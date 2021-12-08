@@ -1,0 +1,327 @@
+.cross-chain__account-switcher {
+  width: 100%;
+  .cross-chain__account-switcher-name {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    .account-name {
+      max-width: calc(100% - 17px);
+      font-size: 11px;
+      font-weight: 400;
+      color: #fff;
+      line-height: 22px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 70px;
+      display: inline-block;
+    }
+
+    .account-switcher {
+      width: 12px;
+      height: 12px;
+      background: url('/images/dex/button/dropdown.png') no-repeat center;
+      background-size: 100% 100%;
+      margin: 0 0 0 5px;
+      cursor: pointer;
+    }
+  }
+}
+
+.cross-chain__account-menu {
+  margin: 0;
+  padding: 0 0 10px;
+  max-height: 226px;
+  overflow-y: auto;
+
+  .menu-item {
+    display: block;
+    padding: 0;
+
+    span {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin: 10px 10px 0;
+      cursor: pointer;
+      border-radius: 8px;
+
+      .account-avatar {
+        width: 30px;
+        height: 30px;
+        background: url('/images/dex/account-menu/account-avatar.png') no-repeat
+          center;
+        background-size: 100%;
+        margin: 0 10px 0 0;
+      }
+
+      .account-name {
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        max-width: 100px;
+      }
+
+      &:hover {
+        background: linear-gradient(
+          58deg,
+          #7813c4 0%,
+          #691bb5 17%,
+          #3b11b8 79%,
+          #2206a0 100%
+        );
+      }
+    }
+
+    &.active {
+      span {
+        background: linear-gradient(
+          58deg,
+          #7813c4 0%,
+          #691bb5 17%,
+          #3b11b8 79%,
+          #2206a0 100%
+        );
+      }
+    }
+  }
+}
+
+.cross-chain__current-token {
+  display: flex;
+  align-items: center;
+
+  .cross-chain__current-token-image {
+    position: relative;
+
+    .cross-chain__current-token-chain-letter {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(
+        58deg,
+        #7813c4 0%,
+        #691bb5 17%,
+        #3b11b8 79%,
+        #2206a0 100%
+      );
+      color: #fff;
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      font-size: 10px;
+    }
+  }
+
+  .cross-chain__current-token-name {
+    margin: 0 0 0 6px;
+    .cross-chain__current-token-name-text {
+      font-size: 16px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      .cross-chain__token-switcher-trigger {
+        width: 12px;
+        height: 12px;
+        background: url('/images/dex/button/dropdown.png') no-repeat center;
+        background-size: 12px 12px;
+        margin: 0 0 0 5px; 
+      }
+    }
+  }
+}
+
+.cross-chain__token-menu {
+  margin: 0;
+  padding: 0 0 7px;
+  width: 200px;
+  max-height: 260px;
+  overflow-y: auto;
+
+  .menu-item {
+    display: block;
+    padding: 0;
+
+    span {
+      display: flex;
+      align-items: center;
+      padding: 7px;
+      margin: 7px 7px 0;
+      cursor: pointer;
+      border-radius: 8px;
+      position: relative;
+
+      .token-name {
+        width: calc(100% - 66px);
+        font-size: 14px;
+        font-weight: 400;
+        margin: 0 0 0 10px;
+      }
+
+      &:hover {
+        .token-name {
+          background: linear-gradient(
+            58deg,
+            #7813c4 0%,
+            #691bb5 17%,
+            #3b11b8 79%,
+            #2206a0 100%
+          );
+          -webkit-background-clip: text;
+          color: transparent;
+        }
+      }
+    }
+
+    &.active {
+      span {
+        .token-name {
+          background: linear-gradient(
+            58deg,
+            #7813c4 0%,
+            #691bb5 17%,
+            #3b11b8 79%,
+            #2206a0 100%
+          );
+          -webkit-background-clip: text;
+          color: transparent;
+        }
+
+        &:after {
+          content: '';
+          width: 12px;
+          height: 12px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: url('/images/dex/account-menu/checked.png') no-repeat center, #232631 linear-gradient(58deg, #7813c4 0%, #691bb5 17%, #3b11b8 79%, #2206a0 100%);
+          background-size: 7px auto;
+          border-radius: 50%;
+          margin: 0 0 0 15px;
+        }
+      }
+    }
+  }
+}
+
+.cross-chain__chain-switcher {
+  width: 100px;
+  background: #141927;
+  border-radius: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 10px;
+  cursor: pointer;
+
+  .cross-chain__chain-switcher-name {
+    max-width: calc(100% - 17px);
+    font-size: 12px;
+    line-height: 16px;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cross-chain__chain-switcher-icon {
+    width: 12px;
+    height: 14px;
+    background: url('/images/dex/button/caret-down.png') no-repeat center;
+    background-size: 12px 14px;
+    margin: 0 0 0 5px;
+  }
+}
+
+.cross-chain__chain-menu {
+  margin: 0;
+  padding: 0 0 7px;
+  width: 200px;
+  max-height: 260px;
+  overflow-y: auto;
+
+  .menu-item {
+    display: block;
+    padding: 0;
+
+    span {
+      display: flex;
+      align-items: center;
+      padding: 7px;
+      margin: 7px 7px 0;
+      cursor: pointer;
+      border-radius: 8px;
+
+      .cross-chain__chain-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background-size: 100%;
+        margin: 0 10px 0 0;
+      }
+
+      .chain-name {
+        width: calc(100% - 36px);
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      .chain-name-checked {
+        width: calc(100% - 36px - 22px);
+      }
+
+      .chain-checked {
+        width: 12px;
+        height: 12px;
+        display: flex;
+        margin-left: 10px;
+        justify-content: center;
+        align-items: center;
+        background: #232631
+          linear-gradient(
+            58deg,
+            #7813c4 0%,
+            #691bb5 17%,
+            #3b11b8 79%,
+            #2206a0 100%
+          );
+        border-radius: 50%;
+      }
+
+      &:hover {
+        .chain-name {
+          background: linear-gradient(
+            58deg,
+            #7813c4 0%,
+            #691bb5 17%,
+            #3b11b8 79%,
+            #2206a0 100%
+          );
+          -webkit-background-clip: text;
+          color: transparent;
+        }
+      }
+    }
+
+    &.active {
+      span {
+        .chain-name {
+          background: linear-gradient(
+            58deg,
+            #7813c4 0%,
+            #691bb5 17%,
+            #3b11b8 79%,
+            #2206a0 100%
+          );
+          -webkit-background-clip: text;
+          color: transparent;
+        }
+      }
+    }
+  }
+}

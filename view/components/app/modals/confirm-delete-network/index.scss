@@ -1,0 +1,27 @@
+.confirm-delete-network {
+  &__mask {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+  }
+
+  &__modal {
+    width: 93vw;
+    margin: 0 auto;
+
+    .modal-container__footer {
+      border: none !important;
+    }
+
+    .modal-content {
+      &__title {
+        color: #fff;
+      }
+
+      &__description {
+        color: #fff;
+      }
+    }
+  }
+}

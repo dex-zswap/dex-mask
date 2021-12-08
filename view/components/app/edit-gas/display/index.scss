@@ -1,0 +1,144 @@
+.edit-gas-display {
+  & .actionable-message--warning,
+  & .actionable-message--error {
+    margin-top: 0;
+
+    & .actionable-message__message {
+      text-align: start;
+    }
+  }
+
+  &__top-tooltip {
+    text-align: center;
+
+    .info-tooltip {
+      display: inline-block;
+
+      img {
+        height: 10px;
+        width: 10px;
+      }
+    }
+  }
+
+  &__dapp-acknowledgement-warning {
+    margin-bottom: 20px;
+  }
+
+  button.edit-gas-display__dapp-acknowledgement-button {
+    margin: 40px auto 0 auto;
+    display: block;
+    color: $secondary-1;
+    border: 1px solid $secondary-1;
+    text-transform: unset;
+    width: auto;
+    background: transparent;
+  }
+
+  .radio-group {
+    margin: 15px auto 40px;
+
+    &__column-label {
+      color: #fff;
+    }
+
+    &__column-radio {
+      input {
+        appearance: none;
+        display: block;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        border: 1px solid #8f879b;
+        margin: 0 auto;
+        position: relative;
+
+        &:checked {
+          border: 1px solid #3f12b8;
+          &::after {
+            content: '';
+            display: block;
+            width: 11px;
+            height: 11px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            left: 1px;
+            top: 1px;
+          }
+        }
+      }
+    }
+
+    &__column-line {
+      height: 8px;
+    }
+  }
+
+  &__advanced-button {
+    display: block;
+    margin: 0 auto 20px;
+    background: transparent;
+    color: rgba(246, 246, 246, 0.6);
+  }
+
+  .advanced-gas-controls {
+    margin-top: 20px;
+
+    .form-field {
+      &__heading-title {
+        h6 {
+          color: rgba(246, 246, 246, 0.6);
+          font-weight: normal;
+        }
+      }
+
+      .numeric-input {
+        input {
+          appearance: none;
+          outline: none !important;
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    .info-tooltip {
+      display: none;
+    }
+  }
+
+  &__education {
+    margin-top: 20px;
+
+    button {
+      display: block;
+      margin: 0 auto;
+      background: transparent;
+      color: $primary-1;
+    }
+  }
+
+  &__warning {
+    margin-bottom: 24px;
+    position: relative;
+    margin-top: 4px;
+  }
+
+  &__content {
+    .transaction-total-banner {
+      .typography--h1 {
+        font-size: 28px;
+      }
+
+      &__detail {
+        font-size: 12px;
+        opacity: 0.6;
+
+        span {
+          font-weight: normal;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

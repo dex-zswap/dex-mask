@@ -1,0 +1,41 @@
+.token-image {
+  &__component {
+    position: relative;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+
+    .img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .default-token-image {
+      background: url('/images/dex/default-token.png') no-repeat center, #fff;
+      background-size: 70% 70%;
+    }
+
+    &-letter {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(
+        58deg,
+        #7813c4 0%,
+        #691bb5 17%,
+        #3b11b8 79%,
+        #2206a0 100%
+      );
+      color: #fff;
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      font-size: 10px;
+    }
+  }
+}

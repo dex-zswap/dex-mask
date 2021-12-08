@@ -1,0 +1,16 @@
+.cross-chain-transfer-button {
+  &__button {
+    width: 92vw;
+    height: 60px;
+    border-radius: 4px;
+    margin: 8px auto;
+    font-size: 12px;
+    color: #585a64;
+    text-indent: 58px;
+    line-height: 60px;
+    background: url('/images/dex/button/cross-chain.png') no-repeat 8px center,
+      #090b13;
+    background-size: 36px 36px;
+    cursor: pointer;
+  }
+}

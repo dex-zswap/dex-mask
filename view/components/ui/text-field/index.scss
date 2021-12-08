@@ -1,0 +1,22 @@
+.MuiFormLabel-root {
+  font-weight: normal!important;
+  color: #8C8C8C!important;
+  font-family: $font-family!important;
+}
+
+.MuiInputBase-root {
+  border: 1px solid transparent!important;
+  background: #8C8C8C;
+  color: #fff!important;
+  background: rgba(36, 36, 36, 0.55)!important;
+  transition: all 0.1s;
+
+  &.Mui-focused {
+    border: 1px solid #5c22c5!important;
+    box-shadow: 0 0 15px #4118a1!important;
+  }
+
+  &:after {
+    display: none;
+  }
+}

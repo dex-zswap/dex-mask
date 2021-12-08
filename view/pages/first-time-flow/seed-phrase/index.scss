@@ -1,0 +1,34 @@
+@import 'confirm-seed-phrase/index';
+@import 'reveal-seed-phrase/index';
+@import 'seed-phrase-intro/index';
+
+.seed-phrase {
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1 0 auto;
+    min-height: 0;
+    width: 100%;
+    padding: 30px 0 0;
+
+    .first-time-flow__account-password {
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: 300;
+    }
+
+    .first-time-flow__account-password-btn {
+      width: 100%;
+      height: 52px;
+      margin: 20px auto 0;
+
+      .button__right__arrow {
+        margin: 0 0 0 6px;
+        width: 16px;
+        height: 11px;
+      }
+    }
+  }
+}

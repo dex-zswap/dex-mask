@@ -1,0 +1,212 @@
+.send-token-info {
+  &__wrapper {
+    margin: 20px 4vw 50px;
+    position: relative;
+    background: linear-gradient(
+      58deg,
+      #7813c4 0%,
+      #691bb5 17%,
+      #3b11b8 79%,
+      #2206a0 100%
+    );
+    border-radius: 14px;
+    padding: 12px 4px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 1px;
+      height: 76px;
+      border-left: 1px dashed #4b5165;
+      left: 0;
+      right: 0;
+      margin: auto;
+      bottom: -84px;
+      transform: translateX(1px);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: url('/images/dex/send/send-recive.png') no-repeat center;
+      background-size: 100% 100%;
+      left: 50%;
+      top: calc(100% + 40px);
+      margin: 0 0 0 -6px;
+    }
+
+    &_noarrow {
+      &::before {
+        content: none;
+      }
+      &::after {
+        content: none;
+      }
+    }
+
+    .send-v2 {
+      &__asset-dropdown__single-asset {
+        display: block;
+      }
+
+      &__asset-dropdown__input-wrapper {
+        border: none;
+      }
+
+      &__asset-dropdown__asset {
+        background: transparent !important;
+        display: block !important;
+      }
+
+      &__asset-dropdown {
+        background-color: transparent;
+        height: auto;
+
+        &__icon-name {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          > div {
+            &:first-child {
+              width: calc(100% - 110px);
+              display: flex;
+              align-items: center;
+              margin-right: 10px;
+            }
+          }
+        }
+
+        &__symbol {
+          width: calc(100% - 46px);
+          margin: 0 0 0 6px;
+          font-size: 16px;
+          color: rgba(246, 246, 246, 0.6);
+          > div:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .cross-chain__account-switcher {
+            width: 100%;
+          }
+        }
+
+        &__switch-token {
+          display: block;
+          width: 16px;
+          height: 16px;
+          background: url('/images/dex/button/dropdown.png') no-repeat center;
+          background-size: 100% 100%;
+          margin: 0 0 0 8px;
+        }
+
+        &__name {
+          margin: 13px 0 0;
+        }
+
+        &__asset-data {
+          margin: 0;
+        }
+
+        &__asset-data-max {
+          .send-v2__asset-dropdown__name {
+            margin: 16px 0 0;
+            display: flex;
+            align-items: center;
+            color: rgba(246, 246, 246, 0.6);
+            font-size: 12px;
+
+            .currency-display-component {
+              padding: 0 0 0 6px;
+              height: 14px;
+              line-height: 14px;
+
+              &__text {
+                font-weight: normal;
+                color: rgba(246, 246, 246, 0.6);
+                font-size: 12px;
+              }
+
+              &__suffix {
+                font-weight: normal;
+                font-size: 12px;
+                color: rgba(246, 246, 246, 0.6);
+              }
+            }
+          }
+        }
+
+        &__close-area {
+          background: rgba(0, 0, 0, 0.3);
+        }
+
+        &__list {
+          background: #101422;
+          border: none;
+          max-height: 200px;
+          height: auto;
+
+          .send-v2__asset-dropdown {
+            &__asset {
+              display: flex !important;
+              align-items: center;
+              justify-content: space-between;
+              padding: 8px 10px;
+            }
+
+            &__asset-data {
+              flex-grow: 0;
+            }
+
+            &__symbol {
+              font-size: 14px;
+            }
+
+            &__name {
+              margin: 0;
+
+              .currency-display-component {
+                height: 20px;
+                line-height: 20px;
+                display: flex;
+                align-items: baseline;
+
+                &__text {
+                  color: rgba(246, 246, 246, 0.6);
+                  font-size: 14px;
+                  font-weight: 600;
+                }
+
+                &__suffix {
+                  font-size: 14px;
+                  color: rgba(246, 246, 246, 0.6);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .currency-display-component {
+      height: 40px;
+      line-height: 40px;
+      display: flex;
+      align-items: baseline;
+
+      &__text {
+        color: rgba(246, 246, 246, 0.6);
+        font-size: 36px;
+        font-weight: 600;
+      }
+
+      &__suffix {
+        font-size: 14px;
+        color: rgba(246, 246, 246, 0.6);
+      }
+    }
+  }
+}

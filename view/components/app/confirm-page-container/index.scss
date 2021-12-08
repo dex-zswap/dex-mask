@@ -1,0 +1,11 @@
+@import 'content/index';
+@import 'header/index';
+@import 'detail-row/index';
+@import 'navigation/index';
+@import 'header-content/index';
+
+.page-container {
+  &__content-component-wrapper {
+    height: 100%;
+  }
+}

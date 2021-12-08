@@ -1,0 +1,26 @@
+.edit-gas-popover {
+  &__wrapper {
+    background: #5f19b6 !important;
+    border-radius: 14px !important;
+
+    .popover-header {
+      background: #5f19b6;
+    }
+
+    .popover-footer {
+      padding: 5px !important;
+
+      border-top: 1px solid #979797 !important;
+
+      .button {
+        border: none !important;
+
+        .button__right__arrow {
+          margin: 0 0 0 6px;
+          width: 16px;
+          height: 11px;
+        }
+      }
+    }
+  }
+}

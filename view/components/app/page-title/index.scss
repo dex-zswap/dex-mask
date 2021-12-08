@@ -1,0 +1,22 @@
+.page-title {
+  &__wrapper {
+    font-size: 20px;
+    font-weight: normal;
+    text-align: center;
+    margin: 20px 0 80px;
+  }
+
+  &__title {
+    color: #383B46;
+  }
+
+  &__splitor {
+    color: #383B46;
+    font-size: 14px;
+    padding: 0 5px;
+  }
+
+  &__subtitle {
+    color: #FFFFFF;
+  }
+}

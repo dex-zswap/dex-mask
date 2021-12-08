@@ -1,0 +1,50 @@
+.chain-switcher {
+  &__wrapper {
+    width: 92vw;
+    height: 46px;
+    border-radius: 23px;
+    margin: 0 auto;
+    background: #101422;
+    padding: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__current-chain {
+    font-size: 16px;
+    padding: 7px 12px;
+    font-weight: 500;
+    border-radius: 23px;
+    background: #651AB5;
+    color: #fff;
+  }
+
+  &__modal-trigger {
+    font-size: 16px;
+    font-weight: 600;
+    color: #8B99A6;
+    width: 50px;
+    height: 32px;
+    display: flex;
+    line-height: 20px;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  &__default-chains {
+    width: 80vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__default-chain-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+  }
+}

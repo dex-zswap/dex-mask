@@ -1,0 +1,15 @@
+@import './import-with-seed-phrase/index';
+@import './new-account/index';
+
+.create-password {
+  &__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1 0 auto;
+    min-height: 0;
+    width: 100%;
+    padding: 30px 0 0;
+  }
+}

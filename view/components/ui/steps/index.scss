@@ -1,0 +1,42 @@
+.steps-component {
+  &__wrapper {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    min-width: 60px;
+    max-width: 108px;
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: url('/images/dex/steps/cicle-normal.png') no-repeat center;
+      background-size: 100% 100%;
+      font-size: 18px;
+      color: #A69E9E;
+
+      &.active {
+        color: #FCFCFD;
+        background: url('/images/dex/steps/cicle-active.png') no-repeat center;
+        background-size: 100% 100%;
+      }
+    }
+
+    .line {
+      width: 32px;
+      height: 1px;
+      background: #A69E9E;
+
+      &.active {
+        background: linear-gradient(58deg, #DF05FE 0%, #F06FFF 17%, #E42DFE 100%);
+      }
+    }
+  }
+}

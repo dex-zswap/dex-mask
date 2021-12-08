@@ -1,0 +1,56 @@
+// Account Modal Container
+.account-modal {
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding: 5px 0 31px 0;
+    border-radius: 15px;
+    background: rgba(#141827, 0.9);
+  }
+
+  &__back {
+    color: $dusty-gray;
+    position: absolute;
+    top: 13px;
+    left: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  &__back-text {
+    @include H6;
+
+    padding-left: 3px;
+  }
+
+  &__close {
+    font-size: 25px;
+    background-color: transparent;
+    color: $dusty-gray;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    right: 12px;
+
+    &::after {
+      content: '\00D7';
+    }
+  }
+
+  & .qr-code {
+    margin: 15px 0 0;
+  }
+
+  & .identicon {
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: -32px;
+    margin-bottom: -32px;
+  }
+}
