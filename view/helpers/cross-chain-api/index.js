@@ -15,10 +15,7 @@ export const getTokenGroup = async (body) => await fetch(`${API_BASE}/getTokenGr
   body: JSON.stringify(body)
 });
 
-export const getIcon = async (body) => await fetch(`${API_BASE}/getIcon`, {
-  method: 'POST',
-  body: JSON.stringify(body)
-});
+export const getAssetIcon = ({ meta_chain_id, token_address }) => `${API_BASE}/getAssetIcon/${meta_chain_id}/${token_address}`;
 
 export const getIndexAssets = async (body) => await fetch(`${API_BASE}/getIndexAssets`, {
   method: 'POST',
