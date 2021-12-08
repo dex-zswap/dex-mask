@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+
 export const ETH = 'ETH';
 export const GWEI = 'GWEI';
 export const WEI = 'WEI';
@@ -13,3 +15,5 @@ export const GAS_ESTIMATE_TYPES = {
   FAST: 'FAST',
   FASTEST: 'FASTEST',
 };
+
+export const ZERO_DECIMAL = new Decimal(0);

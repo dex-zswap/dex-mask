@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import { CHAIN_ID_TO_RPC_URL_MAP } from '@shared/constants/network';
 import { toBnString } from '@view/helpers/utils/conversions.util';
+import { ZERO_DECIMAL } from '@view/helpers/constants/common';
 
 export async function getTokenBalance({
   tokenAddress,
@@ -33,7 +34,7 @@ export async function getTokenBalance({
       decimals[0].toString(),
     );
     const demical = new Decimal(num);
-    return demical.toFixed(fixed);
+    return ZERO_DECIMAL.eq(demical) ? '0' : demical.toFixed(fixed);
   }
 }
 
