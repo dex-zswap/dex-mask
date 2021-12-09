@@ -1,4 +1,3 @@
-import AutoInitTokens from '@c/app/auto-init-tokens';
 import { I18nProvider, LegacyI18nProvider } from '@view/contexts/i18n';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
@@ -39,10 +38,7 @@ class Page extends PureComponent {
         <HashRouter hashType="noslash">
           <I18nProvider>
             <LegacyI18nProvider>
-              <>
-                <Routes />
-                <AutoInitTokens />
-              </>
+              <Routes />
             </LegacyI18nProvider>
           </I18nProvider>
         </HashRouter>

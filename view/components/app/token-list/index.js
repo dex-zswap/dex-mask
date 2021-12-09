@@ -30,24 +30,6 @@ export default function TokenList({ onTokenClick }) {
     shouldHideZeroBalanceTokens,
   );
 
-  const tokenSorted = useMemo(() => {
-    if (!tokenDisplayOrders.length) {
-      return tokensWithBalances;
-    }
-
-    return tokenDisplayOrders
-      .map((address) =>
-        tokensWithBalances.find(
-          ({ address: tokenAddress }) => address === tokenAddress,
-        ),
-      )
-      .concat(
-        tokensWithBalances.filter(
-          ({ address }) => !tokenDisplayOrders.includes(address),
-        ),
-      );
-  }, [tokensWithBalances, tokenDisplayOrders]);
-
   if (loading) {
     return (
       <div
@@ -66,7 +48,7 @@ export default function TokenList({ onTokenClick }) {
 
   return (
     <div>
-      {tokenSorted.map((tokenData, index) => {
+      {tokensWithBalances.map((tokenData, index) => {
         if (tokenData) {
           tokenData.image = assetImages[tokenData.address];
           return (

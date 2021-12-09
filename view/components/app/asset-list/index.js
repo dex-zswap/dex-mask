@@ -97,7 +97,6 @@ const AssetList = ({ onClickAsset }) => {
           history.push(ADD_TOKEN_ROUTE);
         }}
       />
-      <CrossChainButton />
     </div>
   );
 };

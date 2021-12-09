@@ -115,58 +115,7 @@ export default function SendTransactionScreen() {
           await dispatch(setProviderType(type ?? changedChainId));
         }
       };
-      const token_address = changeFromChain
-        ? zeroAddress()
-        : tokenAddress || zeroAddress();
-      checkTokenBridge({
-        meta_chain_id: toBnString(
-          isRpc ? (changeFromChain ? type : chainId) : fromChainId,
-        ),
-        token_address,
-      })
-        .then((res) => res.json())
-        .then(async (res) => {
-          if (res?.c === 200 && res?.d?.length) {
-            if (changeFromChain) {
-              await dispatchChainId();
-            }
-            const targetChain = res.d.find(
-              (d) =>
-                toBnString(d.target_meta_chain_id) == toBnString(toChainId),
-            );
-            if (targetChain) {
-              dispatch(
-                updateCrossChainState({
-                  isInternalTrans: checked,
-                  coinAddress: token_address,
-                  coinSymbol: sendAsset?.details?.symbol || nativeCurrency,
-                  from: fromAddress,
-                  dest: toAddress,
-                  fromChain: fromChainId,
-                  target: targetChain,
-                  destChain: toChainId,
-                  supportChains: [],
-                  chainTokens: [],
-                  targetCoinAddress: targetChain?.target_token_address,
-                  targetCoinSymbol: targetChain?.target_token,
-                }),
-              );
-              history.push(CROSSCHAIN_ROUTE);
-            } else {
-              await dispatchChainId();
-            }
-          } else {
-            dispatchChainId();
-            // if (changeFromChain) {
-            //   await dispatchChainId();
-            // }
-          }
-        })
-        .catch(() => {
-          if (changeFromChain) {
-            dispatchChainId();
-          }
-        });
+      dispatchChainId();
     },
     [checked, tokenAddress, fromAddress, toAddress, chainId],
   );

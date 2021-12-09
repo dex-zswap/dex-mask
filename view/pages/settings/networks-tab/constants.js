@@ -17,9 +17,9 @@ import {
   BSC_MAINNET,
   BSC_CHAIN_ID,
   BSC_RPC_URL,
-  DEX_MAINNET,
-  DEX_CHAIN_ID,
-  DEX_RPC_URL
+  AVAX_MAINNET,
+  AVAX_CHAIN_ID,
+  AVAX_RPC_URL
 } from '@shared/constants/network';
 
 const defaultNetworksData = [
@@ -42,13 +42,13 @@ const defaultNetworksData = [
     blockExplorerUrl: 'https://bscscan.com',
   },
   {
-    labelKey: DEX_MAINNET,
+    labelKey: AVAX_MAINNET,
     iconColor: '#69e71b',
-    providerType: DEX_MAINNET,
-    rpcUrl: DEX_RPC_URL,
-    chainId: DEX_CHAIN_ID,
-    ticker: 'DEX',
-    blockExplorerUrl: 'https://explorer.testnet.dex.io',
+    providerType: AVAX_MAINNET,
+    rpcUrl: AVAX_RPC_URL,
+    chainId: AVAX_CHAIN_ID,
+    ticker: 'AVAX',
+    blockExplorerUrl: 'https://snowtrace.io/',
   },
   {
     labelKey: ROPSTEN,

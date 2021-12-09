@@ -1,6 +1,6 @@
 {
   "externally_connectable": {
-    "matches": ["https://dexmask.io/*"],
+    "matches": ["https://anybit.io/*"],
     "ids": ["*"]
   },
   "minimum_chrome_version": "63"

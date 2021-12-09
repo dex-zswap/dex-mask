@@ -2,8 +2,8 @@ import LongLetter from '@c/ui/long-letter';
 import { Menu, MenuItem } from '@c/ui/menu';
 import {
   BSC_MAINNET,
-  DEX_MAINNET,
   MAINNET,
+  AVAX_MAINNET,
   NETWORK_TYPE_RPC,
 } from '@shared/constants/network';
 import { isPrefixedFormattedHexString } from '@shared/modules/network.utils';
@@ -64,52 +64,12 @@ class ChainSwitcher extends Component {
     });
   }
 
-  getNetworkName() {
-    const { provider } = this.props;
-    const providerName = provider.type;
-
-    let name;
-
-    if (providerName === 'mainnet') {
-      name = this.context.t('mainnet');
-    } else if (providerName === 'ropsten') {
-      name = this.context.t('ropsten');
-    } else if (providerName === 'kovan') {
-      name = this.context.t('kovan');
-    } else if (providerName === 'rinkeby') {
-      name = this.context.t('rinkeby');
-    } else if (providerName === 'goerli') {
-      name = this.context.t('goerli');
-    } else {
-      name = provider.nickname || this.context.t('unknownNetwork');
-    }
-
-    return name;
-  }
-
-  renderCurrentChain() {
-    return (
-      <div className="chain-switcher__current-chain">
-        {this.getNetworkName()}
-      </div>
-    );
-  }
-
   renderDefaultChains() {
     const { provider, setProviderType } = this.props;
     const providerName = provider.type;
 
     return (
       <div className="chain-switcher__default-chains">
-        <div
-          className={classnames([
-            'chain-switcher__default-chain-item',
-            providerName === DEX_MAINNET && 'chain-switcher__current-chain',
-          ])}
-          onClick={() => this.switchNetWork(DEX_MAINNET)}
-        >
-          DEX
-        </div>
         <div
           className={classnames([
             'chain-switcher__default-chain-item',
@@ -127,6 +87,15 @@ class ChainSwitcher extends Component {
           onClick={() => this.switchNetWork(BSC_MAINNET)}
         >
           BSC
+        </div>
+        <div
+          className={classnames([
+            'chain-switcher__default-chain-item',
+            providerName === AVAX_MAINNET && 'chain-switcher__current-chain',
+          ])}
+          onClick={() => this.switchNetWork(AVAX_MAINNET)}
+        >
+          AVAX
         </div>
       </div>
     );
@@ -180,11 +149,11 @@ class ChainSwitcher extends Component {
     } = this.props;
 
     const iconBg =
-      'dexMainnet' === network
-        ? '/images/dex-token.png'
-        : 'mainnet' === network
+      AVAX_MAINNET === network
+        ? '/images/avax.png'
+        : MAINNET === network
         ? '/images/eth_logo.png'
-        : 'bscMainnet' === network
+        : BSC_MAINNET === network
         ? '/images/bnb.png'
         : '/images/dex/settings/chain-icon.png';
 
@@ -235,9 +204,9 @@ class ChainSwitcher extends Component {
         anchorElement={this.triggerEl}
         onHide={() => this.toggleNetworkDrop()}
       >
-        {this.renderNetworkMenuItem('dexMainnet')}
-        {this.renderNetworkMenuItem('mainnet')}
-        {this.renderNetworkMenuItem('bscMainnet')}
+        {this.renderNetworkMenuItem(MAINNET)}
+        {this.renderNetworkMenuItem(BSC_MAINNET)}
+        {this.renderNetworkMenuItem(AVAX_MAINNET)}
         {this.renderNetworkMenuItem('ropsten')}
         {this.renderNetworkMenuItem('kovan')}
         {this.renderNetworkMenuItem('rinkeby')}

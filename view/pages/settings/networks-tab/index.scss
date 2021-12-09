@@ -134,6 +134,9 @@
   &__networks-list-name--selected {
     font-weight: bold;
     color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__networks-list-name--disabled {

@@ -53,28 +53,6 @@ const TokenOverview = ({ className, token }) => {
   const isSwapsChain = useSelector(getIsSwapsChain);
   const chainId = useSelector(getCurrentChainId);
 
-  const { loading, error, res } = useFetch(
-    () =>
-      checkTokenBridge({
-        meta_chain_id: toBnString(chainId),
-        token_address: token.address,
-      }),
-    [chainId, token.address],
-  );
-
-  const supportCrossChain = useMemo(() => {
-    if (loading || error || res?.c !== 200) {
-      return false;
-    }
-
-    return res?.d?.length;
-  }, [loading, error, res]);
-
-  const defaultTargetChain = useMemo(
-    () => (supportCrossChain ? res.d[0] : null),
-    [supportCrossChain, res],
-  );
-
   return (
     <WalletOverview
       balance={
@@ -135,34 +113,6 @@ const TokenOverview = ({ className, token }) => {
             }}
             label={t('swap')}
           />
-          {supportCrossChain ? (
-            <IconButton
-              className="eth-overview__button"
-              Icon={SwapIcon}
-              iconSize={40}
-              onClick={() => {
-                const destChain = ethers.BigNumber.from(
-                  defaultTargetChain.target_meta_chain_id,
-                ).toHexString();
-                dispatch(
-                  updateCrossChainState({
-                    coinAddress: token.address,
-                    coinSymbol: token.symbol,
-                    targetCoinAddress: defaultTargetChain.target_token_address,
-                    targetCoinSymbol: defaultTargetChain.target_token,
-                    from: selectedAccount.address,
-                    fromChain: chainId,
-                    target: defaultTargetChain,
-                    destChain,
-                    supportChains: [],
-                    chainTokens: [],
-                  }),
-                );
-                history.push(CROSSCHAIN_ROUTE);
-              }}
-              label={t('crossChain')}
-            />
-          ) : null}
         </>
       }
       className={className}

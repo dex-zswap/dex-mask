@@ -80,7 +80,7 @@ export function useTokenTracker(
           [selectedAddress]: [diffed.address]
         };
       }
-      dispatch(setTokenDisplayOrders(tokenOrdersInfo));
+      // dispatch(setTokenDisplayOrders(tokenOrdersInfo));
     }
 
     userTokens.current = tokenBalances;

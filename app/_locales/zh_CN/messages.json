@@ -1,21 +1,21 @@
 {
-  "DEXMaskConnectStatusParagraphOne": {
-    "message": "现在您可在 DEXMask 中对账户连接进行更多的控制。"
+  "metaMaskConnectStatusParagraphOne": {
+    "message": "现在您可在 AnyBit Wallet 中对账户连接进行更多的控制。"
   },
-  "DEXMaskConnectStatusParagraphThree": {
+  "metaMaskConnectStatusParagraphThree": {
     "message": "点击管理连接的账户。"
   },
-  "DEXMaskConnectStatusParagraphTwo": {
+  "metaMaskConnectStatusParagraphTwo": {
     "message": "连接状态按钮显示所访问的网站是否与您当前选择的账户连接。"
   },
-  "DEXMaskDescription": {
+  "metaMaskDescription": {
     "message": "将您与 Ethereum 和去中心化网络连接起来。"
   },
-  "DEXMaskSwapsOfflineDescription": {
-    "message": "DEXMask Swaps 正在进行维护。请稍后访问。"
+  "metaMaskSwapsOfflineDescription": {
+    "message": "AnyBit Wallet Swaps 正在进行维护。请稍后访问。"
   },
-  "DEXMaskVersion": {
-    "message": "DEXMask 版本"
+  "metaMaskVersion": {
+    "message": "AnyBit Wallet 版本"
   },
   "InterBlockchain": {
     "message": "从 $1 跨链转出"
@@ -65,7 +65,7 @@
     "message": "活动日志"
   },
   "addAcquiredTokens": {
-    "message": "在 DEXMask 上添加获得的代币"
+    "message": "在 AnyBit Wallet 上添加获得的代币"
   },
   "addAlias": {
     "message": "添加别名"
@@ -155,7 +155,7 @@
     "description": "The description of the application"
   },
   "appName": {
-    "message": "DEXMask",
+    "message": "AnyBit Wallet",
     "description": "The name of the application"
   },
   "approvalAndAggregatorTxFeeCost": {
@@ -202,7 +202,7 @@
     "message": "自动锁定定时（分钟）"
   },
   "autoLockTimeLimitDescription": {
-    "message": "请设置 DEXMask 自动锁定前的空闲时间（单位：分钟）"
+    "message": "请设置 AnyBit Wallet 自动锁定前的空闲时间（单位：分钟）"
   },
   "average": {
     "message": "平均值"
@@ -214,7 +214,7 @@
     "message": "返回全部"
   },
   "backupApprovalInfo": {
-    "message": "如果不慎丢失个人设备，忘记密码，或者需要重新安装 DEXMask，亦或是需在另一台设备上打开钱包，请使用该保密码恢复个人钱包数据。"
+    "message": "如果不慎丢失个人设备，忘记密码，或者需要重新安装 AnyBit Wallet，亦或是需在另一台设备上打开钱包，请使用该保密码恢复个人钱包数据。"
   },
   "backupApprovalNotice": {
     "message": "请备份您的账户助记词，保证您的钱包和资金安全。"
@@ -254,7 +254,7 @@
     "message": "使用 Wyre 购买 ETH"
   },
   "buyWithWyreDescription": {
-    "message": "您可以通过 Wyre 使用信用卡将 ETH 存入您的 DEXMask 账户。"
+    "message": "您可以通过 Wyre 使用信用卡将 ETH 存入您的 AnyBit Wallet 账户。"
   },
   "bytes": {
     "message": "字节"
@@ -275,7 +275,7 @@
     "message": "链 ID"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "您需要在谷歌浏览器（Google Chrome）上使用 DEXMask 才能连接到您的硬件钱包。"
+    "message": "您需要在谷歌浏览器（Google Chrome）上使用 AnyBit Wallet 才能连接到您的硬件钱包。"
   },
   "clickToRevealSeed": {
     "message": "点击此处显示密语"
@@ -312,7 +312,7 @@
   },
   "connectTo": {
     "message": "连接到 $1",
-    "description": "$1 is the name/origin of a web3 site/application that the user can connect to DEXMask"
+    "description": "$1 is the name/origin of a web3 site/application that the user can connect to AnyBit Wallet"
   },
   "connectToAll": {
     "message": "连接到您的全部$1",
@@ -331,7 +331,7 @@
     "description": "$1 is the number of accounts to which the web3 site/application is asking to connect; this will substitute $1 in connectToMultiple"
   },
   "connectWithDEXMask": {
-    "message": "使用 DEXMask 连接"
+    "message": "使用 AnyBit Wallet 连接"
   },
   "connectedAccountsDescriptionPlural": {
     "message": "您有 $1 个账户连接到了该网站。",
@@ -341,7 +341,7 @@
     "message": "您有 1 个账户连接到了该网站。"
   },
   "connectedAccountsEmptyDescription": {
-    "message": "DEXMask 没有连接这个网站。要连接到 web3 网站，请在他们的网站上找到连接按钮。"
+    "message": "AnyBit Wallet 没有连接这个网站。要连接到 web3 网站，请在他们的网站上找到连接按钮。"
   },
   "connectedSites": {
     "message": "已连接的网站"
@@ -457,7 +457,7 @@
     "message": "自定义代币"
   },
   "dataBackupFoundInfo": {
-    "message": "您的部分账户数据已在之前安装的 DEXMask 时备份。其中可能包括您的设置、联系人和代币。您现在想恢复这些数据吗？"
+    "message": "您的部分账户数据已在之前安装的 AnyBit Wallet 时备份。其中可能包括您的设置、联系人和代币。您现在想恢复这些数据吗？"
   },
   "decimal": {
     "message": "小数精度"
@@ -512,8 +512,11 @@
   "dexMainnet": {
     "message": "DEX"
   },
+  "avaxMainnet": {
+    "message": "AVAX"
+  },
   "dex_trans": {
-    "message": "DEX钱包内转账"
+    "message": "钱包内转账"
   },
   "directDepositEther": {
     "message": "直接存入 Ether"
@@ -589,13 +592,13 @@
     "message": "不向任何任何人分享该账户助记词。"
   },
   "endOfFlowMessage5": {
-    "message": "谨防网络钓鱼！DEXMask 绝不会主动要求您提供个人账户助记词。"
+    "message": "谨防网络钓鱼！AnyBit Wallet 绝不会主动要求您提供个人账户助记词。"
   },
   "endOfFlowMessage6": {
     "message": "如果您需要再次备份账户助记词，请通过设置 -> 安全选项完成该操作。"
   },
   "endOfFlowMessage8": {
-    "message": "DEXMask 无法恢复您的账户助记词。"
+    "message": "AnyBit Wallet 无法恢复您的账户助记词。"
   },
   "endOfFlowMessage9": {
     "message": "了解详情。"
@@ -639,7 +642,7 @@
     "description": "Displayed error name for debugging purposes. $1 is the error name"
   },
   "errorPageTitle": {
-    "message": "DEXMask 遇到了一个错误",
+    "message": "AnyBit Wallet 遇到了一个错误",
     "description": "Title of generic error page"
   },
   "errorStack": {
@@ -788,7 +791,7 @@
     "message": "连接硬件钱包"
   },
   "hardwareWalletsMsg": {
-    "message": "选择希望用于 DEXMask 的硬件钱包"
+    "message": "选择希望用于 AnyBit Wallet 的硬件钱包"
   },
   "here": {
     "message": "这里",
@@ -821,7 +824,7 @@
     "message": "import using Secret Recovery Phrase"
   },
   "importAccountMsg": {
-    "message": "导入的账户将不会与最初创建的 DEXMask 账户助记词相关联。了解更多有关导入账户的信息 。"
+    "message": "导入的账户将不会与最初创建的 AnyBit Wallet 账户助记词相关联。了解更多有关导入账户的信息 。"
   },
   "importAccountSeedPhrase": {
     "message": "使用账户助记词导入账户"
@@ -1004,10 +1007,10 @@
     "message": "发送匿名的点击和页面浏览事件信息"
   },
   "metametricsHelpImproveDEXMask": {
-    "message": "帮助我们让 DEXMask 变得更好"
+    "message": "帮助我们让 AnyBit Wallet 变得更好"
   },
   "metametricsOptInDescription": {
-    "message": "DEXMask 希望收集使用数据，以更好地了解我们的用户如何与扩展进行互动。这些数据将被用于持续改进我们产品和 Ethereum 生态系统的可用性和用户体验。"
+    "message": "AnyBit Wallet 希望收集使用数据，以更好地了解我们的用户如何与扩展进行互动。这些数据将被用于持续改进我们产品和 Ethereum 生态系统的可用性和用户体验。"
   },
   "mustSelectOne": {
     "message": "至少选择 1 种代币。"
@@ -1016,7 +1019,7 @@
     "message": "我的账户"
   },
   "needEtherInWallet": {
-    "message": "使用 DEXMask 与分布式应用交互，需要您的钱包里需要有 Ether。"
+    "message": "使用 AnyBit Wallet 与分布式应用交互，需要您的钱包里需要有 Ether。"
   },
   "needImportFile": {
     "message": "必须选择一个文件来导入。",
@@ -1063,7 +1066,7 @@
     "message": "新密码（至少 8 个字符）"
   },
   "newToDEXMask": {
-    "message": "第一次使用 DEXMask？"
+    "message": "第一次使用 AnyBit Wallet？"
   },
   "newTotal": {
     "message": "新总额"
@@ -1076,7 +1079,7 @@
   },
   "nextNonceWarning": {
     "message": "Nonce 高于建议的 nonce 值 $1",
-    "description": "The next nonce according to DEXMask's internal logic"
+    "description": "The next nonce according to AnyBit Wallet's internal logic"
   },
   "noAccountsFound": {
     "message": "没找到查询的账户"
@@ -1161,7 +1164,7 @@
     "message": "加入 MetaMetrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "加入 MetaMetrics ，帮助我们改善 DEXMask 服务"
+    "message": "加入 MetaMetrics ，帮助我们改善 AnyBit Wallet 服务"
   },
   "password": {
     "message": "密码"
@@ -1396,7 +1399,7 @@
     "message": "选择一个账户"
   },
   "selectAnAccountHelp": {
-    "message": "选择在 DEXMask 中查看的账户"
+    "message": "选择在 AnyBit Wallet 中查看的账户"
   },
   "selectEachPhrase": {
     "message": "请选择每个单词，以确保其正确性。"
@@ -1524,7 +1527,7 @@
     "message": "检索状态日志时出错。"
   },
   "stateLogFileName": {
-    "message": "DEXMask 状态日志"
+    "message": "AnyBit Wallet 状态日志"
   },
   "stateLogs": {
     "message": "状态日志"
@@ -1582,17 +1585,17 @@
   },
   "swapCheckingQuote": {
     "message": "正在检查 $1",
-    "description": "Shown to the user during quote loading. $1 is the name of an aggregator. The message indicates that DEXMask is currently checking if that aggregator has a trade/quote for their requested swap."
+    "description": "Shown to the user during quote loading. $1 is the name of an aggregator. The message indicates that AnyBit Wallet is currently checking if that aggregator has a trade/quote for their requested swap."
   },
   "swapCustom": {
     "message": "自定义"
   },
   "swapDEXMaskFee": {
-    "message": "DEXMask 手续费"
+    "message": "AnyBit Wallet 手续费"
   },
   "swapDEXMaskFeeDescription": {
-    "message": "我们每次都能从顶级流动性资源中找到最好的价格。每次报价都会自动收取1%的手续费用，以支持 DEXMask 的持续发展，使其更加完善。",
-    "description": "Provides information about the fee that DEXMask takes for swaps. $1 is a decimal number."
+    "message": "我们每次都能从顶级流动性资源中找到最好的价格。每次报价都会自动收取1%的手续费用，以支持 AnyBit Wallet 的持续发展，使其更加完善。",
+    "description": "Provides information about the fee that AnyBit Wallet takes for swaps. $1 is a decimal number."
   },
   "swapDecentralizedExchange": {
     "message": "去中心化交易所"
@@ -1601,7 +1604,7 @@
     "message": "修改限制"
   },
   "swapEnableDescription": {
-    "message": "这是必须的，并且允许 DEXMask 兑换您的 $1。",
+    "message": "这是必须的，并且允许 AnyBit Wallet 兑换您的 $1。",
     "description": "Gives the user info about the required approval transaction for swaps. $1 will be the symbol of a token being approved for swaps."
   },
   "swapEstimatedNetworkFee": {
@@ -1650,7 +1653,7 @@
     "description": "$1 is the number of quotes that the user can select from when opening the list of quotes on the 'view quote' screen"
   },
   "swapNetworkFeeSummary": {
-    "message": "网络手续费包括处理您的兑换和在以太坊（$1）网络上存储的成本。DEXMask 不从这笔费用中获利。"
+    "message": "网络手续费包括处理您的兑换和在以太坊（$1）网络上存储的成本。AnyBit Wallet 不从这笔费用中获利。"
   },
   "swapNewQuoteIn": {
     "message": "$1 后更新报价",
@@ -1678,8 +1681,8 @@
     "message": "如果在您下订单和确认订单之间的价格发生了变化，这就叫做\"滑点\"。如果滑点超过您的\"最大滑点\"设置，您的兑换将自动取消。"
   },
   "swapQuoteIncludesRate": {
-    "message": "报价包含 $1% DEXMask 手续费",
-    "description": "Provides information about the fee that DEXMask takes for swaps. $1 is a decimal number."
+    "message": "报价包含 $1% AnyBit Wallet 手续费",
+    "description": "Provides information about the fee that AnyBit Wallet takes for swaps. $1 is a decimal number."
   },
   "swapQuoteNofN": {
     "message": "报价 $1 / $2",
@@ -1811,16 +1814,16 @@
     "message": "扫描这个代码时，请确保附近没有其他人在看您的屏幕。"
   },
   "syncWithMobileComplete": {
-    "message": "您的数据已同步成功。尽情体验 DEXMask 应用程序！"
+    "message": "您的数据已同步成功。尽情体验 AnyBit Wallet 应用程序！"
   },
   "syncWithMobileDesc": {
-    "message": "您可以使用个人移动设备同步个人账户与信息。打开 DEXMask 移动应用程序，进入“设置”选项，点击“通过浏览器扩展程序同步”"
+    "message": "您可以使用个人移动设备同步个人账户与信息。打开 AnyBit Wallet 移动应用程序，进入“设置”选项，点击“通过浏览器扩展程序同步”"
   },
   "syncWithMobileDescNewUsers": {
-    "message": "如果您是首次启用 DEXMask 移动应用程序，请通过个人手机完成如下操作。"
+    "message": "如果您是首次启用 AnyBit Wallet 移动应用程序，请通过个人手机完成如下操作。"
   },
   "syncWithMobileScanThisCode": {
-    "message": "使用 DEXMask 应用程序扫描代码"
+    "message": "使用 AnyBit Wallet 应用程序扫描代码"
   },
   "syncWithMobileTitle": {
     "message": "使用移动设备进行同步"
@@ -1944,7 +1947,7 @@
     "message": "重试"
   },
   "typePassword": {
-    "message": "输入您的 DEXMask 密码"
+    "message": "输入您的 AnyBit Wallet 密码"
   },
   "unapproved": {
     "message": "未批准"
@@ -2030,13 +2033,13 @@
     "description": "$1 is a clickable link."
   },
   "welcome": {
-    "message": "欢迎使用 DEXMask"
+    "message": "欢迎使用 AnyBit Wallet"
   },
   "welcomeBack": {
     "message": "欢迎回来！"
   },
   "welcomeDexWallet": {
-    "message": "欢迎使用 DEXMask"
+    "message": "欢迎使用 AnyBit Wallet"
   },
   "whatsThis": {
     "message": "这是什么？"

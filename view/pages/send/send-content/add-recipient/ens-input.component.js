@@ -1,7 +1,6 @@
 import Identicon from '@c/ui/identicon';
 import { ellipsify } from '@pages/send/utils';
 import {
-  DEX_DISPLAY_NAME,
   MAINNET_DISPLAY_NAME,
   NETWORK_TO_NAME_MAP,
   NETWORK_TYPE_TO_ID_MAP,
@@ -97,21 +96,6 @@ export default class EnsInput extends Component {
     } = this.props;
 
     const bnStrChainId = toBnString(chainId);
-    let placeholder = t('recipientAddressPlaceholder2');
-
-    Object.keys(NETWORK_TYPE_TO_ID_MAP).map((key) => {
-      if (toBnString(NETWORK_TYPE_TO_ID_MAP[key].chainId) == bnStrChainId) {
-        placeholder =
-          MAINNET_DISPLAY_NAME.toUpperCase() ==
-          NETWORK_TO_NAME_MAP[key].toUpperCase()
-            ? t('recipientAddressPlaceholder', ['ENS'])
-            : DEX_DISPLAY_NAME.toUpperCase() ==
-              NETWORK_TO_NAME_MAP[key].toUpperCase()
-            ? t('recipientAddressPlaceholder', ['DNS'])
-            : t('recipientAddressPlaceholder2');
-      }
-    });
-
     const hasSelectedAddress = Boolean(selectedAddress);
 
     return (
@@ -154,7 +138,7 @@ export default class EnsInput extends Component {
                 className="ens-input__wrapper__input"
                 type="text"
                 dir="auto"
-                placeholder={placeholder}
+                placeholder={t('recipientAddressPlaceholder2')}
                 onChange={this.onChange}
                 onPaste={this.onPaste}
                 value={selectedAddress || userInput}

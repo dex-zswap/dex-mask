@@ -288,15 +288,6 @@ export default class NetworkController extends EventEmitter {
   }
 
   async setProviderType(type) {
-    // assert.notStrictEqual(
-    //   type,
-    //   NETWORK_TYPE_RPC,
-    //   `NetworkController - cannot call "setProviderType" with type "${NETWORK_TYPE_RPC}". Use "setRpcTarget"`,
-    // );
-    // assert.ok(
-    //   INFURA_PROVIDER_TYPES.includes(type) || SPECIAL_PROVIDER_TYPES.includes(type),
-    //   `Unknown Infura provider type "${type}".`,
-    // );
     const { chainId, symbol } = NETWORK_TYPE_TO_ID_MAP[type];
 
     this.setProviderConfig({

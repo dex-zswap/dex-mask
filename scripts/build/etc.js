@@ -38,7 +38,7 @@ function createZipTask(target) {
   return async () => {
     await pump(
       gulp.src(`dist/${target}/**`),
-      gulpZip(`dexmask-${target}-${version}.zip`),
+      gulpZip(`anybitWallet-${target}-${version}.zip`),
       gulp.dest('builds'),
     );
   };

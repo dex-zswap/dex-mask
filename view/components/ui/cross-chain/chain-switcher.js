@@ -6,20 +6,22 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   BSC_CHAIN_ID,
-  CHAIN_ID_NAME_MAP,
-  CHAIN_ID_TYPE_MAP,
-  DEX_CHAIN_ID,
+  AVAX_CHAIN_ID,
   GOERLI_CHAIN_ID,
   KOVAN_CHAIN_ID,
   MAINNET_CHAIN_ID,
   RINKEBY_CHAIN_ID,
   ROPSTEN_CHAIN_ID,
+} from '@shared/constants/network';
+import {
+  CHAIN_ID_NAME_MAP,
+  CHAIN_ID_TYPE_MAP
 } from './constants';
 
 const chainIdOrders = [
-  DEX_CHAIN_ID,
   MAINNET_CHAIN_ID,
   BSC_CHAIN_ID,
+  AVAX_CHAIN_ID,
   ROPSTEN_CHAIN_ID,
   RINKEBY_CHAIN_ID,
   GOERLI_CHAIN_ID,
@@ -63,8 +65,8 @@ const ChainSwitcher = ({ onChange, currentChainId, outSideChains }) => {
         isRpc: false,
         type: 'built-in',
         iconBg:
-          DEX_CHAIN_ID === chainId
-            ? '/images/dex-token.png'
+          AVAX_CHAIN_ID === chainId
+            ? '/images/avax.png'
             : MAINNET_CHAIN_ID === chainId
             ? '/images/eth_logo.png'
             : BSC_CHAIN_ID === chainId

@@ -78,7 +78,7 @@ const AutoInitTokens = () => {
             }
 
             if (!isEqual(orderInfo, memoizedTokenOrders)) {
-              dispatch(setTokenDisplayOrders(orderInfo));
+              // dispatch(setTokenDisplayOrders(orderInfo));
             }
           }
 
@@ -96,7 +96,7 @@ const AutoInitTokens = () => {
   ]);
 
   useDeepEffect(() => {
-    dispatch(addTokens(paddingTokens));
+    // dispatch(addTokens(paddingTokens));
   }, [paddingTokens, dispatch, addTokens]);
 
   return (

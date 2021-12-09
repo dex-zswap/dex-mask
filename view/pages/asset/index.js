@@ -58,7 +58,7 @@ const Asset = () => {
 
   useDeepEffect(() => {
     if (!isNative) {
-      dispatch(setTokenDisplayOrders(tokenDisplayOrder));
+      // dispatch(setTokenDisplayOrders(tokenDisplayOrder));
     }
   }, [isNative, dispatch, setTokenDisplayOrders, tokenDisplayOrder]);
 
