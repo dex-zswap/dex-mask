@@ -21,11 +21,11 @@ const SYMBOLS = {
 function setupTaskDisplay(taskEvents) {
   const taskData = [];
   taskEvents.on('start', ([name]) => {
-    console.log(chalk.yellowBright(`DexMask build: Starting Task '${name}'...`));
+    console.log(chalk.yellowBright(`AnyBit build: Starting Task '${name}'...`));
   });
   taskEvents.on('end', ([name, start, end]) => {
     taskData.push([name, start, end]);
-    console.log(chalk.greenBright(`DexMask build: Finished '${name}', Cost ${end - start}(ms)`));
+    console.log(chalk.greenBright(`AnyBit build: Finished '${name}', Cost ${end - start}(ms)`));
   });
   taskEvents.on('complete', () => {
     displayChart(taskData);

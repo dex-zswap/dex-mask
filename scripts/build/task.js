@@ -22,7 +22,7 @@ function detectAndRunEntryTask() {
   // get requested task name and execute
   const taskName = process.argv[2];
   if (!taskName) {
-    throw new Error(`DexMask build: No task name specified`);
+    throw new Error(`AnyBit build: No task name specified`);
   }
   const skipStats = process.argv.includes('--skip-stats');
 
@@ -31,17 +31,17 @@ function detectAndRunEntryTask() {
 
 async function runTask(taskName, { skipStats } = {}) {
   if (!(taskName in tasks)) {
-    throw new Error(`DexMask build: Unrecognized task name "${taskName}"`);
+    throw new Error(`AnyBit build: Unrecognized task name "${taskName}"`);
   }
   if (!skipStats) {
     setupTaskDisplay(taskEvents);
-    console.log(chalk.cyanBright(`DexMask build: running task "${taskName}"...`));
+    console.log(chalk.cyanBright(`AnyBit build: running task "${taskName}"...`));
   }
   try {
     await tasks[taskName]();
   } catch (err) {
     console.error(
-      `DexMask build: Encountered an error while running task "${taskName}".`,
+      `AnyBit build: Encountered an error while running task "${taskName}".`,
     );
     console.error(err);
     process.exit(1);
@@ -52,7 +52,7 @@ async function runTask(taskName, { skipStats } = {}) {
 function createTask(taskName, taskFn) {
   if (taskName in tasks) {
     throw new Error(
-      `DexMask build: task "${taskName}" already exists. Refusing to redefine`,
+      `AnyBit build: task "${taskName}" already exists. Refusing to redefine`,
     );
   }
   const task = instrumentForTaskStats(taskName, taskFn);
@@ -65,7 +65,7 @@ function runInChildProcess(task) {
   const taskName = typeof task === 'string' ? task : task.taskName;
   if (!taskName) {
     throw new Error(
-      `DexMask build: runInChildProcess unable to identify task name`,
+      `AnyBit build: runInChildProcess unable to identify task name`,
     );
   }
   return instrumentForTaskStats(taskName, async () => {
@@ -100,7 +100,7 @@ function runInChildProcess(task) {
         if (errCode !== 0) {
           reject(
             new Error(
-              `DexMask build: runInChildProcess for task "${taskName}" encountered an error ${errCode}`,
+              `AnyBit build: runInChildProcess for task "${taskName}" encountered an error ${errCode}`,
             ),
           );
           return;
