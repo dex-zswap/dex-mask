@@ -53,7 +53,7 @@ const CurrentCoin = ({
       return coinSymbol;
     }
     return 'UNKOWN';
-  }, [tokens, nativeCurrency, coinAddress, useOut]);
+  }, [tokens, nativeCurrency, coinSymbol, coinAddress, useOut]);
 
   const allTokens = useMemo(() => {
     return [

@@ -1,20 +1,20 @@
 {
-  "DEXMaskConnectStatusParagraphOne": {
+  "metaMaskConnectStatusParagraphOne": {
     "message": "You now have more control over your account connections in DEXMask."
   },
-  "DEXMaskConnectStatusParagraphThree": {
+  "metaMaskConnectStatusParagraphThree": {
     "message": "Click it to manage your connected accounts."
   },
-  "DEXMaskConnectStatusParagraphTwo": {
+  "metaMaskConnectStatusParagraphTwo": {
     "message": "The connection status button shows if the website you’re visiting is connected to your currently selected account."
   },
-  "DEXMaskDescription": {
+  "metaMaskDescription": {
     "message": "Connecting you to Ethereum and the Decentralized Web."
   },
-  "DEXMaskSwapsOfflineDescription": {
+  "metaMaskSwapsOfflineDescription": {
     "message": "DEXMask Swaps is undergoing maintenance. Please check back later."
   },
-  "DEXMaskVersion": {
+  "metaMaskVersion": {
     "message": "DEXMask Version"
   },
   "InterBlockchain": {

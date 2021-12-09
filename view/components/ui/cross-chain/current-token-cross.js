@@ -59,7 +59,7 @@ const CurrentCoinCross = ({
       return token.token;
     }
     return 'UNKOWN';
-  }, [tokens, nativeCurrency, coinAddress, useOut]);
+  }, [tokens, nativeCurrency, coinSymbol, coinAddress, useOut]);
 
   useEffect(() => {
     getAllSupportBridge({

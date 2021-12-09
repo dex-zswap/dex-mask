@@ -1,20 +1,20 @@
 {
-  "DEXMaskConnectStatusParagraphOne": {
+  "metaMaskConnectStatusParagraphOne": {
     "message": "现在您可在 DEXMask 中对账户连接进行更多的控制。"
   },
-  "DEXMaskConnectStatusParagraphThree": {
+  "metaMaskConnectStatusParagraphThree": {
     "message": "点击管理连接的账户。"
   },
-  "DEXMaskConnectStatusParagraphTwo": {
+  "metaMaskConnectStatusParagraphTwo": {
     "message": "连接状态按钮显示所访问的网站是否与您当前选择的账户连接。"
   },
-  "DEXMaskDescription": {
+  "metaMaskDescription": {
     "message": "将您与 Ethereum 和去中心化网络连接起来。"
   },
-  "DEXMaskSwapsOfflineDescription": {
+  "metaMaskSwapsOfflineDescription": {
     "message": "DEXMask Swaps 正在进行维护。请稍后访问。"
   },
-  "DEXMaskVersion": {
+  "metaMaskVersion": {
     "message": "DEXMask 版本"
   },
   "InterBlockchain": {
