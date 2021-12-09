@@ -2,7 +2,7 @@ import { getTokens } from '@reducer/dexmask/dexmask';
 import { getIndexAssets } from '@view/helpers/cross-chain-api';
 import { toBnString } from '@view/helpers/utils/conversions.util';
 import useDeepEffect from '@view/hooks/useDeepEffect';
-import { useEqualityCheck } from '@view/hooks/useEqualityCheck';
+import { useMd5EqualityCheck } from '@view/hooks/useMd5EqualityCheck';
 import {
   getCurrentChainId,
   getSelectedAddress,
@@ -24,7 +24,7 @@ const AutoInitTokens = () => {
   const tokenOrders = useSelector((state) =>
     getTokenDisplayOrders(state, false),
   );
-  const memoizedTokenOrders = useEqualityCheck(tokenOrders);
+  const memoizedTokenOrders = useMd5EqualityCheck(tokenOrders);
 
   const userTokenAddress = useMemo(
     () => userTokens.map(({ address }) => address),
