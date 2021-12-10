@@ -157,17 +157,9 @@ class ReciveToken extends React.Component {
             />
           </div>
           <div
-            className={[
-              'recive-token__bridge-info',
-              isDifferentChain && 'diffrent-chain',
-            ].join(' ')}
+            className="recive-token__bridge-info"
           >
             <div>
-              {isDifferentChain && (
-                <div className="recive-token__bridge">
-                  {this.context.t('dexBridge')}
-                </div>
-              )}
               <div className="recive-token__bridge-arrow"></div>
             </div>
           </div>

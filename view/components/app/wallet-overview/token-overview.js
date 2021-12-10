@@ -104,7 +104,7 @@ const TokenOverview = ({ className, token }) => {
               );
             }}
           />
-          <IconButton
+          {/* <IconButton
             className="token-overview__button"
             Icon={SwapIcon}
             iconSize={40}
@@ -112,7 +112,7 @@ const TokenOverview = ({ className, token }) => {
               history.push(TRADE_ROUTE);
             }}
             label={t('swap')}
-          />
+          /> */}
         </>
       }
       className={className}

@@ -80,7 +80,7 @@ const EthOverview = ({ className }) => {
               );
             }}
           />
-          <IconButton
+          {/* <IconButton
             className="eth-overview__button"
             Icon={SwapIcon}
             iconSize={40}
@@ -88,7 +88,7 @@ const EthOverview = ({ className }) => {
               history.push(TRADE_ROUTE);
             }}
             label={t('swap')}
-          />
+          /> */}
         </>
       }
       className={className}

@@ -65,8 +65,8 @@ class Switchers extends React.Component {
       name = this.context.t('mainnet');
     } else if (providerName === 'bscMainnet') {
       name = this.context.t('bscMainnet');
-    } else if (providerName === 'dexMainnet') {
-      name = this.context.t('dexMainnet');
+    } else if (providerName === 'avaxMainnet') {
+      name = this.context.t('avaxMainnet');
     } else if (providerName === 'ropsten') {
       name = this.context.t('ropsten');
     } else if (providerName === 'kovan') {
@@ -141,8 +141,8 @@ class Switchers extends React.Component {
     } = this.props;
 
     const iconBg =
-      'dexMainnet' === network
-        ? '/images/dex-token.png'
+      'avaxMainnet' === network
+        ? '/images/avax.png'
         : 'mainnet' === network
         ? '/images/eth_logo.png'
         : 'bscMainnet' === network
@@ -189,9 +189,9 @@ class Switchers extends React.Component {
         anchorElement={this.networkSwitchRef}
         onHide={this.toggleSwitchNetwork}
       >
-        {this.renderNetworkMenuItem('dexMainnet')}
         {this.renderNetworkMenuItem('mainnet')}
         {this.renderNetworkMenuItem('bscMainnet')}
+        {this.renderNetworkMenuItem('avaxMainnet')}
         {this.renderNetworkMenuItem('ropsten')}
         {this.renderNetworkMenuItem('kovan')}
         {this.renderNetworkMenuItem('rinkeby')}
