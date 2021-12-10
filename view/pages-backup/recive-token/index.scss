@@ -1,0 +1,107 @@
+.recive-token {
+  &__wrapper {
+    width: 92vw;
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  &__from {
+    width: 92vw;
+    background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__to {
+    width: 92vw;
+    background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
+    border-radius: 14px;
+    padding: 12px;
+  }
+
+  &__to-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__bridge-info {
+    width: 92vw;
+    height: 40px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/images/dex/send/line.svg') no-repeat center center;
+    background-size: 2px 100%;
+
+    &.diffrent-chain {
+      height: 70px;
+      background-size: 2px 100%;
+    }
+  }
+
+  &__bridge {
+    height: 22px;
+    line-height: 22px;
+    padding: 0 8px;
+    background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
+    border-radius: 26px;
+    font-size: 12px;
+    color: #D3D3D3;
+    margin: 0 0 8px;
+  }
+
+  &__bridge-arrow {
+    width: 16px;
+    height: 16px;
+    background: url('/images/dex/send/send-recive.png') no-repeat center;
+    background-size: 16px 16px;
+    margin: 0 auto;
+  }
+
+  &__qr-wrapper {
+    width: 92vw;
+    width: 100%;
+    background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
+    border-radius: 14px;
+    padding: 15px;
+  }
+
+  &__qr-code {
+    .qr-code {
+      margin: 15px auto;
+    }
+  }
+
+  &__user-info {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  &__account-name {
+    padding: 15px 0 0 0;
+  }
+
+  &__qr_address {
+    color: #fff;
+    text-align: center;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .copy {
+      margin: 0 0 0 10px;
+    }
+  }
+}

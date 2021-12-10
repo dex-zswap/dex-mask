@@ -1,0 +1,33 @@
+.send-amount-row {
+  .currency-input__swap-component {
+    display: none;
+  }
+
+  &__amount-label {
+    padding: 0 0 10px;
+  }
+
+  .unit-input {
+    border: 1px solid rgba(36, 36, 36, 0.55);
+    background: rgba(36, 36, 36, 0.55);
+    transition: all 0.3s;
+
+    &:focus-within {
+      border: 1px solid #5c22c5;
+      box-shadow: 0 0 15px #4118a1;
+    }
+
+    &__input {
+      color: #fff;
+      background: transparent;
+      border: none;
+      &::placeholder {
+        color: #fff;
+      }
+    }
+
+    &__suffix {
+      color: #fff;
+    }
+  }
+}
