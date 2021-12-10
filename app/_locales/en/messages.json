@@ -2777,13 +2777,13 @@
     "description": "$1 is a clickable link."
   },
   "welcome": {
-    "message": "DEX Wallet"
+    "message": "AnyBit Wallet"
   },
   "welcomeBack": {
     "message": "Welcome Back!"
   },
   "welcomeDexWallet": {
-    "message": "Welcome to DEX Wallet"
+    "message": "Welcome to AnyBit Wallet"
   },
   "whatsNew": {
     "message": "What's new",

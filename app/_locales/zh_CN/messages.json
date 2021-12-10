@@ -989,7 +989,7 @@
     "description": "This string is localized separately from some of the commitments so that we can bold it"
   },
   "metametricsCommitmentsIntro": {
-    "message": "DEXMask……"
+    "message": "AnyBit……"
   },
   "metametricsCommitmentsNeverCollectIP": {
     "message": "$1收集您的完整IP地址",
