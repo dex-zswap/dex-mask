@@ -1,3 +1,6 @@
+//  FIXME: 生产包需要取消导入
+import 'react-devtools';
+
 // polyfills
 import '@formatjs/intl-relativetimeformat/polyfill';
 import {
@@ -11,8 +14,6 @@ import Eth from 'ethjs';
 import PortStream from 'extension-port-stream';
 import extension from 'extensionizer';
 import log from 'loglevel';
-//  FIXME: 生产包需要取消导入
-import 'react-devtools';
 import StreamProvider from 'web3-stream-provider';
 import metaRPCClientFactory from './lib/metaRPCClientFactory';
 import { setupMultiplex } from './lib/stream-utils';

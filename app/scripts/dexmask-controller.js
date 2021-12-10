@@ -2195,7 +2195,7 @@ export default class DexmaskController extends EventEmitter {
     const mux = setupMultiplex(connectionStream);
 
     // messages between inpage and background
-    this.setupProviderConnection(mux.createStream('dexmask-provider'), sender);
+    this.setupProviderConnection(mux.createStream('anybit-provider'), sender);
 
     // TODO:LegacyProvider: Delete
     // legacy streams

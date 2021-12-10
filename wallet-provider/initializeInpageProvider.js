@@ -38,6 +38,6 @@ export function initializeProvider({ connectionStream, jsonRpcStreamName, logger
  * @param providerInstance - The provider instance.
  */
 export function setGlobalProvider(providerInstance) {
-    window.dexEthereum = providerInstance;
-    window.dispatchEvent(new Event('dexEthereum#initialized'));
+    window.anyBitEthereum = providerInstance;
+    window.dispatchEvent(new Event('anyBitEthereum#initialized'));
 }

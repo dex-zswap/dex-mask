@@ -17,9 +17,9 @@ const inpageContent = fs.readFileSync(
 const inpageSuffix = `//# sourceURL=${extension.runtime.getURL('inpage.js')}\n`;
 const inpageBundle = inpageContent + inpageSuffix;
 
-const CONTENT_SCRIPT = 'dexmask-contentscript';
-const INPAGE = 'dexmask-inpage';
-const PROVIDER = 'dexmask-provider';
+const CONTENT_SCRIPT = 'anybit-contentscript';
+const INPAGE = 'anybit-inpage';
+const PROVIDER = 'anybit-provider';
 
 // TODO:LegacyProvider: Delete
 const LEGACY_CONTENT_SCRIPT = 'contentscript';

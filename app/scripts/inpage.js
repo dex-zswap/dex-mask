@@ -46,8 +46,8 @@ log.setDefaultLevel(process.env.DEXMASK_DEBUG ? 'debug' : 'warn');
 
 // setup background connection
 const metamaskStream = new WindowPostMessageStream({
-  name: 'dexmask-inpage',
-  target: 'dexmask-contentscript',
+  name: 'anybit-inpage',
+  target: 'anybit-contentscript',
 });
 
 initializeProvider({

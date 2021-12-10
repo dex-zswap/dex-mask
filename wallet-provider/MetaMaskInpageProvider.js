@@ -8,14 +8,14 @@ export default class MetaMaskInpageProvider extends BaseProvider {
      * @param connectionStream - A Node.js duplex stream
      * @param options - An options bag
      * @param options.jsonRpcStreamName - The name of the internal JSON-RPC stream.
-     * Default: dexmask-provider
+     * Default: anybit-provider
      * @param options.logger - The logging API to use. Default: console
      * @param options.maxEventListeners - The maximum number of event
      * listeners. Default: 100
      * @param options.shouldSendMetadata - Whether the provider should
      * send page metadata. Default: true
      */
-    constructor(connectionStream, { jsonRpcStreamName = 'dexmask-provider', logger = console, maxEventListeners = 100, shouldSendMetadata = true, } = {}) {
+    constructor(connectionStream, { jsonRpcStreamName = 'anybit-provider', logger = console, maxEventListeners = 100, shouldSendMetadata = true, } = {}) {
         super(connectionStream, { jsonRpcStreamName, logger, maxEventListeners });
         this._sentWarnings = {
             // methods
