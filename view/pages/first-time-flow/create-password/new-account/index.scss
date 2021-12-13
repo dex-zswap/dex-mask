@@ -1,41 +1,37 @@
-.new-account {
-  &__container {
+.new-account__container {
+  .logo-container {
+    margin: 0 auto;
+  }
+
+  .first-time-flow__header {
+    margin: 40px 0 0;
+  }
+
+  .first-time-flow__account-password {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 300;
+  }
+
+  .first-time-flow__account-password-btns {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
 
-    .first-time-flow__account-password {
-      font-size: 20px;
-      margin-bottom: 10px;
-      font-weight: 300;
-    }
+    .button {
+      width: 47%;
+      height: 42px;
 
-    .first-time-flow__form {
-      width: 90%;
-      margin: 0 auto;
-
-      label {
-        font-size: 14px;
+      .button__left__arrow {
+        margin: 0 10px 0 0;
+        width: 13px;
+        height: 11px;
       }
-    }
 
-    .first-time-flow__account-password-btns {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      .button {
-        width: 47%;
-        height: 42px;
-
-        .button__left__arrow {
-          margin: 0 10px 0 0;
-          width: 13px;
-          height: 11px;
-        }
-
-        .button__right__arrow {
-          margin: 0 0 0 10px;
-          width: 13px;
-          height: 11px;
-        }
+      .button__right__arrow {
+        margin: 0 0 0 10px;
+        width: 13px;
+        height: 11px;
       }
     }
   }

@@ -27,9 +27,6 @@ temp
 .DS_Store
 app/.DS_Store
 
-storybook-build/
-coverage/
-jest-coverage/
 dist
 builds/
 builds.zip
@@ -47,3 +44,4 @@ view/css/output/
 notes.txt
 
 .nyc_output
+.dexmaskrc.dist

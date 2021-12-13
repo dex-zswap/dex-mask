@@ -29,27 +29,25 @@ export default class CreatePassword extends PureComponent {
     const { onCreateNewAccount, onCreateNewAccountFromSeed } = this.props;
 
     return (
-      <div className="create-password__wrapper">
-        <Switch>
-          <Route
-            exact
-            path={INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE}
-            render={(routeProps) => (
-              <ImportWithSeedPhrase
-                {...routeProps}
-                onSubmit={onCreateNewAccountFromSeed}
-              />
-            )}
-          />
-          <Route
-            exact
-            path={INITIALIZE_CREATE_PASSWORD_ROUTE}
-            render={(routeProps) => (
-              <NewAccount {...routeProps} onSubmit={onCreateNewAccount} />
-            )}
-          />
-        </Switch>
-      </div>
+      <Switch>
+        <Route
+          exact
+          path={INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE}
+          render={(routeProps) => (
+            <ImportWithSeedPhrase
+              {...routeProps}
+              onSubmit={onCreateNewAccountFromSeed}
+            />
+          )}
+        />
+        <Route
+          exact
+          path={INITIALIZE_CREATE_PASSWORD_ROUTE}
+          render={(routeProps) => (
+            <NewAccount {...routeProps} onSubmit={onCreateNewAccount} />
+          )}
+        />
+      </Switch>
     );
   }
 }
