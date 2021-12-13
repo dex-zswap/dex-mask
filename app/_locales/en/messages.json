@@ -516,6 +516,9 @@
   "createWallet": {
     "message": "Create Wallet"
   },
+  "rightWay": {
+    "message": "The right way to metaverse, DeFi, Dex, NFT, GameFi and many more ..."
+  },
   "crossChain": {
     "message": "Bridge"
   },
@@ -1042,7 +1045,7 @@
     "description": "Displays network name for Ether faucet"
   },
   "getStarted": {
-    "message": "GET START"
+    "message": "Get Start"
   },
   "goOpen": {
     "message": "Go"
@@ -1122,7 +1125,7 @@
     "message": "Anyone can create a token with any name, including fake versions of existing tokens. Add and trade at your own risk!"
   },
   "importWallet": {
-    "message": "Recovery"
+    "message": "Import Wallet"
   },
   "importYourExisting": {
     "message": "Import your existing wallet using a Secret Recovery Phrase"
@@ -1640,7 +1643,7 @@
     "description": "$1 is a number of additional but unshown items in a list- this message will be shown in place of those items"
   },
   "pre": {
-    "message": "Pre"
+    "message": "Back"
   },
   "prev": {
     "message": "Prev"
@@ -2783,7 +2786,7 @@
     "message": "Welcome Back!"
   },
   "welcomeDexWallet": {
-    "message": "Welcome to DexMask Wallet"
+    "message": "Welcome to DexMask"
   },
   "whatsNew": {
     "message": "What's new",

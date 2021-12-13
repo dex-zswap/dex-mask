@@ -104,7 +104,7 @@ export default class FirstTimeFlow extends PureComponent {
     const { verifySeedPhrase } = this.props;
 
     return (
-      <div className="first-time-flow">
+      <div>
         <Switch>
           <Route
             path={INITIALIZE_SEED_PHRASE_ROUTE}

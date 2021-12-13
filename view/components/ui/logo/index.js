@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import classnames from 'classnames';
 
-export default function Logo({ width, height, plain }) {
+export default function Logo({ width, height, plain, className }) {
   const style = useMemo(() => {
     return {
       width: `${plain ? (width ?? 38) : (width ?? 100)}px`,
@@ -10,6 +10,6 @@ export default function Logo({ width, height, plain }) {
   }, [width, height, plain]);
 
   return (
-    <div className={classnames(['logo-component', plain ? 'plain-logo' : 'logo-text'])} style={style}></div>
+    <div className={classnames(['logo-component', plain ? 'plain-logo' : 'logo-text', className])} style={style}></div>
   );
 }

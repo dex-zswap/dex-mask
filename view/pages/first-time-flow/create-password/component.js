@@ -1,12 +1,11 @@
-import Logo from '@c/ui/logo';
+import React, { PureComponent } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import {
   INITIALIZE_CREATE_PASSWORD_ROUTE,
   INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
   INITIALIZE_SEED_PHRASE_ROUTE,
 } from '@view/helpers/constants/routes';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import { Route, Switch } from 'react-router-dom';
 import ImportWithSeedPhrase from './import-with-seed-phrase';
 import NewAccount from './new-account';
 
@@ -31,7 +30,6 @@ export default class CreatePassword extends PureComponent {
 
     return (
       <div className="create-password__wrapper">
-        <Logo width="82" height="97" />
         <Switch>
           <Route
             exact

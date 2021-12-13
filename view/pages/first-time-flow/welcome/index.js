@@ -44,7 +44,7 @@ export default function Welcome() {
         <LocaleSwitcher className="locale-switcher" />
         <Button
           type="primary"
-          className="first-time-flow__button"
+          className="welcone-page__button"
           rightArrow={true}
           onClick={handleContinue}
         >

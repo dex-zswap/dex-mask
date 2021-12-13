@@ -1,39 +1,37 @@
 .import-with-seed-phrase {
-  &__form {
-    width: 90%;
+  .import-with-seed-phrase__form {
+    width: 90vw;
     margin: 0 auto;
     padding: 20px 0 0 0;
 
+    .create-password-logo {
+      margin: 0 auto 40px;
+    }
+  
     .first-time-flow__header {
-      font-size: 18px;
+      font-weight: bold;
+      font-size: 20px;
+      color: $white;
+      line-height: 23px;
       text-align: center;
-      margin: 0 0 10px;
+      margin: 0 auto;
     }
-
+  
     .first-time-flow__text-block {
+      font-size: $size-10;
+      line-height: 16px;
       text-align: center;
+      color: $white;
+      margin: 6px 0 0;
     }
 
-    .MuiFormControl-marginNormal {
-      margin-top: 10px;
+    .first-time-flow__textarea-wrapper {
+      
     }
+  }
 
-    label {
-      font-size: 14px;
-    }
-
-    .import-seed__btn-wrapper {
-      width: 100%;
-      margin: 20px 0 0;
-      display: flex;
-      justify-content: space-between;
-
-      .button {
-        margin-top: 10px;
-        margin-bottom: 0;
-        height: 42px;
-        width: 47%;
-      }
-    }
+  .import-seed__btn-wrapper {
+    display: flex;
+    justify-content: space-between;
   }
 }

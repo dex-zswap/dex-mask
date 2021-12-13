@@ -17,7 +17,7 @@
   }
   
   .welcome-page__header {
-    font-size: 32px;
+    font-size: 28px;
     line-height: 50px;
     color: $white;
     margin: 55px 0 0;
@@ -38,7 +38,11 @@
   }
 
   .locale-switcher {
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 60px;
+  }
+
+  .welcone-page__button {
+    margin: 10px auto 0;
+    width: 90vw;
   }
 }
