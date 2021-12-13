@@ -162,7 +162,7 @@ export default function ImportWithSeedPhrase() {
   return (
     <div className="import-with-seed-phrase dex-page-container space-between">
       <form
-        className="first-time-flow__form import-with-seed-phrase__form"
+        className="first-time-flow__form import-with-seed-phrase__form base-width"
         onSubmit={handleImport}
       >
         <Logo className="create-password-logo" plain />
@@ -206,7 +206,7 @@ export default function ImportWithSeedPhrase() {
           largeLabel
         />
       </form>
-      <div className="import-seed__btn-wrapper">
+      <div className="import-seed__btn-wrapper base-width">
         <Button
           className="half-button"
           onClick={handleCancel}
