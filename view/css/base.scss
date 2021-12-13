@@ -2,6 +2,10 @@ html, body {
   background: $page-background;
 }
 
+#app-content {
+  width: 90vw;
+}
+
 .dex-page-container {
   width: 100%;
   padding: 20px 0;
@@ -13,10 +17,6 @@ html, body {
     flex-direction: column;
     justify-content: space-between;
   }
-}
-
-.app-content {
-  width: 90vw;
 }
 
 .dex-button {
