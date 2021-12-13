@@ -12,7 +12,7 @@ import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import { INITIALIZE_END_OF_FLOW_ROUTE } from '@view/helpers/constants/routes';
 
-// import ImportWithSeedPhrase from './component';
+const { isValidMnemonic } = ethers.utils;
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -22,21 +22,20 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-// export default connect(null, mapDispatchToProps)(ImportWithSeedPhrase);
+const parseSeedPhrase = (seedPhrase) => (seedPhrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
 
-export default function ImportWithSeedPhrase() {
+export default function ImportWithSeedPhrase({ onSubmit }) {
   const history = useHistory();
   const t = useContext(I18nContext);
+  const dispatch = useDispatch();
 
   const [state, setState] = useState({
     seedPhrase: '',
-    showSeedPhrase: false,
     password: '',
     confirmPassword: '',
     seedPhraseError: '',
     passwordError: '',
-    confirmPasswordError: '',
-    termsChecked: true
+    confirmPasswordError: ''
   });
 
   const isValid = useMemo(() => {
@@ -69,22 +68,20 @@ export default function ImportWithSeedPhrase() {
     let seedPhraseError = '';
 
     if (seedPhrase) {
-      const parsedSeedPhrase = this.parseSeedPhrase(seedPhrase);
+      const parsedSeedPhrase = parseSeedPhrase(seedPhrase);
       const wordCount = parsedSeedPhrase.split(/\s/u).length;
       if (wordCount % 3 !== 0 || wordCount > 24 || wordCount < 12) {
-        seedPhraseError = this.context.t('seedPhraseReq');
+        seedPhraseError = t('seedPhraseReq');
       } else if (!isValidMnemonic(parsedSeedPhrase)) {
-        seedPhraseError = this.context.t('invalidSeedPhrase');
+        seedPhraseError = t('invalidSeedPhrase');
       }
     }
 
-    // this.setState({ seedPhrase, seedPhraseError });
-  }, [state])
+    setState((state) => Object.assign({}, state, { seedPhrase, seedPhraseError }));
+  }, [state, t])
 
   const handlePasswordChange = useCallback((password) => {
-    const { t } = this.context;
-
-    this.setState((state) => {
+    setState((state) => {
       const { confirmPassword } = state;
       let confirmPasswordError = '';
       let passwordError = '';
@@ -97,18 +94,16 @@ export default function ImportWithSeedPhrase() {
         confirmPasswordError = t('passwordsDontMatch');
       }
 
-      return {
+      return Object.assign({}, state, {
         password,
         passwordError,
         confirmPasswordError,
-      };
+      });
     });
-  }, [state])
+  }, [state, t]);
 
   const handleConfirmPasswordChange = useCallback((confirmPassword) => {
-    const { t } = this.context;
-
-    this.setState((state) => {
+    setState((state) => {
       const { password } = state;
       let confirmPasswordError = '';
 
@@ -116,48 +111,36 @@ export default function ImportWithSeedPhrase() {
         confirmPasswordError = t('passwordsDontMatch');
       }
 
-      return {
+      return Object.assign({}, state, {
         confirmPassword,
         confirmPasswordError,
-      };
+      });
     });
-  }, [state])
+  }, [state, t]);
 
   const handleImport = useCallback(async (event) => {
     event.preventDefault();
 
-    if (!this.isValid()) {
+    if (!isValid) {
       return;
     }
 
-    const { password, seedPhrase } = this.state;
-    const {
-      history,
-      onSubmit,
-      setSeedPhraseBackedUp,
-      initializeThreeBox,
-    } = this.props;
+    const { password, seedPhrase } = state;
 
     try {
-      await onSubmit(password, this.parseSeedPhrase(seedPhrase));
-      setSeedPhraseBackedUp(true).then(async () => {
-        initializeThreeBox();
+      await onSubmit(password, parseSeedPhrase(seedPhrase));
+      dispatch(setSeedPhraseBackedUp(true)).then(async () => {
+        dispatch(initializeThreeBox());
         history.push(INITIALIZE_END_OF_FLOW_ROUTE);
       });
     } catch (error) {
-      // this.setState({ seedPhraseError: error.message });
+      setState({ seedPhraseError: error.message });
     }
-  }, [history]);
+  }, [state, history, isValid, dispatch, setSeedPhraseBackedUp, initializeThreeBox, onSubmit]);
 
   const handleCancel = useCallback(() => {
     history.goBack();
   }, [history]);
-
-  const toggleShowSeedPhrase = useCallback(() => {
-    this.setState(({ showSeedPhrase }) => ({
-      showSeedPhrase: !showSeedPhrase,
-    }));
-  }, []);
 
   return (
     <div className="import-with-seed-phrase dex-page-container space-between">
@@ -187,11 +170,9 @@ export default function ImportWithSeedPhrase() {
           type="password"
           className="first-time-flow__input"
           value={state.password}
-          onChange={(event) => this.handlePasswordChange(event.target.value)}
+          onChange={(event) => handlePasswordChange(event.target.value)}
           error={state.passwordError}
-          autoComplete="new-password"
-          margin="normal"
-          largeLabel
+          bordered
         />
         <TextField
           id="confirm-password"
@@ -201,9 +182,7 @@ export default function ImportWithSeedPhrase() {
           value={state.confirmPassword}
           onChange={(event) => handleConfirmPasswordChange(event.target.value)}
           error={state.confirmPasswordError}
-          autoComplete="new-password"
-          margin="normal"
-          largeLabel
+          bordered
         />
       </form>
       <div className="import-seed__btn-wrapper base-width">
@@ -217,6 +196,7 @@ export default function ImportWithSeedPhrase() {
         <Button
           type="primary"
           className="half-button"
+          onClick={handleImport}
           disabled={!isValid}
         >
           {t('import')}

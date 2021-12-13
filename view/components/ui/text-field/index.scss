@@ -22,11 +22,11 @@
     transition: all 0.3s;
 
     &.bordered {
-      border: 1px solid $primary-border;
+      border: 0.5pt solid $primary-border;
     }
 
     &:focus {
-      box-shadow: 0 0 15px $box-shadow;
+      box-shadow: 0 0 10px $pink;
     }
   }
 

@@ -789,10 +789,13 @@
     "message": "Request encryption public key"
   },
   "endOfFlowMessage1": {
-    "message": "Your wallet has been created！"
+    "message": "Your wallet has been created!"
   },
   "endOfFlowMessage10": {
-    "message": "Go"
+    "message": "Let’s Start"
+  },
+  "endOfFlowMessage11": {
+    "message": "Your wallet has been imported!"
   },
   "endOfFlowMessage2": {
     "message": "Tips on storing it safely"

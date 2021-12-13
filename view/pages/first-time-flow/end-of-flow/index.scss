@@ -1,31 +1,27 @@
 .end-of-flow {
-  font-style: normal;
+  padding: 20px 0 0;
+
+  .logo-component {
+    margin: 0 auto;
+  }
 
   &__success-icon {
-    width: 220px;
-    height: 220px;
-    background: url('/images/dex/background/finish-init.png') no-repeat center;
+    width: 236px;
+    height: 236px;
+    background: url('/images/background/end-of-init.png') no-repeat center;
     background-size: 100% 100%;
-    margin: 75px auto 40px;
+    margin: 40px auto 32px;
   }
 
   &__success-text {
-    font-weight: 400;
-    color: #f4f4f4;
-    line-height: 33px;
+    color: $white;
+    font-size: $size-12;
     text-align: center;
-    padding: 0 20px;
   }
 
   &__button {
     margin: 25px auto 14px !important;
     height: 48px;
     font-size: 14px;
-
-    .button__right__arrow {
-      margin: 0 0 0 6px;
-      width: 16px;
-      height: 11px;
-    }
   }
 }

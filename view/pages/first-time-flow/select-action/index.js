@@ -43,7 +43,7 @@ export default function SelectAction() {
 
   return (
     <div className="select-action select-action__page">
-      <div className="select-action__wrapper">
+      <div className="select-action__wrapper base-width">
         <Logo />
         <div className="select-action__body">
           <div className="select-action__header">{t('welcomeDexWallet')}</div>

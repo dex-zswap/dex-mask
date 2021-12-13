@@ -25,6 +25,7 @@
     }
 
     .first-time-flow__textarea-wrapper {
+      margin: 20px 0 0;
       label {
         font-weight: bold;
         font-size: $size-12;
@@ -37,7 +38,7 @@
         box-sizing: border-box;
         width: 100%;
         height: 96px;
-        padding: 18px;
+        padding: $size-10 18px;
         margin: $size-8 0;
         background: $primary-background;
         border-radius: $size-12;
@@ -46,11 +47,16 @@
         color: $white;
         transition: all 0.3s;
         resize: none;
-        border: none;
+        border: 1px solid rgba(229, 229, 229, 0.5);
 
         &:focus {
-          box-shadow: 0 0 15px $box-shadow;
+          box-shadow: 0 0 10px $pink;
         }
+      }
+
+      .error {
+        font-size: $size-12;
+        color: $warning;
       }
     }
   }
