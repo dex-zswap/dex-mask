@@ -4,6 +4,7 @@ html, body {
 
 .dex-page-container {
   width: 100%;
+  padding: 20px 0;
 
   &.space-between {
     display: flex;
@@ -11,7 +12,6 @@ html, body {
     height: 100vh;
     flex-direction: column;
     justify-content: space-between;
-    padding: 20px 0;
   }
 }
 
