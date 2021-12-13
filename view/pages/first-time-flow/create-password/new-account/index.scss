@@ -1,38 +1,36 @@
 .new-account__container {
-  .logo-container {
+  .logo-component {
     margin: 0 auto;
   }
 
   .first-time-flow__header {
-    margin: 40px 0 0;
+    margin: 40px 0;
   }
 
   .first-time-flow__account-password {
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-weight: 300;
+    .title {
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 23px;
+      text-align: center;
+      color: $white;
+    }
+
+    .sub-title {
+      font-size: $size-12;
+      line-height: 16px;
+      text-align: center;
+      color: $white;
+    }
+  }
+
+  .first-time-flow__form {
+    margin: 50px 0 0;
   }
 
   .first-time-flow__account-password-btns {
     width: 100%;
     display: flex;
     justify-content: space-between;
-
-    .button {
-      width: 47%;
-      height: 42px;
-
-      .button__left__arrow {
-        margin: 0 10px 0 0;
-        width: 13px;
-        height: 11px;
-      }
-
-      .button__right__arrow {
-        margin: 0 0 0 10px;
-        width: 13px;
-        height: 11px;
-      }
-    }
   }
 }

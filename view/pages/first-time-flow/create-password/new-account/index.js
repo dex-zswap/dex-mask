@@ -105,9 +105,8 @@ export default function NewAccount({ onSubmit }) {
         <Logo plain />
         <div className="first-time-flow__header">
           <div className="first-time-flow__account-password">
-            <span className="dark-text">{t('createWallet')}</span>
-            <span className="sperator">/</span>
-            <span className="light-text">{t('createPassword')}</span>
+            <p className="title">{t('createAWallet')}</p>
+            <p className="sub-title">{t('createPassword')}</p>
           </div>
         </div>
         <Steps total={3} current={1} />
@@ -120,6 +119,7 @@ export default function NewAccount({ onSubmit }) {
             value={state.password}
             onChange={(event) => handlePasswordChange(event.target.value)}
             error={state.passwordError}
+            bordered
             autoFocus
           />
           <TextField
@@ -132,6 +132,7 @@ export default function NewAccount({ onSubmit }) {
               handleConfirmPasswordChange(event.target.value)
             }
             error={state.confirmPasswordError}
+            bordered
           />
         </form>
 

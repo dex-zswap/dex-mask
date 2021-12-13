@@ -502,7 +502,7 @@
     "message": "Create"
   },
   "createAWallet": {
-    "message": "I’m New !"
+    "message": "Create a Wallet"
   },
   "createAccount": {
     "message": "Create Account"
@@ -511,7 +511,7 @@
     "message": "Create a new wallet"
   },
   "createPassword": {
-    "message": "Password"
+    "message": "Create a Password to access your wallet."
   },
   "createWallet": {
     "message": "Create Wallet"
