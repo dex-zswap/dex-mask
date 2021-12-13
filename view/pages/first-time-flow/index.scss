@@ -7,8 +7,6 @@
 
 .first-time-flow {
   width: 100%;
-  display: flex;
-  justify-content: center;
 
   &__wrapper {
     @media screen and (min-width: $break-large) {

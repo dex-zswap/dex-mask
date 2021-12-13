@@ -249,6 +249,8 @@ export function updateTransactionGasFees({
 
 // Selectors
 
+export const getDexMaskState = (state) => state.metamask;
+
 export const getConfirmedAction = (state) => state.metamask.confirmedAction;
 
 export const getCurrentLocale = (state) => state.metamask.currentLocale;

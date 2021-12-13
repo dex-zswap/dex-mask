@@ -1,7 +1,7 @@
 import ExtensionPlatform from '@app/scripts/platforms/extension';
 
 const NOTIFICATION_HEIGHT = 600;
-const NOTIFICATION_WIDTH = 288;
+const NOTIFICATION_WIDTH = 320;
 
 export default class NotificationManager {
   /**

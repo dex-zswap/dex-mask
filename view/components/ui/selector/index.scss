@@ -1,0 +1,69 @@
+.selector-component {
+  width: 100%;
+  height: $size-48;
+  border-radius: $size-12;
+  border: 1px solid $primary-border;
+  transition: all 0.2s;
+  position: relative;
+
+  .current-label {
+    padding: 0 0 0 18px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: $size-14;
+    background: $primary-background;
+    color: $white;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 6px;
+    background: url('/images/icons/arrow-down.png') no-repeat center;
+    background-size: 100%;
+    transform-origin: center;
+    transition: all 0.2s;
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .selector-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: $size-48;
+    background: $popup-background;
+    border-radius: $size-12;
+
+    .select-option {
+      padding: 0 0 0 18px;
+      height: $size-48;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #fff;
+    }
+  }
+
+  &.small {
+    height: $size-36;
+    .selector-menu {
+      top: $size-36;
+      .select-option {
+        height: $size-36;
+      }
+    }
+  }
+
+  &.menu-opened {
+    &:after {
+      transform: rotate(-180deg);
+    }
+    box-shadow: 0 0 10px $box-shadow;
+  }
+  
+}

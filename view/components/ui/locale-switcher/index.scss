@@ -1,0 +1,13 @@
+.locale-switcher-component {
+  width: 90vw;
+  margin: 0 auto;
+
+  .switcher-label {
+    text-align: left;
+    color: $white;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 0 0 10px;
+    font-weight: bold;
+  }
+}

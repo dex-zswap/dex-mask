@@ -1,0 +1,11 @@
+.logo-component {
+  &.plain-logo {
+    background: url('/images/logo/plain-logo.png') no-repeat center;
+    background-size: 100%;
+  }
+
+  &.logo-text {
+    background: url('/images/logo/logo-text.png') no-repeat center;
+    background-size: 100%;
+  }
+}

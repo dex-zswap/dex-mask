@@ -5,8 +5,9 @@
   prior to it being fully removed from the system.
 */
 @import './reset.scss';
+@import './dex/variables';
 @import './design-system/index';
-@import './base-styles.scss';
+@import './base';
 @import '../components/app/app-components';
 @import '../components/ui/ui-components';
 @import '../pages/pages';

@@ -537,6 +537,9 @@
   "currentLanguage": {
     "message": "Current Language"
   },
+  "language": {
+    "message": "Language"
+  },
   "custom": {
     "message": "Custom"
   },
@@ -1048,7 +1051,7 @@
     "message": "Goerli Test Network"
   },
   "happyToSeeYou": {
-    "message": "the righ way to metaverse defi、dex、nft、gamefi…"
+    "message": "We are happy to see you !"
   },
   "hardware": {
     "message": "Hardware"
@@ -2774,13 +2777,13 @@
     "description": "$1 is a clickable link."
   },
   "welcome": {
-    "message": "DEX Wallet"
+    "message": "DexMask Wallet"
   },
   "welcomeBack": {
     "message": "Welcome Back!"
   },
   "welcomeDexWallet": {
-    "message": "Welcome to DEX Wallet"
+    "message": "Welcome to DexMask Wallet"
   },
   "whatsNew": {
     "message": "What's new",
