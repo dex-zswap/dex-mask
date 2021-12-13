@@ -1,42 +1,35 @@
-.steps-component {
-  &__wrapper {
-    display: flex;
-    margin: 0 auto;
-    justify-content: center;
-  }
+.steps-component__wrapper {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
 
-  &__item {
+  .steps-component__item {
     display: flex;
     align-items: center;
     min-width: 60px;
     max-width: 108px;
-
+  
     .step-item {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 50px;
-      height: 50px;
-      background: url('/images/dex/steps/cicle-normal.png') no-repeat center;
-      background-size: 100% 100%;
+      width: 44px;
+      height: 44px;
       font-size: 18px;
-      color: #A69E9E;
-
+      color: $gray;
+      background: $primary-background;
+      border-radius: 50%;
+  
       &.active {
-        color: #FCFCFD;
-        background: url('/images/dex/steps/cicle-active.png') no-repeat center;
-        background-size: 100% 100%;
+        background: linear-gradient(82.09deg, #7813C4 5.18%, #2206A0 101.7%);
+        color: $white;
       }
     }
-
+  
     .line {
-      width: 32px;
-      height: 1px;
-      background: #A69E9E;
-
-      &.active {
-        background: linear-gradient(58deg, #DF05FE 0%, #F06FFF 17%, #E42DFE 100%);
-      }
+      width: 20px;
+      margin: 0 6px;
+      border-bottom: 2px dotted $primary-background;
     }
   }
 }

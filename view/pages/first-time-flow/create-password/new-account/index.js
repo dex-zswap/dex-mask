@@ -1,55 +1,47 @@
+import React, { useState, useCallback, useMemo, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+import { ethers } from 'ethers';
+
+import { setSeedPhraseBackedUp, initializeThreeBox } from '@view/store/actions';
+
+import { I18nContext } from '@view/contexts/i18n';
+
+import Logo from '@c/ui/logo';
 import Button from '@c/ui/button';
-import Steps from '@c/ui/steps';
 import TextField from '@c/ui/text-field';
-import {
-  INITIALIZE_SEED_PHRASE_ROUTE,
-  INITIALIZE_SELECT_ACTION_ROUTE,
-} from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import Steps from '@c/ui/steps';
+import { INITIALIZE_SEED_PHRASE_ROUTE, INITIALIZE_SELECT_ACTION_ROUTE } from '@view/helpers/constants/routes';
 
-export default class NewAccount extends PureComponent {
-  static contextTypes = {
-    metricsEvent: PropTypes.func,
-    t: PropTypes.func,
-  };
 
-  static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-  };
+export default function NewAccount({ onSubmit }) {
+  const history = useHistory();
+  const t = useContext(I18nContext);
 
-  state = {
+  const [state, setState] = useState({
     password: '',
     confirmPassword: '',
     passwordError: '',
     confirmPasswordError: '',
-    termsChecked: false,
-  };
+    termsChecked: false
+  });
 
-  isValid() {
+  const isValid = useMemo(() => {
     const {
       password,
       confirmPassword,
       passwordError,
       confirmPasswordError,
-    } = this.state;
+    } = state;
 
-    if (!password || !confirmPassword || password !== confirmPassword) {
-      return false;
-    }
-
-    if (password.length < 8) {
+    if ((!password || !confirmPassword || password !== confirmPassword) || password.length < 8) {
       return false;
     }
 
     return !passwordError && !confirmPasswordError;
-  }
+  }, [state]);
 
-  handlePasswordChange(password) {
-    const { t } = this.context;
-
-    this.setState((state) => {
+  const handlePasswordChange = useCallback((password) => {
+    setState((state) => {
       const { confirmPassword } = state;
       let passwordError = '';
       let confirmPasswordError = '';
@@ -62,18 +54,16 @@ export default class NewAccount extends PureComponent {
         confirmPasswordError = t('passwordsDontMatch');
       }
 
-      return {
+      return Object.assign({}, state, {
         password,
         passwordError,
         confirmPasswordError,
-      };
+      });
     });
-  }
+  }, [t]);
 
-  handleConfirmPasswordChange(confirmPassword) {
-    const { t } = this.context;
-
-    this.setState((state) => {
+  const handleConfirmPasswordChange = useCallback((confirmPassword) => {
+    setState((state) => {
       const { password } = state;
       let confirmPasswordError = '';
 
@@ -81,77 +71,38 @@ export default class NewAccount extends PureComponent {
         confirmPasswordError = t('passwordsDontMatch');
       }
 
-      return {
+      return Object.assign({}, state, {
         confirmPassword,
         confirmPasswordError,
-      };
+      });
     });
-  }
+  }, [t]);
 
-  handleCreate = async (event) => {
+  const handleCreate = useCallback(async (event) => {
     event.preventDefault();
 
-    if (!this.isValid()) {
+    if (!isValid) {
       return;
     }
 
-    const { password } = this.state;
-    const { onSubmit, history } = this.props;
+    const { password } = state;
 
     try {
       await onSubmit(password);
-
-      this.context.metricsEvent({
-        eventOpts: {
-          category: 'Onboarding',
-          action: 'Create Password',
-          name: 'Submit Password',
-        },
-      });
-
       history.push(INITIALIZE_SEED_PHRASE_ROUTE);
     } catch (error) {
-      this.setState({ passwordError: error.message });
+      setState((state) => Object.assign({}, state, { passwordError: error.message }));
     }
-  };
+  }, [isValid, state, onSubmit, history]);
 
-  handleCancel = () => {
-    const { history } = this.props;
+  const handleCancel = useCallback(() => {
     history.push(INITIALIZE_SELECT_ACTION_ROUTE);
-  };
+  }, [history]);
 
-  toggleTermsCheck = () => {
-    this.context.metricsEvent({
-      eventOpts: {
-        category: 'Onboarding',
-        action: 'Create Password',
-        name: 'Check ToS',
-      },
-    });
-
-    this.setState((prevState) => ({
-      termsChecked: !prevState.termsChecked,
-    }));
-  };
-
-  onTermsKeyPress = ({ key }) => {
-    if (key === ' ' || key === 'Enter') {
-      this.toggleTermsCheck();
-    }
-  };
-
-  render() {
-    const { t } = this.context;
-    const {
-      password,
-      confirmPassword,
-      passwordError,
-      confirmPasswordError,
-      termsChecked,
-    } = this.state;
-
-    return (
-      <div className="new-account__container">
+  return (
+    <div className="new-account__container dex-page-container space-between base-width">
+      <div>
+        <Logo plain />
         <div className="first-time-flow__header">
           <div className="first-time-flow__account-password">
             <span className="dark-text">{t('createWallet')}</span>
@@ -160,58 +111,49 @@ export default class NewAccount extends PureComponent {
           </div>
         </div>
         <Steps total={3} current={1} />
-        <form className="first-time-flow__form" onSubmit={this.handleCreate}>
+        <form className="first-time-flow__form" onSubmit={handleCreate}>
           <TextField
             id="create-password"
             label={t('newPassword')}
             type="password"
             className="first-time-flow__input"
-            value={password}
-            onChange={(event) => this.handlePasswordChange(event.target.value)}
-            error={passwordError}
+            value={state.password}
+            onChange={(event) => handlePasswordChange(event.target.value)}
+            error={state.passwordError}
             autoFocus
-            autoComplete="new-password"
-            margin="normal"
-            fullWidth
-            largeLabel
           />
           <TextField
             id="confirm-password"
             label={t('confirmPassword')}
             type="password"
             className="first-time-flow__input"
-            value={confirmPassword}
+            value={state.confirmPassword}
             onChange={(event) =>
-              this.handleConfirmPasswordChange(event.target.value)
+              handleConfirmPasswordChange(event.target.value)
             }
-            error={confirmPasswordError}
-            autoComplete="confirm-password"
-            margin="normal"
-            fullWidth
-            largeLabel
+            error={state.confirmPasswordError}
           />
-          <div className="first-time-flow__account-password-btns">
-            <Button
-              className="first-time-flow__button"
-              as="div"
-              leftArrow
-              onClick={this.handleCancel}
-            >
-              {t('pre')}
-            </Button>
-            <Button
-              type="primary"
-              className="first-time-flow__button"
-              rightArrow
-              submit
-              disabled={!this.isValid()}
-              onClick={this.handleCreate}
-            >
-              {t('next')}
-            </Button>
-          </div>
         </form>
+
       </div>
-    );
-  }
+      <div className="first-time-flow__account-password-btns">
+        <Button
+          className="first-time-flow__button half-button"
+          as="div"
+          leftArrow
+          onClick={handleCancel}
+        >
+          {t('pre')}
+        </Button>
+        <Button
+          type="primary"
+          className="first-time-flow__button half-button"
+          disabled={!isValid}
+          onClick={handleCreate}
+        >
+          {t('next')}
+        </Button>
+      </div>
+    </div>
+  );
 }

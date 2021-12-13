@@ -78,7 +78,7 @@ export default function ImportWithSeedPhrase({ onSubmit }) {
     }
 
     setState((state) => Object.assign({}, state, { seedPhrase, seedPhraseError }));
-  }, [state, t])
+  }, [t])
 
   const handlePasswordChange = useCallback((password) => {
     setState((state) => {
@@ -100,7 +100,7 @@ export default function ImportWithSeedPhrase({ onSubmit }) {
         confirmPasswordError,
       });
     });
-  }, [state, t]);
+  }, [t]);
 
   const handleConfirmPasswordChange = useCallback((confirmPassword) => {
     setState((state) => {
@@ -116,7 +116,7 @@ export default function ImportWithSeedPhrase({ onSubmit }) {
         confirmPasswordError,
       });
     });
-  }, [state, t]);
+  }, [t]);
 
   const handleImport = useCallback(async (event) => {
     event.preventDefault();
