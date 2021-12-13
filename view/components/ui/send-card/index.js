@@ -3,9 +3,10 @@ import { conversionUtil } from '@shared/modules/conversion.utils';
 import { getPrice } from '@view/helpers/cross-chain-api';
 import { useFetch } from '@view/hooks/useFetch';
 import { useTokenTracker } from '@view/hooks/useTokenTracker';
+import { getCurrentChainId } from '@view/selectors';
 import BigNumber from 'bignumber.js';
 import { zeroAddress } from 'ethereumjs-util';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 export default function SendCardAmountInput({
@@ -15,6 +16,7 @@ export default function SendCardAmountInput({
   onAmountChange,
   accountAddress,
 }) {
+  const chainId = useSelector(getCurrentChainId);
   const nativeCurrency = useSelector(getNativeCurrency);
   const { tokensWithBalances } = useTokenTracker(
     token ? [token] : [],
@@ -91,6 +93,10 @@ export default function SendCardAmountInput({
     },
     [initVal],
   );
+
+  useEffect(() => {
+    setTokenVal('');
+  }, [chainId]);
 
   return (
     <div className="send-card-amount-input-wrap">
