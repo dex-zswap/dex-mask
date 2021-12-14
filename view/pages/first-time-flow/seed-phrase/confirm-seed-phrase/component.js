@@ -132,21 +132,11 @@ export default class ConfirmSeedPhraseComponent extends PureComponent {
           {this.renderPhrase()}
           {this.renderSelected()}
           <div className="first-time-flow__account-password-btn">
-            {/* <Button
-              type="primary"
-              className="first-time-flow__button"
-              onClick={this.handleNext}
-              disabled={this.isDisabled()}
-              rightArrow={true}
-            >
-              {t('next')}
-            </Button> */}
             <Button
               type="primary"
               className="first-time-flow__button"
               disabled={this.isDisabled()}
               onClick={this.handleNext}
-              rightArrow={true}
             >
               {t('next')}
             </Button>

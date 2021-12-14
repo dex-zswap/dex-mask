@@ -27,9 +27,16 @@
     }
   
     .line {
-      width: 20px;
+      width: 22px;
+      height: 2px;
       margin: 0 6px;
-      border-bottom: 2px dotted $primary-background;
+      background: url('/images/line/normal.png') no-repeat center;
+      background-size: 100%;
+
+      &.active {
+        background: url('/images/line/active.png') no-repeat center;
+        background-size: 100%;
+      }
     }
   }
 }
