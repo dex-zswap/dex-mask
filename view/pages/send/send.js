@@ -2,6 +2,7 @@ import ChainSwitcher from '@c/ui/cross-chain/chain-switcher';
 import {
   getNativeCurrency,
   getSendHexDataFeatureFlagState,
+  getTokens,
 } from '@reducer/dexmask/dexmask';
 import {
   getIsUsingMyAccountForRecipientSearch,
@@ -26,6 +27,7 @@ import {
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import {
   getCurrentChainId,
+  getMetaMaskAccounts,
   getSelectedAddress,
   isCustomPriceExcessive,
 } from '@view/selectors';
@@ -54,7 +56,10 @@ export default function SendTransactionScreen() {
   const chainId = useSelector(getCurrentChainId);
   const stage = useSelector(getSendStage);
   const tokenAddress = useSelector(getSendAssetAddress);
+  const userTokens = useSelector(getTokens);
   const sendAsset = useSelector(getSendAsset);
+  const accounts = useSelector(getMetaMaskAccounts);
+
   const nativeCurrency = useSelector(getNativeCurrency);
   const gasIsExcessive = useSelector(sendSliceIsCustomPriceExcessive);
   const isUsingMyAccountsForRecipientSearch = useSelector(
@@ -70,9 +75,18 @@ export default function SendTransactionScreen() {
   const [fromAccountAddress, setFromAccountAddress] = useState('');
   const [toAccountAddress, setToAccountAddress] = useState('');
 
+  const sendToken = useMemo(
+    () => userTokens?.find(({ address }) => address == tokenAddress),
+    [userTokens, tokenAddress],
+  );
+
   const fromAddress = useMemo(() => fromAccountAddress || selectedAddress, [
     fromAccountAddress,
     selectedAddress,
+  ]);
+  const fromAccountBalance = useMemo(() => accounts[fromAddress]?.balance, [
+    accounts,
+    fromAddress,
   ]);
   const toAddress = useMemo(() => toAccountAddress || selectedAddress, [
     toAccountAddress,
@@ -98,6 +112,7 @@ export default function SendTransactionScreen() {
       ) {
         return;
       }
+
       const fromChainId = changeFromChain ? changedChainId : chainId;
       const toChainId = changeFromChain ? chainId : changedChainId;
 
@@ -156,22 +171,25 @@ export default function SendTransactionScreen() {
               await dispatchChainId();
             }
           } else {
-            dispatchChainId();
+            await dispatchChainId();
             // if (changeFromChain) {
             //   await dispatchChainId();
             // }
           }
+          dispatch(resetRecipientInput());
         })
         .catch(() => {
           if (changeFromChain) {
             dispatchChainId();
           }
         });
-      dispatch(resetSendState());
-      dispatch(resetRecipientInput());
     },
     [checked, tokenAddress, fromAddress, toAddress, chainId],
   );
+
+  useEffect(() => {
+    dispatch(initializeSendState());
+  }, [fromAccountBalance]);
 
   const onAmountChange = useCallback((val) => {
     // dispatch(
@@ -191,10 +209,13 @@ export default function SendTransactionScreen() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (chainId !== undefined) {
-      dispatch(initializeSendState());
+    if (chainId) {
       window.addEventListener('beforeunload', cleanup);
     }
+    return () => {
+      dispatch(resetSendState());
+      window.removeEventListener('beforeunload', cleanup);
+    };
   }, [chainId, dispatch, cleanup]);
 
   useEffect(() => {
@@ -207,13 +228,6 @@ export default function SendTransactionScreen() {
       window.location.hash = '#send';
     }
   }, [location, dispatch]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(resetSendState());
-      window.removeEventListener('beforeunload', cleanup);
-    };
-  }, [dispatch, cleanup]);
 
   // let content;
 
