@@ -1,13 +1,13 @@
 .recive-token {
   &__wrapper {
-    width: 92vw;
+
     display: flex;
     align-items: center;
     margin: 0 auto;
   }
 
   &__from {
-    width: 92vw;
+
     background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
     border-radius: 14px;
     padding: 12px;
@@ -17,7 +17,7 @@
   }
 
   &__to {
-    width: 92vw;
+
     background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
     border-radius: 14px;
     padding: 12px;
@@ -30,7 +30,7 @@
   }
 
   &__bridge-info {
-    width: 92vw;
+
     height: 40px;
     margin: 10px 0;
     display: flex;
@@ -65,7 +65,7 @@
   }
 
   &__qr-wrapper {
-    width: 92vw;
+
     width: 100%;
     background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
     border-radius: 14px;
