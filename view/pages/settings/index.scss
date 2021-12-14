@@ -216,7 +216,7 @@
       &__caret {
         width: 20px;
         height: 16px;
-        background: url('/images/dex/button/arrow.png') no-repeat center;
+        background: url('/images/button/arrow.png') no-repeat center;
         background-size: 20px 16px;
         opacity: 0;
         transition: all 0.3s;
@@ -233,41 +233,33 @@
       padding: 0 0 0 57px;
 
       &.general {
-        background: url('/images/dex/settings/common.png') no-repeat left center;
-        background-size: 42px 42px;
+        background: url('/images/settings/general.png') no-repeat left 5px;
+        background-size: 22px 22px;
       }
 
       &.advanced {
-        background: url('/images/dex/settings/advanced.png') no-repeat left
-          center;
-        background-size: 42px 42px;
-      }
-
-      &.contacts {
-        background: url('/images/dex/settings/contact.png') no-repeat left
-          center;
-        background-size: 42px 42px;
+        background: url('/images/settings/advanced.png') no-repeat left 5px;
+        background-size: 22px 22px;
       }
 
       &.security {
-        background: url('/images/dex/settings/safe.png') no-repeat left center;
-        background-size: 42px 42px;
+        background: url('/images/settings/security.png') no-repeat left 5px;
+        background-size: 22px 22px;
       }
 
       &.alerts {
-        background: url('/images/dex/settings/note.png') no-repeat left center;
-        background-size: 42px 42px;
+        background: url('/images/settings/alerts.png') no-repeat left 5px;
+        background-size: 22px 22px;
       }
 
       &.networks {
-        background: url('/images/dex/settings/network.png') no-repeat left
-          center;
-        background-size: 42px 42px;
+        background: url('/images/settings/network.png') no-repeat left 5px;
+        background-size: 22px 22px;
       }
 
       &.about {
-        background: url('/images/dex/settings/about.png') no-repeat left center;
-        background-size: 42px 42px;
+        background: url('/images/settings/about.png') no-repeat left 5px;
+        background-size: 22px 22px;
       }
 
       &__title {
