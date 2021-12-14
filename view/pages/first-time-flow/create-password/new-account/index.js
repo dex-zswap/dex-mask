@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { ethers } from 'ethers';
 
 import { setSeedPhraseBackedUp, initializeThreeBox } from '@view/store/actions';
-
 import { I18nContext } from '@view/contexts/i18n';
 
 import Logo from '@c/ui/logo';
