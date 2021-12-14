@@ -9,28 +9,17 @@ import Steps from '@c/ui/steps';
 import Logo from '@c/ui/logo';
 
 import { I18nContext } from '@view/contexts/i18n';
-import { INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
-
+import { INITIALIZE_END_OF_FLOW_ROUTE } from '@view/helpers/constants/routes';
 import { initializeThreeBox, setSeedPhraseBackedUp } from '@view/store/actions';
-import { connect } from 'react-redux';
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setSeedPhraseBackedUp: (seedPhraseBackupState) =>
-      dispatch(setSeedPhraseBackedUp(seedPhraseBackupState)),
-    initializeThreeBox: () => dispatch(initializeThreeBox()),
-  };
-};
-
-// export default function ConfirmSeedPhrase({ seedPhrase }) {
-export default function ConfirmSeedPhrase() {
-  const seedPhrase = 'approve weasel drift hospital adapt quit beach team anger glide wrap toward'
-
+export default function ConfirmSeedPhrase({ seedPhrase }) {
   const t = useContext(I18nContext);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const [selectedPhrase, setSelectedPhrase] = useState([]);
+
+  const disabled = useMemo(() => selectedPhrase.join(' ') !== seedPhrase, [selectedPhrase, seedPhrase]);
 
   const phraseArray = useMemo(() => {
     const phrases = seedPhrase.split(' ').sort();;
@@ -39,7 +28,7 @@ export default function ConfirmSeedPhrase() {
 
   const handleNext = useCallback(async (event) => {
     event.preventDefault();
-    history.push(INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE);
+    history.push(INITIALIZE_END_OF_FLOW_ROUTE);
   }, [history]);
 
   const selectPhrase = useCallback((phrase) => {
@@ -52,8 +41,8 @@ export default function ConfirmSeedPhrase() {
         <Logo plain />
         <div className="first-time-flow__header">
           <div className="first-time-flow__account-password">
-            <p className="title">{t('createAWallet')}</p>
-            <p className="sub-title">{t('createPassword')}</p>
+            <p className="title">{t('confirmRecoveryPhrase')}</p>
+            <p className="sub-title">{t('confirmRecoveryPhraseDescription')}</p>
           </div>
         </div>
         <Steps total={3} current={3} />
@@ -86,6 +75,7 @@ export default function ConfirmSeedPhrase() {
         <Button
           type="primary"
           className="first-time-flow__button"
+          disabled={disabled}
           onClick={handleNext}
         >
           {t('next')}

@@ -26,15 +26,15 @@ export default class SeedPhrase extends PureComponent {
   componentDidMount() {
     const { seedPhrase, history, verifySeedPhrase } = this.props;
 
-    // if (!seedPhrase) {
-    //   verifySeedPhrase().then((verifiedSeedPhrase) => {
-    //     if (verifiedSeedPhrase) {
-    //       this.setState({ verifiedSeedPhrase });
-    //     } else {
-    //       history.push(DEFAULT_ROUTE);
-    //     }
-    //   });
-    // }
+    if (!seedPhrase) {
+      verifySeedPhrase().then((verifiedSeedPhrase) => {
+        if (verifiedSeedPhrase) {
+          this.setState({ verifiedSeedPhrase });
+        } else {
+          history.push(DEFAULT_ROUTE);
+        }
+      });
+    }
   }
 
   render() {
