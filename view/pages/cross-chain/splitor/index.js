@@ -37,7 +37,7 @@ const CrossChainSplitor = () => {
     }).then((res) => res.json())
     .then(async (res) => {
       if (res.c === 200) {
-        const target = res.d.find(({ target_meta_chain_id, token_address }) => target_meta_chain_id === toBnString(crossInfo.fromChain) && token_address === crossInfo.coinAddress);
+        const target = res.d.find(({ target_meta_chain_id, token_address }) => token_address === crossInfo.coinAddress);
         const newCrossInfo = Object.assign({}, crossInfo, {
           destChain: crossInfo.fromChain,
           fromChain: crossInfo.destChain,
