@@ -1,65 +1,80 @@
 .confirm-seed-phrase {
-  width: 100%;
+  .logo-component {
+    margin: 0 auto;
+  }
 
-  &__word-display {
+  .first-time-flow__header {
+    margin: 40px 0;
+  }
+
+  .first-time-flow__account-password {
+    .title {
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 23px;
+      text-align: center;
+      color: $white;
+    }
+
+    .sub-title {
+      font-size: $size-12;
+      line-height: 16px;
+      text-align: center;
+      color: $white;
+    }
+  }
+
+  .seed-phrase-display {
+    margin: 36px auto 0;
+    width: 256px;
+    max-height: 250px;
+    overflow-y: auto;
+
+    .first-time-flow__form {
+      display: flex;
+      justify-content: space-between;
+  
+      .confirm-seed-phrase__word-column {
+        width: 120px;
+  
+        .word-item {
+          display: flex;
+          align-items: center;
+          width: 120px;
+          height: 28px;
+          border-radius: $size-12;
+          background: $primary-background;
+          margin: 0 0 10px;
+          padding: 0 $size-12;
+          font-size: $size-12;
+          color: $white;
+  
+          &.active {
+            background: $primary-gradient;
+          }
+        }
+      }
+    }
+
+    .select-text {
+      display: flex;
+
+      .word-item {
+        display: inline-block;
+        padding: 7px 12px;
+        margin: 0 5px 5px 0;
+        border-radius: 4px;
+        background: $primary-background;
+        color: $white;
+        font-size: $size-12;
+        border-radius: $size-12;
+      }
+    }
+  }
+
+  .first-time-flow__account-password-btns {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: 15px 0 0;
   }
-
-  &__word-column {
-    width: 47%;
-
-    .word-item {
-      width: 100%;
-      height: 28px;
-      padding: 0 10px;
-      border-radius: 4px;
-      background: #020202;
-      color: #A2A2AA;
-      margin: 0 0 6px;
-      font-size: 14px;
-      line-height: 28px;
-
-      &.active {
-        background: #6A4DEF;
-      }
-
-      .word-text {
-        font-size: 12px;
-        font-weight: normal;
-        color: #FFFFFF;
-        line-height: 28px;
-        padding: 0 0 0 4px;
-      }
-    }
-  }
-
-  &__word-selected {
-    width: 100%;
-    margin: 10px 0 0;
-
-    .word-item {
-      display: inline-block;
-      padding: 3px 8px;
-      margin: 0 5px 5px 0;
-      border-radius: 4px;
-      background: #020202;
-      color: #A2A2AA;
-
-      .word-text {
-        font-size: 12px;
-        font-weight: normal;
-        color: #FFFFFF;
-        line-height: 24px;
-        padding: 0 0 0 2px;
-      }
-    }
-  }
-}
-
-
-.confirm-seed__form {
-  width: 224px;
 }

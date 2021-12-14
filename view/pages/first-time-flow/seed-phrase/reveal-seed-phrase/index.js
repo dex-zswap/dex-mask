@@ -10,18 +10,14 @@ import Logo from '@c/ui/logo';
 
 import { I18nContext } from '@view/contexts/i18n';
 import { INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
-import { getOnboardingInitiator } from '@view/selectors';
 
 export default function RevealSeedPhrase({ seedPhrase }) {
   const t = useContext(I18nContext);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const onboardingInitiator = useSelector(getOnboardingInitiator);
-
   const phraseArray = useMemo(() => {
     const phrases = seedPhrase.split(' ');
-    console.log(phrases)
     return [phrases.slice(0, 6), phrases.slice(6)];
   }, [seedPhrase]);
 
