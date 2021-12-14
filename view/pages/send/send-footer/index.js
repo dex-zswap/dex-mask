@@ -37,13 +37,11 @@ function mapStateToProps(state) {
   //     ? gasButtonInfo[activeButtonIndex].gasEstimateType
   //     : 'custom';
 
-  const amount = getSendAmount(state);
-
   return {
     disabled:
       isSendFormInvalid(state) ||
-      !amount ||
-      new BigNumber(amount).eq(new BigNumber(0)),
+      !getSendAmount(state) ||
+      new BigNumber(getSendAmount(state)).eq(new BigNumber(0)),
     to: getSendTo(state),
     toAccounts: getSendToAccounts(state),
     sendErrors: getSendErrors(state),
