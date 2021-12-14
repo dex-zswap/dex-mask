@@ -1,11 +1,13 @@
 import PageContainerFooter from '@c/ui/page-container/page-container-footer';
 import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes';
+import BigNumber from 'bignumber.js';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 export default class SendFooter extends Component {
   static propTypes = {
+    amount: PropTypes.any,
     addToAddressBookIfNew: PropTypes.func,
     resetSendState: PropTypes.func,
     disabled: PropTypes.bool.isRequired,
@@ -60,13 +62,19 @@ export default class SendFooter extends Component {
   }
 
   render() {
+    const { amount } = this.props;
+
     return (
       <PageContainerFooter
         submitButtonType="primary"
         submitText="Trans"
         hideCancel={true}
         onSubmit={(e) => this.onSubmit(e)}
-        disabled={this.props.disabled}
+        disabled={
+          this.props.disabled ||
+          !amount ||
+          new BigNumber(amount).eq(new BigNumber(0))
+        }
         rightArrow
       />
     );
