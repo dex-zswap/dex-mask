@@ -168,6 +168,7 @@ export default function SendTransactionScreen() {
           }
         });
       dispatch(resetSendState());
+      dispatch(resetRecipientInput());
     },
     [checked, tokenAddress, fromAddress, toAddress, chainId],
   );
