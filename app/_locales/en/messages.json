@@ -2826,5 +2826,13 @@
   },
   "zswap": {
     "message": "ZSWAP"
+  },
+  "recoveryPhrase": {
+    "message": "Secret Recovery Phrase",
+    "description": "Your Secret Recovery Phrase makes it easy to back up and restore your account."
+  },
+  "confirmRecoveryPhrase": {
+    "message": "Confirm your Secret Recivery Phrase",
+    "description": "Please select each phrase in order to make sure it is correct."
   }
 }
