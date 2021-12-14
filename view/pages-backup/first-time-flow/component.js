@@ -4,7 +4,6 @@ import {
   INITIALIZE_BACKUP_SEED_PHRASE_ROUTE,
   INITIALIZE_CREATE_PASSWORD_ROUTE,
   INITIALIZE_END_OF_FLOW_ROUTE,
-  INITIALIZE_METAMETRICS_OPT_IN_ROUTE,
   INITIALIZE_SEED_PHRASE_INTRO_ROUTE,
   INITIALIZE_SEED_PHRASE_ROUTE,
   INITIALIZE_SELECT_ACTION_ROUTE,
@@ -17,7 +16,6 @@ import { Route, Switch } from 'react-router-dom';
 import CreatePassword from './create-password';
 import EndOfFlow from './end-of-flow';
 import FirstTimeFlowSwitch from './first-time-flow-switch';
-import MetaMetricsOptInScreen from './metametrics-opt-in';
 import SeedPhrase from './seed-phrase';
 import SelectAction from './select-action';
 import Welcome from './welcome';
@@ -162,11 +160,6 @@ export default class FirstTimeFlow extends PureComponent {
             component={EndOfFlow}
           />
           <Route exact path={INITIALIZE_WELCOME_ROUTE} component={Welcome} />
-          <Route
-            exact
-            path={INITIALIZE_METAMETRICS_OPT_IN_ROUTE}
-            component={MetaMetricsOptInScreen}
-          />
           <Route exact path="*" component={FirstTimeFlowSwitch} />
         </Switch>
       </div>
