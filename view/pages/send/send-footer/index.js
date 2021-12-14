@@ -11,7 +11,6 @@ import {
   signTransaction,
 } from '@reducer/send';
 import { addToAddressBook } from '@view/store/actions';
-import BigNumber from 'bignumber.js';
 import { connect } from 'react-redux';
 import SendFooter from './component';
 
@@ -38,10 +37,8 @@ function mapStateToProps(state) {
   //     : 'custom';
 
   return {
-    disabled:
-      isSendFormInvalid(state) ||
-      !getSendAmount(state) ||
-      new BigNumber(getSendAmount(state)).eq(new BigNumber(0)),
+    amount: getSendAmount(state),
+    disabled: isSendFormInvalid(state),
     to: getSendTo(state),
     toAccounts: getSendToAccounts(state),
     sendErrors: getSendErrors(state),
