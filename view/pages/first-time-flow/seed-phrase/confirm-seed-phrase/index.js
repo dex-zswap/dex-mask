@@ -30,6 +30,8 @@ export default function ConfirmSeedPhrase() {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  console.log(t)
+
   const [selectedPhrase, setSelectedPhrase] = useState([]);
 
   const phraseArray = useMemo(() => {
@@ -52,8 +54,8 @@ export default function ConfirmSeedPhrase() {
         <Logo plain />
         <div className="first-time-flow__header">
           <div className="first-time-flow__account-password">
-            <p className="title">{t('createAWallet')}</p>
-            <p className="sub-title">{t('createPassword')}</p>
+            <p className="title">{t('recoveryPhrase')}</p>
+            <p className="sub-title">{t('recoveryPhrase.description')}</p>
           </div>
         </div>
         <Steps total={3} current={3} />
