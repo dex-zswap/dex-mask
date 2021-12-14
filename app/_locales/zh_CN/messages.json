@@ -1,22 +1,4 @@
 {
-  "metaMaskConnectStatusParagraphOne": {
-    "message": "现在您可在 DEXMask 中对账户连接进行更多的控制。"
-  },
-  "metaMaskConnectStatusParagraphThree": {
-    "message": "点击管理连接的账户。"
-  },
-  "metaMaskConnectStatusParagraphTwo": {
-    "message": "连接状态按钮显示所访问的网站是否与您当前选择的账户连接。"
-  },
-  "metaMaskDescription": {
-    "message": "将您与 Ethereum 和去中心化网络连接起来。"
-  },
-  "metaMaskSwapsOfflineDescription": {
-    "message": "DEXMask Swaps 正在进行维护。请稍后访问。"
-  },
-  "metaMaskVersion": {
-    "message": "DEXMask 版本"
-  },
   "InterBlockchain": {
     "message": "从 $1 跨链转出"
   },
@@ -438,9 +420,6 @@
   "currentLanguage": {
     "message": "当前语言"
   },
-  "language": {
-    "message": "语言"
-  },
   "custom": {
     "message": "自定义"
   },
@@ -813,6 +792,9 @@
     "message": "隐藏 $1",
     "description": "$1 is the symbol for a token (e.g. 'DAI')"
   },
+  "hideZeroBalanceTokens": {
+    "message": "Hide Tokens Without Balance"
+  },
   "history": {
     "message": "历史记录"
   },
@@ -927,6 +909,9 @@
   "kovan": {
     "message": "Kovan 测试网络"
   },
+  "language": {
+    "message": "语言"
+  },
   "lastConnected": {
     "message": "最后连接"
   },
@@ -983,6 +968,24 @@
   },
   "message": {
     "message": "消息"
+  },
+  "metaMaskConnectStatusParagraphOne": {
+    "message": "现在您可在 DEXMask 中对账户连接进行更多的控制。"
+  },
+  "metaMaskConnectStatusParagraphThree": {
+    "message": "点击管理连接的账户。"
+  },
+  "metaMaskConnectStatusParagraphTwo": {
+    "message": "连接状态按钮显示所访问的网站是否与您当前选择的账户连接。"
+  },
+  "metaMaskDescription": {
+    "message": "将您与 Ethereum 和去中心化网络连接起来。"
+  },
+  "metaMaskSwapsOfflineDescription": {
+    "message": "DEXMask Swaps 正在进行维护。请稍后访问。"
+  },
+  "metaMaskVersion": {
+    "message": "DEXMask 版本"
   },
   "metametricsCommitmentsAllowOptOut": {
     "message": "始终允许您通过设置选择退出"
