@@ -613,3 +613,7 @@ export function getShowRecoveryPhraseReminder(state) {
 
   return currentTime - recoveryPhraseReminderLastShown >= frequency;
 }
+
+export function getAppState(state) {
+  return state.appState;
+}

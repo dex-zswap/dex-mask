@@ -5,7 +5,6 @@ import NetworkDropdown from '@c/app/dropdowns/network-dropdown';
 import LoadingNetwork from '@c/app/loading-network-screen';
 import Modal from '@c/app/modals';
 import Sidebar from '@c/app/sidebars';
-import TopHeader from '@c/app/top-header';
 import Alert from '@c/ui/alert';
 import Loading from '@c/ui/loading-screen';
 import AddTokenPage from '@pages/add-token';
@@ -326,7 +325,6 @@ export default class Routes extends Component {
       >
         <Modal />
         <Alert visible={this.props.alertOpen} msg={alertMessage} />
-        {!this.hideAppHeader() && <TopHeader />}
         <Sidebar
           sidebarOpen={sidebarIsOpen}
           sidebarShouldClose={sidebarShouldClose}
