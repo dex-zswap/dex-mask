@@ -32,8 +32,8 @@ export default function RevealSeedPhrase({ seedPhrase }) {
         <Logo plain />
         <div className="first-time-flow__header">
           <div className="first-time-flow__account-password">
-            <p className="title">{t('createAWallet')}</p>
-            <p className="sub-title">{t('createPassword')}</p>
+            <p className="title">{t('recoveryPhrase')}</p>
+            <p className="sub-title">{t('recoveryPhraseDescription')}</p>
           </div>
         </div>
         <Steps total={3} current={2} />

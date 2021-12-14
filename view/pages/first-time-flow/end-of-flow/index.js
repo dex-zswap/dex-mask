@@ -24,7 +24,7 @@ export default function EndOfFlow() {
   const { firstTimeFlowType } = useSelector(getDexMaskState);
   const onboardingInitiator = useSelector(getOnboardingInitiator);
 
-  const localeKey = useMemo(() => firstTimeFlowType === 'create' ? 'endOfFlowMessage10' : 'endOfFlowMessage11', [firstTimeFlowType]);
+  const localeKey = useMemo(() => firstTimeFlowType === 'create' ? 'endOfFlowMessage1' : 'endOfFlowMessage11', [firstTimeFlowType]);
 
   const onOnboardingComplete = useCallback(async () => {
     await dispatch(setCompletedOnboarding());
