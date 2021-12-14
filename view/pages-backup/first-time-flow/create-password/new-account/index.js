@@ -101,14 +101,6 @@ export default class NewAccount extends PureComponent {
     try {
       await onSubmit(password);
 
-      this.context.metricsEvent({
-        eventOpts: {
-          category: 'Onboarding',
-          action: 'Create Password',
-          name: 'Submit Password',
-        },
-      });
-
       history.push(INITIALIZE_SEED_PHRASE_ROUTE);
     } catch (error) {
       this.setState({ passwordError: error.message });
@@ -121,14 +113,6 @@ export default class NewAccount extends PureComponent {
   };
 
   toggleTermsCheck = () => {
-    this.context.metricsEvent({
-      eventOpts: {
-        category: 'Onboarding',
-        action: 'Create Password',
-        name: 'Check ToS',
-      },
-    });
-
     this.setState((prevState) => ({
       termsChecked: !prevState.termsChecked,
     }));
