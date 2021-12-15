@@ -1,15 +1,19 @@
-$primary-gradient: linear-gradient(82.09deg, #7813C4 5.18%, #2206A0 101.7%);
-$primary-gradient-hover: linear-gradient(82.09deg, rgba(#7813C4, 0.5) 5.18%, rgba(#2206A0, 0.5) 101.7%);
+$primary-gradient: linear-gradient(82.09deg, #7813c4 5.18%, #2206a0 101.7%);
+$primary-gradient-hover: linear-gradient(
+  82.09deg,
+  rgba(#7813c4, 0.5) 5.18%,
+  rgba(#2206a0, 0.5) 101.7%
+);
 $primary-background: rgba(229, 229, 229, 0.1);
 $primary-border: rgba(229, 229, 229, 0.5);
 $box-shadow: rgba(120, 19, 196, 0.7);
 $page-background: #050317;
 $popup-background: #1b1a2c;
-$warning: #FB5D5D;
-$pink: #7813C4;
+$warning: #fb5d5d;
+$pink: #7813c4;
 $white: #fff;
-$gray: #C6C6C6;
-$green: #11CABE;
+$gray: #c6c6c6;
+$green: #11cabe;
 
 $size-8: 8px;
 $size-10: 10px;

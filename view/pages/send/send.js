@@ -88,8 +88,6 @@ export default function SendTransactionScreen() {
     accounts,
     fromAddress,
   ]);
-  console.log('accounts', accounts);
-  console.log('fromAccountBalance', fromAccountBalance);
   const toAddress = useMemo(() => toAccountAddress || selectedAddress, [
     toAccountAddress,
     selectedAddress,
