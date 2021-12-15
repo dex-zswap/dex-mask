@@ -31,3 +31,19 @@ input, textarea {
     width: 139px;
   }
 }
+
+.flex {
+  display: flex;
+}
+
+.flex-inline {
+  display: inline-flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}

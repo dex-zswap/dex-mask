@@ -25,46 +25,28 @@ export default function TokenCell({
     showFiat: true,
   });
 
-  const warning = balanceError ? (
-    <span>
-      {t('troubleTokenBalances')}
-      <a
-        href={`https://ethplorer.io/address/${userAddress}`}
-        rel="noopener noreferrer"
-        target="_blank"
-        onClick={(event) => event.stopPropagation()}
-        style={{ color: '#F7861C' }}
-      >
-        {t('here')}
-      </a>
-    </span>
-  ) : null;
-
   return (
     <AssetListItem
       className={classnames('token-cell', {
         'token-cell--outdated': Boolean(balanceError),
       })}
-      hideSuffixSymbol={true}
-      iconClassName="token-cell__icon"
       onClick={onClick.bind(null, address)}
       tokenAddress={address}
-      tokenImage={image}
       tokenSymbol={symbol}
       tokenDecimals={decimals}
       primary={
-        <div className="asset-list-item__token-detail">
+        <div className="token-detail">
+          {formattedFiat && (
+            <div className="token-usd">{formattedFiat}</div>
+          )}
           <div
-            className="asset-list-item__token-amount"
+            className="token-amount"
             title={`${string || '0'}${symbol}`}
           >
             <LongLetter text={string || '0'} length={10} />
             &nbsp;&nbsp;
             {symbol}
           </div>
-          {formattedFiat && (
-            <div className="asset-list-item__token-usd">{formattedFiat}</div>
-          )}
         </div>
       }
       isERC721={isERC721}

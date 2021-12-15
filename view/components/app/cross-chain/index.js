@@ -1,16 +1,17 @@
+import React, { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { ethers } from 'ethers';
+
 import { getNativeCurrency } from '@reducer/dexmask/dexmask';
 import { getCurrentChainId, getSelectedAccount } from '@selectors/selectors';
 import { NETWORK_TO_NAME_MAP } from '@shared/constants/network';
 import { CROSSCHAIN_ROUTE } from '@view/helpers/constants/routes';
 import { checkTokenBridge } from '@view/helpers/cross-chain-api';
-import { toBnString } from '@view/helpers/utils/conversions.util';
+import { toBnString, toHexString } from '@view/helpers/utils/conversions.util';
 import { useFetch } from '@view/hooks/useFetch';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { updateCrossChainState } from '@view/store/actions';
-import { ethers } from 'ethers';
-import React, { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 export default function CrossChainBtn() {
   const t = useI18nContext();
@@ -46,34 +47,30 @@ export default function CrossChainBtn() {
   return (
     <>
       {supportCrossChain ? (
-        <div className="cross-chain-transfer-button">
-          <div
-            className="cross-chain-transfer-button__button"
-            onClick={() => {
-              const destChain = ethers.BigNumber.from(
-                defaultTargetChain.target_meta_chain_id,
-              ).toHexString();
-              dispatch(
-                updateCrossChainState({
-                  coinAddress: ethers.constants.AddressZero,
-                  targetCoinAddress: defaultTargetChain.target_token_address,
-                  coinSymbol: nativeCurrency,
-                  targetCoinSymbol: defaultTargetChain.target_token,
-                  from: selectedAccount.address,
-                  fromChain: chainId,
-                  target: defaultTargetChain,
-                  destChain,
-                  supportChains: [],
-                  chainTokens: [],
-                }),
-              );
-              history.push(CROSSCHAIN_ROUTE);
-            }}
-          >
+        <div className="cross-chain-transfer-button flex items-center" onClick={() => {
+          const destChain = toHexString(defaultTargetChain.target_meta_chain_id);
+          dispatch(
+            updateCrossChainState({
+              coinAddress: ethers.constants.AddressZero,
+              targetCoinAddress: defaultTargetChain.target_token_address,
+              coinSymbol: nativeCurrency,
+              targetCoinSymbol: defaultTargetChain.target_token,
+              from: selectedAccount.address,
+              fromChain: chainId,
+              target: defaultTargetChain,
+              destChain,
+              supportChains: [],
+              chainTokens: [],
+            }),
+          );
+          history.push(CROSSCHAIN_ROUTE);
+        }}>
+          <div className="icon"></div>
+          <p className="text">
             {t('InterBlockchain', [
               NETWORK_TO_NAME_MAP[provider.type] || provider.type,
             ])}
-          </div>
+          </p>
         </div>
       ) : null}
     </>

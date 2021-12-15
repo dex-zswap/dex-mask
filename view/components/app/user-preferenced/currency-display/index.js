@@ -41,25 +41,3 @@ export default function UserPreferencedCurrencyDisplay({
     />
   );
 }
-
-UserPreferencedCurrencyDisplay.propTypes = {
-  className: PropTypes.string,
-  'data-testid': PropTypes.string,
-  prefix: PropTypes.string,
-  value: PropTypes.string,
-  numberOfDecimals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  hideLabel: PropTypes.bool,
-  hideTitle: PropTypes.bool,
-  style: PropTypes.object,
-  showEthLogo: PropTypes.bool,
-  ethLogoHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  type: PropTypes.oneOf([PRIMARY, SECONDARY]),
-  ethNumberOfDecimals: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  fiatNumberOfDecimals: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-};
