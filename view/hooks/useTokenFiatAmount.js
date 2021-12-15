@@ -60,5 +60,5 @@ export function useTokenFiatAmount(
     return undefined;
   }
 
-  return formattedFiat ?? '0 USD';
+  return formattedFiat ?? '$0.00 USD';
 }

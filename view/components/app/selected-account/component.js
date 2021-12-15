@@ -1,3 +1,7 @@
+import React, { useContext, useRef } from 'react';
+import { ethers } from 'ethers';
+import copyToClipboard from 'copy-to-clipboard';
+
 import AccountOptionsMenu from '@c/app/menu-bar/account-options-menu';
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
 import CopyIcon from '@c/ui/icon/copy-icon.component';
@@ -6,10 +10,6 @@ import Tooltip from '@c/ui/tooltip';
 import { SECOND } from '@shared/constants/time';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import { shortenAddress } from '@view/helpers/utils';
-import copyToClipboard from 'copy-to-clipboard';
-import { ethers } from 'ethers';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 
 class SelectedAccount extends Component {
   state = {

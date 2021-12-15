@@ -61,31 +61,28 @@ const AssetList = ({ onClickAsset }) => {
 
   return (
     <div className="assets-list-wrapper">
-      <p className="title">MY ASSETS ON {providerType}</p>
       <AssetListItem
         hideSuffixSymbol={true}
         onClick={() => onClickAsset(nativeCurrency)}
-        data-testid="wallet-balance"
         primary={
-          <div className="asset-list-item__token-detail">
+          <div className="token-detail">
+            {showFiat && (
+              <div className="token-usd">
+                {secondaryCurrencyDisplay}
+              </div>
+            )}
             <div
-              className="asset-list-item__token-amount"
+              className="token-amount"
               title={`${primaryCurrencyProperties.value} ${primaryCurrencyProperties.suffix}`}
             >
               <LongLetter text={primaryCurrencyProperties.value} length={10} />
               &nbsp;&nbsp;
               {primaryCurrencyProperties.suffix}
             </div>
-            {showFiat && (
-              <div className="asset-list-item__token-usd">
-                {secondaryCurrencyDisplay}
-              </div>
-            )}
           </div>
         }
         tokenSymbol={primaryCurrencyProperties.suffix}
         tokenImage={primaryTokenImage}
-        identiconBorder
       />
       <TokenList
         onTokenClick={(tokenAddress) => {

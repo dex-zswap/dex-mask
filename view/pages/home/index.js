@@ -53,6 +53,22 @@ import { EthOverview } from '@c/app/wallet-overview';
 import { Tab, Tabs } from '@c/ui/tabs';
 import TransactionList from '@c/app/transaction/list';
 
+import {
+  ASSET_ROUTE,
+  AWAITING_SWAP_ROUTE,
+  BUILD_QUOTE_ROUTE,
+  CONFIRMATION_V_NEXT_ROUTE,
+  CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE,
+  CONFIRM_TRANSACTION_ROUTE,
+  CONNECTED_ACCOUNTS_ROUTE,
+  CONNECTED_ROUTE,
+  CONNECT_ROUTE,
+  INITIALIZE_BACKUP_SEED_PHRASE_ROUTE,
+  RESTORE_VAULT_ROUTE,
+  VIEW_QUOTE_ROUTE,
+} from '@view/helpers/constants/routes';
+import { formatDate } from '@view/helpers/utils';
+
 export default function HomePage() {
   const t = useContext(I18nContext);
   const history = useHistory();
@@ -106,8 +122,6 @@ export default function HomePage() {
           <ChainSwitcher />
           <SelectedAccount />
           <EthOverview />
-
-          {/* defaultActiveTabName={defaultHomeActiveTabName} */}
           <Tabs
             defaultActiveTabName={t('assets')}
             tabsClassName="home__tabs"

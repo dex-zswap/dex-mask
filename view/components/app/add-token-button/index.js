@@ -8,15 +8,15 @@ export default function AddTokenButton() {
   const history = useHistory();
 
   return (
-    <div className="add-token-button">
-      <div
-        className="add-token-button__button"
-        onClick={() => {
-          history.push(ADD_TOKEN_ROUTE);
-        }}
-      >
+    <div className="add-token-button flex items-center"
+      onClick={() => {
+        history.push(ADD_TOKEN_ROUTE);
+      }}
+    >
+      <div className="icon"></div>
+      <p className="text">
         {t('addToken')}
-      </div>
+      </p>
     </div>
   );
 }
