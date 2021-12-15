@@ -88,6 +88,8 @@ export default function SendTransactionScreen() {
     accounts,
     fromAddress,
   ]);
+  console.log('accounts', accounts);
+  console.log('fromAccountBalance', fromAccountBalance);
   const toAddress = useMemo(() => toAccountAddress || selectedAddress, [
     toAccountAddress,
     selectedAddress,
@@ -192,10 +194,13 @@ export default function SendTransactionScreen() {
 
   useEffect(() => {
     dispatch(initializeSendState());
+  }, [fromAccountBalance]);
+
+  useEffect(() => {
     if (checked) {
       changeToAccountAddressData(toAddress);
     }
-  }, [chainId, fromAccountBalance]);
+  }, [chainId, checked, toAddress, changeToAccountAddressData]);
 
   const onAmountChange = useCallback((val) => {
     // dispatch(
