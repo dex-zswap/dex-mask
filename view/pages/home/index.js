@@ -52,6 +52,7 @@ import SelectedAccount from '@c/app/selected-account';
 import { EthOverview } from '@c/app/wallet-overview';
 import { Tab, Tabs } from '@c/ui/tabs';
 import TransactionList from '@c/app/transaction/list';
+import TopHeader from '@c/ui/top-header';
 
 import {
   ASSET_ROUTE,
@@ -114,11 +115,11 @@ export default function HomePage() {
 
   const shouldShowSeedPhraseReminder = useMemo(() => seedPhraseBackedUp === false && (parseInt(accountBalance, 16) > 0 || tokens.length > 0) && dismissSeedBackUpReminder === false, [seedPhraseBackedUp, accountBalance, tokens, dismissSeedBackUpReminder]);
 
-
   return (
-    <div className="main-container">
+    <div className="main-container dex-page-container">
       <div className="home__container base-width">
         <div className="home__main-view">
+          <TopHeader />
           <ChainSwitcher />
           <SelectedAccount />
           <EthOverview />
