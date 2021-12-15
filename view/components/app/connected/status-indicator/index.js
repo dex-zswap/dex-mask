@@ -1,3 +1,9 @@
+import React from 'react';
+import { useSelector } from 'react-redux';
+import classnames from 'classnames';
+
+import { findKey } from 'lodash';
+
 import {
   STATUS_CONNECTED,
   STATUS_CONNECTED_TO_ANOTHER_ACCOUNT,
@@ -9,10 +15,7 @@ import {
   getOriginOfCurrentTab,
   getSelectedAddress,
 } from '@view/selectors';
-import { findKey } from 'lodash';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useSelector } from 'react-redux';
+
 
 export default function ConnectedStatusIndicator({ onClick }) {
   const t = useI18nContext();
@@ -40,16 +43,9 @@ export default function ConnectedStatusIndicator({ onClick }) {
       : t('statusNotConnected');
 
   return (
-    <button className="connected-status-indicator" onClick={onClick}>
+    <button className="connected-status-indicator flex items-center" onClick={onClick}>
+      <i className={classnames('connected-status', status === STATUS_CONNECTED ? 'connected' : 'not-connected')}></i>
       <div className="connected-status-indicator__text">{text}</div>
     </button>
   );
 }
-
-ConnectedStatusIndicator.defaultProps = {
-  onClick: undefined,
-};
-
-ConnectedStatusIndicator.propTypes = {
-  onClick: PropTypes.func,
-};

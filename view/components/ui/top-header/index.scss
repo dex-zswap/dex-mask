@@ -1,3 +1,14 @@
 .top-header-component {
-  
+  .top-header-container {
+    margin: 20px auto;
+    height: 46px;
+
+    .account-menu-trigger {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid $pink;
+      cursor: pointer;
+    }
+  }
 }
