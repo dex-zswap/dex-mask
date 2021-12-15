@@ -7,19 +7,19 @@ import {
   INVALID_RECIPIENT_ADDRESS_NOT_ETH_NETWORK_ERROR,
   KNOWN_RECIPIENT_ADDRESS_WARNING,
   MIN_GAS_LIMIT_HEX,
-  NEGATIVE_ETH_ERROR,
+  NEGATIVE_ETH_ERROR
 } from '@pages/send/constants';
 import {
   addGasBuffer,
   calcGasTotal,
   generateTokenTransferData,
   isBalanceSufficient,
-  isTokenBalanceSufficient,
+  isTokenBalanceSufficient
 } from '@pages/send/utils';
 import {
   getGasEstimateType,
   getTokens,
-  getUnapprovedTxs,
+  getUnapprovedTxs
 } from '@reducer/dexmask/dexmask';
 import { resetEnsResolution } from '@reducer/ens';
 import { setCustomGasLimit } from '@reducer/gas/gas.duck';
@@ -31,23 +31,23 @@ import {
   conversionGreaterThan,
   conversionUtil,
   multiplyCurrencies,
-  subtractCurrencies,
+  subtractCurrencies
 } from '@shared/modules/conversion.utils';
 import {
   isBurnAddress,
-  isValidHexAddress,
+  isValidHexAddress
 } from '@shared/modules/hexstring-utils';
 import { ETH, GWEI } from '@view/helpers/constants/common';
 import {
   checkExistingAddresses,
   isDefaultMetaMaskChain,
   isOriginContractAddress,
-  isValidDomainName,
+  isValidDomainName
 } from '@view/helpers/utils';
 import {
   calcTokenAmount,
   getTokenAddressParam,
-  getTokenValueParam,
+  getTokenValueParam
 } from '@view/helpers/utils/token-util';
 import {
   checkNetworkAndAccountSupports1559,
@@ -58,14 +58,14 @@ import {
   getIsMainnet,
   getIsNonStandardEthChain,
   getSelectedAddress,
-  getTargetAccount,
+  getTargetAccount
 } from '@view/selectors';
 import {
   ACCOUNT_CHANGED,
   ADDRESS_BOOK_UPDATED,
   GAS_FEE_ESTIMATES_UPDATED,
   QR_CODE_DETECTED,
-  SELECTED_ACCOUNT_CHANGED,
+  SELECTED_ACCOUNT_CHANGED
 } from '@view/store/actionConstants';
 import {
   addPollingTokenToAppState,
@@ -78,7 +78,7 @@ import {
   showConfTxPage,
   showLoadingIndication,
   updateTokenType,
-  updateTransaction,
+  updateTransaction
 } from '@view/store/actions';
 import BigNumber from 'bignumber.js';
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
@@ -1072,6 +1072,12 @@ const slice = createSlice({
       state.gas.error = insufficientFunds ? INSUFFICIENT_FUNDS_ERROR : null;
     },
     validateSendState: (state) => {
+      console.log(
+        'SendState',
+        state.amount.value,
+        state.asset.balance,
+        state.recipient.userInput,
+      );
       switch (true) {
         // 1 + 2. State is invalid when either gas or amount fields have errors
         // 3. State is invalid if asset type is a token and the token details
