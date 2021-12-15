@@ -10,7 +10,7 @@ import {
   forgotPassword,
   markPasswordForgotten,
   showModal,
-  tryUnlockMetamask,
+  tryUnlockDexmask,
 } from '@view/store/actions';
 import { EventEmitter } from 'events';
 import PropTypes from 'prop-types';
@@ -178,7 +178,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     forgotPassword: () => dispatch(forgotPassword()),
-    tryUnlockMetamask: (password) => dispatch(tryUnlockMetamask(password)),
+    tryUnlockDexmask: (password) => dispatch(tryUnlockDexmask(password)),
     markPasswordForgotten: () => dispatch(markPasswordForgotten()),
     forceupdateDexmaskState: () => forceupdateDexmaskState(dispatch),
     showOptInModal: () =>
@@ -191,7 +191,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     // eslint-disable-next-line no-shadow
     markPasswordForgotten,
     // eslint-disable-next-line no-shadow
-    tryUnlockMetamask,
+    tryUnlockDexmask,
     ...restDispatchProps
   } = dispatchProps;
   const { history, onSubmit: ownPropsSubmit, ...restOwnProps } = ownProps;
@@ -202,7 +202,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   };
 
   const onSubmit = async (password) => {
-    await tryUnlockMetamask(password);
+    await tryUnlockDexmask(password);
     history.push(DEFAULT_ROUTE);
   };
 

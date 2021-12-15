@@ -77,7 +77,7 @@ export default class Routes extends Component {
     setLastActiveTime: PropTypes.func,
     history: PropTypes.object,
     location: PropTypes.object,
-    lockMetaMask: PropTypes.func,
+    lockDexmask: PropTypes.func,
     submittedPendingTransactions: PropTypes.array,
     isMouseUser: PropTypes.bool,
     setMouseUserState: PropTypes.func,
@@ -248,10 +248,6 @@ export default class Routes extends Component {
       return true;
     }
 
-    // if (windowType === ENVIRONMENT_TYPE_POPUP && this.onConfirmPage()) {
-    //   return true;
-    // }
-
     const isHandlingPermissionsRequest = Boolean(
       matchPath(location.pathname, {
         path: CONNECT_ROUTE,
@@ -336,7 +332,6 @@ export default class Routes extends Component {
           provider={provider}
           frequentRpcListDetail={frequentRpcListDetail}
         />
-        {/* <AccountMenu /> */}
         <>
           {isLoading && <Loading loadingMessage={loadMessage} />}
           {!isLoading && isNetworkLoading && <LoadingNetwork />}

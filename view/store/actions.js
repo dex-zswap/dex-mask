@@ -42,7 +42,7 @@ export function goHome() {
 }
 // async actions
 
-export function tryUnlockMetamask(password) {
+export function tryUnlockDexmask(password) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     dispatch(unlockInProgress());
@@ -1096,7 +1096,7 @@ const backgroundSetLocked = () => {
   });
 };
 
-export function lockMetamask() {
+export function lockDexmask() {
   log.debug(`background.setLocked`);
 
   return (dispatch) => {

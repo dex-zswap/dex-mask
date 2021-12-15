@@ -6,11 +6,13 @@ export default function Logo({ width, height, plain, className, isCenter }) {
     const obj = {
       width: `${plain ? width ?? 38 : width ?? 100}px`,
       height: `${plain ? (height ?? 46) : (height ?? 86)}px`
-      margin: isCenter ? 'auto' : '0',
     };
+
     if (isCenter) {
-      obj.margin = 'auto';
+      obj.marginLeft = 'auto';
+      obj.marginRight = 'auto';
     }
+
     return obj;
   }, [width, height, plain, isCenter]);
 

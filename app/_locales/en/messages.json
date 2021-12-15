@@ -505,7 +505,7 @@
     "message": "Create a Wallet"
   },
   "createAccount": {
-    "message": "Create Account"
+    "message": "Create account"
   },
   "createNewWallet": {
     "message": "Create a new wallet"
@@ -1106,7 +1106,7 @@
     "description": "Button to import an account from a selected file"
   },
   "importAccount": {
-    "message": "Import Account"
+    "message": "Import account"
   },
   "importAccountLinkText": {
     "message": "import using Secret Recovery Phrase"
@@ -2786,7 +2786,7 @@
     "message": "DexMask Wallet"
   },
   "welcomeBack": {
-    "message": "Welcome Back!"
+    "message": "Welcome back"
   },
   "welcomeDexWallet": {
     "message": "Welcome to DexMask"

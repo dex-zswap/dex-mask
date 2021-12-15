@@ -8,7 +8,7 @@ import {
 import {
   hideSidebar,
   hideWarning,
-  lockMetamask,
+  lockDexmask,
   showAccountDetail,
   toggleAccountMenu,
 } from '@view/store/actions';
@@ -49,8 +49,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(hideSidebar());
       dispatch(toggleAccountMenu());
     },
-    lockMetamask: () => {
-      dispatch(lockMetamask());
+    lockDexmask: () => {
+      dispatch(lockDexmask());
       dispatch(hideWarning());
       dispatch(hideSidebar());
       dispatch(toggleAccountMenu());

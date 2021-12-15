@@ -1,3 +1,11 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
+import getCaretCoordinates from 'textarea-caret';
+import { EventEmitter } from 'events';
+import PropTypes from 'prop-types';
+
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
 import TextField from '@c/ui/text-field';
@@ -10,15 +18,8 @@ import {
   forgotPassword,
   markPasswordForgotten,
   showModal,
-  tryUnlockMetamask,
+  tryUnlockDexmask,
 } from '@view/store/actions';
-import { EventEmitter } from 'events';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-import getCaretCoordinates from 'textarea-caret';
 
 class UnlockPage extends Component {
   static contextTypes = {
@@ -127,13 +128,13 @@ class UnlockPage extends Component {
     const { onRestore } = this.props;
 
     return (
-      <div className="unlock-page__container">
+      <div className="unlock-page__container base-width">
         <div className="unlock-page">
           <div className="unlock-page__mascot-container">
-            <Logo width="82px" height="97px" />
+            <Logo isCenter />
           </div>
           <h1 className="unlock-page__title">{t('welcomeBack')}</h1>
-          <div className="unlock-page__message">{t('unlockMessage')}</div>
+          <div className="unlock-page__message">{t('rightWay')}</div>
           <form className="unlock-page__form" onSubmit={this.handleSubmit}>
             <TextField
               id="password"
@@ -144,8 +145,7 @@ class UnlockPage extends Component {
               error={error}
               autoFocus
               autoComplete="current-password"
-              theme="material"
-              fullWidth
+              bordered
             />
           </form>
           {this.renderSubmitButton()}
@@ -178,7 +178,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     forgotPassword: () => dispatch(forgotPassword()),
-    tryUnlockMetamask: (password) => dispatch(tryUnlockMetamask(password)),
+    tryUnlockDexmask: (password) => dispatch(tryUnlockDexmask(password)),
     markPasswordForgotten: () => dispatch(markPasswordForgotten()),
     forceupdateDexmaskState: () => forceupdateDexmaskState(dispatch),
     showOptInModal: () =>
@@ -191,7 +191,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     // eslint-disable-next-line no-shadow
     markPasswordForgotten,
     // eslint-disable-next-line no-shadow
-    tryUnlockMetamask,
+    tryUnlockDexmask,
     ...restDispatchProps
   } = dispatchProps;
   const { history, onSubmit: ownPropsSubmit, ...restOwnProps } = ownProps;
@@ -202,7 +202,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   };
 
   const onSubmit = async (password) => {
-    await tryUnlockMetamask(password);
+    await tryUnlockDexmask(password);
     history.push(DEFAULT_ROUTE);
   };
 

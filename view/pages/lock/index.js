@@ -1,4 +1,4 @@
-import { lockMetamask } from '@view/store/actions';
+import { lockDexmask } from '@view/store/actions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    lockMetamask: () => dispatch(lockMetamask()),
+    lockDexmask: () => dispatch(lockDexmask()),
   };
 };
 

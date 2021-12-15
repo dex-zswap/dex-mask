@@ -8,7 +8,7 @@ import {
 } from '@view/selectors';
 import {
   hideSidebar,
-  lockMetamask,
+  lockDexmask,
   setCurrentCurrency,
   setLastActiveTime,
   setMouseUserState,
@@ -51,7 +51,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    lockMetaMask: () => dispatch(lockMetamask(false)),
+    lockDexmask: () => dispatch(lockDexmask(false)),
     hideSidebar: () => dispatch(hideSidebar()),
     setCurrentCurrencyToUSD: () => dispatch(setCurrentCurrency('usd')),
     setMouseUserState: (isMouseUser) =>
