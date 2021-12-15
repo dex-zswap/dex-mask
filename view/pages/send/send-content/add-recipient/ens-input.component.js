@@ -1,11 +1,6 @@
 import Identicon from '@c/ui/identicon';
 import { ellipsify } from '@pages/send/utils';
 import {
-  MAINNET_DISPLAY_NAME,
-  NETWORK_TO_NAME_MAP,
-  NETWORK_TYPE_TO_ID_MAP,
-} from '@shared/constants/network';
-import {
   isBurnAddress,
   isValidHexAddress,
 } from '@shared/modules/hexstring-utils';
@@ -142,7 +137,6 @@ export default class EnsInput extends Component {
                 onChange={this.onChange}
                 onPaste={this.onPaste}
                 value={selectedAddress || userInput}
-                autoFocus
                 data-testid="ens-input"
               />
               <button

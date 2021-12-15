@@ -95,14 +95,17 @@ export default function SendTransactionScreen() {
   const changeFromAccountAddress = useCallback((address) => {
     setFromAccountAddress(address);
   }, []);
-  const changeToAccountAddress = useCallback((address) => {
-    setToAccountAddress(address);
-    changeToAccountAddressData(checked ? '' : address || selectedAddress);
-  }, []);
   const changeToAccountAddressData = useCallback((address) => {
     dispatch(updateRecipientUserInput(address));
     dispatch(updateRecipient({ address, nickname: '' }));
   }, []);
+  const changeToAccountAddress = useCallback(
+    (address) => {
+      setToAccountAddress(address);
+      changeToAccountAddressData(address || selectedAddress);
+    },
+    [changeToAccountAddressData],
+  );
 
   const changeChain = useCallback(
     async (type, changedChainId, isRpc, chainInfo, changeFromChain = true) => {
@@ -189,7 +192,8 @@ export default function SendTransactionScreen() {
 
   useEffect(() => {
     dispatch(initializeSendState());
-  }, [fromAccountBalance]);
+    changeToAccountAddressData(checked ? toAddress : '');
+  }, [chainId, fromAccountBalance]);
 
   const onAmountChange = useCallback((val) => {
     // dispatch(
@@ -258,8 +262,8 @@ export default function SendTransactionScreen() {
       <div className="send-check-wrap">
         <div
           onClick={() => {
-            setChecked((pre) => !pre);
             changeToAccountAddressData(checked ? '' : toAddress);
+            setChecked((pre) => !pre);
           }}
         >
           <img
