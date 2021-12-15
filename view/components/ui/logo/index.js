@@ -1,15 +1,27 @@
-import React, { useMemo } from 'react';
 import classnames from 'classnames';
+import React, { useMemo } from 'react';
 
-export default function Logo({ width, height, plain, className }) {
+export default function Logo({ width, height, plain, className, isCenter }) {
   const style = useMemo(() => {
-    return {
-      width: `${plain ? (width ?? 38) : (width ?? 100)}px`,
+    const obj = {
+      width: `${plain ? width ?? 38 : width ?? 100}px`,
       height: `${plain ? (height ?? 46) : (height ?? 86)}px`
+      margin: isCenter ? 'auto' : '0',
     };
-  }, [width, height, plain]);
+    if (isCenter) {
+      obj.margin = 'auto';
+    }
+    return obj;
+  }, [width, height, plain, isCenter]);
 
   return (
-    <div className={classnames(['logo-component', plain ? 'plain-logo' : 'logo-text', className])} style={style}></div>
+    <div
+      className={classnames([
+        'logo-component',
+        plain ? 'plain-logo' : 'logo-text',
+        className,
+      ])}
+      style={style}
+    ></div>
   );
 }

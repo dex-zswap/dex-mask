@@ -1,5 +1,4 @@
 import { getEnvironmentType } from '@app/scripts/lib/util';
-import AccountMenu from '@c/app/account-menu';
 import Alerts from '@c/app/alerts';
 import NetworkDropdown from '@c/app/dropdowns/network-dropdown';
 import LoadingNetwork from '@c/app/loading-network-screen';
@@ -337,12 +336,12 @@ export default class Routes extends Component {
           provider={provider}
           frequentRpcListDetail={frequentRpcListDetail}
         />
-        <AccountMenu />
-        <div>
+        {/* <AccountMenu /> */}
+        <>
           {isLoading && <Loading loadingMessage={loadMessage} />}
           {!isLoading && isNetworkLoading && <LoadingNetwork />}
           {this.renderRoutes()}
-        </div>
+        </>
         {isUnlocked ? <Alerts history={this.props.history} /> : null}
       </div>
     );
