@@ -192,7 +192,9 @@ export default function SendTransactionScreen() {
 
   useEffect(() => {
     dispatch(initializeSendState());
-    changeToAccountAddressData(checked ? toAddress : '');
+    if (checked) {
+      changeToAccountAddressData(toAddress);
+    }
   }, [chainId, fromAccountBalance]);
 
   const onAmountChange = useCallback((val) => {
