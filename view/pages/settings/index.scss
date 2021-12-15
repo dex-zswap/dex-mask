@@ -203,7 +203,6 @@
     display: block;
 
     &__tab {
-  
       height: 85px;
       background: #090b13;
       border-radius: 4px;
@@ -287,6 +286,55 @@
       flex: 1 1 auto;
       display: flex;
       flex-flow: column;
+    }
+  }
+}
+
+.setting-content-wrap {
+  > div {
+    @include flex(space-between, flex-start);
+    width: 100%;
+    padding: 20px 22px 20px 25px;
+    color: #fff;
+    background: $primary-background;
+    border-radius: 12px;
+    transition: 0.3s all ease-in-out;
+    margin-bottom: 10px;
+    cursor: pointer;
+    &:hover {
+      background: $primary-gradient-hover;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+    > div {
+      &:first-child {
+        @include flex(flex-start, flex-start);
+        width: 22px;
+      }
+      &:nth-child(2) {
+        flex: 1;
+        margin: 0 15px;
+        > div {
+          width: 100%;
+          &:first-child {
+            @include text-ellipsis;
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+          }
+          &:last-child {
+            @include text-ellipsis-2;
+            font-size: 12px;
+            line-height: 16px;
+            color: #c6c6c6;
+          }
+        }
+      }
+    }
+    .setting-arrow-right {
+      transform: rotate(-90deg);
     }
   }
 }

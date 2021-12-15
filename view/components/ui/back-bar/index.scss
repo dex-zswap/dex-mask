@@ -1,0 +1,25 @@
+.back-bar-wrap {
+  @include flex(flex-start);
+  margin: 25px auto;
+  padding: 0 8px;
+  .back-bar-icon-wrap {
+    @include w-h(24px, 24px);
+    @include flex;
+    border-radius: 50%;
+    background: $primary-background;
+    cursor: pointer;
+    img {
+      transform: rotate(90deg);
+    }
+  }
+  .back-bar-title {
+    @include w-h(calc(100% - 24px - 40px), 24px);
+    @include text-ellipsis;
+    line-height: 24px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 44px 0 20px;
+    text-align: center;
+  }
+}

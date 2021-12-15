@@ -1,0 +1,34 @@
+@mixin w-h($width: 100%, $height: 100%) {
+  width: $width;
+  height: $height;
+}
+
+@mixin flex(
+  $justify-content: center,
+  $align-items: center,
+  $direction: row,
+  $wrap: nowrap
+) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-direction: $direction;
+  flex-wrap: $wrap;
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+@mixin text-ellipsis-2 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  /*! autoprefixer: off */
+  -webkit-box-orient: vertical;
+}
