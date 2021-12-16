@@ -1,0 +1,50 @@
+.account-options-menu {
+  &__connected-sites {
+    width: 16px;
+    height: 15px;
+    background: url('/images/dex/account-drop/connected-site.png') no-repeat center;
+    background-size: 100%;
+  }
+
+  &__explorer-origin {
+    @include H7;
+
+    color: $Grey-500;
+  }
+
+  .fas {
+    display: inline-block;
+
+    &:before {
+      display: none;
+    }
+
+    &.fa-expand-alt {
+      width: 16px;
+      height: 15px;
+      background: url('/images/dex/account-drop/expand-view.png') no-repeat center;
+      background-size: 100%;
+    }
+
+    &.fa-qrcode {
+      width: 16px;
+      height: 15px;
+      background: url('/images/dex/account-drop/account-detail.png') no-repeat center;
+      background-size: 100%;
+    }
+
+    &.fa-external-link-alt {
+      width: 16px;
+      height: 15px;
+      background: url('/images/dex/account-drop/view-in-explore.png') no-repeat center;
+      background-size: 110%;
+    }
+
+    &.fa-trash-alt {
+      width: 16px;
+      height: 15px;
+      background: url('/images/dex/account-drop/connected-site.png') no-repeat center;
+      background-size: 100%;
+    }
+  }
+}
