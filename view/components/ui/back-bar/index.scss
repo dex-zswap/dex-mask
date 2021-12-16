@@ -13,7 +13,8 @@
     }
   }
   .back-bar-title {
-    @include w-h(calc(100% - 24px - 40px), 24px);
+    height: 24px;
+    flex: 1;
     @include text-ellipsis;
     line-height: 24px;
     color: #fff;
