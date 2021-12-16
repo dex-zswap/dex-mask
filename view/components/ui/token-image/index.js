@@ -61,22 +61,26 @@ export default function TokenImage({
     setSuccess(false);
     setSrc('');
 
-    const img = new Image();
-    img.src = getAssetIcon({
-      meta_chain_id: networkId,
-      token_address: address
-    });
-
-    img.addEventListener('load', () => {
-      setLoading(false);
-      setSuccess(true);
-      setSrc(img.src);
-    });
-
-    img.addEventListener('error', () => {
-      setLoading(false);
-      setSuccess(false);
-    });
+    getAssetIcon({
+      chainId: networkId,
+      contractId: address.toLowerCase()
+    }).then((res) => res.json())
+      .then((res) => {
+        if (res.rtnCode === 1) {
+          setLoading(false);
+          setSuccess(true);
+          setSrc(['data:image/png;base64', res.data.img].join(','));          
+        } else {
+          setLoading(false);
+          setSuccess(false);
+        }
+      }, () => {
+        setLoading(false);
+        setSuccess(false);
+      }).catch(() => {
+        setLoading(false);
+        setSuccess(false);
+      });
   }, [networkId, address]);
 
   return (

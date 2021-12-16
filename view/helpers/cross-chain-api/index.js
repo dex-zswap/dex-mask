@@ -1,4 +1,4 @@
-const API_BASE = 'http://47.57.239.181:18526';
+const API_BASE = 'http://112.47.58.57:8899';
 
 export const getPrice = async (body) => await fetch(`${API_BASE}/getPrice`, {
   method: 'POST',
@@ -15,7 +15,10 @@ export const getTokenGroup = async (body) => await fetch(`${API_BASE}/getTokenGr
   body: JSON.stringify(body)
 });
 
-export const getAssetIcon = ({ meta_chain_id, token_address }) => `${API_BASE}/getAssetIcon/${meta_chain_id}/${token_address}`;
+export const getAssetIcon = async (body) => await fetch(`${API_BASE}/lightwallet/dex/logo`, {
+  method: 'POST',
+  body: JSON.stringify(body)
+});
 
 export const getIndexAssets = async (body) => await fetch(`${API_BASE}/getIndexAssets`, {
   method: 'POST',
