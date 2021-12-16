@@ -1,6 +1,5 @@
-import React, { useState, useCallback, useMemo } from 'react';
-
 import classnames from 'classnames';
+import React, { useCallback, useMemo, useState } from 'react';
 
 export default function Selector({ options, onSelect, selectedValue, labelRender, itemRender, className, small }) {
   const [ show, setShow ] = useState(false);
@@ -11,27 +10,35 @@ export default function Selector({ options, onSelect, selectedValue, labelRender
   }, [onSelect]);
 
   const selectedItem = useMemo(() => options.find(({ value }) => value === selectedValue), [options, selectedValue]);
-  const selectedLabel = useMemo(() => selectedItem.label || '', [selectedItem]);
+  const selectedLabel = useMemo(
+    () => options.find(({ value }) => value === selectedValue)?.label || '',
+    [options, selectedValue],
+  );
 
   return (
     <div className={classnames(['selector-component', small && 'small', show ? 'menu-opened' : 'menu-hidden', className])}>
       <div className="current-label" onClick={toggleShow}>
-        {labelRender && selectedItem ? labelRender(selectedItem) : selectedLabel}
+      {labelRender && selectedItem ? labelRender(selectedItem) : selectedLabel}
       </div>
-      {
-        show && 
-        (
+      {show && (
+        <>
+          <div className="options-mask" onClick={() => setShow(false)}></div>
           <div className="selector-menu">
-            {
-              options.map(({ label, value }, index) => (
-                <div className={classnames(['select-option'])} onClick={() => onChange(value, options[index])} key={value}>
-                  {itemRender ? itemRender(options[index]) : label }
-                </div>
-              ))
-            }
+            {options.map(({ label, value }) => (
+              <div
+                className={classnames([
+                  'select-option',
+                  selectedValue === value ? 'select-option-active-color' : '',
+                ])}
+                onClick={() => onChange(value)}
+                key={value}
+              >
+                {itemRender ? itemRender(options[index]) : label }
+              </div>
+            ))}
           </div>
-        )
-      }
+        </>
+      )}
     </div>
   );
 }
