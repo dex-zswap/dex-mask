@@ -1,50 +1,24 @@
 .account-options-menu {
-  &__connected-sites {
-    width: 16px;
-    height: 15px;
-    background: url('/images/dex/account-drop/connected-site.png') no-repeat center;
+  .menu-item__icon {
+    width: 15px;
+    margin: 0 8px 0 0;
+  }
+
+  .account-options-menu__account-details {
+    height: 13px;
+    background: url('/images/account-option/account-detail.png') no-repeat center;
     background-size: 100%;
   }
 
-  &__explorer-origin {
-    @include H7;
-
-    color: $Grey-500;
+  .account-options-menu__explorer-origin {
+    height: 15px;
+    background: url('/images/account-option/view-on-explore.png') no-repeat center;
+    background-size: 100%;
   }
 
-  .fas {
-    display: inline-block;
-
-    &:before {
-      display: none;
-    }
-
-    &.fa-expand-alt {
-      width: 16px;
-      height: 15px;
-      background: url('/images/dex/account-drop/expand-view.png') no-repeat center;
-      background-size: 100%;
-    }
-
-    &.fa-qrcode {
-      width: 16px;
-      height: 15px;
-      background: url('/images/dex/account-drop/account-detail.png') no-repeat center;
-      background-size: 100%;
-    }
-
-    &.fa-external-link-alt {
-      width: 16px;
-      height: 15px;
-      background: url('/images/dex/account-drop/view-in-explore.png') no-repeat center;
-      background-size: 110%;
-    }
-
-    &.fa-trash-alt {
-      width: 16px;
-      height: 15px;
-      background: url('/images/dex/account-drop/connected-site.png') no-repeat center;
-      background-size: 100%;
-    }
+  .account-options-menu__connected-sites {
+    height: 12px;
+    background: url('/images/account-option/connected-sites.png') no-repeat center;
+    background-size: auto 100%;
   }
 }

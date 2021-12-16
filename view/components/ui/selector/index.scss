@@ -14,6 +14,7 @@
     font-size: $size-14;
     background: $primary-background;
     color: $white;
+    border-radius: $size-12;
   }
 
   &:after {
@@ -35,6 +36,7 @@
     position: absolute;
     left: 0;
     right: 0;
+    z-index: 1050;
     top: $size-48;
     background: $popup-background;
     border-radius: $size-12;

@@ -246,3 +246,56 @@ export const CHAIN_ID_NATIVE_TOKEN_IMAGE = {
   [BSC_CHAIN_ID]: BSC_DISPLAY_NAME,
   [DEX_CHAIN_ID]: DEX_TOKEN_IMAGE_URL
 };
+
+
+export const DEFAULT_NETWORK_LIST = [
+  {
+    chainId: DEX_CHAIN_ID,
+    symbol: DEX_SYMBOL,
+    provider: DEX_MAINNET,
+    isBulltIn: true,
+    label: 'DEX Smart Chain Mainnet'
+  },
+  {
+    chainId: MAINNET_CHAIN_ID,
+    symbol: ETH_SYMBOL,
+    provider: MAINNET,
+    isBulltIn: true,
+    label: 'Ethereum Mainnet'
+  },
+  {
+    chainId: BSC_CHAIN_ID,
+    symbol: BNB_SYMBOL,
+    provider: BSC_MAINNET,
+    isBulltIn: true,
+    label: 'Binance Smart Chain Mainnet'
+  },
+  {
+    chainId: RINKEBY_CHAIN_ID,
+    symbol: TEST_ETH_SYMBOL,
+    provider: RINKEBY,
+    isBulltIn: true,
+    label: 'Rinkeby Smart Chain Testnet'
+  },
+  {
+    chainId: ROPSTEN_CHAIN_ID,
+    symbol: TEST_ETH_SYMBOL,
+    provider: ROPSTEN,
+    isBulltIn: true,
+    label: 'Ropsten Smart Chain Testnet'
+  },
+  {
+    chainId: KOVAN_CHAIN_ID,
+    symbol: TEST_ETH_SYMBOL,
+    provider: KOVAN,
+    isBulltIn: true,
+    label: 'Kovan Smart Chain Testnet'
+  },
+  {
+    chainId: GOERLI_CHAIN_ID,
+    symbol: TEST_ETH_SYMBOL,
+    provider: GOERLI,
+    isBulltIn: true,
+    label: 'Goerli Smart Chain Testnet'
+  }
+];

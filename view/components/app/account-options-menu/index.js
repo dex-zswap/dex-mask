@@ -71,7 +71,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
             global.platform.openExtensionInBrowser();
             onClose();
           }}
-          iconClassName="fas fa-expand-alt"
+          iconClassName="account-options-menu__expand-view"
         >
           {t('expandView')}
         </MenuItem>
@@ -82,7 +82,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
           dispatch(showModal({ name: 'ACCOUNT_DETAILS' }));
           onClose();
         }}
-        iconClassName="fas fa-qrcode"
+        iconClassName="account-options-menu__account-details"
       >
         {t('accountDetails')}
       </MenuItem>
@@ -100,7 +100,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
             </span>
           ) : null
         }
-        iconClassName="fas fa-external-link-alt"
+        iconClassName="account-options-menu__explorer-origin"
       >
         {rpcPrefs.blockExplorerUrl
           ? t('viewinExplorer', [providerType])

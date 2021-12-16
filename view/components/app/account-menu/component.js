@@ -273,6 +273,7 @@ export default class AccountMenu extends Component {
           />
           <AccountMenuItem
             onClick={() => {
+              console.log(1111)
               toggleAccountMenu();
               history.push(SETTINGS_ROUTE);
             }}
