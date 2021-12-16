@@ -32,3 +32,20 @@
   /*! autoprefixer: off */
   -webkit-box-orient: vertical;
 }
+
+@mixin modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  @include w-h(100vw, 100vh);
+  z-index: 1050;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+@mixin modal {
+  border-radius: $size-12;
+  background: $popup-background-opacity;
+  backdrop-filter: blur(3px);
+  color: $white;
+  z-index: 1050;
+}

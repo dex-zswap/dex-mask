@@ -6,7 +6,7 @@ import copyToClipboard from 'copy-to-clipboard';
 
 import { I18nContext } from '@view/contexts/i18n';
 
-import AccountOptionsMenu from '@c/app/menu-bar/account-options-menu';
+import AccountOptionsMenu from '@c/app/account-options-menu';
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
 import CopyIcon from '@c/ui/icon/copy-icon.component';
 import TokenImage from '@c/ui/token-image';
@@ -52,6 +52,12 @@ export default function SelectedAccount() {
     [checksummedAddress, copyToClipboard, copyTimeout.current, state.copied]
   );
 
+  const toggleAccountDrop = useCallback(() => {
+    setState((state) => Object.assign({}, state, {
+      accountOptionsMenuOpen: !state.accountOptionsMenuOpen
+    }))
+  }, []);
+
   useEffect(() => {
     if (copyTimeout.current) {
       window.clearTimeout(copyTimeout.current);
@@ -59,36 +65,44 @@ export default function SelectedAccount() {
   }, [copyTimeout.current]);
 
   return (
-    <div className="selected-account base-width">
-      <div className="account-address flex space-between items-center">
-        <div className="account flex items-center">
-          {selectedIdentity.name}
-          <div className="drop-trigger" ref={el => dropTrigger.current = el}></div>
+    <>
+      {state.accountOptionsMenuOpen && (
+        <AccountOptionsMenu
+          anchorElement={dropTrigger.current}
+          onClose={toggleAccountDrop}
+        />
+      )}
+      <div className="selected-account base-width">
+        <div className="account-address flex space-between items-center">
+          <div className="account flex items-center">
+            {selectedIdentity.name}
+            <div className="drop-trigger" onClick={toggleAccountDrop} ref={el => dropTrigger.current = el}></div>
+          </div>
+          <Tooltip
+            wrapperClassName="selected-account__tooltip-wrapper"
+            position="top"
+            title={state.copied ? t('copiedExclamation') : t('copyToClipboard')}
+          >
+          <div className="address flex items-center" onClick={copyAddress}>
+            {shortenAddress(checksummedAddress)}
+            <div className="copy-icon"></div>
+          </div>
+        </Tooltip>
         </div>
-        <Tooltip
-          wrapperClassName="selected-account__tooltip-wrapper"
-          position="top"
-          title={state.copied ? t('copiedExclamation') : t('copyToClipboard')}
-        >
-        <div className="address flex items-center" onClick={copyAddress}>
-          {shortenAddress(checksummedAddress)}
-          <div className="copy-icon"></div>
-        </div>
-      </Tooltip>
-      </div>
-      <div className="native-currency flex space-between items-center">
-        <div className="native-currency-balance">
-          <UserPreferencedCurrencyDisplay
-            value={balance}
-            suffix={nativeCurrency}
+        <div className="native-currency flex space-between items-center">
+          <div className="native-currency-balance">
+            <UserPreferencedCurrencyDisplay
+              value={balance}
+              suffix={nativeCurrency}
+            />
+          </div>
+          <TokenImage
+            symbol={nativeCurrency}
+            address={ethers.constants.AddressZero}
+            size={48}
           />
         </div>
-        <TokenImage
-          symbol={nativeCurrency}
-          address={ethers.constants.AddressZero}
-          size={48}
-        />
       </div>
-    </div>
+    </>
   );
 }
