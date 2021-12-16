@@ -44,3 +44,15 @@
     padding-left: 4px;
   }
 }
+
+.setting-tab-content {
+  color: #fff;
+  .setting-tab-label {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  > div:nth-child(even) {
+    margin-bottom: 25px;
+  }
+}

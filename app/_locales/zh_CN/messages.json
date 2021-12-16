@@ -793,7 +793,7 @@
     "description": "$1 is the symbol for a token (e.g. 'DAI')"
   },
   "hideZeroBalanceTokens": {
-    "message": "Hide Tokens Without Balance"
+    "message": "隐藏没有余额的代币"
   },
   "history": {
     "message": "历史记录"
