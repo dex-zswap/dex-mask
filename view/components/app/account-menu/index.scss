@@ -1,15 +1,12 @@
 .account-menu {
   position: fixed;
-  z-index: 100;
   top: 70px;
   right: 20px;
   width: 220px;
-  border-radius: $size-12;
-  background: $popup-background-opacity;
-  backdrop-filter: blur(3px);
   color: $white;
   overflow: hidden;
   padding: 20px 18px;
+  @include modal;
 
   &__close-area {
     @include modal-background;

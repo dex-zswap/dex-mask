@@ -1,42 +1,47 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
+
 import LongLetter from '@c/ui/long-letter';
 import { Menu, MenuItem } from '@c/ui/menu';
+import Selector from '@c/ui/selector';
 import {
   BSC_MAINNET,
   DEX_MAINNET,
   MAINNET,
   NETWORK_TYPE_RPC,
+  DEFAULT_NETWORK_LIST
 } from '@shared/constants/network';
 import { isPrefixedFormattedHexString } from '@shared/modules/network.utils';
 import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes';
 import * as actions from '@view/store/actions';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
+
+const SelectorOption = (props) => {
+  return (
+    <div className={classnames('chain-option-item flex items-center', props.value.toLowerCase())}>
+      <i className="option-item-chain"></i>
+      {props.label}
+    </div>
+  );
+}
 
 class ChainSwitcher extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
 
-  static propTypes = {
-    provider: PropTypes.object.isRequired,
-    frequentRpcListDetail: PropTypes.array,
-    showNetworkDropdown: PropTypes.func.isRequired,
-    setProviderType: PropTypes.func.isRequired,
-    setRpcTarget: PropTypes.func.isRequired,
-    hideNetworkDropdown: PropTypes.func.isRequired,
-    setNetworksTabAddMode: PropTypes.func.isRequired,
-    setSelectedSettingsRpcUrl: PropTypes.func.isRequired,
-    frequentRpcListDetail: PropTypes.array.isRequired,
-    networkDropdownOpen: PropTypes.bool,
-    networkType: PropTypes.string,
-    history: PropTypes.object.isRequired,
-    displayInvalidCustomNetworkAlert: PropTypes.func.isRequired,
-    showConfirmDeleteNetworkModal: PropTypes.func.isRequired,
-  };
+  defaultChains = DEFAULT_NETWORK_LIST.map(({ chainId, provider, label }) => {
+    return {
+      key: chainId,
+      value: provider,
+      render: (item) => <SelectorOption {...item} />,
+      label
+    };
+  });
 
   triggerEl = null;
 
@@ -100,8 +105,8 @@ class ChainSwitcher extends Component {
     const providerName = provider.type;
 
     return (
-      <div className="chain-switcher__default-chains">
-        <div
+      <div className="chain-switcher__default-chains base-width">
+        {/* <div
           className={classnames([
             'chain-switcher__default-chain-item',
             providerName === DEX_MAINNET && 'chain-switcher__current-chain',
@@ -127,7 +132,7 @@ class ChainSwitcher extends Component {
           onClick={() => this.switchNetWork(BSC_MAINNET)}
         >
           BSC
-        </div>
+        </div> */}
       </div>
     );
   }
@@ -261,12 +266,13 @@ class ChainSwitcher extends Component {
   render() {
     const { showNetworkDropdown, provider, frequentRpcListDetail } = this.props;
     const { showMenu } = this.state;
+    const networkOptions = this.defaultChains;
 
     return (
       <>
         <div className="chain-switcher">
-          <div className="chain-switcher__wrapper">
-            {this.renderDefaultChains()}
+          {/* <div className="chain-switcher__wrapper">
+            
             <div
               className="chain-switcher__modal-trigger"
               ref={(el) => (this.triggerEl = el)}
@@ -274,7 +280,8 @@ class ChainSwitcher extends Component {
             >
               ...
             </div>
-          </div>
+          </div> */}
+          <Selector className="chain-switcher-selector" selectedValue={provider.type} options={networkOptions} labelRender={SelectorOption} itemRender={SelectorOption} small />
         </div>
         {showMenu && this.renderNetWorkMenu()}
       </>
