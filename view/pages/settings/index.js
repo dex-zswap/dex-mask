@@ -43,14 +43,21 @@ const ROUTES_TO_I18N_KEYS = {
 let backRoute = SETTINGS_ROUTE;
 
 const SettingsPage = () => {
+  const t = useContext(I18nContext);
   const history = useHistory();
   const { pathname } = useLocation();
-  const t = useContext(I18nContext);
 
-  const isNetworksFormPage = Boolean(pathname.match(NETWORKS_FORM_ROUTE));
-
-  const isPopup = getEnvironmentType() === ENVIRONMENT_TYPE_POPUP;
-  const pathnameI18nKey = ROUTES_TO_I18N_KEYS[pathname];
+  const isNetworksFormPage = useMemo(
+    () => Boolean(pathname.match(NETWORKS_FORM_ROUTE)),
+    [pathname],
+  );
+  const isPopup = useMemo(
+    () => getEnvironmentType() === ENVIRONMENT_TYPE_POPUP,
+    [getEnvironmentType],
+  );
+  const pathnameI18nKey = useMemo(() => ROUTES_TO_I18N_KEYS[pathname], [
+    pathname,
+  ]);
 
   if (isNetworksFormPage) {
     backRoute = NETWORKS_ROUTE;
@@ -107,7 +114,7 @@ const SettingsPage = () => {
         iconWidth: 22,
       },
     ],
-    [],
+    [t],
   );
 
   const getTitleText = useMemo(() => {
@@ -134,7 +141,7 @@ const SettingsPage = () => {
     }
 
     return titleText;
-  }, [pathname, isPopup, pathnameI18nKey]);
+  }, [t, pathname, isPopup, pathnameI18nKey]);
 
   return (
     <div className="dex-page-container">
