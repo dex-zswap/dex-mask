@@ -31,13 +31,23 @@
     transform: translateY(-50%);
   }
 
+  .options-mask {
+    @include w-h(100%, 100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 88;
+  }
   .selector-menu {
     position: absolute;
     left: 0;
     right: 0;
-    top: $size-48;
+    top: calc(#{$size-48} + 10px);
     background: $popup-background;
     border-radius: $size-12;
+    max-height: 300px;
+    overflow: scroll;
+    z-index: 999;
 
     .select-option {
       padding: 0 0 0 18px;
@@ -46,6 +56,9 @@
       align-items: center;
       font-size: 14px;
       color: #fff;
+    }
+    .select-option-active-color {
+      color: $pink;
     }
   }
 
@@ -65,5 +78,4 @@
     }
     box-shadow: 0 0 10px $pink;
   }
-  
 }
