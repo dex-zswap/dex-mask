@@ -1,3 +1,7 @@
+import React, { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 import { Menu, MenuItem } from '@c/ui/menu';
 import {
   createCustomAccountLink,
@@ -17,10 +21,6 @@ import {
   getSelectedIdentity,
 } from '@view/selectors';
 import { showModal } from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 export default function AccountOptionsMenu({ anchorElement, onClose }) {
   const t = useI18nContext();
@@ -138,12 +138,3 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
     </Menu>
   );
 }
-
-AccountOptionsMenu.propTypes = {
-  anchorElement: PropTypes.instanceOf(window.Element),
-  onClose: PropTypes.func.isRequired,
-};
-
-AccountOptionsMenu.defaultProps = {
-  anchorElement: undefined,
-};

@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback, useContext } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -40,7 +40,7 @@ import {
   setWeb3ShimUsageAlertDismissed,
   turnThreeBoxSyncingOn,
 } from '@view/store/actions';
-import { I18nContext } from '@view/contexts/i18n';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 
 import { getDexMaskState } from '@reducer/dexmask/dexmask';
 
@@ -71,7 +71,7 @@ import {
 import { formatDate } from '@view/helpers/utils';
 
 export default function HomePage() {
-  const t = useContext(I18nContext);
+  const t = useI18nContext();
   const history = useHistory();
 
   const { forgottenPassword, threeBoxLastUpdated } = useSelector(getAppState);
