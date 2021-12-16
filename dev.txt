@@ -6,33 +6,36 @@ reminder: approve weasel drift hospital adapt quit beach team anger glide wrap t
 bf469cea02175a7e853602134adbe7d48b3634f0a218798665626fd2101bd97b
 acf9ce44a2e0bbb779efdcffeefc44d9603c9da23a46eafd72958fb514772459
 
-charemoncorleen07@gmail.com     w89fIms73      KonstanceMargy@MAIL.RU
 candwellzgopcct@gmail.com       nLgUEE8302     c6ad2eb4aa5@56.com
+https://chrome.google.com/webstore/devconsole
 
-https://chrome.google.com/webstore/devconsole/register
+----- Single purpose -----
+Link the blockchain project website through AnyBit web wallet to realize the interaction between blockchain wallet and smart contract.
+----- Single purpose -----
 
-
-Link the blockchain project website through DEX web wallet to realize the interaction between blockchain wallet and smart contract.
-
+----- Permission justification -----
 Store the user's blockchain wallet locally.
 
 Due to the basic functional requirements of blockchain wallet, it is requested to use this function.
+----- Permission justification -----
 
 
-DEXMask Wallet is one non-custodial, multi-chain wallet and DeFi gateway, designed to seamlessly connect users to the crypto world in a safe and secure manner.  
+----- Product details -----
+AnyBit Wallet is one non-custodial, multi-chain wallet and DeFi gateway, designed to seamlessly connect users to the crypto world in a safe and secure manner.  
 
-DEXMask Wallet lets the user create and manage their own identities, so when a Dapp wants to perform a transaction and write to the blockchain, the user gets a secure interface to review the transaction, before approving or rejecting it. 
+AnyBit Wallet lets the user create and manage their own identities, so when a Dapp wants to perform a transaction and write to the blockchain, the user gets a secure interface to review the transaction, before approving or rejecting it. 
 
-DEXMask Wallet also enables faster, yet safer access to the most popular DApps and multi-chain DApps by providing a transaction review before approving or rejecting. Besides, users can adjust their own transaction fee using the convenient & optimized gas bar according to their needs. 
+AnyBit Wallet also enables faster, yet safer access to the most popular DApps and multi-chain DApps by providing a transaction review before approving or rejecting. Besides, users can adjust their own transaction fee using the convenient & optimized gas bar according to their needs. 
 
-Because it adds functionality to the normal browser context, DEXMask Wallet requires the permission to read and write to any webpage. 
+Because it adds functionality to the normal browser context, AnyBit Wallet requires the permission to read and write to any webpage. 
 
-Use DEXMask Wallet to: 
+Use AnyBit Wallet to: 
 
 - Manage your digital identity and experience 100% true ownership of your assets. 
 - Send transactions without paying expensive gas fees 
 
-DEXMask Wallet will be continuously upgraded to introduce a new generation of users to the glorious benefits of Blockchain technology.
+AnyBit Wallet will be continuously upgraded to introduce a new generation of users to the glorious benefits of Blockchain technology.
+----- Product details -----
 
 
 (RnkeBy) ZBT2: 0x8c7277b4b28e73dff7d09533a13f794b42d319be
