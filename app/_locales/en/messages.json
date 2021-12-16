@@ -1952,7 +1952,7 @@
     "message": "If you don't see your existing Ledger accounts below, try switching paths to \"Legacy (MEW / MyCrypto)\""
   },
   "selectType": {
-    "message": "Select Type"
+    "message": "Select Type:"
   },
   "selectingAllWillAllow": {
     "message": "Selecting all will allow this site to view all of your current accounts. Make sure you trust this site."

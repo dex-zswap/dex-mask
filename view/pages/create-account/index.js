@@ -6,7 +6,7 @@ import {
   IMPORT_ACCOUNT_ROUTE,
   CONNECT_HARDWARE_ROUTE,
 } from '@view/helpers/constants/routes';
-import NewAccountCreateForm from './new-account.container';
+import NewAccountCreateForm from './container';
 import NewAccountImportForm from './import-account';
 import ConnectHardwareForm from './connect-hardware';
 

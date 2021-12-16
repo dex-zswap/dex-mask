@@ -2,20 +2,8 @@
 @import 'import-account/index';
 
 .new-account {
-  width: 260px;
-  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.08);
-  z-index: 25;
-  height: unset;
-  overflow: auto;
-  scrollbar-width: none;
-  margin: 0 auto;
-
   &::-webkit-scrollbar {
     display: none;
-  }
-
-  @media screen and (min-width: 576px) {
-    position: absolute;
   }
 
   &__header {
@@ -25,8 +13,6 @@
   }
 
   &__title {
-    @include H2;
-
     color: $tundora;
     font-weight: 500;
     margin-top: 22px;
@@ -39,8 +25,6 @@
     margin-top: 10px;
 
     &__tab {
-      @include H4;
-
       height: 54px;
       padding: 15px 10px;
       color: $dusty-gray;
@@ -60,58 +44,5 @@
       pointer-events: none;
     }
   }
-}
 
-.new-account-create-form {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  padding: 30px 10px 0;
-
-  &__input-label {
-    @include Paragraph;
-
-    color: $scorpion;
-    align-self: flex-start;
-  }
-
-  &__input-container {
-    width: 100%;
-  }
-
-  &__input {
-    @include Paragraph;
-
-    height: 48px;
-    width: 100%;
-    border: 1px solid rgba(36, 36, 36, 0.55);
-    border-radius: 4px;
-    background-color: rgba(36, 36, 36, 0.55);
-    color: #fff;
-    margin-top: 15px;
-    padding: 0 20px;
-    transition: all 0.1s;
-
-    &:focus {
-      border: 1px solid #5c22c5;
-      box-shadow: 0 0 15px #4118a1;
-    }
-  }
-
-  &__buttons {
-    margin-top: 39px;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-
-    .button {
-      font-size: 1rem;
-
-      .button__right__arrow {
-        margin: 0 0 0 6px;
-        width: 16px;
-        height: 11px;
-      }
-    }
-  }
 }

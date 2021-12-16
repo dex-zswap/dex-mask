@@ -8,7 +8,7 @@ const TextField = ({
   label,
   bordered,
   ...inputProps
-}) => {
+}, ref) => {
   const inputClassNames = useMemo(() => classnames('dex-text-field-input', bordered && 'bordered', `${className}-input`), [className, bordered]);
 
   return (
@@ -17,7 +17,7 @@ const TextField = ({
         React.isValidElement(label) ?
         label : <label className={classnames('dex-text-field-label', `${className}-label`)}>{label}</label>
       }
-      <input {...inputProps} className={inputClassNames} />
+      <input {...inputProps} className={inputClassNames} ref={ref} />
       {
         error && <div className="input-error">{error}</div>
       }
@@ -25,4 +25,4 @@ const TextField = ({
   );
 };
 
-export default TextField;
+export default React.forwardRef(TextField);

@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
-const BackBar = ({ title, url }) => {
+const BackBar = ({ title, url, method = 'push' }) => {
   const history = useHistory();
 
   const back = useCallback(() => {
     if (url) {
-      history.push(url);
+      history[method](url);
     } else {
       history.go(-1);
     }

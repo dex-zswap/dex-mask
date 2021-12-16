@@ -1,31 +1,26 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Button from '@c/ui/button';
+import TextField from '@c/ui/text-field';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { getMetaMaskAccounts } from '@view/selectors';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 
 class PrivateKeyImportView extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
 
-  static propTypes = {
-    importNewAccount: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-    displayWarning: PropTypes.func.isRequired,
-    setSelectedAddress: PropTypes.func.isRequired,
-    firstAddress: PropTypes.string.isRequired,
-    error: PropTypes.node,
-    mostRecentOverviewPage: PropTypes.string.isRequired,
-  };
-
   inputRef = React.createRef();
 
   state = { isEmpty: true };
+
+  shouldDisableImport() {
+    return this.state.isEmpty;
+  }
 
   createNewKeychain() {
     const privateKey = this.inputRef.current.value;
@@ -72,50 +67,24 @@ class PrivateKeyImportView extends Component {
 
     return (
       <div className="new-account-import-form__private-key">
-        <span className="new-account-create-form__instruction">
-          {this.context.t('pastePrivateKey')}
-        </span>
         <div className="new-account-import-form__private-key-password-container">
-          <input
+          <TextField
             className="new-account-import-form__input-password"
+            label={this.context.t('pastePrivateKey')}
             type="password"
             id="private-key-box"
             onKeyPress={(e) => this.createKeyringOnEnter(e)}
             onChange={() => this.checkInputEmpty()}
             ref={this.inputRef}
             autoFocus
+            bordered
           />
-        </div>
-        <div className="new-account-import-form__buttons">
-          {/* <Button
-            className="new-account-create-form__button"
-            onClick={() => {
-              const { history, mostRecentOverviewPage } = this.props;
-              displayWarning(null);
-              history.push(mostRecentOverviewPage);
-            }}
-          >
-            {this.context.t('cancel')}
-          </Button> */}
-          <Button
-            type="primary"
-            className="new-account-create-form__button"
-            onClick={() => this.createNewKeychain()}
-            disabled={this.state.isEmpty}
-          >
-            {this.context.t('import')}
-          </Button>
         </div>
         {error ? <span className="error">{error}</span> : null}
       </div>
     );
   }
 }
-
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-)(PrivateKeyImportView);
 
 function mapStateToProps(state) {
   return {
@@ -136,3 +105,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(actions.setSelectedAddress(address)),
   };
 }
+
+const ComposedComponent = compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(PrivateKeyImportView);
+
+export default React.forwardRef((props, ref) => <ComposedComponent {...props} forwardedRef={ref} />);

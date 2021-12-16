@@ -1417,7 +1417,7 @@
     "message": "如果下列账户中没有您当前所持有的 Ledger 账户，请将路径切换至“Legacy (MEW / MyCrypto)”"
   },
   "selectType": {
-    "message": "选择类型"
+    "message": "选择类型："
   },
   "selectingAllWillAllow": {
     "message": "选择全部将允许本网站查看您当前的所有账户。确保您信任这个网站。"

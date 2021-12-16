@@ -24,7 +24,7 @@ export default function Selector({ options, onSelect, selectedValue, labelRender
         <>
           <div className="options-mask" onClick={() => setShow(false)}></div>
           <div className="selector-menu">
-            {options.map(({ label, value }) => (
+            {options.map(({ label, value }, index) => (
               <div
                 className={classnames([
                   'select-option',

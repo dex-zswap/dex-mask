@@ -1,95 +1,14 @@
-.new-account-import-disclaimer {
-  @include H7;
-
-  display: inline-block;
-  align-items: center;
-  padding: 20px 10px 20px;
-  color: #f4f9fc;
-}
-
-.new-account-import-form {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  padding: 0 10px 30px;
-
-  &__select-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 29px;
-    width: 100%;
-  }
-
-  &__select-label {
-    @include Paragraph;
-
-    color: $scorpion;
-  }
-
-  &__select {
-    width: 160px;
-    display: flex;
-    align-items: center;
-  }
-
-  &__private-key-password-container {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    width: 100%;
-  }
-
-  &__instruction {
-    @include Paragraph;
-
-    color: $scorpion;
-    align-self: flex-start;
-  }
-
-  &__private-key {
-    display: flex;
-    flex-flow: column;
-    align-items: flex-start;
-    margin-top: 34px;
-    width: 99%;
-  }
-
-  &__input-password {
-    @include Paragraph;
-
-    height: 48px;
-    width: 100%;
-    border: 1px solid rgba(36, 36, 36, 0.55);
-    border-radius: 4px;
-    background-color: rgba(36, 36, 36, 0.55);
-    color: #fff;
-    margin-top: 15px;
-    padding: 0 20px;
-    transition: all 0.1s;
-
-    &:focus {
-      border: 1px solid #5c22c5;
-      box-shadow: 0 0 15px #4118a1;
+.new-account {
+  .new-account-import-form__select-section {
+    margin: 0 0 24px;
+    .new-account-import-form__select-label {
+      font-size: $size-12;
+      color: $white;
+      font-weight: bold;
     }
-  }
 
-  &__json {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    margin-top: 29px;
-    width: 100%;
-  }
-
-  &__buttons {
-    margin-top: 39px;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-
-    .error {
-      margin: 15px 0;
+    .selector-component {
+      width: 195px;
     }
   }
 }
