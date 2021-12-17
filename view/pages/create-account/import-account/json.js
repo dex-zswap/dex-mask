@@ -1,24 +1,37 @@
-import Button from '@c/ui/button';
-import { getMostRecentOverviewPage } from '@reducer/history/history';
-import { getMetaMaskAccounts } from '@view/selectors';
-import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import FileInput from 'react-simple-file-input';
 import { compose } from 'redux';
+import Logo from '@c/ui/logo';
+import BackBar from '@c/ui/back-bar';
+import Button from '@c/ui/button';
+import TextField from '@c/ui/text-field';
+
+import { getMostRecentOverviewPage } from '@reducer/history/history';
+import { getMetaMaskAccounts } from '@view/selectors';
+import * as actions from '@view/store/actions';
 
 const HELP_LINK =
   'https://metamask.zendesk.com/hc/en-us/articles/360015489331-Importing-an-Account';
 
 class JsonImportSubview extends Component {
+  static contextTypes = {
+    t: PropTypes.func,
+  };
+
   state = {
     fileContents: '',
     isEmpty: true,
   };
 
   inputRef = React.createRef();
+
+  shouldDisableImport() {
+    const enabled = !this.state.isEmpty && this.state.fileContents !== '';
+    return !enabled;
+  }
 
   render() {
     const { error, history, mostRecentOverviewPage } = this.props;
@@ -46,7 +59,7 @@ class JsonImportSubview extends Component {
             width: '100%',
           }}
         />
-        <input
+        <TextField
           className="new-account-import-form__input-password"
           type="password"
           placeholder={this.context.t('enterPassword')}
@@ -54,23 +67,8 @@ class JsonImportSubview extends Component {
           onKeyPress={this.createKeyringOnEnter.bind(this)}
           onChange={() => this.checkInputEmpty()}
           ref={this.inputRef}
+          bordered
         />
-        <div className="new-account-create-form__buttons">
-          {/* <Button
-            className="new-account-create-form__button"
-            onClick={() => history.push(mostRecentOverviewPage)}
-          >
-            {this.context.t('cancel')}
-          </Button> */}
-          <Button
-            type="primary"
-            className="new-account-create-form__button"
-            onClick={() => this.createNewKeychain()}
-            disabled={!enabled}
-          >
-            {this.context.t('import')}
-          </Button>
-        </div>
         {error ? <span className="error">{error}</span> : null}
       </div>
     );
@@ -131,16 +129,6 @@ class JsonImportSubview extends Component {
   }
 }
 
-JsonImportSubview.propTypes = {
-  error: PropTypes.string,
-  displayWarning: PropTypes.func,
-  firstAddress: PropTypes.string,
-  importNewJsonAccount: PropTypes.func,
-  history: PropTypes.object,
-  setSelectedAddress: PropTypes.func,
-  mostRecentOverviewPage: PropTypes.string.isRequired,
-};
-
 const mapStateToProps = (state) => {
   return {
     error: state.appState.warning,
@@ -159,11 +147,10 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-JsonImportSubview.contextTypes = {
-  t: PropTypes.func,
-};
-
-export default compose(
+const ComposedComponent = compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
 )(JsonImportSubview);
+
+
+export default React.forwardRef((props, ref) => <ComposedComponent {...props} forwardedRef={ref} />);

@@ -1414,7 +1414,7 @@
     "message": "如果下列賬戶中沒有您當前所持有的 Ledger 賬戶，請將路徑切換至“Legacy (MEW / MyCrypto)”"
   },
   "selectType": {
-    "message": "選擇類型"
+    "message": "選擇類型："
   },
   "selectingAllWillAllow": {
     "message": "選擇全部將允許本網站查看您當前的所有賬戶。確保您信任這個網站。"
