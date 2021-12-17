@@ -17,21 +17,15 @@ const sortedCurrencies = availableCurrencies.sort((a, b) => {
   return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
 });
 
-const currencyOptions = sortedCurrencies.map(({ code, name }) => {
-  return {
-    label: code.toUpperCase(),
-    value: code,
-  };
+const currencyOptions = sortedCurrencies.map(({ code }) => {
+  return { label: code.toUpperCase(), value: code };
 });
 
 const localeOptions = locales.map((locale) => {
-  return {
-    label: `${locale.name}`,
-    value: locale.code,
-  };
+  return { label: locale.name, value: locale.code };
 });
 
-const SettingsTab = () => {
+export default function SettingsTab() {
   const t = useContext(I18nContext);
   const { warning } = useSelector((state) => state.appState);
   const metamask = useSelector((state) => state.metamask);
@@ -40,34 +34,42 @@ const SettingsTab = () => {
   const { hideZeroBalanceTokens } = useSelector(getPreferences);
 
   return (
-    <div className="setting-tab-content base-width">
+    <div className="setting-tab-wrap base-width">
       {warning && <div className="settings-tab__error">{warning}</div>}
-      <div className="setting-tab-label">{t('currencyConversion')}</div>
-      <Selector
-        options={currencyOptions}
-        selectedValue={currentCurrency}
-        onSelect={(newCurrency) => dispatch(setCurrentCurrency(newCurrency))}
-      />
-      <div className="setting-tab-label">{t('currentLanguage')}</div>
-      <Selector
-        options={localeOptions}
-        selectedValue={currentLocale}
-        onSelect={async (newLocale) => dispatch(updateCurrentLocale(newLocale))}
-      />
-      <div className="setting-tab-label">{t('blockiesIdenticon')}</div>
-      <Switch
-        value={useBlockie}
-        onChange={() => dispatch(setUseBlockie(!useBlockie))}
-      />
-      <div className="setting-tab-label">{t('hideZeroBalanceTokens')}</div>
-      <Switch
-        value={hideZeroBalanceTokens}
-        onChange={() =>
-          dispatch(setHideZeroBalanceTokens(!hideZeroBalanceTokens))
-        }
-      />
+      <div className="setting-item">
+        <div className="setting-label">{t('currencyConversion')}</div>
+        <Selector
+          options={currencyOptions}
+          selectedValue={currentCurrency}
+          onSelect={(newCurrency) => dispatch(setCurrentCurrency(newCurrency))}
+        />
+      </div>
+      <div className="setting-item">
+        <div className="setting-label">{t('currentLanguage')}</div>
+        <Selector
+          options={localeOptions}
+          selectedValue={currentLocale}
+          onSelect={async (newLocale) =>
+            dispatch(updateCurrentLocale(newLocale))
+          }
+        />
+      </div>
+      <div className="setting-item">
+        <div className="setting-label">{t('blockiesIdenticon')}</div>
+        <Switch
+          value={useBlockie}
+          onChange={() => dispatch(setUseBlockie(!useBlockie))}
+        />
+      </div>
+      <div className="setting-item">
+        <div className="setting-label">{t('hideZeroBalanceTokens')}</div>
+        <Switch
+          value={hideZeroBalanceTokens}
+          onChange={() =>
+            dispatch(setHideZeroBalanceTokens(!hideZeroBalanceTokens))
+          }
+        />
+      </div>
     </div>
   );
-};
-
-export default SettingsTab;
+}

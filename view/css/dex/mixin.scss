@@ -42,10 +42,10 @@
   background: rgba(0, 0, 0, 0.3);
 }
 
-@mixin modal {
+@mixin modal($zIndex: 1050) {
   border-radius: $size-12;
   background: $popup-background-opacity;
   backdrop-filter: blur(3px);
   color: $white;
-  z-index: 1050;
+  z-index: $zIndex;
 }

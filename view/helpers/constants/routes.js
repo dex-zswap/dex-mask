@@ -6,16 +6,12 @@ const SETTINGS_ROUTE = '/settings';
 const GENERAL_ROUTE = '/settings/general';
 const ADVANCED_ROUTE = '/settings/advanced';
 const SECURITY_ROUTE = '/settings/security';
+const REVEAL_SEED_ROUTE = '/settings/security/seed';
+const RESTORE_VAULT_ROUTE = '/settings/security/restore-vault';
 const ABOUT_US_ROUTE = '/settings/about-us';
 const ALERTS_ROUTE = '/settings/alerts';
 const NETWORKS_ROUTE = '/settings/networks';
 const NETWORKS_FORM_ROUTE = '/settings/networks/form';
-const CONTACT_LIST_ROUTE = '/settings/contact-list';
-const CONTACT_EDIT_ROUTE = '/settings/contact-list/edit-contact';
-const CONTACT_ADD_ROUTE = '/settings/contact-list/add-contact';
-const CONTACT_VIEW_ROUTE = '/settings/contact-list/view-contact';
-const REVEAL_SEED_ROUTE = '/seed';
-const RESTORE_VAULT_ROUTE = '/restore-vault';
 const ADD_TOKEN_ROUTE = '/add-token';
 const CONFIRM_ADD_TOKEN_ROUTE = '/confirm-add-token';
 const CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE = '/confirm-add-suggested-token';
@@ -83,10 +79,6 @@ const PATH_NAME_MAP = {
   [ALERTS_ROUTE]: 'Alerts Settings Page',
   [NETWORKS_ROUTE]: 'Network Settings Page',
   [NETWORKS_FORM_ROUTE]: 'Network Settings Page Form',
-  [CONTACT_LIST_ROUTE]: 'Contact List Settings Page',
-  [`${CONTACT_EDIT_ROUTE}/:address`]: 'Edit Contact Settings Page',
-  [CONTACT_ADD_ROUTE]: 'Add Contact Settings Page',
-  [`${CONTACT_VIEW_ROUTE}/:address`]: 'View Contact Settings Page',
   [REVEAL_SEED_ROUTE]: 'Reveal Secret Recovery Phrase Page',
   // [MOBILE_SYNC_ROUTE]: 'Sync With Mobile Page',
   [RESTORE_VAULT_ROUTE]: 'Restore Vault Page',
@@ -182,10 +174,6 @@ export {
   SECURITY_ROUTE,
   GENERAL_ROUTE,
   ABOUT_US_ROUTE,
-  CONTACT_LIST_ROUTE,
-  CONTACT_EDIT_ROUTE,
-  CONTACT_ADD_ROUTE,
-  CONTACT_VIEW_ROUTE,
   NETWORKS_ROUTE,
   NETWORKS_FORM_ROUTE,
   INITIALIZE_BACKUP_SEED_PHRASE_ROUTE,

@@ -1,10 +1,18 @@
+import classnames from 'classnames';
 import React from 'react';
 
-const Switch = ({ value, onChange }) => {
+const Switch = ({ value, onChange, disabled }) => {
   return (
     <div
-      className={value ? 'switch-wrap active-switch' : 'switch-wrap'}
-      onClick={onChange}
+      className={classnames([
+        'switch-wrap',
+        value ? 'active-switch' : '',
+        disabled ? 'disabled-switch' : '',
+      ])}
+      onClick={() => {
+        if (disabled) return;
+        onChange();
+      }}
     ></div>
   );
 };

@@ -1,19 +1,19 @@
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import BackBar from '@c/ui/back-bar';
 import Logo from '@c/ui/logo';
+import RestoreVaultPage from '@pages/keychains/restore-vault';
+import RevealSeedConfirmation from '@pages/keychains/reveal-seed';
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
 import { I18nContext } from '@view/contexts/i18n';
 import {
   ABOUT_US_ROUTE,
   ADVANCED_ROUTE,
   ALERTS_ROUTE,
-  CONTACT_ADD_ROUTE,
-  CONTACT_EDIT_ROUTE,
-  CONTACT_LIST_ROUTE,
-  CONTACT_VIEW_ROUTE,
   GENERAL_ROUTE,
   NETWORKS_FORM_ROUTE,
   NETWORKS_ROUTE,
+  RESTORE_VAULT_ROUTE,
+  REVEAL_SEED_ROUTE,
   SECURITY_ROUTE,
   SETTINGS_ROUTE,
 } from '@view/helpers/constants/routes';
@@ -31,10 +31,6 @@ const ROUTES_TO_I18N_KEYS = {
   [ADVANCED_ROUTE]: 'advanced',
   [ALERTS_ROUTE]: 'alerts',
   [GENERAL_ROUTE]: 'general',
-  [CONTACT_ADD_ROUTE]: 'newContact',
-  [CONTACT_EDIT_ROUTE]: 'editContact',
-  [CONTACT_LIST_ROUTE]: 'contacts',
-  [CONTACT_VIEW_ROUTE]: 'viewContact',
   [NETWORKS_ROUTE]: 'networks',
   [NETWORKS_FORM_ROUTE]: 'networks',
   [SECURITY_ROUTE]: 'securityAndPrivacy',
@@ -83,27 +79,21 @@ const SettingsPage = () => {
         title: t('networks'),
         subTitle: t('networkSettingsDescription'),
         url: NETWORKS_ROUTE,
-        icon: 'security',
+        icon: 'network',
         iconWidth: 18,
       },
-      // {
-      //   content: t('contacts'),
-      //   classNames: 'contacts',
-      //   description: t('contactsSettingsDescription'),
-      //   key: CONTACT_LIST_ROUTE,
-      // },
       {
         title: t('securityAndPrivacy'),
         subTitle: t('securitySettingsDescription'),
         url: SECURITY_ROUTE,
-        icon: 'alerts',
+        icon: 'security',
         iconWidth: 18,
       },
       {
         title: t('alerts'),
         subTitle: t('alertsSettingsDescription'),
         url: ALERTS_ROUTE,
-        icon: 'network',
+        icon: 'alerts',
         iconWidth: 18,
       },
       {
@@ -122,6 +112,8 @@ const SettingsPage = () => {
       [GENERAL_ROUTE]: t('general'),
       [ADVANCED_ROUTE]: t('advanced'),
       [SECURITY_ROUTE]: t('securityAndPrivacy'),
+      [REVEAL_SEED_ROUTE]: t('walletSeed'),
+      [RESTORE_VAULT_ROUTE]: t('walletSeed'),
       [ALERTS_ROUTE]: t('alerts'),
       [NETWORKS_ROUTE]: t('networks'),
       [ABOUT_US_ROUTE]: t('about'),
@@ -173,17 +165,20 @@ const SettingsPage = () => {
           <Route exact path={ADVANCED_ROUTE} component={AdvancedTab} />
           <Route exact path={NETWORKS_ROUTE} component={NetworksTab} />
           <Route exact path={SECURITY_ROUTE} component={SecurityTab} />
+          <Route
+            exact
+            path={REVEAL_SEED_ROUTE}
+            component={RevealSeedConfirmation}
+          />
+          <Route
+            exact
+            path={RESTORE_VAULT_ROUTE}
+            component={RestoreVaultPage}
+          />
           <Route exact path={ALERTS_ROUTE} component={AlertsTab} />
           <Route exact path={ABOUT_US_ROUTE} component={InfoTab} />
         </Switch>
       }
-      {/* <div className="settings-page__content">
-        <div className="settings-page__content__tabs">{renderTabs()}</div>
-        <div className="settings-page__content__modules">
-          {renderSubHeader()}
-          {renderContent()}
-        </div>
-      </div> */}
     </div>
   );
 };

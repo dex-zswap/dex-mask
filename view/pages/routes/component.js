@@ -16,8 +16,6 @@ import CreateAccountPage from '@pages/create-account';
 import CrossChain from '@pages/cross-chain';
 import FirstTimeFlow from '@pages/first-time-flow';
 import Home from '@pages/home';
-import RestoreVaultPage from '@pages/keychains/restore-vault';
-import RevealSeedConfirmation from '@pages/keychains/reveal-seed';
 import Lock from '@pages/lock';
 import PermissionsConnect from '@pages/permissions-connect';
 import ReciveToken from '@pages/recive-token';
@@ -43,8 +41,6 @@ import {
   LOCK_ROUTE,
   NEW_ACCOUNT_ROUTE,
   RECIVE_TOKEN_ROUTE,
-  RESTORE_VAULT_ROUTE,
-  REVEAL_SEED_ROUTE,
   SEND_ROUTE,
   SETTINGS_ROUTE,
   SWAPS_ROUTE,
@@ -118,16 +114,6 @@ export default class Routes extends Component {
         <Route path={LOCK_ROUTE} component={Lock} exact />
         <Route path={INITIALIZE_ROUTE} component={FirstTimeFlow} />
         <Initialized path={UNLOCK_ROUTE} component={UnlockPage} exact />
-        <Initialized
-          path={RESTORE_VAULT_ROUTE}
-          component={RestoreVaultPage}
-          exact
-        />
-        <Authenticated
-          path={REVEAL_SEED_ROUTE}
-          component={RevealSeedConfirmation}
-          exact
-        />
         <Authenticated path={SETTINGS_ROUTE} component={Settings} />
         <Authenticated
           path={`${CONFIRM_TRANSACTION_ROUTE}/:id?`}

@@ -1,45 +1,36 @@
-import ToggleButton from '@c/ui/toggle-button';
+import Switch from '@c/ui/switch';
 import Tooltip from '@c/ui/tooltip';
 import { getAlertEnabledness } from '@reducer/dexmask/dexmask';
 import { ALERT_TYPES } from '@shared/constants/alerts';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { setAlertEnabledness } from '@view/store/actions';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 const AlertSettingsEntry = ({ alertId, description, title }) => {
-  const t = useI18nContext();
   const isEnabled = useSelector((state) => getAlertEnabledness(state)[alertId]);
 
   return (
-    <>
-      <span className="alert-tab-title">{title}</span>
-      <Tooltip
-        position="top"
-        title={description}
-        wrapperClassName="alerts-tab__description"
-      >
-        <img className="info-icon" width="12px" src="images/dex/info.png" />
-        {/* <i className="fa fa-info-circle" /> */}
-      </Tooltip>
-      <ToggleButton
-        offLabel={t('off')}
-        onLabel={t('on')}
-        onToggle={() => setAlertEnabledness(alertId, !isEnabled)}
+    <div className="setting-item">
+      <div className="setting-label">
+        <span>{title}</span>
+        <Tooltip position="top" title={description}>
+          <img
+            style={{ margin: '3px 0 0 10px' }}
+            width="12px"
+            src="images/settings/info.png"
+          />
+        </Tooltip>
+      </div>
+      <Switch
         value={isEnabled}
+        onChange={() => setAlertEnabledness(alertId, !isEnabled)}
       />
-    </>
+    </div>
   );
 };
 
-AlertSettingsEntry.propTypes = {
-  alertId: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-};
-
-const AlertsTab = () => {
+export default function AlertsTab() {
   const t = useI18nContext();
 
   const alertConfig = {
@@ -54,7 +45,7 @@ const AlertsTab = () => {
   };
 
   return (
-    <div className="alerts-tab__body">
+    <div className="base-width">
       {Object.entries(alertConfig).map(([alertId, { title, description }]) => (
         <AlertSettingsEntry
           alertId={alertId}
@@ -65,6 +56,4 @@ const AlertsTab = () => {
       ))}
     </div>
   );
-};
-
-export default AlertsTab;
+}
