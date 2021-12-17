@@ -38,6 +38,7 @@
     top: 0;
     left: 0;
     z-index: 88;
+    background: $modal-mask-background;
   }
   .selector-menu {
     position: absolute;
@@ -66,7 +67,7 @@
   &.small {
     height: $size-36;
     .selector-menu {
-      top: $size-36;
+      top: calc(#{$size-36} + 10px);
       .select-option {
         height: $size-36;
       }
@@ -76,6 +77,10 @@
   &.menu-opened {
     &:after {
       transform: rotate(-180deg);
+    }
+    .current-label {
+      position: relative;
+      z-index: 99;
     }
     box-shadow: 0 0 10px $pink;
   }
