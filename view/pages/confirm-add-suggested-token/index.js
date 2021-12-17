@@ -1,32 +1,38 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { addToken, removeSuggestedTokens } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import ConfirmAddSuggestedTokenComponent from './component';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const {
-    metamask: { pendingTokens, suggestedTokens, tokens },
+    metamask: {
+      pendingTokens,
+      suggestedTokens,
+      tokens
+    }
   } = state;
-  const params = { ...pendingTokens, ...suggestedTokens };
-
+  const params = { ...pendingTokens,
+    ...suggestedTokens
+  };
   return {
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
     pendingTokens: params,
-    tokens,
+    tokens
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    addToken: ({ address, symbol, decimals, image }) =>
-      dispatch(addToken(address, symbol, Number(decimals), image)),
-    removeSuggestedTokens: () => dispatch(removeSuggestedTokens()),
+    addToken: ({
+      address,
+      symbol,
+      decimals,
+      image
+    }) => dispatch(addToken(address, symbol, Number(decimals), image)),
+    removeSuggestedTokens: () => dispatch(removeSuggestedTokens())
   };
 };
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-)(ConfirmAddSuggestedTokenComponent);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(ConfirmAddSuggestedTokenComponent);

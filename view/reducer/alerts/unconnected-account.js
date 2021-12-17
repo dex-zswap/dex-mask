@@ -1,84 +1,70 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 import { ALERT_TYPES } from '@shared/constants/alerts';
 import * as actionConstants from '@view/store/actionConstants';
-import {
-  addPermittedAccount,
-  setAlertEnabledness,
-  setSelectedAddress,
-} from '@view/store/actions';
+import { addPermittedAccount, setAlertEnabledness, setSelectedAddress } from '@view/store/actions';
 import { getOriginOfCurrentTab, getSelectedAddress } from '@view/selectors';
-import { ALERT_STATE } from './enums';
-
-// Constants
+import { ALERT_STATE } from './enums'; // Constants
 
 const name = ALERT_TYPES.unconnectedAccount;
-
 const initialState = {
-  state: ALERT_STATE.CLOSED,
-};
-
-// Slice (reducer plus auto-generated actions and action creators)
+  state: ALERT_STATE.CLOSED
+}; // Slice (reducer plus auto-generated actions and action creators)
 
 const slice = createSlice({
   name,
   initialState,
   reducers: {
-    connectAccountFailed: (state) => {
+    connectAccountFailed: state => {
       state.state = ALERT_STATE.ERROR;
     },
-    connectAccountRequested: (state) => {
+    connectAccountRequested: state => {
       state.state = ALERT_STATE.LOADING;
     },
-    connectAccountSucceeded: (state) => {
+    connectAccountSucceeded: state => {
       state.state = ALERT_STATE.CLOSED;
     },
-    disableAlertFailed: (state) => {
+    disableAlertFailed: state => {
       state.state = ALERT_STATE.ERROR;
     },
-    disableAlertRequested: (state) => {
+    disableAlertRequested: state => {
       state.state = ALERT_STATE.LOADING;
     },
-    disableAlertSucceeded: (state) => {
+    disableAlertSucceeded: state => {
       state.state = ALERT_STATE.CLOSED;
     },
-    dismissAlert: (state) => {
+    dismissAlert: state => {
       state.state = ALERT_STATE.CLOSED;
     },
-    switchAccountFailed: (state) => {
+    switchAccountFailed: state => {
       state.state = ALERT_STATE.ERROR;
     },
-    switchAccountRequested: (state) => {
+    switchAccountRequested: state => {
       state.state = ALERT_STATE.LOADING;
     },
-    switchAccountSucceeded: (state) => {
+    switchAccountSucceeded: state => {
       state.state = ALERT_STATE.CLOSED;
     },
-    switchedToUnconnectedAccount: (state) => {
+    switchedToUnconnectedAccount: state => {
       state.state = ALERT_STATE.OPEN;
-    },
+    }
   },
   extraReducers: {
-    [actionConstants.SELECTED_ADDRESS_CHANGED]: (state) => {
+    [actionConstants.SELECTED_ADDRESS_CHANGED]: state => {
       // close the alert if the account is switched while it's open
       if (state.state === ALERT_STATE.OPEN) {
         state.state = ALERT_STATE.CLOSED;
       }
-    },
-  },
+    }
+  }
 });
+const {
+  actions,
+  reducer
+} = slice;
+export default reducer; // Selectors
 
-const { actions, reducer } = slice;
-
-export default reducer;
-
-// Selectors
-
-export const getAlertState = (state) => state[name].state;
-
-export const alertIsOpen = (state) => state[name].state !== ALERT_STATE.CLOSED;
-
-// Actions / action-creators
+export const getAlertState = state => state[name].state;
+export const alertIsOpen = state => state[name].state !== ALERT_STATE.CLOSED; // Actions / action-creators
 
 const {
   connectAccountFailed,
@@ -91,13 +77,11 @@ const {
   switchAccountFailed,
   switchAccountRequested,
   switchAccountSucceeded,
-  switchedToUnconnectedAccount,
+  switchedToUnconnectedAccount
 } = actions;
-
 export { dismissAlert, switchedToUnconnectedAccount };
-
 export const dismissAndDisableAlert = () => {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       await dispatch(disableAlertRequested());
       await setAlertEnabledness(name, false);
@@ -108,9 +92,8 @@ export const dismissAndDisableAlert = () => {
     }
   };
 };
-
-export const switchToAccount = (address) => {
-  return async (dispatch) => {
+export const switchToAccount = address => {
+  return async dispatch => {
     try {
       await dispatch(switchAccountRequested());
       await dispatch(setSelectedAddress(address));
@@ -121,12 +104,12 @@ export const switchToAccount = (address) => {
     }
   };
 };
-
 export const connectAccount = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const selectedAddress = getSelectedAddress(state);
     const origin = getOriginOfCurrentTab(state);
+
     try {
       await dispatch(connectAccountRequested());
       await dispatch(addPermittedAccount(origin, selectedAddress));

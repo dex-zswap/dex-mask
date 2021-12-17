@@ -1,17 +1,20 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Loading from '@c/ui/loading-screen';
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class Lock extends PureComponent {
   static propTypes = {
     history: PropTypes.object,
     isUnlocked: PropTypes.bool,
-    lockDexmask: PropTypes.func,
+    lockDexmask: PropTypes.func
   };
 
   componentDidMount() {
-    const { lockDexmask, isUnlocked, history } = this.props;
+    const {
+      lockDexmask,
+      isUnlocked,
+      history
+    } = this.props;
 
     if (isUnlocked) {
       lockDexmask().then(() => history.push(DEFAULT_ROUTE));
@@ -23,4 +26,5 @@ export default class Lock extends PureComponent {
   render() {
     return <Loading />;
   }
+
 }

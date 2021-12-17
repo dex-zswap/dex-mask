@@ -1,18 +1,11 @@
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import Box from '@c/ui/box';
 import InfoTooltip from '@c/ui/info-tooltip';
 import NumericInput from '@c/ui/numeric-input';
 import Typography from '@c/ui/typography';
-import {
-  COLORS,
-  DISPLAY,
-  FONT_WEIGHT,
-  TEXT_ALIGN,
-  TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-
+import { COLORS, DISPLAY, FONT_WEIGHT, TEXT_ALIGN, TYPOGRAPHY } from '@view/helpers/constants/design-system';
 export default function FormField({
   titleText,
   titleUnit,
@@ -26,88 +19,39 @@ export default function FormField({
   autoFocus,
   password,
   allowDecimals,
-  disabled,
+  disabled
 }) {
-  return (
-    <div
-      className={classNames('form-field', {
-        'form-field__row--error': error,
-      })}
-    >
+  return <div className={classNames('form-field', {
+    'form-field__row--error': error
+  })}>
       <label>
         <div className="form-field__heading">
           <div className="form-field__heading-title">
-            {titleText && (
-              <Typography
-                tag={TYPOGRAPHY.H6}
-                fontWeight={FONT_WEIGHT.BOLD}
-                variant={TYPOGRAPHY.H6}
-                boxProps={{ display: DISPLAY.INLINE_BLOCK }}
-              >
+            {titleText && <Typography tag={TYPOGRAPHY.H6} fontWeight={FONT_WEIGHT.BOLD} variant={TYPOGRAPHY.H6} boxProps={{
+            display: DISPLAY.INLINE_BLOCK
+          }}>
                 {titleText}
-              </Typography>
-            )}
-            {titleUnit && (
-              <Typography
-                tag={TYPOGRAPHY.H6}
-                variant={TYPOGRAPHY.H6}
-                color={COLORS.UI4}
-                boxProps={{ display: DISPLAY.INLINE_BLOCK }}
-              >
+              </Typography>}
+            {titleUnit && <Typography tag={TYPOGRAPHY.H6} variant={TYPOGRAPHY.H6} color={COLORS.UI4} boxProps={{
+            display: DISPLAY.INLINE_BLOCK
+          }}>
                 {titleUnit}
-              </Typography>
-            )}
-            {tooltipText && (
-              <InfoTooltip position="top" contentText={tooltipText} />
-            )}
+              </Typography>}
+            {tooltipText && <InfoTooltip position="top" contentText={tooltipText} />}
           </div>
-          {titleDetail && (
-            <Box
-              className="form-field__heading-detail"
-              textAlign={TEXT_ALIGN.END}
-              marginBottom={3}
-              marginRight={2}
-            >
+          {titleDetail && <Box className="form-field__heading-detail" textAlign={TEXT_ALIGN.END} marginBottom={3} marginRight={2}>
               {titleDetail}
-            </Box>
-          )}
+            </Box>}
         </div>
-        {numeric ? (
-          <NumericInput
-            error={error}
-            onChange={onChange}
-            value={value}
-            detailText={detailText}
-            autoFocus={autoFocus}
-            allowDecimals={allowDecimals}
-            disabled={disabled}
-          />
-        ) : (
-          <input
-            className={classNames('form-field__input', {
-              'form-field__input--error': error,
-            })}
-            onChange={(e) => onChange(e.target.value)}
-            value={value}
-            type={password ? 'password' : 'text'}
-            autoFocus={autoFocus}
-            disabled={disabled}
-          />
-        )}
-        {error && (
-          <Typography
-            color={COLORS.ERROR1}
-            variant={TYPOGRAPHY.H7}
-            className="form-field__error"
-          >
+        {numeric ? <NumericInput error={error} onChange={onChange} value={value} detailText={detailText} autoFocus={autoFocus} allowDecimals={allowDecimals} disabled={disabled} /> : <input className={classNames('form-field__input', {
+        'form-field__input--error': error
+      })} onChange={e => onChange(e.target.value)} value={value} type={password ? 'password' : 'text'} autoFocus={autoFocus} disabled={disabled} />}
+        {error && <Typography color={COLORS.ERROR1} variant={TYPOGRAPHY.H7} className="form-field__error">
             {error}
-          </Typography>
-        )}
+          </Typography>}
       </label>
-    </div>
-  );
+    </div>;
 }
-
 FormField.propTypes = {
   titleText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   titleUnit: PropTypes.string,
@@ -121,9 +65,8 @@ FormField.propTypes = {
   numeric: PropTypes.bool,
   password: PropTypes.bool,
   allowDecimals: PropTypes.bool,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
-
 FormField.defaultProps = {
   titleText: '',
   titleUnit: '',
@@ -137,5 +80,5 @@ FormField.defaultProps = {
   numeric: false,
   password: false,
   allowDecimals: true,
-  disabled: false,
+  disabled: false
 };

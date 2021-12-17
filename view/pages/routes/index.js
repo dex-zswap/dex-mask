@@ -1,34 +1,26 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { pageChanged } from '@reducer/history/history';
 import { prepareToLeaveSwaps } from '@reducer/swaps/swaps';
-import {
-  getNetworkIdentifier,
-  getPreferences,
-  isNetworkLoading,
-  submittedPendingTransactionsSelector,
-} from '@view/selectors';
-import {
-  hideSidebar,
-  lockDexmask,
-  setCurrentCurrency,
-  setLastActiveTime,
-  setMouseUserState,
-} from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
+import { getNetworkIdentifier, getPreferences, isNetworkLoading, submittedPendingTransactionsSelector } from '@view/selectors';
+import { hideSidebar, lockDexmask, setCurrentCurrency, setLastActiveTime, setMouseUserState } from '@view/store/actions';
 import Routes from './component';
 
 function mapStateToProps(state) {
-  const { appState } = state;
+  const {
+    appState
+  } = state;
   const {
     sidebar,
     alertOpen,
     alertMessage,
     isLoading,
-    loadingMessage,
+    loadingMessage
   } = appState;
-  const { autoLockTimeLimit = 0 } = getPreferences(state);
-
+  const {
+    autoLockTimeLimit = 0
+  } = getPreferences(state);
   return {
     sidebar,
     alertOpen,
@@ -45,7 +37,7 @@ function mapStateToProps(state) {
     isMouseUser: state.appState.isMouseUser,
     providerId: getNetworkIdentifier(state),
     autoLockTimeLimit,
-    browserEnvironment: state.metamask.browserEnvironment,
+    browserEnvironment: state.metamask.browserEnvironment
   };
 }
 
@@ -54,15 +46,11 @@ function mapDispatchToProps(dispatch) {
     lockDexmask: () => dispatch(lockDexmask(false)),
     hideSidebar: () => dispatch(hideSidebar()),
     setCurrentCurrencyToUSD: () => dispatch(setCurrentCurrency('usd')),
-    setMouseUserState: (isMouseUser) =>
-      dispatch(setMouseUserState(isMouseUser)),
+    setMouseUserState: isMouseUser => dispatch(setMouseUserState(isMouseUser)),
     setLastActiveTime: () => dispatch(setLastActiveTime()),
-    pageChanged: (path) => dispatch(pageChanged(path)),
-    prepareToLeaveSwaps: () => dispatch(prepareToLeaveSwaps()),
+    pageChanged: path => dispatch(pageChanged(path)),
+    prepareToLeaveSwaps: () => dispatch(prepareToLeaveSwaps())
   };
 }
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-)(Routes);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(Routes);

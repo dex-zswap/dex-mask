@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 const MenuItem = ({
   children,
@@ -8,20 +8,12 @@ const MenuItem = ({
   'data-testid': dataTestId,
   iconClassName,
   onClick,
-  subtitle,
-}) => (
-  <button
-    className={classnames('menu-item', className)}
-    data-testid={dataTestId}
-    onClick={onClick}
-  >
-    {iconClassName ? (
-      <i className={classnames('menu-item__icon', iconClassName)} />
-    ) : null}
+  subtitle
+}) => <button className={classnames('menu-item', className)} data-testid={dataTestId} onClick={onClick}>
+    {iconClassName ? <i className={classnames('menu-item__icon', iconClassName)} /> : null}
     <span>{children}</span>
     {subtitle}
-  </button>
-);
+  </button>;
 
 MenuItem.propTypes = {
   'children': PropTypes.node.isRequired,
@@ -29,15 +21,13 @@ MenuItem.propTypes = {
   'data-testid': PropTypes.string,
   'iconClassName': PropTypes.string,
   'onClick': PropTypes.func,
-  'subtitle': PropTypes.node,
+  'subtitle': PropTypes.node
 };
-
 MenuItem.defaultProps = {
   'className': undefined,
   'data-testid': undefined,
   'iconClassName': undefined,
   'onClick': undefined,
-  'subtitle': undefined,
+  'subtitle': undefined
 };
-
 export default MenuItem;

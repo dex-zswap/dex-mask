@@ -1,12 +1,6 @@
-import { getSelectedIdentity } from '@view/selectors';
-import {
-  clearAccountDetails,
-  exportAccount,
-  hideModal,
-  hideWarning,
-  showModal,
-} from '@view/store/actions';
 import { connect } from 'react-redux';
+import { getSelectedIdentity } from '@view/selectors';
+import { clearAccountDetails, exportAccount, hideModal, hideWarning, showModal } from '@view/store/actions';
 import ExportPrivateKeyModal from './component';
 
 function mapStateToPropsFactory() {
@@ -21,7 +15,7 @@ function mapStateToPropsFactory() {
       warning: state.appState.warning,
       privateKey: state.appState.accountDetail.privateKey,
       selectedIdentity,
-      previousModalState: state.appState.modal.previousModalState.name,
+      previousModalState: state.appState.modal.previousModalState.name
     };
   };
 }
@@ -29,20 +23,18 @@ function mapStateToPropsFactory() {
 function mapDispatchToProps(dispatch) {
   return {
     exportAccount: (password, address) => {
-      return dispatch(exportAccount(password, address)).then((res) => {
+      return dispatch(exportAccount(password, address)).then(res => {
         dispatch(hideWarning());
         return res;
       });
     },
-    showAccountDetailModal: () =>
-      dispatch(showModal({ name: 'ACCOUNT_DETAILS' })),
+    showAccountDetailModal: () => dispatch(showModal({
+      name: 'ACCOUNT_DETAILS'
+    })),
     hideModal: () => dispatch(hideModal()),
     hideWarning: () => dispatch(hideWarning()),
-    clearAccountDetails: () => dispatch(clearAccountDetails()),
+    clearAccountDetails: () => dispatch(clearAccountDetails())
   };
 }
 
-export default connect(
-  mapStateToPropsFactory,
-  mapDispatchToProps,
-)(ExportPrivateKeyModal);
+export default connect(mapStateToPropsFactory, mapDispatchToProps)(ExportPrivateKeyModal);

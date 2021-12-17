@@ -1,31 +1,20 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
+import PropTypes from 'prop-types';
 import getCaretCoordinates from 'textarea-caret';
 import { EventEmitter } from 'events';
-import PropTypes from 'prop-types';
-
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
 import TextField from '@c/ui/text-field';
-import {
-  DEFAULT_ROUTE,
-  RESTORE_VAULT_ROUTE,
-} from '@view/helpers/constants/routes';
-import {
-  forceupdateDexmaskState,
-  forgotPassword,
-  markPasswordForgotten,
-  showModal,
-  tryUnlockDexmask,
-} from '@view/store/actions';
+import { DEFAULT_ROUTE, RESTORE_VAULT_ROUTE } from '@view/helpers/constants/routes';
+import { forceupdateDexmaskState, forgotPassword, markPasswordForgotten, showModal, tryUnlockDexmask } from '@view/store/actions';
 
 class UnlockPage extends Component {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   static propTypes = {
     history: PropTypes.object.isRequired,
     isUnlocked: PropTypes.bool,
@@ -33,20 +22,20 @@ class UnlockPage extends Component {
     onSubmit: PropTypes.func,
     forceupdateDexmaskState: PropTypes.func,
     showOptInModal: PropTypes.func,
-    markPasswordForgotten: PropTypes.func,
+    markPasswordForgotten: PropTypes.func
   };
-
   state = {
     password: process.env.DEXMASK_DEBUG ? '11111111' : '',
-    error: null,
+    error: null
   };
-
   submitting = false;
-
   animationEventEmitter = new EventEmitter();
 
   UNSAFE_componentWillMount() {
-    const { isUnlocked, history } = this.props;
+    const {
+      isUnlocked,
+      history
+    } = this.props;
 
     if (isUnlocked) {
       history.push(DEFAULT_ROUTE);
@@ -56,45 +45,59 @@ class UnlockPage extends Component {
   handleImport = () => {
     this.props.history.push(RESTORE_VAULT_ROUTE);
   };
-
-  handleSubmit = async (event) => {
+  handleSubmit = async event => {
     event.preventDefault();
     event.stopPropagation();
-
-    const { password } = this.state;
-    const { onSubmit, forceupdateDexmaskState, showOptInModal } = this.props;
+    const {
+      password
+    } = this.state;
+    const {
+      onSubmit,
+      forceupdateDexmaskState,
+      showOptInModal
+    } = this.props;
 
     if (password === '' || this.submitting) {
       return;
     }
 
-    this.setState({ error: null });
+    this.setState({
+      error: null
+    });
     this.submitting = true;
 
     try {
       await onSubmit(password);
       const newState = await forceupdateDexmaskState();
-    } catch ({ message }) {
+    } catch ({
+      message
+    }) {
       if (message === 'Incorrect password') {
         const newState = await forceupdateDexmaskState();
       }
 
-      this.setState({ error: message });
+      this.setState({
+        error: message
+      });
       this.submitting = false;
     }
   };
 
-  handleInputChange({ target }) {
-    this.setState({ password: target.value, error: null });
+  handleInputChange({
+    target
+  }) {
+    this.setState({
+      password: target.value,
+      error: null
+    }); // tell mascot to look at page action
 
-    // tell mascot to look at page action
     if (target.getBoundingClientRect) {
       const element = target;
       const boundingRect = element.getBoundingClientRect();
       const coordinates = getCaretCoordinates(element, element.selectionEnd);
       this.animationEventEmitter.emit('point', {
         x: boundingRect.left + coordinates.left - element.scrollLeft,
-        y: boundingRect.top + coordinates.top - element.scrollTop,
+        y: boundingRect.top + coordinates.top - element.scrollTop
       });
     }
   }
@@ -106,29 +109,25 @@ class UnlockPage extends Component {
       height: '48px',
       fontWeight: '400',
       boxShadow: 'none',
-      borderRadius: '4px',
+      borderRadius: '4px'
     };
-
-    return (
-      <Button
-        type="primary"
-        style={style}
-        disabled={!this.state.password}
-        variant="contained"
-        onClick={this.handleSubmit}
-      >
+    return <Button type="primary" style={style} disabled={!this.state.password} variant="contained" onClick={this.handleSubmit}>
         {this.context.t('unlock')}
-      </Button>
-    );
+      </Button>;
   }
 
   render() {
-    const { password, error } = this.state;
-    const { t } = this.context;
-    const { onRestore } = this.props;
-
-    return (
-      <div className="unlock-page__container base-width">
+    const {
+      password,
+      error
+    } = this.state;
+    const {
+      t
+    } = this.context;
+    const {
+      onRestore
+    } = this.props;
+    return <div className="unlock-page__container base-width">
         <div className="unlock-page">
           <div className="unlock-page__mascot-container">
             <Logo isCenter />
@@ -136,53 +135,40 @@ class UnlockPage extends Component {
           <h1 className="unlock-page__title">{t('welcomeBack')}</h1>
           <div className="unlock-page__message">{t('rightWay')}</div>
           <form className="unlock-page__form" onSubmit={this.handleSubmit}>
-            <TextField
-              id="password"
-              label={t('password')}
-              type="password"
-              value={password}
-              onChange={(event) => this.handleInputChange(event)}
-              error={error}
-              autoFocus
-              autoComplete="current-password"
-              bordered
-            />
+            <TextField id="password" label={t('password')} type="password" value={password} onChange={event => this.handleInputChange(event)} error={error} autoFocus autoComplete="current-password" bordered />
           </form>
           {this.renderSubmitButton()}
           <div className="unlock-page__links">
-            {t('importAccountText', [
-              <button
-                key="import-account"
-                className="unlock-page__link unlock-page__link--import"
-                onClick={this.handleImport}
-              >
+            {t('importAccountText', [<button key="import-account" className="unlock-page__link unlock-page__link--import" onClick={this.handleImport}>
                 {t('importAccountLinkText')}
-              </button>,
-            ])}
+              </button>])}
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
+
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   const {
-    metamask: { isUnlocked },
+    metamask: {
+      isUnlocked
+    }
   } = state;
   return {
-    isUnlocked,
+    isUnlocked
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     forgotPassword: () => dispatch(forgotPassword()),
-    tryUnlockDexmask: (password) => dispatch(tryUnlockDexmask(password)),
+    tryUnlockDexmask: password => dispatch(tryUnlockDexmask(password)),
     markPasswordForgotten: () => dispatch(markPasswordForgotten()),
     forceupdateDexmaskState: () => forceupdateDexmaskState(dispatch),
-    showOptInModal: () =>
-      dispatch(showModal({ name: 'METAMETRICS_OPT_IN_MODAL' })),
+    showOptInModal: () => dispatch(showModal({
+      name: 'METAMETRICS_OPT_IN_MODAL'
+    }))
   };
 };
 
@@ -194,29 +180,29 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     tryUnlockDexmask,
     ...restDispatchProps
   } = dispatchProps;
-  const { history, onSubmit: ownPropsSubmit, ...restOwnProps } = ownProps;
+  const {
+    history,
+    onSubmit: ownPropsSubmit,
+    ...restOwnProps
+  } = ownProps;
 
   const onImport = async () => {
     await markPasswordForgotten();
     history.push(RESTORE_VAULT_ROUTE);
   };
 
-  const onSubmit = async (password) => {
+  const onSubmit = async password => {
     await tryUnlockDexmask(password);
     history.push(DEFAULT_ROUTE);
   };
 
-  return {
-    ...stateProps,
+  return { ...stateProps,
     ...restDispatchProps,
     ...restOwnProps,
     onRestore: onImport,
     onSubmit: ownPropsSubmit || onSubmit,
-    history,
+    history
   };
 };
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps, mergeProps),
-)(UnlockPage);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps, mergeProps))(UnlockPage);

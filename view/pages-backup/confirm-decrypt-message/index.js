@@ -1,36 +1,26 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { clearConfirmTransaction } from '@reducer/confirm-transaction/confirm-transaction.duck';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
-import {
-  conversionRateSelector,
-  getTargetAccountWithSendEtherInfo,
-  unconfirmedTransactionsListSelector,
-} from '@view/selectors';
-import {
-  cancelDecryptMsg,
-  decryptMsg,
-  decryptMsgInline,
-  goHome,
-} from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
+import { conversionRateSelector, getTargetAccountWithSendEtherInfo, unconfirmedTransactionsListSelector } from '@view/selectors';
+import { cancelDecryptMsg, decryptMsg, decryptMsgInline, goHome } from '@view/store/actions';
 import ConfirmDecryptMessage from './component';
 
 function mapStateToProps(state) {
   const {
-    metamask: { domainMetadata = {} },
+    metamask: {
+      domainMetadata = {}
+    }
   } = state;
-
   const unconfirmedTransactions = unconfirmedTransactionsListSelector(state);
-
   const txData = unconfirmedTransactions[0];
-
   const {
-    msgParams: { from },
+    msgParams: {
+      from
+    }
   } = txData;
-
   const fromAccount = getTargetAccountWithSendEtherInfo(state, from);
-
   return {
     txData,
     domainMetadata,
@@ -38,7 +28,7 @@ function mapStateToProps(state) {
     requester: null,
     requesterAddress: null,
     conversionRate: conversionRateSelector(state),
-    mostRecentOverviewPage: getMostRecentOverviewPage(state),
+    mostRecentOverviewPage: getMostRecentOverviewPage(state)
   };
 }
 
@@ -61,11 +51,8 @@ function mapDispatchToProps(dispatch) {
       params.metamaskId = msgData.id;
       event.stopPropagation(event);
       return dispatch(decryptMsgInline(params));
-    },
+    }
   };
 }
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-)(ConfirmDecryptMessage);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(ConfirmDecryptMessage);

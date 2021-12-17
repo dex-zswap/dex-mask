@@ -1,21 +1,13 @@
-// Components
+import React from 'react';
+import { useHistory } from 'react-router-dom'; // Components
+
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
 import Typography from '@c/ui/typography';
-import {
-  BLOCK_SIZES,
-  BORDER_STYLE,
-  COLORS,
-  FONT_WEIGHT,
-  SIZES,
-  TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
-// Routes
+import { BLOCK_SIZES, BORDER_STYLE, COLORS, FONT_WEIGHT, SIZES, TYPOGRAPHY } from '@view/helpers/constants/design-system'; // Routes
+
 import { INITIALIZE_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-
 export default function SeedPhraseIntro() {
   const t = useI18nContext();
   const history = useHistory();
@@ -24,38 +16,24 @@ export default function SeedPhraseIntro() {
     history.push(INITIALIZE_SEED_PHRASE_ROUTE);
   };
 
-  return (
-    <div className="seed-phrase-intro">
+  return <div className="seed-phrase-intro">
       <div className="seed-phrase-intro__sections">
         <div className="seed-phrase-intro__left">
-          <Typography
-            color={COLORS.BLACK}
-            variant={TYPOGRAPHY.H1}
-            boxProps={{ marginTop: 0, marginBottom: 4 }}
-          >
+          <Typography color={COLORS.BLACK} variant={TYPOGRAPHY.H1} boxProps={{
+          marginTop: 0,
+          marginBottom: 4
+        }}>
             {t('seedPhraseIntroTitle')}
           </Typography>
-          <Typography
-            color={COLORS.BLACK}
-            boxProps={{ marginBottom: 4 }}
-            variant={TYPOGRAPHY.Paragraph}
-            className="seed-phrase-intro__copy"
-          >
+          <Typography color={COLORS.BLACK} boxProps={{
+          marginBottom: 4
+        }} variant={TYPOGRAPHY.Paragraph} className="seed-phrase-intro__copy">
             {t('seedPhraseIntroTitleCopy')}
           </Typography>
           <Box marginBottom={4}>
             <video controls>
-              <source
-                type="video/webm"
-                src="./images/videos/recovery-onboarding/video.webm"
-              />
-              <track
-                default
-                srcLang="en"
-                label="English"
-                kind="subtitles"
-                src="./images/videos/recovery-onboarding/subtitles-en.vtt"
-              />
+              <source type="video/webm" src="./images/videos/recovery-onboarding/video.webm" />
+              <track default srcLang="en" label="English" kind="subtitles" src="./images/videos/recovery-onboarding/subtitles-en.vtt" />
             </video>
           </Box>
           <Box width={BLOCK_SIZES.ONE_THIRD}>
@@ -65,31 +43,19 @@ export default function SeedPhraseIntro() {
           </Box>
         </div>
         <div className="seed-phrase-intro__right">
-          <Box
-            padding={4}
-            borderWidth={1}
-            borderRadius={SIZES.MD}
-            borderColor={COLORS.UI2}
-            borderStyle={BORDER_STYLE.SOLID}
-          >
+          <Box padding={4} borderWidth={1} borderRadius={SIZES.MD} borderColor={COLORS.UI2} borderStyle={BORDER_STYLE.SOLID}>
             <Box marginBottom={4}>
-              <Typography
-                tag="span"
-                color={COLORS.BLACK}
-                fontWeight={FONT_WEIGHT.BOLD}
-                boxProps={{ display: 'block' }}
-              >
+              <Typography tag="span" color={COLORS.BLACK} fontWeight={FONT_WEIGHT.BOLD} boxProps={{
+              display: 'block'
+            }}>
                 {t('seedPhraseIntroSidebarTitleOne')}
               </Typography>
               <span>{t('seedPhraseIntroSidebarCopyOne')}</span>
             </Box>
             <Box marginBottom={4}>
-              <Typography
-                tag="span"
-                color={COLORS.BLACK}
-                fontWeight={FONT_WEIGHT.BOLD}
-                boxProps={{ display: 'block' }}
-              >
+              <Typography tag="span" color={COLORS.BLACK} fontWeight={FONT_WEIGHT.BOLD} boxProps={{
+              display: 'block'
+            }}>
                 {t('seedPhraseIntroSidebarTitleTwo')}
               </Typography>
               <ul className="seed-phrase-intro__sidebar_list">
@@ -100,12 +66,9 @@ export default function SeedPhraseIntro() {
               </ul>
             </Box>
             <Box marginBottom={4}>
-              <Typography
-                tag="span"
-                color={COLORS.BLACK}
-                fontWeight={FONT_WEIGHT.BOLD}
-                boxProps={{ display: 'block' }}
-              >
+              <Typography tag="span" color={COLORS.BLACK} fontWeight={FONT_WEIGHT.BOLD} boxProps={{
+              display: 'block'
+            }}>
                 {t('seedPhraseIntroSidebarTitleThree')}
               </Typography>
               <span>{t('seedPhraseIntroSidebarCopyTwo')}</span>
@@ -116,6 +79,5 @@ export default function SeedPhraseIntro() {
           </Box>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }

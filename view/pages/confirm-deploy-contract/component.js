@@ -1,23 +1,28 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ConfirmTransactionBase from '@pages/confirm-transaction-base';
 import { toBuffer } from '@shared/modules/buffer-utils';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmDeployContract extends Component {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   static propTypes = {
-    txData: PropTypes.object,
+    txData: PropTypes.object
   };
 
   renderData() {
-    const { t } = this.context;
-    const { txData: { origin, txParams: { data } = {} } = {} } = this.props;
-
-    return (
-      <div className="confirm-page-container-content__data">
+    const {
+      t
+    } = this.context;
+    const {
+      txData: {
+        origin,
+        txParams: {
+          data
+        } = {}
+      } = {}
+    } = this.props;
+    return <div className="confirm-page-container-content__data">
         <div className="confirm-page-container-content__data-box">
           <div className="confirm-page-container-content__data-field">
             <div className="confirm-page-container-content__data-field-label">
@@ -36,16 +41,11 @@ export default class ConfirmDeployContract extends Component {
           {`${t('hexData')}:`}
         </div>
         <div className="confirm-page-container-content__data-box">{data}</div>
-      </div>
-    );
+      </div>;
   }
 
   render() {
-    return (
-      <ConfirmTransactionBase
-        actionKey="contractDeployment"
-        dataComponent={this.renderData()}
-      />
-    );
+    return <ConfirmTransactionBase actionKey="contractDeployment" dataComponent={this.renderData()} />;
   }
+
 }

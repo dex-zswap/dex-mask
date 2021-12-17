@@ -1,25 +1,21 @@
-import { addHexPrefix } from '@app/scripts/lib/util';
-import CurrencyDisplay from '@c/ui/currency-display';
-import UnitInput from '@c/ui/unit-input';
-import {
-  conversionUtil,
-  multiplyCurrencies,
-} from '@shared/modules/conversion.utils';
-import { ETH } from '@view/helpers/constants/common';
-import { getWeiHexFromDecimalValue } from '@view/helpers/utils/conversions.util';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
 /**
  * Component that allows user to enter token values as a number, and props receive a converted
  * hex value. props.value, used as a default or forced value, should be a hex value, which
  * gets converted into a decimal value.
  */
+
+import PropTypes from 'prop-types';
+import { addHexPrefix } from '@app/scripts/lib/util';
+import CurrencyDisplay from '@c/ui/currency-display';
+import UnitInput from '@c/ui/unit-input';
+import { conversionUtil, multiplyCurrencies } from '@shared/modules/conversion.utils';
+import { ETH } from '@view/helpers/constants/common';
+import { getWeiHexFromDecimalValue } from '@view/helpers/utils/conversions.util';
 export default class TokenInput extends PureComponent {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   static propTypes = {
     currentCurrency: PropTypes.string,
     onChange: PropTypes.func,
@@ -29,63 +25,79 @@ export default class TokenInput extends PureComponent {
     token: PropTypes.shape({
       address: PropTypes.string.isRequired,
       decimals: PropTypes.number,
-      symbol: PropTypes.string,
+      symbol: PropTypes.string
     }).isRequired,
-    tokenExchangeRates: PropTypes.object,
+    tokenExchangeRates: PropTypes.object
   };
 
   constructor(props) {
     super(props);
-
-    const { value: hexValue } = props;
+    const {
+      value: hexValue
+    } = props;
     const decimalValue = hexValue ? this.getValue(props) : 0;
-
     this.state = {
       decimalValue,
-      hexValue,
+      hexValue
     };
   }
 
   componentDidUpdate(prevProps) {
-    const { value: prevPropsHexValue } = prevProps;
-    const { value: propsHexValue } = this.props;
-    const { hexValue: stateHexValue } = this.state;
+    const {
+      value: prevPropsHexValue
+    } = prevProps;
+    const {
+      value: propsHexValue
+    } = this.props;
+    const {
+      hexValue: stateHexValue
+    } = this.state;
 
-    if (
-      prevPropsHexValue !== propsHexValue &&
-      propsHexValue !== stateHexValue
-    ) {
+    if (prevPropsHexValue !== propsHexValue && propsHexValue !== stateHexValue) {
       const decimalValue = this.getValue(this.props);
-      this.setState({ hexValue: propsHexValue, decimalValue });
+      this.setState({
+        hexValue: propsHexValue,
+        decimalValue
+      });
     }
   }
 
   getValue(props) {
-    const { value: hexValue, token: { decimals, symbol } = {} } = props;
-
+    const {
+      value: hexValue,
+      token: {
+        decimals,
+        symbol
+      } = {}
+    } = props;
     const multiplier = Math.pow(10, Number(decimals || 0));
     const decimalValueString = conversionUtil(addHexPrefix(hexValue), {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
       toCurrency: symbol,
       conversionRate: multiplier,
-      invertConversionRate: true,
+      invertConversionRate: true
     });
-
     return Number(decimalValueString) ? decimalValueString : '';
   }
 
-  handleChange = (decimalValue) => {
-    const { token: { decimals } = {}, onChange } = this.props;
-
+  handleChange = decimalValue => {
+    const {
+      token: {
+        decimals
+      } = {},
+      onChange
+    } = this.props;
     const multiplier = Math.pow(10, Number(decimals || 0));
     const hexValue = multiplyCurrencies(decimalValue || 0, multiplier, {
       multiplicandBase: 10,
       multiplierBase: 10,
-      toNumericBase: 'hex',
+      toNumericBase: 'hex'
     });
-
-    this.setState({ hexValue, decimalValue });
+    this.setState({
+      hexValue,
+      decimalValue
+    });
     onChange(hexValue);
   };
 
@@ -95,19 +107,18 @@ export default class TokenInput extends PureComponent {
       showFiat,
       currentCurrency,
       hideConversion,
-      token,
+      token
     } = this.props;
-    const { decimalValue } = this.state;
-
+    const {
+      decimalValue
+    } = this.state;
     const tokenExchangeRate = tokenExchangeRates?.[token.address] || 0;
     let currency, numberOfDecimals;
 
     if (hideConversion) {
-      return (
-        <div className="currency-input__conversion-component">
+      return <div className="currency-input__conversion-component">
           {this.context.t('noConversionRateAvailable')}
-        </div>
-      );
+        </div>;
     }
 
     if (showFiat) {
@@ -124,36 +135,24 @@ export default class TokenInput extends PureComponent {
     const hexWeiValue = getWeiHexFromDecimalValue({
       value: decimalEthValue,
       fromCurrency: ETH,
-      fromDenomination: ETH,
+      fromDenomination: ETH
     });
-
-    return tokenExchangeRate ? (
-      <CurrencyDisplay
-        className="currency-input__conversion-component"
-        currency={currency}
-        value={hexWeiValue}
-        numberOfDecimals={numberOfDecimals}
-      />
-    ) : (
-      <div className="currency-input__conversion-component">
+    return tokenExchangeRate ? <CurrencyDisplay className="currency-input__conversion-component" currency={currency} value={hexWeiValue} numberOfDecimals={numberOfDecimals} /> : <div className="currency-input__conversion-component">
         {this.context.t('noConversionRateAvailable')}
-      </div>
-    );
+      </div>;
   }
 
   render() {
-    const { token, ...restProps } = this.props;
-    const { decimalValue } = this.state;
-
-    return (
-      <UnitInput
-        {...restProps}
-        suffix={token.symbol}
-        onChange={this.handleChange}
-        value={decimalValue}
-      >
+    const {
+      token,
+      ...restProps
+    } = this.props;
+    const {
+      decimalValue
+    } = this.state;
+    return <UnitInput {...restProps} suffix={token.symbol} onChange={this.handleChange} value={decimalValue}>
         {this.renderConversionComponent()}
-      </UnitInput>
-    );
+      </UnitInput>;
   }
+
 }

@@ -1,8 +1,7 @@
-import Button from '@c/ui/button';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import Button from '@c/ui/button';
 export default class PageContainerFooter extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -17,11 +16,10 @@ export default class PageContainerFooter extends Component {
     buttonSizeLarge: PropTypes.bool,
     footerClassName: PropTypes.string,
     footerButtonClassName: PropTypes.string,
-    rightArrow: PropTypes.bool,
+    rightArrow: PropTypes.bool
   };
-
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   render() {
@@ -38,47 +36,21 @@ export default class PageContainerFooter extends Component {
       buttonSizeLarge = false,
       footerClassName,
       footerButtonClassName,
-      rightArrow = false,
+      rightArrow = false
     } = this.props;
-
-    return (
-      <div className={classnames('page-container__footer', footerClassName)}>
+    return <div className={classnames('page-container__footer', footerClassName)}>
         <footer>
-          {!hideCancel && (
-            <Button
-              type={cancelButtonType || 'default'}
-              large={buttonSizeLarge}
-              className={classnames(
-                'page-container__footer-button',
-                footerButtonClassName,
-              )}
-              onClick={(e) => onCancel(e)}
-              data-testid="page-container-footer-cancel"
-            >
+          {!hideCancel && <Button type={cancelButtonType || 'default'} large={buttonSizeLarge} className={classnames('page-container__footer-button', footerButtonClassName)} onClick={e => onCancel(e)} data-testid="page-container-footer-cancel">
               {cancelText || this.context.t('cancel')}
-            </Button>
-          )}
+            </Button>}
 
-          <Button
-            rightArrow={rightArrow}
-            type={submitButtonType || 'secondary'}
-            large={buttonSizeLarge}
-            className={classnames(
-              'page-container__footer-button',
-              footerButtonClassName,
-            )}
-            disabled={disabled}
-            onClick={(e) => onSubmit(e)}
-            data-testid="page-container-footer-next"
-          >
+          <Button rightArrow={rightArrow} type={submitButtonType || 'secondary'} large={buttonSizeLarge} className={classnames('page-container__footer-button', footerButtonClassName)} disabled={disabled} onClick={e => onSubmit(e)} data-testid="page-container-footer-next">
             {submitText || this.context.t('next')}
           </Button>
         </footer>
 
-        {children && (
-          <div className="page-container__footer-secondary">{children}</div>
-        )}
-      </div>
-    );
+        {children && <div className="page-container__footer-secondary">{children}</div>}
+      </div>;
   }
+
 }

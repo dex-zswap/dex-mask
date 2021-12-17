@@ -1,22 +1,18 @@
-import { getOnboardingInitiator } from '@view/selectors';
-import {
-  setCompletedOnboarding,
-  setSeedPhraseBackedUp,
-} from '@view/store/actions';
 import { connect } from 'react-redux';
+import { getOnboardingInitiator } from '@view/selectors';
+import { setCompletedOnboarding, setSeedPhraseBackedUp } from '@view/store/actions';
 import RevealSeedPhrase from './component';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    onboardingInitiator: getOnboardingInitiator(state),
+    onboardingInitiator: getOnboardingInitiator(state)
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    setSeedPhraseBackedUp: (seedPhraseBackupState) =>
-      dispatch(setSeedPhraseBackedUp(seedPhraseBackupState)),
-    setCompletedOnboarding: () => dispatch(setCompletedOnboarding()),
+    setSeedPhraseBackedUp: seedPhraseBackupState => dispatch(setSeedPhraseBackedUp(seedPhraseBackupState)),
+    setCompletedOnboarding: () => dispatch(setCompletedOnboarding())
   };
 };
 

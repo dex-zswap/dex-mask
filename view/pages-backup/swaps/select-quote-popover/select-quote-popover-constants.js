@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-
 export const QUOTE_DATA_ROWS_PROPTYPES_SHAPE = PropTypes.shape({
   aggId: PropTypes.string.isRequired,
   amountReceiving: PropTypes.string.isRequired,
@@ -13,5 +12,5 @@ export const QUOTE_DATA_ROWS_PROPTYPES_SHAPE = PropTypes.shape({
   slippage: PropTypes.number.isRequired,
   sourceTokenDecimals: PropTypes.number.isRequired,
   sourceTokenSymbol: PropTypes.string.isRequired,
-  sourceTokenValue: PropTypes.string.isRequired,
+  sourceTokenValue: PropTypes.string.isRequired
 });

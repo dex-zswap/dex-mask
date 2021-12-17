@@ -1,38 +1,32 @@
-import { getPreferences } from '@view/selectors';
-import {
-  displayWarning,
-  setAutoLockTimeLimit,
-  setDismissSeedBackUpReminder,
-  setFeatureFlag,
-  setIpfsGateway,
-  setLedgerLivePreference,
-  setShowFiatConversionOnTestnetsPreference,
-  setThreeBoxSyncingPermission,
-  setUseNonceField,
-  showModal,
-  turnThreeBoxSyncingOnAndInitialize,
-} from '@view/store/actions';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { getPreferences } from '@view/selectors';
+import { displayWarning, setAutoLockTimeLimit, setDismissSeedBackUpReminder, setFeatureFlag, setIpfsGateway, setLedgerLivePreference, setShowFiatConversionOnTestnetsPreference, setThreeBoxSyncingPermission, setUseNonceField, showModal, turnThreeBoxSyncingOnAndInitialize } from '@view/store/actions';
 import AdvancedTab from './component';
-
-export const mapStateToProps = (state) => {
+export const mapStateToProps = state => {
   const {
-    appState: { warning },
-    metamask,
+    appState: {
+      warning
+    },
+    metamask
   } = state;
   const {
-    featureFlags: { sendHexData, advancedInlineGas } = {},
+    featureFlags: {
+      sendHexData,
+      advancedInlineGas
+    } = {},
     threeBoxSyncingAllowed,
     threeBoxDisabled,
     useNonceField,
     ipfsGateway,
     useLedgerLive,
-    dismissSeedBackUpReminder,
+    dismissSeedBackUpReminder
   } = metamask;
-  const { showFiatInTestnets, autoLockTimeLimit } = getPreferences(state);
-
+  const {
+    showFiatInTestnets,
+    autoLockTimeLimit
+  } = getPreferences(state);
   return {
     warning,
     sendHexData,
@@ -44,46 +38,40 @@ export const mapStateToProps = (state) => {
     useNonceField,
     ipfsGateway,
     useLedgerLive,
-    dismissSeedBackUpReminder,
+    dismissSeedBackUpReminder
   };
 };
-
-export const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = dispatch => {
   return {
-    setHexDataFeatureFlag: (shouldShow) =>
-      dispatch(setFeatureFlag('sendHexData', shouldShow)),
-    displayWarning: (warning) => dispatch(displayWarning(warning)),
-    showResetAccountConfirmationModal: () =>
-      dispatch(showModal({ name: 'CONFIRM_RESET_ACCOUNT' })),
-    setAdvancedInlineGasFeatureFlag: (shouldShow) =>
-      dispatch(setFeatureFlag('advancedInlineGas', shouldShow)),
-    setUseNonceField: (value) => dispatch(setUseNonceField(value)),
-    setShowFiatConversionOnTestnetsPreference: (value) => {
+    setHexDataFeatureFlag: shouldShow => dispatch(setFeatureFlag('sendHexData', shouldShow)),
+    displayWarning: warning => dispatch(displayWarning(warning)),
+    showResetAccountConfirmationModal: () => dispatch(showModal({
+      name: 'CONFIRM_RESET_ACCOUNT'
+    })),
+    setAdvancedInlineGasFeatureFlag: shouldShow => dispatch(setFeatureFlag('advancedInlineGas', shouldShow)),
+    setUseNonceField: value => dispatch(setUseNonceField(value)),
+    setShowFiatConversionOnTestnetsPreference: value => {
       return dispatch(setShowFiatConversionOnTestnetsPreference(value));
     },
-    setAutoLockTimeLimit: (value) => {
+    setAutoLockTimeLimit: value => {
       return dispatch(setAutoLockTimeLimit(value));
     },
-    setThreeBoxSyncingPermission: (newThreeBoxSyncingState) => {
+    setThreeBoxSyncingPermission: newThreeBoxSyncingState => {
       if (newThreeBoxSyncingState) {
         dispatch(turnThreeBoxSyncingOnAndInitialize());
       } else {
         dispatch(setThreeBoxSyncingPermission(newThreeBoxSyncingState));
       }
     },
-    setIpfsGateway: (value) => {
+    setIpfsGateway: value => {
       return dispatch(setIpfsGateway(value));
     },
-    setLedgerLivePreference: (value) => {
+    setLedgerLivePreference: value => {
       return dispatch(setLedgerLivePreference(value));
     },
-    setDismissSeedBackUpReminder: (value) => {
+    setDismissSeedBackUpReminder: value => {
       return dispatch(setDismissSeedBackUpReminder(value));
-    },
+    }
   };
 };
-
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-)(AdvancedTab);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(AdvancedTab);

@@ -1,55 +1,41 @@
+import { capitalize, isEqual } from 'lodash';
+import log from 'loglevel';
+import pify from 'pify';
 import getBuyEthUrl from '@app/scripts/lib/buy-eth-url';
 import { addHexPrefix, getEnvironmentType } from '@app/scripts/lib/util';
 import { switchedToUnconnectedAccount } from '@reducer/alerts/unconnected-account';
 import { getUnconnectedAccountAlertEnabledness } from '@reducer/dexmask/dexmask';
 import { computeEstimatedGasLimit, resetSendState } from '@reducer/send';
-import {
-  ENVIRONMENT_TYPE_NOTIFICATION,
-  POLLING_TOKEN_ENVIRONMENT_TYPES,
-} from '@shared/constants/app';
+import { ENVIRONMENT_TYPE_NOTIFICATION, POLLING_TOKEN_ENVIRONMENT_TYPES } from '@shared/constants/app';
 import { LISTED_CONTRACT_ADDRESSES } from '@shared/constants/tokens';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import { hasUnconfirmedTransactions } from '@view/helpers/utils/confirm-tx.util';
-import {
-  fetchLocale,
-  loadRelativeTimeFormatLocaleData,
-} from '@view/helpers/utils/i18n-helper';
+import { fetchLocale, loadRelativeTimeFormatLocaleData } from '@view/helpers/utils/i18n-helper';
 import switchDirection from '@view/helpers/utils/switch-direction';
 import { getSymbolAndDecimals } from '@view/helpers/utils/token-util';
 import { getMethodDataAsync } from '@view/helpers/utils/transactions.util';
 import txHelper from '@view/helpers/utils/tx-helper';
-import {
-  getDexMaskAccounts,
-  getPermittedAccountsForCurrentTab,
-  getSelectedAddress,
-} from '@view/selectors';
-import { capitalize, isEqual } from 'lodash';
-import log from 'loglevel';
-import pify from 'pify';
+import { getDexMaskAccounts, getPermittedAccountsForCurrentTab, getSelectedAddress } from '@view/selectors';
 import * as actionConstants from './actionConstants';
-
 let background = null;
 let promisifiedBackground = null;
 export function _setBackgroundConnection(backgroundConnection) {
   background = backgroundConnection;
   promisifiedBackground = pify(background);
 }
-
 export function goHome() {
   return {
-    type: actionConstants.GO_HOME,
+    type: actionConstants.GO_HOME
   };
-}
-// async actions
+} // async actions
 
 export function tryUnlockDexmask(password) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     dispatch(unlockInProgress());
     log.debug(`background.submitPassword`);
-
     return new Promise((resolve, reject) => {
-      background.submitPassword(password, (error) => {
+      background.submitPassword(password, error => {
         if (error) {
           reject(error);
           return;
@@ -57,37 +43,32 @@ export function tryUnlockDexmask(password) {
 
         resolve();
       });
-    })
-      .then(() => {
-        dispatch(unlockSucceeded());
-        return forceupdateDexmaskState(dispatch);
-      })
-      .then(() => {
-        return new Promise((resolve, reject) => {
-          background.verifySeedPhrase((err) => {
-            if (err) {
-              dispatch(displayWarning(err.message));
-              reject(err);
-              return;
-            }
+    }).then(() => {
+      dispatch(unlockSucceeded());
+      return forceupdateDexmaskState(dispatch);
+    }).then(() => {
+      return new Promise((resolve, reject) => {
+        background.verifySeedPhrase(err => {
+          if (err) {
+            dispatch(displayWarning(err.message));
+            reject(err);
+            return;
+          }
 
-            resolve();
-          });
+          resolve();
         });
-      })
-      .then(() => {
-        dispatch(hideLoadingIndication());
-      })
-      .catch((err) => {
-        dispatch(unlockFailed(err.message));
-        dispatch(hideLoadingIndication());
-        return Promise.reject(err);
       });
+    }).then(() => {
+      dispatch(hideLoadingIndication());
+    }).catch(err => {
+      dispatch(unlockFailed(err.message));
+      dispatch(hideLoadingIndication());
+      return Promise.reject(err);
+    });
   };
 }
-
 export function createNewVaultAndRestore(password, seed) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.createNewVaultAndRestore`);
     let vault;
@@ -97,26 +78,23 @@ export function createNewVaultAndRestore(password, seed) {
           reject(err);
           return;
         }
+
         vault = _vault;
         resolve();
       });
-    })
-      .then(() => dispatch(unMarkPasswordForgotten()))
-      .then(() => {
-        dispatch(showAccountsPage());
-        dispatch(hideLoadingIndication());
-        return vault;
-      })
-      .catch((err) => {
-        dispatch(displayWarning(err.message));
-        dispatch(hideLoadingIndication());
-        return Promise.reject(err);
-      });
+    }).then(() => dispatch(unMarkPasswordForgotten())).then(() => {
+      dispatch(showAccountsPage());
+      dispatch(hideLoadingIndication());
+      return vault;
+    }).catch(err => {
+      dispatch(displayWarning(err.message));
+      dispatch(hideLoadingIndication());
+      return Promise.reject(err);
+    });
   };
 }
-
 export function createNewVaultAndGetSeedPhrase(password) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
 
     try {
@@ -131,9 +109,8 @@ export function createNewVaultAndGetSeedPhrase(password) {
     }
   };
 }
-
 export function unlockAndGetSeedPhrase(password) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
 
     try {
@@ -149,10 +126,9 @@ export function unlockAndGetSeedPhrase(password) {
     }
   };
 }
-
 export function submitPassword(password) {
   return new Promise((resolve, reject) => {
-    background.submitPassword(password, (error) => {
+    background.submitPassword(password, error => {
       if (error) {
         reject(error);
         return;
@@ -162,10 +138,9 @@ export function submitPassword(password) {
     });
   });
 }
-
 export function createNewVault(password) {
   return new Promise((resolve, reject) => {
-    background.createNewVaultAndKeychain(password, (error) => {
+    background.createNewVaultAndKeychain(password, error => {
       if (error) {
         reject(error);
         return;
@@ -175,10 +150,9 @@ export function createNewVault(password) {
     });
   });
 }
-
 export function verifyPassword(password) {
   return new Promise((resolve, reject) => {
-    background.verifyPassword(password, (error) => {
+    background.verifyPassword(password, error => {
       if (error) {
         reject(error);
         return;
@@ -188,7 +162,6 @@ export function verifyPassword(password) {
     });
   });
 }
-
 export function verifySeedPhrase() {
   return new Promise((resolve, reject) => {
     background.verifySeedPhrase((error, seedWords) => {
@@ -201,9 +174,8 @@ export function verifySeedPhrase() {
     });
   });
 }
-
 export function requestRevealSeedWords(password) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.verifyPassword`);
 
@@ -219,22 +191,21 @@ export function requestRevealSeedWords(password) {
     }
   };
 }
-
 export function tryReverseResolveAddress(address) {
   return () => {
-    return new Promise((resolve) => {
-      background.tryReverseResolveAddress(address, (err) => {
+    return new Promise(resolve => {
+      background.tryReverseResolveAddress(address, err => {
         if (err) {
           log.error(err);
         }
+
         resolve();
       });
     });
   };
 }
-
 export function fetchInfoToSync() {
-  return (dispatch) => {
+  return dispatch => {
     log.debug(`background.fetchInfoToSync`);
     return new Promise((resolve, reject) => {
       background.fetchInfoToSync((err, result) => {
@@ -243,19 +214,19 @@ export function fetchInfoToSync() {
           reject(err);
           return;
         }
+
         resolve(result);
       });
     });
   };
 }
-
 export function resetAccount() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
-
     return new Promise((resolve, reject) => {
       background.resetAccount((err, account) => {
         dispatch(hideLoadingIndication());
+
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
@@ -269,9 +240,8 @@ export function resetAccount() {
     });
   };
 }
-
 export function removeAccount(address) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
 
     try {
@@ -281,6 +251,7 @@ export function removeAccount(address) {
             reject(error);
             return;
           }
+
           resolve(account);
         });
       });
@@ -296,13 +267,11 @@ export function removeAccount(address) {
     dispatch(showAccountsPage());
   };
 }
-
 export function importNewAccount(strategy, args) {
-  return async (dispatch) => {
+  return async dispatch => {
     let newState;
-    dispatch(
-      showLoadingIndication('This may take a while, please be patient.'),
-    );
+    dispatch(showLoadingIndication('This may take a while, please be patient.'));
+
     try {
       log.debug(`background.importAccountWithStrategy`);
       await promisifiedBackground.importAccountWithStrategy(strategy, args);
@@ -316,25 +285,28 @@ export function importNewAccount(strategy, args) {
     }
 
     dispatch(updateDexmaskState(newState));
+
     if (newState.selectedAddress) {
       dispatch({
         type: actionConstants.SHOW_ACCOUNT_DETAIL,
-        value: newState.selectedAddress,
+        value: newState.selectedAddress
       });
     }
+
     return newState;
   };
 }
-
 export function addNewAccount() {
   log.debug(`background.addNewAccount`);
   return async (dispatch, getState) => {
     const oldIdentities = getState().metamask.identities;
     dispatch(showLoadingIndication());
-
     let newIdentities;
+
     try {
-      const { identities } = await promisifiedBackground.addNewAccount();
+      const {
+        identities
+      } = await promisifiedBackground.addNewAccount();
       newIdentities = identities;
     } catch (error) {
       dispatch(displayWarning(error.message));
@@ -343,25 +315,19 @@ export function addNewAccount() {
       dispatch(hideLoadingIndication());
     }
 
-    const newAccountAddress = Object.keys(newIdentities).find(
-      (address) => !oldIdentities[address],
-    );
+    const newAccountAddress = Object.keys(newIdentities).find(address => !oldIdentities[address]);
     await forceupdateDexmaskState(dispatch);
     return newAccountAddress;
   };
 }
-
 export function checkHardwareStatus(deviceName, hdPath) {
   log.debug(`background.checkHardwareStatus`, deviceName, hdPath);
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
-
     let unlocked;
+
     try {
-      unlocked = await promisifiedBackground.checkHardwareStatus(
-        deviceName,
-        hdPath,
-      );
+      unlocked = await promisifiedBackground.checkHardwareStatus(deviceName, hdPath);
     } catch (error) {
       log.error(error);
       dispatch(displayWarning(error.message));
@@ -374,11 +340,11 @@ export function checkHardwareStatus(deviceName, hdPath) {
     return unlocked;
   };
 }
-
 export function forgetDevice(deviceName) {
   log.debug(`background.forgetDevice`, deviceName);
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
+
     try {
       await promisifiedBackground.forgetDevice(deviceName);
     } catch (error) {
@@ -392,21 +358,14 @@ export function forgetDevice(deviceName) {
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function connectHardware(deviceName, page, hdPath) {
   log.debug(`background.connectHardware`, deviceName, page, hdPath);
-  return async (dispatch) => {
-    dispatch(
-      showLoadingIndication(`Looking for your ${capitalize(deviceName)}...`),
-    );
-
+  return async dispatch => {
+    dispatch(showLoadingIndication(`Looking for your ${capitalize(deviceName)}...`));
     let accounts;
+
     try {
-      accounts = await promisifiedBackground.connectHardware(
-        deviceName,
-        page,
-        hdPath,
-      );
+      accounts = await promisifiedBackground.connectHardware(deviceName, page, hdPath);
     } catch (error) {
       log.error(error);
       dispatch(displayWarning(error.message));
@@ -419,31 +378,14 @@ export function connectHardware(deviceName, page, hdPath) {
     return accounts;
   };
 }
-
-export function unlockHardwareWalletAccounts(
-  indexes,
-  deviceName,
-  hdPath,
-  hdPathDescription,
-) {
-  log.debug(
-    `background.unlockHardwareWalletAccount`,
-    indexes,
-    deviceName,
-    hdPath,
-    hdPathDescription,
-  );
-  return async (dispatch) => {
+export function unlockHardwareWalletAccounts(indexes, deviceName, hdPath, hdPathDescription) {
+  log.debug(`background.unlockHardwareWalletAccount`, indexes, deviceName, hdPath, hdPathDescription);
+  return async dispatch => {
     dispatch(showLoadingIndication());
 
     for (const index of indexes) {
       try {
-        await promisifiedBackground.unlockHardwareWalletAccount(
-          index,
-          deviceName,
-          hdPath,
-          hdPathDescription,
-        );
+        await promisifiedBackground.unlockHardwareWalletAccount(index, deviceName, hdPath, hdPathDescription);
       } catch (e) {
         log.error(e);
         dispatch(displayWarning(e.message));
@@ -456,21 +398,18 @@ export function unlockHardwareWalletAccounts(
     return undefined;
   };
 }
-
 export function showQrScanner() {
-  return (dispatch) => {
-    dispatch(
-      showModal({
-        name: 'QR_SCANNER',
-      }),
-    );
+  return dispatch => {
+    dispatch(showModal({
+      name: 'QR_SCANNER'
+    }));
   };
 }
-
 export function setCurrentCurrency(currencyCode) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.setCurrentCurrency`);
+
     try {
       await promisifiedBackground.setCurrentCurrency(currencyCode);
       await forceupdateDexmaskState(dispatch);
@@ -483,13 +422,13 @@ export function setCurrentCurrency(currencyCode) {
     }
   };
 }
-
 export function signMsg(msgData) {
   log.debug('action - signMsg');
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.signMessage`);
     let newState;
+
     try {
       newState = await promisifiedBackground.signMessage(msgData);
     } catch (error) {
@@ -506,14 +445,13 @@ export function signMsg(msgData) {
     return msgData;
   };
 }
-
 export function signPersonalMsg(msgData) {
   log.debug('action - signPersonalMsg');
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.signPersonalMessage`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.signPersonalMessage(msgData);
     } catch (error) {
@@ -530,17 +468,14 @@ export function signPersonalMsg(msgData) {
     return msgData;
   };
 }
-
 export function decryptMsgInline(decryptedMsgData) {
   log.debug('action - decryptMsgInline');
-  return async (dispatch) => {
+  return async dispatch => {
     log.debug(`actions calling background.decryptMessageInline`);
-
     let newState;
+
     try {
-      newState = await promisifiedBackground.decryptMessageInline(
-        decryptedMsgData,
-      );
+      newState = await promisifiedBackground.decryptMessageInline(decryptedMsgData);
     } catch (error) {
       log.error(error);
       dispatch(displayWarning(error.message));
@@ -551,14 +486,13 @@ export function decryptMsgInline(decryptedMsgData) {
     return newState.unapprovedDecryptMsgs[decryptedMsgData.metamaskId];
   };
 }
-
 export function decryptMsg(decryptedMsgData) {
   log.debug('action - decryptMsg');
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.decryptMessage`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.decryptMessage(decryptedMsgData);
     } catch (error) {
@@ -575,14 +509,13 @@ export function decryptMsg(decryptedMsgData) {
     return decryptedMsgData;
   };
 }
-
 export function encryptionPublicKeyMsg(msgData) {
   log.debug('action - encryptionPublicKeyMsg');
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.encryptionPublicKey`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.encryptionPublicKey(msgData);
     } catch (error) {
@@ -599,14 +532,13 @@ export function encryptionPublicKeyMsg(msgData) {
     return msgData;
   };
 }
-
 export function signTypedMsg(msgData) {
   log.debug('action - signTypedMsg');
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.signTypedMessage`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.signTypedMessage(msgData);
     } catch (error) {
@@ -623,17 +555,15 @@ export function signTypedMsg(msgData) {
     return msgData;
   };
 }
-
 export function updateCustomNonce(value) {
   return {
     type: actionConstants.UPDATE_CUSTOM_NONCE,
-    value,
+    value
   };
 }
 
 const updateDexmaskStateFromBackground = () => {
   log.debug(`background.getState`);
-
   return new Promise((resolve, reject) => {
     background.getState((error, newState) => {
       if (error) {
@@ -647,7 +577,7 @@ const updateDexmaskStateFromBackground = () => {
 };
 
 export function updateTransaction(txData, dontShowLoadingIndicator) {
-  return async (dispatch) => {
+  return async dispatch => {
     !dontShowLoadingIndicator && dispatch(showLoadingIndication());
 
     try {
@@ -665,17 +595,17 @@ export function updateTransaction(txData, dontShowLoadingIndicator) {
       dispatch(updateTransactionParams(txData.id, txData.txParams));
       const newState = await updateDexmaskStateFromBackground();
       dispatch(updateDexmaskState(newState));
-      dispatch(showConfTxPage({ id: txData.id }));
+      dispatch(showConfTxPage({
+        id: txData.id
+      }));
       return txData;
     } finally {
       dispatch(hideLoadingIndication());
     }
   };
 }
-
 export function addUnapprovedTransaction(txParams, origin) {
   log.debug('background.addUnapprovedTransaction');
-
   return () => {
     return new Promise((resolve, reject) => {
       background.addUnapprovedTransaction(txParams, origin, (err, txMeta) => {
@@ -683,17 +613,17 @@ export function addUnapprovedTransaction(txParams, origin) {
           reject(err);
           return;
         }
+
         resolve(txMeta);
       });
     });
   };
 }
-
 export function updateAndApproveTx(txData, dontShowLoadingIndicator) {
-  return (dispatch) => {
+  return dispatch => {
     !dontShowLoadingIndicator && dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
-      background.updateAndApproveTransaction(txData, (err) => {
+      background.updateAndApproveTransaction(txData, err => {
         dispatch(updateTransactionParams(txData.id, txData.txParams));
         dispatch(resetSendState());
 
@@ -707,25 +637,19 @@ export function updateAndApproveTx(txData, dontShowLoadingIndicator) {
 
         resolve(txData);
       });
-    })
-      .then(() => updateDexmaskStateFromBackground())
-      .then((newState) => dispatch(updateDexmaskState(newState)))
-      .then(() => {
-        dispatch(resetSendState());
-        dispatch(completedTx(txData.id));
-        dispatch(hideLoadingIndication());
-        dispatch(updateCustomNonce(''));
-        dispatch(closeCurrentNotificationWindow());
-
-        return txData;
-      })
-      .catch((err) => {
-        dispatch(hideLoadingIndication());
-        return Promise.reject(err);
-      });
+    }).then(() => updateDexmaskStateFromBackground()).then(newState => dispatch(updateDexmaskState(newState))).then(() => {
+      dispatch(resetSendState());
+      dispatch(completedTx(txData.id));
+      dispatch(hideLoadingIndication());
+      dispatch(updateCustomNonce(''));
+      dispatch(closeCurrentNotificationWindow());
+      return txData;
+    }).catch(err => {
+      dispatch(hideLoadingIndication());
+      return Promise.reject(err);
+    });
   };
 }
-
 export function completedTx(id) {
   return (dispatch, getState) => {
     const state = getState();
@@ -735,49 +659,39 @@ export function completedTx(id) {
       unapprovedPersonalMsgs,
       unapprovedTypedMessages,
       network,
-      provider: { chainId },
+      provider: {
+        chainId
+      }
     } = state.metamask;
-    const unconfirmedActions = txHelper(
-      unapprovedTxs,
-      unapprovedMsgs,
-      unapprovedPersonalMsgs,
-      unapprovedTypedMessages,
-      network,
-      chainId,
-    );
-    const otherUnconfirmedActions = unconfirmedActions.filter(
-      (tx) => tx.id !== id,
-    );
+    const unconfirmedActions = txHelper(unapprovedTxs, unapprovedMsgs, unapprovedPersonalMsgs, unapprovedTypedMessages, network, chainId);
+    const otherUnconfirmedActions = unconfirmedActions.filter(tx => tx.id !== id);
     dispatch({
       type: actionConstants.COMPLETED_TX,
       value: {
         id,
-        unconfirmedActionsCount: otherUnconfirmedActions.length,
-      },
+        unconfirmedActionsCount: otherUnconfirmedActions.length
+      }
     });
   };
 }
-
 export function updateTransactionParams(id, txParams) {
   return {
     type: actionConstants.UPDATE_TRANSACTION_PARAMS,
     id,
-    value: txParams,
+    value: txParams
   };
 }
-
 export function txError(err) {
   return {
     type: actionConstants.TRANSACTION_ERROR,
-    message: err.message,
+    message: err.message
   };
 }
-
 export function cancelMsg(msgData) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelMessage(msgData.id);
     } finally {
@@ -790,12 +704,11 @@ export function cancelMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelPersonalMsg(msgData) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelPersonalMessage(msgData.id);
     } finally {
@@ -808,12 +721,11 @@ export function cancelPersonalMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelDecryptMsg(msgData) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelDecryptMessage(msgData.id);
     } finally {
@@ -826,16 +738,13 @@ export function cancelDecryptMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelEncryptionPublicKeyMsg(msgData) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
-      newState = await promisifiedBackground.cancelEncryptionPublicKey(
-        msgData.id,
-      );
+      newState = await promisifiedBackground.cancelEncryptionPublicKey(msgData.id);
     } finally {
       dispatch(hideLoadingIndication());
     }
@@ -846,12 +755,11 @@ export function cancelEncryptionPublicKeyMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelTypedMsg(msgData) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelTypedMessage(msgData.id);
     } finally {
@@ -864,12 +772,11 @@ export function cancelTypedMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelTx(txData, _showLoadingIndication = true) {
-  return (dispatch) => {
+  return dispatch => {
     _showLoadingIndication && dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
-      background.cancelTransaction(txData.id, (error) => {
+      background.cancelTransaction(txData.id, error => {
         if (error) {
           reject(error);
           return;
@@ -877,56 +784,47 @@ export function cancelTx(txData, _showLoadingIndication = true) {
 
         resolve();
       });
-    })
-      .then(() => updateDexmaskStateFromBackground())
-      .then((newState) => dispatch(updateDexmaskState(newState)))
-      .then(() => {
-        dispatch(resetSendState());
-        dispatch(completedTx(txData.id));
-        dispatch(hideLoadingIndication());
-        dispatch(closeCurrentNotificationWindow());
-
-        return txData;
-      })
-      .catch((error) => {
-        dispatch(hideLoadingIndication());
-        throw error;
-      });
+    }).then(() => updateDexmaskStateFromBackground()).then(newState => dispatch(updateDexmaskState(newState))).then(() => {
+      dispatch(resetSendState());
+      dispatch(completedTx(txData.id));
+      dispatch(hideLoadingIndication());
+      dispatch(closeCurrentNotificationWindow());
+      return txData;
+    }).catch(error => {
+      dispatch(hideLoadingIndication());
+      throw error;
+    });
   };
 }
-
 /**
  * Cancels all of the given transactions
  * @param {Array<object>} txDataList - a list of tx data objects
  * @returns {function(*): Promise<void>}
  */
+
 export function cancelTxs(txDataList) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
 
     try {
-      const txIds = txDataList.map(({ id }) => id);
-      const cancellations = txIds.map(
-        (id) =>
-          new Promise((resolve, reject) => {
-            background.cancelTransaction(id, (err) => {
-              if (err) {
-                reject(err);
-                return;
-              }
+      const txIds = txDataList.map(({
+        id
+      }) => id);
+      const cancellations = txIds.map(id => new Promise((resolve, reject) => {
+        background.cancelTransaction(id, err => {
+          if (err) {
+            reject(err);
+            return;
+          }
 
-              resolve();
-            });
-          }),
-      );
-
+          resolve();
+        });
+      }));
       await Promise.all(cancellations);
-
       const newState = await updateDexmaskStateFromBackground();
       dispatch(updateDexmaskState(newState));
       dispatch(resetSendState());
-
-      txIds.forEach((id) => {
+      txIds.forEach(id => {
         dispatch(completedTx(id));
       });
     } finally {
@@ -938,16 +836,16 @@ export function cancelTxs(txDataList) {
     }
   };
 }
-
 export function markPasswordForgotten() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       await new Promise((resolve, reject) => {
-        return background.markPasswordForgotten((error) => {
+        return background.markPasswordForgotten(error => {
           if (error) {
             reject(error);
             return;
           }
+
           resolve();
         });
       });
@@ -959,10 +857,9 @@ export function markPasswordForgotten() {
     }
   };
 }
-
 export function unMarkPasswordForgotten() {
-  return (dispatch) => {
-    return new Promise((resolve) => {
+  return dispatch => {
+    return new Promise(resolve => {
       background.unMarkPasswordForgotten(() => {
         dispatch(forgotPassword(false));
         resolve();
@@ -970,53 +867,51 @@ export function unMarkPasswordForgotten() {
     }).then(() => forceupdateDexmaskState(dispatch));
   };
 }
-
 export function forgotPassword(forgotPasswordState = true) {
   return {
     type: actionConstants.FORGOT_PASSWORD,
-    value: forgotPasswordState,
+    value: forgotPasswordState
   };
 }
-
 export function closeWelcomeScreen() {
   return {
-    type: actionConstants.CLOSE_WELCOME_SCREEN,
+    type: actionConstants.CLOSE_WELCOME_SCREEN
   };
-}
-
-//
+} //
 // unlock screen
 //
 
 export function unlockInProgress() {
   return {
-    type: actionConstants.UNLOCK_IN_PROGRESS,
+    type: actionConstants.UNLOCK_IN_PROGRESS
   };
 }
-
 export function unlockFailed(message) {
   return {
     type: actionConstants.UNLOCK_FAILED,
-    value: message,
+    value: message
   };
 }
-
 export function unlockSucceeded(message) {
   return {
     type: actionConstants.UNLOCK_SUCCEEDED,
-    value: message,
+    value: message
   };
 }
-
 export function updateDexmaskState(newState) {
   return (dispatch, getState) => {
-    const { metamask: currentState } = getState();
-
-    const { currentLocale, selectedAddress, provider } = currentState;
+    const {
+      metamask: currentState
+    } = getState();
+    const {
+      currentLocale,
+      selectedAddress,
+      provider
+    } = currentState;
     const {
       currentLocale: newLocale,
       selectedAddress: newSelectedAddress,
-      provider: newProvider,
+      provider: newProvider
     } = newState;
 
     if (currentLocale && newLocale && currentLocale !== newLocale) {
@@ -1024,73 +919,87 @@ export function updateDexmaskState(newState) {
     }
 
     if (selectedAddress !== newSelectedAddress) {
-      dispatch({ type: actionConstants.SELECTED_ADDRESS_CHANGED });
+      dispatch({
+        type: actionConstants.SELECTED_ADDRESS_CHANGED
+      });
     }
 
     const newAddressBook = newState.addressBook?.[newProvider?.chainId] ?? {};
     const oldAddressBook = currentState.addressBook?.[provider?.chainId] ?? {};
-    const newAccounts = getDexMaskAccounts({ metamask: newState });
-    const oldAccounts = getDexMaskAccounts({ metamask: currentState });
+    const newAccounts = getDexMaskAccounts({
+      metamask: newState
+    });
+    const oldAccounts = getDexMaskAccounts({
+      metamask: currentState
+    });
     const newSelectedAccount = newAccounts[newSelectedAddress];
-    const oldSelectedAccount = newAccounts[selectedAddress];
-    // dispatch an ACCOUNT_CHANGED for any account whose balance or other
+    const oldSelectedAccount = newAccounts[selectedAddress]; // dispatch an ACCOUNT_CHANGED for any account whose balance or other
     // properties changed in this update
+
     Object.entries(oldAccounts).forEach(([address, oldAccount]) => {
       if (!isEqual(oldAccount, newAccounts[address])) {
         dispatch({
           type: actionConstants.ACCOUNT_CHANGED,
-          payload: { account: newAccounts[address] },
+          payload: {
+            account: newAccounts[address]
+          }
         });
       }
-    });
-    // Also emit an event for the selected account changing, either due to a
+    }); // Also emit an event for the selected account changing, either due to a
     // property update or if the entire account changes.
+
     if (isEqual(oldSelectedAccount, newSelectedAccount) === false) {
       dispatch({
         type: actionConstants.SELECTED_ACCOUNT_CHANGED,
-        payload: { account: newSelectedAccount },
+        payload: {
+          account: newSelectedAccount
+        }
       });
-    }
-    // We need to keep track of changing address book entries
+    } // We need to keep track of changing address book entries
+
+
     if (isEqual(oldAddressBook, newAddressBook) === false) {
       dispatch({
         type: actionConstants.ADDRESS_BOOK_UPDATED,
-        payload: { addressBook: newAddressBook },
+        payload: {
+          addressBook: newAddressBook
+        }
       });
-    }
+    } // track when gasFeeEstimates change
 
-    // track when gasFeeEstimates change
-    if (
-      isEqual(currentState.gasFeeEstimates, newState.gasFeeEstimates) === false
-    ) {
+
+    if (isEqual(currentState.gasFeeEstimates, newState.gasFeeEstimates) === false) {
       dispatch({
         type: actionConstants.GAS_FEE_ESTIMATES_UPDATED,
         payload: {
           gasFeeEstimates: newState.gasFeeEstimates,
-          gasEstimateType: newState.gasEstimateType,
-        },
+          gasEstimateType: newState.gasEstimateType
+        }
       });
     }
+
     if (provider.chainId !== newProvider.chainId) {
       dispatch({
         type: actionConstants.CHAIN_CHANGED,
-        payload: newProvider.chainId,
+        payload: newProvider.chainId
       });
     }
+
     dispatch({
       type: actionConstants.UPDATE_DEXMASK_STATE,
-      value: newState,
+      value: newState
     });
   };
 }
 
 const backgroundSetLocked = () => {
   return new Promise((resolve, reject) => {
-    background.setLocked((error) => {
+    background.setLocked(error => {
       if (error) {
         reject(error);
         return;
       }
+
       resolve();
     });
   });
@@ -1098,25 +1007,23 @@ const backgroundSetLocked = () => {
 
 export function lockDexmask() {
   log.debug(`background.setLocked`);
-
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
-
-    return backgroundSetLocked()
-      .then(() => updateDexmaskStateFromBackground())
-      .catch((error) => {
-        dispatch(displayWarning(error.message));
-        return Promise.reject(error);
-      })
-      .then((newState) => {
-        dispatch(updateDexmaskState(newState));
-        dispatch(hideLoadingIndication());
-        dispatch({ type: actionConstants.LOCK_DEXMASK });
-      })
-      .catch(() => {
-        dispatch(hideLoadingIndication());
-        dispatch({ type: actionConstants.LOCK_DEXMASK });
+    return backgroundSetLocked().then(() => updateDexmaskStateFromBackground()).catch(error => {
+      dispatch(displayWarning(error.message));
+      return Promise.reject(error);
+    }).then(newState => {
+      dispatch(updateDexmaskState(newState));
+      dispatch(hideLoadingIndication());
+      dispatch({
+        type: actionConstants.LOCK_DEXMASK
       });
+    }).catch(() => {
+      dispatch(hideLoadingIndication());
+      dispatch({
+        type: actionConstants.LOCK_DEXMASK
+      });
+    });
   };
 }
 
@@ -1127,9 +1034,10 @@ async function _setSelectedAddress(dispatch, address) {
 }
 
 export function setSelectedAddress(address) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.setSelectedAddress`);
+
     try {
       await _setSelectedAddress(dispatch, address);
     } catch (error) {
@@ -1140,30 +1048,18 @@ export function setSelectedAddress(address) {
     }
   };
 }
-
 export function showAccountDetail(address) {
   return async (dispatch, getState) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setSelectedAddress`);
-
     const state = getState();
-    const unconnectedAccountAccountAlertIsEnabled = getUnconnectedAccountAlertEnabledness(
-      state,
-    );
+    const unconnectedAccountAccountAlertIsEnabled = getUnconnectedAccountAlertEnabledness(state);
     const activeTabOrigin = state.activeTab.origin;
     const selectedAddress = getSelectedAddress(state);
-    const permittedAccountsForCurrentTab = getPermittedAccountsForCurrentTab(
-      state,
-    );
-    const currentTabIsConnectedToPreviousAddress =
-      Boolean(activeTabOrigin) &&
-      permittedAccountsForCurrentTab.includes(selectedAddress);
-    const currentTabIsConnectedToNextAddress =
-      Boolean(activeTabOrigin) &&
-      permittedAccountsForCurrentTab.includes(address);
-    const switchingToUnconnectedAddress =
-      currentTabIsConnectedToPreviousAddress &&
-      !currentTabIsConnectedToNextAddress;
+    const permittedAccountsForCurrentTab = getPermittedAccountsForCurrentTab(state);
+    const currentTabIsConnectedToPreviousAddress = Boolean(activeTabOrigin) && permittedAccountsForCurrentTab.includes(selectedAddress);
+    const currentTabIsConnectedToNextAddress = Boolean(activeTabOrigin) && permittedAccountsForCurrentTab.includes(address);
+    const switchingToUnconnectedAddress = currentTabIsConnectedToPreviousAddress && !currentTabIsConnectedToNextAddress;
 
     try {
       await _setSelectedAddress(dispatch, address);
@@ -1177,265 +1073,230 @@ export function showAccountDetail(address) {
 
     dispatch({
       type: actionConstants.SHOW_ACCOUNT_DETAIL,
-      value: address,
+      value: address
     });
-    if (
-      unconnectedAccountAccountAlertIsEnabled &&
-      switchingToUnconnectedAddress
-    ) {
+
+    if (unconnectedAccountAccountAlertIsEnabled && switchingToUnconnectedAddress) {
       dispatch(switchedToUnconnectedAccount());
       await setUnconnectedAccountAlertShown(activeTabOrigin);
     }
   };
 }
-
 export function addPermittedAccount(origin, address) {
-  return async (dispatch) => {
+  return async dispatch => {
     await new Promise((resolve, reject) => {
-      background.addPermittedAccount(origin, address, (error) => {
+      background.addPermittedAccount(origin, address, error => {
         if (error) {
           reject(error);
           return;
         }
+
         resolve();
       });
     });
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function removePermittedAccount(origin, address) {
-  return async (dispatch) => {
+  return async dispatch => {
     await new Promise((resolve, reject) => {
-      background.removePermittedAccount(origin, address, (error) => {
+      background.removePermittedAccount(origin, address, error => {
         if (error) {
           reject(error);
           return;
         }
+
         resolve();
       });
     });
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function showAccountsPage() {
   return {
-    type: actionConstants.SHOW_ACCOUNTS_PAGE,
+    type: actionConstants.SHOW_ACCOUNTS_PAGE
   };
 }
-
-export function showConfTxPage({ id } = {}) {
+export function showConfTxPage({
+  id
+} = {}) {
   return {
     type: actionConstants.SHOW_CONF_TX_PAGE,
-    id,
+    id
   };
 }
-
-export function addToken(
-  address,
-  symbol,
-  decimals,
-  image,
-  dontShowLoadingIndicator,
-) {
-  return (dispatch) => {
+export function addToken(address, symbol, decimals, image, dontShowLoadingIndicator) {
+  return dispatch => {
     if (!address) {
       throw new Error('DexMask - Cannot add token without address');
     }
+
     if (!dontShowLoadingIndicator) {
       dispatch(showLoadingIndication());
     }
+
     return new Promise((resolve, reject) => {
       background.addToken(address, symbol, decimals, image, (err, tokens) => {
         dispatch(hideLoadingIndication());
+
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         dispatch(updateTokens(tokens));
         resolve(tokens);
       });
     });
   };
 }
-
 export function removeToken(address) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
       background.removeToken(address, (err, tokens) => {
         dispatch(hideLoadingIndication());
+
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         dispatch(updateTokens(tokens));
         resolve(tokens);
       });
     });
   };
 }
-
 export function addTokens(tokens) {
-  return (dispatch) => {
+  return dispatch => {
     if (Array.isArray(tokens)) {
-      return Promise.all(
-        tokens.map(({ address, symbol, decimals }) =>
-          dispatch(addToken(address, symbol, decimals)),
-        ),
-      );
+      return Promise.all(tokens.map(({
+        address,
+        symbol,
+        decimals
+      }) => dispatch(addToken(address, symbol, decimals))));
     }
-    return Promise.all(
-      Object.entries(tokens).map(([_, { address, symbol, decimals }]) =>
-        dispatch(addToken(address, symbol, decimals)),
-      ),
-    );
+
+    return Promise.all(Object.entries(tokens).map(([_, {
+      address,
+      symbol,
+      decimals
+    }]) => dispatch(addToken(address, symbol, decimals))));
   };
 }
-
 export function removeSuggestedTokens() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       background.removeSuggestedTokens((err, suggestedTokens) => {
         dispatch(hideLoadingIndication());
+
         if (err) {
           dispatch(displayWarning(err.message));
         }
+
         dispatch(clearPendingTokens());
+
         if (getEnvironmentType() === ENVIRONMENT_TYPE_NOTIFICATION) {
           global.platform.closeCurrentWindow();
           return;
         }
+
         resolve(suggestedTokens);
       });
-    })
-      .then(() => updateDexmaskStateFromBackground())
-      .then((suggestedTokens) =>
-        dispatch(updateDexmaskState({ ...suggestedTokens })),
-      );
+    }).then(() => updateDexmaskStateFromBackground()).then(suggestedTokens => dispatch(updateDexmaskState({ ...suggestedTokens
+    })));
   };
 }
-
 export function addKnownMethodData(fourBytePrefix, methodData) {
   return () => {
     background.addKnownMethodData(fourBytePrefix, methodData);
   };
 }
-
 export function updateTokens(newTokens) {
   return {
     type: actionConstants.UPDATE_TOKENS,
-    newTokens,
+    newTokens
   };
 }
-
 export function clearPendingTokens() {
   return {
-    type: actionConstants.CLEAR_PENDING_TOKENS,
+    type: actionConstants.CLEAR_PENDING_TOKENS
   };
 }
-
-export function createCancelTransaction(
-  txId,
-  customGasSettings,
-  newTxMetaProps,
-) {
+export function createCancelTransaction(txId, customGasSettings, newTxMetaProps) {
   log.debug('background.cancelTransaction');
   let newTxId;
-
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.createCancelTransaction(
-        txId,
-        customGasSettings,
-        newTxMetaProps,
-        (err, newState) => {
-          if (err) {
-            dispatch(displayWarning(err.message));
-            reject(err);
-            return;
-          }
+      background.createCancelTransaction(txId, customGasSettings, newTxMetaProps, (err, newState) => {
+        if (err) {
+          dispatch(displayWarning(err.message));
+          reject(err);
+          return;
+        }
 
-          const { currentNetworkTxList } = newState;
-          const { id } = currentNetworkTxList[currentNetworkTxList.length - 1];
-          newTxId = id;
-          resolve(newState);
-        },
-      );
-    })
-      .then((newState) => dispatch(updateDexmaskState(newState)))
-      .then(() => newTxId);
+        const {
+          currentNetworkTxList
+        } = newState;
+        const {
+          id
+        } = currentNetworkTxList[currentNetworkTxList.length - 1];
+        newTxId = id;
+        resolve(newState);
+      });
+    }).then(newState => dispatch(updateDexmaskState(newState))).then(() => newTxId);
   };
 }
-
-export function createSpeedUpTransaction(
-  txId,
-  customGasSettings,
-  newTxMetaProps,
-) {
+export function createSpeedUpTransaction(txId, customGasSettings, newTxMetaProps) {
   log.debug('background.createSpeedUpTransaction');
   let newTx;
-
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.createSpeedUpTransaction(
-        txId,
-        customGasSettings,
-        newTxMetaProps,
-        (err, newState) => {
-          if (err) {
-            dispatch(displayWarning(err.message));
-            reject(err);
-            return;
-          }
+      background.createSpeedUpTransaction(txId, customGasSettings, newTxMetaProps, (err, newState) => {
+        if (err) {
+          dispatch(displayWarning(err.message));
+          reject(err);
+          return;
+        }
 
-          const { currentNetworkTxList } = newState;
-          newTx = currentNetworkTxList[currentNetworkTxList.length - 1];
-          resolve(newState);
-        },
-      );
-    })
-      .then((newState) => dispatch(updateDexmaskState(newState)))
-      .then(() => newTx);
+        const {
+          currentNetworkTxList
+        } = newState;
+        newTx = currentNetworkTxList[currentNetworkTxList.length - 1];
+        resolve(newState);
+      });
+    }).then(newState => dispatch(updateDexmaskState(newState))).then(() => newTx);
   };
 }
-
 export function createRetryTransaction(txId, customGasSettings) {
   let newTx;
-
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.createSpeedUpTransaction(
-        txId,
-        customGasSettings,
-        (err, newState) => {
-          if (err) {
-            dispatch(displayWarning(err.message));
-            reject(err);
-            return;
-          }
+      background.createSpeedUpTransaction(txId, customGasSettings, (err, newState) => {
+        if (err) {
+          dispatch(displayWarning(err.message));
+          reject(err);
+          return;
+        }
 
-          const { currentNetworkTxList } = newState;
-          newTx = currentNetworkTxList[currentNetworkTxList.length - 1];
-          resolve(newState);
-        },
-      );
-    })
-      .then((newState) => dispatch(updateDexmaskState(newState)))
-      .then(() => newTx);
+        const {
+          currentNetworkTxList
+        } = newState;
+        newTx = currentNetworkTxList[currentNetworkTxList.length - 1];
+        resolve(newState);
+      });
+    }).then(newState => dispatch(updateDexmaskState(newState))).then(() => newTx);
   };
-}
-
-//
+} //
 // config
 //
 
 export function setProviderType(type) {
-  return async (dispatch) => {
+  return async dispatch => {
     log.debug(`background.setProviderType`, type);
 
     try {
@@ -1445,37 +1306,22 @@ export function setProviderType(type) {
       dispatch(displayWarning('Had a problem changing networks!'));
       return;
     }
+
     dispatch(updateProviderType(type));
   };
 }
-
 export function updateProviderType(type) {
   return {
     type: actionConstants.SET_PROVIDER_TYPE,
-    value: type,
+    value: type
   };
 }
-
-export function updateAndSetCustomRpc(
-  newRpc,
-  chainId,
-  ticker = 'ETH',
-  nickname,
-  rpcPrefs,
-) {
-  return async (dispatch) => {
-    log.debug(
-      `background.updateAndSetCustomRpc: ${newRpc} ${chainId} ${ticker} ${nickname}`,
-    );
+export function updateAndSetCustomRpc(newRpc, chainId, ticker = 'ETH', nickname, rpcPrefs) {
+  return async dispatch => {
+    log.debug(`background.updateAndSetCustomRpc: ${newRpc} ${chainId} ${ticker} ${nickname}`);
 
     try {
-      await promisifiedBackground.updateAndSetCustomRpc(
-        newRpc,
-        chainId,
-        ticker,
-        nickname || newRpc,
-        rpcPrefs,
-      );
+      await promisifiedBackground.updateAndSetCustomRpc(newRpc, chainId, ticker, nickname || newRpc, rpcPrefs);
     } catch (error) {
       log.error(error);
       dispatch(displayWarning('Had a problem changing networks!'));
@@ -1484,21 +1330,14 @@ export function updateAndSetCustomRpc(
 
     dispatch({
       type: actionConstants.SET_RPC_TARGET,
-      value: newRpc,
+      value: newRpc
     });
   };
 }
-
-export function editRpc(
-  oldRpc,
-  newRpc,
-  chainId,
-  ticker = 'ETH',
-  nickname,
-  rpcPrefs,
-) {
-  return async (dispatch) => {
+export function editRpc(oldRpc, newRpc, chainId, ticker = 'ETH', nickname, rpcPrefs) {
+  return async dispatch => {
     log.debug(`background.delRpcTarget: ${oldRpc}`);
+
     try {
       promisifiedBackground.delCustomRpc(oldRpc);
     } catch (error) {
@@ -1508,13 +1347,7 @@ export function editRpc(
     }
 
     try {
-      await promisifiedBackground.updateAndSetCustomRpc(
-        newRpc,
-        chainId,
-        ticker,
-        nickname || newRpc,
-        rpcPrefs,
-      );
+      await promisifiedBackground.updateAndSetCustomRpc(newRpc, chainId, ticker, nickname || newRpc, rpcPrefs);
     } catch (error) {
       log.error(error);
       dispatch(displayWarning('Had a problem changing networks!'));
@@ -1523,33 +1356,24 @@ export function editRpc(
 
     dispatch({
       type: actionConstants.SET_RPC_TARGET,
-      value: newRpc,
+      value: newRpc
     });
   };
 }
-
 export function setRpcTarget(newRpc, chainId, ticker = 'ETH', nickname) {
-  return async (dispatch) => {
-    log.debug(
-      `background.setRpcTarget: ${newRpc} ${chainId} ${ticker} ${nickname}`,
-    );
+  return async dispatch => {
+    log.debug(`background.setRpcTarget: ${newRpc} ${chainId} ${ticker} ${nickname}`);
 
     try {
-      await promisifiedBackground.setCustomRpc(
-        newRpc,
-        chainId,
-        ticker,
-        nickname || newRpc,
-      );
+      await promisifiedBackground.setCustomRpc(newRpc, chainId, ticker, nickname || newRpc);
     } catch (error) {
       log.error(error);
       dispatch(displayWarning('Had a problem changing networks!'));
     }
   };
 }
-
 export function rollbackToPreviousProvider() {
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       await promisifiedBackground.rollbackToPreviousProvider();
     } catch (error) {
@@ -1558,189 +1382,171 @@ export function rollbackToPreviousProvider() {
     }
   };
 }
-
 export function delRpcTarget(oldRpc) {
-  return (dispatch) => {
+  return dispatch => {
     log.debug(`background.delRpcTarget: ${oldRpc}`);
     return new Promise((resolve, reject) => {
-      background.delCustomRpc(oldRpc, (err) => {
+      background.delCustomRpc(oldRpc, err => {
         if (err) {
           log.error(err);
           dispatch(displayWarning('Had a problem removing network!'));
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
-}
+} // Calls the addressBookController to add a new address.
 
-// Calls the addressBookController to add a new address.
 export function addToAddressBook(recipient, nickname = '', memo = '') {
   log.debug(`background.addToAddressBook`);
-
   return async (dispatch, getState) => {
-    const { chainId } = getState().metamask.provider;
-
+    const {
+      chainId
+    } = getState().metamask.provider;
     let set;
+
     try {
-      set = await promisifiedBackground.setAddressBook(
-        toChecksumHexAddress(recipient),
-        nickname,
-        chainId,
-        memo,
-      );
+      set = await promisifiedBackground.setAddressBook(toChecksumHexAddress(recipient), nickname, chainId, memo);
     } catch (error) {
       log.error(error);
       dispatch(displayWarning('Address book failed to update'));
       throw error;
     }
+
     if (!set) {
       dispatch(displayWarning('Address book failed to update'));
     }
   };
 }
-
 /**
  * @description Calls the addressBookController to remove an existing address.
  * @param {string} addressToRemove - Address of the entry to remove from the address book
  */
+
 export function removeFromAddressBook(chainId, addressToRemove) {
   log.debug(`background.removeFromAddressBook`);
-
   return async () => {
-    await promisifiedBackground.removeFromAddressBook(
-      chainId,
-      toChecksumHexAddress(addressToRemove),
-    );
+    await promisifiedBackground.removeFromAddressBook(chainId, toChecksumHexAddress(addressToRemove));
   };
 }
-
 export function showNetworkDropdown(payload) {
   return {
     type: actionConstants.NETWORK_DROPDOWN_OPEN,
-    payload,
+    payload
   };
 }
-
 export function hideNetworkDropdown() {
   return {
-    type: actionConstants.NETWORK_DROPDOWN_CLOSE,
+    type: actionConstants.NETWORK_DROPDOWN_CLOSE
   };
 }
-
 export function showModal(payload) {
   return {
     type: actionConstants.MODAL_OPEN,
-    payload,
+    payload
   };
 }
-
 export function hideModal(payload) {
   return {
     type: actionConstants.MODAL_CLOSE,
-    payload,
+    payload
   };
 }
-
 export function closeCurrentNotificationWindow() {
   return (_, getState) => {
-    if (
-      getEnvironmentType() === ENVIRONMENT_TYPE_NOTIFICATION &&
-      !hasUnconfirmedTransactions(getState())
-    ) {
+    if (getEnvironmentType() === ENVIRONMENT_TYPE_NOTIFICATION && !hasUnconfirmedTransactions(getState())) {
       global.platform.closeCurrentWindow();
     }
   };
 }
-
-export function showSidebar({ transitionName, type, props }) {
+export function showSidebar({
+  transitionName,
+  type,
+  props
+}) {
   return {
     type: actionConstants.SIDEBAR_OPEN,
     value: {
       transitionName,
       type,
-      props,
-    },
+      props
+    }
   };
 }
-
 export function hideSidebar() {
   return {
-    type: actionConstants.SIDEBAR_CLOSE,
+    type: actionConstants.SIDEBAR_CLOSE
   };
 }
-
 export function showAlert(msg) {
   return {
     type: actionConstants.ALERT_OPEN,
-    value: msg,
+    value: msg
   };
 }
-
 export function hideAlert() {
   return {
-    type: actionConstants.ALERT_CLOSE,
+    type: actionConstants.ALERT_CLOSE
   };
 }
-
 /**
  * This action will receive two types of values via qrCodeData
  * an object with the following structure {type, values}
  * or null (used to clear the previous value)
  */
+
 export function qrCodeDetected(qrCodeData) {
-  return async (dispatch) => {
+  return async dispatch => {
     await dispatch({
       type: actionConstants.QR_CODE_DETECTED,
-      value: qrCodeData,
-    });
-
-    // If on the send page, the send slice will listen for the QR_CODE_DETECTED
+      value: qrCodeData
+    }); // If on the send page, the send slice will listen for the QR_CODE_DETECTED
     // action and update its state. Address changes need to recompute gasLimit
     // so we fire this method so that the send page gasLimit can be recomputed
+
     dispatch(computeEstimatedGasLimit());
   };
 }
-
 export function showLoadingIndication(message) {
   return {
     type: actionConstants.SHOW_LOADING,
-    value: message,
+    value: message
   };
 }
-
-export function setHardwareWalletDefaultHdPath({ device, path }) {
+export function setHardwareWalletDefaultHdPath({
+  device,
+  path
+}) {
   return {
     type: actionConstants.SET_HARDWARE_WALLET_DEFAULT_HD_PATH,
-    value: { device, path },
+    value: {
+      device,
+      path
+    }
   };
 }
-
 export function hideLoadingIndication() {
   return {
-    type: actionConstants.HIDE_LOADING,
+    type: actionConstants.HIDE_LOADING
   };
 }
-
 export function displayWarning(text) {
   return {
     type: actionConstants.DISPLAY_WARNING,
-    value: text,
+    value: text
   };
 }
-
 export function hideWarning() {
   return {
-    type: actionConstants.HIDE_WARNING,
+    type: actionConstants.HIDE_WARNING
   };
 }
-
 export function exportAccount(password, address) {
   return function (dispatch) {
     dispatch(showLoadingIndication());
-
     log.debug(`background.verifyPassword`);
     return new Promise((resolve, reject) => {
       background.verifyPassword(password, function (err) {
@@ -1751,6 +1557,7 @@ export function exportAccount(password, address) {
           reject(err);
           return;
         }
+
         log.debug(`background.exportAccount`);
         background.exportAccount(address, function (err2, result) {
           dispatch(hideLoadingIndication());
@@ -1769,7 +1576,6 @@ export function exportAccount(password, address) {
     });
   };
 }
-
 export function exportAccounts(password, addresses) {
   return function (dispatch) {
     log.debug(`background.verifyPassword`);
@@ -1780,43 +1586,35 @@ export function exportAccounts(password, addresses) {
           reject(err);
           return;
         }
+
         log.debug(`background.exportAccounts`);
-        const accountPromises = addresses.map(
-          (address) =>
-            new Promise((resolve2, reject2) =>
-              background.exportAccount(address, function (err2, result) {
-                if (err2) {
-                  log.error(err2);
-                  dispatch(
-                    displayWarning('Had a problem exporting the account.'),
-                  );
-                  reject2(err2);
-                  return;
-                }
-                resolve2(result);
-              }),
-            ),
-        );
+        const accountPromises = addresses.map(address => new Promise((resolve2, reject2) => background.exportAccount(address, function (err2, result) {
+          if (err2) {
+            log.error(err2);
+            dispatch(displayWarning('Had a problem exporting the account.'));
+            reject2(err2);
+            return;
+          }
+
+          resolve2(result);
+        })));
         resolve(Promise.all(accountPromises));
       });
     });
   };
 }
-
 export function showPrivateKey(key) {
   return {
     type: actionConstants.SHOW_PRIVATE_KEY,
-    value: key,
+    value: key
   };
 }
-
 export function setAccountLabel(account, label) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.setAccountLabel`);
-
     return new Promise((resolve, reject) => {
-      background.setAccountLabel(account, label, (err) => {
+      background.setAccountLabel(account, label, err => {
         dispatch(hideLoadingIndication());
 
         if (err) {
@@ -1827,71 +1625,71 @@ export function setAccountLabel(account, label) {
 
         dispatch({
           type: actionConstants.SET_ACCOUNT_LABEL,
-          value: { account, label },
+          value: {
+            account,
+            label
+          }
         });
         resolve(account);
       });
     });
   };
 }
-
 export function clearAccountDetails() {
   return {
-    type: actionConstants.CLEAR_ACCOUNT_DETAILS,
+    type: actionConstants.CLEAR_ACCOUNT_DETAILS
   };
 }
-
 export function showSendTokenPage() {
   return {
-    type: actionConstants.SHOW_SEND_TOKEN_PAGE,
+    type: actionConstants.SHOW_SEND_TOKEN_PAGE
   };
 }
-
 export function buyEth(opts) {
-  return async (dispatch) => {
+  return async dispatch => {
     const url = await getBuyEthUrl(opts);
-    global.platform.openTab({ url });
+    global.platform.openTab({
+      url
+    });
     dispatch({
-      type: actionConstants.BUY_ETH,
+      type: actionConstants.BUY_ETH
     });
   };
 }
-
 export function setFeatureFlag(feature, activated, notificationType) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
-      background.setFeatureFlag(
-        feature,
-        activated,
-        (err, updatedFeatureFlags) => {
-          dispatch(hideLoadingIndication());
-          if (err) {
-            dispatch(displayWarning(err.message));
-            reject(err);
-            return;
-          }
-          dispatch(updateFeatureFlags(updatedFeatureFlags));
-          notificationType && dispatch(showModal({ name: notificationType }));
-          resolve(updatedFeatureFlags);
-        },
-      );
+      background.setFeatureFlag(feature, activated, (err, updatedFeatureFlags) => {
+        dispatch(hideLoadingIndication());
+
+        if (err) {
+          dispatch(displayWarning(err.message));
+          reject(err);
+          return;
+        }
+
+        dispatch(updateFeatureFlags(updatedFeatureFlags));
+        notificationType && dispatch(showModal({
+          name: notificationType
+        }));
+        resolve(updatedFeatureFlags);
+      });
     });
   };
 }
-
 export function updateFeatureFlags(updatedFeatureFlags) {
   return {
     type: actionConstants.UPDATE_FEATURE_FLAGS,
-    value: updatedFeatureFlags,
+    value: updatedFeatureFlags
   };
 }
-
 export function setPreference(preference, value, loading = true) {
-  return (dispatch) => {
+  return dispatch => {
     if (loading) {
       dispatch(showLoadingIndication());
     }
+
     return new Promise((resolve, reject) => {
       background.setPreference(preference, value, (err, updatedPreferences) => {
         if (loading) {
@@ -1910,43 +1708,35 @@ export function setPreference(preference, value, loading = true) {
     });
   };
 }
-
 export function updatePreferences(value) {
   return {
     type: actionConstants.UPDATE_PREFERENCES,
-    value,
+    value
   };
 }
-
 export function setDefaultHomeActiveTabName(value) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setDefaultHomeActiveTabName(value);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setUseNativeCurrencyAsPrimaryCurrencyPreference(value) {
   return setPreference('useNativeCurrencyAsPrimaryCurrency', value);
 }
-
 export function setHideZeroBalanceTokens(value) {
   return setPreference('hideZeroBalanceTokens', value);
 }
-
 export function setShowFiatConversionOnTestnetsPreference(value) {
   return setPreference('showFiatInTestnets', value);
 }
-
 export function setAutoLockTimeLimit(value) {
   return setPreference('autoLockTimeLimit', value);
 }
-
 export function setTokenDisplayOrders(value) {
   return setPreference('tokenDisplayOrders', JSON.stringify(value));
 }
-
 export function setCompletedOnboarding() {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
 
     try {
@@ -1960,24 +1750,21 @@ export function setCompletedOnboarding() {
     }
   };
 }
-
 export function completeOnboarding() {
   return {
-    type: actionConstants.COMPLETE_ONBOARDING,
+    type: actionConstants.COMPLETE_ONBOARDING
   };
 }
-
 export function setMouseUserState(isMouseUser) {
   return {
     type: actionConstants.SET_MOUSE_USER_STATE,
-    value: isMouseUser,
+    value: isMouseUser
   };
 }
-
 export async function forceupdateDexmaskState(dispatch) {
   log.debug(`background.getState`);
-
   let newState;
+
   try {
     newState = await promisifiedBackground.getState();
   } catch (error) {
@@ -1988,19 +1775,18 @@ export async function forceupdateDexmaskState(dispatch) {
   dispatch(updateDexmaskState(newState));
   return newState;
 }
-
 export function toggleAccountMenu() {
   return {
-    type: actionConstants.TOGGLE_ACCOUNT_MENU,
+    type: actionConstants.TOGGLE_ACCOUNT_MENU
   };
 }
-
 export function setParticipateInMetaMetrics(val) {
-  return (dispatch) => {
+  return dispatch => {
     log.debug(`background.setParticipateInMetaMetrics`);
     return new Promise((resolve, reject) => {
       background.setParticipateInMetaMetrics(val, (err, metaMetricsId) => {
         log.debug(err);
+
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
@@ -2009,94 +1795,93 @@ export function setParticipateInMetaMetrics(val) {
 
         dispatch({
           type: actionConstants.SET_PARTICIPATE_IN_METAMETRICS,
-          value: val,
+          value: val
         });
         resolve([val, metaMetricsId]);
       });
     });
   };
 }
-
 export function setUseBlockie(val) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.setUseBlockie`);
-    background.setUseBlockie(val, (err) => {
+    background.setUseBlockie(val, err => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
     dispatch({
       type: actionConstants.SET_USE_BLOCKIE,
-      value: val,
+      value: val
     });
   };
 }
-
 export function setUseNonceField(val) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.setUseNonceField`);
-    background.setUseNonceField(val, (err) => {
+    background.setUseNonceField(val, err => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
     dispatch({
       type: actionConstants.SET_USE_NONCEFIELD,
-      value: val,
+      value: val
     });
   };
 }
-
 export function setUsePhishDetect(val) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.setUsePhishDetect`);
-    background.setUsePhishDetect(val, (err) => {
+    background.setUsePhishDetect(val, err => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
   };
 }
-
 export function setUseStaticTokenList(val) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.setUseStaticTokenList`);
-    background.setUseStaticTokenList(val, (err) => {
+    background.setUseStaticTokenList(val, err => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
   };
 }
-
 export function setIpfsGateway(val) {
-  return (dispatch) => {
+  return dispatch => {
     dispatch(showLoadingIndication());
     log.debug(`background.setIpfsGateway`);
-    background.setIpfsGateway(val, (err) => {
+    background.setIpfsGateway(val, err => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       } else {
         dispatch({
           type: actionConstants.SET_IPFS_GATEWAY,
-          value: val,
+          value: val
         });
       }
     });
   };
 }
-
 export function updateCurrentLocale(key) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
 
     try {
@@ -2113,270 +1898,229 @@ export function updateCurrentLocale(key) {
     }
   };
 }
-
 export function setCurrentLocale(locale, messages) {
   return {
     type: actionConstants.SET_CURRENT_LOCALE,
     value: {
       locale,
-      messages,
-    },
+      messages
+    }
   };
 }
-
 export function setPendingTokens(pendingTokens) {
-  const { customToken = {}, selectedTokens = {} } = pendingTokens;
-  const { address, symbol, decimals } = customToken;
-  const tokens =
-    address && symbol && decimals >= 0 <= 36
-      ? {
-          ...selectedTokens,
-          [address]: {
-            ...customToken,
-            isCustom: true,
-          },
-        }
-      : selectedTokens;
-
-  Object.keys(tokens).forEach((tokenAddress) => {
-    tokens[tokenAddress].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(
-      tokenAddress.toLowerCase(),
-    );
+  const {
+    customToken = {},
+    selectedTokens = {}
+  } = pendingTokens;
+  const {
+    address,
+    symbol,
+    decimals
+  } = customToken;
+  const tokens = address && symbol && decimals >= 0 <= 36 ? { ...selectedTokens,
+    [address]: { ...customToken,
+      isCustom: true
+    }
+  } : selectedTokens;
+  Object.keys(tokens).forEach(tokenAddress => {
+    tokens[tokenAddress].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(tokenAddress.toLowerCase());
   });
-
   return {
     type: actionConstants.SET_PENDING_TOKENS,
-    payload: tokens,
+    payload: tokens
   };
-}
-
-// Swaps
+} // Swaps
 
 export function setSwapsLiveness(swapsLiveness) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setSwapsLiveness(swapsLiveness);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function fetchAndSetQuotes(fetchParams, fetchParamsMetaData) {
-  return async (dispatch) => {
-    const [
-      quotes,
-      selectedAggId,
-    ] = await promisifiedBackground.fetchAndSetQuotes(
-      fetchParams,
-      fetchParamsMetaData,
-    );
+  return async dispatch => {
+    const [quotes, selectedAggId] = await promisifiedBackground.fetchAndSetQuotes(fetchParams, fetchParamsMetaData);
     await forceupdateDexmaskState(dispatch);
     return [quotes, selectedAggId];
   };
 }
-
 export function setSelectedQuoteAggId(aggId) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setSelectedQuoteAggId(aggId);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setSwapsTokens(tokens) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setSwapsTokens(tokens);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function resetBackgroundSwapsState() {
-  return async (dispatch) => {
+  return async dispatch => {
     const id = await promisifiedBackground.resetSwapsState();
     await forceupdateDexmaskState(dispatch);
     return id;
   };
 }
-
 export function setCustomApproveTxData(data) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setCustomApproveTxData(data);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setSwapsTxGasPrice(gasPrice) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setSwapsTxGasPrice(gasPrice);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setSwapsTxGasLimit(gasLimit) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setSwapsTxGasLimit(gasLimit, true);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function updateCustomSwapsEIP1559GasParams({
   gasLimit,
   maxFeePerGas,
-  maxPriorityFeePerGas,
+  maxPriorityFeePerGas
 }) {
-  return async (dispatch) => {
-    await Promise.all([
-      promisifiedBackground.setSwapsTxGasLimit(gasLimit),
-      promisifiedBackground.setSwapsTxMaxFeePerGas(maxFeePerGas),
-      promisifiedBackground.setSwapsTxMaxFeePriorityPerGas(
-        maxPriorityFeePerGas,
-      ),
-    ]);
+  return async dispatch => {
+    await Promise.all([promisifiedBackground.setSwapsTxGasLimit(gasLimit), promisifiedBackground.setSwapsTxMaxFeePerGas(maxFeePerGas), promisifiedBackground.setSwapsTxMaxFeePriorityPerGas(maxPriorityFeePerGas)]);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function updateSwapsUserFeeLevel(swapsCustomUserFeeLevel) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setSwapsUserFeeLevel(swapsCustomUserFeeLevel);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function customSwapsGasParamsUpdated(gasLimit, gasPrice) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setSwapsTxGasPrice(gasPrice);
     await promisifiedBackground.setSwapsTxGasLimit(gasLimit, true);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setTradeTxId(tradeTxId) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setTradeTxId(tradeTxId);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setApproveTxId(approveTxId) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setApproveTxId(approveTxId);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function safeRefetchQuotes() {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.safeRefetchQuotes();
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function stopPollingForQuotes() {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.stopPollingForQuotes();
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setBackgroundSwapRouteState(routeState) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setBackgroundSwapRouteState(routeState);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function resetSwapsPostFetchState() {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.resetPostFetchState();
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setSwapsErrorKey(errorKey) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setSwapsErrorKey(errorKey);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setInitialGasEstimate(initialAggId) {
-  return async (dispatch) => {
+  return async dispatch => {
     await promisifiedBackground.setInitialGasEstimate(initialAggId);
     await forceupdateDexmaskState(dispatch);
   };
-}
-
-// Permissions
+} // Permissions
 
 export function requestAccountsPermissionWithId(origin) {
-  return async (dispatch) => {
-    const id = await promisifiedBackground.requestAccountsPermissionWithId(
-      origin,
-    );
+  return async dispatch => {
+    const id = await promisifiedBackground.requestAccountsPermissionWithId(origin);
     await forceupdateDexmaskState(dispatch);
     return id;
   };
 }
-
 /**
  * Approves the permissions request.
  * @param {Object} request - The permissions request to approve
  * @param {string[]} accounts - The accounts to expose, if any.
  */
+
 export function approvePermissionsRequest(request, accounts) {
-  return (dispatch) => {
-    background.approvePermissionsRequest(request, accounts, (err) => {
+  return dispatch => {
+    background.approvePermissionsRequest(request, accounts, err => {
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
   };
 }
-
 /**
  * Rejects the permissions request with the given ID.
  * @param {string} requestId - The id of the request to be rejected
  */
+
 export function rejectPermissionsRequest(requestId) {
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.rejectPermissionsRequest(requestId, (err) => {
+      background.rejectPermissionsRequest(requestId, err => {
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         forceupdateDexmaskState(dispatch).then(resolve).catch(reject);
       });
     });
   };
 }
-
 /**
  * Clears the given permissions for the given origin.
  */
+
 export function removePermissionsFor(domains) {
-  return (dispatch) => {
-    background.removePermissionsFor(domains, (err) => {
+  return dispatch => {
+    background.removePermissionsFor(domains, err => {
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
   };
 }
-
 /**
  * Clears all permissions for all domains.
  */
+
 export function clearPermissions() {
-  return (dispatch) => {
-    background.clearPermissions((err) => {
+  return dispatch => {
+    background.clearPermissions(err => {
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
   };
-}
-
-// Pending Approvals
+} // Pending Approvals
 
 /**
  * Resolves a pending approval and closes the current notification window if no
@@ -2384,269 +2128,268 @@ export function clearPermissions() {
  * @param {string} id - The pending approval id
  * @param {any} [value] - The value required to confirm a pending approval
  */
+
 export function resolvePendingApproval(id, value) {
-  return async (dispatch) => {
-    await promisifiedBackground.resolvePendingApproval(id, value);
-    // Before closing the current window, check if any additional confirmations
+  return async dispatch => {
+    await promisifiedBackground.resolvePendingApproval(id, value); // Before closing the current window, check if any additional confirmations
     // are added as a result of this confirmation being accepted
-    const { pendingApprovals } = await forceupdateDexmaskState(dispatch);
+
+    const {
+      pendingApprovals
+    } = await forceupdateDexmaskState(dispatch);
+
     if (Object.values(pendingApprovals).length === 0) {
       dispatch(closeCurrentNotificationWindow());
     }
   };
 }
-
 /**
  * Rejects a pending approval and closes the current notification window if no
  * further approvals are pending after the background state updates.
  * @param {string} id - The pending approval id
  * @param {Error} [error] - The error to throw when rejecting the approval
  */
+
 export function rejectPendingApproval(id, error) {
-  return async (dispatch) => {
-    await promisifiedBackground.rejectPendingApproval(id, error);
-    // Before closing the current window, check if any additional confirmations
+  return async dispatch => {
+    await promisifiedBackground.rejectPendingApproval(id, error); // Before closing the current window, check if any additional confirmations
     // are added as a result of this confirmation being rejected
-    const { pendingApprovals } = await forceupdateDexmaskState(dispatch);
+
+    const {
+      pendingApprovals
+    } = await forceupdateDexmaskState(dispatch);
+
     if (Object.values(pendingApprovals).length === 0) {
       dispatch(closeCurrentNotificationWindow());
     }
   };
 }
-
 export function setFirstTimeFlowType(type) {
-  return (dispatch) => {
+  return dispatch => {
     log.debug(`background.setFirstTimeFlowType`);
-    background.setFirstTimeFlowType(type, (err) => {
+    background.setFirstTimeFlowType(type, err => {
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
     dispatch({
       type: actionConstants.SET_FIRST_TIME_FLOW_TYPE,
-      value: type,
+      value: type
     });
   };
 }
-
 export function setSelectedSettingsRpcUrl(newRpcUrl) {
   return {
     type: actionConstants.SET_SELECTED_SETTINGS_RPC_URL,
-    value: newRpcUrl,
+    value: newRpcUrl
   };
 }
-
 export function setNetworksTabAddMode(isInAddMode) {
   return {
     type: actionConstants.SET_NETWORKS_TAB_ADD_MODE,
-    value: isInAddMode,
+    value: isInAddMode
   };
 }
-
 export function setLastActiveTime() {
-  return (dispatch) => {
-    background.setLastActiveTime((err) => {
+  return dispatch => {
+    background.setLastActiveTime(err => {
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
   };
 }
-
 export function setDismissSeedBackUpReminder(value) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     await promisifiedBackground.setDismissSeedBackUpReminder(value);
     dispatch(hideLoadingIndication());
   };
 }
-
 export function setConnectedStatusPopoverHasBeenShown() {
   return () => {
-    background.setConnectedStatusPopoverHasBeenShown((err) => {
+    background.setConnectedStatusPopoverHasBeenShown(err => {
       if (err) {
         throw new Error(err.message);
       }
     });
   };
 }
-
 export function setRecoveryPhraseReminderHasBeenShown() {
   return () => {
-    background.setRecoveryPhraseReminderHasBeenShown((err) => {
+    background.setRecoveryPhraseReminderHasBeenShown(err => {
       if (err) {
         throw new Error(err.message);
       }
     });
   };
 }
-
 export function setRecoveryPhraseReminderLastShown(lastShown) {
   return () => {
-    background.setRecoveryPhraseReminderLastShown(lastShown, (err) => {
+    background.setRecoveryPhraseReminderLastShown(lastShown, err => {
       if (err) {
         throw new Error(err.message);
       }
     });
   };
 }
-
 export function loadingMethodDataStarted() {
   return {
-    type: actionConstants.LOADING_METHOD_DATA_STARTED,
+    type: actionConstants.LOADING_METHOD_DATA_STARTED
   };
 }
-
 export function loadingMethodDataFinished() {
   return {
-    type: actionConstants.LOADING_METHOD_DATA_FINISHED,
+    type: actionConstants.LOADING_METHOD_DATA_FINISHED
   };
 }
-
 export function getContractMethodData(data = '') {
   return (dispatch, getState) => {
     const prefixedData = addHexPrefix(data);
     const fourBytePrefix = prefixedData.slice(0, 10);
-    const { knownMethodData } = getState().metamask;
+    const {
+      knownMethodData
+    } = getState().metamask;
 
-    if (
-      (knownMethodData &&
-        knownMethodData[fourBytePrefix] &&
-        Object.keys(knownMethodData[fourBytePrefix]).length !== 0) ||
-      fourBytePrefix === '0x'
-    ) {
+    if (knownMethodData && knownMethodData[fourBytePrefix] && Object.keys(knownMethodData[fourBytePrefix]).length !== 0 || fourBytePrefix === '0x') {
       return Promise.resolve(knownMethodData[fourBytePrefix]);
     }
 
     dispatch(loadingMethodDataStarted());
     log.debug(`loadingMethodData`);
-
-    return getMethodDataAsync(fourBytePrefix).then(({ name, params }) => {
+    return getMethodDataAsync(fourBytePrefix).then(({
+      name,
+      params
+    }) => {
       dispatch(loadingMethodDataFinished());
-      background.addKnownMethodData(fourBytePrefix, { name, params }, (err) => {
+      background.addKnownMethodData(fourBytePrefix, {
+        name,
+        params
+      }, err => {
         if (err) {
           dispatch(displayWarning(err.message));
         }
       });
-      return { name, params };
+      return {
+        name,
+        params
+      };
     });
   };
 }
-
 export function loadingTokenParamsStarted() {
   return {
-    type: actionConstants.LOADING_TOKEN_PARAMS_STARTED,
+    type: actionConstants.LOADING_TOKEN_PARAMS_STARTED
   };
 }
-
 export function loadingTokenParamsFinished() {
   return {
-    type: actionConstants.LOADING_TOKEN_PARAMS_FINISHED,
+    type: actionConstants.LOADING_TOKEN_PARAMS_FINISHED
   };
 }
-
 export function getTokenParams(tokenAddress) {
   return (dispatch, getState) => {
     const existingTokens = getState().metamask.tokens;
-    const existingToken = existingTokens.find(
-      ({ address }) => tokenAddress === address,
-    );
+    const existingToken = existingTokens.find(({
+      address
+    }) => tokenAddress === address);
 
     if (existingToken) {
       return Promise.resolve({
         symbol: existingToken.symbol,
-        decimals: existingToken.decimals,
+        decimals: existingToken.decimals
       });
     }
 
     dispatch(loadingTokenParamsStarted());
     log.debug(`loadingTokenParams`);
-
-    return getSymbolAndDecimals(tokenAddress).then(({ symbol, decimals }) => {
+    return getSymbolAndDecimals(tokenAddress).then(({
+      symbol,
+      decimals
+    }) => {
       dispatch(addToken(tokenAddress, symbol, Number(decimals)));
       dispatch(loadingTokenParamsFinished());
     });
   };
 }
-
 export function setSeedPhraseBackedUp(seedPhraseBackupState) {
-  return (dispatch) => {
+  return dispatch => {
     log.debug(`background.setSeedPhraseBackedUp`);
     return new Promise((resolve, reject) => {
-      background.setSeedPhraseBackedUp(seedPhraseBackupState, (err) => {
+      background.setSeedPhraseBackedUp(seedPhraseBackupState, err => {
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         forceupdateDexmaskState(dispatch).then(resolve).catch(reject);
       });
     });
   };
 }
-
 export function initializeThreeBox() {
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.initializeThreeBox((err) => {
+      background.initializeThreeBox(err => {
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function setShowRestorePromptToFalse() {
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.setShowRestorePromptToFalse((err) => {
+      background.setShowRestorePromptToFalse(err => {
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function turnThreeBoxSyncingOn() {
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.turnThreeBoxSyncingOn((err) => {
+      background.turnThreeBoxSyncingOn(err => {
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function restoreFromThreeBox(accountAddress) {
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.restoreFromThreeBox(accountAddress, (err) => {
+      background.restoreFromThreeBox(accountAddress, err => {
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function getThreeBoxLastUpdated() {
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
       background.getThreeBoxLastUpdated((err, lastUpdated) => {
         if (err) {
@@ -2654,42 +2397,40 @@ export function getThreeBoxLastUpdated() {
           reject(err);
           return;
         }
+
         resolve(lastUpdated);
       });
     });
   };
 }
-
 export function setThreeBoxSyncingPermission(threeBoxSyncingAllowed) {
-  return (dispatch) => {
+  return dispatch => {
     return new Promise((resolve, reject) => {
-      background.setThreeBoxSyncingPermission(threeBoxSyncingAllowed, (err) => {
+      background.setThreeBoxSyncingPermission(threeBoxSyncingAllowed, err => {
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function turnThreeBoxSyncingOnAndInitialize() {
-  return async (dispatch) => {
+  return async dispatch => {
     await dispatch(setThreeBoxSyncingPermission(true));
     await dispatch(turnThreeBoxSyncingOn());
     await dispatch(initializeThreeBox(true));
   };
 }
-
 export function setNextNonce(nextNonce) {
   return {
     type: actionConstants.SET_NEXT_NONCE,
-    value: nextNonce,
+    value: nextNonce
   };
 }
-
 export function getNextNonce() {
   return (dispatch, getState) => {
     const address = getState().metamask.selectedAddress;
@@ -2700,76 +2441,71 @@ export function getNextNonce() {
           reject(err);
           return;
         }
+
         dispatch(setNextNonce(nextNonce));
         resolve(nextNonce);
       });
     });
   };
 }
-
 export function setRequestAccountTabIds(requestAccountTabIds) {
   return {
     type: actionConstants.SET_REQUEST_ACCOUNT_TABS,
-    value: requestAccountTabIds,
+    value: requestAccountTabIds
   };
 }
-
 export function getRequestAccountTabIds() {
-  return async (dispatch) => {
+  return async dispatch => {
     const requestAccountTabIds = await promisifiedBackground.getRequestAccountTabIds();
     dispatch(setRequestAccountTabIds(requestAccountTabIds));
   };
 }
-
 export function setOpenMetamaskTabsIDs(openMetaMaskTabIDs) {
   return {
     type: actionConstants.SET_OPEN_DEXMASK_TABIDS,
-    value: openMetaMaskTabIDs,
+    value: openMetaMaskTabIDs
   };
 }
-
 export function getOpenMetamaskTabsIds() {
-  return async (dispatch) => {
+  return async dispatch => {
     const openMetaMaskTabIDs = await promisifiedBackground.getOpenMetamaskTabsIds();
     dispatch(setOpenMetamaskTabsIDs(openMetaMaskTabIDs));
   };
 }
-
 export function setCurrentWindowTab(currentWindowTab) {
   return {
     type: actionConstants.SET_CURRENT_WINDOW_TAB,
-    value: currentWindowTab,
+    value: currentWindowTab
   };
 }
-
 export function getCurrentWindowTab() {
-  return async (dispatch) => {
+  return async dispatch => {
     const currentWindowTab = await global.platform.currentTab();
     dispatch(setCurrentWindowTab(currentWindowTab));
   };
 }
-
 export function setLedgerLivePreference(value) {
-  return async (dispatch) => {
+  return async dispatch => {
     dispatch(showLoadingIndication());
     await promisifiedBackground.setLedgerLivePreference(value);
     dispatch(hideLoadingIndication());
   };
 }
-
 export function captureSingleException(error) {
   return async (dispatch, getState) => {
-    const { singleExceptions } = getState().appState;
+    const {
+      singleExceptions
+    } = getState().appState;
+
     if (!(error in singleExceptions)) {
       dispatch({
         type: actionConstants.CAPTURE_SINGLE_EXCEPTION,
-        value: error,
+        value: error
       });
     }
   };
-}
+} // Wrappers around promisifedBackground
 
-// Wrappers around promisifedBackground
 /**
  * The "actions" below are not actions nor action creators. They cannot use
  * dispatch nor should they be dispatched when used. Instead they can be
@@ -2780,17 +2516,17 @@ export function captureSingleException(error) {
 export function estimateGas(params) {
   return promisifiedBackground.estimateGas(params);
 }
-
 export async function updateTokenType(tokenAddress) {
   let token = {};
+
   try {
     token = await promisifiedBackground.updateTokenType(tokenAddress);
   } catch (error) {
     log.error(error);
   }
+
   return token;
 }
-
 /**
  * initiates polling for gas fee estimates.
  *
@@ -2798,10 +2534,10 @@ export async function updateTokenType(tokenAddress) {
  *  to remove that request from consideration of whether polling needs to
  *  continue.
  */
+
 export function getGasFeeEstimatesAndStartPolling() {
   return promisifiedBackground.getGasFeeEstimatesAndStartPolling();
 }
-
 /**
  * Informs the GasFeeController that a specific token is no longer requiring
  * gas fee estimates. If all tokens unsubscribe the controller stops polling.
@@ -2810,32 +2546,20 @@ export function getGasFeeEstimatesAndStartPolling() {
  *  `getGasFeeEstimatesAndStartPolling`.
  * @returns {void}
  */
+
 export function disconnectGasFeeEstimatePoller(pollToken) {
   return promisifiedBackground.disconnectGasFeeEstimatePoller(pollToken);
 }
-
 export async function addPollingTokenToAppState(pollingToken) {
-  return promisifiedBackground.addPollingTokenToAppState(
-    pollingToken,
-    POLLING_TOKEN_ENVIRONMENT_TYPES[getEnvironmentType()],
-  );
+  return promisifiedBackground.addPollingTokenToAppState(pollingToken, POLLING_TOKEN_ENVIRONMENT_TYPES[getEnvironmentType()]);
 }
-
 export async function removePollingTokenFromAppState(pollingToken) {
-  return promisifiedBackground.removePollingTokenFromAppState(
-    pollingToken,
-    POLLING_TOKEN_ENVIRONMENT_TYPES[getEnvironmentType()],
-  );
+  return promisifiedBackground.removePollingTokenFromAppState(pollingToken, POLLING_TOKEN_ENVIRONMENT_TYPES[getEnvironmentType()]);
 }
-
 export function getGasFeeTimeEstimate(maxPriorityFeePerGas, maxFeePerGas) {
-  return promisifiedBackground.getGasFeeTimeEstimate(
-    maxPriorityFeePerGas,
-    maxFeePerGas,
-  );
-}
+  return promisifiedBackground.getGasFeeTimeEstimate(maxPriorityFeePerGas, maxFeePerGas);
+} // MetaMetrics
 
-// MetaMetrics
 /**
  * @typedef {import('../../shared/constants/metametrics').MetaMetricsEventPayload} MetaMetricsEventPayload
  * @typedef {import('../../shared/constants/metametrics').MetaMetricsEventOptions} MetaMetricsEventOptions
@@ -2848,47 +2572,40 @@ export function getGasFeeTimeEstimate(maxPriorityFeePerGas, maxFeePerGas) {
  * @param {MetaMetricsEventOptions} options - options for routing/handling of event
  * @returns {Promise<void>}
  */
+
 export function trackMetaMetricsEvent(payload, options) {
   return promisifiedBackground.trackMetaMetricsEvent(payload, options);
 }
-
 /**
  * @param {MetaMetricsPagePayload} payload - details of the page viewed
  * @param {MetaMetricsPageOptions} options - options for handling the page view
  * @returns {void}
  */
+
 export function trackMetaMetricsPage(payload, options) {
   return promisifiedBackground.trackMetaMetricsPage(payload, options);
 }
-
 export function updateViewedNotifications(notificationIdViewedStatusMap) {
-  return promisifiedBackground.updateViewedNotifications(
-    notificationIdViewedStatusMap,
-  );
+  return promisifiedBackground.updateViewedNotifications(notificationIdViewedStatusMap);
 }
-
 export async function setAlertEnabledness(alertId, enabledness) {
   await promisifiedBackground.setAlertEnabledness(alertId, enabledness);
 }
-
 export async function setUnconnectedAccountAlertShown(origin) {
   await promisifiedBackground.setUnconnectedAccountAlertShown(origin);
 }
-
 export async function setWeb3ShimUsageAlertDismissed(origin) {
   await promisifiedBackground.setWeb3ShimUsageAlertDismissed(origin);
 }
-
 export function updateCrossChainState(value) {
   return {
     type: actionConstants.UPDATE_CROSS_CHAIN_STATE,
-    value,
+    value
   };
 }
-
 export function updateConfirmAction(value) {
   return {
     type: actionConstants.UPDATE_CONFIRM_ACTION,
-    value,
+    value
   };
 }

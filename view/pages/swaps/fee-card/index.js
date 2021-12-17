@@ -1,27 +1,14 @@
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import GasTiming from '@c/app/gas-timing';
 import TransactionDetailItem from '@c/app/transaction/detail-item/transaction-detail-item.component';
 import TransactionDetail from '@c/app/transaction/detail/transaction-detail.component';
 import InfoTooltip from '@c/ui/info-tooltip';
 import Typography from '@c/ui/typography';
-import {
-  BSC_CHAIN_ID,
-  LOCALHOST_CHAIN_ID,
-  MAINNET_CHAIN_ID,
-  POLYGON_CHAIN_ID,
-  RINKEBY_CHAIN_ID,
-} from '@shared/constants/network';
+import { BSC_CHAIN_ID, LOCALHOST_CHAIN_ID, MAINNET_CHAIN_ID, POLYGON_CHAIN_ID, RINKEBY_CHAIN_ID } from '@shared/constants/network';
 import { I18nContext } from '@view/contexts/i18n';
-import {
-  COLORS,
-  FONT_WEIGHT,
-  TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-
-const GAS_FEES_LEARN_MORE_URL =
-  'https://community.metamask.io/t/what-is-gas-why-do-transactions-take-so-long/3172';
-
+import { COLORS, FONT_WEIGHT, TYPOGRAPHY } from '@view/helpers/constants/design-system';
+const GAS_FEES_LEARN_MORE_URL = 'https://community.metamask.io/t/what-is-gas-why-do-transactions-take-so-long/3172';
 export default function FeeCard({
   primaryFee,
   secondaryFee,
@@ -38,11 +25,11 @@ export default function FeeCard({
   chainId,
   networkAndAccountSupports1559,
   maxPriorityFeePerGasDecGWEI,
-  maxFeePerGasDecGWEI,
+  maxFeePerGasDecGWEI
 }) {
   const t = useContext(I18nContext);
-
   let bestQuoteText = '';
+
   if (isBestQuote && tokenConversionRate) {
     bestQuoteText = t('swapUsingBestQuote');
   } else if (tokenConversionRate) {
@@ -53,33 +40,29 @@ export default function FeeCard({
     switch (chainId) {
       case MAINNET_CHAIN_ID:
         return t('networkNameEthereum');
+
       case BSC_CHAIN_ID:
         return t('networkNameBSC');
+
       case POLYGON_CHAIN_ID:
         return t('networkNamePolygon');
+
       case LOCALHOST_CHAIN_ID:
         return t('networkNameTestnet');
+
       case RINKEBY_CHAIN_ID:
         return t('networkNameRinkeby');
+
       default:
         throw new Error('This network is not supported for token swaps');
     }
   };
 
-  return (
-    <div className="fee-card">
-      <div
-        className="fee-card__savings-and-quotes-header"
-        data-testid="fee-card__savings-and-quotes-header"
-      >
+  return <div className="fee-card">
+      <div className="fee-card__savings-and-quotes-header" data-testid="fee-card__savings-and-quotes-header">
         <div className="fee-card__savings-and-quotes-row">
-          {bestQuoteText && (
-            <p className="fee-card__savings-text">{bestQuoteText}</p>
-          )}
-          <div
-            className="fee-card__quote-link-container"
-            onClick={onQuotesClick}
-          >
+          {bestQuoteText && <p className="fee-card__savings-text">{bestQuoteText}</p>}
+          <div className="fee-card__quote-link-container" onClick={onQuotesClick}>
             <p className="fee-card__quote-link-text">
               {t('swapNQuotes', [numberOfQuotes])}
             </p>
@@ -90,135 +73,72 @@ export default function FeeCard({
         </div>
       </div>
       <div className="fee-card__main">
-        {networkAndAccountSupports1559 && (
-          <TransactionDetail
-            rows={[
-              <TransactionDetailItem
-                key="gas-item"
-                detailTitle={
-                  <>
+        {networkAndAccountSupports1559 && <TransactionDetail rows={[<TransactionDetailItem key="gas-item" detailTitle={<>
                     {t('transactionDetailGasHeading')}
-                    <InfoTooltip
-                      position="top"
-                      contentText={
-                        <>
+                    <InfoTooltip position="top" contentText={<>
                           <p className="fee-card__info-tooltip-paragraph">
-                            {t('swapGasFeesSummary', [
-                              getTranslatedNetworkName(),
-                            ])}
+                            {t('swapGasFeesSummary', [getTranslatedNetworkName()])}
                           </p>
                           <p className="fee-card__info-tooltip-paragraph">
                             {t('swapGasFeesDetails')}
                           </p>
                           <p className="fee-card__info-tooltip-paragraph">
-                            {/* <a
-                              className="fee-card__link"
-                              onClick={() => {
-                                global.platform.openTab({
-                                  url: GAS_FEES_LEARN_MORE_URL,
-                                });
-                              }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {t('swapGasFeesLearnMore')}
-                            </a> */}
+                            {
+              /* <a
+               className="fee-card__link"
+               onClick={() => {
+                 global.platform.openTab({
+                   url: GAS_FEES_LEARN_MORE_URL,
+                 });
+               }}
+               target="_blank"
+               rel="noopener noreferrer"
+              >
+               {t('swapGasFeesLearnMore')}
+              </a> */
+            }
                           </p>
-                        </>
-                      }
-                      containerClassName="fee-card__info-tooltip-content-container"
-                      wrapperClassName="fee-card__row-label fee-card__info-tooltip-container"
-                      wide
-                    />
-                  </>
-                }
-                detailText={primaryFee.fee}
-                detailTotal={secondaryFee.fee}
-                subTitle={
-                  <GasTiming
-                    maxPriorityFeePerGas={maxPriorityFeePerGasDecGWEI}
-                    maxFeePerGas={maxFeePerGasDecGWEI}
-                  />
-                }
-                subText={
-                  secondaryFee?.maxFee !== undefined && (
-                    <>
-                      <Typography
-                        tag="span"
-                        fontWeight={FONT_WEIGHT.BOLD}
-                        color={COLORS.UI4}
-                        variant={TYPOGRAPHY.H7}
-                      >
+                        </>} containerClassName="fee-card__info-tooltip-content-container" wrapperClassName="fee-card__row-label fee-card__info-tooltip-container" wide />
+                  </>} detailText={primaryFee.fee} detailTotal={secondaryFee.fee} subTitle={<GasTiming maxPriorityFeePerGas={maxPriorityFeePerGasDecGWEI} maxFeePerGas={maxFeePerGasDecGWEI} />} subText={secondaryFee?.maxFee !== undefined && <>
+                      <Typography tag="span" fontWeight={FONT_WEIGHT.BOLD} color={COLORS.UI4} variant={TYPOGRAPHY.H7}>
                         {t('maxFee')}
                       </Typography>
                       {`: ${secondaryFee.maxFee}`}
-                      <span
-                        className="fee-card__edit-link"
-                        onClick={() => onFeeCardMaxRowClick()}
-                      >
+                      <span className="fee-card__edit-link" onClick={() => onFeeCardMaxRowClick()}>
                         {t('edit')}
                       </span>
-                    </>
-                  )
-                }
-              />,
-            ]}
-          />
-        )}
-        {!networkAndAccountSupports1559 && (
-          <div
-            className="fee-card__row-header"
-            data-testid="fee-card__row-header"
-          >
+                    </>} />]} />}
+        {!networkAndAccountSupports1559 && <div className="fee-card__row-header" data-testid="fee-card__row-header">
             <div>
               <div className="fee-card__row-header-text--bold">
                 {t('swapEstimatedNetworkFee')}
               </div>
-              <InfoTooltip
-                position="top"
-                contentText={
-                  <>
+              <InfoTooltip position="top" contentText={<>
                     <p className="fee-card__info-tooltip-paragraph">
                       {t('swapNetworkFeeSummary', [getTranslatedNetworkName()])}
                     </p>
                     <p className="fee-card__info-tooltip-paragraph">
-                      {t('swapEstimatedNetworkFeeSummary', [
-                        <span className="fee-card__bold" key="fee-card-bold-1">
+                      {t('swapEstimatedNetworkFeeSummary', [<span className="fee-card__bold" key="fee-card-bold-1">
                           {t('swapEstimatedNetworkFee')}
-                        </span>,
-                      ])}
+                        </span>])}
                     </p>
                     <p className="fee-card__info-tooltip-paragraph">
-                      {t('swapMaxNetworkFeeInfo', [
-                        <span className="fee-card__bold" key="fee-card-bold-2">
+                      {t('swapMaxNetworkFeeInfo', [<span className="fee-card__bold" key="fee-card-bold-2">
                           {t('swapMaxNetworkFees')}
-                        </span>,
-                      ])}
+                        </span>])}
                     </p>
-                  </>
-                }
-                containerClassName="fee-card__info-tooltip-content-container"
-                wrapperClassName="fee-card__row-label fee-card__info-tooltip-container"
-                wide
-              />
+                  </>} containerClassName="fee-card__info-tooltip-content-container" wrapperClassName="fee-card__row-label fee-card__info-tooltip-container" wide />
             </div>
             <div>
               <div className="fee-card__row-header-secondary--bold">
                 {primaryFee.fee}
               </div>
-              {secondaryFee && (
-                <div className="fee-card__row-header-primary--bold">
+              {secondaryFee && <div className="fee-card__row-header-primary--bold">
                   {secondaryFee.fee}
-                </div>
-              )}
+                </div>}
             </div>
-          </div>
-        )}
-        {!networkAndAccountSupports1559 && (
-          <div
-            className="fee-card__row-header"
-            onClick={() => onFeeCardMaxRowClick()}
-          >
+          </div>}
+        {!networkAndAccountSupports1559 && <div className="fee-card__row-header" onClick={() => onFeeCardMaxRowClick()}>
             <div>
               <div className="fee-card__row-header-text">
                 {t('swapMaxNetworkFees')}
@@ -229,62 +149,42 @@ export default function FeeCard({
               <div className="fee-card__row-header-secondary">
                 {primaryFee.maxFee}
               </div>
-              {secondaryFee?.maxFee !== undefined && (
-                <div className="fee-card__row-header-primary">
+              {secondaryFee?.maxFee !== undefined && <div className="fee-card__row-header-primary">
                   {secondaryFee.maxFee}
-                </div>
-              )}
+                </div>}
             </div>
-          </div>
-        )}
+          </div>}
 
-        {!hideTokenApprovalRow && (
-          <div className="fee-card__row-header">
+        {!hideTokenApprovalRow && <div className="fee-card__row-header">
             <div className="fee-card__row-label">
               <div className="fee-card__row-header-text">
                 {t('swapThisWillAllowApprove', [tokenApprovalTextComponent])}
               </div>
-              <InfoTooltip
-                position="top"
-                contentText={t('swapEnableDescription', [
-                  tokenApprovalSourceTokenSymbol,
-                ])}
-                containerClassName="fee-card__info-tooltip-container"
-              />
+              <InfoTooltip position="top" contentText={t('swapEnableDescription', [tokenApprovalSourceTokenSymbol])} containerClassName="fee-card__info-tooltip-container" />
             </div>
-            <div
-              className="fee-card__link"
-              onClick={() => onTokenApprovalClick()}
-            >
+            <div className="fee-card__link" onClick={() => onTokenApprovalClick()}>
               {t('swapEditLimit')}
             </div>
-          </div>
-        )}
+          </div>}
         <div className="fee-card__top-bordered-row">
           <div className="fee-card__row-label">
             <div className="fee-card__row-header-text">
               {t('swapQuoteIncludesRate', [metaMaskFee])}
             </div>
-            <InfoTooltip
-              position="top"
-              contentText={t('swapMetaMaskFeeDescription', [metaMaskFee])}
-              wrapperClassName="fee-card__info-tooltip-container"
-            />
+            <InfoTooltip position="top" contentText={t('swapMetaMaskFeeDescription', [metaMaskFee])} wrapperClassName="fee-card__info-tooltip-container" />
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 FeeCard.propTypes = {
   primaryFee: PropTypes.shape({
     fee: PropTypes.string.isRequired,
-    maxFee: PropTypes.string.isRequired,
+    maxFee: PropTypes.string.isRequired
   }).isRequired,
   secondaryFee: PropTypes.shape({
     fee: PropTypes.string.isRequired,
-    maxFee: PropTypes.string.isRequired,
+    maxFee: PropTypes.string.isRequired
   }),
   onFeeCardMaxRowClick: PropTypes.func.isRequired,
   hideTokenApprovalRow: PropTypes.bool.isRequired,
@@ -299,5 +199,5 @@ FeeCard.propTypes = {
   chainId: PropTypes.string.isRequired,
   networkAndAccountSupports1559: PropTypes.bool.isRequired,
   maxPriorityFeePerGasDecGWEI: PropTypes.string,
-  maxFeePerGasDecGWEI: PropTypes.string,
+  maxFeePerGasDecGWEI: PropTypes.string
 };

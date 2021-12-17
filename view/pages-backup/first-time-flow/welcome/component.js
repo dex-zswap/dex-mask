@@ -1,39 +1,36 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import locales from '@app/_locales/index.json';
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
-import {
-  INITIALIZE_CREATE_PASSWORD_ROUTE,
-  INITIALIZE_SELECT_ACTION_ROUTE,
-} from '@view/helpers/constants/routes';
+import { INITIALIZE_CREATE_PASSWORD_ROUTE, INITIALIZE_SELECT_ACTION_ROUTE } from '@view/helpers/constants/routes';
 import EventEmitter from 'events';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class Welcome extends PureComponent {
   static propTypes = {
     history: PropTypes.object,
     participateInMetaMetrics: PropTypes.bool,
     welcomeScreenSeen: PropTypes.bool,
     currentLocale: PropTypes.object,
-    updateCurrentLocale: PropTypes.func,
+    updateCurrentLocale: PropTypes.func
   };
-
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   state = {
-    showLocaleOptions: false,
+    showLocaleOptions: false
   };
 
   constructor(props) {
     super(props);
-
     this.animationEventEmitter = new EventEmitter();
   }
 
   componentDidMount() {
-    const { history, participateInMetaMetrics, welcomeScreenSeen } = this.props;
+    const {
+      history,
+      participateInMetaMetrics,
+      welcomeScreenSeen
+    } = this.props;
 
     if (welcomeScreenSeen && participateInMetaMetrics !== null) {
       history.push(INITIALIZE_CREATE_PASSWORD_ROUTE);
@@ -43,14 +40,12 @@ export default class Welcome extends PureComponent {
   }
 
   toggleLocaleOption = () => {
-    this.setState((prev) => {
-      return {
-        ...prev,
-        showLocaleOptions: !prev.showLocaleOptions,
+    this.setState(prev => {
+      return { ...prev,
+        showLocaleOptions: !prev.showLocaleOptions
       };
     });
   };
-
   handleContinue = () => {
     this.props.history.push(INITIALIZE_SELECT_ACTION_ROUTE);
   };
@@ -62,39 +57,30 @@ export default class Welcome extends PureComponent {
   }
 
   renderLocaleOptions() {
-    return (
-      <div className="locale-options">
-        {locales.map((locale) => {
-          return (
-            <div
-              className="option-row"
-              key={locale.code}
-              onClick={(e) => this.changeLocale(e, locale.code)}
-            >
+    return <div className="locale-options">
+        {locales.map(locale => {
+        return <div className="option-row" key={locale.code} onClick={e => this.changeLocale(e, locale.code)}>
               {locale.name}
-            </div>
-          );
-        })}
-      </div>
-    );
+            </div>;
+      })}
+      </div>;
   }
 
   render() {
-    const { t } = this.context;
-    const { currentLocale } = this.props;
-    const { showLocaleOptions } = this.state;
-    const currentLocaleMeta = locales.find(
-      (locale) => locale.code === currentLocale,
-    );
+    const {
+      t
+    } = this.context;
+    const {
+      currentLocale
+    } = this.props;
+    const {
+      showLocaleOptions
+    } = this.state;
+    const currentLocaleMeta = locales.find(locale => locale.code === currentLocale);
     const currentLocaleName = currentLocaleMeta ? currentLocaleMeta.name : '';
-
-    return (
-      <div className="welcome-page__wrapper">
+    return <div className="welcome-page__wrapper">
         <div className="welcome-page">
-          <div
-            className="welcome-page__langage-switcher"
-            onClick={this.toggleLocaleOption}
-          >
+          <div className="welcome-page__langage-switcher" onClick={this.toggleLocaleOption}>
             <div className="switcher-text">{currentLocaleName}</div>
             <div className="switcher-arrow"></div>
             {showLocaleOptions ? this.renderLocaleOptions() : null}
@@ -105,16 +91,11 @@ export default class Welcome extends PureComponent {
             <div>{t('metamaskDescription')}</div>
             <div>{t('happyToSeeYou')}</div>
           </div>
-          <Button
-            type="primary"
-            className="first-time-flow__button"
-            rightArrow={true}
-            onClick={this.handleContinue}
-          >
+          <Button type="primary" className="first-time-flow__button" rightArrow={true} onClick={this.handleContinue}>
             {t('getStarted')}
           </Button>
         </div>
-      </div>
-    );
+      </div>;
   }
+
 }

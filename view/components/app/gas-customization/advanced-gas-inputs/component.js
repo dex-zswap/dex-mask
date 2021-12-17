@@ -1,14 +1,12 @@
-import Tooltip from '@c/ui/tooltip';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import Tooltip from '@c/ui/tooltip';
 export default class AdvancedGasInputs extends Component {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   static propTypes = {
     updateCustomGasPrice: PropTypes.func,
     updateCustomGasLimit: PropTypes.func,
@@ -19,18 +17,17 @@ export default class AdvancedGasInputs extends Component {
     isSpeedUp: PropTypes.bool,
     customGasLimitMessage: PropTypes.string,
     minimumGasLimit: PropTypes.number,
-    customPriceIsExcessive: PropTypes.bool,
+    customPriceIsExcessive: PropTypes.bool
   };
-
   static defaultProps = {
-    customPriceIsExcessive: false,
+    customPriceIsExcessive: false
   };
 
   constructor(props) {
     super(props);
     this.state = {
       gasPrice: this.props.customGasPrice,
-      gasLimit: this.props.customGasLimit,
+      gasLimit: this.props.customGasLimit
     };
     this.changeGasPrice = debounce(this.changeGasPrice, 500);
     this.changeGasLimit = debounce(this.changeGasLimit, 500);
@@ -39,34 +36,54 @@ export default class AdvancedGasInputs extends Component {
   componentDidUpdate(prevProps) {
     const {
       customGasPrice: prevCustomGasPrice,
-      customGasLimit: prevCustomGasLimit,
+      customGasLimit: prevCustomGasLimit
     } = prevProps;
-    const { customGasPrice, customGasLimit } = this.props;
-    const { gasPrice, gasLimit } = this.state;
+    const {
+      customGasPrice,
+      customGasLimit
+    } = this.props;
+    const {
+      gasPrice,
+      gasLimit
+    } = this.state;
 
     if (customGasPrice !== prevCustomGasPrice && customGasPrice !== gasPrice) {
-      this.setState({ gasPrice: customGasPrice });
+      this.setState({
+        gasPrice: customGasPrice
+      });
     }
+
     if (customGasLimit !== prevCustomGasLimit && customGasLimit !== gasLimit) {
-      this.setState({ gasLimit: customGasLimit });
+      this.setState({
+        gasLimit: customGasLimit
+      });
     }
   }
 
-  onChangeGasLimit = (e) => {
-    this.setState({ gasLimit: e.target.value });
-    this.changeGasLimit({ target: { value: e.target.value } });
+  onChangeGasLimit = e => {
+    this.setState({
+      gasLimit: e.target.value
+    });
+    this.changeGasLimit({
+      target: {
+        value: e.target.value
+      }
+    });
   };
-
-  changeGasLimit = (e) => {
+  changeGasLimit = e => {
     this.props.updateCustomGasLimit(Number(e.target.value));
   };
-
-  onChangeGasPrice = (e) => {
-    this.setState({ gasPrice: e.target.value });
-    this.changeGasPrice({ target: { value: e.target.value } });
+  onChangeGasPrice = e => {
+    this.setState({
+      gasPrice: e.target.value
+    });
+    this.changeGasPrice({
+      target: {
+        value: e.target.value
+      }
+    });
   };
-
-  changeGasPrice = (e) => {
+  changeGasPrice = e => {
     this.props.updateCustomGasPrice(Number(e.target.value));
   };
 
@@ -75,47 +92,55 @@ export default class AdvancedGasInputs extends Component {
     customPriceIsSafe,
     isSpeedUp,
     gasPrice,
-    customPriceIsExcessive,
+    customPriceIsExcessive
   }) {
-    const { t } = this.context;
+    const {
+      t
+    } = this.context;
 
     if (insufficientBalance) {
       return {
         errorText: t('insufficientBalance'),
-        errorType: 'error',
+        errorType: 'error'
       };
     } else if (isSpeedUp && gasPrice === 0) {
       return {
         errorText: t('zeroGasPriceOnSpeedUpError'),
-        errorType: 'error',
+        errorType: 'error'
       };
     } else if (!customPriceIsSafe) {
       return {
         errorText: t('gasPriceExtremelyLow'),
-        errorType: 'warning',
+        errorType: 'warning'
       };
     } else if (customPriceIsExcessive) {
       return {
         errorText: t('gasPriceExcessiveInput'),
-        errorType: 'error',
+        errorType: 'error'
       };
     }
 
     return {};
   }
 
-  gasLimitError({ insufficientBalance, gasLimit, minimumGasLimit }) {
-    const { t } = this.context;
+  gasLimitError({
+    insufficientBalance,
+    gasLimit,
+    minimumGasLimit
+  }) {
+    const {
+      t
+    } = this.context;
 
     if (insufficientBalance) {
       return {
         errorText: t('insufficientBalance'),
-        errorType: 'error',
+        errorType: 'error'
       };
     } else if (gasLimit < minimumGasLimit) {
       return {
         errorText: t('gasLimitTooLowWithDynamicFee', [minimumGasLimit]),
-        errorType: 'error',
+        errorType: 'error'
       };
     }
 
@@ -129,10 +154,9 @@ export default class AdvancedGasInputs extends Component {
     errorType,
     label,
     customMessageComponent,
-    tooltipTitle,
+    tooltipTitle
   }) {
-    return (
-      <div className="advanced-gas-inputs__gas-edit-row">
+    return <div className="advanced-gas-inputs__gas-edit-row">
         <div className="advanced-gas-inputs__gas-edit-row__label">
           {label}
           <Tooltip title={tooltipTitle} position="top" arrow>
@@ -140,48 +164,32 @@ export default class AdvancedGasInputs extends Component {
           </Tooltip>
         </div>
         <div className="advanced-gas-inputs__gas-edit-row__input-wrapper">
-          <input
-            className={classnames('advanced-gas-inputs__gas-edit-row__input', {
-              'advanced-gas-inputs__gas-edit-row__input--error':
-                errorType === 'error',
-              'advanced-gas-inputs__gas-edit-row__input--warning':
-                errorType === 'warning',
-            })}
-            type="number"
-            min="0"
-            value={value}
-            onChange={onChange}
-          />
-          <div
-            className={classnames(
-              'advanced-gas-inputs__gas-edit-row__input-arrows',
-              {
-                'advanced-gas-inputs__gas-edit-row__input--error':
-                  errorType === 'error',
-                'advanced-gas-inputs__gas-edit-row__input--warning':
-                  errorType === 'warning',
-              },
-            )}
-          >
-            <div
-              className="advanced-gas-inputs__gas-edit-row__input-arrows__i-wrap"
-              onClick={() => onChange({ target: { value: value + 1 } })}
-            >
+          <input className={classnames('advanced-gas-inputs__gas-edit-row__input', {
+          'advanced-gas-inputs__gas-edit-row__input--error': errorType === 'error',
+          'advanced-gas-inputs__gas-edit-row__input--warning': errorType === 'warning'
+        })} type="number" min="0" value={value} onChange={onChange} />
+          <div className={classnames('advanced-gas-inputs__gas-edit-row__input-arrows', {
+          'advanced-gas-inputs__gas-edit-row__input--error': errorType === 'error',
+          'advanced-gas-inputs__gas-edit-row__input--warning': errorType === 'warning'
+        })}>
+            <div className="advanced-gas-inputs__gas-edit-row__input-arrows__i-wrap" onClick={() => onChange({
+            target: {
+              value: value + 1
+            }
+          })}>
               <i className="fa fa-sm fa-angle-up" />
             </div>
-            <div
-              className="advanced-gas-inputs__gas-edit-row__input-arrows__i-wrap"
-              onClick={() =>
-                onChange({ target: { value: Math.max(value - 1, 0) } })
-              }
-            >
+            <div className="advanced-gas-inputs__gas-edit-row__input-arrows__i-wrap" onClick={() => onChange({
+            target: {
+              value: Math.max(value - 1, 0)
+            }
+          })}>
               <i className="fa fa-sm fa-angle-down" />
             </div>
           </div>
           {errorComponent || customMessageComponent}
         </div>
-      </div>
-    );
+      </div>;
   }
 
   render() {
@@ -191,66 +199,58 @@ export default class AdvancedGasInputs extends Component {
       isSpeedUp,
       customGasLimitMessage,
       minimumGasLimit,
-      customPriceIsExcessive,
+      customPriceIsExcessive
     } = this.props;
-    const { gasPrice, gasLimit } = this.state;
-
+    const {
+      gasPrice,
+      gasLimit
+    } = this.state;
     const {
       errorText: gasPriceErrorText,
-      errorType: gasPriceErrorType,
+      errorType: gasPriceErrorType
     } = this.gasPriceError({
       insufficientBalance,
       customPriceIsSafe,
       isSpeedUp,
       gasPrice,
-      customPriceIsExcessive,
+      customPriceIsExcessive
     });
-    const gasPriceErrorComponent = gasPriceErrorType ? (
-      <div
-        className={`advanced-gas-inputs__gas-edit-row__${gasPriceErrorType}-text`}
-      >
+    const gasPriceErrorComponent = gasPriceErrorType ? <div className={`advanced-gas-inputs__gas-edit-row__${gasPriceErrorType}-text`}>
         {gasPriceErrorText}
-      </div>
-    ) : null;
-
+      </div> : null;
     const {
       errorText: gasLimitErrorText,
-      errorType: gasLimitErrorType,
-    } = this.gasLimitError({ insufficientBalance, gasLimit, minimumGasLimit });
-    const gasLimitErrorComponent = gasLimitErrorType ? (
-      <div
-        className={`advanced-gas-inputs__gas-edit-row__${gasLimitErrorType}-text`}
-      >
+      errorType: gasLimitErrorType
+    } = this.gasLimitError({
+      insufficientBalance,
+      gasLimit,
+      minimumGasLimit
+    });
+    const gasLimitErrorComponent = gasLimitErrorType ? <div className={`advanced-gas-inputs__gas-edit-row__${gasLimitErrorType}-text`}>
         {gasLimitErrorText}
-      </div>
-    ) : null;
-
-    const gasLimitCustomMessageComponent = customGasLimitMessage ? (
-      <div className="advanced-gas-inputs__gas-edit-row__custom-text">
+      </div> : null;
+    const gasLimitCustomMessageComponent = customGasLimitMessage ? <div className="advanced-gas-inputs__gas-edit-row__custom-text">
         {customGasLimitMessage}
-      </div>
-    ) : null;
-
-    return (
-      <div className="advanced-gas-inputs__gas-edit-rows">
+      </div> : null;
+    return <div className="advanced-gas-inputs__gas-edit-rows">
         {this.renderGasInput({
-          label: this.context.t('gasPrice'),
-          tooltipTitle: this.context.t('gasPriceInfoTooltipContent'),
-          value: this.state.gasPrice,
-          onChange: this.onChangeGasPrice,
-          errorComponent: gasPriceErrorComponent,
-          errorType: gasPriceErrorType,
-        })}
+        label: this.context.t('gasPrice'),
+        tooltipTitle: this.context.t('gasPriceInfoTooltipContent'),
+        value: this.state.gasPrice,
+        onChange: this.onChangeGasPrice,
+        errorComponent: gasPriceErrorComponent,
+        errorType: gasPriceErrorType
+      })}
         {this.renderGasInput({
-          label: this.context.t('gasLimit'),
-          tooltipTitle: this.context.t('gasLimitInfoTooltipContent'),
-          value: this.state.gasLimit,
-          onChange: this.onChangeGasLimit,
-          errorComponent: gasLimitErrorComponent,
-          customMessageComponent: gasLimitCustomMessageComponent,
-          errorType: gasLimitErrorType,
-        })}
-      </div>
-    );
+        label: this.context.t('gasLimit'),
+        tooltipTitle: this.context.t('gasLimitInfoTooltipContent'),
+        value: this.state.gasLimit,
+        onChange: this.onChangeGasLimit,
+        errorComponent: gasLimitErrorComponent,
+        customMessageComponent: gasLimitCustomMessageComponent,
+        errorType: gasLimitErrorType
+      })}
+      </div>;
   }
+
 }

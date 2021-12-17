@@ -1,9 +1,9 @@
+import React, { PureComponent } from 'react';
+import { HashRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import PropTypes from 'prop-types';
 import AutoInitTokens from '@c/app/auto-init-tokens';
 import { I18nProvider, LegacyI18nProvider } from '@view/contexts/i18n';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import { Provider } from 'react-redux';
-import { HashRouter } from 'react-router-dom';
 import ErrorPage from './error';
 import Routes from './routes';
 
@@ -11,7 +11,9 @@ class Page extends PureComponent {
   state = {};
 
   static getDerivedStateFromError(error) {
-    return { error };
+    return {
+      error
+    };
   }
 
   componentDidCatch(error) {
@@ -19,23 +21,25 @@ class Page extends PureComponent {
   }
 
   render() {
-    const { error, errorId } = this.state;
-    const { store } = this.props;
+    const {
+      error,
+      errorId
+    } = this.state;
+    const {
+      store
+    } = this.props;
 
     if (error) {
-      return (
-        <Provider store={store}>
+      return <Provider store={store}>
           <I18nProvider>
             <LegacyI18nProvider>
               <ErrorPage error={error} errorId={errorId} />
             </LegacyI18nProvider>
           </I18nProvider>
-        </Provider>
-      );
+        </Provider>;
     }
 
-    return (
-      <Provider store={store}>
+    return <Provider store={store}>
         <HashRouter hashType="noslash">
           <I18nProvider>
             <LegacyI18nProvider>
@@ -46,13 +50,12 @@ class Page extends PureComponent {
             </LegacyI18nProvider>
           </I18nProvider>
         </HashRouter>
-      </Provider>
-    );
+      </Provider>;
   }
+
 }
 
 Page.propTypes = {
-  store: PropTypes.object,
+  store: PropTypes.object
 };
-
 export default Page;

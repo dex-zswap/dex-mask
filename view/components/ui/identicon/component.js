@@ -1,15 +1,15 @@
-import Jazzicon from '@c/ui/jazzicon';
+import React, { PureComponent } from 'react';
 import contractMap from '@metamask/contract-metadata';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import Jazzicon from '@c/ui/jazzicon';
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import BlockieIdenticon from './blockieIdenticon';
 
-const getStyles = (diameter) => ({
+const getStyles = diameter => ({
   height: diameter,
   width: diameter,
-  borderRadius: diameter / 2,
+  borderRadius: diameter / 2
 });
 
 export default class Identicon extends PureComponent {
@@ -21,9 +21,8 @@ export default class Identicon extends PureComponent {
     image: PropTypes.string,
     useBlockie: PropTypes.bool,
     alt: PropTypes.string,
-    imageBorder: PropTypes.bool,
+    imageBorder: PropTypes.bool
   };
-
   static defaultProps = {
     addBorder: false,
     address: undefined,
@@ -31,53 +30,52 @@ export default class Identicon extends PureComponent {
     diameter: 46,
     image: undefined,
     useBlockie: false,
-    alt: '',
+    alt: ''
   };
 
   renderImage() {
-    const { className, diameter, image, alt, imageBorder } = this.props;
-
-    return (
-      <img
-        className={classnames('identicon', className, {
-          'identicon__image-border': imageBorder,
-        })}
-        src={image}
-        style={getStyles(diameter)}
-        alt={alt}
-      />
-    );
+    const {
+      className,
+      diameter,
+      image,
+      alt,
+      imageBorder
+    } = this.props;
+    return <img className={classnames('identicon', className, {
+      'identicon__image-border': imageBorder
+    })} src={image} style={getStyles(diameter)} alt={alt} />;
   }
 
   renderJazzicon() {
-    const { address, className, diameter, alt } = this.props;
-
-    return (
-      <Jazzicon
-        address={address}
-        diameter={diameter}
-        className={classnames('identicon', className)}
-        style={getStyles(diameter)}
-        alt={alt}
-      />
-    );
+    const {
+      address,
+      className,
+      diameter,
+      alt
+    } = this.props;
+    return <Jazzicon address={address} diameter={diameter} className={classnames('identicon', className)} style={getStyles(diameter)} alt={alt} />;
   }
 
   renderBlockie() {
-    const { address, className, diameter, alt } = this.props;
-
-    return (
-      <div
-        className={classnames('identicon', className)}
-        style={getStyles(diameter)}
-      >
+    const {
+      address,
+      className,
+      diameter,
+      alt
+    } = this.props;
+    return <div className={classnames('identicon', className)} style={getStyles(diameter)}>
         <BlockieIdenticon address={address} diameter={diameter} alt={alt} />
-      </div>
-    );
+      </div>;
   }
 
   render() {
-    const { address, image, useBlockie, addBorder, diameter } = this.props;
+    const {
+      address,
+      image,
+      useBlockie,
+      addBorder,
+      diameter
+    } = this.props;
 
     if (image) {
       return this.renderImage();
@@ -90,20 +88,14 @@ export default class Identicon extends PureComponent {
         return this.renderJazzicon();
       }
 
-      return (
-        <div
-          className={classnames({ 'identicon__address-wrapper': addBorder })}
-        >
+      return <div className={classnames({
+        'identicon__address-wrapper': addBorder
+      })}>
           {useBlockie ? this.renderBlockie() : this.renderJazzicon()}
-        </div>
-      );
+        </div>;
     }
 
-    return (
-      <div
-        style={getStyles(diameter)}
-        className="identicon__image-border"
-      ></div>
-    );
+    return <div style={getStyles(diameter)} className="identicon__image-border"></div>;
   }
+
 }

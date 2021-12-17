@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
-import { ethers } from 'ethers';
 import classnames from 'classnames';
-
+import { ethers } from 'ethers';
 import TokenImage from '@c/ui/token-image';
 
 const AssetListItem = ({
@@ -15,17 +14,9 @@ const AssetListItem = ({
   secondary
 }) => {
   const isNativeAsset = !tokenAddress;
-
-  return (
-    <div className={classnames('asset-list-item', `asset-${tokenAddress ?? 'native'}`, className)} onClick={onClick}>
+  return <div className={classnames('asset-list-item', `asset-${tokenAddress ?? 'native'}`, className)} onClick={onClick}>
       <div className="symbol-image">
-        <TokenImage
-          symbol={tokenSymbol}
-          size={32}
-          address={
-            isNativeAsset ? ethers.constants.AddressZero : tokenAddress
-          }
-        />
+        <TokenImage symbol={tokenSymbol} size={32} address={isNativeAsset ? ethers.constants.AddressZero : tokenAddress} />
         <p className="token-symbol">{tokenSymbol}</p>
       </div>
       <div className="token-balance">
@@ -33,8 +24,7 @@ const AssetListItem = ({
           {primary}
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
 
 export default AssetListItem;

@@ -1,31 +1,29 @@
-import { closeWelcomeScreen, updateCurrentLocale } from '@view/store/actions';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { closeWelcomeScreen, updateCurrentLocale } from '@view/store/actions';
 import Welcome from './component';
 
-const mapStateToProps = ({ metamask }) => {
+const mapStateToProps = ({
+  metamask
+}) => {
   const {
     welcomeScreenSeen,
     participateInMetaMetrics,
-    currentLocale,
+    currentLocale
   } = metamask;
-
   return {
     currentLocale,
     welcomeScreenSeen,
-    participateInMetaMetrics,
+    participateInMetaMetrics
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    updateCurrentLocale: (key) => dispatch(updateCurrentLocale(key)),
-    closeWelcomeScreen: () => dispatch(closeWelcomeScreen()),
+    updateCurrentLocale: key => dispatch(updateCurrentLocale(key)),
+    closeWelcomeScreen: () => dispatch(closeWelcomeScreen())
   };
 };
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-)(Welcome);
+export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(Welcome);

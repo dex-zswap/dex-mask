@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 const Dropdown = ({
   className,
@@ -9,35 +9,21 @@ const Dropdown = ({
   options,
   selectedOption,
   style,
-  title,
+  title
 }) => {
-  const _onChange = useCallback(
-    (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      onChange(event.target.value);
-    },
-    [onChange],
-  );
+  const _onChange = useCallback(event => {
+    event.preventDefault();
+    event.stopPropagation();
+    onChange(event.target.value);
+  }, [onChange]);
 
-  return (
-    <select
-      className={classnames('dropdown', className)}
-      disabled={disabled}
-      title={title}
-      onChange={_onChange}
-      style={style}
-      value={selectedOption}
-    >
-      {options.map((option) => {
-        return (
-          <option key={option.value} value={option.value}>
+  return <select className={classnames('dropdown', className)} disabled={disabled} title={title} onChange={_onChange} style={style} value={selectedOption}>
+      {options.map(option => {
+      return <option key={option.value} value={option.value}>
             {option.name || option.value}
-          </option>
-        );
-      })}
-    </select>
-  );
+          </option>;
+    })}
+    </select>;
 };
 
 Dropdown.propTypes = {
@@ -45,22 +31,18 @@ Dropdown.propTypes = {
   disabled: PropTypes.bool,
   title: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  options: PropTypes.arrayOf(
-    PropTypes.exact({
-      name: PropTypes.string,
-      value: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
+  options: PropTypes.arrayOf(PropTypes.exact({
+    name: PropTypes.string,
+    value: PropTypes.string.isRequired
+  })).isRequired,
   selectedOption: PropTypes.string,
-  style: PropTypes.object,
+  style: PropTypes.object
 };
-
 Dropdown.defaultProps = {
   className: undefined,
   disabled: false,
   title: undefined,
   selectedOption: null,
-  style: undefined,
+  style: undefined
 };
-
 export default Dropdown;

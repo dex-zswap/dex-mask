@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-
 /**
  * useTimeout
  *
@@ -9,14 +8,13 @@ import { useState, useEffect, useRef, useCallback } from 'react';
  *
  * @return {Function|undefined}
  */
+
 export function useTimeout(cb, delay, immediate = true) {
   const saveCb = useRef();
   const [timeoutId, setTimeoutId] = useState(null);
-
   useEffect(() => {
     saveCb.current = cb;
   }, [cb]);
-
   useEffect(() => {
     if (timeoutId !== 'start') {
       return undefined;
@@ -25,14 +23,11 @@ export function useTimeout(cb, delay, immediate = true) {
     const id = setTimeout(() => {
       saveCb.current();
     }, delay);
-
     setTimeoutId(id);
-
     return () => {
       clearTimeout(timeoutId);
     };
   }, [delay, timeoutId]);
-
   const startTimeout = useCallback(() => {
     clearTimeout(timeoutId);
     setTimeoutId('start');

@@ -1,15 +1,13 @@
-import Dropdown from '@c/ui/dropdown';
+import React, { Component } from 'react'; // Subviews
+
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-// Subviews
+import Dropdown from '@c/ui/dropdown';
 import JsonImportView from './json';
 import PrivateKeyImportView from './private-key';
-
 export default class AccountImportSubview extends Component {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   state = {};
 
   getMenuItemTexts() {
@@ -17,15 +15,19 @@ export default class AccountImportSubview extends Component {
   }
 
   renderImportView() {
-    const { type } = this.state;
+    const {
+      type
+    } = this.state;
     const menuItems = this.getMenuItemTexts();
     const current = type || menuItems[0];
 
     switch (current) {
       case this.context.t('privateKey'):
         return <PrivateKeyImportView />;
+
       case this.context.t('jsonFile'):
         return <JsonImportView />;
+
       default:
         return <JsonImportView />;
     }
@@ -33,42 +35,43 @@ export default class AccountImportSubview extends Component {
 
   render() {
     const menuItems = this.getMenuItemTexts();
-    const { type } = this.state;
-
-    return (
-      <div className="new-account-import-form">
-        {/* <div className="new-account-import-disclaimer">
-          <span>{this.context.t('importAccountMsg')}</span>
-          <span
-            style={{
-              cursor: 'pointer',
-              textDecoration: 'underline',
-            }}
-            onClick={() => {
-              global.platform.openTab({
-                url:
-                  'https://metamask.zendesk.com/hc/en-us/articles/360015289932',
-              });
-            }}
-          >
-            {this.context.t('here')}
-          </span>
-        </div> */}
+    const {
+      type
+    } = this.state;
+    return <div className="new-account-import-form">
+        {
+        /* <div className="new-account-import-disclaimer">
+         <span>{this.context.t('importAccountMsg')}</span>
+         <span
+           style={{
+             cursor: 'pointer',
+             textDecoration: 'underline',
+           }}
+           onClick={() => {
+             global.platform.openTab({
+               url:
+                 'https://metamask.zendesk.com/hc/en-us/articles/360015289932',
+             });
+           }}
+         >
+           {this.context.t('here')}
+         </span>
+        </div> */
+      }
         <div className="new-account-import-form__select-section">
           <div className="new-account-import-form__select-label">
             {this.context.t('selectType')}
           </div>
-          <Dropdown
-            className="new-account-import-form__select"
-            options={menuItems.map((text) => ({ value: text }))}
-            selectedOption={type || menuItems[0]}
-            onChange={(value) => {
-              this.setState({ type: value });
-            }}
-          />
+          <Dropdown className="new-account-import-form__select" options={menuItems.map(text => ({
+          value: text
+        }))} selectedOption={type || menuItems[0]} onChange={value => {
+          this.setState({
+            type: value
+          });
+        }} />
         </div>
         {this.renderImportView()}
-      </div>
-    );
+      </div>;
   }
+
 }

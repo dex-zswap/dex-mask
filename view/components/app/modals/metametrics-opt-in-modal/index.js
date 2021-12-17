@@ -1,25 +1,22 @@
-import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
-import { setParticipateInMetaMetrics } from '@view/store/actions';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
+import { setParticipateInMetaMetrics } from '@view/store/actions';
 import MetaMetricsOptInModal from './component';
 
 const mapStateToProps = (_, ownProps) => {
-  const { unapprovedTxCount } = ownProps;
-
+  const {
+    unapprovedTxCount
+  } = ownProps;
   return {
-    unapprovedTxCount,
+    unapprovedTxCount
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    setParticipateInMetaMetrics: (val) =>
-      dispatch(setParticipateInMetaMetrics(val)),
+    setParticipateInMetaMetrics: val => dispatch(setParticipateInMetaMetrics(val))
   };
 };
 
-export default compose(
-  withModalProps,
-  connect(mapStateToProps, mapDispatchToProps),
-)(MetaMetricsOptInModal);
+export default compose(withModalProps, connect(mapStateToProps, mapDispatchToProps))(MetaMetricsOptInModal);

@@ -1,12 +1,7 @@
+import { connect } from 'react-redux';
 import { INITIALIZE_BACKUP_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
 import { getFirstTimeFlowTypeRoute } from '@view/selectors';
-import {
-  createNewVaultAndGetSeedPhrase,
-  createNewVaultAndRestore,
-  unlockAndGetSeedPhrase,
-  verifySeedPhrase,
-} from '@view/store/actions';
-import { connect } from 'react-redux';
+import { createNewVaultAndGetSeedPhrase, createNewVaultAndRestore, unlockAndGetSeedPhrase, verifySeedPhrase } from '@view/store/actions';
 import FirstTimeFlow from './component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -15,32 +10,28 @@ const mapStateToProps = (state, ownProps) => {
       completedOnboarding,
       isInitialized,
       isUnlocked,
-      seedPhraseBackedUp,
-    },
+      seedPhraseBackedUp
+    }
   } = state;
-  const showingSeedPhraseBackupAfterOnboarding = Boolean(
-    ownProps.location.pathname.match(INITIALIZE_BACKUP_SEED_PHRASE_ROUTE),
-  );
-
+  const showingSeedPhraseBackupAfterOnboarding = Boolean(ownProps.location.pathname.match(INITIALIZE_BACKUP_SEED_PHRASE_ROUTE));
   return {
     completedOnboarding,
     isInitialized,
     isUnlocked,
     nextRoute: getFirstTimeFlowTypeRoute(state),
     showingSeedPhraseBackupAfterOnboarding,
-    seedPhraseBackedUp,
+    seedPhraseBackedUp
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
-    createNewAccount: (password) =>
-      dispatch(createNewVaultAndGetSeedPhrase(password)),
+    createNewAccount: password => dispatch(createNewVaultAndGetSeedPhrase(password)),
     createNewAccountFromSeed: (password, seedPhrase) => {
       return dispatch(createNewVaultAndRestore(password, seedPhrase));
     },
-    unlockAccount: (password) => dispatch(unlockAndGetSeedPhrase(password)),
-    verifySeedPhrase: () => verifySeedPhrase(),
+    unlockAccount: password => dispatch(unlockAndGetSeedPhrase(password)),
+    verifySeedPhrase: () => verifySeedPhrase()
   };
 };
 

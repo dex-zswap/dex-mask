@@ -1,13 +1,13 @@
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import { MILLISECOND } from '@shared/constants/time';
 
 class Alert extends Component {
   state = {
     visible: false,
     msg: false,
-    className: '',
+    className: ''
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
@@ -22,35 +22,38 @@ class Alert extends Component {
     this.setState({
       msg,
       visible: true,
-      className: 'visible',
+      className: 'visible'
     });
   }
 
   animateOut() {
     this.setState({
       msg: null,
-      className: 'hidden',
+      className: 'hidden'
     });
-
-    setTimeout((_) => {
-      this.setState({ visible: false });
+    setTimeout(_ => {
+      this.setState({
+        visible: false
+      });
     }, MILLISECOND * 500);
   }
 
   render() {
     if (this.state.visible) {
-      return (
-        <div className={classnames('global-alert', this.state.className)}>
+      return <div className={classnames('global-alert', this.state.className)}>
           <a className="msg">{this.state.msg}</a>
-        </div>
-      );
+        </div>;
     }
+
     return null;
   }
+
 }
 
 Alert.propTypes = {
   visible: PropTypes.bool.isRequired,
-  msg: PropTypes.string /* eslint-disable-line react/no-unused-prop-types */,
+  msg: PropTypes.string
+  /* eslint-disable-line react/no-unused-prop-types */
+
 };
 export default Alert;

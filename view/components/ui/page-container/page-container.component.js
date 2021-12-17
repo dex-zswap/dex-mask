@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
 import PageContainerHeader from './page-container-header';
 import PageContainerFooter from './page-container-footer';
-
 export default class PageContainer extends PureComponent {
   static propTypes = {
     // PageContainerHeader props
@@ -29,61 +27,63 @@ export default class PageContainer extends PureComponent {
     submitText: PropTypes.string,
     submitButtonType: PropTypes.string
   };
-
   state = {
-    activeTabIndex: this.props.defaultActiveTabIndex || 0,
+    activeTabIndex: this.props.defaultActiveTabIndex || 0
   };
 
   handleTabClick(activeTabIndex) {
-    this.setState({ activeTabIndex });
+    this.setState({
+      activeTabIndex
+    });
   }
 
   renderTabs() {
-    const { tabsComponent } = this.props;
+    const {
+      tabsComponent
+    } = this.props;
 
     if (!tabsComponent) {
       return null;
     }
 
     const numberOfTabs = React.Children.count(tabsComponent.props.children);
-
-    return React.Children.map(
-      tabsComponent.props.children,
-      (child, tabIndex) => {
-        return (
-          child &&
-          React.cloneElement(child, {
-            onClick: (index) => this.handleTabClick(index),
-            tabIndex,
-            isActive:
-              numberOfTabs > 1 && tabIndex === this.state.activeTabIndex,
-            key: tabIndex,
-            className: 'page-container__tab',
-          })
-        );
-      },
-    );
+    return React.Children.map(tabsComponent.props.children, (child, tabIndex) => {
+      return child && React.cloneElement(child, {
+        onClick: index => this.handleTabClick(index),
+        tabIndex,
+        isActive: numberOfTabs > 1 && tabIndex === this.state.activeTabIndex,
+        key: tabIndex,
+        className: 'page-container__tab'
+      });
+    });
   }
 
   renderActiveTabContent() {
-    const { tabsComponent } = this.props;
-    let { children } = tabsComponent.props;
+    const {
+      tabsComponent
+    } = this.props;
+    let {
+      children
+    } = tabsComponent.props;
     children = children.filter(Boolean);
-    const { activeTabIndex } = this.state;
-
-    return children[activeTabIndex]
-      ? children[activeTabIndex].props.children
-      : children.props.children;
+    const {
+      activeTabIndex
+    } = this.state;
+    return children[activeTabIndex] ? children[activeTabIndex].props.children : children.props.children;
   }
 
   renderContent() {
-    const { contentComponent, tabsComponent } = this.props;
+    const {
+      contentComponent,
+      tabsComponent
+    } = this.props;
 
     if (contentComponent) {
       return contentComponent;
     } else if (tabsComponent) {
       return this.renderActiveTabContent();
     }
+
     return null;
   }
 
@@ -103,35 +103,15 @@ export default class PageContainer extends PureComponent {
       disabled,
       headerCloseText,
       submitButtonType,
-      hideCancel,
+      hideCancel
     } = this.props;
-
-    return (
-      <div className="page-container">
-        <PageContainerHeader
-          title={title}
-          subtitle={subtitle}
-          onClose={onClose}
-          showBackButton={showBackButton}
-          onBackButtonClick={onBackButtonClick}
-          backButtonStyles={backButtonStyles}
-          backButtonString={backButtonString}
-          tabs={this.renderTabs()}
-          headerCloseText={headerCloseText}
-        />
+    return <div className="page-container">
+        <PageContainerHeader title={title} subtitle={subtitle} onClose={onClose} showBackButton={showBackButton} onBackButtonClick={onBackButtonClick} backButtonStyles={backButtonStyles} backButtonString={backButtonString} tabs={this.renderTabs()} headerCloseText={headerCloseText} />
         <div className="page-container__bottom">
           <div className="page-container__content">{this.renderContent()}</div>
-          <PageContainerFooter
-            submitButtonType={submitButtonType}
-            onCancel={onCancel}
-            cancelText={cancelText}
-            hideCancel={hideCancel}
-            onSubmit={onSubmit}
-            submitText={submitText}
-            disabled={disabled}
-          />
+          <PageContainerFooter submitButtonType={submitButtonType} onCancel={onCancel} cancelText={cancelText} hideCancel={hideCancel} onSubmit={onSubmit} submitText={submitText} disabled={disabled} />
         </div>
-      </div>
-    );
+      </div>;
   }
+
 }

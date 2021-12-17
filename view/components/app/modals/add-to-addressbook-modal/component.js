@@ -1,45 +1,43 @@
-import Button from '@c/ui/button';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import Button from '@c/ui/button';
 export default class AddToAddressBookModal extends Component {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   static propTypes = {
     hideModal: PropTypes.func.isRequired,
     addToAddressBook: PropTypes.func.isRequired,
-    recipient: PropTypes.string.isRequired,
+    recipient: PropTypes.string.isRequired
   };
-
   state = {
-    alias: '',
+    alias: ''
   };
-
   onSave = async () => {
-    const { recipient, addToAddressBook, hideModal } = this.props;
+    const {
+      recipient,
+      addToAddressBook,
+      hideModal
+    } = this.props;
     await addToAddressBook(recipient, this.state.alias);
     hideModal();
   };
-
-  onChange = (e) => {
+  onChange = e => {
     this.setState({
-      alias: e.target.value,
+      alias: e.target.value
     });
   };
-
-  onKeyPress = async (e) => {
+  onKeyPress = async e => {
     if (e.key === 'Enter' && this.state.alias) {
       this.onSave();
     }
   };
 
   render() {
-    const { t } = this.context;
-
-    return (
-      <div className="add-to-address-book-modal">
+    const {
+      t
+    } = this.context;
+    return <div className="add-to-address-book-modal">
         <div className="add-to-address-book-modal__content">
           <div className="add-to-address-book-modal__content__header">
             {t('addToAddressBook')}
@@ -47,29 +45,17 @@ export default class AddToAddressBookModal extends Component {
           <div className="add-to-address-book-modal__input-label">
             {t('enterAnAlias')}
           </div>
-          <input
-            type="text"
-            className="add-to-address-book-modal__input"
-            placeholder={t('addToAddressBookModalPlaceholder')}
-            onChange={this.onChange}
-            onKeyPress={this.onKeyPress}
-            value={this.state.alias}
-            autoFocus
-          />
+          <input type="text" className="add-to-address-book-modal__input" placeholder={t('addToAddressBookModalPlaceholder')} onChange={this.onChange} onKeyPress={this.onKeyPress} value={this.state.alias} autoFocus />
         </div>
         <div className="add-to-address-book-modal__footer">
           <Button type="secondary" onClick={this.props.hideModal}>
             {t('cancel')}
           </Button>
-          <Button
-            type="primary"
-            onClick={this.onSave}
-            disabled={!this.state.alias}
-          >
+          <Button type="primary" onClick={this.onSave} disabled={!this.state.alias}>
             {t('save')}
           </Button>
         </div>
-      </div>
-    );
+      </div>;
   }
+
 }

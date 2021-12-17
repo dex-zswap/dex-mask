@@ -1,16 +1,14 @@
-import Button from '@c/ui/button';
-import PropTypes from 'prop-types';
 import React from 'react';
-
+import PropTypes from 'prop-types';
+import Button from '@c/ui/button';
 export default function ConfirmationFooter({
   onApprove,
   onCancel,
   approveText,
   cancelText,
-  alerts,
+  alerts
 }) {
-  return (
-    <div className="confirmation-footer">
+  return <div className="confirmation-footer">
       {alerts}
       <div className="confirmation-footer__actions">
         <Button onClick={onCancel}>{cancelText}</Button>
@@ -18,14 +16,12 @@ export default function ConfirmationFooter({
           {approveText}
         </Button>
       </div>
-    </div>
-  );
+    </div>;
 }
-
 ConfirmationFooter.propTypes = {
   alerts: PropTypes.node,
   onApprove: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   approveText: PropTypes.string.isRequired,
-  cancelText: PropTypes.string.isRequired,
+  cancelText: PropTypes.string.isRequired
 };

@@ -1,20 +1,18 @@
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
+import PropTypes from 'prop-types';
 export default class InfoTab extends PureComponent {
   state = {
-    version: global.platform.getVersion(),
+    version: global.platform.getVersion()
   };
-
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   render() {
-    const { t } = this.context;
-
-    return (
-      <div className="settings-page__body">
+    const {
+      t
+    } = this.context;
+    return <div className="settings-page__body">
         <div className="settings-page__content-row">
           <div className="settings-page__content-item settings-page__content-item--without-height">
             <div className="info-tab__item">
@@ -30,7 +28,7 @@ export default class InfoTab extends PureComponent {
             </div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
+
 }

@@ -1,12 +1,8 @@
 import { useSelector } from 'react-redux';
 import { TRANSACTION_TYPES } from '@shared/constants/transaction';
-import {
-  isSwapsDefaultTokenAddress,
-  isSwapsDefaultTokenSymbol,
-} from '@shared/modules/swaps.utils';
+import { isSwapsDefaultTokenAddress, isSwapsDefaultTokenSymbol } from '@shared/modules/swaps.utils';
 import { getCurrentChainId } from '@view/selectors';
 import { useTokenFiatAmount } from './useTokenFiatAmount';
-
 /**
  * @typedef {Object} SwappedTokenValue
  * @property {string} swapTokenValue - a primary currency string formatted for display
@@ -27,39 +23,35 @@ import { useTokenFiatAmount } from './useTokenFiatAmount';
  * @param {import('./useTokenDisplayValue').Token} currentAsset - The current asset the user is looking at
  * @returns {SwappedTokenValue}
  */
+
 export function useSwappedTokenValue(transactionGroup, currentAsset) {
-  const { symbol, decimals, address } = currentAsset;
-  const { primaryTransaction, initialTransaction } = transactionGroup;
-  const { type } = initialTransaction;
-  const { from: senderAddress } = initialTransaction.txParams || {};
-  const chainId = useSelector(getCurrentChainId);
-
-  const isViewingReceivedTokenFromSwap =
-    currentAsset?.symbol === primaryTransaction.destinationTokenSymbol ||
-    (isSwapsDefaultTokenAddress(currentAsset.address, chainId) &&
-      isSwapsDefaultTokenSymbol(
-        primaryTransaction.destinationTokenSymbol,
-        chainId,
-      ));
-
-  const swapTokenValue = '0';
-
-  const isNegative =
-    typeof swapTokenValue === 'string'
-      ? Math.sign(swapTokenValue) === -1
-      : false;
-
-  const _swapTokenFiatAmount = useTokenFiatAmount(
-    address,
-    swapTokenValue || '',
+  const {
     symbol,
-  );
-  const swapTokenFiatAmount =
-    swapTokenValue && isViewingReceivedTokenFromSwap && _swapTokenFiatAmount;
+    decimals,
+    address
+  } = currentAsset;
+  const {
+    primaryTransaction,
+    initialTransaction
+  } = transactionGroup;
+  const {
+    type
+  } = initialTransaction;
+  const {
+    from: senderAddress
+  } = initialTransaction.txParams || {};
+  const chainId = useSelector(getCurrentChainId);
+  const isViewingReceivedTokenFromSwap = currentAsset?.symbol === primaryTransaction.destinationTokenSymbol || isSwapsDefaultTokenAddress(currentAsset.address, chainId) && isSwapsDefaultTokenSymbol(primaryTransaction.destinationTokenSymbol, chainId);
+  const swapTokenValue = '0';
+  const isNegative = typeof swapTokenValue === 'string' ? Math.sign(swapTokenValue) === -1 : false;
+
+  const _swapTokenFiatAmount = useTokenFiatAmount(address, swapTokenValue || '', symbol);
+
+  const swapTokenFiatAmount = swapTokenValue && isViewingReceivedTokenFromSwap && _swapTokenFiatAmount;
   return {
     swapTokenValue,
     swapTokenFiatAmount,
     isViewingReceivedTokenFromSwap,
-    isNegative,
+    isNegative
   };
 }

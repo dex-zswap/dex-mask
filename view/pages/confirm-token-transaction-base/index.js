@@ -1,67 +1,62 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getTokens } from '@reducer/dexmask/dexmask';
 import { hexWEIToDecETH } from '@view/helpers/utils/conversions.util';
-import {
-  calcTokenAmount,
-  getTokenAddressParam,
-  getTokenValueParam,
-} from '@view/helpers/utils/token-util';
+import { calcTokenAmount, getTokenAddressParam, getTokenValueParam } from '@view/helpers/utils/token-util';
 import { getTokenData } from '@view/helpers/utils/transactions.util';
-import {
-  contractExchangeRateSelector,
-  transactionFeeSelector,
-} from '@view/selectors';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
+import { contractExchangeRateSelector, transactionFeeSelector } from '@view/selectors';
 import ConfirmTokenTransactionBase from './component';
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    match: { params = {} },
+    match: {
+      params = {}
+    }
   } = ownProps;
-  const { id: paramsTransactionId } = params;
+  const {
+    id: paramsTransactionId
+  } = params;
   const {
     confirmTransaction,
     metamask: {
       currentCurrency,
       conversionRate,
       currentNetworkTxList,
-      nativeCurrency,
-    },
+      nativeCurrency
+    }
   } = state;
-
   const {
     txData: {
       id: transactionId,
-      txParams: { to: tokenAddress, data } = {},
-    } = {},
+      txParams: {
+        to: tokenAddress,
+        data
+      } = {}
+    } = {}
   } = confirmTransaction;
-
-  const transaction =
-    currentNetworkTxList.find(
-      ({ id }) => id === (Number(paramsTransactionId) || transactionId),
-    ) || {};
-
+  const transaction = currentNetworkTxList.find(({
+    id
+  }) => id === (Number(paramsTransactionId) || transactionId)) || {};
   const {
     ethTransactionTotal,
     fiatTransactionTotal,
-    hexMaximumTransactionFee,
+    hexMaximumTransactionFee
   } = transactionFeeSelector(state, transaction);
   const tokens = getTokens(state);
-  const currentToken = tokens?.find(({ address }) => tokenAddress === address);
-  const { decimals, symbol: tokenSymbol } = currentToken || {};
-
-  const ethTransactionTotalMaxAmount = Number(
-    hexWEIToDecETH(hexMaximumTransactionFee),
-  ).toFixed(6);
-
+  const currentToken = tokens?.find(({
+    address
+  }) => tokenAddress === address);
+  const {
+    decimals,
+    symbol: tokenSymbol
+  } = currentToken || {};
+  const ethTransactionTotalMaxAmount = Number(hexWEIToDecETH(hexMaximumTransactionFee)).toFixed(6);
   const tokenData = getTokenData(data);
   const tokenValue = getTokenValueParam(tokenData);
   const toAddress = getTokenAddressParam(tokenData);
-  const tokenAmount =
-    tokenData && calcTokenAmount(tokenValue, decimals).toFixed();
+  const tokenAmount = tokenData && calcTokenAmount(tokenValue, decimals).toFixed();
   const contractExchangeRate = contractExchangeRateSelector(state);
-
   return {
     toAddress,
     tokenAddress,
@@ -73,11 +68,8 @@ const mapStateToProps = (state, ownProps) => {
     fiatTransactionTotal,
     ethTransactionTotal,
     ethTransactionTotalMaxAmount,
-    nativeCurrency,
+    nativeCurrency
   };
 };
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps),
-)(ConfirmTokenTransactionBase);
+export default compose(withRouter, connect(mapStateToProps))(ConfirmTokenTransactionBase);

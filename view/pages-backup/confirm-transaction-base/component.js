@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import ConfirmPageContainer from '@c/app/confirm-page-container';
 import GasTiming from '@c/app/gas-timing';
@@ -13,40 +15,18 @@ import { TRANSACTION_STATUSES } from '@shared/constants/transaction';
 import { toBuffer } from '@shared/modules/buffer-utils';
 import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
 import { COLORS } from '@view/helpers/constants/design-system';
-import {
-  ETH_GAS_PRICE_FETCH_WARNING_KEY,
-  GAS_LIMIT_TOO_LOW_ERROR_KEY,
-  GAS_PRICE_FETCH_FAILURE_ERROR_KEY,
-  INSUFFICIENT_FUNDS_ERROR_KEY,
-  TRANSACTION_ERROR_KEY,
-} from '@view/helpers/constants/error-keys';
-import {
-  CONFIRM_TRANSACTION_ROUTE,
-  DEFAULT_ROUTE,
-} from '@view/helpers/constants/routes';
-import {
-  addHexes,
-  hexToDecimal,
-  hexWEIToDecGWEI,
-} from '@view/helpers/utils/conversions.util';
+import { ETH_GAS_PRICE_FETCH_WARNING_KEY, GAS_LIMIT_TOO_LOW_ERROR_KEY, GAS_PRICE_FETCH_FAILURE_ERROR_KEY, INSUFFICIENT_FUNDS_ERROR_KEY, TRANSACTION_ERROR_KEY } from '@view/helpers/constants/error-keys';
+import { CONFIRM_TRANSACTION_ROUTE, DEFAULT_ROUTE } from '@view/helpers/constants/routes';
+import { addHexes, hexToDecimal, hexWEIToDecGWEI } from '@view/helpers/utils/conversions.util';
 import { getTransactionTypeTitle } from '@view/helpers/utils/transactions.util';
-import {
-  addPollingTokenToAppState,
-  disconnectGasFeeEstimatePoller,
-  getGasFeeEstimatesAndStartPolling,
-  removePollingTokenFromAppState,
-} from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import { addPollingTokenToAppState, disconnectGasFeeEstimatePoller, getGasFeeEstimatesAndStartPolling, removePollingTokenFromAppState } from '@view/store/actions';
 
-const renderHeartBeatIfNotInTest = () =>
-  process.env.IN_TEST === 'true' ? null : <LoadingHeartBeat />;
+const renderHeartBeatIfNotInTest = () => process.env.IN_TEST === 'true' ? null : <LoadingHeartBeat />;
 
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   static propTypes = {
     // react-router props
     history: PropTypes.object,
@@ -110,15 +90,14 @@ export default class ConfirmTransactionBase extends Component {
     maxFeePerGas: PropTypes.string,
     maxPriorityFeePerGas: PropTypes.string,
     baseFeePerGas: PropTypes.string,
-    gasFeeIsCustom: PropTypes.bool,
+    gasFeeIsCustom: PropTypes.bool
   };
-
   state = {
     submitting: false,
     submitError: null,
     submitWarning: '',
     ethGasPriceWarning: '',
-    editingGas: false,
+    editingGas: false
   };
 
   componentDidUpdate(prevProps) {
@@ -132,30 +111,27 @@ export default class ConfirmTransactionBase extends Component {
       toAddress,
       tryReverseResolveAddress,
       isEthGasPrice,
-      setDefaultHomeActiveTabName,
+      setDefaultHomeActiveTabName
     } = this.props;
     const {
       customNonceValue: prevCustomNonceValue,
       nextNonce: prevNextNonce,
       toAddress: prevToAddress,
       transactionStatus: prevTxStatus,
-      isEthGasPrice: prevIsEthGasPrice,
+      isEthGasPrice: prevIsEthGasPrice
     } = prevProps;
     const statusUpdated = transactionStatus !== prevTxStatus;
-    const txDroppedOrConfirmed =
-      transactionStatus === TRANSACTION_STATUSES.DROPPED ||
-      transactionStatus === TRANSACTION_STATUSES.CONFIRMED;
+    const txDroppedOrConfirmed = transactionStatus === TRANSACTION_STATUSES.DROPPED || transactionStatus === TRANSACTION_STATUSES.CONFIRMED;
 
-    if (
-      nextNonce !== prevNextNonce ||
-      customNonceValue !== prevCustomNonceValue
-    ) {
+    if (nextNonce !== prevNextNonce || customNonceValue !== prevCustomNonceValue) {
       if (nextNonce !== null && customNonceValue > nextNonce) {
         this.setState({
-          submitWarning: this.context.t('nextNonceWarning', [nextNonce]),
+          submitWarning: this.context.t('nextNonceWarning', [nextNonce])
         });
       } else {
-        this.setState({ submitWarning: '' });
+        this.setState({
+          submitWarning: ''
+        });
       }
     }
 
@@ -166,7 +142,7 @@ export default class ConfirmTransactionBase extends Component {
           setDefaultHomeActiveTabName('Activity').then(() => {
             history.push(DEFAULT_ROUTE);
           });
-        },
+        }
       });
     }
 
@@ -177,11 +153,11 @@ export default class ConfirmTransactionBase extends Component {
     if (isEthGasPrice !== prevIsEthGasPrice) {
       if (isEthGasPrice) {
         this.setState({
-          ethGasPriceWarning: this.context.t(ETH_GAS_PRICE_FETCH_WARNING_KEY),
+          ethGasPriceWarning: this.context.t(ETH_GAS_PRICE_FETCH_WARNING_KEY)
         });
       } else {
         this.setState({
-          ethGasPriceWarning: '',
+          ethGasPriceWarning: ''
         });
       }
     }
@@ -192,68 +168,73 @@ export default class ConfirmTransactionBase extends Component {
       balance,
       conversionRate,
       hexMaximumTransactionFee,
-      txData: { simulationFails, txParams: { value: amount } = {} } = {},
+      txData: {
+        simulationFails,
+        txParams: {
+          value: amount
+        } = {}
+      } = {},
       customGas,
       noGasPrice,
-      gasFeeIsCustom,
+      gasFeeIsCustom
     } = this.props;
-
-    const insufficientBalance =
-      balance &&
-      !isBalanceSufficient({
-        amount,
-        gasTotal: hexMaximumTransactionFee || '0x0',
-        balance,
-        conversionRate,
-      });
+    const insufficientBalance = balance && !isBalanceSufficient({
+      amount,
+      gasTotal: hexMaximumTransactionFee || '0x0',
+      balance,
+      conversionRate
+    });
 
     if (insufficientBalance) {
       return {
         valid: false,
-        errorKey: INSUFFICIENT_FUNDS_ERROR_KEY,
+        errorKey: INSUFFICIENT_FUNDS_ERROR_KEY
       };
     }
 
     if (hexToDecimal(customGas.gasLimit) < 21000) {
       return {
         valid: false,
-        errorKey: GAS_LIMIT_TOO_LOW_ERROR_KEY,
+        errorKey: GAS_LIMIT_TOO_LOW_ERROR_KEY
       };
     }
 
     if (simulationFails) {
       return {
         valid: true,
-        errorKey: simulationFails.errorKey
-          ? simulationFails.errorKey
-          : TRANSACTION_ERROR_KEY,
+        errorKey: simulationFails.errorKey ? simulationFails.errorKey : TRANSACTION_ERROR_KEY
       };
     }
 
     if (noGasPrice && !gasFeeIsCustom) {
       return {
         valid: false,
-        errorKey: GAS_PRICE_FETCH_FAILURE_ERROR_KEY,
+        errorKey: GAS_PRICE_FETCH_FAILURE_ERROR_KEY
       };
     }
 
     return {
-      valid: true,
+      valid: true
     };
   }
 
   handleEditGas() {
     const {
       actionKey,
-      txData: { origin },
-      methodData = {},
+      txData: {
+        origin
+      },
+      methodData = {}
     } = this.props;
-
-    this.setState({ editingGas: true });
+    this.setState({
+      editingGas: true
+    });
   }
 
   handleCloseEditGas() {
-    this.setState({ editingGas: false });
+    this.setState({
+      editingGas: false
+    });
   }
 
   renderDetails() {
@@ -272,10 +253,11 @@ export default class ConfirmTransactionBase extends Component {
       useNativeCurrencyAsPrimaryCurrency,
       primaryTotalTextOverrideMaxAmount,
       maxFeePerGas,
-      maxPriorityFeePerGas,
+      maxPriorityFeePerGas
     } = this.props;
-
-    const { t } = this.context;
+    const {
+      t
+    } = this.context;
 
     const getRequestingOrigin = () => {
       try {
@@ -286,263 +268,149 @@ export default class ConfirmTransactionBase extends Component {
     };
 
     const renderTotalMaxAmount = () => {
-      if (
-        primaryTotalTextOverrideMaxAmount === undefined &&
-        secondaryTotalTextOverride === undefined
-      ) {
+      if (primaryTotalTextOverrideMaxAmount === undefined && secondaryTotalTextOverride === undefined) {
         // Native Send
-        return (
-          <UserPreferencedCurrencyDisplay
-            type={PRIMARY}
-            value={addHexes(txData.txParams.value, hexMaximumTransactionFee)}
-            hideLabel={!useNativeCurrencyAsPrimaryCurrency}
-          />
-        );
-      }
+        return <UserPreferencedCurrencyDisplay type={PRIMARY} value={addHexes(txData.txParams.value, hexMaximumTransactionFee)} hideLabel={!useNativeCurrencyAsPrimaryCurrency} />;
+      } // Token send
 
-      // Token send
-      return useNativeCurrencyAsPrimaryCurrency
-        ? primaryTotalTextOverrideMaxAmount
-        : secondaryTotalTextOverride;
+
+      return useNativeCurrencyAsPrimaryCurrency ? primaryTotalTextOverrideMaxAmount : secondaryTotalTextOverride;
     };
 
     const renderTotalDetailTotal = () => {
-      if (
-        primaryTotalTextOverride === undefined &&
-        secondaryTotalTextOverride === undefined
-      ) {
-        return (
-          <UserPreferencedCurrencyDisplay
-            type={PRIMARY}
-            value={hexTransactionTotal}
-            hideLabel={!useNativeCurrencyAsPrimaryCurrency}
-          />
-        );
+      if (primaryTotalTextOverride === undefined && secondaryTotalTextOverride === undefined) {
+        return <UserPreferencedCurrencyDisplay type={PRIMARY} value={hexTransactionTotal} hideLabel={!useNativeCurrencyAsPrimaryCurrency} />;
       }
-      return useNativeCurrencyAsPrimaryCurrency
-        ? primaryTotalTextOverride
-        : secondaryTotalTextOverride;
+
+      return useNativeCurrencyAsPrimaryCurrency ? primaryTotalTextOverride : secondaryTotalTextOverride;
     };
 
     const renderTotalDetailText = () => {
-      if (
-        primaryTotalTextOverride === undefined &&
-        secondaryTotalTextOverride === undefined
-      ) {
-        return (
-          <UserPreferencedCurrencyDisplay
-            prefix="≈ "
-            type={SECONDARY}
-            value={hexTransactionTotal}
-            hideLabel={Boolean(useNativeCurrencyAsPrimaryCurrency)}
-          />
-        );
+      if (primaryTotalTextOverride === undefined && secondaryTotalTextOverride === undefined) {
+        return <UserPreferencedCurrencyDisplay prefix="≈ " type={SECONDARY} value={hexTransactionTotal} hideLabel={Boolean(useNativeCurrencyAsPrimaryCurrency)} />;
       }
-      return useNativeCurrencyAsPrimaryCurrency
-        ? secondaryTotalTextOverride
-        : primaryTotalTextOverride;
+
+      return useNativeCurrencyAsPrimaryCurrency ? secondaryTotalTextOverride : primaryTotalTextOverride;
     };
 
-    const nonceField = useNonceField ? (
-      <div>
+    const nonceField = useNonceField ? <div>
         <div className="confirm-detail-row">
           <div className="confirm-detail-row__label">
             {t('nonceFieldHeading')}
           </div>
           <div className="custom-nonce-input">
-            <TextField
-              type="number"
-              min="0"
-              placeholder={
-                typeof nextNonce === 'number' ? nextNonce.toString() : null
-              }
-              onChange={({ target: { value } }) => {
-                if (!value.length || Number(value) < 0) {
-                  updateCustomNonce('');
-                } else {
-                  updateCustomNonce(String(Math.floor(value)));
-                }
-                getNextNonce();
-              }}
-              fullWidth
-              margin="dense"
-              value={customNonceValue || ''}
-            />
+            <TextField type="number" min="0" placeholder={typeof nextNonce === 'number' ? nextNonce.toString() : null} onChange={({
+            target: {
+              value
+            }
+          }) => {
+            if (!value.length || Number(value) < 0) {
+              updateCustomNonce('');
+            } else {
+              updateCustomNonce(String(Math.floor(value)));
+            }
+
+            getNextNonce();
+          }} fullWidth margin="dense" value={customNonceValue || ''} />
           </div>
         </div>
-      </div>
-    ) : null;
-
-    return (
-      <div className="confirm-page-container-content__details">
-        <TransactionDetail
-          onEdit={() => this.handleEditGas()}
-          rows={[
-            <TransactionDetailItem
-              key="gas-item"
-              detailTitle={
-                txData.dappSuggestedGasFees ? (
-                  <>
-                    {t('transactionDetailDappGasHeading', [
-                      getRequestingOrigin(),
-                    ])}
-                    <InfoTooltip
-                      contentText={t('transactionDetailDappGasTooltip')}
-                      position="top"
-                    >
+      </div> : null;
+    return <div className="confirm-page-container-content__details">
+        <TransactionDetail onEdit={() => this.handleEditGas()} rows={[<TransactionDetailItem key="gas-item" detailTitle={txData.dappSuggestedGasFees ? <>
+                    {t('transactionDetailDappGasHeading', [getRequestingOrigin()])}
+                    <InfoTooltip contentText={t('transactionDetailDappGasTooltip')} position="top">
                       <i className="fa fa-info-circle" />
                     </InfoTooltip>
-                  </>
-                ) : (
-                  <>
+                  </> : <>
                     {t('transactionDetailGasHeading')}
-                    <InfoTooltip
-                      contentText={
-                        <>
+                    <InfoTooltip contentText={<>
                           <p>{t('transactionDetailGasTooltipIntro')}</p>
                           <p>{t('transactionDetailGasTooltipExplanation')}</p>
-                          {/* <p>
-                            <a
-                              href="https://community.metamask.io/t/what-is-gas-why-do-transactions-take-so-long/3172"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {t('transactionDetailGasTooltipConversion')}
-                            </a>
-                          </p> */}
-                        </>
-                      }
-                      position="top"
-                    >
+                          {
+            /* <p>
+             <a
+               href="https://community.metamask.io/t/what-is-gas-why-do-transactions-take-so-long/3172"
+               target="_blank"
+               rel="noopener noreferrer"
+             >
+               {t('transactionDetailGasTooltipConversion')}
+             </a>
+            </p> */
+          }
+                        </>} position="top">
                       <i className="fa fa-info-circle" />
                     </InfoTooltip>
-                  </>
-                )
-              }
-              detailTitleColor={
-                txData.dappSuggestedGasFees ? COLORS.SECONDARY1 : COLORS.BLACK
-              }
-              detailTotal={
-                <div className="confirm-page-container-content__currency-container">
+                  </>} detailTitleColor={txData.dappSuggestedGasFees ? COLORS.SECONDARY1 : COLORS.BLACK} detailTotal={<div className="confirm-page-container-content__currency-container">
                   {renderHeartBeatIfNotInTest()}
-                  <UserPreferencedCurrencyDisplay
-                    type={PRIMARY}
-                    value={hexMinimumTransactionFee}
-                    hideLabel={!useNativeCurrencyAsPrimaryCurrency}
-                  />
-                </div>
-              }
-              // detailText={null}
-              detailText={
-                <div className="confirm-page-container-content__currency-container">
+                  <UserPreferencedCurrencyDisplay type={PRIMARY} value={hexMinimumTransactionFee} hideLabel={!useNativeCurrencyAsPrimaryCurrency} />
+                </div>} // detailText={null}
+      detailText={<div className="confirm-page-container-content__currency-container">
                   {renderHeartBeatIfNotInTest()}
-                  <UserPreferencedCurrencyDisplay
-                    prefix="≈ "
-                    type={SECONDARY}
-                    value={hexMinimumTransactionFee}
-                    hideLabel
-                  />
-                </div>
-              }
-              subText={t('editGasSubTextFee', [
-                <div
-                  key="editGasSubTextFeeValue"
-                  className="confirm-page-container-content__currency-container confirm-page-container-content__currency-container2"
-                >
+                  <UserPreferencedCurrencyDisplay prefix="≈ " type={SECONDARY} value={hexMinimumTransactionFee} hideLabel />
+                </div>} subText={t('editGasSubTextFee', [<div key="editGasSubTextFeeValue" className="confirm-page-container-content__currency-container confirm-page-container-content__currency-container2">
                   {renderHeartBeatIfNotInTest()}
-                  <UserPreferencedCurrencyDisplay
-                    key="editGasSubTextFeeAmount"
-                    type={PRIMARY}
-                    value={hexMaximumTransactionFee}
-                    hideLabel={!useNativeCurrencyAsPrimaryCurrency}
-                  />
-                </div>,
-                <div
-                  style={{
-                    textAlign: 'right',
-                    marginTop: '4px',
-                    color: '#3d3f48',
-                  }}
-                  key="editGasSubTextFeeLabel"
-                >
+                  <UserPreferencedCurrencyDisplay key="editGasSubTextFeeAmount" type={PRIMARY} value={hexMaximumTransactionFee} hideLabel={!useNativeCurrencyAsPrimaryCurrency} />
+                </div>, <div style={{
+        textAlign: 'right',
+        marginTop: '4px',
+        color: '#3d3f48'
+      }} key="editGasSubTextFeeLabel">
                   {t('editGasSubTextFeeLabel')}
-                </div>,
-              ])}
-              subTitle={
-                <GasTiming
-                  maxPriorityFeePerGas={hexWEIToDecGWEI(
-                    maxPriorityFeePerGas ||
-                      txData.txParams.maxPriorityFeePerGas,
-                  )}
-                  maxFeePerGas={hexWEIToDecGWEI(
-                    maxFeePerGas || txData.txParams.maxFeePerGas,
-                  )}
-                />
-              }
-            />,
-            <TransactionDetailItem
-              key="total-item"
-              detailTitle={t('total')}
-              // detailText={<></>}
-              detailTotal={renderTotalMaxAmount()}
-              detailText={renderTotalDetailText()}
-              // detailTotal={renderTotalDetailTotal()}
-              subTitle={<></>}
-              subText={<></>}
-              // subTitle={t('transactionDetailGasTotalSubtitle')}
-              // subText={t('editGasSubTextAmount', [
-              //   <b key="editGasSubTextAmountLabel">
-              //     {t('editGasSubTextAmountLabel')}
-              //   </b>,
-              //   renderTotalMaxAmount(),
-              // ])}
-            />,
-          ]}
-        />
+                </div>])} subTitle={<GasTiming maxPriorityFeePerGas={hexWEIToDecGWEI(maxPriorityFeePerGas || txData.txParams.maxPriorityFeePerGas)} maxFeePerGas={hexWEIToDecGWEI(maxFeePerGas || txData.txParams.maxFeePerGas)} />} />, <TransactionDetailItem key="total-item" detailTitle={t('total')} // detailText={<></>}
+      detailTotal={renderTotalMaxAmount()} detailText={renderTotalDetailText()} // detailTotal={renderTotalDetailTotal()}
+      subTitle={<></>} subText={<></>} // subTitle={t('transactionDetailGasTotalSubtitle')}
+      // subText={t('editGasSubTextAmount', [
+      //   <b key="editGasSubTextAmountLabel">
+      //     {t('editGasSubTextAmountLabel')}
+      //   </b>,
+      //   renderTotalMaxAmount(),
+      // ])}
+      />]} />
         {nonceField}
-      </div>
-    );
+      </div>;
   }
 
   renderData(functionType) {
-    const { t } = this.context;
     const {
-      txData: { txParams: { data } = {} } = {},
-      methodData: { params } = {},
+      t
+    } = this.context;
+    const {
+      txData: {
+        txParams: {
+          data
+        } = {}
+      } = {},
+      methodData: {
+        params
+      } = {},
       hideData,
-      dataComponent,
+      dataComponent
     } = this.props;
 
     if (hideData) {
       return null;
     }
 
-    return (
-      dataComponent || (
-        <div className="confirm-page-container-content__data">
+    return dataComponent || <div className="confirm-page-container-content__data">
           <div className="confirm-page-container-content__data-box-label">
             {`${t('functionType')}:`}
             <span className="confirm-page-container-content__function-type">
               {functionType}
             </span>
           </div>
-          {params && (
-            <div className="confirm-page-container-content__data-box">
+          {params && <div className="confirm-page-container-content__data-box">
               <div className="confirm-page-container-content__data-field-label">
                 {`${t('parameters')}:`}
               </div>
               <div>
                 <pre>{JSON.stringify(params, null, 2)}</pre>
               </div>
-            </div>
-          )}
+            </div>}
           <div className="confirm-page-container-content__data-box-label">
             {`${t('hexData')}: ${toBuffer(data).length} bytes`}
           </div>
           <div className="confirm-page-container-content__data-box">{data}</div>
-        </div>
-      )
-    );
+        </div>;
   }
 
   handleEdit() {
@@ -552,11 +420,16 @@ export default class ConfirmTransactionBase extends Component {
       tokenProps,
       onEdit,
       actionKey,
-      txData: { origin },
-      methodData = {},
+      txData: {
+        origin
+      },
+      methodData = {}
     } = this.props;
-
-    onEdit({ txData, tokenData, tokenProps });
+    onEdit({
+      txData,
+      tokenData,
+      tokenProps
+    });
   }
 
   handleCancelAll() {
@@ -566,17 +439,17 @@ export default class ConfirmTransactionBase extends Component {
       history,
       mostRecentOverviewPage,
       showRejectTransactionsConfirmationModal,
-      unapprovedTxCount,
+      unapprovedTxCount
     } = this.props;
-
     showRejectTransactionsConfirmationModal({
       unapprovedTxCount,
       onSubmit: async () => {
         this._removeBeforeUnload();
+
         await cancelAllTransactions();
         clearConfirmTransaction();
         history.push(mostRecentOverviewPage);
-      },
+      }
     });
   }
 
@@ -587,10 +460,11 @@ export default class ConfirmTransactionBase extends Component {
       history,
       mostRecentOverviewPage,
       clearConfirmTransaction,
-      updateCustomNonce,
+      updateCustomNonce
     } = this.props;
 
     this._removeBeforeUnload();
+
     updateCustomNonce('');
     cancelTransaction(txData).then(() => {
       clearConfirmTransaction();
@@ -608,9 +482,11 @@ export default class ConfirmTransactionBase extends Component {
       updateCustomNonce,
       maxFeePerGas,
       maxPriorityFeePerGas,
-      baseFeePerGas,
+      baseFeePerGas
     } = this.props;
-    const { submitting } = this.state;
+    const {
+      submitting
+    } = this.state;
 
     if (submitting) {
       return;
@@ -621,85 +497,67 @@ export default class ConfirmTransactionBase extends Component {
     }
 
     if (maxFeePerGas) {
-      txData.txParams = {
-        ...txData.txParams,
-        maxFeePerGas,
+      txData.txParams = { ...txData.txParams,
+        maxFeePerGas
       };
     }
 
     if (maxPriorityFeePerGas) {
-      txData.txParams = {
-        ...txData.txParams,
-        maxPriorityFeePerGas,
+      txData.txParams = { ...txData.txParams,
+        maxPriorityFeePerGas
       };
     }
 
-    this.setState(
-      {
-        submitting: true,
-        submitError: null,
-      },
-      () => {
-        this._removeBeforeUnload();
+    this.setState({
+      submitting: true,
+      submitError: null
+    }, () => {
+      this._removeBeforeUnload();
 
-        sendTransaction(txData)
-          .then(() => {
-            clearConfirmTransaction();
-            this.setState(
-              {
-                submitting: false,
-              },
-              () => {
-                history.push(mostRecentOverviewPage);
-                updateCustomNonce('');
-              },
-            );
-          })
-          .catch((error) => {
-            this.setState({
-              submitting: false,
-              submitError: error.message,
-            });
-            updateCustomNonce('');
-          });
-      },
-    );
+      sendTransaction(txData).then(() => {
+        clearConfirmTransaction();
+        this.setState({
+          submitting: false
+        }, () => {
+          history.push(mostRecentOverviewPage);
+          updateCustomNonce('');
+        });
+      }).catch(error => {
+        this.setState({
+          submitting: false,
+          submitError: error.message
+        });
+        updateCustomNonce('');
+      });
+    });
   }
 
   renderTitleComponent() {
-    const { title, hexTransactionAmount } = this.props;
+    const {
+      title,
+      hexTransactionAmount
+    } = this.props; // Title string passed in by props takes priority
 
-    // Title string passed in by props takes priority
     if (title) {
       return null;
     }
 
-    return (
-      <UserPreferencedCurrencyDisplay
-        value={hexTransactionAmount}
-        type={PRIMARY}
-        ethLogoHeight="26"
-        hideLabel
-      />
-    );
+    return <UserPreferencedCurrencyDisplay value={hexTransactionAmount} type={PRIMARY} ethLogoHeight="26" hideLabel />;
   }
 
   renderSubtitleComponent() {
-    const { subtitleComponent, hexTransactionAmount } = this.props;
-
-    return (
-      subtitleComponent || (
-        <UserPreferencedCurrencyDisplay
-          value={hexTransactionAmount}
-          type={SECONDARY}
-          hideLabel
-        />
-      )
-    );
+    const {
+      subtitleComponent,
+      hexTransactionAmount
+    } = this.props;
+    return subtitleComponent || <UserPreferencedCurrencyDisplay value={hexTransactionAmount} type={SECONDARY} hideLabel />;
   }
 
   handleNextTx(txId) {
-    const { history, clearConfirmTransaction } = this.props;
+    const {
+      history,
+      clearConfirmTransaction
+    } = this.props;
 
     if (txId) {
       clearConfirmTransaction();
@@ -708,10 +566,14 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   getNavigateTxData() {
-    const { currentNetworkUnapprovedTxs, txData: { id } = {} } = this.props;
+    const {
+      currentNetworkUnapprovedTxs,
+      txData: {
+        id
+      } = {}
+    } = this.props;
     const enumUnapprovedTxs = Object.keys(currentNetworkUnapprovedTxs);
     const currentPosition = enumUnapprovedTxs.indexOf(id ? id.toString() : '');
-
     return {
       totalTx: enumUnapprovedTxs.length,
       positionOfCurrentTx: currentPosition + 1,
@@ -721,27 +583,34 @@ export default class ConfirmTransactionBase extends Component {
       firstTx: enumUnapprovedTxs[0],
       lastTx: enumUnapprovedTxs[enumUnapprovedTxs.length - 1],
       ofText: this.context.t('ofTextNofM'),
-      requestsWaitingText: this.context.t('requestsAwaitingAcknowledgement'),
+      requestsWaitingText: this.context.t('requestsAwaitingAcknowledgement')
     };
   }
 
   _beforeUnload = () => {
-    const { txData: { id } = {}, cancelTransaction } = this.props;
-    cancelTransaction({ id });
+    const {
+      txData: {
+        id
+      } = {},
+      cancelTransaction
+    } = this.props;
+    cancelTransaction({
+      id
+    });
   };
-
   _beforeUnloadForGasPolling = () => {
     this._isMounted = false;
+
     if (this.state.pollingToken) {
       disconnectGasFeeEstimatePoller(this.state.pollingToken);
       removePollingTokenFromAppState(this.state.pollingToken);
     }
   };
-
   _removeBeforeUnload = () => {
     if (getEnvironmentType() === ENVIRONMENT_TYPE_NOTIFICATION) {
       window.removeEventListener('beforeunload', this._beforeUnload);
     }
+
     window.removeEventListener('beforeunload', this._beforeUnloadForGasPolling);
   };
 
@@ -749,9 +618,11 @@ export default class ConfirmTransactionBase extends Component {
     this._isMounted = true;
     const {
       toAddress,
-      txData: { origin } = {},
+      txData: {
+        origin
+      } = {},
       getNextNonce,
-      tryReverseResolveAddress,
+      tryReverseResolveAddress
     } = this.props;
 
     if (getEnvironmentType() === ENVIRONMENT_TYPE_NOTIFICATION) {
@@ -759,10 +630,10 @@ export default class ConfirmTransactionBase extends Component {
     }
 
     getNextNonce();
+
     if (toAddress) {
       tryReverseResolveAddress(toAddress);
     }
-
     /**
      * This makes a request to get estimates and begin polling, keeping track of the poll
      * token in component state.
@@ -770,10 +641,14 @@ export default class ConfirmTransactionBase extends Component {
      * while waiting for `getGasFeeEstimatesAndStartPolling` to resolve, the `_isMounted`
      * flag ensures that a call to disconnect happens after promise resolution.
      */
-    getGasFeeEstimatesAndStartPolling().then((pollingToken) => {
+
+
+    getGasFeeEstimatesAndStartPolling().then(pollingToken => {
       if (this._isMounted) {
         addPollingTokenToAppState(pollingToken);
-        this.setState({ pollingToken });
+        this.setState({
+          pollingToken
+        });
       } else {
         disconnectGasFeeEstimatePoller(pollingToken);
         removePollingTokenFromAppState(this.state.pollingToken);
@@ -784,11 +659,14 @@ export default class ConfirmTransactionBase extends Component {
 
   componentWillUnmount() {
     this._beforeUnloadForGasPolling();
+
     this._removeBeforeUnload();
   }
 
   render() {
-    const { t } = this.context;
+    const {
+      t
+    } = this.context;
     const {
       tokenData,
       tokenProps,
@@ -813,18 +691,22 @@ export default class ConfirmTransactionBase extends Component {
       showAccountInHeader,
       txData,
       gasIsLoading,
-      gasFeeIsCustom,
+      gasFeeIsCustom
     } = this.props;
     const {
       submitting,
       submitError,
       submitWarning,
       ethGasPriceWarning,
-      editingGas,
+      editingGas
     } = this.state;
-
-    const { name } = methodData;
-    const { valid, errorKey } = this.getErrorKey();
+    const {
+      name
+    } = methodData;
+    const {
+      valid,
+      errorKey
+    } = this.getErrorKey();
     const {
       totalTx,
       positionOfCurrentTx,
@@ -834,10 +716,10 @@ export default class ConfirmTransactionBase extends Component {
       firstTx,
       lastTx,
       ofText,
-      requestsWaitingText,
+      requestsWaitingText
     } = this.getNavigateTxData();
-
     let functionType = getMethodName(name);
+
     if (!functionType) {
       if (type) {
         functionType = getTransactionTypeTitle(t, type);
@@ -845,68 +727,18 @@ export default class ConfirmTransactionBase extends Component {
         functionType = t('contractInteraction');
       }
     }
-    return (
-      <ConfirmPageContainer
-        tokenData={{
-          address: tokenData?.args?.[0],
-          symbol: tokenProps?.symbol,
-        }}
-        fromName={fromName}
-        fromAddress={fromAddress}
-        showAccountInHeader={showAccountInHeader}
-        toName={toName}
-        toAddress={toAddress}
-        toEns={toEns}
-        toNickname={toNickname}
-        showEdit={Boolean(onEdit)}
-        action={functionType}
-        title={title}
-        titleComponent={this.renderTitleComponent()}
-        subtitleComponent={this.renderSubtitleComponent()}
-        hideSubtitle={hideSubtitle}
-        detailsComponent={this.renderDetails()}
-        dataComponent={this.renderData(functionType)}
-        contentComponent={contentComponent}
-        nonce={customNonceValue || nonce}
-        unapprovedTxCount={unapprovedTxCount}
-        assetImage={assetImage}
-        identiconAddress={identiconAddress}
-        errorMessage={submitError}
-        errorKey={errorKey}
-        warning={submitWarning}
-        totalTx={totalTx}
-        positionOfCurrentTx={positionOfCurrentTx}
-        nextTxId={nextTxId}
-        prevTxId={prevTxId}
-        showNavigation={showNavigation}
-        onNextTx={(txId) => this.handleNextTx(txId)}
-        firstTx={firstTx}
-        lastTx={lastTx}
-        ofText={ofText}
-        requestsWaitingText={requestsWaitingText}
-        disabled={!valid || submitting || (gasIsLoading && !gasFeeIsCustom)}
-        onEdit={() => this.handleEdit()}
-        onCancelAll={() => this.handleCancelAll()}
-        onCancel={() => this.handleCancel()}
-        onSubmit={() => this.handleSubmit()}
-        hideSenderToRecipient={hideSenderToRecipient}
-        origin={txData.origin}
-        ethGasPriceWarning={ethGasPriceWarning}
-        editingGas={editingGas}
-        handleCloseEditGas={() => this.handleCloseEditGas()}
-        currentTransaction={txData}
-      />
-    );
-  }
-}
 
+    return <ConfirmPageContainer tokenData={{
+      address: tokenData?.args?.[0],
+      symbol: tokenProps?.symbol
+    }} fromName={fromName} fromAddress={fromAddress} showAccountInHeader={showAccountInHeader} toName={toName} toAddress={toAddress} toEns={toEns} toNickname={toNickname} showEdit={Boolean(onEdit)} action={functionType} title={title} titleComponent={this.renderTitleComponent()} subtitleComponent={this.renderSubtitleComponent()} hideSubtitle={hideSubtitle} detailsComponent={this.renderDetails()} dataComponent={this.renderData(functionType)} contentComponent={contentComponent} nonce={customNonceValue || nonce} unapprovedTxCount={unapprovedTxCount} assetImage={assetImage} identiconAddress={identiconAddress} errorMessage={submitError} errorKey={errorKey} warning={submitWarning} totalTx={totalTx} positionOfCurrentTx={positionOfCurrentTx} nextTxId={nextTxId} prevTxId={prevTxId} showNavigation={showNavigation} onNextTx={txId => this.handleNextTx(txId)} firstTx={firstTx} lastTx={lastTx} ofText={ofText} requestsWaitingText={requestsWaitingText} disabled={!valid || submitting || gasIsLoading && !gasFeeIsCustom} onEdit={() => this.handleEdit()} onCancelAll={() => this.handleCancelAll()} onCancel={() => this.handleCancel()} onSubmit={() => this.handleSubmit()} hideSenderToRecipient={hideSenderToRecipient} origin={txData.origin} ethGasPriceWarning={ethGasPriceWarning} editingGas={editingGas} handleCloseEditGas={() => this.handleCloseEditGas()} currentTransaction={txData} />;
+  }
+
+}
 export function getMethodName(camelCase) {
   if (!camelCase || typeof camelCase !== 'string') {
     return '';
   }
 
-  return camelCase
-    .replace(/([a-z])([A-Z])/gu, '$1 $2')
-    .replace(/([A-Z])([a-z])/gu, ' $1$2')
-    .replace(/ +/gu, ' ');
+  return camelCase.replace(/([a-z])([A-Z])/gu, '$1 $2').replace(/([A-Z])([a-z])/gu, ' $1$2').replace(/ +/gu, ' ');
 }

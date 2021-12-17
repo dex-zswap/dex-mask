@@ -1,9 +1,8 @@
-import PageContainerFooter from '@c/ui/page-container/page-container-footer';
-import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes';
+import React, { Component } from 'react';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import PageContainerFooter from '@c/ui/page-container/page-container-footer';
+import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes';
 export default class SendFooter extends Component {
   static propTypes = {
     addToAddressBookIfNew: PropTypes.func,
@@ -15,15 +14,18 @@ export default class SendFooter extends Component {
     toAccounts: PropTypes.array,
     sendErrors: PropTypes.object,
     gasEstimateType: PropTypes.string,
-    mostRecentOverviewPage: PropTypes.string.isRequired,
+    mostRecentOverviewPage: PropTypes.string.isRequired
   };
-
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   onCancel() {
-    const { resetSendState, history, mostRecentOverviewPage } = this.props;
+    const {
+      resetSendState,
+      history,
+      mostRecentOverviewPage
+    } = this.props;
     resetSendState();
     history.push(mostRecentOverviewPage);
   }
@@ -35,40 +37,30 @@ export default class SendFooter extends Component {
       sign,
       to,
       toAccounts,
-      history,
-      // gasEstimateType,
-    } = this.props;
+      history // gasEstimateType,
 
-    // TODO: add nickname functionality
+    } = this.props; // TODO: add nickname functionality
     // await addToAddressBookIfNew(to, toAccounts);
-    const promise = sign();
 
+    const promise = sign();
     Promise.resolve(promise).then(() => {
       history.push(CONFIRM_TRANSACTION_ROUTE);
     });
   }
 
   componentDidUpdate(prevProps) {
-    const { sendErrors } = this.props;
-    if (
-      Object.keys(sendErrors).length > 0 &&
-      isEqual(sendErrors, prevProps.sendErrors) === false
-    ) {
-      const errorField = Object.keys(sendErrors).find((key) => sendErrors[key]);
+    const {
+      sendErrors
+    } = this.props;
+
+    if (Object.keys(sendErrors).length > 0 && isEqual(sendErrors, prevProps.sendErrors) === false) {
+      const errorField = Object.keys(sendErrors).find(key => sendErrors[key]);
       const errorMessage = sendErrors[errorField];
     }
   }
 
   render() {
-    return (
-      <PageContainerFooter
-        submitButtonType="primary"
-        submitText="Trans"
-        hideCancel={true}
-        onSubmit={(e) => this.onSubmit(e)}
-        disabled={this.props.disabled}
-        rightArrow
-      />
-    );
+    return <PageContainerFooter submitButtonType="primary" submitText="Trans" hideCancel={true} onSubmit={e => this.onSubmit(e)} disabled={this.props.disabled} rightArrow />;
   }
+
 }

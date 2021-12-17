@@ -1,8 +1,7 @@
-import Button from '@c/ui/button';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import Button from '@c/ui/button';
 export default class PageContainerHeader extends Component {
   static propTypes = {
     title: PropTypes.string,
@@ -14,12 +13,13 @@ export default class PageContainerHeader extends Component {
     backButtonString: PropTypes.string,
     tabs: PropTypes.node,
     headerCloseText: PropTypes.string,
-    className: PropTypes.string,
+    className: PropTypes.string
   };
 
   renderTabs() {
-    const { tabs } = this.props;
-
+    const {
+      tabs
+    } = this.props;
     return tabs && <ul className="page-container__tabs">{tabs}</ul>;
   }
 
@@ -28,22 +28,13 @@ export default class PageContainerHeader extends Component {
       showBackButton,
       onBackButtonClick,
       backButtonStyles,
-      backButtonString,
+      backButtonString
     } = this.props;
-
-    return (
-      showBackButton && (
-        <div className="page-container__header-row">
-          <span
-            className="page-container__back-button"
-            onClick={onBackButtonClick}
-            style={backButtonStyles}
-          >
+    return showBackButton && <div className="page-container__header-row">
+          <span className="page-container__back-button" onClick={onBackButtonClick} style={backButtonStyles}>
             {backButtonString || 'Back'}
           </span>
-        </div>
-      )
-    );
+        </div>;
   }
 
   render() {
@@ -53,41 +44,23 @@ export default class PageContainerHeader extends Component {
       onClose,
       tabs,
       headerCloseText,
-      className,
+      className
     } = this.props;
-
-    return (
-      <div
-        className={classnames('page-container__header', className, {
-          'page-container__header--no-padding-bottom': Boolean(tabs),
-        })}
-        data-testid="page-container__header"
-      >
+    return <div className={classnames('page-container__header', className, {
+      'page-container__header--no-padding-bottom': Boolean(tabs)
+    })} data-testid="page-container__header">
         {this.renderHeaderRow()}
 
         {title && <div className="page-container__title">{title}</div>}
 
         {subtitle && <div className="page-container__subtitle">{subtitle}</div>}
 
-        {onClose && headerCloseText ? (
-          <Button
-            type="link"
-            className="page-container__header-close-text"
-            onClick={() => onClose()}
-          >
+        {onClose && headerCloseText ? <Button type="link" className="page-container__header-close-text" onClick={() => onClose()}>
             {headerCloseText}
-          </Button>
-        ) : (
-          onClose && (
-            <div
-              className="page-container__header-close"
-              onClick={() => onClose()}
-            />
-          )
-        )}
+          </Button> : onClose && <div className="page-container__header-close" onClick={() => onClose()} />}
 
         {this.renderTabs()}
-      </div>
-    );
+      </div>;
   }
+
 }

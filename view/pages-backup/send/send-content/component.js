@@ -1,22 +1,15 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Dialog from '@c/ui/dialog';
 import PageContainerContent from '@c/ui/page-container/page-container-content.component';
-import {
-  ETH_GAS_PRICE_FETCH_WARNING_KEY,
-  GAS_PRICE_EXCESSIVE_ERROR_KEY,
-  GAS_PRICE_FETCH_FAILURE_ERROR_KEY,
-  UNSENDABLE_ASSET_ERROR_KEY,
-} from '@view/helpers/constants/error-keys';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import { ETH_GAS_PRICE_FETCH_WARNING_KEY, GAS_PRICE_EXCESSIVE_ERROR_KEY, GAS_PRICE_FETCH_FAILURE_ERROR_KEY, UNSENDABLE_ASSET_ERROR_KEY } from '@view/helpers/constants/error-keys';
 import SendAmountRow from './send-amount-row';
 import SendGasRow from './send-gas-row';
 import SendHexDataRow from './send-hex-data-row';
-
 export default class SendContent extends Component {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   static propTypes = {
     isAssetSendable: PropTypes.bool,
     showAddToAddressBookModal: PropTypes.func,
@@ -28,7 +21,7 @@ export default class SendContent extends Component {
     gasIsExcessive: PropTypes.bool.isRequired,
     isEthGasPrice: PropTypes.bool,
     noGasPrice: PropTypes.bool,
-    networkAndAccountSupports1559: PropTypes.bool,
+    networkAndAccountSupports1559: PropTypes.bool
   };
 
   render() {
@@ -39,20 +32,15 @@ export default class SendContent extends Component {
       isEthGasPrice,
       noGasPrice,
       isAssetSendable,
-      networkAndAccountSupports1559,
+      networkAndAccountSupports1559
     } = this.props;
-
     let gasError;
-    if (gasIsExcessive) gasError = GAS_PRICE_EXCESSIVE_ERROR_KEY;
-    else if (noGasPrice) gasError = GAS_PRICE_FETCH_FAILURE_ERROR_KEY;
-
-    return (
-      <PageContainerContent>
+    if (gasIsExcessive) gasError = GAS_PRICE_EXCESSIVE_ERROR_KEY;else if (noGasPrice) gasError = GAS_PRICE_FETCH_FAILURE_ERROR_KEY;
+    return <PageContainerContent>
         <div className="send-v2__form">
           {gasError && this.renderError(gasError)}
           {isEthGasPrice && this.renderWarning(ETH_GAS_PRICE_FETCH_WARNING_KEY)}
-          {isAssetSendable === false &&
-            this.renderError(UNSENDABLE_ASSET_ERROR_KEY)}
+          {isAssetSendable === false && this.renderError(UNSENDABLE_ASSET_ERROR_KEY)}
           {error && this.renderError(error)}
           {warning && this.renderWarning()}
           {this.maybeRenderAddContact()}
@@ -60,49 +48,47 @@ export default class SendContent extends Component {
           {!networkAndAccountSupports1559 && <SendGasRow />}
           {this.props.showHexData && <SendHexDataRow />}
         </div>
-      </PageContainerContent>
-    );
+      </PageContainerContent>;
   }
 
   maybeRenderAddContact() {
-    const { t } = this.context;
+    const {
+      t
+    } = this.context;
     const {
       isOwnedAccount,
       showAddToAddressBookModal,
-      contact = {},
+      contact = {}
     } = this.props;
 
     if (isOwnedAccount || contact.name) {
       return null;
     }
 
-    return (
-      <Dialog
-        type="message"
-        className="send__dialog"
-        onClick={showAddToAddressBookModal}
-      >
+    return <Dialog type="message" className="send__dialog" onClick={showAddToAddressBookModal}>
         {t('newAccountDetectedDialogMessage')}
-      </Dialog>
-    );
+      </Dialog>;
   }
 
   renderWarning(gasWarning = '') {
-    const { t } = this.context;
-    const { warning } = this.props;
-    return (
-      <Dialog type="warning" className="send__error-dialog">
+    const {
+      t
+    } = this.context;
+    const {
+      warning
+    } = this.props;
+    return <Dialog type="warning" className="send__error-dialog">
         {gasWarning === '' ? t(warning) : t(gasWarning)}
-      </Dialog>
-    );
+      </Dialog>;
   }
 
   renderError(error) {
-    const { t } = this.context;
-    return (
-      <Dialog type="error" className="send__error-dialog">
+    const {
+      t
+    } = this.context;
+    return <Dialog type="error" className="send__error-dialog">
         {t(error)}
-      </Dialog>
-    );
+      </Dialog>;
   }
+
 }

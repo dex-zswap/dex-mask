@@ -1,17 +1,15 @@
-import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
 import RejectTransactionsModal from './component';
 
 const mapStateToProps = (_, ownProps) => {
-  const { unapprovedTxCount } = ownProps;
-
+  const {
+    unapprovedTxCount
+  } = ownProps;
   return {
-    unapprovedTxCount,
+    unapprovedTxCount
   };
 };
 
-export default compose(
-  withModalProps,
-  connect(mapStateToProps),
-)(RejectTransactionsModal);
+export default compose(withModalProps, connect(mapStateToProps))(RejectTransactionsModal);

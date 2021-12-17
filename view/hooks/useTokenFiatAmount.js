@@ -1,13 +1,5 @@
-import { getConversionRate } from '@reducer/dexmask/dexmask';
-import { getTokenFiatAmount } from '@view/helpers/utils/token-util';
-import {
-  getCurrentCurrency,
-  getShouldShowFiat,
-  getTokenExchangeRates,
-} from '@view/selectors';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-
 /**
  * Get the token balance converted to fiat and formatted for display
  *
@@ -21,40 +13,18 @@ import { useSelector } from 'react-redux';
  * @param {boolean} hideCurrencySymbol Indicates whether the returned formatted amount should include the trailing currency symbol
  * @return {string} - The formatted token amount in the user's chosen fiat currency
  */
-export function useTokenFiatAmount(
-  tokenAddress,
-  tokenAmount,
-  tokenSymbol,
-  overrides = {},
-  hideCurrencySymbol,
-) {
+
+import { getConversionRate } from '@reducer/dexmask/dexmask';
+import { getTokenFiatAmount } from '@view/helpers/utils/token-util';
+import { getCurrentCurrency, getShouldShowFiat, getTokenExchangeRates } from '@view/selectors';
+export function useTokenFiatAmount(tokenAddress, tokenAmount, tokenSymbol, overrides = {}, hideCurrencySymbol) {
   const contractExchangeRates = useSelector(getTokenExchangeRates);
   const conversionRate = useSelector(getConversionRate);
   const currentCurrency = useSelector(getCurrentCurrency);
   const userPrefersShownFiat = useSelector(getShouldShowFiat);
   const showFiat = overrides.showFiat ?? userPrefersShownFiat;
-  const tokenExchangeRate =
-    overrides.exchangeRate ?? contractExchangeRates[tokenAddress];
-  const formattedFiat = useMemo(
-    () =>
-      getTokenFiatAmount(
-        tokenExchangeRate,
-        conversionRate,
-        currentCurrency,
-        tokenAmount,
-        tokenSymbol,
-        true,
-        hideCurrencySymbol,
-      ),
-    [
-      tokenExchangeRate,
-      conversionRate,
-      currentCurrency,
-      tokenAmount,
-      tokenSymbol,
-      hideCurrencySymbol,
-    ],
-  );
+  const tokenExchangeRate = overrides.exchangeRate ?? contractExchangeRates[tokenAddress];
+  const formattedFiat = useMemo(() => getTokenFiatAmount(tokenExchangeRate, conversionRate, currentCurrency, tokenAmount, tokenSymbol, true, hideCurrencySymbol), [tokenExchangeRate, conversionRate, currentCurrency, tokenAmount, tokenSymbol, hideCurrencySymbol]);
 
   if (!showFiat || currentCurrency.toUpperCase() === tokenSymbol) {
     return undefined;

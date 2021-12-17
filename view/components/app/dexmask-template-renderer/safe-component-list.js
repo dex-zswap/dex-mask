@@ -7,7 +7,6 @@ import DefinitionList from '@c/ui/definition-list';
 import Popover from '@c/ui/popover';
 import TruncatedDefinitionList from '@c/ui/truncated-definition-list';
 import Typography from '@c/ui/typography';
-
 export const safeComponentList = {
   DexMaskTranslation,
   a: 'a',
@@ -22,5 +21,5 @@ export const safeComponentList = {
   Button,
   Popover,
   Box,
-  NetworkDisplay,
+  NetworkDisplay
 };

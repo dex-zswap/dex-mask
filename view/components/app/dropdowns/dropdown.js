@@ -1,7 +1,6 @@
-import MenuDroppo from '@c/app/menu-droppo';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import MenuDroppo from '@c/app/menu-droppo';
 export class Dropdown extends Component {
   render() {
     const {
@@ -11,27 +10,16 @@ export class Dropdown extends Component {
       style,
       innerStyle,
       children,
-      useCssTransition,
+      useCssTransition
     } = this.props;
-
     const innerStyleDefaults = {
       borderRadius: '4px',
       padding: '8px 16px',
       background: 'rgba(0, 0, 0, 0.8)',
       boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
-      ...innerStyle,
+      ...innerStyle
     };
-
-    return (
-      <MenuDroppo
-        containerClassName={containerClassName}
-        useCssTransition={useCssTransition}
-        isOpen={isOpen}
-        zIndex={55}
-        onClickOutside={onClickOutside}
-        style={style}
-        innerStyle={innerStyleDefaults}
-      >
+    return <MenuDroppo containerClassName={containerClassName} useCssTransition={useCssTransition} isOpen={isOpen} zIndex={55} onClickOutside={onClickOutside} style={style} innerStyle={innerStyleDefaults}>
         <style>
           {`
             li.dropdown-menu-item:hover {
@@ -43,15 +31,13 @@ export class Dropdown extends Component {
           `}
         </style>
         {children}
-      </MenuDroppo>
-    );
+      </MenuDroppo>;
   }
+
 }
-
 Dropdown.defaultProps = {
-  useCssTransition: false,
+  useCssTransition: false
 };
-
 Dropdown.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   children: PropTypes.node,
@@ -59,49 +45,44 @@ Dropdown.propTypes = {
   onClickOutside: PropTypes.func,
   innerStyle: PropTypes.object,
   useCssTransition: PropTypes.bool,
-  containerClassName: PropTypes.string,
+  containerClassName: PropTypes.string
 };
-
 export class DropdownMenuItem extends Component {
   render() {
-    const { onClick, closeMenu, children, style } = this.props;
-
-    return (
-      <li
-        className="dropdown-menu-item"
-        onClick={() => {
-          onClick();
-          closeMenu();
-        }}
-        onKeyPress={(event) => {
-          if (event.key === 'Enter') {
-            onClick();
-            closeMenu();
-          }
-        }}
-        style={{
-          listStyle: 'none',
-          padding: '8px 0px',
-          fontSize: '18px',
-          fontStyle: 'normal',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'flex-start',
-          alignItems: 'center',
-          color: 'white',
-          ...style,
-        }}
-        tabIndex="0"
-      >
+    const {
+      onClick,
+      closeMenu,
+      children,
+      style
+    } = this.props;
+    return <li className="dropdown-menu-item" onClick={() => {
+      onClick();
+      closeMenu();
+    }} onKeyPress={event => {
+      if (event.key === 'Enter') {
+        onClick();
+        closeMenu();
+      }
+    }} style={{
+      listStyle: 'none',
+      padding: '8px 0px',
+      fontSize: '18px',
+      fontStyle: 'normal',
+      cursor: 'pointer',
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      color: 'white',
+      ...style
+    }} tabIndex="0">
         {children}
-      </li>
-    );
+      </li>;
   }
-}
 
+}
 DropdownMenuItem.propTypes = {
   closeMenu: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
   children: PropTypes.node,
-  style: PropTypes.object,
+  style: PropTypes.object
 };

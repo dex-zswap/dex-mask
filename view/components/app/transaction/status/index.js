@@ -1,15 +1,10 @@
-import Tooltip from '@c/ui/tooltip';
-import {
-  TRANSACTION_GROUP_STATUSES,
-  TRANSACTION_STATUSES,
-} from '@shared/constants/transaction';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
-
+import Tooltip from '@c/ui/tooltip';
+import { TRANSACTION_GROUP_STATUSES, TRANSACTION_STATUSES } from '@shared/constants/transaction';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 const QUEUED_PSEUDO_STATUS = 'queued';
-
 /**
  * A note about status logic for this component:
  * Approved, Signed and Submitted statuses are all treated, effectively
@@ -20,12 +15,12 @@ const QUEUED_PSEUDO_STATUS = 'queued';
  * Confirmed transactions are not especially highlighted except that their
  * status label will be the date the transaction was finalized.
  */
+
 const pendingStatusHash = {
   [TRANSACTION_STATUSES.SUBMITTED]: TRANSACTION_GROUP_STATUSES.PENDING,
   [TRANSACTION_STATUSES.APPROVED]: TRANSACTION_GROUP_STATUSES.PENDING,
-  [TRANSACTION_STATUSES.SIGNED]: TRANSACTION_GROUP_STATUSES.PENDING,
+  [TRANSACTION_STATUSES.SIGNED]: TRANSACTION_GROUP_STATUSES.PENDING
 };
-
 const statusToClassNameHash = {
   [TRANSACTION_STATUSES.UNAPPROVED]: 'transaction-status--unapproved',
   [TRANSACTION_STATUSES.REJECTED]: 'transaction-status--rejected',
@@ -33,47 +28,32 @@ const statusToClassNameHash = {
   [TRANSACTION_STATUSES.DROPPED]: 'transaction-status--dropped',
   [TRANSACTION_GROUP_STATUSES.CANCELLED]: 'transaction-status--cancelled',
   [QUEUED_PSEUDO_STATUS]: 'transaction-status--queued',
-  [TRANSACTION_GROUP_STATUSES.PENDING]: 'transaction-status--pending',
+  [TRANSACTION_GROUP_STATUSES.PENDING]: 'transaction-status--pending'
 };
-
 export default function TransactionStatus({
   status,
   date,
   error,
   isEarliestNonce,
-  className,
+  className
 }) {
   const t = useI18nContext();
   const tooltipText = error?.rpc?.message || error?.message;
   let statusKey = status;
+
   if (pendingStatusHash[status]) {
-    statusKey = isEarliestNonce
-      ? TRANSACTION_GROUP_STATUSES.PENDING
-      : QUEUED_PSEUDO_STATUS;
+    statusKey = isEarliestNonce ? TRANSACTION_GROUP_STATUSES.PENDING : QUEUED_PSEUDO_STATUS;
   }
 
-  const statusText =
-    statusKey === TRANSACTION_STATUSES.CONFIRMED ? date : t(statusKey);
-
-  return (
-    <Tooltip
-      position="top"
-      title={tooltipText}
-      wrapperClassName={classnames(
-        'transaction-status',
-        className,
-        statusToClassNameHash[statusKey],
-      )}
-    >
+  const statusText = statusKey === TRANSACTION_STATUSES.CONFIRMED ? date : t(statusKey);
+  return <Tooltip position="top" title={tooltipText} wrapperClassName={classnames('transaction-status', className, statusToClassNameHash[statusKey])}>
       {statusText}
-    </Tooltip>
-  );
+    </Tooltip>;
 }
-
 TransactionStatus.propTypes = {
   status: PropTypes.string,
   className: PropTypes.string,
   date: PropTypes.string,
   error: PropTypes.object,
-  isEarliestNonce: PropTypes.bool,
+  isEarliestNonce: PropTypes.bool
 };

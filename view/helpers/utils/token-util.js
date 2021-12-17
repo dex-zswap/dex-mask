@@ -1,20 +1,14 @@
 import contractMap from '@metamask/contract-metadata';
-import {
-  conversionUtil,
-  multiplyCurrencies,
-} from '@shared/modules/conversion.utils';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
+import { conversionUtil, multiplyCurrencies } from '@shared/modules/conversion.utils';
 import * as util from '.';
 import { formatCurrency } from './confirm-tx.util';
-
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
-  return {
-    ...acc,
-    [base.toLowerCase()]: contractMap[base],
+  return { ...acc,
+    [base.toLowerCase()]: contractMap[base]
   };
 }, {});
-
 const DEFAULT_SYMBOL = '';
 
 async function getSymbolFromContract(tokenAddress) {
@@ -24,10 +18,7 @@ async function getSymbolFromContract(tokenAddress) {
     const result = await token.symbol();
     return result[0];
   } catch (error) {
-    log.warn(
-      `symbol() call for token at address ${tokenAddress} resulted in error:`,
-      error,
-    );
+    log.warn(`symbol() call for token at address ${tokenAddress} resulted in error:`, error);
     return undefined;
   }
 }
@@ -40,10 +31,7 @@ async function getDecimalsFromContract(tokenAddress) {
     const decimalsBN = result[0];
     return decimalsBN?.toString();
   } catch (error) {
-    log.warn(
-      `decimals() call for token at address ${tokenAddress} resulted in error:`,
-      error,
-    );
+    log.warn(`decimals() call for token at address ${tokenAddress} resulted in error:`, error);
     return undefined;
   }
 }
@@ -81,14 +69,14 @@ async function getDecimals(tokenAddress) {
 }
 
 export async function getSymbolAndDecimals(tokenAddress, existingTokens = []) {
-  const existingToken = existingTokens.find(
-    ({ address }) => tokenAddress === address,
-  );
+  const existingToken = existingTokens.find(({
+    address
+  }) => tokenAddress === address);
 
   if (existingToken) {
     return {
       symbol: existingToken.symbol,
-      decimals: existingToken.decimals,
+      decimals: existingToken.decimals
     };
   }
 
@@ -98,42 +86,33 @@ export async function getSymbolAndDecimals(tokenAddress, existingTokens = []) {
     symbol = await getSymbol(tokenAddress);
     decimals = await getDecimals(tokenAddress);
   } catch (error) {
-    log.warn(
-      `symbol() and decimal() calls for token at address ${tokenAddress} resulted in error:`,
-      error,
-    );
+    log.warn(`symbol() and decimal() calls for token at address ${tokenAddress} resulted in error:`, error);
   }
 
   return {
     symbol: symbol || DEFAULT_SYMBOL,
-    decimals,
+    decimals
   };
 }
-
 export function tokenInfoGetter() {
   const tokens = {};
-
-  return async (address) => {
+  return async address => {
     if (tokens[address]) {
       return tokens[address];
     }
 
     tokens[address] = await getSymbolAndDecimals(address);
-
     return tokens[address];
   };
 }
-
 export function calcTokenAmount(value, decimals) {
   const multiplier = Math.pow(10, Number(decimals || 0));
   return new BigNumber(String(value)).div(multiplier);
 }
-
 export function calcTokenValue(value, decimals) {
   const multiplier = Math.pow(10, Number(decimals || 0));
   return new BigNumber(String(value)).times(multiplier);
 }
-
 /**
  * Attempts to get the address parameter of the given token transaction data
  * (i.e. function call) per the Human Standard Token ABI, in the following
@@ -144,11 +123,11 @@ export function calcTokenValue(value, decimals) {
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A lowercase address string.
  */
+
 export function getTokenAddressParam(tokenData = {}) {
   const value = tokenData?.args?._to || tokenData?.args?.[0];
   return value?.toString().toLowerCase();
 }
-
 /**
  * Gets the '_value' parameter of the given token transaction data
  * (i.e function call) per the Human Standard Token ABI, if present.
@@ -156,15 +135,14 @@ export function getTokenAddressParam(tokenData = {}) {
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A decimal string value.
  */
+
 export function getTokenValueParam(tokenData = {}) {
   return tokenData?.args?._value?.toString();
 }
-
 export function getTokenValue(tokenParams = []) {
-  const valueData = tokenParams.find((param) => param.name === '_value');
+  const valueData = tokenParams.find(param => param.name === '_value');
   return valueData && valueData.value;
 }
-
 /**
  * Get the token balance converted to fiat and optionally formatted for display
  *
@@ -177,51 +155,35 @@ export function getTokenValue(tokenParams = []) {
  * @param {boolean} [hideCurrencySymbol] - excludes the currency symbol in the result if true
  * @returns {string|undefined} The token amount in the user's chosen fiat currency, optionally formatted and localize
  */
-export function getTokenFiatAmount(
-  contractExchangeRate,
-  conversionRate,
-  currentCurrency,
-  tokenAmount,
-  tokenSymbol,
-  formatted = true,
-  hideCurrencySymbol = false,
-) {
+
+export function getTokenFiatAmount(contractExchangeRate, conversionRate, currentCurrency, tokenAmount, tokenSymbol, formatted = true, hideCurrencySymbol = false) {
   // If the conversionRate is 0 (i.e. unknown) or the contract exchange rate
   // is currently unknown, the fiat amount cannot be calculated so it is not
   // shown to the user
-  if (
-    conversionRate <= 0 ||
-    !contractExchangeRate ||
-    tokenAmount === undefined
-  ) {
+  if (conversionRate <= 0 || !contractExchangeRate || tokenAmount === undefined) {
     return undefined;
   }
 
-  const currentTokenToFiatRate = multiplyCurrencies(
-    contractExchangeRate,
-    conversionRate,
-    {
-      multiplicandBase: 10,
-      multiplierBase: 10,
-    },
-  );
+  const currentTokenToFiatRate = multiplyCurrencies(contractExchangeRate, conversionRate, {
+    multiplicandBase: 10,
+    multiplierBase: 10
+  });
   const currentTokenInFiat = conversionUtil(tokenAmount, {
     fromNumericBase: 'dec',
     fromCurrency: tokenSymbol,
     toCurrency: currentCurrency.toUpperCase(),
     numberOfDecimals: 2,
-    conversionRate: currentTokenToFiatRate,
+    conversionRate: currentTokenToFiatRate
   });
   let result;
+
   if (hideCurrencySymbol) {
     result = formatCurrency(currentTokenInFiat, currentCurrency);
   } else if (formatted) {
-    result = `${formatCurrency(
-      currentTokenInFiat,
-      currentCurrency,
-    )} ${currentCurrency.toUpperCase()}`;
+    result = `${formatCurrency(currentTokenInFiat, currentCurrency)} ${currentCurrency.toUpperCase()}`;
   } else {
     result = currentTokenInFiat;
   }
+
   return result;
 }

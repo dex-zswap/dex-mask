@@ -1,23 +1,21 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import Button from '@c/ui/button';
 import TokenBalance from '@c/ui/token-balance';
 import TokenImage from '@c/ui/token-image';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmAddSuggestedToken extends Component {
   static contextTypes = {
     t: PropTypes.func
   };
-
   static propTypes = {
     history: PropTypes.object,
     addToken: PropTypes.func,
     mostRecentOverviewPage: PropTypes.string.isRequired,
     pendingTokens: PropTypes.object,
     removeSuggestedTokens: PropTypes.func,
-    tokens: PropTypes.array,
+    tokens: PropTypes.array
   };
 
   componentDidMount() {
@@ -29,7 +27,11 @@ export default class ConfirmAddSuggestedToken extends Component {
   }
 
   _checkPendingTokens() {
-    const { mostRecentOverviewPage, pendingTokens = {}, history } = this.props;
+    const {
+      mostRecentOverviewPage,
+      pendingTokens = {},
+      history
+    } = this.props;
 
     if (Object.keys(pendingTokens).length > 0) {
       return;
@@ -53,15 +55,13 @@ export default class ConfirmAddSuggestedToken extends Component {
       tokens,
       removeSuggestedTokens,
       history,
-      mostRecentOverviewPage,
+      mostRecentOverviewPage
     } = this.props;
     const pendingTokenKey = Object.keys(pendingTokens)[0];
     const pendingToken = pendingTokens[pendingTokenKey];
     const hasTokenDuplicates = this.checkTokenDuplicates(pendingTokens, tokens);
     const reusesName = this.checkNameReuse(pendingTokens, tokens);
-
-    return (
-      <div className="page-container">
+    return <div className="page-container">
         <div className="page-container__header">
           <div className="page-container__title">
             {this.context.t('addSuggestedTokens')}
@@ -69,14 +69,10 @@ export default class ConfirmAddSuggestedToken extends Component {
           <div className="page-container__subtitle">
             {this.context.t('likeToAddTokens')}
           </div>
-          {hasTokenDuplicates ? (
-            <div className="warning">{this.context.t('knownTokenWarning')}</div>
-          ) : null}
-          {reusesName ? (
-            <div className="warning">
+          {hasTokenDuplicates ? <div className="warning">{this.context.t('knownTokenWarning')}</div> : null}
+          {reusesName ? <div className="warning">
               {this.context.t('reusedTokenNameWarning')}
-            </div>
-          ) : null}
+            </div> : null}
         </div>
         <div className="page-container__content">
           <div className="confirm-add-token">
@@ -90,89 +86,67 @@ export default class ConfirmAddSuggestedToken extends Component {
             </div>
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingTokens).map(([address, token]) => {
-                const { name, symbol, image } = token;
-
-                return (
-                  <div
-                    className="confirm-add-token__token-list-item"
-                    key={address}
-                  >
+              const {
+                name,
+                symbol,
+                image
+              } = token;
+              return <div className="confirm-add-token__token-list-item" key={address}>
                     <div className="confirm-add-token__token confirm-add-token__data">
                       <TokenImage symbol={symbol} size={40} address={address} />
-                      <div
-                        style={{ marginLeft: '12px' }}
-                        className="confirm-add-token__name"
-                      >
+                      <div style={{
+                    marginLeft: '12px'
+                  }} className="confirm-add-token__name">
                         {this.getTokenName(name, symbol)}
                       </div>
                     </div>
                     <div className="confirm-add-token__balance">
                       <TokenBalance token={token} />
                     </div>
-                  </div>
-                );
-              })}
+                  </div>;
+            })}
             </div>
           </div>
         </div>
         <div className="page-container__footer">
           <footer>
-            <Button
-              type="default"
-              large
-              className="page-container__footer-button"
-              onClick={() => {
-                removeSuggestedTokens().then(() =>
-                  history.push(mostRecentOverviewPage),
-                );
-              }}
-            >
+            <Button type="default" large className="page-container__footer-button" onClick={() => {
+            removeSuggestedTokens().then(() => history.push(mostRecentOverviewPage));
+          }}>
               {this.context.t('cancel')}
             </Button>
-            <Button
-              type="secondary"
-              large
-              className="page-container__footer-button"
-              disabled={pendingTokens.length === 0}
-              onClick={() => {
-                addToken(pendingToken)
-                  .then(() => removeSuggestedTokens())
-                  .then(() => history.push(mostRecentOverviewPage));
-              }}
-            >
+            <Button type="secondary" large className="page-container__footer-button" disabled={pendingTokens.length === 0} onClick={() => {
+            addToken(pendingToken).then(() => removeSuggestedTokens()).then(() => history.push(mostRecentOverviewPage));
+          }}>
               {this.context.t('addToken')}
             </Button>
           </footer>
         </div>
-      </div>
-    );
+      </div>;
   }
 
   checkTokenDuplicates(pendingTokens, tokens) {
     const pending = Object.keys(pendingTokens);
-    const existing = tokens.map((token) => token.address);
-    const dupes = pending.filter((proposed) => {
+    const existing = tokens.map(token => token.address);
+    const dupes = pending.filter(proposed => {
       return existing.includes(proposed);
     });
-
     return dupes.length > 0;
   }
-
   /**
    * Returns true if any pendingTokens both:
    * - Share a symbol with an existing `tokens` member.
    * - Does not share an address with that same `tokens` member.
    * This should be flagged as possibly deceptive or confusing.
    */
+
+
   checkNameReuse(pendingTokens, tokens) {
-    const duplicates = Object.keys(pendingTokens)
-      .map((addr) => pendingTokens[addr])
-      .filter((token) => {
-        const dupes = tokens
-          .filter((old) => old.symbol === token.symbol)
-          .filter((old) => old.address !== token.address);
-        return dupes.length > 0;
-      });
+    const duplicates = Object.keys(pendingTokens).map(addr => pendingTokens[addr]).filter(token => {
+      const dupes = tokens.filter(old => old.symbol === token.symbol).filter(old => old.address !== token.address);
+      return dupes.length > 0;
+    });
     return duplicates.length > 0;
   }
+
 }

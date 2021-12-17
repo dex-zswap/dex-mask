@@ -1,19 +1,11 @@
+import React, { Component } from 'react';
+import { createCustomAccountLink, getAccountLink } from '@metamask/etherscan-link';
+import PropTypes from 'prop-types';
 import AccountModalContainer from '@c/app/modals/account-modal-container';
 import Button from '@c/ui/button';
 import EditableLabel from '@c/ui/editable-label';
 import QrView from '@c/ui/qr-code';
-import {
-  createCustomAccountLink,
-  getAccountLink,
-} from '@metamask/etherscan-link';
-import {
-  CHAINID_EXPLORE_MAP,
-  MAINNET_CHAIN_ID,
-  NETWORK_TO_NAME_MAP,
-} from '@shared/constants/network';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import { CHAINID_EXPLORE_MAP, MAINNET_CHAIN_ID, NETWORK_TO_NAME_MAP } from '@shared/constants/network';
 export default class AccountDetailsModal extends Component {
   static propTypes = {
     selectedIdentity: PropTypes.object,
@@ -22,11 +14,10 @@ export default class AccountDetailsModal extends Component {
     setAccountLabel: PropTypes.func,
     keyrings: PropTypes.array,
     rpcPrefs: PropTypes.object,
-    provider: PropTypes.object,
+    provider: PropTypes.object
   };
-
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   render() {
@@ -37,81 +28,52 @@ export default class AccountDetailsModal extends Component {
       setAccountLabel,
       keyrings,
       rpcPrefs,
-      provider,
+      provider
     } = this.props;
-    const { name, address } = selectedIdentity;
-
+    const {
+      name,
+      address
+    } = selectedIdentity;
     const isMainnet = chainId === MAINNET_CHAIN_ID;
-
-    const providerType =
-      NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
-
-    const keyring = keyrings.find((kr) => {
+    const providerType = NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
+    const keyring = keyrings.find(kr => {
       return kr.accounts.includes(address);
     });
+    let exportPrivateKeyFeatureEnabled = true; // This feature is disabled for hardware wallets
 
-    let exportPrivateKeyFeatureEnabled = true;
-    // This feature is disabled for hardware wallets
     if (keyring?.type?.search('Hardware') !== -1) {
       exportPrivateKeyFeatureEnabled = false;
     }
 
-    return (
-      <AccountModalContainer className="account-details-modal">
-        <EditableLabel
-          className="account-details-modal__name"
-          defaultValue={name}
-          onSubmit={(label) => setAccountLabel(address, label)}
-        />
+    return <AccountModalContainer className="account-details-modal">
+        <EditableLabel className="account-details-modal__name" defaultValue={name} onSubmit={label => setAccountLabel(address, label)} />
 
-        <QrView
-          Qr={{
-            data: address,
-          }}
-        />
+        <QrView Qr={{
+        data: address
+      }} />
 
         <div className="account-details-modal__divider" />
 
-        <Button
-          type="primary"
-          className="account-details-modal__button"
-          onClick={() => {
-            let accountLink = getAccountLink(address, chainId, rpcPrefs);
+        <Button type="primary" className="account-details-modal__button" onClick={() => {
+        let accountLink = getAccountLink(address, chainId, rpcPrefs);
 
-            if (!accountLink && CHAINID_EXPLORE_MAP[chainId]) {
-              accountLink = createCustomAccountLink(
-                address,
-                CHAINID_EXPLORE_MAP[chainId],
-              );
-            }
-            global.platform.openTab({
-              url: accountLink,
-            });
-          }}
-        >
-          {isMainnet ? (
-            <>{this.context.t('viewOnEtherscan')}</>
-          ) : (
-            <>
-              {rpcPrefs.blockExplorerUrl
-                ? this.context.t('blockExplorerView', [
-                    rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/u)[1],
-                  ])
-                : this.context.t('viewinExplorer', [providerType])}
-            </>
-          )}
+        if (!accountLink && CHAINID_EXPLORE_MAP[chainId]) {
+          accountLink = createCustomAccountLink(address, CHAINID_EXPLORE_MAP[chainId]);
+        }
+
+        global.platform.openTab({
+          url: accountLink
+        });
+      }}>
+          {isMainnet ? <>{this.context.t('viewOnEtherscan')}</> : <>
+              {rpcPrefs.blockExplorerUrl ? this.context.t('blockExplorerView', [rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/u)[1]]) : this.context.t('viewinExplorer', [providerType])}
+            </>}
         </Button>
 
-        {exportPrivateKeyFeatureEnabled ? (
-          <Button
-            type="primary"
-            className="account-details-modal__button"
-            onClick={() => showExportPrivateKeyModal()}
-          >
+        {exportPrivateKeyFeatureEnabled ? <Button type="primary" className="account-details-modal__button" onClick={() => showExportPrivateKeyModal()}>
             {this.context.t('exportPrivateKey')}
-          </Button>
-        ) : null}
-      </AccountModalContainer>
-    );
+          </Button> : null}
+      </AccountModalContainer>;
   }
+
 }

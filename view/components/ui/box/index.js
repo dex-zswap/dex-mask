@@ -1,17 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import {
-  ALIGN_ITEMS,
-  BLOCK_SIZES,
-  BORDER_STYLE,
-  COLORS,
-  DISPLAY,
-  JUSTIFY_CONTENT,
-  SIZES,
-  TEXT_ALIGN,
-} from '@view/helpers/constants/design-system';
-
+import PropTypes from 'prop-types';
+import { ALIGN_ITEMS, BLOCK_SIZES, BORDER_STYLE, COLORS, DISPLAY, JUSTIFY_CONTENT, SIZES, TEXT_ALIGN } from '@view/helpers/constants/design-system';
 const ValidSize = PropTypes.oneOf([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 const ArrayOfValidSizes = PropTypes.arrayOf(ValidSize);
 const MultipleSizes = PropTypes.oneOfType([ValidSize, ArrayOfValidSizes]);
@@ -19,10 +9,9 @@ const MultipleSizes = PropTypes.oneOfType([ValidSize, ArrayOfValidSizes]);
 function generateSizeClasses(baseClass, type, main, top, right, bottom, left) {
   const arr = Array.isArray(main) ? main : [];
   const singleDigit = Array.isArray(main) ? undefined : main;
+
   if (Array.isArray(main) && ![2, 3, 4].includes(main.length)) {
-    throw new Error(
-      `Expected prop ${type} to have length between 2 and 4, received ${main.length}`,
-    );
+    throw new Error(`Expected prop ${type} to have length between 2 and 4, received ${main.length}`);
   }
 
   const isHorizontalAndVertical = arr.length === 2;
@@ -47,10 +36,9 @@ function generateSizeClasses(baseClass, type, main, top, right, bottom, left) {
     [`${baseClass}--${type}-bottom-${arr?.[2]}`]: hasAtLeastThree,
     [`${baseClass}--${type}-bottom-${arr?.[0]}`]: isHorizontalAndVertical,
     // If an array has 2 or 3 values, the second number will be the left value
-    [`${baseClass}--${type}-left-${arr?.[1]}`]:
-      isHorizontalAndVertical || isTopHorizontalAndBottom,
+    [`${baseClass}--${type}-left-${arr?.[1]}`]: isHorizontalAndVertical || isTopHorizontalAndBottom,
     // If an array has 4 values, the fourth number is the left value
-    [`${baseClass}--${type}-left-${arr?.[3]}`]: isAllFour,
+    [`${baseClass}--${type}-left-${arr?.[3]}`]: isAllFour
   };
 }
 
@@ -76,13 +64,12 @@ export default function Box({
   width,
   height,
   children,
-  className,
+  className
 }) {
   const boxClassName = classnames('box', className, {
     // ---Borders---
     // if borderWidth or borderColor is supplied w/o style, default to solid
-    'box--border-style-solid':
-      !borderStyle && (Boolean(borderWidth) || Boolean(borderColor)),
+    'box--border-style-solid': !borderStyle && (Boolean(borderWidth) || Boolean(borderColor)),
     // if borderColor supplied w/o width, default to 1
     'box--border-size-1': !borderWidth && Boolean(borderColor),
     [`box--border-color-${borderColor}`]: Boolean(borderColor),
@@ -90,29 +77,12 @@ export default function Box({
     [`box--border-style-${borderStyle}`]: Boolean(borderStyle),
     [`box--border-size-${borderWidth}`]: Boolean(borderWidth),
     // Margin
-    ...generateSizeClasses(
-      'box',
-      'margin',
-      margin,
-      marginTop,
-      marginRight,
-      marginBottom,
-      marginLeft,
-    ),
+    ...generateSizeClasses('box', 'margin', margin, marginTop, marginRight, marginBottom, marginLeft),
     // Padding
-    ...generateSizeClasses(
-      'box',
-      'padding',
-      padding,
-      paddingTop,
-      paddingRight,
-      paddingBottom,
-      paddingLeft,
-    ),
+    ...generateSizeClasses('box', 'padding', padding, paddingTop, paddingRight, paddingBottom, paddingLeft),
     // ---Flex/Grid alignment---
     // if justifyContent or alignItems supplied w/o display, default to flex
-    'box--display-flex':
-      !display && (Boolean(justifyContent) || Boolean(alignItems)),
+    'box--display-flex': !display && (Boolean(justifyContent) || Boolean(alignItems)),
     [`box--justify-content-${justifyContent}`]: Boolean(justifyContent),
     [`box--align-items-${alignItems}`]: Boolean(alignItems),
     // text align
@@ -121,15 +91,15 @@ export default function Box({
     [`box--display-${display}`]: Boolean(display),
     // width & height
     [`box--width-${width}`]: Boolean(width),
-    [`box--height-${height}`]: Boolean(height),
-  });
-  // Apply Box styles to any other component using function pattern
+    [`box--height-${height}`]: Boolean(height)
+  }); // Apply Box styles to any other component using function pattern
+
   if (typeof children === 'function') {
     return children(boxClassName);
   }
+
   return <div className={boxClassName}>{children}</div>;
 }
-
 Box.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   margin: MultipleSizes,
@@ -152,5 +122,5 @@ Box.propTypes = {
   display: PropTypes.oneOf(Object.values(DISPLAY)),
   width: PropTypes.oneOf(Object.values(BLOCK_SIZES)),
   height: PropTypes.oneOf(Object.values(BLOCK_SIZES)),
-  className: PropTypes.string,
+  className: PropTypes.string
 };

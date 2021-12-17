@@ -1,32 +1,30 @@
-import PageContainerFooter from '@c/ui/page-container/page-container-footer';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import PageContainerFooter from '@c/ui/page-container/page-container-footer';
 export default class MetaMetricsOptIn extends Component {
   static propTypes = {
     history: PropTypes.object,
     setParticipateInMetaMetrics: PropTypes.func,
     nextRoute: PropTypes.string,
     firstTimeSelectionMetaMetricsName: PropTypes.string,
-    participateInMetaMetrics: PropTypes.bool,
+    participateInMetaMetrics: PropTypes.bool
   };
-
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
 
   render() {
-    const { t } = this.context;
+    const {
+      t
+    } = this.context;
     const {
       nextRoute,
       history,
       setParticipateInMetaMetrics,
       firstTimeSelectionMetaMetricsName,
-      participateInMetaMetrics,
+      participateInMetaMetrics
     } = this.props;
-
-    return (
-      <div className="metametrics-opt-in">
+    return <div className="metametrics-opt-in">
         <div className="metametrics-opt-in__main">
           <MetaFoxLogo />
           <div className="metametrics-opt-in__body-graphic">
@@ -59,74 +57,44 @@ export default class MetaMetricsOptIn extends Component {
               <div className="metametrics-opt-in__row metametrics-opt-in__break-row">
                 <i className="fa fa-times" />
                 <div className="metametrics-opt-in__row-description">
-                  {t('metametricsCommitmentsNeverCollectKeysEtc', [
-                    <span
-                      className="metametrics-opt-in__bold"
-                      key="neverCollectKeys"
-                    >
+                  {t('metametricsCommitmentsNeverCollectKeysEtc', [<span className="metametrics-opt-in__bold" key="neverCollectKeys">
                       {t('metametricsCommitmentsBoldNever')}
-                    </span>,
-                  ])}
+                    </span>])}
                 </div>
               </div>
               <div className="metametrics-opt-in__row">
                 <i className="fa fa-times" />
                 <div className="metametrics-opt-in__row-description">
-                  {t('metametricsCommitmentsNeverCollectIP', [
-                    <span
-                      className="metametrics-opt-in__bold"
-                      key="neverCollectIP"
-                    >
+                  {t('metametricsCommitmentsNeverCollectIP', [<span className="metametrics-opt-in__bold" key="neverCollectIP">
                       {t('metametricsCommitmentsBoldNever')}
-                    </span>,
-                  ])}
+                    </span>])}
                 </div>
               </div>
               <div className="metametrics-opt-in__row">
                 <i className="fa fa-times" />
                 <div className="metametrics-opt-in__row-description">
-                  {t('metametricsCommitmentsNeverSellDataForProfit', [
-                    <span
-                      className="metametrics-opt-in__bold"
-                      key="neverSellData"
-                    >
+                  {t('metametricsCommitmentsNeverSellDataForProfit', [<span className="metametrics-opt-in__bold" key="neverSellData">
                       {t('metametricsCommitmentsBoldNever')}
-                    </span>,
-                  ])}
+                    </span>])}
                 </div>
               </div>
             </div>
           </div>
           <div className="metametrics-opt-in__footer">
-            <PageContainerFooter
-              onCancel={async () => {
-                await setParticipateInMetaMetrics(false);
-                history.push(nextRoute);
-              }}
-              cancelText={t('noThanks')}
-              hideCancel={false}
-              onSubmit={() => {
-                history.push(nextRoute);
-              }}
-              submitText={t('affirmAgree')}
-              submitButtonType="primary"
-              disabled={false}
-            />
+            <PageContainerFooter onCancel={async () => {
+            await setParticipateInMetaMetrics(false);
+            history.push(nextRoute);
+          }} cancelText={t('noThanks')} hideCancel={false} onSubmit={() => {
+            history.push(nextRoute);
+          }} submitText={t('affirmAgree')} submitButtonType="primary" disabled={false} />
             <div className="metametrics-opt-in__bottom-text">
-              {t('gdprMessage', [
-                <a
-                  key="metametrics-bottom-text-wrapper"
-                  href="https://metamask.io/privacy.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              {t('gdprMessage', [<a key="metametrics-bottom-text-wrapper" href="https://metamask.io/privacy.html" target="_blank" rel="noopener noreferrer">
                   {t('gdprMessagePrivacyPolicy')}
-                </a>,
-              ])}
+                </a>])}
             </div>
           </div>
         </div>
-      </div>
-    );
+      </div>;
   }
+
 }

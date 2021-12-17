@@ -1,26 +1,23 @@
 import React, { createRef, PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import jazzicon from '@metamask/jazzicon';
+import PropTypes from 'prop-types';
 import iconFactoryGenerator from '@view/helpers/utils/icon-factory';
-
 const iconFactory = iconFactoryGenerator(jazzicon);
-
 /**
  * Wrapper around the jazzicon library to return a React component, as the library returns an
  * HTMLDivElement which needs to be appended.
  */
+
 export default class Jazzicon extends PureComponent {
   static propTypes = {
     address: PropTypes.string.isRequired,
     className: PropTypes.string,
     diameter: PropTypes.number,
-    style: PropTypes.object,
+    style: PropTypes.object
   };
-
   static defaultProps = {
-    diameter: 46,
+    diameter: 46
   };
-
   container = createRef();
 
   componentDidMount() {
@@ -28,8 +25,14 @@ export default class Jazzicon extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const { address: prevAddress, diameter: prevDiameter } = prevProps;
-    const { address, diameter } = this.props;
+    const {
+      address: prevAddress,
+      diameter: prevDiameter
+    } = prevProps;
+    const {
+      address,
+      diameter
+    } = this.props;
 
     if (address !== prevAddress || diameter !== prevDiameter) {
       this.removeExistingChildren();
@@ -38,7 +41,9 @@ export default class Jazzicon extends PureComponent {
   }
 
   removeExistingChildren() {
-    const { children } = this.container.current;
+    const {
+      children
+    } = this.container.current;
 
     for (let i = 0; i < children.length; i++) {
       this.container.current.removeChild(children[i]);
@@ -46,14 +51,20 @@ export default class Jazzicon extends PureComponent {
   }
 
   appendJazzicon() {
-    const { address, diameter } = this.props;
+    const {
+      address,
+      diameter
+    } = this.props;
     const image = iconFactory.iconForAddress(address, diameter);
     this.container.current.appendChild(image);
   }
 
   render() {
-    const { className, style } = this.props;
-
+    const {
+      className,
+      style
+    } = this.props;
     return <div className={className} ref={this.container} style={style} />;
   }
+
 }

@@ -1,13 +1,7 @@
 import { ethers } from 'ethers';
-
 import MINTABLE_ABI from '@shared/contract-abis/mintable';
 import * as actionConstants from '@view/store/actionConstants';
-
-import {
-  displayWarning,
-  showConfTxPage
-} from '@view/store/actions';
-
+import { displayWarning, showConfTxPage } from '@view/store/actions';
 export default function crossChainReducer(state = {}, action) {
   const crossChainState = {
     coinAddress: '',
@@ -19,12 +13,14 @@ export default function crossChainReducer(state = {}, action) {
     userInputValue: '',
     supportChains: [],
     target: null,
-    ...state,
+    ...state
   };
 
   switch (action.type) {
     case actionConstants.UPDATE_CROSS_CHAIN_STATE:
-      return { ...crossChainState, ...action.value };
+      return { ...crossChainState,
+        ...action.value
+      };
 
     default:
       return crossChainState;

@@ -1,8 +1,8 @@
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import InfoTooltip from '@c/ui/info-tooltip';
 import ExchangeRateDisplay from '@pages/swaps/exchange-rate-display';
 import { I18nContext } from '@view/contexts/i18n';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
 
 const QuoteDetails = ({
   slippage,
@@ -14,41 +14,27 @@ const QuoteDetails = ({
   minimumAmountReceived,
   feeInEth,
   networkFees,
-  metaMaskFee,
+  metaMaskFee
 }) => {
   const t = useContext(I18nContext);
-  return (
-    <div className="quote-details">
+  return <div className="quote-details">
       <div className="quote-details__row">
         <div className="quote-details__detail-header">{t('swapRate')}</div>
         <div className="quote-details__detail-content">
-          <ExchangeRateDisplay
-            primaryTokenValue={sourceTokenValue}
-            primaryTokenDecimals={1}
-            primaryTokenSymbol={sourceTokenSymbol}
-            secondaryTokenValue={destinationTokenValue}
-            secondaryTokenDecimals={1}
-            secondaryTokenSymbol={destinationTokenSymbol}
-          />
+          <ExchangeRateDisplay primaryTokenValue={sourceTokenValue} primaryTokenDecimals={1} primaryTokenSymbol={sourceTokenSymbol} secondaryTokenValue={destinationTokenValue} secondaryTokenDecimals={1} secondaryTokenSymbol={destinationTokenSymbol} />
         </div>
       </div>
       <div className="quote-details__row">
         <div className="quote-details__detail-header">
           {t('swapMaxSlippage')}
-          <InfoTooltip
-            position="bottom"
-            contentText={t('swapQuoteDetailsSlippageInfo')}
-          />
+          <InfoTooltip position="bottom" contentText={t('swapQuoteDetailsSlippageInfo')} />
         </div>
         <div className="quote-details__detail-content">{`${slippage}%`}</div>
       </div>
       <div className="quote-details__row">
         <div className="quote-details__detail-header">
           {t('swapAmountReceived')}
-          <InfoTooltip
-            position="bottom"
-            contentText={t('swapAmountReceivedInfo')}
-          />
+          <InfoTooltip position="bottom" contentText={t('swapAmountReceivedInfo')} />
         </div>
         <div className="quote-details__detail-content">
           <span>{minimumAmountReceived}</span>
@@ -58,10 +44,7 @@ const QuoteDetails = ({
       <div className="quote-details__row">
         <div className="quote-details__detail-header">
           {t('swapEstimatedNetworkFees')}
-          <InfoTooltip
-            position="bottom"
-            contentText={t('swapEstimatedNetworkFeesInfo')}
-          />
+          <InfoTooltip position="bottom" contentText={t('swapEstimatedNetworkFeesInfo')} />
         </div>
         <div className="quote-details__detail-content">
           <span>{feeInEth}</span>
@@ -79,19 +62,14 @@ const QuoteDetails = ({
       </div>
       <div className="quote-details__row quote-details__row--high">
         <div className="quote-details__detail-header">
-          <img
-            src="./images/logo/logo-fox.svg"
-            className="quote-details__metafox-logo"
-            alt=""
-          />
+          <img src="./images/logo/logo-fox.svg" className="quote-details__metafox-logo" alt="" />
           {t('swapMetaMaskFee')}
         </div>
         <div className="quote-details__detail-content">
           {t('swapMetaMaskFeeDescription', [metaMaskFee])}
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
 
 QuoteDetails.propTypes = {
@@ -104,7 +82,6 @@ QuoteDetails.propTypes = {
   minimumAmountReceived: PropTypes.string.isRequired,
   feeInEth: PropTypes.string.isRequired,
   networkFees: PropTypes.string.isRequired,
-  metaMaskFee: PropTypes.number.isRequired,
+  metaMaskFee: PropTypes.number.isRequired
 };
-
 export default QuoteDetails;

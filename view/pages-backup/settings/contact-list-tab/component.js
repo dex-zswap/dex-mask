@@ -1,20 +1,15 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ContactList from '@c/app/contact-list';
 import Button from '@c/ui/button';
-import {
-  CONTACT_ADD_ROUTE,
-  CONTACT_VIEW_ROUTE,
-} from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import { CONTACT_ADD_ROUTE, CONTACT_VIEW_ROUTE } from '@view/helpers/constants/routes';
 import AddContact from './add-contact';
 import EditContact from './edit-contact';
 import ViewContact from './view-contact';
-
 export default class ContactListTab extends Component {
   static contextTypes = {
-    t: PropTypes.func,
+    t: PropTypes.func
   };
-
   static propTypes = {
     addressBook: PropTypes.array,
     history: PropTypes.object,
@@ -23,67 +18,60 @@ export default class ContactListTab extends Component {
     editingContact: PropTypes.bool,
     addingContact: PropTypes.bool,
     showContactContent: PropTypes.bool,
-    hideAddressBook: PropTypes.bool,
+    hideAddressBook: PropTypes.bool
   };
 
   renderAddresses() {
-    const { addressBook, history, selectedAddress } = this.props;
-    const contacts = addressBook.filter(({ name }) => Boolean(name));
-    const nonContacts = addressBook.filter(({ name }) => !name);
-    const { t } = this.context;
+    const {
+      addressBook,
+      history,
+      selectedAddress
+    } = this.props;
+    const contacts = addressBook.filter(({
+      name
+    }) => Boolean(name));
+    const nonContacts = addressBook.filter(({
+      name
+    }) => !name);
+    const {
+      t
+    } = this.context;
 
     if (addressBook.length) {
-      return (
-        <div>
-          <ContactList
-            searchForContacts={() => contacts}
-            searchForRecents={() => nonContacts}
-            selectRecipient={(address) => {
-              history.push(`${CONTACT_VIEW_ROUTE}/${address}`);
-            }}
-            selectedAddress={selectedAddress}
-          />
-        </div>
-      );
+      return <div>
+          <ContactList searchForContacts={() => contacts} searchForRecents={() => nonContacts} selectRecipient={address => {
+          history.push(`${CONTACT_VIEW_ROUTE}/${address}`);
+        }} selectedAddress={selectedAddress} />
+        </div>;
     }
-    return (
-      <div className="address-book__container">
+
+    return <div className="address-book__container">
         <div>
           <img src="./images/address-book.svg" alt={t('addressBookIcon')} />
           <h4 className="address-book__title">{t('buildContactList')}</h4>
           <p className="address-book__sub-title">
             {t('addFriendsAndAddresses')}
           </p>
-          <button
-            className="address-book__link"
-            onClick={() => {
-              history.push(CONTACT_ADD_ROUTE);
-            }}
-          >
+          <button className="address-book__link" onClick={() => {
+          history.push(CONTACT_ADD_ROUTE);
+        }}>
             + {t('addContact')}
           </button>
         </div>
-      </div>
-    );
+      </div>;
   }
 
   renderAddButton() {
-    const { history } = this.props;
-
-    return (
-      <div className="address-book-add-button">
-        <Button
-          className="address-book-add-button__button"
-          type="secondary"
-          rounded
-          onClick={() => {
-            history.push(CONTACT_ADD_ROUTE);
-          }}
-        >
+    const {
+      history
+    } = this.props;
+    return <div className="address-book-add-button">
+        <Button className="address-book-add-button__button" type="secondary" rounded onClick={() => {
+        history.push(CONTACT_ADD_ROUTE);
+      }}>
           {this.context.t('addContact')}
         </Button>
-      </div>
-    );
+      </div>;
   }
 
   renderContactContent() {
@@ -91,7 +79,7 @@ export default class ContactListTab extends Component {
       viewingContact,
       editingContact,
       addingContact,
-      showContactContent,
+      showContactContent
     } = this.props;
 
     if (!showContactContent) {
@@ -99,6 +87,7 @@ export default class ContactListTab extends Component {
     }
 
     let ContactContentComponent = null;
+
     if (viewingContact) {
       ContactContentComponent = ViewContact;
     } else if (editingContact) {
@@ -107,33 +96,33 @@ export default class ContactListTab extends Component {
       ContactContentComponent = AddContact;
     }
 
-    return (
-      ContactContentComponent && (
-        <div className="address-book-contact-content">
+    return ContactContentComponent && <div className="address-book-contact-content">
           <ContactContentComponent />
-        </div>
-      )
-    );
+        </div>;
   }
 
   renderAddressBookContent() {
-    const { hideAddressBook } = this.props;
+    const {
+      hideAddressBook
+    } = this.props;
 
     if (!hideAddressBook) {
       return <div className="address-book">{this.renderAddresses()}</div>;
     }
+
     return null;
   }
 
   render() {
-    const { addingContact, addressBook } = this.props;
-
-    return (
-      <div className="address-book-wrapper">
+    const {
+      addingContact,
+      addressBook
+    } = this.props;
+    return <div className="address-book-wrapper">
         {this.renderAddressBookContent()}
         {this.renderContactContent()}
         {!addingContact && addressBook.length > 0 && this.renderAddButton()}
-      </div>
-    );
+      </div>;
   }
+
 }

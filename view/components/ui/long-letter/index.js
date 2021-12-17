@@ -9,6 +9,6 @@ const LongLetter = ({
   }
 
   return [text.substring(0, length), '...'].join('');
-}
+};
 
 export default LongLetter;
