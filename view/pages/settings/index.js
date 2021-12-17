@@ -1,7 +1,6 @@
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import BackBar from '@c/ui/back-bar';
 import Logo from '@c/ui/logo';
-import RestoreVaultPage from '@pages/keychains/restore-vault';
 import RevealSeedConfirmation from '@pages/keychains/reveal-seed';
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
 import {
@@ -11,13 +10,12 @@ import {
   GENERAL_ROUTE,
   NETWORKS_FORM_ROUTE,
   NETWORKS_ROUTE,
-  RESTORE_VAULT_ROUTE,
   REVEAL_SEED_ROUTE,
   SECURITY_ROUTE,
   SETTINGS_ROUTE,
 } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import { default as React, default as React, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import AdvancedTab from './advanced-tab';
 import AlertsTab from './alerts-tab';
@@ -109,7 +107,6 @@ const SettingsPage = () => {
       [ADVANCED_ROUTE]: t('advanced'),
       [SECURITY_ROUTE]: t('securityAndPrivacy'),
       [REVEAL_SEED_ROUTE]: t('walletSeed'),
-      [RESTORE_VAULT_ROUTE]: t('walletSeed'),
       [ALERTS_ROUTE]: t('alerts'),
       [NETWORKS_ROUTE]: t('networks'),
       [ABOUT_US_ROUTE]: t('about'),
@@ -164,11 +161,6 @@ const SettingsPage = () => {
             exact
             path={REVEAL_SEED_ROUTE}
             component={RevealSeedConfirmation}
-          />
-          <Route
-            exact
-            path={RESTORE_VAULT_ROUTE}
-            component={RestoreVaultPage}
           />
           <Route exact path={ALERTS_ROUTE} component={AlertsTab} />
           <Route exact path={ABOUT_US_ROUTE} component={InfoTab} />

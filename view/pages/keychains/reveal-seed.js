@@ -4,7 +4,7 @@ import TextField from '@c/ui/text-field';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { requestRevealSeedWords } from '@view/store/actions';
-import { default as React, default as React, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 

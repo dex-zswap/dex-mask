@@ -10,7 +10,7 @@ import {
   setUseBlockie,
   updateCurrentLocale,
 } from '@view/store/actions';
-import { default as React, default as React } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const sortedCurrencies = availableCurrencies.sort((a, b) => {
