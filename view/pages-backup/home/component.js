@@ -367,10 +367,10 @@ export default class Home extends PureComponent {
         />
         <div className="home__container">
           {/* {!showWhatsNew && showRecoveryPhraseReminder ? (
-           <RecoveryPhraseReminder
-             hasBackedUp={seedPhraseBackedUp}
-             onConfirm={this.onRecoveryPhraseReminderClose}
-           />
+          <RecoveryPhraseReminder
+            hasBackedUp={seedPhraseBackedUp}
+            onConfirm={this.onRecoveryPhraseReminderClose}
+          />
           ) : null} */}
           {isPopup && !connectedStatusPopoverHasBeenShown
             ? this.renderPopover()
@@ -382,30 +382,30 @@ export default class Home extends PureComponent {
               <EthOverview />
             </div>
             {/* <Tabs
-             defaultActiveTabName={defaultHomeActiveTabName}
-             onTabClick={onTabClick}
-             tabsClassName="home__tabs"
+            defaultActiveTabName={defaultHomeActiveTabName}
+            onTabClick={onTabClick}
+            tabsClassName="home__tabs"
             >
-             <Tab
-               activeClassName="home__tab--active"
-               className="home__tab"
-               data-testid="home__asset-tab"
-               name={t('assets')}
-             >
-               <AssetList
-                 onClickAsset={(asset) =>
-                   history.push(`${ASSET_ROUTE}/${asset}`)
-                 }
-               />
-             </Tab>
-             <Tab
-               activeClassName="home__tab--active"
-               className="home__tab"
-               data-testid="home__activity-tab"
-               name={t('activity')}
-             >
-               <TransactionList />
-             </Tab>
+            <Tab
+              activeClassName="home__tab--active"
+              className="home__tab"
+              data-testid="home__asset-tab"
+              name={t('assets')}
+            >
+              <AssetList
+                onClickAsset={(asset) =>
+                  history.push(`${ASSET_ROUTE}/${asset}`)
+                }
+              />
+            </Tab>
+            <Tab
+              activeClassName="home__tab--active"
+              className="home__tab"
+              data-testid="home__activity-tab"
+              name={t('activity')}
+            >
+              <TransactionList />
+            </Tab>
             </Tabs> */}
             <AssetList
               onClickAsset={(asset) => history.push(`${ASSET_ROUTE}/${asset}`)}

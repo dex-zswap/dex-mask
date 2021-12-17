@@ -9,7 +9,7 @@ export default function TransactionTotalBanner({
     <div className="transaction-total-banner">
       <div className="transaction-total-banner_title">{total}</div>
       {/* <Typography color={COLORS.BLACK} variant={TYPOGRAPHY.H1}>
-       {total}
+      {total}
       </Typography> */}
       {
         detail && (

@@ -246,12 +246,12 @@ export default class ConfirmApproveContent extends Component {
           </div>
         )}
         {/* <div className="confirm-approve-content__identicon-wrapper">
-         <UrlIcon
-           className="confirm-approve-content__identicon"
-           fallbackClassName="confirm-approve-content__identicon"
-           name={origin ? new URL(origin).hostname : ''}
-           url={siteImage}
-         />
+        <UrlIcon
+          className="confirm-approve-content__identicon"
+          fallbackClassName="confirm-approve-content__identicon"
+          name={origin ? new URL(origin).hostname : ''}
+          url={siteImage}
+        />
         </div> */}
         <div className="confirm-approve-content__title">
           {t('allowOriginSpendToken', [origin, tokenSymbol])}

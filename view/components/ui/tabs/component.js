@@ -73,7 +73,7 @@ export default class Tabs extends Component {
     return (
       <div className="tabs">
         {/* <ul className={classnames('tabs__list', tabsClassName)}>
-         {this.renderTabs()}
+        {this.renderTabs()}
         </ul> */}
         <div className="tabs__content">{this.renderActiveTabContent()}</div>
       </div>

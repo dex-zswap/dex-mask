@@ -8,39 +8,65 @@ import React, {
 } from 'react';
 import { useSelector } from 'react-redux';
 import copyToClipboard from 'copy-to-clipboard';
-import { ethers } from 'ethers';
 import { I18nContext } from '@view/contexts/i18n';
 import AccountOptionsMenu from '@c/app/account-options-menu';
-import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
-import CopyIcon from '@c/ui/icon/copy-icon.component';
 import TokenImage from '@c/ui/token-image';
 import Tooltip from '@c/ui/tooltip';
 import { SECOND } from '@shared/constants/time';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import { shortenAddress } from '@view/helpers/utils';
-import { getNativeCurrency } from '@reducer/dexmask/dexmask';
+import { getTokens } from '@reducer/dexmask/dexmask';
+import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount';
+import { useTokenTracker } from '@view/hooks/useTokenTracker';
 import {
-  getNativeCurrencyImage,
+  getShouldHideZeroBalanceTokens,
   getSelectedAccount,
   getSelectedIdentity,
 } from '@view/selectors';
-export default function SelectedToken() {
+export default function SelectedToken({ token }) {
   const t = useContext(I18nContext);
   const selectedIdentity = useSelector(getSelectedIdentity);
   const selectedAccount = useSelector(getSelectedAccount);
-  const nativeCurrencyImage = useSelector(getNativeCurrencyImage);
-  const nativeCurrency = useSelector(getNativeCurrency);
   const [state, setState] = useState({
     copied: false,
     accountOptionsMenuOpen: false,
   });
+
+  const tokens = useSelector(getTokens);
+
+  const shouldHideZeroBalanceTokens = useSelector(getShouldHideZeroBalanceTokens);
+  const { tokensWithBalancesLoading, tokensWithBalances } = useTokenTracker(
+    tokens,
+    true,
+    shouldHideZeroBalanceTokens,
+  );
+
   const copyTimeout = useRef(null);
   const dropTrigger = useRef(null);
-  const { balance } = selectedAccount;
   const checksummedAddress = useMemo(
     () => toChecksumHexAddress(selectedIdentity.address),
     [selectedIdentity.address],
   );
+
+  const targetToken = useMemo(() => tokensWithBalances.find(({ address }) => address === token.address), [token, tokensWithBalances]);
+
+  const tokenBalance = useMemo(() => {
+    if (tokensWithBalancesLoading) {
+      return `0.00 ${token.symbol}`;
+    }
+
+    return [targetToken?.string ?? '0.00', token.symbol].join(' ');
+  }, [targetToken]);
+
+  const formattedFiat = useTokenFiatAmount(
+    token?.address,
+    targetToken?.string,
+    token?.symbol,
+    {
+      showFiat: true,
+    },
+  );
+
   const copyAddress = useCallback(() => {
     setState((state) =>
       Object.assign({}, state, {
@@ -101,14 +127,12 @@ export default function SelectedToken() {
         </div>
         <div className="native-currency flex space-between items-center">
           <div className="native-currency-balance">
-            <UserPreferencedCurrencyDisplay
-              value={balance}
-              suffix={nativeCurrency}
-            />
+            <div className="token-balance">{ tokenBalance }</div>
+            <div className="token-usd">{ formattedFiat }</div>
           </div>
           <TokenImage
-            symbol={nativeCurrency}
-            address={ethers.constants.AddressZero}
+            symbol={token.symbol}
+            address={token.address}
             size={48}
           />
         </div>

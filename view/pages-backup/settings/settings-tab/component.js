@@ -47,7 +47,7 @@ export default class SettingsTab extends PureComponent {
         <div className="settings-page__content-item">
           <span>{t('currencyConversion')}</span>
           {/* <span className="settings-page__content-description">
-           {t('updatedWithDate', [Date(conversionDate)])}
+          {t('updatedWithDate', [Date(conversionDate)])}
           </span> */}
         </div>
         <div className="settings-page__content-item">
@@ -78,7 +78,7 @@ export default class SettingsTab extends PureComponent {
             {t('currentLanguage')}
           </span>
           {/* <span className="settings-page__content-description">
-           {currentLocaleName}
+          {currentLocaleName}
           </span> */}
         </div>
         <div className="settings-page__content-item">

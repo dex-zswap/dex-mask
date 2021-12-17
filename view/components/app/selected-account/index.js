@@ -11,16 +11,16 @@ import copyToClipboard from 'copy-to-clipboard';
 import { ethers } from 'ethers';
 import { I18nContext } from '@view/contexts/i18n';
 import AccountOptionsMenu from '@c/app/account-options-menu';
-import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
-import CopyIcon from '@c/ui/icon/copy-icon.component';
 import TokenImage from '@c/ui/token-image';
 import Tooltip from '@c/ui/tooltip';
 import { SECOND } from '@shared/constants/time';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import { shortenAddress } from '@view/helpers/utils';
 import { getNativeCurrency } from '@reducer/dexmask/dexmask';
+import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
+import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
+import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
 import {
-  getNativeCurrencyImage,
   getSelectedAccount,
   getSelectedIdentity,
 } from '@view/selectors';
@@ -28,7 +28,6 @@ export default function SelectedAccount() {
   const t = useContext(I18nContext);
   const selectedIdentity = useSelector(getSelectedIdentity);
   const selectedAccount = useSelector(getSelectedAccount);
-  const nativeCurrencyImage = useSelector(getNativeCurrencyImage);
   const nativeCurrency = useSelector(getNativeCurrency);
   const [state, setState] = useState({
     copied: false,
@@ -37,6 +36,32 @@ export default function SelectedAccount() {
   const copyTimeout = useRef(null);
   const dropTrigger = useRef(null);
   const { balance } = selectedAccount;
+  const {
+    currency: primaryCurrency,
+    numberOfDecimals: primaryNumberOfDecimals,
+  } = useUserPreferencedCurrency(PRIMARY, {
+    ethNumberOfDecimals: 4,
+  });
+  const {
+    currency: secondaryCurrency,
+    numberOfDecimals: secondaryNumberOfDecimals,
+  } = useUserPreferencedCurrency(SECONDARY, {
+    ethNumberOfDecimals: 4,
+  });
+  const [, primaryCurrencyProperties] = useCurrencyDisplay(
+    balance,
+    {
+      numberOfDecimals: primaryNumberOfDecimals,
+      currency: primaryCurrency,
+    },
+  );
+  const [
+    secondaryCurrencyDisplay,
+    secondaryCurrencyProperties,
+  ] = useCurrencyDisplay(balance, {
+    numberOfDecimals: secondaryNumberOfDecimals,
+    currency: secondaryCurrency,
+  });
   const checksummedAddress = useMemo(
     () => toChecksumHexAddress(selectedIdentity.address),
     [selectedIdentity.address],
@@ -101,10 +126,8 @@ export default function SelectedAccount() {
         </div>
         <div className="native-currency flex space-between items-center">
           <div className="native-currency-balance">
-            <UserPreferencedCurrencyDisplay
-              value={balance}
-              suffix={nativeCurrency}
-            />
+            <div className="token-balance">{primaryCurrencyProperties.value} {primaryCurrencyProperties.suffix}</div>
+            <div className="token-usd">{secondaryCurrencyProperties.value} {secondaryCurrencyProperties.suffix}</div>
           </div>
           <TokenImage
             symbol={nativeCurrency}

@@ -107,9 +107,9 @@ export default function TokenInfo({ isNative, token }) {
       <div className="asset__token-info__token-image">
         <div className="asset__token-info__token-image-wrapper">
           {/* {isNative ? (
-           <img className="image" src={tokenImage} />
+          <img className="image" src={tokenImage} />
           ) : (
-           <Identicon address={address} diameter={54} />
+          <Identicon address={address} diameter={54} />
           )} */}
           <TokenImage
             symbol={tokenSymbol}

@@ -103,31 +103,31 @@ class ChainSwitcher extends Component {
     return (
       <div className="chain-switcher__default-chains base-width">
         {/* <div
-         className={classnames([
-           'chain-switcher__default-chain-item',
-           providerName === DEX_MAINNET && 'chain-switcher__current-chain',
-         ])}
-         onClick={() => this.switchNetWork(DEX_MAINNET)}
+        className={classnames([
+          'chain-switcher__default-chain-item',
+          providerName === DEX_MAINNET && 'chain-switcher__current-chain',
+        ])}
+        onClick={() => this.switchNetWork(DEX_MAINNET)}
         >
-         DEX
+        DEX
         </div>
         <div
-         className={classnames([
-           'chain-switcher__default-chain-item',
-           providerName === MAINNET && 'chain-switcher__current-chain',
-         ])}
-         onClick={() => this.switchNetWork(MAINNET)}
+        className={classnames([
+          'chain-switcher__default-chain-item',
+          providerName === MAINNET && 'chain-switcher__current-chain',
+        ])}
+        onClick={() => this.switchNetWork(MAINNET)}
         >
-         ETH
+        ETH
         </div>
         <div
-         className={classnames([
-           'chain-switcher__default-chain-item',
-           providerName === BSC_MAINNET && 'chain-switcher__current-chain',
-         ])}
-         onClick={() => this.switchNetWork(BSC_MAINNET)}
+        className={classnames([
+          'chain-switcher__default-chain-item',
+          providerName === BSC_MAINNET && 'chain-switcher__current-chain',
+        ])}
+        onClick={() => this.switchNetWork(BSC_MAINNET)}
         >
-         BSC
+        BSC
         </div> */}
       </div>
     );
@@ -264,14 +264,14 @@ class ChainSwitcher extends Component {
       <>
         <div className="chain-switcher">
           {/* <div className="chain-switcher__wrapper">
-           
-           <div
-             className="chain-switcher__modal-trigger"
-             ref={(el) => (this.triggerEl = el)}
-             onClick={() => this.toggleNetworkDrop()}
-           >
-             ...
-           </div>
+          
+          <div
+            className="chain-switcher__modal-trigger"
+            ref={(el) => (this.triggerEl = el)}
+            onClick={() => this.toggleNetworkDrop()}
+          >
+            ...
+          </div>
           </div> */}
           <Selector
             className="chain-switcher-selector"

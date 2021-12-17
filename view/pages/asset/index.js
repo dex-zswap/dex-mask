@@ -74,7 +74,7 @@ const Asset = () => {
     );
   }
 
-  return <div className="main-container asset__container">{content}</div>;
+  return <div className="main-container asset__container dex-page-container base-width">{content}</div>;
 };
 
 export default Asset;

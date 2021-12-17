@@ -1,10 +1,11 @@
 .tippy-popper {
   .tippy-tooltip {
     @include modal;
+    background: rgba(#24233D, 0.9);
     text-align: left;
     padding: 10px 14px !important;
     .arrow-regular {
-      border-top-color: $popup-background-opacity;
+      border-top-color: rgba(#24233D, 0.9);
     }
   }
 }
