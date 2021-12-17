@@ -1,47 +1,73 @@
-import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask';
-import { updateRecipient } from '@reducer/send';
-import {
-  getAllState,
-  getCurrentChainId,
-  getDexMaskAccountsOrdered,
-  getSelectedAccount,
-  getSelectedIdentity,
-} from '@view/selectors';
-import * as actions from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import ReciveToken from './component';
+import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-const mapStateToProps = (state) => {
-  return {
-    allState: getAllState(state),
-    allAccounts: getDexMaskAccountsOrdered(state),
-    nativeCorrency: getNativeCurrency(state),
-    selectedIdentity: getSelectedIdentity(state),
-    selectedAccount: getSelectedAccount(state),
-    tokens: getTokens(state),
-    currentChainId: getCurrentChainId(state),
-  };
+import copyToClipboard from 'copy-to-clipboard';
+
+import { useI18nContext } from '@view/hooks/useI18nContext';
+import { getSelectedIdentity } from '@view/selectors';
+import QrView from '@c/ui/qr-code';
+import TopHeader from '@c/ui/top-header';
+import BackBar from '@c/ui/back-bar';
+import Tooltip from '@c/ui/tooltip';
+
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
+import { SECOND } from '@shared/constants/time';
+
+const ReciveToken = () => {
+  const t = useI18nContext();
+  const selectedIdentity = useSelector(getSelectedIdentity);
+  const address = useMemo(() => toChecksumHexAddress(selectedIdentity.address), [selectedIdentity]);
+
+  const [ state, setState ] = useState({
+    copied: false
+  });
+
+  const copyTimeout = useRef(null);
+
+  const copyAddress = useCallback(
+    () => {
+      setState((state) => Object.assign({}, state, { copied: true }));
+      copyTimeout.current = setTimeout(
+        () => setState((state) => Object.assign({}, state, { copied: false })),
+        SECOND * 3,
+      );
+      copyToClipboard(address);
+    },
+    [address, copyToClipboard, copyTimeout.current, state.copied]
+  );
+
+  useEffect(() => {
+    if (copyTimeout.current) {
+      window.clearTimeout(copyTimeout.current);
+    }
+  }, [copyTimeout.current]);
+
+  return (
+    <div className="recive-token dex-page-container base-width">
+      <TopHeader />
+      <BackBar title={t('reciveToken')} />
+      <p className="recive-token-tip">
+        {t('shareAddress')}
+      </p>
+      <div className="qr-wrapper">
+        <div className="qr-code">
+          <QrView
+            hiddenAddress={true}
+            cellWidth={5}
+            darkColor="#fff"
+            lightColor="transparent"
+            Qr={{
+              data: address
+            }}
+          />
+        </div>
+        <div className="account-name">{ selectedIdentity.name }</div>
+        <Tooltip position="top" title={state.copied ? t('copiedExclamation') : t('copyToClipboard')}>
+          <div onClick={copyAddress} className="account-address">{address}</div>
+        </Tooltip>
+      </div>
+    </div>
+  );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setProviderType: (type) => {
-      dispatch(actions.setProviderType(type));
-    },
-    setRpcTarget: (...args) => {
-      dispatch(actions.setRpcTarget(...args));
-    },
-    showAccountDetail: (address) => {
-      dispatch(actions.showAccountDetail(address));
-    },
-    updateCrossChainState: (value) =>
-      dispatch(actions.updateCrossChainState(value)),
-    updateSendAsset: (value) => dispatch(actions.updateSendAsset(value)),
-    updateRecipient: (value) => dispatch(updateRecipient(value)),
-  };
-};
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ReciveToken),
-);
+export default ReciveToken;

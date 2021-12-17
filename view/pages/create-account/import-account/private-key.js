@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
-import { getMetaMaskAccounts } from '@view/selectors';
+import { getDexMaskAccounts } from '@view/selectors';
 import * as actions from '@view/store/actions';
 
 class PrivateKeyImportView extends Component {
@@ -18,11 +18,7 @@ class PrivateKeyImportView extends Component {
 
   state = { isEmpty: true };
 
-  shouldDisableImport() {
-    return this.state.isEmpty;
-  }
-
-  createNewKeychain() {
+  createNewKeychain = () => {
     const privateKey = this.inputRef.current.value;
     const {
       importNewAccount,
@@ -46,6 +42,14 @@ class PrivateKeyImportView extends Component {
       .catch((err) => err && displayWarning(err.message || err));
   }
 
+  back = () => {
+    const {
+      history,
+      mostRecentOverviewPage
+    } = this.props;
+    history.push(mostRecentOverviewPage);
+  }
+
   createKeyringOnEnter = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -64,23 +68,42 @@ class PrivateKeyImportView extends Component {
 
   render() {
     const { error, displayWarning } = this.props;
+    const { isEmpty } = this.state;
 
     return (
-      <div className="new-account-import-form__private-key">
-        <div className="new-account-import-form__private-key-password-container">
-          <TextField
-            className="new-account-import-form__input-password"
-            label={this.context.t('pastePrivateKey')}
-            type="password"
-            id="private-key-box"
-            onKeyPress={(e) => this.createKeyringOnEnter(e)}
-            onChange={() => this.checkInputEmpty()}
-            ref={this.inputRef}
-            autoFocus
-            bordered
-          />
+      <div className="new-account-import-form__private-key flex space-between">
+        <div>
+          <div className="new-account-import-form__private-key-password-container">
+            <TextField
+              className="new-account-import-form__input-password"
+              label={this.context.t('pastePrivateKey')}
+              type="password"
+              id="private-key-box"
+              onKeyPress={(e) => this.createKeyringOnEnter(e)}
+              onChange={() => this.checkInputEmpty()}
+              ref={this.inputRef}
+              autoFocus
+              bordered
+            />
+          </div>
+          {error ? <span className="error">{error}</span> : null}
         </div>
-        {error ? <span className="error">{error}</span> : null}
+        <div className="new-account-import-form-buttons flex space-between">
+          <Button
+            className="half-button"
+            onClick={this.back}
+          >
+            {this.context.t('pre')}
+          </Button>
+          <Button
+            type="primary"
+            onClick={this.createNewKeychain}
+            disabled={isEmpty}
+            className="half-button"
+          >
+            {this.context.t('import')}
+          </Button>
+        </div>
       </div>
     );
   }
@@ -89,7 +112,7 @@ class PrivateKeyImportView extends Component {
 function mapStateToProps(state) {
   return {
     error: state.appState.warning,
-    firstAddress: Object.keys(getMetaMaskAccounts(state))[0],
+    firstAddress: Object.keys(getDexMaskAccounts(state))[0],
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
   };
 }

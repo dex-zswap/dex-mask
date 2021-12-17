@@ -424,7 +424,7 @@ export const initializeSendState = createAsyncThunk(
         ? draftTransaction.txParams.from
         : metamask.selectedAddress;
     // We need the account's balance which is calculated from cachedBalances in
-    // the getMetaMaskAccounts selector. getTargetAccount consumes this
+    // the getDexMaskAccounts selector. getTargetAccount consumes this
     // selector and returns the account at the specified address.
     const account = getTargetAccount(state, fromAddress);
 

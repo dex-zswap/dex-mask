@@ -1,6 +1,6 @@
 import Button from '@c/ui/button';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
-import { getMetaMaskAccounts } from '@view/selectors';
+import { getDexMaskAccounts } from '@view/selectors';
 import * as actions from '@view/store/actions';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -144,7 +144,7 @@ JsonImportSubview.propTypes = {
 const mapStateToProps = (state) => {
   return {
     error: state.appState.warning,
-    firstAddress: Object.keys(getMetaMaskAccounts(state))[0],
+    firstAddress: Object.keys(getDexMaskAccounts(state))[0],
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
   };
 };

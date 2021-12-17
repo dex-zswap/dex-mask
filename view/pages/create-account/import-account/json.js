@@ -10,7 +10,7 @@ import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 
 import { getMostRecentOverviewPage } from '@reducer/history/history';
-import { getMetaMaskAccounts } from '@view/selectors';
+import { getDexMaskAccounts } from '@view/selectors';
 import * as actions from '@view/store/actions';
 
 const HELP_LINK =
@@ -38,38 +38,48 @@ class JsonImportSubview extends Component {
     const enabled = !this.state.isEmpty && this.state.fileContents !== '';
 
     return (
-      <div className="new-account-import-form__json">
-        <p>{this.context.t('usedByClients')}</p>
-        <a
-          className="warning"
-          href={HELP_LINK}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {this.context.t('fileImportFail')}
-        </a>
-        <FileInput
-          readAs="text"
-          onLoad={this.onLoad.bind(this)}
-          style={{
-            padding: '20px 0px 12px 15%',
-            fontSize: '15px',
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-          }}
-        />
-        <TextField
-          className="new-account-import-form__input-password"
-          type="password"
-          placeholder={this.context.t('enterPassword')}
-          id="json-password-box"
-          onKeyPress={this.createKeyringOnEnter.bind(this)}
-          onChange={() => this.checkInputEmpty()}
-          ref={this.inputRef}
-          bordered
-        />
-        {error ? <span className="error">{error}</span> : null}
+      <div className="new-account-import-form__json flex space-between">
+        <div>
+          <p className="used-by-clients">{this.context.t('usedByClients')}</p>
+          <FileInput
+            readAs="text"
+            onLoad={this.onLoad.bind(this)}
+            style={{
+              padding: '20px 0px 12px 15%',
+              fontSize: '15px',
+              display: 'flex',
+              justifyContent: 'center',
+              width: '100%',
+            }}
+          />
+          <TextField
+            className="new-account-import-form__input-password"
+            type="password"
+            placeholder={this.context.t('enterPassword')}
+            id="json-password-box"
+            onKeyPress={this.createKeyringOnEnter.bind(this)}
+            onChange={() => this.checkInputEmpty()}
+            ref={this.inputRef}
+            bordered
+          />
+          {error ? <span className="error">{error}</span> : null}
+        </div>
+        <div className="new-account-import-form-buttons flex space-between">
+          <Button
+            className="half-button"
+            onClick={this.back}
+          >
+            {this.context.t('pre')}
+          </Button>
+          <Button
+            type="primary"
+            onClick={this.createNewKeychain}
+            disabled={this.shouldDisableImport()}
+            className="half-button"
+          >
+            {this.context.t('import')}
+          </Button>
+        </div>
       </div>
     );
   }
@@ -87,7 +97,7 @@ class JsonImportSubview extends Component {
     }
   }
 
-  createNewKeychain() {
+  createNewKeychain = () => {
     const {
       firstAddress,
       displayWarning,
@@ -127,12 +137,20 @@ class JsonImportSubview extends Component {
     }
     this.setState({ isEmpty });
   }
+
+  back = () => {
+    const {
+      history,
+      mostRecentOverviewPage
+    } = this.props;
+    history.push(mostRecentOverviewPage);
+  }
 }
 
 const mapStateToProps = (state) => {
   return {
     error: state.appState.warning,
-    firstAddress: Object.keys(getMetaMaskAccounts(state))[0],
+    firstAddress: Object.keys(getDexMaskAccounts(state))[0],
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
   };
 };

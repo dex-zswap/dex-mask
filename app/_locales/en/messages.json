@@ -2838,5 +2838,11 @@
   },
   "confirmRecoveryPhraseDescription": {
     "message": "Please select each phrase in order to make sure it is correct."
+  },
+  "reciveToken": {
+    "message": "Recive Token"
+  },
+  "shareAddress": {
+    "message": "Share your account’s unique address by send the QR code or copy the address below to receive any token or collectible."
   }
 }

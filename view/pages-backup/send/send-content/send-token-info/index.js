@@ -6,7 +6,7 @@ import {
 } from '@reducer/send';
 import {
   getAssetImages,
-  getMetaMaskAccounts,
+  getDexMaskAccounts,
   getNativeCurrencyImage,
 } from '@view/selectors';
 import { showAccountDetail } from '@view/store/actions';
@@ -17,7 +17,7 @@ function mapStateToProps(state) {
   return {
     tokens: state.metamask.tokens,
     sendAssetAddress: getSendAssetAddress(state),
-    accounts: getMetaMaskAccounts(state),
+    accounts: getDexMaskAccounts(state),
     nativeCurrency: getNativeCurrency(state),
     nativeCurrencyImage: getNativeCurrencyImage(state),
     assetImages: getAssetImages(state),
