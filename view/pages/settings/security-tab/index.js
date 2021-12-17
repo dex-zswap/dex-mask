@@ -1,14 +1,14 @@
 import Button from '@c/ui/button';
 import Switch from '@c/ui/switch';
-import { I18nContext } from '@view/contexts/i18n';
 import { REVEAL_SEED_ROUTE } from '@view/helpers/constants/routes';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 import { setFeatureFlag, setUsePhishDetect } from '@view/store/actions';
-import React, { useContext } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 export default function SecurityTab() {
-  const t = useContext(I18nContext);
+  const t = useI18nContext();
   const history = useHistory();
   const dispatch = useDispatch();
   const { warning } = useSelector((state) => state.appState);

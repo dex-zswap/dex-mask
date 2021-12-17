@@ -29,6 +29,13 @@ textarea {
   }
 }
 
+.bottom-fixed-btn-group {
+  width: 90vw;
+  position: fixed;
+  left: 5vw;
+  bottom: 20px;
+}
+
 .dex-button {
   &.half-button {
     width: 139px;

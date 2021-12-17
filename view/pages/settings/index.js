@@ -4,7 +4,6 @@ import Logo from '@c/ui/logo';
 import RestoreVaultPage from '@pages/keychains/restore-vault';
 import RevealSeedConfirmation from '@pages/keychains/reveal-seed';
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
-import { I18nContext } from '@view/contexts/i18n';
 import {
   ABOUT_US_ROUTE,
   ADVANCED_ROUTE,
@@ -17,7 +16,8 @@ import {
   SECURITY_ROUTE,
   SETTINGS_ROUTE,
 } from '@view/helpers/constants/routes';
-import React, { useContext, useMemo } from 'react';
+import { useI18nContext } from '@view/hooks/useI18nContext';
+import React, { useMemo } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import AdvancedTab from './advanced-tab';
 import AlertsTab from './alerts-tab';
@@ -39,7 +39,7 @@ const ROUTES_TO_I18N_KEYS = {
 let backRoute = SETTINGS_ROUTE;
 
 const SettingsPage = () => {
-  const t = useContext(I18nContext);
+  const t = useI18nContext();
   const history = useHistory();
   const { pathname } = useLocation();
 
