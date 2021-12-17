@@ -83,27 +83,21 @@ const SettingsPage = () => {
         title: t('networks'),
         subTitle: t('networkSettingsDescription'),
         url: NETWORKS_ROUTE,
-        icon: 'security',
+        icon: 'network',
         iconWidth: 18,
       },
-      // {
-      //   content: t('contacts'),
-      //   classNames: 'contacts',
-      //   description: t('contactsSettingsDescription'),
-      //   key: CONTACT_LIST_ROUTE,
-      // },
       {
         title: t('securityAndPrivacy'),
         subTitle: t('securitySettingsDescription'),
         url: SECURITY_ROUTE,
-        icon: 'alerts',
+        icon: 'security',
         iconWidth: 18,
       },
       {
         title: t('alerts'),
         subTitle: t('alertsSettingsDescription'),
         url: ALERTS_ROUTE,
-        icon: 'network',
+        icon: 'alerts',
         iconWidth: 18,
       },
       {
@@ -177,13 +171,6 @@ const SettingsPage = () => {
           <Route exact path={ABOUT_US_ROUTE} component={InfoTab} />
         </Switch>
       }
-      {/* <div className="settings-page__content">
-        <div className="settings-page__content__tabs">{renderTabs()}</div>
-        <div className="settings-page__content__modules">
-          {renderSubHeader()}
-          {renderContent()}
-        </div>
-      </div> */}
     </div>
   );
 };
