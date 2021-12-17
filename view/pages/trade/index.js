@@ -1,65 +1,34 @@
-import PageTitle from '@c/app/page-title';
-import { LIQUIDITY_ROUTE, ZSWAP_ROUTE } from '@view/helpers/constants/routes';
+import React, { useMemo, useCallback } from 'react';
+
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import classnames from 'classnames';
-import React, { useMemo } from 'react';
-import {
-  Link,
-  matchPath,
-  Redirect,
-  Route,
-  Switch,
-  useLocation,
-} from 'react-router-dom';
-import Liquidity from './liquidity';
-import Zswap from './swap';
+
+import BackBar from '@c/ui/back-bar';
+import Button from '@c/ui/button';
+import TopHeader from '@c/ui/top-header';
 
 export default function Trade() {
   const t = useI18nContext();
-  const { pathname } = useLocation();
 
-  const activeInfo = useMemo(() => {
-    return {
-      swap: matchPath(pathname, {
-        path: ZSWAP_ROUTE,
-        exact: true,
-      }),
-      liquidity: matchPath(pathname, {
-        path: LIQUIDITY_ROUTE,
-        exact: true,
-      }),
-    };
-  }, [pathname]);
+  const openSwap = useCallback(() => {
+    global.platform.openTab({
+      url: 'http://103.43.11.66:9999',
+    });
+  }, []);
 
   return (
-    <div className="trade-component__wrapper">
-      <PageTitle
-        title={t('swap')}
-        subTitle={activeInfo.swap ? t('zswap') : t('liquidity')}
-      />
-      <div className="trade-component__tabs">
-        <div
-          className={classnames([
-            'trade-component__tab',
-            activeInfo.swap && 'active',
-          ])}
-        >
-          <Link to={ZSWAP_ROUTE}>{t('zswap')}</Link>
-        </div>
-        <div
-          className={classnames([
-            'trade-component__tab',
-            activeInfo.liquidity && 'active',
-          ])}
-        >
-          <Link to={LIQUIDITY_ROUTE}>{t('liquidity')}</Link>
-        </div>
-      </div>
-      <Switch>
-        <Route path={LIQUIDITY_ROUTE} component={Liquidity} />
-        <Route path={ZSWAP_ROUTE} component={Zswap} />
-        <Redirect from="*" to={ZSWAP_ROUTE} />
-      </Switch>
+    <div className="trade-page dex-page-container base-width">
+      <TopHeader />
+      <BackBar title={t('swap')} />
+      <div className="swap-background"></div>
+      <div className="swap-welcome">{t('swapWelcome')}</div>
+      <div className="swap-description">{t('swapWelcomeDescription')}</div>
+      <Button
+        type="primary"
+        onClick={openSwap}
+        rightArrow
+      >
+        {t('toSwap')}
+      </Button>
     </div>
   );
 }

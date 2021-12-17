@@ -2540,11 +2540,8 @@
     "message": "To: $1",
     "description": "$1 is the address to include in the To label. It is typically shortened first using shortenAddress"
   },
-  "toLiquidity": {
-    "message": "Click the button to enter the Liquidity page"
-  },
   "toSwap": {
-    "message": "Click the button to enter the Swap page"
+    "message": "Enter ZSwap"
   },
   "toWithColon": {
     "message": "To:"
@@ -2844,5 +2841,11 @@
   },
   "shareAddress": {
     "message": "Share your account’s unique address by send the QR code or copy the address below to receive any token or collectible."
+  },
+  "swapWelcome": {
+    "message": "Welcome to ZSwap"
+  },
+  "swapWelcomeDescription": {
+    "message": "The most advanced decentralized platform. Enter to swap and add liquidity now."
   }
 }
