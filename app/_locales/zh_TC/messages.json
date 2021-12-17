@@ -14,7 +14,7 @@
   "metaMaskSwapsOfflineDescription": {
     "message": "DEXMask Swaps 正在進行維護。請稍後訪問。"
   },
-  "metaMaskVersion": {
+  "dexMaskVersion": {
     "message": "DEXMask 版本"
   },
   "InterBlockchain": {

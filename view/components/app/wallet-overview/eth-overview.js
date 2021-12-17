@@ -35,6 +35,7 @@ const EthOverview = ({ className }) => {
   const history = useHistory();
   const selectedAccount = useSelector(getSelectedAccount);
   const chainId = useSelector(getCurrentChainId);
+  const nativeCurrency = useSelector(getNativeCurrency);
 
   const defaultSwapsToken = useSelector(getSwapsDefaultToken);
 
@@ -111,7 +112,7 @@ const EthOverview = ({ className }) => {
     }
 
     return buttons;
-  }, [dispatch, updateCrossChainState, supportCrossChain, defaultTargetChain, t, history]);
+  }, [dispatch, updateCrossChainState, nativeCurrency, supportCrossChain, defaultTargetChain, t, history]);
 
   return (
     <WalletOverview buttons={overViewButtons} />

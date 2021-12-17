@@ -19,7 +19,7 @@ export default class InfoTab extends PureComponent {
           <div className="settings-page__content-item settings-page__content-item--without-height">
             <div className="info-tab__item">
               <div className="info-tab__version-header">
-                {t('metamaskVersion')}
+                {t('dexMaskVersion')}
               </div>
               <div className="info-tab__version-number">
                 {this.state.version}

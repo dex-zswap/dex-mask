@@ -41,17 +41,13 @@ class JsonImportSubview extends Component {
       <div className="new-account-import-form__json flex space-between">
         <div>
           <p className="used-by-clients">{this.context.t('usedByClients')}</p>
-          <FileInput
-            readAs="text"
-            onLoad={this.onLoad.bind(this)}
-            style={{
-              padding: '20px 0px 12px 15%',
-              fontSize: '15px',
-              display: 'flex',
-              justifyContent: 'center',
-              width: '100%',
-            }}
-          />
+          <div className="file-selector half-button">
+            <FileInput
+              readAs="text"
+              onLoad={this.onLoad.bind(this)}
+            />
+            {this.context.t('selectFile')}
+          </div>
           <TextField
             className="new-account-import-form__input-password"
             type="password"

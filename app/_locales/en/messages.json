@@ -14,7 +14,7 @@
   "metaMaskSwapsOfflineDescription": {
     "message": "DEXMask Swaps is undergoing maintenance. Please check back later."
   },
-  "metaMaskVersion": {
+  "dexMaskVersion": {
     "message": "DEXMask Version"
   },
   "InterBlockchain": {
@@ -2847,5 +2847,8 @@
   },
   "swapWelcomeDescription": {
     "message": "The most advanced decentralized platform. Enter to swap and add liquidity now."
+  },
+  "selectFile": {
+    "message": "Select File"
   }
 }

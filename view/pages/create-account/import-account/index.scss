@@ -21,6 +21,27 @@
       height: 100%;
     }
 
+    .file-selector {
+      width: 139px;
+      height: $size-48;
+      border-radius: $size-12;
+      background: $primary-background;
+      position: relative;
+      margin: 10px 0;
+      font-size: $size-14;
+      font-weight: bold;
+      color: $white;
+      @include flex;
+
+      input[type="file"] {
+        opacity: 0;
+        position: absolute;
+        left: 0;
+        height: 0;
+        @include w-h;
+      }
+    }
+
     .used-by-clients {
       font-size: $size-12;
       font-weight: bold;

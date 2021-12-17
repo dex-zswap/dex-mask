@@ -984,7 +984,7 @@
   "metaMaskSwapsOfflineDescription": {
     "message": "DEXMask Swaps 正在进行维护。请稍后访问。"
   },
-  "metaMaskVersion": {
+  "dexMaskVersion": {
     "message": "DEXMask 版本"
   },
   "metametricsCommitmentsAllowOptOut": {
