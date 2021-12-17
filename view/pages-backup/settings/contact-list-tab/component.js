@@ -1,20 +1,18 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ContactList from '@c/app/contact-list';
 import Button from '@c/ui/button';
 import {
   CONTACT_ADD_ROUTE,
   CONTACT_VIEW_ROUTE,
 } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import AddContact from './add-contact';
 import EditContact from './edit-contact';
 import ViewContact from './view-contact';
-
 export default class ContactListTab extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     addressBook: PropTypes.array,
     history: PropTypes.object,
@@ -46,6 +44,7 @@ export default class ContactListTab extends Component {
         </div>
       );
     }
+
     return (
       <div className="address-book__container">
         <div>
@@ -69,7 +68,6 @@ export default class ContactListTab extends Component {
 
   renderAddButton() {
     const { history } = this.props;
-
     return (
       <div className="address-book-add-button">
         <Button
@@ -99,6 +97,7 @@ export default class ContactListTab extends Component {
     }
 
     let ContactContentComponent = null;
+
     if (viewingContact) {
       ContactContentComponent = ViewContact;
     } else if (editingContact) {
@@ -122,12 +121,12 @@ export default class ContactListTab extends Component {
     if (!hideAddressBook) {
       return <div className="address-book">{this.renderAddresses()}</div>;
     }
+
     return null;
   }
 
   render() {
     const { addingContact, addressBook } = this.props;
-
     return (
       <div className="address-book-wrapper">
         {this.renderAddressBookContent()}

@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Modal from '@c/app/modal';
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
@@ -12,8 +14,6 @@ import {
 } from '@view/helpers/constants/design-system';
 import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
 
 const CustomizeNonce = ({
   hideModal,
@@ -24,7 +24,6 @@ const CustomizeNonce = ({
 }) => {
   const [customNonce, setCustomNonce] = useState('');
   const t = useI18nContext();
-
   return (
     <Modal
       onSubmit={() => {
@@ -33,6 +32,7 @@ const CustomizeNonce = ({
         } else {
           updateCustomNonce(customNonce);
         }
+
         getNextNonce();
         hideModal();
       }}
@@ -83,7 +83,9 @@ const CustomizeNonce = ({
             <Typography
               variant={TYPOGRAPHY.H6}
               fontWeight={FONT_WEIGHT.BOLD}
-              boxProps={{ width: BLOCK_SIZES.FIVE_SIXTHS }}
+              boxProps={{
+                width: BLOCK_SIZES.FIVE_SIXTHS,
+              }}
             >
               {t('editNonceField')}
             </Typography>

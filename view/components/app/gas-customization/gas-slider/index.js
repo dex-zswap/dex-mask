@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 export default class GasSlider extends Component {
   static propTypes = {
     onChange: PropTypes.func,
@@ -14,7 +13,6 @@ export default class GasSlider extends Component {
 
   render() {
     const { onChange, lowLabel, highLabel, value, step, max, min } = this.props;
-
     return (
       <div className="gas-slider">
         <input

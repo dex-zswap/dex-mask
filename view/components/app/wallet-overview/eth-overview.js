@@ -1,8 +1,7 @@
 import React, { useContext, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { ethers } from 'ethers';
-
 import { getNativeCurrency } from '@reducer/dexmask/dexmask';
 import {
   getCurrentChainId,
@@ -35,9 +34,8 @@ const EthOverview = ({ className }) => {
   const history = useHistory();
   const selectedAccount = useSelector(getSelectedAccount);
   const chainId = useSelector(getCurrentChainId);
-
+  const nativeCurrency = useSelector(getNativeCurrency);
   const defaultSwapsToken = useSelector(getSwapsDefaultToken);
-
   const { loading, error, res } = useFetch(
     () =>
       checkTokenBridge({
@@ -46,7 +44,6 @@ const EthOverview = ({ className }) => {
       }),
     [chainId],
   );
-
   const supportCrossChain = useMemo(() => {
     if (loading || error || res?.c !== 200) {
       return false;
@@ -54,34 +51,35 @@ const EthOverview = ({ className }) => {
 
     return res?.d?.length;
   }, [loading, error, res]);
-
   const defaultTargetChain = useMemo(
     () => (supportCrossChain ? res.d[0] : null),
     [supportCrossChain, res],
   );
-
   const overViewButtons = useMemo(() => {
     const buttons = [
       {
         key: 'send',
         iconClass: 'send-icon',
         label: t('send'),
-        onClick: () => history.push(SEND_ROUTE)
+        onClick: () => history.push(SEND_ROUTE),
       },
       {
         key: 'recive',
         iconClass: 'recive-icon',
         label: t('buy'),
-        onClick: () => history.push(generatePath(RECIVE_TOKEN_ROUTE, {
-          address: ethers.constants.AddressZero,
-        }))
+        onClick: () =>
+          history.push(
+            generatePath(RECIVE_TOKEN_ROUTE, {
+              address: ethers.constants.AddressZero,
+            }),
+          ),
       },
       {
         key: 'swap',
         iconClass: 'swap-icon',
         label: t('swap'),
-        onClick: () => history.push(TRADE_ROUTE)
-      }
+        onClick: () => history.push(TRADE_ROUTE),
+      },
     ];
 
     if (supportCrossChain) {
@@ -90,7 +88,9 @@ const EthOverview = ({ className }) => {
         iconClass: 'cross-chain-icon',
         label: t('crossChain'),
         onClick: () => {
-          const destChain = toHexString(defaultTargetChain.target_meta_chain_id);
+          const destChain = toHexString(
+            defaultTargetChain.target_meta_chain_id,
+          );
           dispatch(
             updateCrossChainState({
               coinAddress: ethers.constants.AddressZero,
@@ -106,16 +106,21 @@ const EthOverview = ({ className }) => {
             }),
           );
           history.push(CROSSCHAIN_ROUTE);
-        }
+        },
       });
     }
 
     return buttons;
-  }, [dispatch, updateCrossChainState, supportCrossChain, defaultTargetChain, t, history]);
-
-  return (
-    <WalletOverview buttons={overViewButtons} />
-  );
+  }, [
+    dispatch,
+    updateCrossChainState,
+    nativeCurrency,
+    supportCrossChain,
+    defaultTargetChain,
+    t,
+    history,
+  ]);
+  return <WalletOverview buttons={overViewButtons} />;
 };
 
 export default EthOverview;

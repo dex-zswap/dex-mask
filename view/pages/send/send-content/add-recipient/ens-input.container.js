@@ -1,10 +1,10 @@
+import { connect } from 'react-redux';
+import { debounce } from 'lodash';
 import {
   initializeEnsSlice,
   lookupEnsName,
   resetEnsResolution,
 } from '@reducer/ens';
-import { debounce } from 'lodash';
-import { connect } from 'react-redux';
 import EnsInput from './ens-input.component';
 
 function mapDispatchToProps(dispatch) {

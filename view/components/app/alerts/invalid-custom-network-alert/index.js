@@ -1,3 +1,6 @@
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import Popover from '@c/ui/popover';
 import { ALERT_STATE } from '@reducer/alerts';
@@ -8,10 +11,6 @@ import {
 } from '@reducer/alerts/invalid-custom-network';
 import { NETWORKS_ROUTE } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 const { ERROR, LOADING } = ALERT_STATE;
 
 const InvalidCustomNetworkAlert = ({ history }) => {
@@ -52,7 +51,6 @@ const InvalidCustomNetworkAlert = ({ history }) => {
       </div>
     </>
   );
-
   return (
     <Popover
       title={t('invalidCustomNetworkAlertTitle')}
@@ -69,7 +67,9 @@ const InvalidCustomNetworkAlert = ({ history }) => {
             key="invalidCustomNetworkAlertContentLink"
             className="invalid-custom-network-alert__content-link"
             onClick={() =>
-              global.platform.openTab({ url: 'https://chainid.network' })
+              global.platform.openTab({
+                url: 'https://chainid.network',
+              })
             }
           >
             chainId.network
@@ -83,5 +83,4 @@ const InvalidCustomNetworkAlert = ({ history }) => {
 InvalidCustomNetworkAlert.propTypes = {
   history: PropTypes.object.isRequired,
 };
-
 export default InvalidCustomNetworkAlert;

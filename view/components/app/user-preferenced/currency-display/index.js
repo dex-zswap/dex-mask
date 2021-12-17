@@ -1,9 +1,8 @@
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import CurrencyDisplay from '@c/ui/currency-display';
 import { ETH, PRIMARY, SECONDARY } from '@view/helpers/constants/common';
 import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
-import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
-
 export default function UserPreferencedCurrencyDisplay({
   'data-testid': dataTestId,
   ethLogoHeight = 12,
@@ -30,7 +29,6 @@ export default function UserPreferencedCurrencyDisplay({
       )
     );
   }, [currency, showEthLogo, ethLogoHeight]);
-
   return (
     <CurrencyDisplay
       {...restProps}

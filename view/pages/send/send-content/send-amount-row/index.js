@@ -1,12 +1,11 @@
+import { connect } from 'react-redux';
 import {
   getSendAmount,
   getSendAsset,
   sendAmountIsInError,
   updateSendAmount,
 } from '@reducer/send';
-import { connect } from 'react-redux';
 import SendAmountRow from './component';
-
 export default connect(mapStateToProps, mapDispatchToProps)(SendAmountRow);
 
 function mapStateToProps(state) {

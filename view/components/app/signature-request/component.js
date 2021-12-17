@@ -1,12 +1,11 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import Identicon from '@c/ui/identicon';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from './constants';
 import Footer from './signature-request-footer';
 import Header from './signature-request-header';
 import Message from './signature-request-message';
-
 export default class SignatureRequest extends PureComponent {
   static propTypes = {
     txData: PropTypes.object.isRequired,
@@ -15,12 +14,10 @@ export default class SignatureRequest extends PureComponent {
       balance: PropTypes.string,
       name: PropTypes.string,
     }).isRequired,
-
     clearConfirmTransaction: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
     sign: PropTypes.func.isRequired,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };

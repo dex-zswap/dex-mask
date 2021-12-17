@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { getIsAssetSendable, getSendTo } from '@reducer/send';
 import {
   accountsWithSendEtherInfoSelector,
@@ -7,7 +8,6 @@ import {
   getNoGasPriceFetched,
 } from '@view/selectors';
 import * as actions from '@view/store/actions';
-import { connect } from 'react-redux';
 import SendContent from './component';
 
 function mapStateToProps(state) {

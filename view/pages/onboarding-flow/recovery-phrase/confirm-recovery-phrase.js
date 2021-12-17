@@ -1,3 +1,7 @@
+import React, { useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
 import ProgressBar from '@c/app/step-progress-bar';
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
@@ -10,22 +14,16 @@ import {
 } from '@view/helpers/constants/design-system';
 import { INITIALIZE_END_OF_FLOW_ROUTE } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import { debounce } from 'lodash';
-import PropTypes from 'prop-types';
-import React, { useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import RecoveryPhraseChips from './recovery-phrase-chips';
-
 export default function ConfirmRecoveryPhrase({ seedPhrase = '' }) {
   const history = useHistory();
   const t = useI18nContext();
   const splitSeedPhrase = seedPhrase.split(' ');
   const indicesToCheck = [2, 3, 7];
-  const [matching, setMatching] = useState(false);
-
-  // Removes seed phrase words from chips corresponding to the
+  const [matching, setMatching] = useState(false); // Removes seed phrase words from chips corresponding to the
   // indicesToCheck so that user has to complete the phrase and confirm
   // they have saved it.
+
   const initializePhraseElements = () => {
     const phraseElements = { ...splitSeedPhrase };
     indicesToCheck.forEach((i) => {
@@ -33,10 +31,10 @@ export default function ConfirmRecoveryPhrase({ seedPhrase = '' }) {
     });
     return phraseElements;
   };
+
   const [phraseElements, setPhraseElements] = useState(
     initializePhraseElements(),
   );
-
   const validate = useMemo(
     () =>
       debounce((elements) => {
@@ -94,7 +92,6 @@ export default function ConfirmRecoveryPhrase({ seedPhrase = '' }) {
     </div>
   );
 }
-
 ConfirmRecoveryPhrase.propTypes = {
   seedPhrase: PropTypes.string,
 };

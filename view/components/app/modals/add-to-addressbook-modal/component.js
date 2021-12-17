@@ -1,34 +1,28 @@
-import Button from '@c/ui/button';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import Button from '@c/ui/button';
 export default class AddToAddressBookModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     hideModal: PropTypes.func.isRequired,
     addToAddressBook: PropTypes.func.isRequired,
     recipient: PropTypes.string.isRequired,
   };
-
   state = {
     alias: '',
   };
-
   onSave = async () => {
     const { recipient, addToAddressBook, hideModal } = this.props;
     await addToAddressBook(recipient, this.state.alias);
     hideModal();
   };
-
   onChange = (e) => {
     this.setState({
       alias: e.target.value,
     });
   };
-
   onKeyPress = async (e) => {
     if (e.key === 'Enter' && this.state.alias) {
       this.onSave();
@@ -37,7 +31,6 @@ export default class AddToAddressBookModal extends Component {
 
   render() {
     const { t } = this.context;
-
     return (
       <div className="add-to-address-book-modal">
         <div className="add-to-address-book-modal__content">

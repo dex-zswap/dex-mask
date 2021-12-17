@@ -1,9 +1,8 @@
-import PageContainerFooter from '@c/ui/page-container/page-container-footer';
-import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes';
+import React, { Component } from 'react';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import PageContainerFooter from '@c/ui/page-container/page-container-footer';
+import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes';
 export default class SendFooter extends Component {
   static propTypes = {
     addToAddressBookIfNew: PropTypes.func,
@@ -17,7 +16,6 @@ export default class SendFooter extends Component {
     gasEstimateType: PropTypes.string,
     mostRecentOverviewPage: PropTypes.string.isRequired,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -35,14 +33,11 @@ export default class SendFooter extends Component {
       sign,
       to,
       toAccounts,
-      history,
-      // gasEstimateType,
-    } = this.props;
-
-    // TODO: add nickname functionality
+      history, // gasEstimateType,
+    } = this.props; // TODO: add nickname functionality
     // await addToAddressBookIfNew(to, toAccounts);
-    const promise = sign();
 
+    const promise = sign();
     Promise.resolve(promise).then(() => {
       history.push(CONFIRM_TRANSACTION_ROUTE);
     });
@@ -50,6 +45,7 @@ export default class SendFooter extends Component {
 
   componentDidUpdate(prevProps) {
     const { sendErrors } = this.props;
+
     if (
       Object.keys(sendErrors).length > 0 &&
       isEqual(sendErrors, prevProps.sendErrors) === false

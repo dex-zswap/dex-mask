@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 const TabBar = (props) => {
   const { tabs = [], onSelect, isActive } = props;
-
   return (
     <div className="tab-bar">
       {tabs.map(({ key, content, classNames, description }) => (
@@ -33,5 +32,4 @@ TabBar.propTypes = {
   tabs: PropTypes.array,
   onSelect: PropTypes.func,
 };
-
 export default TabBar;

@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 export default function TransitionListItem({
   title,
   subtitle,
@@ -20,7 +19,6 @@ export default function TransitionListItem({
     className,
     subtitle || children ? '' : 'list-item--single-content-row',
   );
-
   return (
     <div
       className={primaryClassName}
@@ -45,7 +43,9 @@ export default function TransitionListItem({
                 <h2 className="list-item__title">{title}</h2>
               )}
             </div>
-            {subtitle && <div className="list-item__subheading">{subtitle}</div>}
+            {subtitle && (
+              <div className="list-item__subheading">{subtitle}</div>
+            )}
           </div>
         </div>
       </div>
@@ -57,16 +57,15 @@ export default function TransitionListItem({
     </div>
   );
 }
-
 TransitionListItem.propTypes = {
-  'title': PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  'titleIcon': PropTypes.node,
-  'subtitle': PropTypes.node,
-  'children': PropTypes.node,
-  'icon': PropTypes.node,
-  'rightContent': PropTypes.node,
-  'midContent': PropTypes.node,
-  'className': PropTypes.string,
-  'onClick': PropTypes.func,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  titleIcon: PropTypes.node,
+  subtitle: PropTypes.node,
+  children: PropTypes.node,
+  icon: PropTypes.node,
+  rightContent: PropTypes.node,
+  midContent: PropTypes.node,
+  className: PropTypes.string,
+  onClick: PropTypes.func,
   'data-testid': PropTypes.string,
 };

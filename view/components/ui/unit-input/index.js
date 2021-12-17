@@ -1,16 +1,16 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 function removeLeadingZeroes(str) {
   return str.replace(/^0*(?=\d)/u, '');
 }
-
 /**
  * Component that attaches a suffix or unit of measurement trailing user input, ex. 'ETH'. Also
  * allows rendering a child component underneath the input to, for example, display conversions of
  * the shown suffix.
  */
+
 export default class UnitInput extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
@@ -21,12 +21,10 @@ export default class UnitInput extends PureComponent {
     suffix: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   };
-
   static defaultProps = {
     value: '',
     placeholder: '0',
   };
-
   state = {
     value: this.props.value,
   };
@@ -37,26 +35,29 @@ export default class UnitInput extends PureComponent {
     const { value: stateValue } = this.state;
 
     if (prevPropsValue !== propsValue && propsValue !== stateValue) {
-      this.setState({ value: propsValue });
+      this.setState({
+        value: propsValue,
+      });
     }
   }
 
   handleFocus = () => {
     this.unitInput.focus();
   };
-
   handleInputFocus = ({ target: { value } }) => {
     if (value === '0') {
-      this.setState({ value: '' });
+      this.setState({
+        value: '',
+      });
     }
   };
-
   handleInputBlur = ({ target: { value } }) => {
     if (value === '') {
-      this.setState({ value: '0' });
+      this.setState({
+        value: '0',
+      });
     }
   };
-
   handleChange = (event) => {
     const { value: userInput } = event.target;
     let value = userInput;
@@ -65,7 +66,9 @@ export default class UnitInput extends PureComponent {
       value = removeLeadingZeroes(userInput);
     }
 
-    this.setState({ value });
+    this.setState({
+      value,
+    });
     this.props.onChange(value);
   };
 
@@ -85,10 +88,11 @@ export default class UnitInput extends PureComponent {
       children,
     } = this.props;
     const { value } = this.state;
-
     return (
       <div
-        className={classnames('unit-input', { 'unit-input--error': error })}
+        className={classnames('unit-input', {
+          'unit-input--error': error,
+        })}
         onClick={this.handleFocus}
       >
         <div className="unit-input__inputs">
@@ -102,7 +106,9 @@ export default class UnitInput extends PureComponent {
               onChange={this.handleChange}
               onBlur={this.handleInputBlur}
               onFocus={this.handleInputFocus}
-              style={{ width: this.getInputWidth(value) }}
+              style={{
+                width: this.getInputWidth(value),
+              }}
               ref={(ref) => {
                 this.unitInput = ref;
               }}

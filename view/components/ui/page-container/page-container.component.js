@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
 import PageContainerHeader from './page-container-header';
 import PageContainerFooter from './page-container-footer';
-
 export default class PageContainer extends PureComponent {
   static propTypes = {
     // PageContainerHeader props
@@ -27,15 +25,16 @@ export default class PageContainer extends PureComponent {
     onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
     submitText: PropTypes.string,
-    submitButtonType: PropTypes.string
+    submitButtonType: PropTypes.string,
   };
-
   state = {
     activeTabIndex: this.props.defaultActiveTabIndex || 0,
   };
 
   handleTabClick(activeTabIndex) {
-    this.setState({ activeTabIndex });
+    this.setState({
+      activeTabIndex,
+    });
   }
 
   renderTabs() {
@@ -46,7 +45,6 @@ export default class PageContainer extends PureComponent {
     }
 
     const numberOfTabs = React.Children.count(tabsComponent.props.children);
-
     return React.Children.map(
       tabsComponent.props.children,
       (child, tabIndex) => {
@@ -70,7 +68,6 @@ export default class PageContainer extends PureComponent {
     let { children } = tabsComponent.props;
     children = children.filter(Boolean);
     const { activeTabIndex } = this.state;
-
     return children[activeTabIndex]
       ? children[activeTabIndex].props.children
       : children.props.children;
@@ -84,6 +81,7 @@ export default class PageContainer extends PureComponent {
     } else if (tabsComponent) {
       return this.renderActiveTabContent();
     }
+
     return null;
   }
 
@@ -105,7 +103,6 @@ export default class PageContainer extends PureComponent {
       submitButtonType,
       hideCancel,
     } = this.props;
-
     return (
       <div className="page-container">
         <PageContainerHeader

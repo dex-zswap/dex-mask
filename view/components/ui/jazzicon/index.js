@@ -1,14 +1,13 @@
 import React, { createRef, PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import jazzicon from '@metamask/jazzicon';
+import PropTypes from 'prop-types';
 import iconFactoryGenerator from '@view/helpers/utils/icon-factory';
-
 const iconFactory = iconFactoryGenerator(jazzicon);
-
 /**
  * Wrapper around the jazzicon library to return a React component, as the library returns an
  * HTMLDivElement which needs to be appended.
  */
+
 export default class Jazzicon extends PureComponent {
   static propTypes = {
     address: PropTypes.string.isRequired,
@@ -16,11 +15,9 @@ export default class Jazzicon extends PureComponent {
     diameter: PropTypes.number,
     style: PropTypes.object,
   };
-
   static defaultProps = {
     diameter: 46,
   };
-
   container = createRef();
 
   componentDidMount() {
@@ -53,7 +50,6 @@ export default class Jazzicon extends PureComponent {
 
   render() {
     const { className, style } = this.props;
-
     return <div className={className} ref={this.container} style={style} />;
   }
 }

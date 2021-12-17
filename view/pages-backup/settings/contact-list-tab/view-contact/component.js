@@ -1,12 +1,12 @@
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import Copy from '@c/ui/icon/copy-icon.component';
 import Identicon from '@c/ui/identicon';
 import Tooltip from '@c/ui/tooltip';
 import { useCopyToClipboard } from '@view/hooks/useCopyToClipboard';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Redirect } from 'react-router-dom';
 
 function quadSplit(address) {
   return `0x ${address
@@ -28,7 +28,13 @@ function ViewContact({
   const [copied, handleCopy] = useCopyToClipboard();
 
   if (!address) {
-    return <Redirect to={{ pathname: listRoute }} />;
+    return (
+      <Redirect
+        to={{
+          pathname: listRoute,
+        }}
+      />
+    );
   }
 
   return (
@@ -93,5 +99,4 @@ ViewContact.propTypes = {
   editRoute: PropTypes.string,
   listRoute: PropTypes.string.isRequired,
 };
-
 export default React.memo(ViewContact);

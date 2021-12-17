@@ -1,4 +1,6 @@
-// Components
+import React from 'react';
+import { useHistory } from 'react-router-dom'; // Components
+
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
 import Typography from '@c/ui/typography';
@@ -9,13 +11,10 @@ import {
   FONT_WEIGHT,
   SIZES,
   TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
-// Routes
+} from '@view/helpers/constants/design-system'; // Routes
+
 import { INITIALIZE_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-
 export default function SeedPhraseIntro() {
   const t = useI18nContext();
   const history = useHistory();
@@ -31,13 +30,18 @@ export default function SeedPhraseIntro() {
           <Typography
             color={COLORS.BLACK}
             variant={TYPOGRAPHY.H1}
-            boxProps={{ marginTop: 0, marginBottom: 4 }}
+            boxProps={{
+              marginTop: 0,
+              marginBottom: 4,
+            }}
           >
             {t('seedPhraseIntroTitle')}
           </Typography>
           <Typography
             color={COLORS.BLACK}
-            boxProps={{ marginBottom: 4 }}
+            boxProps={{
+              marginBottom: 4,
+            }}
             variant={TYPOGRAPHY.Paragraph}
             className="seed-phrase-intro__copy"
           >
@@ -77,7 +81,9 @@ export default function SeedPhraseIntro() {
                 tag="span"
                 color={COLORS.BLACK}
                 fontWeight={FONT_WEIGHT.BOLD}
-                boxProps={{ display: 'block' }}
+                boxProps={{
+                  display: 'block',
+                }}
               >
                 {t('seedPhraseIntroSidebarTitleOne')}
               </Typography>
@@ -88,7 +94,9 @@ export default function SeedPhraseIntro() {
                 tag="span"
                 color={COLORS.BLACK}
                 fontWeight={FONT_WEIGHT.BOLD}
-                boxProps={{ display: 'block' }}
+                boxProps={{
+                  display: 'block',
+                }}
               >
                 {t('seedPhraseIntroSidebarTitleTwo')}
               </Typography>
@@ -104,7 +112,9 @@ export default function SeedPhraseIntro() {
                 tag="span"
                 color={COLORS.BLACK}
                 fontWeight={FONT_WEIGHT.BOLD}
-                boxProps={{ display: 'block' }}
+                boxProps={{
+                  display: 'block',
+                }}
               >
                 {t('seedPhraseIntroSidebarTitleThree')}
               </Typography>

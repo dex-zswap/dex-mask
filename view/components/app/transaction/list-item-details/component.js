@@ -1,3 +1,10 @@
+import React, { PureComponent } from 'react';
+import {
+  createCustomExplorerLink,
+  getBlockExplorerLink,
+} from '@metamask/etherscan-link';
+import copyToClipboard from 'copy-to-clipboard';
+import PropTypes from 'prop-types';
 import TransactionActivityLog from '@c/app/transaction/activity-log';
 import TransactionBreakdown from '@c/app/transaction/breakdown';
 import Button from '@c/ui/button';
@@ -7,29 +14,19 @@ import SenderToRecipient from '@c/ui/sender-to-recipient';
 import { FLAT_VARIANT } from '@c/ui/sender-to-recipient/constants';
 import Tooltip from '@c/ui/tooltip';
 import {
-  createCustomExplorerLink,
-  getBlockExplorerLink,
-} from '@metamask/etherscan-link';
-import {
   CHAINID_EXPLORE_MAP,
   MAINNET_CHAIN_ID,
   NETWORK_TO_NAME_MAP,
 } from '@shared/constants/network';
 import { SECOND } from '@shared/constants/time';
 import { TRANSACTION_TYPES } from '@shared/constants/transaction';
-import copyToClipboard from 'copy-to-clipboard';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static defaultProps = {
     recipientEns: null,
   };
-
   static propTypes = {
     onCancel: PropTypes.func,
     onRetry: PropTypes.func,
@@ -52,11 +49,9 @@ export default class TransactionListItemDetails extends PureComponent {
     provider: PropTypes.object,
     chainId: PropTypes.string,
   };
-
   state = {
     justCopied: false,
   };
-
   handleBlockExplorerClick = () => {
     const {
       transactionGroup: { primaryTransaction },
@@ -76,28 +71,35 @@ export default class TransactionListItemDetails extends PureComponent {
       url: blockExplorerLink,
     });
   };
-
   handleCancel = (event) => {
     const { onCancel, onClose } = this.props;
     onCancel(event);
     onClose();
   };
-
   handleRetry = (event) => {
     const { onClose, onRetry } = this.props;
     onRetry(event);
     onClose();
   };
-
   handleCopyTxId = () => {
     const { transactionGroup } = this.props;
     const { primaryTransaction: transaction } = transactionGroup;
     const { hash } = transaction;
-
-    this.setState({ justCopied: true }, () => {
-      copyToClipboard(hash);
-      setTimeout(() => this.setState({ justCopied: false }), SECOND);
-    });
+    this.setState(
+      {
+        justCopied: true,
+      },
+      () => {
+        copyToClipboard(hash);
+        setTimeout(
+          () =>
+            this.setState({
+              justCopied: false,
+            }),
+          SECOND,
+        );
+      },
+    );
   };
 
   componentDidMount() {
@@ -165,10 +167,8 @@ export default class TransactionListItemDetails extends PureComponent {
     } = transactionGroup;
     const { hash, chainId } = transaction;
     const isMainnet = chainId === MAINNET_CHAIN_ID;
-
     const providerType =
       NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
-
     return (
       <Popover title={title} onClose={onClose}>
         <div className="transaction-list-item-details">

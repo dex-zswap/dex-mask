@@ -1,11 +1,9 @@
-import * as actions from '@view/store/actions';
 import { connect } from 'react-redux';
+import * as actions from '@view/store/actions';
 import NewAccountModal from './component';
 
 function mapStateToProps(state) {
-  return {
-    ...(state.appState.modal.modalState.props || {}),
-  };
+  return { ...(state.appState.modal.modalState.props || {}) };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -16,6 +14,7 @@ function mapDispatchToProps(dispatch) {
         if (newAccountName) {
           dispatch(actions.setAccountLabel(newAccountAddress, newAccountName));
         }
+
         return newAccountAddress;
       });
     },
@@ -25,7 +24,6 @@ function mapDispatchToProps(dispatch) {
 function mergeProps(stateProps, dispatchProps) {
   const { onCreateNewAccount } = stateProps;
   const { createAccount } = dispatchProps;
-
   return {
     ...stateProps,
     ...dispatchProps,

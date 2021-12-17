@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import PageContainer from '@c/ui/page-container';
 import { Tab, Tabs } from '@c/ui/tabs';
 import {
@@ -6,16 +8,12 @@ import {
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
 } from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import AdvancedTabContent from './advanced-tab-content';
 import BasicTabContent from './basic-tab-content';
-
 export default class GasModalPageContainer extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     hideBasic: PropTypes.bool,
     updateCustomGasPrice: PropTypes.func,
@@ -53,7 +51,9 @@ export default class GasModalPageContainer extends Component {
     getGasFeeEstimatesAndStartPolling().then((pollingToken) => {
       if (this._isMounted) {
         addPollingTokenToAppState(pollingToken);
-        this.setState({ pollingToken });
+        this.setState({
+          pollingToken,
+        });
       } else {
         disconnectGasFeeEstimatePoller(pollingToken);
         removePollingTokenFromAppState(pollingToken);
@@ -64,6 +64,7 @@ export default class GasModalPageContainer extends Component {
 
   _beforeUnload = () => {
     this._isMounted = false;
+
     if (this.state.pollingToken) {
       disconnectGasFeeEstimatePoller(this.state.pollingToken);
       removePollingTokenFromAppState(this.state.pollingToken);
@@ -72,6 +73,7 @@ export default class GasModalPageContainer extends Component {
 
   componentWillUnmount() {
     this._beforeUnload();
+
     window.removeEventListener('beforeunload', this._beforeUnload);
   }
 
@@ -94,7 +96,6 @@ export default class GasModalPageContainer extends Component {
       customPriceIsExcessive,
       infoRowProps: { transactionFee },
     } = this.props;
-
     return (
       <AdvancedTabContent
         updateCustomGasPrice={updateCustomGasPrice}
@@ -155,8 +156,8 @@ export default class GasModalPageContainer extends Component {
       hideBasic,
       infoRowProps: { newTotalFiat, newTotalEth, sendAmount, transactionFee },
     } = this.props;
-
     let tabsToRender;
+
     if (hideBasic) {
       tabsToRender = [
         {
@@ -205,7 +206,6 @@ export default class GasModalPageContainer extends Component {
       disableSave,
       isSpeedUp,
     } = this.props;
-
     return (
       <div className="gas-modal-page-container">
         <PageContainer

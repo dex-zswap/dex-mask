@@ -494,6 +494,9 @@
   "dexMainnet": {
     "message": "DEX"
   },
+  "dexMaskVersion": {
+    "message": "DEXMask 版本"
+  },
   "dex_trans": {
     "message": "DEX钱包内转账"
   },
@@ -983,9 +986,6 @@
   },
   "metaMaskSwapsOfflineDescription": {
     "message": "DEXMask Swaps 正在进行维护。请稍后访问。"
-  },
-  "metaMaskVersion": {
-    "message": "DEXMask 版本"
   },
   "metametricsCommitmentsAllowOptOut": {
     "message": "始终允许您通过设置选择退出"

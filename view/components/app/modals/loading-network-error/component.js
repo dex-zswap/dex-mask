@@ -1,11 +1,10 @@
-import Modal, { ModalContent } from '@c/app/modal';
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
+import Modal, { ModalContent } from '@c/app/modal';
 
 const LoadingNetworkError = (props, context) => {
   const { t } = context;
   const { hideModal } = props;
-
   return (
     <Modal onSubmit={() => hideModal()} submitText={t('tryAgain')}>
       <ModalContent description={t('somethingWentWrong')} />
@@ -16,9 +15,7 @@ const LoadingNetworkError = (props, context) => {
 LoadingNetworkError.contextTypes = {
   t: PropTypes.func,
 };
-
 LoadingNetworkError.propTypes = {
   hideModal: PropTypes.func,
 };
-
 export default LoadingNetworkError;

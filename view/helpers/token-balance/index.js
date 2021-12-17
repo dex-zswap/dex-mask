@@ -1,13 +1,12 @@
-import Decimal from 'decimal.js';
+import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import Eth from 'ethjs';
 import TOKEN_ABI from 'human-standard-token-abi';
-import { useEffect, useState } from 'react';
 import Web3 from 'web3';
+import Decimal from 'decimal.js';
 import { CHAIN_ID_TO_RPC_URL_MAP } from '@shared/constants/network';
 import { toBnString } from '@view/helpers/utils/conversions.util';
 import { ZERO_DECIMAL } from '@view/helpers/constants/common';
-
 export async function getTokenBalance({
   tokenAddress,
   wallet,
@@ -37,7 +36,6 @@ export async function getTokenBalance({
     return ZERO_DECIMAL.eq(demical) ? '0' : demical.toFixed(fixed);
   }
 }
-
 export default function useTokenBalance({
   tokenAddress,
   wallet,
@@ -46,7 +44,6 @@ export default function useTokenBalance({
   fixed = 6,
 }) {
   const [balance, setBalance] = useState('0');
-
   useEffect(() => {
     setBalance('0');
     getTokenBalance({
@@ -59,6 +56,5 @@ export default function useTokenBalance({
       setBalance(res);
     });
   }, [tokenAddress, wallet, isNativeAsset, chainId, fixed]);
-
   return balance;
 }

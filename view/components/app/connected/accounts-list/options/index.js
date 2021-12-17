@@ -1,6 +1,6 @@
-import { Menu } from '@c/ui/menu';
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Menu } from '@c/ui/menu';
 
 const ConnectedAccountsListOptions = ({
   children,
@@ -9,7 +9,6 @@ const ConnectedAccountsListOptions = ({
   show,
 }) => {
   const [optionsButtonElement, setOptionsButtonElement] = useState(null);
-
   return (
     <>
       <button
@@ -24,7 +23,12 @@ const ConnectedAccountsListOptions = ({
           className="connected-accounts-list-item__menu"
           popperOptions={{
             modifiers: [
-              { name: 'preventOverflow', options: { altBoundary: true } },
+              {
+                name: 'preventOverflow',
+                options: {
+                  altBoundary: true,
+                },
+              },
             ],
           }}
         >
@@ -41,5 +45,4 @@ ConnectedAccountsListOptions.propTypes = {
   onShowOptions: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
 };
-
 export default ConnectedAccountsListOptions;

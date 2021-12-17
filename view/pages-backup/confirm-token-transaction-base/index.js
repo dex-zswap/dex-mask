@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getTokens } from '@reducer/dexmask/dexmask';
 import { hexWEIToDecETH } from '@view/helpers/utils/conversions.util';
 import {
@@ -10,9 +13,6 @@ import {
   contractExchangeRateSelector,
   transactionFeeSelector,
 } from '@view/selectors';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import ConfirmTokenTransactionBase from './component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -29,19 +29,16 @@ const mapStateToProps = (state, ownProps) => {
       nativeCurrency,
     },
   } = state;
-
   const {
     txData: {
       id: transactionId,
       txParams: { to: tokenAddress, data } = {},
     } = {},
   } = confirmTransaction;
-
   const transaction =
     currentNetworkTxList.find(
       ({ id }) => id === (Number(paramsTransactionId) || transactionId),
     ) || {};
-
   const {
     ethTransactionTotal,
     fiatTransactionTotal,
@@ -50,18 +47,15 @@ const mapStateToProps = (state, ownProps) => {
   const tokens = getTokens(state);
   const currentToken = tokens?.find(({ address }) => tokenAddress === address);
   const { decimals, symbol: tokenSymbol } = currentToken || {};
-
   const ethTransactionTotalMaxAmount = Number(
     hexWEIToDecETH(hexMaximumTransactionFee),
   ).toFixed(6);
-
   const tokenData = getTokenData(data);
   const tokenValue = getTokenValueParam(tokenData);
   const toAddress = getTokenAddressParam(tokenData);
   const tokenAmount =
     tokenData && calcTokenAmount(tokenValue, decimals).toFixed();
   const contractExchangeRate = contractExchangeRateSelector(state);
-
   return {
     toAddress,
     tokenAddress,

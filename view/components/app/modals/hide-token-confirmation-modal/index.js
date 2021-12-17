@@ -1,9 +1,9 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import Identicon from '@c/ui/identicon';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
 
 function mapStateToProps(state) {
   return {
@@ -27,7 +27,6 @@ class HideTokenConfirmationModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     hideToken: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
@@ -37,14 +36,12 @@ class HideTokenConfirmationModal extends Component {
       address: PropTypes.string,
     }),
   };
-
   state = {};
 
   render() {
     const { token, hideToken, hideModal, assetImages } = this.props;
     const { symbol, address } = token;
     const image = assetImages[address];
-
     return (
       <div className="hide-token-confirmation">
         <div className="hide-token-confirmation__container">

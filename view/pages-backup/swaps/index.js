@@ -1,3 +1,13 @@
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import BigNumber from 'bignumber.js';
 import {
   clearSwapsState,
   fetchAndSetSwapsGasPriceInfo,
@@ -57,16 +67,6 @@ import {
   setSwapsErrorKey,
   setSwapsTokens,
 } from '@view/store/actions';
-import BigNumber from 'bignumber.js';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Redirect,
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-} from 'react-router-dom';
 import AwaitingSignatures from './awaiting-signatures';
 import AwaitingSwap from './awaiting-swap';
 import BuildQuote from './build-quote';
@@ -79,26 +79,21 @@ import {
   getSwapsTokensReceivedFromTxMeta,
 } from './swaps.util';
 import ViewQuote from './view-quote';
-
 export default function Swap() {
   const t = useContext(I18nContext);
   const history = useHistory();
   const dispatch = useDispatch();
-
   const { pathname } = useLocation();
   const isAwaitingSwapRoute = pathname === AWAITING_SWAP_ROUTE;
   const isAwaitingSignaturesRoute = pathname === AWAITING_SIGNATURES_ROUTE;
   const isSwapsErrorRoute = pathname === SWAPS_ERROR_ROUTE;
   const isLoadingQuotesRoute = pathname === LOADING_QUOTES_ROUTE;
-
   const fetchParams = useSelector(getFetchParams);
   const { destinationTokenInfo = {} } = fetchParams?.metaData || {};
-
   const [inputValue, setInputValue] = useState(fetchParams?.value || '');
   const [maxSlippage, setMaxSlippage] = useState(fetchParams?.slippage || 3);
   const [isFeatureFlagLoaded, setIsFeatureFlagLoaded] = useState(false);
   const [tokenFromError, setTokenFromError] = useState(null);
-
   const routeState = useSelector(getBackgroundSwapRouteState);
   const selectedAccount = useSelector(getSelectedAccount);
   const quotes = useSelector(getQuotes);
@@ -127,9 +122,7 @@ export default function Swap() {
     balance: ethBalance,
     address: selectedAccountAddress,
   } = selectedAccount;
-
   const { destinationTokenAddedForSwap } = fetchParams || {};
-
   const approveTxData =
     approveTxId && txList.find(({ id }) => approveTxId === id);
   const tradeTxData = tradeTxId && txList.find(({ id }) => tradeTxId === id);
@@ -179,9 +172,8 @@ export default function Swap() {
     return () => {
       clearTemporaryTokenRef.current();
     };
-  }, []);
+  }, []); // eslint-disable-next-line
 
-  // eslint-disable-next-line
   useEffect(() => {
     if (isFeatureFlagLoaded) {
       fetchTokens(chainId, useNewSwapsApi)
@@ -197,9 +189,11 @@ export default function Swap() {
           dispatch(setAggregatorMetadata(newAggregatorMetadata));
         },
       );
+
       if (!networkAndAccountSupports1559) {
         dispatch(fetchAndSetSwapsGasPriceInfo(chainId));
       }
+
       return () => {
         dispatch(prepareToLeaveSwaps());
       };
@@ -211,47 +205,47 @@ export default function Swap() {
     useNewSwapsApi,
     networkAndAccountSupports1559,
   ]);
-
   const hardwareWalletUsed = useSelector(isHardwareWallet);
   const hardwareWalletType = useSelector(getHardwareWalletType);
   const exitEventRef = useRef();
   useEffect(() => {
     exitEventRef.current = () => {};
   });
-
   useEffect(() => {
     const fetchSwapsLivenessWrapper = async () => {
       await dispatch(fetchSwapsLiveness());
       setIsFeatureFlagLoaded(true);
     };
+
     fetchSwapsLivenessWrapper();
     return () => {
       exitEventRef.current();
     };
   }, [dispatch]);
-
   useEffect(() => {
     if (swapsErrorKey && !isSwapsErrorRoute) {
       history.push(SWAPS_ERROR_ROUTE);
     }
   }, [history, swapsErrorKey, isSwapsErrorRoute]);
-
   const beforeUnloadEventAddedRef = useRef();
   useEffect(() => {
     const fn = () => {
       clearTemporaryTokenRef.current();
+
       if (isLoadingQuotesRoute) {
         dispatch(prepareToLeaveSwaps());
       }
+
       return null;
     };
+
     if (isLoadingQuotesRoute && !beforeUnloadEventAddedRef.current) {
       beforeUnloadEventAddedRef.current = true;
       window.addEventListener('beforeunload', fn);
     }
+
     return () => window.removeEventListener('beforeunload', fn);
   }, [dispatch, isLoadingQuotesRoute]);
-
   return (
     <div className="swaps">
       <div className="swaps__container">
@@ -280,19 +274,37 @@ export default function Swap() {
               exact
               render={() => {
                 if (tradeTxData && !conversionError) {
-                  return <Redirect to={{ pathname: AWAITING_SWAP_ROUTE }} />;
+                  return (
+                    <Redirect
+                      to={{
+                        pathname: AWAITING_SWAP_ROUTE,
+                      }}
+                    />
+                  );
                 } else if (tradeTxData && routeState) {
-                  return <Redirect to={{ pathname: SWAPS_ERROR_ROUTE }} />;
+                  return (
+                    <Redirect
+                      to={{
+                        pathname: SWAPS_ERROR_ROUTE,
+                      }}
+                    />
+                  );
                 } else if (routeState === 'loading' && aggregatorMetadata) {
-                  return <Redirect to={{ pathname: LOADING_QUOTES_ROUTE }} />;
+                  return (
+                    <Redirect
+                      to={{
+                        pathname: LOADING_QUOTES_ROUTE,
+                      }}
+                    />
+                  );
                 }
 
                 const onInputChange = (newInputValue, balance) => {
                   setInputValue(newInputValue);
                   const balanceError = new BigNumber(newInputValue || 0).gt(
                     balance || 0,
-                  );
-                  // "setBalanceError" is just a warning, a user can still click on the "Review Swap" button.
+                  ); // "setBalanceError" is just a warning, a user can still click on the "Review Swap" button.
+
                   dispatch(setBalanceError(balanceError));
                   setTokenFromError(
                     fromToken &&
@@ -327,9 +339,22 @@ export default function Swap() {
                     <ViewQuote numberOfQuotes={Object.values(quotes).length} />
                   );
                 } else if (fetchParams) {
-                  return <Redirect to={{ pathname: SWAPS_ERROR_ROUTE }} />;
+                  return (
+                    <Redirect
+                      to={{
+                        pathname: SWAPS_ERROR_ROUTE,
+                      }}
+                    />
+                  );
                 }
-                return <Redirect to={{ pathname: BUILD_QUOTE_ROUTE }} />;
+
+                return (
+                  <Redirect
+                    to={{
+                      pathname: BUILD_QUOTE_ROUTE,
+                    }}
+                  />
+                );
               }}
             />
             <Route
@@ -348,7 +373,14 @@ export default function Swap() {
                     />
                   );
                 }
-                return <Redirect to={{ pathname: BUILD_QUOTE_ROUTE }} />;
+
+                return (
+                  <Redirect
+                    to={{
+                      pathname: BUILD_QUOTE_ROUTE,
+                    }}
+                  />
+                );
               }}
             />
             <FeatureToggledRoute
@@ -378,7 +410,11 @@ export default function Swap() {
                     aggregatorMetadata={aggregatorMetadata}
                   />
                 ) : (
-                  <Redirect to={{ pathname: BUILD_QUOTE_ROUTE }} />
+                  <Redirect
+                    to={{
+                      pathname: BUILD_QUOTE_ROUTE,
+                    }}
+                  />
                 );
               }}
             />
@@ -389,7 +425,11 @@ export default function Swap() {
                 return swapsEnabled === false ? (
                   <AwaitingSwap errorKey={OFFLINE_FOR_MAINTENANCE} />
                 ) : (
-                  <Redirect to={{ pathname: BUILD_QUOTE_ROUTE }} />
+                  <Redirect
+                    to={{
+                      pathname: BUILD_QUOTE_ROUTE,
+                    }}
+                  />
                 );
               }}
             />
@@ -416,7 +456,11 @@ export default function Swap() {
                     maxSlippage={maxSlippage}
                   />
                 ) : (
-                  <Redirect to={{ pathname: DEFAULT_ROUTE }} />
+                  <Redirect
+                    to={{
+                      pathname: DEFAULT_ROUTE,
+                    }}
+                  />
                 );
               }}
             />

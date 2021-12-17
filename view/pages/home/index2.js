@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import { hideWhatsNewPopup, setThreeBoxLastUpdated } from '@reducer/app';
 import { getWeb3ShimUsageAlertEnabledness } from '@reducer/dexmask/dexmask';
@@ -37,9 +40,6 @@ import {
   setWeb3ShimUsageAlertDismissed,
   turnThreeBoxSyncingOn,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import Home from './component';
 
 const mapStateToProps = (state) => {
@@ -61,17 +61,14 @@ const mapStateToProps = (state) => {
   const totalUnapprovedCount = getTotalUnapprovedCount(state);
   const swapsEnabled = getSwapsFeatureIsLive(state);
   const pendingConfirmations = getUnapprovedTemplatedConfirmations(state);
-
   const envType = getEnvironmentType();
   const isPopup = envType === ENVIRONMENT_TYPE_POPUP;
   const isNotification = envType === ENVIRONMENT_TYPE_NOTIFICATION;
-
   const firstPermissionsRequest = getFirstPermissionRequest(state);
   const firstPermissionsRequestId =
     firstPermissionsRequest && firstPermissionsRequest.metadata
       ? firstPermissionsRequest.metadata.id
       : null;
-
   const originOfCurrentTab = getOriginOfCurrentTab(state);
   const shouldShowWeb3ShimUsageNotification =
     isPopup &&
@@ -79,7 +76,6 @@ const mapStateToProps = (state) => {
     activeTabHasPermissions(state) &&
     getWeb3ShimUsageStateForOrigin(state, originOfCurrentTab) ===
       WEB3_SHIM_USAGE_ALERT_STATES.RECORDED;
-
   return {
     forgottenPassword,
     suggestedTokens,

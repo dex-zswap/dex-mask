@@ -1,6 +1,5 @@
-import classnames from 'classnames';
 import React, { useMemo } from 'react';
-
+import classnames from 'classnames';
 export default function Steps({ total, current }) {
   const steps = useMemo(() => new Array(total).fill(0), [total]);
   let isCurrent;
@@ -8,7 +7,6 @@ export default function Steps({ total, current }) {
   let isLast;
   let currentNumber;
   let classes = [];
-
   return (
     <div className="steps-component__wrapper">
       {steps.map((item, index) => {
@@ -17,7 +15,6 @@ export default function Steps({ total, current }) {
         isCurrent = currentNumber <= current;
         isLast = currentNumber === total;
         isBefore = currentNumber < current;
-
         return (
           <div key={index} className="steps-component__item">
             <div

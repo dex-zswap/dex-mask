@@ -1,9 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { COLORS } from '@view/helpers/constants/design-system';
 import Chip from '.';
-
 export function ChipWithInput({
   className,
   borderColor = COLORS.UI1,
@@ -28,7 +27,6 @@ export function ChipWithInput({
     </Chip>
   );
 }
-
 ChipWithInput.propTypes = {
   borderColor: PropTypes.oneOf(Object.values(COLORS)),
   className: PropTypes.string,

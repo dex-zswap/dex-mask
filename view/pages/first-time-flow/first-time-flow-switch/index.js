@@ -8,7 +8,6 @@ const mapStateToProps = ({ metamask }) => {
     isUnlocked,
     seedPhraseBackedUp,
   } = metamask;
-
   return {
     completedOnboarding,
     isInitialized,

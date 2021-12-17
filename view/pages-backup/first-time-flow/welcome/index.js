@@ -1,7 +1,7 @@
-import { closeWelcomeScreen, updateCurrentLocale } from '@view/store/actions';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { closeWelcomeScreen, updateCurrentLocale } from '@view/store/actions';
 import Welcome from './component';
 
 const mapStateToProps = ({ metamask }) => {
@@ -10,7 +10,6 @@ const mapStateToProps = ({ metamask }) => {
     participateInMetaMetrics,
     currentLocale,
   } = metamask;
-
   return {
     currentLocale,
     welcomeScreenSeen,

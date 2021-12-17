@@ -1,8 +1,5 @@
-import { getKnownMethodData } from '@selectors/selectors';
-import { getContractMethodData as getContractMethodDataAction } from '@view/store/actions';
 import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 /**
  * Access known method data and attempt to resolve unknown method data
  *
@@ -15,6 +12,9 @@ import { useDispatch, useSelector } from 'react-redux';
  * @param {string} data - the transaction data to find method data for
  * @return {Object} contract method data
  */
+
+import { getKnownMethodData } from '@selectors/selectors';
+import { getContractMethodData as getContractMethodDataAction } from '@view/store/actions';
 export function useMethodData(data) {
   const dispatch = useDispatch();
   const knownMethodData = useSelector((state) =>
@@ -24,7 +24,6 @@ export function useMethodData(data) {
     (methodData) => dispatch(getContractMethodDataAction(methodData)),
     [dispatch],
   );
-
   useEffect(() => {
     if (data) {
       getContractMethodData(data);

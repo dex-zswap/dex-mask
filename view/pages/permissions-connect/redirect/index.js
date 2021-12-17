@@ -1,12 +1,10 @@
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import Logo from '@c/ui/logo';
 import SiteIcon from '@c/ui/site-icon';
 import { I18nContext } from '@view/contexts/i18n';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-
 export default function PermissionsRedirect({ domainMetadata }) {
   const t = useContext(I18nContext);
-
   return (
     <div className="permissions-redirect">
       <div className="permissions-redirect__result">
@@ -47,7 +45,6 @@ export default function PermissionsRedirect({ domainMetadata }) {
     );
   }
 }
-
 PermissionsRedirect.propTypes = {
   domainMetadata: PropTypes.shape({
     extensionId: PropTypes.string,

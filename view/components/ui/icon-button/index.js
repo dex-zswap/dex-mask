@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 const defaultRender = (inner) => inner;
 
@@ -35,13 +35,12 @@ export default function IconButton({
     </button>
   );
 }
-
 IconButton.propTypes = {
-  'onClick': PropTypes.func.isRequired,
-  'Icon': PropTypes.func.isRequired,
-  'disabled': PropTypes.bool,
-  'label': PropTypes.string.isRequired,
-  'tooltipRender': PropTypes.func,
-  'className': PropTypes.string,
+  onClick: PropTypes.func.isRequired,
+  Icon: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  label: PropTypes.string.isRequired,
+  tooltipRender: PropTypes.func,
+  className: PropTypes.string,
   'data-testid': PropTypes.string,
 };

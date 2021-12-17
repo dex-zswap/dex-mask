@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { getNativeCurrency } from '@reducer/dexmask/dexmask';
 import { getSendAssetAddress, updateSendAsset } from '@reducer/send';
 import {
@@ -5,7 +6,6 @@ import {
   getDexMaskAccounts,
   getNativeCurrencyImage,
 } from '@view/selectors';
-import { connect } from 'react-redux';
 import SendAssetRow from './component';
 
 function mapStateToProps(state) {
@@ -23,7 +23,12 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     updateSendAsset: ({ type, details }) =>
-      dispatch(updateSendAsset({ type, details })),
+      dispatch(
+        updateSendAsset({
+          type,
+          details,
+        }),
+      ),
   };
 }
 

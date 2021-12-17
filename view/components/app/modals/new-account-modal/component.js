@@ -1,34 +1,28 @@
-import Button from '@c/ui/button';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import Button from '@c/ui/button';
 export default class NewAccountModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     hideModal: PropTypes.func.isRequired,
     newAccountNumber: PropTypes.number.isRequired,
     onSave: PropTypes.func.isRequired,
   };
-
   state = {
     alias: this.context.t('newAccountNumberName', [
       this.props.newAccountNumber,
     ]),
   };
-
   onChange = (e) => {
     this.setState({
       alias: e.target.value,
     });
   };
-
   onSubmit = () => {
     this.props.onSave(this.state.alias).then(this.props.hideModal);
   };
-
   onKeyPress = (e) => {
     if (e.key === 'Enter' && this.state.alias) {
       this.onSubmit();
@@ -37,7 +31,6 @@ export default class NewAccountModal extends Component {
 
   render() {
     const { t } = this.context;
-
     return (
       <div className="new-account-modal">
         <div className="new-account-modal__content">

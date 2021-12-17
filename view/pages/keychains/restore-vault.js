@@ -1,3 +1,7 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { ethers } from 'ethers';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
@@ -6,18 +10,12 @@ import {
   initializeThreeBox,
   unMarkPasswordForgotten,
 } from '@view/store/actions';
-import { ethers } from 'ethers';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
 const { isValidMnemonic } = ethers.utils;
 
 class RestoreVaultPage extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     createNewVaultAndRestore: PropTypes.func.isRequired,
     leaveImportSeedScreenState: PropTypes.func,
@@ -25,7 +23,6 @@ class RestoreVaultPage extends Component {
     isLoading: PropTypes.bool,
     initializeThreeBox: PropTypes.func,
   };
-
   state = {
     seedPhrase: '',
     showSeedPhrase: false,
@@ -35,15 +32,14 @@ class RestoreVaultPage extends Component {
     passwordError: null,
     confirmPasswordError: null,
   };
-
   parseSeedPhrase = (seedPhrase) =>
     (seedPhrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
 
   handleSeedPhraseChange(seedPhrase) {
     const { t } = this.context;
     let seedPhraseError = null;
-
     const wordCount = this.parseSeedPhrase(seedPhrase).split(/\s/u).length;
+
     if (
       seedPhrase &&
       (wordCount % 3 !== 0 || wordCount < 12 || wordCount > 24)
@@ -53,7 +49,10 @@ class RestoreVaultPage extends Component {
       seedPhraseError = t('invalidSeedPhrase');
     }
 
-    this.setState({ seedPhrase, seedPhraseError });
+    this.setState({
+      seedPhrase,
+      seedPhraseError,
+    });
   }
 
   handlePasswordChange(password) {
@@ -69,7 +68,11 @@ class RestoreVaultPage extends Component {
       confirmPasswordError = this.context.t('passwordsDontMatch');
     }
 
-    this.setState({ password, passwordError, confirmPasswordError });
+    this.setState({
+      password,
+      passwordError,
+      confirmPasswordError,
+    });
   }
 
   handleConfirmPasswordChange(confirmPassword) {
@@ -80,7 +83,10 @@ class RestoreVaultPage extends Component {
       confirmPasswordError = this.context.t('passwordsDontMatch');
     }
 
-    this.setState({ confirmPassword, confirmPasswordError });
+    this.setState({
+      confirmPassword,
+      confirmPasswordError,
+    });
   }
 
   onClick = () => {
@@ -93,7 +99,6 @@ class RestoreVaultPage extends Component {
       // eslint-disable-next-line no-shadow
       initializeThreeBox,
     } = this.props;
-
     leaveImportSeedScreenState();
     createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
       () => {
@@ -132,7 +137,6 @@ class RestoreVaultPage extends Component {
       !confirmPassword ||
       isLoading ||
       this.hasError();
-
     return (
       <div className="first-view-main-wrapper">
         <div className="first-view-main">
@@ -200,7 +204,9 @@ class RestoreVaultPage extends Component {
 }
 
 export default connect(
-  ({ appState: { isLoading } }) => ({ isLoading }),
+  ({ appState: { isLoading } }) => ({
+    isLoading,
+  }),
   (dispatch) => ({
     leaveImportSeedScreenState: () => {
       dispatch(unMarkPasswordForgotten());

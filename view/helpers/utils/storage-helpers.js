@@ -1,8 +1,8 @@
 import localforage from 'localforage';
-
 export async function getStorageItem(key) {
   try {
     const serializedData = await localforage.getItem(key);
+
     if (serializedData === null) {
       return undefined;
     }
@@ -12,7 +12,6 @@ export async function getStorageItem(key) {
     return undefined;
   }
 }
-
 export async function setStorageItem(key, value) {
   try {
     const serializedData = JSON.stringify(value);

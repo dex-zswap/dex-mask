@@ -198,7 +198,7 @@ export const NATIVE_CURRENCY_TOKEN_IMAGE_MAP = {
   [TEST_ETH_SYMBOL]: TEST_ETH_TOKEN_IMAGE_URL,
   [BNB_SYMBOL]: BNB_TOKEN_IMAGE_URL,
   [DEX_SYMBOL]: DEX_TOKEN_IMAGE_URL,
-  [MATIC_SYMBOL]: MATIC_TOKEN_IMAGE_URL
+  [MATIC_SYMBOL]: MATIC_TOKEN_IMAGE_URL,
 };
 
 export const INFURA_BLOCKED_KEY = 'countryBlocked';
@@ -244,9 +244,8 @@ export const CHAIN_ID_NATIVE_TOKEN_IMAGE = {
   [GOERLI_CHAIN_ID]: ETH_TOKEN_IMAGE_URL,
   [MAINNET_CHAIN_ID]: ETH_TOKEN_IMAGE_URL,
   [BSC_CHAIN_ID]: BSC_DISPLAY_NAME,
-  [DEX_CHAIN_ID]: DEX_TOKEN_IMAGE_URL
+  [DEX_CHAIN_ID]: DEX_TOKEN_IMAGE_URL,
 };
-
 
 export const DEFAULT_NETWORK_LIST = [
   {
@@ -254,48 +253,48 @@ export const DEFAULT_NETWORK_LIST = [
     symbol: DEX_SYMBOL,
     provider: DEX_MAINNET,
     isBulltIn: true,
-    label: 'DEX Smart Chain Mainnet'
+    label: 'DEX Smart Chain Mainnet',
   },
   {
     chainId: MAINNET_CHAIN_ID,
     symbol: ETH_SYMBOL,
     provider: MAINNET,
     isBulltIn: true,
-    label: 'Ethereum Mainnet'
+    label: 'Ethereum Mainnet',
   },
   {
     chainId: BSC_CHAIN_ID,
     symbol: BNB_SYMBOL,
     provider: BSC_MAINNET,
     isBulltIn: true,
-    label: 'Binance Smart Chain Mainnet'
+    label: 'Binance Smart Chain Mainnet',
   },
   {
     chainId: RINKEBY_CHAIN_ID,
     symbol: TEST_ETH_SYMBOL,
     provider: RINKEBY,
     isBulltIn: true,
-    label: 'Rinkeby Smart Chain Testnet'
+    label: 'Rinkeby Smart Chain Testnet',
   },
   {
     chainId: ROPSTEN_CHAIN_ID,
     symbol: TEST_ETH_SYMBOL,
     provider: ROPSTEN,
     isBulltIn: true,
-    label: 'Ropsten Smart Chain Testnet'
+    label: 'Ropsten Smart Chain Testnet',
   },
   {
     chainId: KOVAN_CHAIN_ID,
     symbol: TEST_ETH_SYMBOL,
     provider: KOVAN,
     isBulltIn: true,
-    label: 'Kovan Smart Chain Testnet'
+    label: 'Kovan Smart Chain Testnet',
   },
   {
     chainId: GOERLI_CHAIN_ID,
     symbol: TEST_ETH_SYMBOL,
     provider: GOERLI,
     isBulltIn: true,
-    label: 'Goerli Smart Chain Testnet'
-  }
+    label: 'Goerli Smart Chain Testnet',
+  },
 ];

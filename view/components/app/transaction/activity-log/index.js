@@ -1,10 +1,10 @@
+import { connect } from 'react-redux';
+import { findLastIndex } from 'lodash';
 import { getNativeCurrency } from '@reducer/dexmask/dexmask';
 import {
   conversionRateSelector,
   getRpcPrefsForCurrentProvider,
 } from '@view/selectors';
-import { findLastIndex } from 'lodash';
-import { connect } from 'react-redux';
 import TransactionActivityLog from './component';
 import {
   TRANSACTION_CANCEL_ATTEMPTED_EVENT,
@@ -28,7 +28,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     transactionGroup: { transactions = [], primaryTransaction } = {},
     ...restOwnProps
   } = ownProps;
-
   const activities = combineTransactionHistories(transactions);
   const inlineRetryIndex = findLastIndex(
     activities,
@@ -38,7 +37,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     activities,
     matchesEventKey(TRANSACTION_CANCEL_ATTEMPTED_EVENT),
   );
-
   return {
     ...stateProps,
     ...dispatchProps,

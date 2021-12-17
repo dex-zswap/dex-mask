@@ -1,36 +1,18 @@
 {
-  "target": "es6",
-  "module": "commonjs",
   "compilerOptions": {
     "baseUrl": "",
     "paths": {
-      "@app/*": [
-        "./app/*"
-      ],
-      "@shared/*": [
-        "./shared/*"
-      ],
-      "@view/*": [
-        "./view/*"
-      ],
-      "@c/*": [
-        "./view/components/*"
-      ],
-      "@pages/*": [
-        "./view/pages/*"
-      ],
-      "@reducer/*": [
-        "./view/reducer/*"
-      ],
-      "@selectors/*": [
-        "./view/selectors/*"
-      ],
-      "@wallet-provider/*": [
-        "./wallet-provider/*"
-      ]
+      "@app/*": ["./app/*"],
+      "@shared/*": ["./shared/*"],
+      "@view/*": ["./view/*"],
+      "@c/*": ["./view/components/*"],
+      "@pages/*": ["./view/pages/*"],
+      "@reducer/*": ["./view/reducer/*"],
+      "@selectors/*": ["./view/selectors/*"],
+      "@wallet-provider/*": ["./wallet-provider/*"]
     }
   },
-  "include": [
-    "view/**/*.js"
-  ]
+  "include": ["view/**/*.js"],
+  "module": "commonjs",
+  "target": "es6"
 }

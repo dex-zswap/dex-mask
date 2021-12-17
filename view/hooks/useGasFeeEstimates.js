@@ -1,12 +1,11 @@
+import { useSelector } from 'react-redux';
 import {
   getEstimatedGasFeeTimeBounds,
   getGasEstimateType,
   getGasFeeEstimates,
   getIsGasEstimatesLoading,
 } from '@reducer/dexmask/dexmask';
-import { useSelector } from 'react-redux';
 import { useSafeGasEstimatePolling } from './useSafeGasEstimatePolling';
-
 /**
  * @typedef {object} GasEstimates
  * @property {GasEstimateTypes} gasEstimateType - The type of estimate provided
@@ -29,13 +28,13 @@ import { useSafeGasEstimatePolling } from './useSafeGasEstimatePolling';
  *
  * @returns {GasFeeEstimates} - GasFeeEstimates object
  */
+
 export function useGasFeeEstimates() {
   const gasEstimateType = useSelector(getGasEstimateType);
   const gasFeeEstimates = useSelector(getGasFeeEstimates);
   const estimatedGasFeeTimeBounds = useSelector(getEstimatedGasFeeTimeBounds);
   const isGasEstimatesLoading = useSelector(getIsGasEstimatesLoading);
   useSafeGasEstimatePolling();
-
   return {
     gasFeeEstimates,
     gasEstimateType,

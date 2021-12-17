@@ -1,20 +1,16 @@
-import Modal from '@c/app/modal';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
+import PropTypes from 'prop-types';
+import Modal from '@c/app/modal';
 export default class TransactionConfirmed extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     onSubmit: PropTypes.func,
     hideModal: PropTypes.func,
   };
-
   handleSubmit = () => {
     const { hideModal, onSubmit } = this.props;
-
     hideModal();
 
     if (onSubmit && typeof onSubmit === 'function') {
@@ -24,7 +20,6 @@ export default class TransactionConfirmed extends PureComponent {
 
   render() {
     const { t } = this.context;
-
     return (
       <Modal onSubmit={this.handleSubmit} submitText={t('ok')}>
         <div className="transaction-confirmed__content">

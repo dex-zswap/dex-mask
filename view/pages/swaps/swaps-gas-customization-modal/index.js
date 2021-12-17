@@ -1,3 +1,5 @@
+import { connect } from 'react-redux';
+import BigNumber from 'bignumber.js';
 import { calcGasTotal, isBalanceSufficient } from '@pages/send/utils';
 import { getNativeCurrency } from '@reducer/dexmask/dexmask';
 import {
@@ -27,8 +29,6 @@ import {
   getUSDConversionRate,
 } from '@view/selectors';
 import { customSwapsGasParamsUpdated, hideModal } from '@view/store/actions';
-import BigNumber from 'bignumber.js';
-import { connect } from 'react-redux';
 import SwapsGasCustomizationModalComponent from './swaps-gas-customization-modal.component';
 
 const mapStateToProps = (state) => {
@@ -37,7 +37,6 @@ const mapStateToProps = (state) => {
   const nativeCurrencySymbol = getNativeCurrency(state);
   const { symbol: swapsDefaultCurrencySymbol } = getSwapsDefaultToken(state);
   const usedCurrencySymbol = nativeCurrencySymbol || swapsDefaultCurrencySymbol;
-
   const { modalState: { props: modalProps } = {} } = state.appState.modal || {};
   const {
     value,
@@ -49,22 +48,17 @@ const mapStateToProps = (state) => {
     minimumGasLimit,
   } = modalProps;
   const buttonDataLoading = swapGasPriceEstimateIsLoading(state);
-
   const swapsCustomizationModalPrice = getSwapsCustomizationModalPrice(state);
   const swapsCustomizationModalLimit = getSwapsCustomizationModalLimit(state);
-
   const customGasPrice = swapsCustomizationModalPrice || initialGasPrice;
   const customGasLimit = swapsCustomizationModalLimit || initialGasLimit;
-
   const customGasTotal = calcGasTotal(customGasLimit, customGasPrice);
-
   const gasEstimates = getSwapGasPriceEstimateData(state);
   const gasEstimatesInNewFormat = {
     low: gasEstimates.safeLow,
     medium: gasEstimates.average,
     high: gasEstimates.fast,
   };
-
   const { averageEstimateData, fastEstimateData } = getRenderableGasButtonData(
     gasEstimatesInNewFormat,
     customGasLimit,
@@ -74,37 +68,30 @@ const mapStateToProps = (state) => {
     usedCurrencySymbol,
   );
   const gasButtonInfo = [averageEstimateData, fastEstimateData];
-
   const newTotalFiat = sumHexWEIsToRenderableFiat(
     [value, customGasTotal, customTotalSupplement],
     currentCurrency,
     conversionRate,
   );
-
   const balance = getCurrentEthBalance(state);
-
   const newTotalEth = sumHexWEIsToRenderableEth(
     [value, customGasTotal, customTotalSupplement],
     usedCurrencySymbol,
   );
-
   const sendAmount = sumHexWEIsToRenderableEth(
     [value, '0x0'],
     usedCurrencySymbol,
   );
-
   const insufficientBalance = !isBalanceSufficient({
     amount: value,
     gasTotal: customGasTotal,
     balance,
     conversionRate,
   });
-
   const customGasLimitTooLow = new BigNumber(customGasLimit, 16).lt(
     minimumGasLimit,
     10,
   );
-
   return {
     customGasPrice,
     customGasLimit,

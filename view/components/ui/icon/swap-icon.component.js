@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 export default function SwapIcon({
   width = '17',
   height = '17',
@@ -23,7 +22,6 @@ export default function SwapIcon({
     </svg>
   );
 }
-
 SwapIcon.propTypes = {
   width: PropTypes.string,
   height: PropTypes.string,

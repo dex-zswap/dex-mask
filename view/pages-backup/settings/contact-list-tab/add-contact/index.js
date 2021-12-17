@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getQrCodeData } from '@reducer/app';
 import {
   getEnsError,
@@ -9,9 +12,6 @@ import {
   qrCodeDetected,
   showQrScanner,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import AddContact from './component';
 
 const mapStateToProps = (state) => {

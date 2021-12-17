@@ -1,18 +1,15 @@
-import InfoTooltip from '@c/ui/info-tooltip';
-import InfoTooltipIcon from '@c/ui/info-tooltip/info-tooltip-icon';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
-
+import InfoTooltip from '@c/ui/info-tooltip';
+import InfoTooltipIcon from '@c/ui/info-tooltip/info-tooltip-icon';
 const CLASSNAME_WARNING = 'actionable-message--warning';
 const CLASSNAME_DANGER = 'actionable-message--danger';
 const CLASSNAME_WITH_RIGHT_BUTTON = 'actionable-message--with-right-button';
-
 const typeHash = {
   warning: CLASSNAME_WARNING,
   danger: CLASSNAME_DANGER,
 };
-
 export default function ActionableMessage({
   message = '',
   primaryAction = null,
@@ -29,9 +26,10 @@ export default function ActionableMessage({
     typeHash[type],
     withRightButton ? CLASSNAME_WITH_RIGHT_BUTTON : null,
     className,
-    { 'actionable-message--with-icon': useIcon },
+    {
+      'actionable-message--with-icon': useIcon,
+    },
   );
-
   return (
     <div className={actionableMessageClassName}>
       {useIcon && <InfoTooltipIcon fillColor={iconFillColor} />}
@@ -72,7 +70,6 @@ export default function ActionableMessage({
     </div>
   );
 }
-
 ActionableMessage.propTypes = {
   message: PropTypes.node.isRequired,
   primaryAction: PropTypes.shape({

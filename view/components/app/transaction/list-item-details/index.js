@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import {
   getAddressBook,
@@ -5,7 +6,6 @@ import {
   getRpcPrefsForCurrentProvider,
 } from '@view/selectors';
 import { tryReverseResolveAddress } from '@view/store/actions';
-import { connect } from 'react-redux';
 import TransactionListItemDetails from './component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -13,10 +13,12 @@ const mapStateToProps = (state, ownProps) => {
   const { ensResolutionsByAddress } = metamask;
   const { recipientAddress, senderAddress } = ownProps;
   let recipientEns;
+
   if (recipientAddress) {
     const address = toChecksumHexAddress(recipientAddress);
     recipientEns = ensResolutionsByAddress[address] || '';
   }
+
   const addressBook = getAddressBook(state);
 
   const getNickName = (address) => {
@@ -25,8 +27,8 @@ const mapStateToProps = (state, ownProps) => {
     });
     return (entry && entry.name) || '';
   };
-  const rpcPrefs = getRpcPrefsForCurrentProvider(state);
 
+  const rpcPrefs = getRpcPrefsForCurrentProvider(state);
   return {
     rpcPrefs,
     recipientEns,

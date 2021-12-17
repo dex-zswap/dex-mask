@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { COLORS, SIZES } from '@view/helpers/constants/design-system';
-
 export default function ColorIndicator({
   size = SIZES.SM,
   type = 'outlined',
@@ -17,7 +16,6 @@ export default function ColorIndicator({
     [`color-indicator--color-${color}`]: true,
     [`color-indicator--size-${size}`]: true,
   });
-
   return (
     <div className={colorIndicatorClassName}>
       {iconClassName ? (
@@ -28,13 +26,11 @@ export default function ColorIndicator({
     </div>
   );
 }
-
 ColorIndicator.TYPES = {
   FILLED: 'filled',
   PARTIAL: 'partial-filled',
   OUTLINE: 'outline',
 };
-
 ColorIndicator.propTypes = {
   color: PropTypes.oneOf(Object.values(COLORS)),
   borderColor: PropTypes.oneOf(Object.values(COLORS)),

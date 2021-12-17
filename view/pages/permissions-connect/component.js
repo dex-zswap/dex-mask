@@ -1,16 +1,14 @@
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import PermissionPageContainer from '@c/app/permission/page-container';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app';
 import { MILLISECOND } from '@shared/constants/time';
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
 import ChooseAccount from './choose-account';
 import PermissionsRedirect from './redirect';
-
 const APPROVE_TIMEOUT = MILLISECOND * 1200;
-
 export default class PermissionConnect extends Component {
   static propTypes = {
     approvePermissionsRequest: PropTypes.func.isRequired,
@@ -39,18 +37,15 @@ export default class PermissionConnect extends Component {
       origin: PropTypes.string.isRequired,
     }),
   };
-
   static defaultProps = {
     origin: '',
     nativeCurrency: '',
     permissionsRequest: undefined,
     permissionsRequestId: '',
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     redirecting: false,
     selectedAccountAddresses: new Set([this.props.currentAddress]),
@@ -58,7 +53,6 @@ export default class PermissionConnect extends Component {
     origin: this.props.origin,
     targetDomainMetadata: this.props.targetDomainMetadata || {},
   };
-
   beforeUnload = () => {
     const { permissionsRequestId, rejectPermissionsRequest } = this.props;
     const { permissionsApproved } = this.state;
@@ -67,9 +61,9 @@ export default class PermissionConnect extends Component {
       rejectPermissionsRequest(permissionsRequestId);
     }
   };
-
   removeBeforeUnload = () => {
     const environmentType = getEnvironmentType();
+
     if (environmentType === ENVIRONMENT_TYPE_NOTIFICATION) {
       window.removeEventListener('beforeunload', this.beforeUnload);
     }
@@ -91,6 +85,7 @@ export default class PermissionConnect extends Component {
     }
 
     const environmentType = getEnvironmentType();
+
     if (environmentType === ENVIRONMENT_TYPE_NOTIFICATION) {
       window.addEventListener('beforeunload', this.beforeUnload);
     }
@@ -104,8 +99,11 @@ export default class PermissionConnect extends Component {
       permissionsRequest &&
       savedMetadata.origin !== targetDomainMetadata?.origin
     ) {
-      return { targetDomainMetadata };
+      return {
+        targetDomainMetadata,
+      };
     }
+
     return null;
   }
 
@@ -118,7 +116,6 @@ export default class PermissionConnect extends Component {
         lastConnectedInfo[origin]?.lastApproved || 0;
       const initialAccountsLastApprovedTime =
         prevProps.lastConnectedInfo[origin]?.lastApproved || 0;
-
       const approved =
         accountsLastApprovedTime > initialAccountsLastApprovedTime;
       this.redirect(approved);
@@ -204,7 +201,6 @@ export default class PermissionConnect extends Component {
       redirecting,
       targetDomainMetadata,
     } = this.state;
-
     return (
       <div className="permissions-connect">
         {this.renderTopBar()}

@@ -1,12 +1,11 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import Typography from '@c/ui/typography';
 import {
   COLORS,
   FONT_WEIGHT,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 export default function TransactionDetailItem({
   detailTitle = '',
   detailText = '',
@@ -36,7 +35,11 @@ export default function TransactionDetailItem({
         </Typography>
       </div>
       {detailText && (
-        <div style={{ textAlign: 'right' }}>
+        <div
+          style={{
+            textAlign: 'right',
+          }}
+        >
           <Typography
             variant={TYPOGRAPHY.H6}
             className="transaction-detail-item__detail-text"
@@ -48,15 +51,15 @@ export default function TransactionDetailItem({
       )}
       <div className="transaction-detail-item__row justify-end">
         {/* {React.isValidElement(subTitle) ? (
-          <div className="transaction-detail-item__subtitle">{subTitle}</div>
+         <div className="transaction-detail-item__subtitle">{subTitle}</div>
         ) : (
-          <Typography
-            variant={TYPOGRAPHY.H7}
-            className="transaction-detail-item__subtitle"
-            color={COLORS.UI4}
-          >
-            {subTitle}
-          </Typography>
+         <Typography
+           variant={TYPOGRAPHY.H7}
+           className="transaction-detail-item__subtitle"
+           color={COLORS.UI4}
+         >
+           {subTitle}
+         </Typography>
         )} */}
 
         <Typography
@@ -70,7 +73,6 @@ export default function TransactionDetailItem({
     </div>
   );
 }
-
 TransactionDetailItem.propTypes = {
   detailTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   detailTitleColor: PropTypes.string,

@@ -13,9 +13,11 @@ const fetchWithCache = async (
   ) {
     throw new Error('fetchWithCache only supports GET requests');
   }
+
   if (!(fetchOptions.headers instanceof window.Headers)) {
     fetchOptions.headers = new window.Headers(fetchOptions.headers);
   }
+
   if (
     fetchOptions.headers.has('Content-Type') &&
     fetchOptions.headers.get('Content-Type') !== 'application/json'
@@ -26,9 +28,11 @@ const fetchWithCache = async (
   const currentTime = Date.now();
   const cacheKey = `cachedFetch:${url}`;
   const { cachedResponse, cachedTime } = (await getStorageItem(cacheKey)) || {};
+
   if (cachedResponse && currentTime - cachedTime < cacheRefreshTime) {
     return cachedResponse;
   }
+
   fetchOptions.headers.set('Content-Type', 'application/json');
   const fetchWithTimeout = getFetchWithTimeout(timeout);
   const response = await fetchWithTimeout(url, {
@@ -38,17 +42,18 @@ const fetchWithCache = async (
     mode: 'cors',
     ...fetchOptions,
   });
+
   if (!response.ok) {
     throw new Error(
       `Fetch failed with status '${response.status}': '${response.statusText}'`,
     );
   }
+
   const responseJson = await response.json();
   const cacheEntry = {
     cachedResponse: responseJson,
     cachedTime: currentTime,
   };
-
   await setStorageItem(cacheKey, cacheEntry);
   return responseJson;
 };

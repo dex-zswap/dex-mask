@@ -1,7 +1,5 @@
 import React from 'react';
-import classnames from 'classnames';
-
-// Button.type default|primary|warning
+import classnames from 'classnames'; // Button.type default|primary|warning
 
 const Button = ({
   type = 'default',
@@ -12,9 +10,10 @@ const Button = ({
   disabled,
   className,
   onClick,
-  as
+  as,
 }) => {
   let Tag = 'button';
+
   if (as) {
     Tag = as;
   }
@@ -26,7 +25,7 @@ const Button = ({
         'dex-button',
         `button-${type}`,
         className,
-        disabled && 'button-disabled'
+        disabled && 'button-disabled',
       )}
     >
       {leftArrow && <span className="button__left__arrow"></span>}

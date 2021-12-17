@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import useDeepEffect from './useDeepEffect';
-
 export function useFetch(fetcher, deps) {
   const [loading, setLoading] = useState(true);
   const [res, setRes] = useState(null);
   const [error, setError] = useState(false);
-
   useDeepEffect(() => {
     if (typeof fetcher === 'function') {
       setLoading(true);
@@ -31,7 +29,6 @@ export function useFetch(fetcher, deps) {
       setLoading(false);
     }
   }, deps);
-
   return {
     loading,
     res,

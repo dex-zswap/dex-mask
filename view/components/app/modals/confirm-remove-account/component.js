@@ -1,13 +1,12 @@
-import Modal from '@c/app/modal';
+import React, { Component } from 'react';
 import {
   createCustomAccountLink,
   getAccountLink,
 } from '@metamask/etherscan-link';
+import PropTypes from 'prop-types';
+import Modal from '@c/app/modal';
 import { CHAINID_EXPLORE_MAP } from '@shared/constants/network';
 import { addressSummary } from '@view/helpers/utils';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmRemoveAccount extends Component {
   static propTypes = {
     hideModal: PropTypes.func.isRequired,
@@ -16,17 +15,14 @@ export default class ConfirmRemoveAccount extends Component {
     chainId: PropTypes.string.isRequired,
     rpcPrefs: PropTypes.object.isRequired,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   handleRemove = () => {
     this.props
       .removeAccount(this.props.identity.address)
       .then(() => this.props.hideModal());
   };
-
   handleCancel = () => {
     this.props.hideModal();
   };
@@ -87,7 +83,6 @@ export default class ConfirmRemoveAccount extends Component {
 
   render() {
     const { t } = this.context;
-
     return (
       <Modal
         headerText={`${t('removeAccount')}?`}

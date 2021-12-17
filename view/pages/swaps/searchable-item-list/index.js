@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ItemList from './item-list';
 import ListItemSearch from './list-item-search';
-
 export default function SearchableItemList({
   className,
   defaultToAll,
@@ -21,10 +20,8 @@ export default function SearchableItemList({
   shouldSearchForImports,
 }) {
   const itemListRef = useRef();
-
   const [results, setResults] = useState(defaultToAll ? itemsToSearch : []);
   const [searchQuery, setSearchQuery] = useState('');
-
   return (
     <div className={className}>
       <ListItemSearch
@@ -58,7 +55,6 @@ export default function SearchableItemList({
     </div>
   );
 }
-
 SearchableItemList.propTypes = {
   itemSelectorError: PropTypes.string,
   itemsToSearch: PropTypes.array,

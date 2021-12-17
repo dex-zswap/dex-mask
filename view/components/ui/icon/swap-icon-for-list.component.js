@@ -26,11 +26,9 @@ const Swap = ({ className, size, color }) => (
 Swap.defaultProps = {
   className: undefined,
 };
-
 Swap.propTypes = {
   className: PropTypes.string,
   size: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
 };
-
 export default Swap;

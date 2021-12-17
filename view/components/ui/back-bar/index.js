@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 
 const BackBar = ({ title, url, method = 'push' }) => {
   const history = useHistory();
-
   const back = useCallback(() => {
     if (url) {
       history[method](url);
@@ -11,7 +10,6 @@ const BackBar = ({ title, url, method = 'push' }) => {
       history.go(-1);
     }
   }, [history, url]);
-
   return (
     <div className="back-bar-wrap base-width">
       <div className="back-bar-icon-wrap" onClick={back}>

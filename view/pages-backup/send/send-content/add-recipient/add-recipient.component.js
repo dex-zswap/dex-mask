@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import Fuse from 'fuse.js';
+import PropTypes from 'prop-types';
 import ContactList from '@c/app/contact-list';
 import RecipientGroup from '@c/app/contact-list/recipient-group';
 import Button from '@c/ui/button';
@@ -5,10 +8,6 @@ import Confusable from '@c/ui/confusable';
 import Dialog from '@c/ui/dialog';
 import Identicon from '@c/ui/identicon';
 import { ellipsify } from '@pages/send/utils';
-import Fuse from 'fuse.js';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class AddRecipient extends Component {
   static propTypes = {
     userInput: PropTypes.string,
@@ -41,9 +40,13 @@ export default class AddRecipient extends Component {
       distance: 100,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: [{ name: 'address', weight: 0.5 }],
+      keys: [
+        {
+          name: 'address',
+          weight: 0.5,
+        },
+      ],
     });
-
     this.contactFuse = new Fuse(props.contacts, {
       shouldSort: true,
       threshold: 0.45,
@@ -52,8 +55,14 @@ export default class AddRecipient extends Component {
       maxPatternLength: 32,
       minMatchCharLength: 1,
       keys: [
-        { name: 'name', weight: 0.5 },
-        { name: 'address', weight: 0.5 },
+        {
+          name: 'name',
+          weight: 0.5,
+        },
+        {
+          name: 'address',
+          weight: 0.5,
+        },
       ],
     });
   }
@@ -61,14 +70,14 @@ export default class AddRecipient extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   selectRecipient = (address, nickname = '') => {
-    this.props.updateRecipient({ address, nickname });
+    this.props.updateRecipient({
+      address,
+      nickname,
+    });
   };
-
   searchForContacts = () => {
     const { userInput, contacts } = this.props;
-
     let _contacts = contacts;
 
     if (userInput) {
@@ -78,10 +87,8 @@ export default class AddRecipient extends Component {
 
     return _contacts;
   };
-
   searchForRecents = () => {
     const { userInput, nonContacts } = this.props;
-
     let _nonContacts = nonContacts;
 
     if (userInput) {
@@ -100,7 +107,6 @@ export default class AddRecipient extends Component {
       addressBookEntryName,
       isUsingMyAccountsForRecipientSearch,
     } = this.props;
-
     let content;
 
     if (recipient.address) {
@@ -118,7 +124,6 @@ export default class AddRecipient extends Component {
     }
 
     content = this.renderTransfer();
-
     return (
       <div className="send__select-recipient-wrapper">
         {this.renderDialogs()}
@@ -186,7 +191,6 @@ export default class AddRecipient extends Component {
       addressBook,
       useMyAccountsForRecipientSearch,
     } = this.props;
-
     return (
       <div className="send__select-recipient-wrapper__list">
         <ContactList

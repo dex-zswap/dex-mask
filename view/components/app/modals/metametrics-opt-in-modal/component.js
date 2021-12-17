@@ -1,13 +1,11 @@
-import PageContainerFooter from '@c/ui/page-container/page-container-footer';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import PageContainerFooter from '@c/ui/page-container/page-container-footer';
 export default class MetaMetricsOptInModal extends Component {
   static propTypes = {
     setParticipateInMetaMetrics: PropTypes.func,
     hideModal: PropTypes.func,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -15,7 +13,6 @@ export default class MetaMetricsOptInModal extends Component {
   render() {
     const { t } = this.context;
     const { setParticipateInMetaMetrics, hideModal } = this.props;
-
     return (
       <div className="metametrics-opt-in metametrics-opt-in-modal">
         <div className="metametrics-opt-in__main">

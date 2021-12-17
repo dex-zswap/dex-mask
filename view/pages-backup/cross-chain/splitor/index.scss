@@ -17,12 +17,19 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
+      background: linear-gradient(
+        58deg,
+        #7813c4 0%,
+        #691bb5 17%,
+        #3b11b8 79%,
+        #2206a0 100%
+      );
 
       .cicle-arrow {
         width: 12px;
         height: 12px;
-        background: url('/images/dex/button/cicle-arrow.png') no-repeat center center;
+        background: url('/images/dex/button/cicle-arrow.png') no-repeat center
+          center;
         background-size: 100% 100%;
         transition: all 0.4s;
         transform-origin: center;
@@ -45,10 +52,16 @@
       height: 22px;
       line-height: 22px;
       padding: 0 8px;
-      background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
+      background: linear-gradient(
+        58deg,
+        #7813c4 0%,
+        #691bb5 17%,
+        #3b11b8 79%,
+        #2206a0 100%
+      );
       border-radius: 26px;
       font-size: 12px;
-      color: #D3D3D3;
+      color: #d3d3d3;
       margin: 0 0 8px;
     }
 

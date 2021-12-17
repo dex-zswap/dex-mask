@@ -1,18 +1,15 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-
 export default class MultipleNotifications extends PureComponent {
   static defaultProps = {
     children: [],
     classNames: [],
   };
-
   static propTypes = {
     children: PropTypes.array,
     classNames: PropTypes.array,
   };
-
   state = {
     showAll: false,
   };
@@ -20,8 +17,8 @@ export default class MultipleNotifications extends PureComponent {
   render() {
     const { showAll } = this.state;
     const { children, classNames } = this.props;
-
     const childrenToRender = children.filter(Boolean);
+
     if (childrenToRender.length === 0) {
       return null;
     }
@@ -36,7 +33,11 @@ export default class MultipleNotifications extends PureComponent {
         {childrenToRender}
         <div
           className="home-notification-wrapper__i-container"
-          onClick={() => this.setState({ showAll: !showAll })}
+          onClick={() =>
+            this.setState({
+              showAll: !showAll,
+            })
+          }
         >
           {childrenToRender.length > 1 ? (
             <i

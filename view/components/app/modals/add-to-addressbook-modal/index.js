@@ -1,11 +1,9 @@
-import * as actions from '@view/store/actions';
 import { connect } from 'react-redux';
+import * as actions from '@view/store/actions';
 import AddToAddressBookModal from './component';
 
 function mapStateToProps(state) {
-  return {
-    ...(state.appState.modal.modalState.props || {}),
-  };
+  return { ...(state.appState.modal.modalState.props || {}) };
 }
 
 function mapDispatchToProps(dispatch) {

@@ -1,9 +1,8 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AdvancedGasInputs from '@c/app/gas-customization/advanced-gas-inputs';
 import SendRowWrapper from '@pages/send/send-content/send-row-wrapper';
 import { GAS_INPUT_MODES } from '@reducer/send';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class SendGasRow extends Component {
   static propTypes = {
     updateGasPrice: PropTypes.func,
@@ -14,7 +13,6 @@ export default class SendGasRow extends Component {
     insufficientBalance: PropTypes.bool,
     minimumGasLimit: PropTypes.string,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };

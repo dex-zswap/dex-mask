@@ -1,3 +1,6 @@
+import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import classnames from 'classnames';
 import { getTokens } from '@reducer/dexmask/dexmask';
 import { getIndexAssets } from '@view/helpers/cross-chain-api';
 import { toBnString } from '@view/helpers/utils/conversions.util';
@@ -9,11 +12,8 @@ import {
   getTokenDisplayOrders,
 } from '@view/selectors';
 import { addTokens, setTokenDisplayOrders } from '@view/store/actions';
-import classnames from 'classnames';
 import clone from 'lodash/clone';
 import isEqual from 'lodash/isEqual';
-import React, { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 const AutoInitTokens = () => {
   const dispatch = useDispatch();
@@ -25,12 +25,10 @@ const AutoInitTokens = () => {
     getTokenDisplayOrders(state, false),
   );
   const memoizedTokenOrders = useMd5EqualityCheck(tokenOrders);
-
   const userTokenAddress = useMemo(
     () => userTokens.map(({ address }) => address),
     [userTokens],
   );
-
   useDeepEffect(() => {
     getIndexAssets({
       offset: 0,
@@ -42,7 +40,6 @@ const AutoInitTokens = () => {
           const chain = toBnString(chainId);
           const tokenMap = {};
           const tokenAddesses = [];
-
           res.d.forEach((token) => {
             if (
               !userTokenAddress.includes(token.token_address) &&
@@ -94,11 +91,9 @@ const AutoInitTokens = () => {
     dispatch,
     setTokenDisplayOrders,
   ]);
-
   useDeepEffect(() => {
     dispatch(addTokens(paddingTokens));
   }, [paddingTokens, dispatch, addTokens]);
-
   return (
     <div
       className={classnames(

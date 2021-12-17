@@ -1,9 +1,8 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import CustomizeGas from '@c/app/gas-customization/gas-modal-page-container';
 import { MILLISECOND } from '@shared/constants/time';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-
 export default class Sidebar extends Component {
   static propTypes = {
     sidebarOpen: PropTypes.bool,
@@ -14,14 +13,12 @@ export default class Sidebar extends Component {
     sidebarProps: PropTypes.object,
     onOverlayClose: PropTypes.func,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
 
   renderOverlay() {
     const { onOverlayClose } = this.props;
-
     return (
       <div
         className="sidebar-overlay"
@@ -36,6 +33,7 @@ export default class Sidebar extends Component {
   renderSidebarContent() {
     const { type, sidebarProps = {} } = this.props;
     const { transaction = {}, onSubmit, hideBasic } = sidebarProps;
+
     switch (type) {
       case 'customize-gas':
         return (
@@ -47,6 +45,7 @@ export default class Sidebar extends Component {
             />
           </div>
         );
+
       default:
         return null;
     }
@@ -60,9 +59,7 @@ export default class Sidebar extends Component {
 
   render() {
     const { transitionName, sidebarOpen, sidebarShouldClose } = this.props;
-
     const showSidebar = sidebarOpen && !sidebarShouldClose;
-
     return (
       <div>
         <ReactCSSTransitionGroup

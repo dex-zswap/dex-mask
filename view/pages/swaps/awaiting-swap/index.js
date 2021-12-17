@@ -1,10 +1,14 @@
-import Box from '@c/ui/box';
-import Mascot from '@c/ui/mascot';
-import PulseLoader from '@c/ui/pulse-loader';
+import React, { useContext, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   createCustomExplorerLink,
   getBlockExplorerLink,
 } from '@metamask/etherscan-link';
+import PropTypes from 'prop-types';
+import Box from '@c/ui/box';
+import Mascot from '@c/ui/mascot';
+import PulseLoader from '@c/ui/pulse-loader';
 import SwapsFooter from '@pages/swaps/swaps-footer';
 import { getRenderableNetworkFeesForQuote } from '@pages/swaps/swaps.util';
 import {
@@ -40,15 +44,10 @@ import {
   isHardwareWallet,
 } from '@view/selectors';
 import EventEmitter from 'events';
-import PropTypes from 'prop-types';
-import React, { useContext, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import QuotesTimeoutIcon from './quotes-timeout-icon';
 import SwapFailureIcon from './swap-failure-icon';
 import SwapSuccessIcon from './swap-success-icon';
 import ViewOnEtherScanLink from './view-on-ether-scan-link';
-
 export default function AwaitingSwap({
   swapComplete,
   errorKey,
@@ -63,7 +62,6 @@ export default function AwaitingSwap({
   const history = useHistory();
   const dispatch = useDispatch();
   const animationEventEmitter = useRef(new EventEmitter());
-
   const fetchParams = useSelector(getFetchParams);
   const { destinationTokenInfo, sourceTokenInfo } = fetchParams?.metaData || {};
   const usedQuote = useSelector(getUsedQuote);
@@ -73,11 +71,9 @@ export default function AwaitingSwap({
   const usdConversionRate = useSelector(getUSDConversionRate);
   const chainId = useSelector(getCurrentChainId);
   const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
-
   const [trackedQuotesExpiredEvent, setTrackedQuotesExpiredEvent] = useState(
     false,
   );
-
   let feeinUnformattedFiat;
 
   if (usedQuote && swapsGasPrice) {
@@ -108,14 +104,18 @@ export default function AwaitingSwap({
     is_hardware_wallet: hardwareWalletUsed,
     hardware_wallet_type: hardwareWalletType,
   };
-
   const baseNetworkUrl =
     rpcPrefs.blockExplorerUrl ??
     SWAPS_CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[chainId] ??
     null;
   let blockExplorerUrl = getBlockExplorerLink(
-    { hash: txHash, chainId },
-    { blockExplorerUrl: baseNetworkUrl },
+    {
+      hash: txHash,
+      chainId,
+    },
+    {
+      blockExplorerUrl: baseNetworkUrl,
+    },
   );
 
   if (!blockExplorerUrl && CHAINID_EXPLORE_MAP[chainId]) {
@@ -129,7 +129,6 @@ export default function AwaitingSwap({
     SWAPS_CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[chainId] ||
       rpcPrefs.blockExplorerUrl,
   );
-
   let headerText;
   let statusImage;
   let descriptionText;
@@ -292,7 +291,6 @@ export default function AwaitingSwap({
     </div>
   );
 }
-
 AwaitingSwap.propTypes = {
   swapComplete: PropTypes.bool,
   txHash: PropTypes.string,

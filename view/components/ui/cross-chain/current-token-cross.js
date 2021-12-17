@@ -1,10 +1,3 @@
-import { Menu, MenuItem } from '@c/ui/menu';
-import TokenImage from '@c/ui/token-image';
-import { getNativeCurrency } from '@reducer/dexmask/dexmask';
-import { getAllSupportBridge } from '@view/helpers/cross-chain-api';
-import { toBnString } from '@view/helpers/utils/conversions.util';
-import classnames from 'classnames';
-import { ethers } from 'ethers';
 import React, {
   useCallback,
   useEffect,
@@ -13,8 +6,14 @@ import React, {
   useState,
 } from 'react';
 import { useSelector } from 'react-redux';
+import classnames from 'classnames';
+import { ethers } from 'ethers';
+import { Menu, MenuItem } from '@c/ui/menu';
+import TokenImage from '@c/ui/token-image';
+import { getNativeCurrency } from '@reducer/dexmask/dexmask';
+import { getAllSupportBridge } from '@view/helpers/cross-chain-api';
+import { toBnString } from '@view/helpers/utils/conversions.util';
 import { CHAIN_ID_NAME_LETTER_MAP } from './constants';
-
 const chainIdKeys = Object.keys(CHAIN_ID_NAME_LETTER_MAP);
 
 const CurrentCoinCross = ({
@@ -29,13 +28,11 @@ const CurrentCoinCross = ({
 }) => {
   const [tokens, setToken] = useState([]);
   const nativeCurrency = useSelector(getNativeCurrency);
-
   const [tokenMenu, setTokenMenu] = useState(false);
   const anchorElement = useRef(null);
   const toggleTokenMenu = useCallback(() => setTokenMenu(!tokenMenu), [
     tokenMenu,
   ]);
-
   const selectToken = useCallback(
     (token) => {
       onChange(token);
@@ -43,24 +40,26 @@ const CurrentCoinCross = ({
     },
     [onChange, toggleTokenMenu],
   );
-
   const currencyName = useMemo(() => {
     if (useOut) {
       return coinSymbol;
     }
+
     if (coinAddress === ethers.constants.AddressZero || !coinAddress) {
       return nativeCurrency;
     }
+
     const token = tokens.find(
       ({ token_address }) =>
         token_address.toLowerCase() === coinAddress.toLowerCase(),
     );
+
     if (token) {
       return token.token;
     }
+
     return 'UNKOWN';
   }, [tokens, nativeCurrency, coinSymbol, coinAddress, useOut]);
-
   useEffect(() => {
     getAllSupportBridge({
       offset: 0,
@@ -77,7 +76,6 @@ const CurrentCoinCross = ({
         }
       });
   }, [currentChainId]);
-
   return (
     <div className="cross-chain__current-token">
       <div className="cross-chain__current-token-image">

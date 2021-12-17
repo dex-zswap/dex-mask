@@ -30,7 +30,7 @@
 
   .disconnect-icon {
     &::before {
-      content: "";
+      content: '';
       background-image: url('/images/icons/disconnect.svg');
       background-size: contain;
       background-repeat: no-repeat;

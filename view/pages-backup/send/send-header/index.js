@@ -1,3 +1,6 @@
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import PageContainerHeader from '@c/ui/page-container/page-container-header';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import {
@@ -8,10 +11,6 @@ import {
   SEND_STAGES,
 } from '@reducer/send';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
 export default function SendHeader() {
   const history = useHistory();
   const mostRecentOverviewPage = useSelector(getMostRecentOverviewPage);

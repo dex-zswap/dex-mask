@@ -1,5 +1,5 @@
-import classnames from 'classnames';
 import React, { useMemo } from 'react';
+import classnames from 'classnames';
 
 const TextField = (
   { className, error, label, bordered = true, ...inputProps },
@@ -14,7 +14,6 @@ const TextField = (
       ),
     [className, bordered],
   );
-
   return (
     <div className={classnames('dex-text-field', className)}>
       {React.isValidElement(label) ? (

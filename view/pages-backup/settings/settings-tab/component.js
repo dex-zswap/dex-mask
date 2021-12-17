@@ -1,33 +1,28 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import locales from '@app/_locales/index.json';
 import Dropdown from '@c/ui/dropdown';
 import ToggleButton from '@c/ui/toggle-button';
 import availableCurrencies from '@view/helpers/constants/available-conversions.json';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 const sortedCurrencies = availableCurrencies.sort((a, b) => {
   return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
 });
-
 const currencyOptions = sortedCurrencies.map(({ code, name }) => {
   return {
     name: code.toUpperCase(),
     value: code,
   };
 });
-
 const localeOptions = locales.map((locale) => {
   return {
     name: `${locale.name}`,
     value: locale.code,
   };
 });
-
 export default class SettingsTab extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     setUseBlockie: PropTypes.func,
     setCurrentCurrency: PropTypes.func,
@@ -47,13 +42,12 @@ export default class SettingsTab extends PureComponent {
   renderCurrentConversion() {
     const { t } = this.context;
     const { currentCurrency, conversionDate, setCurrentCurrency } = this.props;
-
     return (
       <div className="settings-page__content-row">
         <div className="settings-page__content-item">
           <span>{t('currencyConversion')}</span>
           {/* <span className="settings-page__content-description">
-            {t('updatedWithDate', [Date(conversionDate)])}
+           {t('updatedWithDate', [Date(conversionDate)])}
           </span> */}
         </div>
         <div className="settings-page__content-item">
@@ -77,7 +71,6 @@ export default class SettingsTab extends PureComponent {
       (locale) => locale.code === currentLocale,
     );
     const currentLocaleName = currentLocaleMeta ? currentLocaleMeta.name : '';
-
     return (
       <div className="settings-page__content-row">
         <div className="settings-page__content-item">
@@ -85,7 +78,7 @@ export default class SettingsTab extends PureComponent {
             {t('currentLanguage')}
           </span>
           {/* <span className="settings-page__content-description">
-            {currentLocaleName}
+           {currentLocaleName}
           </span> */}
         </div>
         <div className="settings-page__content-item">
@@ -105,7 +98,6 @@ export default class SettingsTab extends PureComponent {
   renderHideZeroBalanceTokensOptIn() {
     const { t } = this.context;
     const { hideZeroBalanceTokens, setHideZeroBalanceTokens } = this.props;
-
     return (
       <div className="settings-page__content-row" id="toggle-zero-balance">
         <div className="settings-page__content-item">
@@ -129,7 +121,6 @@ export default class SettingsTab extends PureComponent {
   renderBlockieOptIn() {
     const { t } = this.context;
     const { useBlockie, setUseBlockie } = this.props;
-
     return (
       <div className="settings-page__content-row" id="blockie-optin">
         <div className="settings-page__content-item">
@@ -157,7 +148,6 @@ export default class SettingsTab extends PureComponent {
       setUseNativeCurrencyAsPrimaryCurrencyPreference,
       useNativeCurrencyAsPrimaryCurrency,
     } = this.props;
-
     return (
       <div className="settings-page__content-row">
         <div className="settings-page__content-item">
@@ -210,7 +200,6 @@ export default class SettingsTab extends PureComponent {
 
   render() {
     const { warning } = this.props;
-
     return (
       <div className="settings-page__body">
         {warning && <div className="settings-tab__error">{warning}</div>}

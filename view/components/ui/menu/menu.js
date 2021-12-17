@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React, { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { usePopper } from 'react-popper';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { usePopper } from 'react-popper';
 
 const Menu = ({
   anchorElement,
@@ -15,13 +15,11 @@ const Menu = ({
   const popoverContainerElement = useRef(
     document.getElementById('popover-content'),
   );
-
   const { attributes, styles } = usePopper(
     anchorElement,
     popperElement,
     popperOptions,
   );
-
   return createPortal(
     <>
       <div className="menu__background" onClick={onHide} />
@@ -45,11 +43,9 @@ Menu.propTypes = {
   onHide: PropTypes.func.isRequired,
   popperOptions: PropTypes.object,
 };
-
 Menu.defaultProps = {
   anchorElement: undefined,
   className: undefined,
   popperOptions: undefined,
 };
-
 export default Menu;

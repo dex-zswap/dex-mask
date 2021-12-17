@@ -1,13 +1,12 @@
-import Spinner from '@c/ui/spinner';
-import PropTypes from 'prop-types';
 import React, { Component, isValidElement } from 'react';
+import PropTypes from 'prop-types';
+import Spinner from '@c/ui/spinner';
 
 class LoadingScreen extends Component {
   static defaultProps = {
     loadingMessage: null,
     showLoadingSpinner: true,
   };
-
   static propTypes = {
     loadingMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     showLoadingSpinner: PropTypes.bool,

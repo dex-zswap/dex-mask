@@ -20,7 +20,7 @@ import {
   RINKEBY_CHAIN_ID,
   INFURA_BLOCKED_KEY,
   CHAIN_ID_TO_RPC_URL_MAP,
-  ETH_SYMBOL
+  ETH_SYMBOL,
 } from '@shared/constants/network';
 import { SECOND } from '@shared/constants/time';
 import {

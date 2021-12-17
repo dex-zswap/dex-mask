@@ -1,8 +1,8 @@
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 
 const Popover = ({
   title,
@@ -94,12 +94,9 @@ Popover.propTypes = {
   }),
   centerTitle: PropTypes.bool,
 };
-
 export default class Item extends PureComponent {
   static propTypes = Popover.propTypes;
-
   rootNode = document.getElementById('popover-content');
-
   instanceNode = document.createElement('div');
 
   componentDidMount() {

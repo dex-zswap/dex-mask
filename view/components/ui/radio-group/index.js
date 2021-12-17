@@ -1,3 +1,5 @@
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import Typography from '@c/ui/typography';
 import { I18nContext } from '@view/contexts/i18n';
 import {
@@ -5,12 +7,8 @@ import {
   FONT_WEIGHT,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-
 export default function RadioGroup({ options, name, selectedValue, onChange }) {
   const t = useContext(I18nContext);
-
   return (
     <div className="radio-group">
       {options.map((option) => {
@@ -52,14 +50,12 @@ export default function RadioGroup({ options, name, selectedValue, onChange }) {
     </div>
   );
 }
-
 RadioGroup.propTypes = {
   options: PropTypes.array,
   selectedValue: PropTypes.string,
   name: PropTypes.string,
   onChange: PropTypes.func,
 };
-
 RadioGroup.defaultProps = {
   options: [],
 };

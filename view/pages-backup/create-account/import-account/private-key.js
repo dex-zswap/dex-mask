@@ -1,18 +1,17 @@
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { getDexMaskAccounts } from '@view/selectors';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 
 class PrivateKeyImportView extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     importNewAccount: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
@@ -22,10 +21,10 @@ class PrivateKeyImportView extends Component {
     error: PropTypes.node,
     mostRecentOverviewPage: PropTypes.string.isRequired,
   };
-
   inputRef = React.createRef();
-
-  state = { isEmpty: true };
+  state = {
+    isEmpty: true,
+  };
 
   createNewKeychain() {
     const privateKey = this.inputRef.current.value;
@@ -37,7 +36,6 @@ class PrivateKeyImportView extends Component {
       setSelectedAddress,
       firstAddress,
     } = this.props;
-
     importNewAccount('Private Key', [privateKey])
       .then(({ selectedAddress }) => {
         if (selectedAddress) {
@@ -61,15 +59,18 @@ class PrivateKeyImportView extends Component {
   checkInputEmpty() {
     const privateKey = this.inputRef.current.value;
     let isEmpty = true;
+
     if (privateKey !== '') {
       isEmpty = false;
     }
-    this.setState({ isEmpty });
+
+    this.setState({
+      isEmpty,
+    });
   }
 
   render() {
     const { error, displayWarning } = this.props;
-
     return (
       <div className="new-account-import-form__private-key">
         <span className="new-account-create-form__instruction">
@@ -88,14 +89,14 @@ class PrivateKeyImportView extends Component {
         </div>
         <div className="new-account-import-form__buttons">
           {/* <Button
-            className="new-account-create-form__button"
-            onClick={() => {
-              const { history, mostRecentOverviewPage } = this.props;
-              displayWarning(null);
-              history.push(mostRecentOverviewPage);
-            }}
+           className="new-account-create-form__button"
+           onClick={() => {
+             const { history, mostRecentOverviewPage } = this.props;
+             displayWarning(null);
+             history.push(mostRecentOverviewPage);
+           }}
           >
-            {this.context.t('cancel')}
+           {this.context.t('cancel')}
           </Button> */}
           <Button
             type="primary"

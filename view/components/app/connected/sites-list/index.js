@@ -1,13 +1,11 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SiteIcon from '@c/ui/site-icon';
 import { stripHttpSchemes } from '@view/helpers/utils';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConnectedSitesList extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     connectedDomains: PropTypes.arrayOf(
       PropTypes.shape({
@@ -24,7 +22,6 @@ export default class ConnectedSitesList extends Component {
   render() {
     const { connectedDomains, onDisconnect } = this.props;
     const { t } = this.context;
-
     return (
       <main className="connected-sites-list__content-rows">
         {connectedDomains.map((domain) => (

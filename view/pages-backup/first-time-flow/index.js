@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { INITIALIZE_BACKUP_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
 import { getFirstTimeFlowTypeRoute } from '@view/selectors';
 import {
@@ -6,7 +7,6 @@ import {
   unlockAndGetSeedPhrase,
   verifySeedPhrase,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
 import FirstTimeFlow from './component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -21,7 +21,6 @@ const mapStateToProps = (state, ownProps) => {
   const showingSeedPhraseBackupAfterOnboarding = Boolean(
     ownProps.location.pathname.match(INITIALIZE_BACKUP_SEED_PHRASE_ROUTE),
   );
-
   return {
     completedOnboarding,
     isInitialized,

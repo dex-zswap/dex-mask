@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_FULLSCREEN } from '@shared/constants/app';
 import { NETWORK_TYPE_RPC } from '@shared/constants/network';
@@ -10,12 +13,8 @@ import {
   showModal,
   updateAndSetCustomRpc,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import NetworksTab from './component';
 import { defaultNetworksData } from './constants';
-
 const defaultNetworks = defaultNetworksData.map((network) => ({
   ...network,
   viewOnly: true,
@@ -25,14 +24,11 @@ const mapStateToProps = (state, ownProps) => {
   const {
     location: { pathname },
   } = ownProps;
-
   const environmentType = getEnvironmentType();
   const isFullScreen = environmentType === ENVIRONMENT_TYPE_FULLSCREEN;
   const shouldRenderNetworkForm = Boolean(pathname.match(NETWORKS_FORM_ROUTE));
-
   const { frequentRpcListDetail, provider } = state.metamask;
   const { networksTabSelectedRpcUrl, networksTabIsInAddMode } = state.appState;
-
   const frequentRpcNetworkListDetails = frequentRpcListDetail.map((rpc) => {
     return {
       label: rpc.nickname,
@@ -44,7 +40,6 @@ const mapStateToProps = (state, ownProps) => {
       blockExplorerUrl: rpc.rpcPrefs?.blockExplorerUrl || '',
     };
   });
-
   const networksToRender = [
     ...defaultNetworks,
     ...frequentRpcNetworkListDetails,
@@ -54,8 +49,8 @@ const mapStateToProps = (state, ownProps) => {
       (network) => network.rpcUrl === networksTabSelectedRpcUrl,
     ) || {};
   const networkIsSelected = Boolean(selectedNetwork.rpcUrl);
-
   let networkDefaultedToProvider = false;
+
   if (!networkIsSelected && !networksTabIsInAddMode) {
     selectedNetwork =
       networksToRender.find((network) => {
@@ -92,7 +87,11 @@ const mapDispatchToProps = (dispatch) => {
     },
     showConfirmDeleteNetworkModal: ({ target, onConfirm }) => {
       return dispatch(
-        showModal({ name: 'CONFIRM_DELETE_NETWORK', target, onConfirm }),
+        showModal({
+          name: 'CONFIRM_DELETE_NETWORK',
+          target,
+          onConfirm,
+        }),
       );
     },
     displayWarning: (warning) => dispatch(displayWarning(warning)),

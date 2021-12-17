@@ -1,8 +1,8 @@
-import CurrencyInput from '@c/ui/currency-input';
-import { getPreferences } from '@view/selectors';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import CurrencyInput from '@c/ui/currency-input';
+import { getPreferences } from '@view/selectors';
 
 class UserPreferencedCurrencyInput extends PureComponent {
   static propTypes = {
@@ -11,7 +11,6 @@ class UserPreferencedCurrencyInput extends PureComponent {
 
   render() {
     const { useNativeCurrencyAsPrimaryCurrency, ...restProps } = this.props;
-
     return (
       <CurrencyInput
         {...restProps}
@@ -23,7 +22,6 @@ class UserPreferencedCurrencyInput extends PureComponent {
 
 const mapStateToProps = (state) => {
   const { useNativeCurrencyAsPrimaryCurrency } = getPreferences(state);
-
   return {
     useNativeCurrencyAsPrimaryCurrency,
   };

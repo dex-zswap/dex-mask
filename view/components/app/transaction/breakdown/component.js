@@ -1,17 +1,15 @@
+import React, { PureComponent } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
 import CurrencyDisplay from '@c/ui/currency-display';
 import HexToDecimal from '@c/ui/hex-to-decimal';
 import { ETH, GWEI, PRIMARY, SECONDARY } from '@view/helpers/constants/common';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
 import TransactionBreakdownRow from './transaction-breakdown-row';
-
 export default class TransactionBreakdown extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     className: PropTypes.string,
     nativeCurrency: PropTypes.string,
@@ -28,7 +26,6 @@ export default class TransactionBreakdown extends PureComponent {
     hexGasTotal: PropTypes.string,
     isEIP1559Transaction: PropTypes.bool,
   };
-
   static defaultProps = {
     showFiat: true,
   };

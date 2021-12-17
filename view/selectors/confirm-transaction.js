@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect';
 import {
   getGasEstimateType,
   getGasFeeEstimates,
@@ -21,19 +22,23 @@ import { decGWEIToHexWEI } from '@view/helpers/utils/conversions.util';
 import { calcTokenAmount } from '@view/helpers/utils/token-util';
 import { sumHexes } from '@view/helpers/utils/transactions.util';
 import txHelper from '@view/helpers/utils/tx-helper';
-import { createSelector } from 'reselect';
 import { checkNetworkAndAccountSupports1559 } from '.';
 import { getAveragePriceEstimateInHexWEI } from './custom-gas';
 import { deprecatedGetCurrentNetworkId, getCurrentChainId } from './selectors';
 
 const unapprovedTxsSelector = (state) => state.metamask.unapprovedTxs;
+
 const unapprovedMsgsSelector = (state) => state.metamask.unapprovedMsgs;
+
 const unapprovedPersonalMsgsSelector = (state) =>
   state.metamask.unapprovedPersonalMsgs;
+
 const unapprovedDecryptMsgsSelector = (state) =>
   state.metamask.unapprovedDecryptMsgs;
+
 const unapprovedEncryptionPublicKeyMsgsSelector = (state) =>
   state.metamask.unapprovedEncryptionPublicKeyMsgs;
+
 const unapprovedTypedMessagesSelector = (state) =>
   state.metamask.unapprovedTypedMessages;
 
@@ -67,7 +72,6 @@ export const unconfirmedTransactionsListSelector = createSelector(
       chainId,
     ) || [],
 );
-
 export const unconfirmedTransactionsHashSelector = createSelector(
   unapprovedTxsSelector,
   unapprovedMsgsSelector,
@@ -101,7 +105,6 @@ export const unconfirmedTransactionsHashSelector = createSelector(
       },
       {},
     );
-
     return {
       ...filteredUnapprovedTxs,
       ...unapprovedMsgs,
@@ -114,12 +117,16 @@ export const unconfirmedTransactionsHashSelector = createSelector(
 );
 
 const unapprovedMsgCountSelector = (state) => state.metamask.unapprovedMsgCount;
+
 const unapprovedPersonalMsgCountSelector = (state) =>
   state.metamask.unapprovedPersonalMsgCount;
+
 const unapprovedDecryptMsgCountSelector = (state) =>
   state.metamask.unapprovedDecryptMsgCount;
+
 const unapprovedEncryptionPublicKeyMsgCountSelector = (state) =>
   state.metamask.unapprovedEncryptionPublicKeyMsgCount;
+
 const unapprovedTypedMessagesCountSelector = (state) =>
   state.metamask.unapprovedTypedMessagesCount;
 
@@ -145,7 +152,6 @@ export const unconfirmedTransactionsCountSelector = createSelector(
     const filteredUnapprovedTxIds = Object.keys(unapprovedTxs).filter((txId) =>
       transactionMatchesNetwork(unapprovedTxs[txId], chainId, network),
     );
-
     return (
       filteredUnapprovedTxIds.length +
       unapprovedTypedMessagesCount +
@@ -156,13 +162,13 @@ export const unconfirmedTransactionsCountSelector = createSelector(
     );
   },
 );
-
 export const currentCurrencySelector = (state) =>
   state.metamask.currentCurrency;
 export const conversionRateSelector = (state) => state.metamask.conversionRate;
-
 export const txDataSelector = (state) => state.confirmTransaction.txData;
+
 const tokenDataSelector = (state) => state.confirmTransaction.tokenData;
+
 const tokenPropsSelector = (state) => state.confirmTransaction.tokenProps;
 
 const contractExchangeRatesSelector = (state) =>
@@ -172,34 +178,28 @@ const tokenDecimalsSelector = createSelector(
   tokenPropsSelector,
   (tokenProps) => tokenProps && tokenProps.decimals,
 );
-
 const tokenDataArgsSelector = createSelector(
   tokenDataSelector,
   (tokenData) => (tokenData && tokenData.args) || [],
 );
-
 const txParamsSelector = createSelector(
   txDataSelector,
   (txData) => (txData && txData.txParams) || {},
 );
-
 export const tokenAddressSelector = createSelector(
   txParamsSelector,
   (txParams) => txParams && txParams.to,
 );
-
 const TOKEN_PARAM_TO = '_to';
 const TOKEN_PARAM_VALUE = '_value';
-
 export const sendTokenTokenAmountAndToAddressSelector = createSelector(
   tokenDataArgsSelector,
   tokenDecimalsSelector,
   (args, tokenDecimals) => {
     let toAddress = '';
-    let tokenAmount = '0';
-
-    // Token params here are ethers BigNumbers, which have a different
+    let tokenAmount = '0'; // Token params here are ethers BigNumbers, which have a different
     // interface than bignumber.js
+
     if (args && args.length) {
       toAddress = args[TOKEN_PARAM_TO];
       let value = args[TOKEN_PARAM_VALUE].toString();
@@ -218,13 +218,11 @@ export const sendTokenTokenAmountAndToAddressSelector = createSelector(
     };
   },
 );
-
 export const contractExchangeRateSelector = createSelector(
   contractExchangeRatesSelector,
   tokenAddressSelector,
   (contractExchangeRates, tokenAddress) => contractExchangeRates[tokenAddress],
 );
-
 export const transactionFeeSelector = function (state, txData) {
   const currentCurrency = currentCurrencySelector(state);
   const conversionRate = conversionRateSelector(state);
@@ -234,7 +232,6 @@ export const transactionFeeSelector = function (state, txData) {
   const networkAndAccountSupportsEIP1559 = checkNetworkAndAccountSupports1559(
     state,
   );
-
   const gasEstimationObject = {
     gasLimit: txData.txParams?.gas ?? '0x0',
   };
@@ -242,6 +239,7 @@ export const transactionFeeSelector = function (state, txData) {
   if (networkAndAccountSupportsEIP1559) {
     const { gasPrice = '0' } = gasFeeEstimates;
     const selectedGasEstimates = gasFeeEstimates[txData.userFeeLevel] || {};
+
     if (txData.txParams?.type === TRANSACTION_ENVELOPE_TYPES.LEGACY) {
       gasEstimationObject.gasPrice =
         txData.txParams?.gasPrice ?? decGWEIToHexWEI(gasPrice);
@@ -271,24 +269,27 @@ export const transactionFeeSelector = function (state, txData) {
       case GAS_ESTIMATE_TYPES.NONE:
         gasEstimationObject.gasPrice = txData.txParams?.gasPrice ?? '0x0';
         break;
+
       case GAS_ESTIMATE_TYPES.ETH_GASPRICE:
         gasEstimationObject.gasPrice =
           txData.txParams?.gasPrice ??
           decGWEIToHexWEI(gasFeeEstimates.gasPrice);
         break;
+
       case GAS_ESTIMATE_TYPES.LEGACY:
         gasEstimationObject.gasPrice =
           txData.txParams?.gasPrice ?? getAveragePriceEstimateInHexWEI(state);
         break;
+
       case GAS_ESTIMATE_TYPES.FEE_MARKET:
         break;
+
       default:
         break;
     }
   }
 
   const { txParams: { value = '0x0' } = {} } = txData;
-
   const fiatTransactionAmount = getValueFromWeiHex({
     value,
     fromCurrency: nativeCurrency,
@@ -303,14 +304,12 @@ export const transactionFeeSelector = function (state, txData) {
     conversionRate,
     numberOfDecimals: 6,
   });
-
   const hexMinimumTransactionFee = getMinimumGasTotalInHexWei(
     gasEstimationObject,
   );
   const hexMaximumTransactionFee = getMaximumGasTotalInHexWei(
     gasEstimationObject,
   );
-
   const fiatMinimumTransactionFee = getTransactionFee({
     value: hexMinimumTransactionFee,
     fromCurrency: nativeCurrency,
@@ -318,7 +317,6 @@ export const transactionFeeSelector = function (state, txData) {
     numberOfDecimals: 2,
     conversionRate,
   });
-
   const fiatMaximumTransactionFee = getTransactionFee({
     value: hexMaximumTransactionFee,
     fromCurrency: nativeCurrency,
@@ -326,7 +324,6 @@ export const transactionFeeSelector = function (state, txData) {
     numberOfDecimals: 2,
     conversionRate,
   });
-
   const ethTransactionFee = getTransactionFee({
     value: hexMinimumTransactionFee,
     fromCurrency: nativeCurrency,
@@ -334,14 +331,12 @@ export const transactionFeeSelector = function (state, txData) {
     numberOfDecimals: 6,
     conversionRate,
   });
-
   const fiatTransactionTotal = addFiat(
     fiatMinimumTransactionFee,
     fiatTransactionAmount,
   );
   const ethTransactionTotal = addEth(ethTransactionFee, ethTransactionAmount);
   const hexTransactionTotal = sumHexes(value, hexMinimumTransactionFee);
-
   return {
     hexTransactionAmount: value,
     fiatTransactionAmount,

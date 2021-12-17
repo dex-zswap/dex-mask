@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import AssetBreadcrumb from './asset-breadcrumb';
 
 const AssetNavigation = ({ accountName, assetName, onBack, optionsButton }) => {
@@ -22,9 +21,7 @@ AssetNavigation.propTypes = {
   onBack: PropTypes.func.isRequired,
   optionsButton: PropTypes.element,
 };
-
 AssetNavigation.defaultProps = {
   optionsButton: undefined,
 };
-
 export default AssetNavigation;

@@ -1,18 +1,15 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ConnectedSitesList from '@c/app/connected/sites-list';
 import Button from '@c/ui/button';
 import Popover from '@c/ui/popover';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConnectedSites extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static defaultProps = {
     tabToConnect: null,
   };
-
   static propTypes = {
     accountLabel: PropTypes.string.isRequired,
     closePopover: PropTypes.func.isRequired,
@@ -27,7 +24,6 @@ export default class ConnectedSites extends Component {
     tabToConnect: PropTypes.object,
     requestAccountsPermission: PropTypes.func.isRequired,
   };
-
   state = {
     sitePendingDisconnect: null,
   };
@@ -44,25 +40,20 @@ export default class ConnectedSites extends Component {
       },
     });
   };
-
   clearPendingDisconnect = () => {
     this.setState({
       sitePendingDisconnect: null,
     });
   };
-
   disconnectAccount = () => {
     const { disconnectAccount } = this.props;
     const { sitePendingDisconnect } = this.state;
-
     disconnectAccount(sitePendingDisconnect.domainKey);
     this.clearPendingDisconnect();
   };
-
   disconnectAllAccounts = () => {
     const { disconnectAllAccounts } = this.props;
     const { sitePendingDisconnect } = this.state;
-
     disconnectAllAccounts(sitePendingDisconnect.domainKey);
     this.clearPendingDisconnect();
   };
@@ -86,7 +77,6 @@ export default class ConnectedSites extends Component {
       requestAccountsPermission,
     } = this.props;
     const { t } = this.context;
-
     return (
       <Popover
         className="connected-sites"
@@ -120,9 +110,7 @@ export default class ConnectedSites extends Component {
     const {
       sitePendingDisconnect: { domainKey },
     } = this.state;
-
     const numPermittedAccounts = permittedAccountsByOrigin[domainKey].length;
-
     return (
       <Popover
         className="connected-sites"

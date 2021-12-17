@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 const Preloader = ({ className, size }) => (
   <svg
@@ -45,10 +45,8 @@ const Preloader = ({ className, size }) => (
 Preloader.defaultProps = {
   className: undefined,
 };
-
 Preloader.propTypes = {
   className: PropTypes.string,
   size: PropTypes.number.isRequired,
 };
-
 export default Preloader;

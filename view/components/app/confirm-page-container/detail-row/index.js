@@ -1,8 +1,8 @@
-import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
-import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
+import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
 
 const ConfirmDetailRow = (props) => {
   const {
@@ -15,7 +15,6 @@ const ConfirmDetailRow = (props) => {
     headerTextClassName,
     value,
   } = props;
-
   return (
     <div className="confirm-detail-row">
       <div className="confirm-detail-row__label">{label}</div>
@@ -34,7 +33,9 @@ const ConfirmDetailRow = (props) => {
         {primaryText ? (
           <div
             className="confirm-detail-row__primary"
-            style={{ color: primaryValueTextColor }}
+            style={{
+              color: primaryValueTextColor,
+            }}
           >
             {primaryText}
           </div>
@@ -44,7 +45,9 @@ const ConfirmDetailRow = (props) => {
             type={PRIMARY}
             value={value}
             ethLogoHeight="18"
-            style={{ color: primaryValueTextColor }}
+            style={{
+              color: primaryValueTextColor,
+            }}
             hideLabel
           />
         )}
@@ -73,5 +76,4 @@ ConfirmDetailRow.propTypes = {
   secondaryText: PropTypes.string,
   value: PropTypes.string,
 };
-
 export default ConfirmDetailRow;

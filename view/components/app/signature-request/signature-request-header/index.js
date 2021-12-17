@@ -1,8 +1,7 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import AccountListItem from '@c/app/account-list-item';
 import NetworkDisplay from '@c/app/network-display';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class SignatureRequestHeader extends PureComponent {
   static propTypes = {
     fromAccount: PropTypes.object,
@@ -10,7 +9,6 @@ export default class SignatureRequestHeader extends PureComponent {
 
   render() {
     const { fromAccount } = this.props;
-
     return (
       <div className="signature-request-header">
         <div className="signature-request-header--account">

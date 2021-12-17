@@ -1,15 +1,13 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ErrorMessage from '@c/ui/error-message';
 import { PageContainerFooter } from '@c/ui/page-container';
 import { Tab, Tabs } from '@c/ui/tabs';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import { ConfirmPageContainerWarning } from '.';
-
 export default class ConfirmPageContainerContent extends Component {
   static contextTypes = {
     t: PropTypes.func.isRequired,
   };
-
   static propTypes = {
     action: PropTypes.string,
     dataComponent: PropTypes.node,
@@ -43,13 +41,13 @@ export default class ConfirmPageContainerContent extends Component {
     if (detailsComponent && dataComponent) {
       return this.renderTabs();
     }
+
     return detailsComponent || dataComponent;
   }
 
   renderTabs() {
     const { t } = this.context;
     const { detailsComponent, dataComponent } = this.props;
-
     return (
       <Tabs>
         <Tab
@@ -91,7 +89,6 @@ export default class ConfirmPageContainerContent extends Component {
       origin,
       ethGasPriceWarning,
     } = this.props;
-
     return (
       <div className="confirm-page-container-content">
         {warning && <ConfirmPageContainerWarning warning={warning} />}
@@ -99,19 +96,19 @@ export default class ConfirmPageContainerContent extends Component {
           <ConfirmPageContainerWarning warning={ethGasPriceWarning} />
         )}
         {/* <ConfirmPageContainerSummary
-          className={classnames({
-            'confirm-page-container-summary--border':
-              !detailsComponent || !dataComponent,
-          })}
-          action={action}
-          title={title}
-          titleComponent={titleComponent}
-          subtitleComponent={subtitleComponent}
-          hideSubtitle={hideSubtitle}
-          identiconAddress={identiconAddress}
-          nonce={nonce}
-          assetImage={assetImage}
-          origin={origin}
+         className={classnames({
+           'confirm-page-container-summary--border':
+             !detailsComponent || !dataComponent,
+         })}
+         action={action}
+         title={title}
+         titleComponent={titleComponent}
+         subtitleComponent={subtitleComponent}
+         hideSubtitle={hideSubtitle}
+         identiconAddress={identiconAddress}
+         nonce={nonce}
+         assetImage={assetImage}
+         origin={origin}
         /> */}
         {this.renderContent()}
         {(errorKey || errorMessage) && (

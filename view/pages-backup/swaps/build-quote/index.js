@@ -1,6 +1,12 @@
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTokenTrackerLink } from '@metamask/etherscan-link';
+import classnames from 'classnames';
+import { isEqual, uniqBy } from 'lodash';
+import PropTypes from 'prop-types';
 import ActionableMessage from '@c/ui/actionable-message/actionable-message';
 import InfoTooltip from '@c/ui/info-tooltip';
-import { getTokenTrackerLink } from '@metamask/etherscan-link';
 import DropdownInputPair from '@pages/swaps/dropdown-input-pair';
 import DropdownSearchList from '@pages/swaps/dropdown-search-list';
 import SlippageButtons from '@pages/swaps/slippage-buttons';
@@ -50,21 +56,21 @@ import {
   getTokenExchangeRates,
 } from '@view/selectors';
 import { removeToken, resetSwapsPostFetchState } from '@view/store/actions';
-import classnames from 'classnames';
-import { isEqual, uniqBy } from 'lodash';
-import PropTypes from 'prop-types';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
 const fuseSearchKeys = [
-  { name: 'name', weight: 0.499 },
-  { name: 'symbol', weight: 0.499 },
-  { name: 'address', weight: 0.002 },
+  {
+    name: 'name',
+    weight: 0.499,
+  },
+  {
+    name: 'symbol',
+    weight: 0.499,
+  },
+  {
+    name: 'address',
+    weight: 0.002,
+  },
 ];
-
 const MAX_ALLOWED_SLIPPAGE = 15;
-
 export default function BuildQuote({
   inputValue,
   onInputChange,
@@ -79,12 +85,10 @@ export default function BuildQuote({
   const dispatch = useDispatch();
   const history = useHistory();
   const metaMetricsEvent = useContext(MetaMetricsContext);
-
   const [fetchedTokenExchangeRate, setFetchedTokenExchangeRate] = useState(
     undefined,
   );
   const [verificationClicked, setVerificationClicked] = useState(false);
-
   const balanceError = useSelector(getBalanceError);
   const fetchParams = useSelector(getFetchParams);
   const { sourceTokenInfo = {}, destinationTokenInfo = {} } =
@@ -96,23 +100,19 @@ export default function BuildQuote({
   const defaultSwapsToken = useSelector(getSwapsDefaultToken);
   const chainId = useSelector(getCurrentChainId);
   const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
-
   const tokenConversionRates = useSelector(getTokenExchangeRates, isEqual);
   const conversionRate = useSelector(getConversionRate);
   const currentCurrency = useSelector(getCurrentCurrency);
-
   const fetchParamsFromToken = isSwapsDefaultTokenSymbol(
     sourceTokenInfo?.symbol,
     chainId,
   )
     ? defaultSwapsToken
     : sourceTokenInfo;
-
-  const { loading, tokensWithBalances } = useTokenTracker(tokens);
-
-  // If the fromToken was set in a call to `onFromSelect` (see below), and that from token has a balance
+  const { loading, tokensWithBalances } = useTokenTracker(tokens); // If the fromToken was set in a call to `onFromSelect` (see below), and that from token has a balance
   // but is not in tokensWithBalances or tokens, then we want to add it to the usersTokens array so that
   // the balance of the token can appear in the from token selection dropdown
+
   const fromTokenArray =
     !isSwapsDefaultTokenSymbol(fromToken?.symbol, chainId) && fromToken?.balance
       ? [fromToken]
@@ -122,7 +122,6 @@ export default function BuildQuote({
     'address',
   );
   const memoizedUsersTokens = useEqualityCheck(usersTokens);
-
   const selectedFromToken = getRenderableTokenData(
     fromToken || fetchParamsFromToken,
     tokenConversionRates,
@@ -130,7 +129,6 @@ export default function BuildQuote({
     currentCurrency,
     chainId,
   );
-
   const tokensToSearch = useTokensToSearch({
     usersTokens: memoizedUsersTokens,
     topTokens: topAssets,
@@ -151,13 +149,10 @@ export default function BuildQuote({
     decimals: fromTokenDecimals,
     balance: rawFromTokenBalance,
   } = selectedFromToken || {};
-
   const fromTokenBalance =
     rawFromTokenBalance &&
     calcTokenAmount(rawFromTokenBalance, fromTokenDecimals).toString(10);
-
   const prevFromTokenBalance = usePrevious(fromTokenBalance);
-
   const swapFromTokenFiatValue = useTokenFiatAmount(
     fromTokenAddress,
     inputValue || 0,
@@ -169,7 +164,9 @@ export default function BuildQuote({
   );
   const swapFromEthFiatValue = useEthFiatAmount(
     inputValue || 0,
-    { showFiat: true },
+    {
+      showFiat: true,
+    },
     true,
   );
   const swapFromFiatValue = isSwapsDefaultTokenSymbol(fromTokenSymbol, chainId)
@@ -190,6 +187,7 @@ export default function BuildQuote({
     } else {
       setFetchedTokenExchangeRate(null);
     }
+
     if (
       token?.address &&
       !memoizedUsersTokens.find(
@@ -215,6 +213,7 @@ export default function BuildQuote({
         },
       );
     }
+
     dispatch(setSwapsFromToken(token));
     onInputChange(
       token?.address ? inputValue : '',
@@ -236,11 +235,9 @@ export default function BuildQuote({
         null,
     },
   );
-
   const blockExplorerLabel = rpcPrefs.blockExplorerUrl
     ? new URL(blockExplorerTokenLink).hostname
     : t('etherscan');
-
   const { destinationTokenAddedForSwap } = fetchParams || {};
   const { address: toAddress } = toToken || {};
   const onToSelect = useCallback(
@@ -248,24 +245,22 @@ export default function BuildQuote({
       if (destinationTokenAddedForSwap && token.address !== toAddress) {
         dispatch(removeToken(toAddress));
       }
+
       dispatch(setSwapToToken(token));
       setVerificationClicked(false);
     },
     [dispatch, destinationTokenAddedForSwap, toAddress],
   );
-
   const hideDropdownItemIf = useCallback(
     (item) => item.address === fromTokenAddress,
     [fromTokenAddress],
   );
-
   const tokensWithBalancesFromToken = tokensWithBalances.find(
     (token) => token.address === fromToken?.address,
   );
   const previousTokensWithBalancesFromToken = usePrevious(
     tokensWithBalancesFromToken,
   );
-
   useEffect(() => {
     const notDefault = !isSwapsDefaultTokenAddress(
       tokensWithBalancesFromToken?.address,
@@ -277,6 +272,7 @@ export default function BuildQuote({
     const balanceHasChanged =
       tokensWithBalancesFromToken?.balance !==
       previousTokensWithBalancesFromToken?.balance;
+
     if (notDefault && addressesAreTheSame && balanceHasChanged) {
       dispatch(
         setSwapsFromToken({
@@ -292,9 +288,8 @@ export default function BuildQuote({
     previousTokensWithBalancesFromToken,
     fromToken,
     chainId,
-  ]);
+  ]); // If the eth balance changes while on build quote, we update the selected from token
 
-  // If the eth balance changes while on build quote, we update the selected from token
   useEffect(() => {
     if (
       isSwapsDefaultTokenAddress(fromToken?.address, chainId) &&
@@ -313,13 +308,11 @@ export default function BuildQuote({
       );
     }
   }, [dispatch, fromToken, ethBalance, chainId]);
-
   useEffect(() => {
     if (prevFromTokenBalance !== fromTokenBalance) {
       onInputChange(inputValue, fromTokenBalance);
     }
   }, [onInputChange, prevFromTokenBalance, inputValue, fromTokenBalance]);
-
   useEffect(() => {
     dispatch(resetSwapsPostFetchState());
   }, [dispatch]);
@@ -343,6 +336,7 @@ export default function BuildQuote({
   };
 
   let tokenVerificationDescription = '';
+
   if (blockExplorerTokenLink) {
     if (occurrences === 1) {
       tokenVerificationDescription = t('verifyThisTokenOn', [
@@ -359,7 +353,6 @@ export default function BuildQuote({
     fromTokenString || '0',
     fromTokenSymbol || SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId]?.symbol || '',
   ]);
-
   return (
     <div className="build-quote">
       <div className="build-quote__content">
@@ -574,7 +567,6 @@ export default function BuildQuote({
     </div>
   );
 }
-
 BuildQuote.propTypes = {
   maxSlippage: PropTypes.number,
   inputValue: PropTypes.string,

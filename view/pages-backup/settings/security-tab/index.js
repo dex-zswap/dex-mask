@@ -1,11 +1,11 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import {
   setFeatureFlag,
   setParticipateInMetaMetrics,
   setUsePhishDetect,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import SecurityTab from './component';
 
 const mapStateToProps = (state) => {
@@ -18,7 +18,6 @@ const mapStateToProps = (state) => {
     participateInMetaMetrics,
     usePhishDetect,
   } = metamask;
-
   return {
     warning,
     showIncomingTransactions,

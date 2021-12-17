@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Fuse from 'fuse.js';
 import classnames from 'classnames';
+import Fuse from 'fuse.js';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
 import SearchIcon from '@c/ui/search-icon';
 import TextField from '@c/ui/text-field';
@@ -15,10 +14,8 @@ import {
   NEW_ACCOUNT_ROUTE,
   SETTINGS_ROUTE,
 } from '@view/helpers/constants/routes';
-
 export function AccountMenuItem(props) {
   const { icon, children, text, subText, className, onClick } = props;
-
   const itemClassName = classnames('account-menu__item', className, {
     'account-menu__item--clickable': Boolean(onClick),
   });
@@ -36,7 +33,6 @@ export function AccountMenuItem(props) {
     </div>
   );
 }
-
 AccountMenuItem.propTypes = {
   icon: PropTypes.node,
   children: PropTypes.node,
@@ -45,12 +41,10 @@ AccountMenuItem.propTypes = {
   onClick: PropTypes.func,
   className: PropTypes.string,
 };
-
 export default class AccountMenu extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     shouldShowAccountsSearch: PropTypes.bool,
     accounts: PropTypes.array,
@@ -64,14 +58,11 @@ export default class AccountMenu extends Component {
     addressConnectedDomainMap: PropTypes.object,
     originOfCurrentTab: PropTypes.string,
   };
-
   accountsRef;
-
   state = {
     shouldShowScrollButton: false,
     searchQuery: '',
   };
-
   addressFuse = new Fuse([], {
     threshold: 0.45,
     location: 0,
@@ -79,8 +70,14 @@ export default class AccountMenu extends Component {
     maxPatternLength: 32,
     minMatchCharLength: 1,
     keys: [
-      { name: 'name', weight: 0.5 },
-      { name: 'address', weight: 0.5 },
+      {
+        name: 'name',
+        weight: 0.5,
+      },
+      {
+        name: 'address',
+        weight: 0.5,
+      },
     ],
   });
 
@@ -92,10 +89,9 @@ export default class AccountMenu extends Component {
 
     if (!prevIsAccountMenuOpen && isAccountMenuOpen) {
       this.setShouldShowScrollButton();
-    }
-
-    // recalculate on each search query change
+    } // recalculate on each search query change
     // whether we can show scroll down button
+
     if (isAccountMenuOpen && prevSearchQuery !== searchQuery) {
       this.setShouldShowScrollButton();
     }
@@ -111,8 +107,8 @@ export default class AccountMenu extends Component {
       originOfCurrentTab,
     } = this.props;
     const { searchQuery } = this.state;
-
     let filteredIdentities = accounts;
+
     if (searchQuery) {
       this.addressFuse.setCollection(accounts);
       filteredIdentities = this.addressFuse.search(searchQuery);
@@ -128,9 +124,7 @@ export default class AccountMenu extends Component {
 
     return filteredIdentities.map((identity) => {
       const isSelected = identity.address === selectedAddress;
-
       const simpleAddress = identity.address.substring(2).toLowerCase();
-
       const keyring = keyrings.find((kr) => {
         return (
           kr.accounts.includes(simpleAddress) ||
@@ -139,7 +133,6 @@ export default class AccountMenu extends Component {
       });
       const addressDomains = addressConnectedDomainMap[identity.address] || {};
       const iconAndNameForOpenDomain = addressDomains[originOfCurrentTab];
-
       return (
         <div
           className={classnames([
@@ -176,18 +169,19 @@ export default class AccountMenu extends Component {
     const canScroll = scrollHeight > offsetHeight;
     const atAccountListBottom = scrollTop + offsetHeight >= scrollHeight;
     const shouldShowScrollButton = canScroll && !atAccountListBottom;
-
-    this.setState({ shouldShowScrollButton });
+    this.setState({
+      shouldShowScrollButton,
+    });
   };
-
   onScroll = debounce(this.setShouldShowScrollButton, 25);
-
   handleScrollDown = (e) => {
     e.stopPropagation();
-
     const { scrollHeight } = this.accountsRef;
-    this.accountsRef.scroll({ left: 0, top: scrollHeight, behavior: 'smooth' });
-
+    this.accountsRef.scroll({
+      left: 0,
+      top: scrollHeight,
+      behavior: 'smooth',
+    });
     this.setShouldShowScrollButton();
   };
 

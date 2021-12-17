@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 export default class SignatureRequestMessage extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -40,7 +38,6 @@ export default class SignatureRequestMessage extends PureComponent {
 
   render() {
     const { data } = this.props;
-
     return (
       <div className="signature-request-message">
         <div className="signature-request-message__title">

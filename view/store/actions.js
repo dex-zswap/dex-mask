@@ -1,3 +1,6 @@
+import { capitalize, isEqual } from 'lodash';
+import log from 'loglevel';
+import pify from 'pify';
 import getBuyEthUrl from '@app/scripts/lib/buy-eth-url';
 import { addHexPrefix, getEnvironmentType } from '@app/scripts/lib/util';
 import { switchedToUnconnectedAccount } from '@reducer/alerts/unconnected-account';
@@ -23,31 +26,24 @@ import {
   getPermittedAccountsForCurrentTab,
   getSelectedAddress,
 } from '@view/selectors';
-import { capitalize, isEqual } from 'lodash';
-import log from 'loglevel';
-import pify from 'pify';
 import * as actionConstants from './actionConstants';
-
 let background = null;
 let promisifiedBackground = null;
 export function _setBackgroundConnection(backgroundConnection) {
   background = backgroundConnection;
   promisifiedBackground = pify(background);
 }
-
 export function goHome() {
   return {
     type: actionConstants.GO_HOME,
   };
-}
-// async actions
+} // async actions
 
 export function tryUnlockDexmask(password) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     dispatch(unlockInProgress());
     log.debug(`background.submitPassword`);
-
     return new Promise((resolve, reject) => {
       background.submitPassword(password, (error) => {
         if (error) {
@@ -85,7 +81,6 @@ export function tryUnlockDexmask(password) {
       });
   };
 }
-
 export function createNewVaultAndRestore(password, seed) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
@@ -97,6 +92,7 @@ export function createNewVaultAndRestore(password, seed) {
           reject(err);
           return;
         }
+
         vault = _vault;
         resolve();
       });
@@ -114,7 +110,6 @@ export function createNewVaultAndRestore(password, seed) {
       });
   };
 }
-
 export function createNewVaultAndGetSeedPhrase(password) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -131,7 +126,6 @@ export function createNewVaultAndGetSeedPhrase(password) {
     }
   };
 }
-
 export function unlockAndGetSeedPhrase(password) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -149,7 +143,6 @@ export function unlockAndGetSeedPhrase(password) {
     }
   };
 }
-
 export function submitPassword(password) {
   return new Promise((resolve, reject) => {
     background.submitPassword(password, (error) => {
@@ -162,7 +155,6 @@ export function submitPassword(password) {
     });
   });
 }
-
 export function createNewVault(password) {
   return new Promise((resolve, reject) => {
     background.createNewVaultAndKeychain(password, (error) => {
@@ -175,7 +167,6 @@ export function createNewVault(password) {
     });
   });
 }
-
 export function verifyPassword(password) {
   return new Promise((resolve, reject) => {
     background.verifyPassword(password, (error) => {
@@ -188,7 +179,6 @@ export function verifyPassword(password) {
     });
   });
 }
-
 export function verifySeedPhrase() {
   return new Promise((resolve, reject) => {
     background.verifySeedPhrase((error, seedWords) => {
@@ -201,7 +191,6 @@ export function verifySeedPhrase() {
     });
   });
 }
-
 export function requestRevealSeedWords(password) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -219,7 +208,6 @@ export function requestRevealSeedWords(password) {
     }
   };
 }
-
 export function tryReverseResolveAddress(address) {
   return () => {
     return new Promise((resolve) => {
@@ -227,12 +215,12 @@ export function tryReverseResolveAddress(address) {
         if (err) {
           log.error(err);
         }
+
         resolve();
       });
     });
   };
 }
-
 export function fetchInfoToSync() {
   return (dispatch) => {
     log.debug(`background.fetchInfoToSync`);
@@ -243,19 +231,19 @@ export function fetchInfoToSync() {
           reject(err);
           return;
         }
+
         resolve(result);
       });
     });
   };
 }
-
 export function resetAccount() {
   return (dispatch) => {
     dispatch(showLoadingIndication());
-
     return new Promise((resolve, reject) => {
       background.resetAccount((err, account) => {
         dispatch(hideLoadingIndication());
+
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
@@ -269,7 +257,6 @@ export function resetAccount() {
     });
   };
 }
-
 export function removeAccount(address) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -281,6 +268,7 @@ export function removeAccount(address) {
             reject(error);
             return;
           }
+
           resolve(account);
         });
       });
@@ -296,13 +284,13 @@ export function removeAccount(address) {
     dispatch(showAccountsPage());
   };
 }
-
 export function importNewAccount(strategy, args) {
   return async (dispatch) => {
     let newState;
     dispatch(
       showLoadingIndication('This may take a while, please be patient.'),
     );
+
     try {
       log.debug(`background.importAccountWithStrategy`);
       await promisifiedBackground.importAccountWithStrategy(strategy, args);
@@ -316,23 +304,24 @@ export function importNewAccount(strategy, args) {
     }
 
     dispatch(updateDexmaskState(newState));
+
     if (newState.selectedAddress) {
       dispatch({
         type: actionConstants.SHOW_ACCOUNT_DETAIL,
         value: newState.selectedAddress,
       });
     }
+
     return newState;
   };
 }
-
 export function addNewAccount() {
   log.debug(`background.addNewAccount`);
   return async (dispatch, getState) => {
     const oldIdentities = getState().metamask.identities;
     dispatch(showLoadingIndication());
-
     let newIdentities;
+
     try {
       const { identities } = await promisifiedBackground.addNewAccount();
       newIdentities = identities;
@@ -350,13 +339,12 @@ export function addNewAccount() {
     return newAccountAddress;
   };
 }
-
 export function checkHardwareStatus(deviceName, hdPath) {
   log.debug(`background.checkHardwareStatus`, deviceName, hdPath);
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     let unlocked;
+
     try {
       unlocked = await promisifiedBackground.checkHardwareStatus(
         deviceName,
@@ -374,11 +362,11 @@ export function checkHardwareStatus(deviceName, hdPath) {
     return unlocked;
   };
 }
-
 export function forgetDevice(deviceName) {
   log.debug(`background.forgetDevice`, deviceName);
   return async (dispatch) => {
     dispatch(showLoadingIndication());
+
     try {
       await promisifiedBackground.forgetDevice(deviceName);
     } catch (error) {
@@ -392,15 +380,14 @@ export function forgetDevice(deviceName) {
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function connectHardware(deviceName, page, hdPath) {
   log.debug(`background.connectHardware`, deviceName, page, hdPath);
   return async (dispatch) => {
     dispatch(
       showLoadingIndication(`Looking for your ${capitalize(deviceName)}...`),
     );
-
     let accounts;
+
     try {
       accounts = await promisifiedBackground.connectHardware(
         deviceName,
@@ -419,7 +406,6 @@ export function connectHardware(deviceName, page, hdPath) {
     return accounts;
   };
 }
-
 export function unlockHardwareWalletAccounts(
   indexes,
   deviceName,
@@ -456,7 +442,6 @@ export function unlockHardwareWalletAccounts(
     return undefined;
   };
 }
-
 export function showQrScanner() {
   return (dispatch) => {
     dispatch(
@@ -466,11 +451,11 @@ export function showQrScanner() {
     );
   };
 }
-
 export function setCurrentCurrency(currencyCode) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setCurrentCurrency`);
+
     try {
       await promisifiedBackground.setCurrentCurrency(currencyCode);
       await forceupdateDexmaskState(dispatch);
@@ -483,13 +468,13 @@ export function setCurrentCurrency(currencyCode) {
     }
   };
 }
-
 export function signMsg(msgData) {
   log.debug('action - signMsg');
   return async (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.signMessage`);
     let newState;
+
     try {
       newState = await promisifiedBackground.signMessage(msgData);
     } catch (error) {
@@ -506,14 +491,13 @@ export function signMsg(msgData) {
     return msgData;
   };
 }
-
 export function signPersonalMsg(msgData) {
   log.debug('action - signPersonalMsg');
   return async (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.signPersonalMessage`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.signPersonalMessage(msgData);
     } catch (error) {
@@ -530,13 +514,12 @@ export function signPersonalMsg(msgData) {
     return msgData;
   };
 }
-
 export function decryptMsgInline(decryptedMsgData) {
   log.debug('action - decryptMsgInline');
   return async (dispatch) => {
     log.debug(`actions calling background.decryptMessageInline`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.decryptMessageInline(
         decryptedMsgData,
@@ -551,14 +534,13 @@ export function decryptMsgInline(decryptedMsgData) {
     return newState.unapprovedDecryptMsgs[decryptedMsgData.metamaskId];
   };
 }
-
 export function decryptMsg(decryptedMsgData) {
   log.debug('action - decryptMsg');
   return async (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.decryptMessage`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.decryptMessage(decryptedMsgData);
     } catch (error) {
@@ -575,14 +557,13 @@ export function decryptMsg(decryptedMsgData) {
     return decryptedMsgData;
   };
 }
-
 export function encryptionPublicKeyMsg(msgData) {
   log.debug('action - encryptionPublicKeyMsg');
   return async (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.encryptionPublicKey`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.encryptionPublicKey(msgData);
     } catch (error) {
@@ -599,14 +580,13 @@ export function encryptionPublicKeyMsg(msgData) {
     return msgData;
   };
 }
-
 export function signTypedMsg(msgData) {
   log.debug('action - signTypedMsg');
   return async (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`actions calling background.signTypedMessage`);
-
     let newState;
+
     try {
       newState = await promisifiedBackground.signTypedMessage(msgData);
     } catch (error) {
@@ -623,7 +603,6 @@ export function signTypedMsg(msgData) {
     return msgData;
   };
 }
-
 export function updateCustomNonce(value) {
   return {
     type: actionConstants.UPDATE_CUSTOM_NONCE,
@@ -633,7 +612,6 @@ export function updateCustomNonce(value) {
 
 const updateDexmaskStateFromBackground = () => {
   log.debug(`background.getState`);
-
   return new Promise((resolve, reject) => {
     background.getState((error, newState) => {
       if (error) {
@@ -665,17 +643,19 @@ export function updateTransaction(txData, dontShowLoadingIndicator) {
       dispatch(updateTransactionParams(txData.id, txData.txParams));
       const newState = await updateDexmaskStateFromBackground();
       dispatch(updateDexmaskState(newState));
-      dispatch(showConfTxPage({ id: txData.id }));
+      dispatch(
+        showConfTxPage({
+          id: txData.id,
+        }),
+      );
       return txData;
     } finally {
       dispatch(hideLoadingIndication());
     }
   };
 }
-
 export function addUnapprovedTransaction(txParams, origin) {
   log.debug('background.addUnapprovedTransaction');
-
   return () => {
     return new Promise((resolve, reject) => {
       background.addUnapprovedTransaction(txParams, origin, (err, txMeta) => {
@@ -683,12 +663,12 @@ export function addUnapprovedTransaction(txParams, origin) {
           reject(err);
           return;
         }
+
         resolve(txMeta);
       });
     });
   };
 }
-
 export function updateAndApproveTx(txData, dontShowLoadingIndicator) {
   return (dispatch) => {
     !dontShowLoadingIndicator && dispatch(showLoadingIndication());
@@ -716,7 +696,6 @@ export function updateAndApproveTx(txData, dontShowLoadingIndicator) {
         dispatch(hideLoadingIndication());
         dispatch(updateCustomNonce(''));
         dispatch(closeCurrentNotificationWindow());
-
         return txData;
       })
       .catch((err) => {
@@ -725,7 +704,6 @@ export function updateAndApproveTx(txData, dontShowLoadingIndicator) {
       });
   };
 }
-
 export function completedTx(id) {
   return (dispatch, getState) => {
     const state = getState();
@@ -757,7 +735,6 @@ export function completedTx(id) {
     });
   };
 }
-
 export function updateTransactionParams(id, txParams) {
   return {
     type: actionConstants.UPDATE_TRANSACTION_PARAMS,
@@ -765,19 +742,17 @@ export function updateTransactionParams(id, txParams) {
     value: txParams,
   };
 }
-
 export function txError(err) {
   return {
     type: actionConstants.TRANSACTION_ERROR,
     message: err.message,
   };
 }
-
 export function cancelMsg(msgData) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelMessage(msgData.id);
     } finally {
@@ -790,12 +765,11 @@ export function cancelMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelPersonalMsg(msgData) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelPersonalMessage(msgData.id);
     } finally {
@@ -808,12 +782,11 @@ export function cancelPersonalMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelDecryptMsg(msgData) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelDecryptMessage(msgData.id);
     } finally {
@@ -826,12 +799,11 @@ export function cancelDecryptMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelEncryptionPublicKeyMsg(msgData) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelEncryptionPublicKey(
         msgData.id,
@@ -846,12 +818,11 @@ export function cancelEncryptionPublicKeyMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelTypedMsg(msgData) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     let newState;
+
     try {
       newState = await promisifiedBackground.cancelTypedMessage(msgData.id);
     } finally {
@@ -864,7 +835,6 @@ export function cancelTypedMsg(msgData) {
     return msgData;
   };
 }
-
 export function cancelTx(txData, _showLoadingIndication = true) {
   return (dispatch) => {
     _showLoadingIndication && dispatch(showLoadingIndication());
@@ -885,7 +855,6 @@ export function cancelTx(txData, _showLoadingIndication = true) {
         dispatch(completedTx(txData.id));
         dispatch(hideLoadingIndication());
         dispatch(closeCurrentNotificationWindow());
-
         return txData;
       })
       .catch((error) => {
@@ -894,12 +863,12 @@ export function cancelTx(txData, _showLoadingIndication = true) {
       });
   };
 }
-
 /**
  * Cancels all of the given transactions
  * @param {Array<object>} txDataList - a list of tx data objects
  * @returns {function(*): Promise<void>}
  */
+
 export function cancelTxs(txDataList) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -919,13 +888,10 @@ export function cancelTxs(txDataList) {
             });
           }),
       );
-
       await Promise.all(cancellations);
-
       const newState = await updateDexmaskStateFromBackground();
       dispatch(updateDexmaskState(newState));
       dispatch(resetSendState());
-
       txIds.forEach((id) => {
         dispatch(completedTx(id));
       });
@@ -938,7 +904,6 @@ export function cancelTxs(txDataList) {
     }
   };
 }
-
 export function markPasswordForgotten() {
   return async (dispatch) => {
     try {
@@ -948,6 +913,7 @@ export function markPasswordForgotten() {
             reject(error);
             return;
           }
+
           resolve();
         });
       });
@@ -959,7 +925,6 @@ export function markPasswordForgotten() {
     }
   };
 }
-
 export function unMarkPasswordForgotten() {
   return (dispatch) => {
     return new Promise((resolve) => {
@@ -970,21 +935,17 @@ export function unMarkPasswordForgotten() {
     }).then(() => forceupdateDexmaskState(dispatch));
   };
 }
-
 export function forgotPassword(forgotPasswordState = true) {
   return {
     type: actionConstants.FORGOT_PASSWORD,
     value: forgotPasswordState,
   };
 }
-
 export function closeWelcomeScreen() {
   return {
     type: actionConstants.CLOSE_WELCOME_SCREEN,
   };
-}
-
-//
+} //
 // unlock screen
 //
 
@@ -993,25 +954,21 @@ export function unlockInProgress() {
     type: actionConstants.UNLOCK_IN_PROGRESS,
   };
 }
-
 export function unlockFailed(message) {
   return {
     type: actionConstants.UNLOCK_FAILED,
     value: message,
   };
 }
-
 export function unlockSucceeded(message) {
   return {
     type: actionConstants.UNLOCK_SUCCEEDED,
     value: message,
   };
 }
-
 export function updateDexmaskState(newState) {
   return (dispatch, getState) => {
     const { metamask: currentState } = getState();
-
     const { currentLocale, selectedAddress, provider } = currentState;
     const {
       currentLocale: newLocale,
@@ -1024,42 +981,53 @@ export function updateDexmaskState(newState) {
     }
 
     if (selectedAddress !== newSelectedAddress) {
-      dispatch({ type: actionConstants.SELECTED_ADDRESS_CHANGED });
+      dispatch({
+        type: actionConstants.SELECTED_ADDRESS_CHANGED,
+      });
     }
 
     const newAddressBook = newState.addressBook?.[newProvider?.chainId] ?? {};
     const oldAddressBook = currentState.addressBook?.[provider?.chainId] ?? {};
-    const newAccounts = getDexMaskAccounts({ metamask: newState });
-    const oldAccounts = getDexMaskAccounts({ metamask: currentState });
+    const newAccounts = getDexMaskAccounts({
+      metamask: newState,
+    });
+    const oldAccounts = getDexMaskAccounts({
+      metamask: currentState,
+    });
     const newSelectedAccount = newAccounts[newSelectedAddress];
-    const oldSelectedAccount = newAccounts[selectedAddress];
-    // dispatch an ACCOUNT_CHANGED for any account whose balance or other
+    const oldSelectedAccount = newAccounts[selectedAddress]; // dispatch an ACCOUNT_CHANGED for any account whose balance or other
     // properties changed in this update
+
     Object.entries(oldAccounts).forEach(([address, oldAccount]) => {
       if (!isEqual(oldAccount, newAccounts[address])) {
         dispatch({
           type: actionConstants.ACCOUNT_CHANGED,
-          payload: { account: newAccounts[address] },
+          payload: {
+            account: newAccounts[address],
+          },
         });
       }
-    });
-    // Also emit an event for the selected account changing, either due to a
+    }); // Also emit an event for the selected account changing, either due to a
     // property update or if the entire account changes.
+
     if (isEqual(oldSelectedAccount, newSelectedAccount) === false) {
       dispatch({
         type: actionConstants.SELECTED_ACCOUNT_CHANGED,
-        payload: { account: newSelectedAccount },
+        payload: {
+          account: newSelectedAccount,
+        },
       });
-    }
-    // We need to keep track of changing address book entries
+    } // We need to keep track of changing address book entries
+
     if (isEqual(oldAddressBook, newAddressBook) === false) {
       dispatch({
         type: actionConstants.ADDRESS_BOOK_UPDATED,
-        payload: { addressBook: newAddressBook },
+        payload: {
+          addressBook: newAddressBook,
+        },
       });
-    }
+    } // track when gasFeeEstimates change
 
-    // track when gasFeeEstimates change
     if (
       isEqual(currentState.gasFeeEstimates, newState.gasFeeEstimates) === false
     ) {
@@ -1071,12 +1039,14 @@ export function updateDexmaskState(newState) {
         },
       });
     }
+
     if (provider.chainId !== newProvider.chainId) {
       dispatch({
         type: actionConstants.CHAIN_CHANGED,
         payload: newProvider.chainId,
       });
     }
+
     dispatch({
       type: actionConstants.UPDATE_DEXMASK_STATE,
       value: newState,
@@ -1091,6 +1061,7 @@ const backgroundSetLocked = () => {
         reject(error);
         return;
       }
+
       resolve();
     });
   });
@@ -1098,10 +1069,8 @@ const backgroundSetLocked = () => {
 
 export function lockDexmask() {
   log.debug(`background.setLocked`);
-
   return (dispatch) => {
     dispatch(showLoadingIndication());
-
     return backgroundSetLocked()
       .then(() => updateDexmaskStateFromBackground())
       .catch((error) => {
@@ -1111,11 +1080,15 @@ export function lockDexmask() {
       .then((newState) => {
         dispatch(updateDexmaskState(newState));
         dispatch(hideLoadingIndication());
-        dispatch({ type: actionConstants.LOCK_DEXMASK });
+        dispatch({
+          type: actionConstants.LOCK_DEXMASK,
+        });
       })
       .catch(() => {
         dispatch(hideLoadingIndication());
-        dispatch({ type: actionConstants.LOCK_DEXMASK });
+        dispatch({
+          type: actionConstants.LOCK_DEXMASK,
+        });
       });
   };
 }
@@ -1130,6 +1103,7 @@ export function setSelectedAddress(address) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setSelectedAddress`);
+
     try {
       await _setSelectedAddress(dispatch, address);
     } catch (error) {
@@ -1140,12 +1114,10 @@ export function setSelectedAddress(address) {
     }
   };
 }
-
 export function showAccountDetail(address) {
   return async (dispatch, getState) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setSelectedAddress`);
-
     const state = getState();
     const unconnectedAccountAccountAlertIsEnabled = getUnconnectedAccountAlertEnabledness(
       state,
@@ -1179,6 +1151,7 @@ export function showAccountDetail(address) {
       type: actionConstants.SHOW_ACCOUNT_DETAIL,
       value: address,
     });
+
     if (
       unconnectedAccountAccountAlertIsEnabled &&
       switchingToUnconnectedAddress
@@ -1188,7 +1161,6 @@ export function showAccountDetail(address) {
     }
   };
 }
-
 export function addPermittedAccount(origin, address) {
   return async (dispatch) => {
     await new Promise((resolve, reject) => {
@@ -1197,13 +1169,13 @@ export function addPermittedAccount(origin, address) {
           reject(error);
           return;
         }
+
         resolve();
       });
     });
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function removePermittedAccount(origin, address) {
   return async (dispatch) => {
     await new Promise((resolve, reject) => {
@@ -1212,26 +1184,24 @@ export function removePermittedAccount(origin, address) {
           reject(error);
           return;
         }
+
         resolve();
       });
     });
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function showAccountsPage() {
   return {
     type: actionConstants.SHOW_ACCOUNTS_PAGE,
   };
 }
-
 export function showConfTxPage({ id } = {}) {
   return {
     type: actionConstants.SHOW_CONF_TX_PAGE,
     id,
   };
 }
-
 export function addToken(
   address,
   symbol,
@@ -1243,42 +1213,46 @@ export function addToken(
     if (!address) {
       throw new Error('DexMask - Cannot add token without address');
     }
+
     if (!dontShowLoadingIndicator) {
       dispatch(showLoadingIndication());
     }
+
     return new Promise((resolve, reject) => {
       background.addToken(address, symbol, decimals, image, (err, tokens) => {
         dispatch(hideLoadingIndication());
+
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         dispatch(updateTokens(tokens));
         resolve(tokens);
       });
     });
   };
 }
-
 export function removeToken(address) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
       background.removeToken(address, (err, tokens) => {
         dispatch(hideLoadingIndication());
+
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
           return;
         }
+
         dispatch(updateTokens(tokens));
         resolve(tokens);
       });
     });
   };
 }
-
 export function addTokens(tokens) {
   return (dispatch) => {
     if (Array.isArray(tokens)) {
@@ -1288,6 +1262,7 @@ export function addTokens(tokens) {
         ),
       );
     }
+
     return Promise.all(
       Object.entries(tokens).map(([_, { address, symbol, decimals }]) =>
         dispatch(addToken(address, symbol, decimals)),
@@ -1295,21 +1270,24 @@ export function addTokens(tokens) {
     );
   };
 }
-
 export function removeSuggestedTokens() {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     return new Promise((resolve) => {
       background.removeSuggestedTokens((err, suggestedTokens) => {
         dispatch(hideLoadingIndication());
+
         if (err) {
           dispatch(displayWarning(err.message));
         }
+
         dispatch(clearPendingTokens());
+
         if (getEnvironmentType() === ENVIRONMENT_TYPE_NOTIFICATION) {
           global.platform.closeCurrentWindow();
           return;
         }
+
         resolve(suggestedTokens);
       });
     })
@@ -1319,26 +1297,22 @@ export function removeSuggestedTokens() {
       );
   };
 }
-
 export function addKnownMethodData(fourBytePrefix, methodData) {
   return () => {
     background.addKnownMethodData(fourBytePrefix, methodData);
   };
 }
-
 export function updateTokens(newTokens) {
   return {
     type: actionConstants.UPDATE_TOKENS,
     newTokens,
   };
 }
-
 export function clearPendingTokens() {
   return {
     type: actionConstants.CLEAR_PENDING_TOKENS,
   };
 }
-
 export function createCancelTransaction(
   txId,
   customGasSettings,
@@ -1346,7 +1320,6 @@ export function createCancelTransaction(
 ) {
   log.debug('background.cancelTransaction');
   let newTxId;
-
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       background.createCancelTransaction(
@@ -1371,7 +1344,6 @@ export function createCancelTransaction(
       .then(() => newTxId);
   };
 }
-
 export function createSpeedUpTransaction(
   txId,
   customGasSettings,
@@ -1379,7 +1351,6 @@ export function createSpeedUpTransaction(
 ) {
   log.debug('background.createSpeedUpTransaction');
   let newTx;
-
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       background.createSpeedUpTransaction(
@@ -1403,10 +1374,8 @@ export function createSpeedUpTransaction(
       .then(() => newTx);
   };
 }
-
 export function createRetryTransaction(txId, customGasSettings) {
   let newTx;
-
   return (dispatch) => {
     return new Promise((resolve, reject) => {
       background.createSpeedUpTransaction(
@@ -1428,9 +1397,7 @@ export function createRetryTransaction(txId, customGasSettings) {
       .then((newState) => dispatch(updateDexmaskState(newState)))
       .then(() => newTx);
   };
-}
-
-//
+} //
 // config
 //
 
@@ -1445,17 +1412,16 @@ export function setProviderType(type) {
       dispatch(displayWarning('Had a problem changing networks!'));
       return;
     }
+
     dispatch(updateProviderType(type));
   };
 }
-
 export function updateProviderType(type) {
   return {
     type: actionConstants.SET_PROVIDER_TYPE,
     value: type,
   };
 }
-
 export function updateAndSetCustomRpc(
   newRpc,
   chainId,
@@ -1488,7 +1454,6 @@ export function updateAndSetCustomRpc(
     });
   };
 }
-
 export function editRpc(
   oldRpc,
   newRpc,
@@ -1499,6 +1464,7 @@ export function editRpc(
 ) {
   return async (dispatch) => {
     log.debug(`background.delRpcTarget: ${oldRpc}`);
+
     try {
       promisifiedBackground.delCustomRpc(oldRpc);
     } catch (error) {
@@ -1527,7 +1493,6 @@ export function editRpc(
     });
   };
 }
-
 export function setRpcTarget(newRpc, chainId, ticker = 'ETH', nickname) {
   return async (dispatch) => {
     log.debug(
@@ -1547,7 +1512,6 @@ export function setRpcTarget(newRpc, chainId, ticker = 'ETH', nickname) {
     }
   };
 }
-
 export function rollbackToPreviousProvider() {
   return async (dispatch) => {
     try {
@@ -1558,7 +1522,6 @@ export function rollbackToPreviousProvider() {
     }
   };
 }
-
 export function delRpcTarget(oldRpc) {
   return (dispatch) => {
     log.debug(`background.delRpcTarget: ${oldRpc}`);
@@ -1570,20 +1533,19 @@ export function delRpcTarget(oldRpc) {
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
-}
+} // Calls the addressBookController to add a new address.
 
-// Calls the addressBookController to add a new address.
 export function addToAddressBook(recipient, nickname = '', memo = '') {
   log.debug(`background.addToAddressBook`);
-
   return async (dispatch, getState) => {
     const { chainId } = getState().metamask.provider;
-
     let set;
+
     try {
       set = await promisifiedBackground.setAddressBook(
         toChecksumHexAddress(recipient),
@@ -1596,19 +1558,19 @@ export function addToAddressBook(recipient, nickname = '', memo = '') {
       dispatch(displayWarning('Address book failed to update'));
       throw error;
     }
+
     if (!set) {
       dispatch(displayWarning('Address book failed to update'));
     }
   };
 }
-
 /**
  * @description Calls the addressBookController to remove an existing address.
  * @param {string} addressToRemove - Address of the entry to remove from the address book
  */
+
 export function removeFromAddressBook(chainId, addressToRemove) {
   log.debug(`background.removeFromAddressBook`);
-
   return async () => {
     await promisifiedBackground.removeFromAddressBook(
       chainId,
@@ -1616,34 +1578,29 @@ export function removeFromAddressBook(chainId, addressToRemove) {
     );
   };
 }
-
 export function showNetworkDropdown(payload) {
   return {
     type: actionConstants.NETWORK_DROPDOWN_OPEN,
     payload,
   };
 }
-
 export function hideNetworkDropdown() {
   return {
     type: actionConstants.NETWORK_DROPDOWN_CLOSE,
   };
 }
-
 export function showModal(payload) {
   return {
     type: actionConstants.MODAL_OPEN,
     payload,
   };
 }
-
 export function hideModal(payload) {
   return {
     type: actionConstants.MODAL_CLOSE,
     payload,
   };
 }
-
 export function closeCurrentNotificationWindow() {
   return (_, getState) => {
     if (
@@ -1654,7 +1611,6 @@ export function closeCurrentNotificationWindow() {
     }
   };
 }
-
 export function showSidebar({ transitionName, type, props }) {
   return {
     type: actionConstants.SIDEBAR_OPEN,
@@ -1665,82 +1621,74 @@ export function showSidebar({ transitionName, type, props }) {
     },
   };
 }
-
 export function hideSidebar() {
   return {
     type: actionConstants.SIDEBAR_CLOSE,
   };
 }
-
 export function showAlert(msg) {
   return {
     type: actionConstants.ALERT_OPEN,
     value: msg,
   };
 }
-
 export function hideAlert() {
   return {
     type: actionConstants.ALERT_CLOSE,
   };
 }
-
 /**
  * This action will receive two types of values via qrCodeData
  * an object with the following structure {type, values}
  * or null (used to clear the previous value)
  */
+
 export function qrCodeDetected(qrCodeData) {
   return async (dispatch) => {
     await dispatch({
       type: actionConstants.QR_CODE_DETECTED,
       value: qrCodeData,
-    });
-
-    // If on the send page, the send slice will listen for the QR_CODE_DETECTED
+    }); // If on the send page, the send slice will listen for the QR_CODE_DETECTED
     // action and update its state. Address changes need to recompute gasLimit
     // so we fire this method so that the send page gasLimit can be recomputed
+
     dispatch(computeEstimatedGasLimit());
   };
 }
-
 export function showLoadingIndication(message) {
   return {
     type: actionConstants.SHOW_LOADING,
     value: message,
   };
 }
-
 export function setHardwareWalletDefaultHdPath({ device, path }) {
   return {
     type: actionConstants.SET_HARDWARE_WALLET_DEFAULT_HD_PATH,
-    value: { device, path },
+    value: {
+      device,
+      path,
+    },
   };
 }
-
 export function hideLoadingIndication() {
   return {
     type: actionConstants.HIDE_LOADING,
   };
 }
-
 export function displayWarning(text) {
   return {
     type: actionConstants.DISPLAY_WARNING,
     value: text,
   };
 }
-
 export function hideWarning() {
   return {
     type: actionConstants.HIDE_WARNING,
   };
 }
-
 export function exportAccount(password, address) {
   return function (dispatch) {
     dispatch(showLoadingIndication());
-
     log.debug(`background.verifyPassword`);
     return new Promise((resolve, reject) => {
       background.verifyPassword(password, function (err) {
@@ -1751,6 +1699,7 @@ export function exportAccount(password, address) {
           reject(err);
           return;
         }
+
         log.debug(`background.exportAccount`);
         background.exportAccount(address, function (err2, result) {
           dispatch(hideLoadingIndication());
@@ -1769,7 +1718,6 @@ export function exportAccount(password, address) {
     });
   };
 }
-
 export function exportAccounts(password, addresses) {
   return function (dispatch) {
     log.debug(`background.verifyPassword`);
@@ -1780,6 +1728,7 @@ export function exportAccounts(password, addresses) {
           reject(err);
           return;
         }
+
         log.debug(`background.exportAccounts`);
         const accountPromises = addresses.map(
           (address) =>
@@ -1793,6 +1742,7 @@ export function exportAccounts(password, addresses) {
                   reject2(err2);
                   return;
                 }
+
                 resolve2(result);
               }),
             ),
@@ -1802,19 +1752,16 @@ export function exportAccounts(password, addresses) {
     });
   };
 }
-
 export function showPrivateKey(key) {
   return {
     type: actionConstants.SHOW_PRIVATE_KEY,
     value: key,
   };
 }
-
 export function setAccountLabel(account, label) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setAccountLabel`);
-
     return new Promise((resolve, reject) => {
       background.setAccountLabel(account, label, (err) => {
         dispatch(hideLoadingIndication());
@@ -1827,36 +1774,37 @@ export function setAccountLabel(account, label) {
 
         dispatch({
           type: actionConstants.SET_ACCOUNT_LABEL,
-          value: { account, label },
+          value: {
+            account,
+            label,
+          },
         });
         resolve(account);
       });
     });
   };
 }
-
 export function clearAccountDetails() {
   return {
     type: actionConstants.CLEAR_ACCOUNT_DETAILS,
   };
 }
-
 export function showSendTokenPage() {
   return {
     type: actionConstants.SHOW_SEND_TOKEN_PAGE,
   };
 }
-
 export function buyEth(opts) {
   return async (dispatch) => {
     const url = await getBuyEthUrl(opts);
-    global.platform.openTab({ url });
+    global.platform.openTab({
+      url,
+    });
     dispatch({
       type: actionConstants.BUY_ETH,
     });
   };
 }
-
 export function setFeatureFlag(feature, activated, notificationType) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
@@ -1866,32 +1814,38 @@ export function setFeatureFlag(feature, activated, notificationType) {
         activated,
         (err, updatedFeatureFlags) => {
           dispatch(hideLoadingIndication());
+
           if (err) {
             dispatch(displayWarning(err.message));
             reject(err);
             return;
           }
+
           dispatch(updateFeatureFlags(updatedFeatureFlags));
-          notificationType && dispatch(showModal({ name: notificationType }));
+          notificationType &&
+            dispatch(
+              showModal({
+                name: notificationType,
+              }),
+            );
           resolve(updatedFeatureFlags);
         },
       );
     });
   };
 }
-
 export function updateFeatureFlags(updatedFeatureFlags) {
   return {
     type: actionConstants.UPDATE_FEATURE_FLAGS,
     value: updatedFeatureFlags,
   };
 }
-
 export function setPreference(preference, value, loading = true) {
   return (dispatch) => {
     if (loading) {
       dispatch(showLoadingIndication());
     }
+
     return new Promise((resolve, reject) => {
       background.setPreference(preference, value, (err, updatedPreferences) => {
         if (loading) {
@@ -1910,41 +1864,33 @@ export function setPreference(preference, value, loading = true) {
     });
   };
 }
-
 export function updatePreferences(value) {
   return {
     type: actionConstants.UPDATE_PREFERENCES,
     value,
   };
 }
-
 export function setDefaultHomeActiveTabName(value) {
   return async (dispatch) => {
     await promisifiedBackground.setDefaultHomeActiveTabName(value);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setUseNativeCurrencyAsPrimaryCurrencyPreference(value) {
   return setPreference('useNativeCurrencyAsPrimaryCurrency', value);
 }
-
 export function setHideZeroBalanceTokens(value) {
   return setPreference('hideZeroBalanceTokens', value);
 }
-
 export function setShowFiatConversionOnTestnetsPreference(value) {
   return setPreference('showFiatInTestnets', value);
 }
-
 export function setAutoLockTimeLimit(value) {
   return setPreference('autoLockTimeLimit', value);
 }
-
 export function setTokenDisplayOrders(value) {
   return setPreference('tokenDisplayOrders', JSON.stringify(value));
 }
-
 export function setCompletedOnboarding() {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -1960,24 +1906,21 @@ export function setCompletedOnboarding() {
     }
   };
 }
-
 export function completeOnboarding() {
   return {
     type: actionConstants.COMPLETE_ONBOARDING,
   };
 }
-
 export function setMouseUserState(isMouseUser) {
   return {
     type: actionConstants.SET_MOUSE_USER_STATE,
     value: isMouseUser,
   };
 }
-
 export async function forceupdateDexmaskState(dispatch) {
   log.debug(`background.getState`);
-
   let newState;
+
   try {
     newState = await promisifiedBackground.getState();
   } catch (error) {
@@ -1988,19 +1931,18 @@ export async function forceupdateDexmaskState(dispatch) {
   dispatch(updateDexmaskState(newState));
   return newState;
 }
-
 export function toggleAccountMenu() {
   return {
     type: actionConstants.TOGGLE_ACCOUNT_MENU,
   };
 }
-
 export function setParticipateInMetaMetrics(val) {
   return (dispatch) => {
     log.debug(`background.setParticipateInMetaMetrics`);
     return new Promise((resolve, reject) => {
       background.setParticipateInMetaMetrics(val, (err, metaMetricsId) => {
         log.debug(err);
+
         if (err) {
           dispatch(displayWarning(err.message));
           reject(err);
@@ -2016,13 +1958,13 @@ export function setParticipateInMetaMetrics(val) {
     });
   };
 }
-
 export function setUseBlockie(val) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setUseBlockie`);
     background.setUseBlockie(val, (err) => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       }
@@ -2033,13 +1975,13 @@ export function setUseBlockie(val) {
     });
   };
 }
-
 export function setUseNonceField(val) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setUseNonceField`);
     background.setUseNonceField(val, (err) => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       }
@@ -2050,39 +1992,39 @@ export function setUseNonceField(val) {
     });
   };
 }
-
 export function setUsePhishDetect(val) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setUsePhishDetect`);
     background.setUsePhishDetect(val, (err) => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
   };
 }
-
 export function setUseStaticTokenList(val) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setUseStaticTokenList`);
     background.setUseStaticTokenList(val, (err) => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       }
     });
   };
 }
-
 export function setIpfsGateway(val) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     log.debug(`background.setIpfsGateway`);
     background.setIpfsGateway(val, (err) => {
       dispatch(hideLoadingIndication());
+
       if (err) {
         dispatch(displayWarning(err.message));
       } else {
@@ -2094,7 +2036,6 @@ export function setIpfsGateway(val) {
     });
   };
 }
-
 export function updateCurrentLocale(key) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -2113,7 +2054,6 @@ export function updateCurrentLocale(key) {
     }
   };
 }
-
 export function setCurrentLocale(locale, messages) {
   return {
     type: actionConstants.SET_CURRENT_LOCALE,
@@ -2123,34 +2063,23 @@ export function setCurrentLocale(locale, messages) {
     },
   };
 }
-
 export function setPendingTokens(pendingTokens) {
   const { customToken = {}, selectedTokens = {} } = pendingTokens;
   const { address, symbol, decimals } = customToken;
   const tokens =
     address && symbol && decimals >= 0 <= 36
-      ? {
-          ...selectedTokens,
-          [address]: {
-            ...customToken,
-            isCustom: true,
-          },
-        }
+      ? { ...selectedTokens, [address]: { ...customToken, isCustom: true } }
       : selectedTokens;
-
   Object.keys(tokens).forEach((tokenAddress) => {
     tokens[tokenAddress].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(
       tokenAddress.toLowerCase(),
     );
   });
-
   return {
     type: actionConstants.SET_PENDING_TOKENS,
     payload: tokens,
   };
-}
-
-// Swaps
+} // Swaps
 
 export function setSwapsLiveness(swapsLiveness) {
   return async (dispatch) => {
@@ -2158,7 +2087,6 @@ export function setSwapsLiveness(swapsLiveness) {
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function fetchAndSetQuotes(fetchParams, fetchParamsMetaData) {
   return async (dispatch) => {
     const [
@@ -2172,21 +2100,18 @@ export function fetchAndSetQuotes(fetchParams, fetchParamsMetaData) {
     return [quotes, selectedAggId];
   };
 }
-
 export function setSelectedQuoteAggId(aggId) {
   return async (dispatch) => {
     await promisifiedBackground.setSelectedQuoteAggId(aggId);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setSwapsTokens(tokens) {
   return async (dispatch) => {
     await promisifiedBackground.setSwapsTokens(tokens);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function resetBackgroundSwapsState() {
   return async (dispatch) => {
     const id = await promisifiedBackground.resetSwapsState();
@@ -2194,28 +2119,24 @@ export function resetBackgroundSwapsState() {
     return id;
   };
 }
-
 export function setCustomApproveTxData(data) {
   return async (dispatch) => {
     await promisifiedBackground.setCustomApproveTxData(data);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setSwapsTxGasPrice(gasPrice) {
   return async (dispatch) => {
     await promisifiedBackground.setSwapsTxGasPrice(gasPrice);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setSwapsTxGasLimit(gasLimit) {
   return async (dispatch) => {
     await promisifiedBackground.setSwapsTxGasLimit(gasLimit, true);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function updateCustomSwapsEIP1559GasParams({
   gasLimit,
   maxFeePerGas,
@@ -2232,14 +2153,12 @@ export function updateCustomSwapsEIP1559GasParams({
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function updateSwapsUserFeeLevel(swapsCustomUserFeeLevel) {
   return async (dispatch) => {
     await promisifiedBackground.setSwapsUserFeeLevel(swapsCustomUserFeeLevel);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function customSwapsGasParamsUpdated(gasLimit, gasPrice) {
   return async (dispatch) => {
     await promisifiedBackground.setSwapsTxGasPrice(gasPrice);
@@ -2247,64 +2166,54 @@ export function customSwapsGasParamsUpdated(gasLimit, gasPrice) {
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setTradeTxId(tradeTxId) {
   return async (dispatch) => {
     await promisifiedBackground.setTradeTxId(tradeTxId);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setApproveTxId(approveTxId) {
   return async (dispatch) => {
     await promisifiedBackground.setApproveTxId(approveTxId);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function safeRefetchQuotes() {
   return async (dispatch) => {
     await promisifiedBackground.safeRefetchQuotes();
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function stopPollingForQuotes() {
   return async (dispatch) => {
     await promisifiedBackground.stopPollingForQuotes();
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setBackgroundSwapRouteState(routeState) {
   return async (dispatch) => {
     await promisifiedBackground.setBackgroundSwapRouteState(routeState);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function resetSwapsPostFetchState() {
   return async (dispatch) => {
     await promisifiedBackground.resetPostFetchState();
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setSwapsErrorKey(errorKey) {
   return async (dispatch) => {
     await promisifiedBackground.setSwapsErrorKey(errorKey);
     await forceupdateDexmaskState(dispatch);
   };
 }
-
 export function setInitialGasEstimate(initialAggId) {
   return async (dispatch) => {
     await promisifiedBackground.setInitialGasEstimate(initialAggId);
     await forceupdateDexmaskState(dispatch);
   };
-}
-
-// Permissions
+} // Permissions
 
 export function requestAccountsPermissionWithId(origin) {
   return async (dispatch) => {
@@ -2315,12 +2224,12 @@ export function requestAccountsPermissionWithId(origin) {
     return id;
   };
 }
-
 /**
  * Approves the permissions request.
  * @param {Object} request - The permissions request to approve
  * @param {string[]} accounts - The accounts to expose, if any.
  */
+
 export function approvePermissionsRequest(request, accounts) {
   return (dispatch) => {
     background.approvePermissionsRequest(request, accounts, (err) => {
@@ -2330,11 +2239,11 @@ export function approvePermissionsRequest(request, accounts) {
     });
   };
 }
-
 /**
  * Rejects the permissions request with the given ID.
  * @param {string} requestId - The id of the request to be rejected
  */
+
 export function rejectPermissionsRequest(requestId) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -2344,15 +2253,16 @@ export function rejectPermissionsRequest(requestId) {
           reject(err);
           return;
         }
+
         forceupdateDexmaskState(dispatch).then(resolve).catch(reject);
       });
     });
   };
 }
-
 /**
  * Clears the given permissions for the given origin.
  */
+
 export function removePermissionsFor(domains) {
   return (dispatch) => {
     background.removePermissionsFor(domains, (err) => {
@@ -2362,10 +2272,10 @@ export function removePermissionsFor(domains) {
     });
   };
 }
-
 /**
  * Clears all permissions for all domains.
  */
+
 export function clearPermissions() {
   return (dispatch) => {
     background.clearPermissions((err) => {
@@ -2374,9 +2284,7 @@ export function clearPermissions() {
       }
     });
   };
-}
-
-// Pending Approvals
+} // Pending Approvals
 
 /**
  * Resolves a pending approval and closes the current notification window if no
@@ -2384,36 +2292,38 @@ export function clearPermissions() {
  * @param {string} id - The pending approval id
  * @param {any} [value] - The value required to confirm a pending approval
  */
+
 export function resolvePendingApproval(id, value) {
   return async (dispatch) => {
-    await promisifiedBackground.resolvePendingApproval(id, value);
-    // Before closing the current window, check if any additional confirmations
+    await promisifiedBackground.resolvePendingApproval(id, value); // Before closing the current window, check if any additional confirmations
     // are added as a result of this confirmation being accepted
+
     const { pendingApprovals } = await forceupdateDexmaskState(dispatch);
+
     if (Object.values(pendingApprovals).length === 0) {
       dispatch(closeCurrentNotificationWindow());
     }
   };
 }
-
 /**
  * Rejects a pending approval and closes the current notification window if no
  * further approvals are pending after the background state updates.
  * @param {string} id - The pending approval id
  * @param {Error} [error] - The error to throw when rejecting the approval
  */
+
 export function rejectPendingApproval(id, error) {
   return async (dispatch) => {
-    await promisifiedBackground.rejectPendingApproval(id, error);
-    // Before closing the current window, check if any additional confirmations
+    await promisifiedBackground.rejectPendingApproval(id, error); // Before closing the current window, check if any additional confirmations
     // are added as a result of this confirmation being rejected
+
     const { pendingApprovals } = await forceupdateDexmaskState(dispatch);
+
     if (Object.values(pendingApprovals).length === 0) {
       dispatch(closeCurrentNotificationWindow());
     }
   };
 }
-
 export function setFirstTimeFlowType(type) {
   return (dispatch) => {
     log.debug(`background.setFirstTimeFlowType`);
@@ -2428,21 +2338,18 @@ export function setFirstTimeFlowType(type) {
     });
   };
 }
-
 export function setSelectedSettingsRpcUrl(newRpcUrl) {
   return {
     type: actionConstants.SET_SELECTED_SETTINGS_RPC_URL,
     value: newRpcUrl,
   };
 }
-
 export function setNetworksTabAddMode(isInAddMode) {
   return {
     type: actionConstants.SET_NETWORKS_TAB_ADD_MODE,
     value: isInAddMode,
   };
 }
-
 export function setLastActiveTime() {
   return (dispatch) => {
     background.setLastActiveTime((err) => {
@@ -2452,7 +2359,6 @@ export function setLastActiveTime() {
     });
   };
 }
-
 export function setDismissSeedBackUpReminder(value) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -2460,7 +2366,6 @@ export function setDismissSeedBackUpReminder(value) {
     dispatch(hideLoadingIndication());
   };
 }
-
 export function setConnectedStatusPopoverHasBeenShown() {
   return () => {
     background.setConnectedStatusPopoverHasBeenShown((err) => {
@@ -2470,7 +2375,6 @@ export function setConnectedStatusPopoverHasBeenShown() {
     });
   };
 }
-
 export function setRecoveryPhraseReminderHasBeenShown() {
   return () => {
     background.setRecoveryPhraseReminderHasBeenShown((err) => {
@@ -2480,7 +2384,6 @@ export function setRecoveryPhraseReminderHasBeenShown() {
     });
   };
 }
-
 export function setRecoveryPhraseReminderLastShown(lastShown) {
   return () => {
     background.setRecoveryPhraseReminderLastShown(lastShown, (err) => {
@@ -2490,19 +2393,16 @@ export function setRecoveryPhraseReminderLastShown(lastShown) {
     });
   };
 }
-
 export function loadingMethodDataStarted() {
   return {
     type: actionConstants.LOADING_METHOD_DATA_STARTED,
   };
 }
-
 export function loadingMethodDataFinished() {
   return {
     type: actionConstants.LOADING_METHOD_DATA_FINISHED,
   };
 }
-
 export function getContractMethodData(data = '') {
   return (dispatch, getState) => {
     const prefixedData = addHexPrefix(data);
@@ -2520,31 +2420,37 @@ export function getContractMethodData(data = '') {
 
     dispatch(loadingMethodDataStarted());
     log.debug(`loadingMethodData`);
-
     return getMethodDataAsync(fourBytePrefix).then(({ name, params }) => {
       dispatch(loadingMethodDataFinished());
-      background.addKnownMethodData(fourBytePrefix, { name, params }, (err) => {
-        if (err) {
-          dispatch(displayWarning(err.message));
-        }
-      });
-      return { name, params };
+      background.addKnownMethodData(
+        fourBytePrefix,
+        {
+          name,
+          params,
+        },
+        (err) => {
+          if (err) {
+            dispatch(displayWarning(err.message));
+          }
+        },
+      );
+      return {
+        name,
+        params,
+      };
     });
   };
 }
-
 export function loadingTokenParamsStarted() {
   return {
     type: actionConstants.LOADING_TOKEN_PARAMS_STARTED,
   };
 }
-
 export function loadingTokenParamsFinished() {
   return {
     type: actionConstants.LOADING_TOKEN_PARAMS_FINISHED,
   };
 }
-
 export function getTokenParams(tokenAddress) {
   return (dispatch, getState) => {
     const existingTokens = getState().metamask.tokens;
@@ -2561,14 +2467,12 @@ export function getTokenParams(tokenAddress) {
 
     dispatch(loadingTokenParamsStarted());
     log.debug(`loadingTokenParams`);
-
     return getSymbolAndDecimals(tokenAddress).then(({ symbol, decimals }) => {
       dispatch(addToken(tokenAddress, symbol, Number(decimals)));
       dispatch(loadingTokenParamsFinished());
     });
   };
 }
-
 export function setSeedPhraseBackedUp(seedPhraseBackupState) {
   return (dispatch) => {
     log.debug(`background.setSeedPhraseBackedUp`);
@@ -2579,12 +2483,12 @@ export function setSeedPhraseBackedUp(seedPhraseBackupState) {
           reject(err);
           return;
         }
+
         forceupdateDexmaskState(dispatch).then(resolve).catch(reject);
       });
     });
   };
 }
-
 export function initializeThreeBox() {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -2594,12 +2498,12 @@ export function initializeThreeBox() {
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function setShowRestorePromptToFalse() {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -2609,12 +2513,12 @@ export function setShowRestorePromptToFalse() {
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function turnThreeBoxSyncingOn() {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -2624,12 +2528,12 @@ export function turnThreeBoxSyncingOn() {
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function restoreFromThreeBox(accountAddress) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -2639,12 +2543,12 @@ export function restoreFromThreeBox(accountAddress) {
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function getThreeBoxLastUpdated() {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -2654,12 +2558,12 @@ export function getThreeBoxLastUpdated() {
           reject(err);
           return;
         }
+
         resolve(lastUpdated);
       });
     });
   };
 }
-
 export function setThreeBoxSyncingPermission(threeBoxSyncingAllowed) {
   return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -2669,12 +2573,12 @@ export function setThreeBoxSyncingPermission(threeBoxSyncingAllowed) {
           reject(err);
           return;
         }
+
         resolve();
       });
     });
   };
 }
-
 export function turnThreeBoxSyncingOnAndInitialize() {
   return async (dispatch) => {
     await dispatch(setThreeBoxSyncingPermission(true));
@@ -2682,14 +2586,12 @@ export function turnThreeBoxSyncingOnAndInitialize() {
     await dispatch(initializeThreeBox(true));
   };
 }
-
 export function setNextNonce(nextNonce) {
   return {
     type: actionConstants.SET_NEXT_NONCE,
     value: nextNonce,
   };
 }
-
 export function getNextNonce() {
   return (dispatch, getState) => {
     const address = getState().metamask.selectedAddress;
@@ -2700,55 +2602,49 @@ export function getNextNonce() {
           reject(err);
           return;
         }
+
         dispatch(setNextNonce(nextNonce));
         resolve(nextNonce);
       });
     });
   };
 }
-
 export function setRequestAccountTabIds(requestAccountTabIds) {
   return {
     type: actionConstants.SET_REQUEST_ACCOUNT_TABS,
     value: requestAccountTabIds,
   };
 }
-
 export function getRequestAccountTabIds() {
   return async (dispatch) => {
     const requestAccountTabIds = await promisifiedBackground.getRequestAccountTabIds();
     dispatch(setRequestAccountTabIds(requestAccountTabIds));
   };
 }
-
 export function setOpenMetamaskTabsIDs(openMetaMaskTabIDs) {
   return {
     type: actionConstants.SET_OPEN_DEXMASK_TABIDS,
     value: openMetaMaskTabIDs,
   };
 }
-
 export function getOpenMetamaskTabsIds() {
   return async (dispatch) => {
     const openMetaMaskTabIDs = await promisifiedBackground.getOpenMetamaskTabsIds();
     dispatch(setOpenMetamaskTabsIDs(openMetaMaskTabIDs));
   };
 }
-
 export function setCurrentWindowTab(currentWindowTab) {
   return {
     type: actionConstants.SET_CURRENT_WINDOW_TAB,
     value: currentWindowTab,
   };
 }
-
 export function getCurrentWindowTab() {
   return async (dispatch) => {
     const currentWindowTab = await global.platform.currentTab();
     dispatch(setCurrentWindowTab(currentWindowTab));
   };
 }
-
 export function setLedgerLivePreference(value) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -2756,10 +2652,10 @@ export function setLedgerLivePreference(value) {
     dispatch(hideLoadingIndication());
   };
 }
-
 export function captureSingleException(error) {
   return async (dispatch, getState) => {
     const { singleExceptions } = getState().appState;
+
     if (!(error in singleExceptions)) {
       dispatch({
         type: actionConstants.CAPTURE_SINGLE_EXCEPTION,
@@ -2767,9 +2663,8 @@ export function captureSingleException(error) {
       });
     }
   };
-}
+} // Wrappers around promisifedBackground
 
-// Wrappers around promisifedBackground
 /**
  * The "actions" below are not actions nor action creators. They cannot use
  * dispatch nor should they be dispatched when used. Instead they can be
@@ -2780,17 +2675,17 @@ export function captureSingleException(error) {
 export function estimateGas(params) {
   return promisifiedBackground.estimateGas(params);
 }
-
 export async function updateTokenType(tokenAddress) {
   let token = {};
+
   try {
     token = await promisifiedBackground.updateTokenType(tokenAddress);
   } catch (error) {
     log.error(error);
   }
+
   return token;
 }
-
 /**
  * initiates polling for gas fee estimates.
  *
@@ -2798,10 +2693,10 @@ export async function updateTokenType(tokenAddress) {
  *  to remove that request from consideration of whether polling needs to
  *  continue.
  */
+
 export function getGasFeeEstimatesAndStartPolling() {
   return promisifiedBackground.getGasFeeEstimatesAndStartPolling();
 }
-
 /**
  * Informs the GasFeeController that a specific token is no longer requiring
  * gas fee estimates. If all tokens unsubscribe the controller stops polling.
@@ -2810,32 +2705,29 @@ export function getGasFeeEstimatesAndStartPolling() {
  *  `getGasFeeEstimatesAndStartPolling`.
  * @returns {void}
  */
+
 export function disconnectGasFeeEstimatePoller(pollToken) {
   return promisifiedBackground.disconnectGasFeeEstimatePoller(pollToken);
 }
-
 export async function addPollingTokenToAppState(pollingToken) {
   return promisifiedBackground.addPollingTokenToAppState(
     pollingToken,
     POLLING_TOKEN_ENVIRONMENT_TYPES[getEnvironmentType()],
   );
 }
-
 export async function removePollingTokenFromAppState(pollingToken) {
   return promisifiedBackground.removePollingTokenFromAppState(
     pollingToken,
     POLLING_TOKEN_ENVIRONMENT_TYPES[getEnvironmentType()],
   );
 }
-
 export function getGasFeeTimeEstimate(maxPriorityFeePerGas, maxFeePerGas) {
   return promisifiedBackground.getGasFeeTimeEstimate(
     maxPriorityFeePerGas,
     maxFeePerGas,
   );
-}
+} // MetaMetrics
 
-// MetaMetrics
 /**
  * @typedef {import('../../shared/constants/metametrics').MetaMetricsEventPayload} MetaMetricsEventPayload
  * @typedef {import('../../shared/constants/metametrics').MetaMetricsEventOptions} MetaMetricsEventOptions
@@ -2848,44 +2740,39 @@ export function getGasFeeTimeEstimate(maxPriorityFeePerGas, maxFeePerGas) {
  * @param {MetaMetricsEventOptions} options - options for routing/handling of event
  * @returns {Promise<void>}
  */
+
 export function trackMetaMetricsEvent(payload, options) {
   return promisifiedBackground.trackMetaMetricsEvent(payload, options);
 }
-
 /**
  * @param {MetaMetricsPagePayload} payload - details of the page viewed
  * @param {MetaMetricsPageOptions} options - options for handling the page view
  * @returns {void}
  */
+
 export function trackMetaMetricsPage(payload, options) {
   return promisifiedBackground.trackMetaMetricsPage(payload, options);
 }
-
 export function updateViewedNotifications(notificationIdViewedStatusMap) {
   return promisifiedBackground.updateViewedNotifications(
     notificationIdViewedStatusMap,
   );
 }
-
 export async function setAlertEnabledness(alertId, enabledness) {
   await promisifiedBackground.setAlertEnabledness(alertId, enabledness);
 }
-
 export async function setUnconnectedAccountAlertShown(origin) {
   await promisifiedBackground.setUnconnectedAccountAlertShown(origin);
 }
-
 export async function setWeb3ShimUsageAlertDismissed(origin) {
   await promisifiedBackground.setWeb3ShimUsageAlertDismissed(origin);
 }
-
 export function updateCrossChainState(value) {
   return {
     type: actionConstants.UPDATE_CROSS_CHAIN_STATE,
     value,
   };
 }
-
 export function updateConfirmAction(value) {
   return {
     type: actionConstants.UPDATE_CONFIRM_ACTION,

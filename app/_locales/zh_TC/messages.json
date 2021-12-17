@@ -1,22 +1,4 @@
 {
-  "metaMaskConnectStatusParagraphOne": {
-    "message": "現在您可在 DEXMask 中對賬戶連接進行更多的控制。"
-  },
-  "metaMaskConnectStatusParagraphThree": {
-    "message": "點擊管理連接的賬戶。"
-  },
-  "metaMaskConnectStatusParagraphTwo": {
-    "message": "連接狀態按鈕顯示所訪問的網站是否與您當前選擇的賬戶連接。"
-  },
-  "metaMaskDescription": {
-    "message": "將您與 Ethereum 和去中心化網絡連接起來。"
-  },
-  "metaMaskSwapsOfflineDescription": {
-    "message": "DEXMask Swaps 正在進行維護。請稍後訪問。"
-  },
-  "metaMaskVersion": {
-    "message": "DEXMask 版本"
-  },
   "InterBlockchain": {
     "message": "從 $1 跨鏈轉出"
   },
@@ -438,9 +420,6 @@
   "currentLanguage": {
     "message": "當前語言"
   },
-  "language": {
-    "message": "語言"
-  },
   "custom": {
     "message": "自定義"
   },
@@ -514,6 +493,9 @@
   },
   "dexMainnet": {
     "message": "DEX"
+  },
+  "dexMaskVersion": {
+    "message": "DEXMask 版本"
   },
   "dex_trans": {
     "message": "DEX錢包內轉賬"
@@ -927,6 +909,9 @@
   "kovan": {
     "message": "Kovan 測試網絡"
   },
+  "language": {
+    "message": "語言"
+  },
   "lastConnected": {
     "message": "最後連接"
   },
@@ -983,6 +968,21 @@
   },
   "message": {
     "message": "消息"
+  },
+  "metaMaskConnectStatusParagraphOne": {
+    "message": "現在您可在 DEXMask 中對賬戶連接進行更多的控制。"
+  },
+  "metaMaskConnectStatusParagraphThree": {
+    "message": "點擊管理連接的賬戶。"
+  },
+  "metaMaskConnectStatusParagraphTwo": {
+    "message": "連接狀態按鈕顯示所訪問的網站是否與您當前選擇的賬戶連接。"
+  },
+  "metaMaskDescription": {
+    "message": "將您與 Ethereum 和去中心化網絡連接起來。"
+  },
+  "metaMaskSwapsOfflineDescription": {
+    "message": "DEXMask Swaps 正在進行維護。請稍後訪問。"
   },
   "metametricsCommitmentsAllowOptOut": {
     "message": "始終允許您通過設置選擇退出"
@@ -2052,7 +2052,7 @@
     "description": "$1 and $2 are intended to be two numbers, where $2 is a total, and $1 is a count towards that total"
   },
   "yesLetsTry": {
-    "message": "是的，嘗試下" 
+    "message": "是的，嘗試下"
   },
   "youNeedToAllowCameraAccess": {
     "message": "需要開啓相機訪問權限，才能使用該功能。"

@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import {
   ALIGN_ITEMS,
   BLOCK_SIZES,
@@ -11,7 +11,6 @@ import {
   SIZES,
   TEXT_ALIGN,
 } from '@view/helpers/constants/design-system';
-
 const ValidSize = PropTypes.oneOf([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
 const ArrayOfValidSizes = PropTypes.arrayOf(ValidSize);
 const MultipleSizes = PropTypes.oneOfType([ValidSize, ArrayOfValidSizes]);
@@ -19,6 +18,7 @@ const MultipleSizes = PropTypes.oneOfType([ValidSize, ArrayOfValidSizes]);
 function generateSizeClasses(baseClass, type, main, top, right, bottom, left) {
   const arr = Array.isArray(main) ? main : [];
   const singleDigit = Array.isArray(main) ? undefined : main;
+
   if (Array.isArray(main) && ![2, 3, 4].includes(main.length)) {
     throw new Error(
       `Expected prop ${type} to have length between 2 and 4, received ${main.length}`,
@@ -122,14 +122,14 @@ export default function Box({
     // width & height
     [`box--width-${width}`]: Boolean(width),
     [`box--height-${height}`]: Boolean(height),
-  });
-  // Apply Box styles to any other component using function pattern
+  }); // Apply Box styles to any other component using function pattern
+
   if (typeof children === 'function') {
     return children(boxClassName);
   }
+
   return <div className={boxClassName}>{children}</div>;
 }
-
 Box.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   margin: MultipleSizes,

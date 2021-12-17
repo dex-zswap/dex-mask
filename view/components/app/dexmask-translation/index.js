@@ -1,10 +1,4 @@
-import DexMaskTemplateRenderer, {
-  SectionShape,
-} from '@c/app/dexmask-template-renderer';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import PropTypes from 'prop-types';
 import React from 'react';
-
 /**
  * DexMaskTranslation is a simple helper Component for adding full translation
  * support to the template system. We do pass the translation function to the
@@ -21,9 +15,14 @@ import React from 'react';
  * the safeComponentList for what kind of components we allow these special
  * trees to contain.
  */
+
+import PropTypes from 'prop-types';
+import DexMaskTemplateRenderer, {
+  SectionShape,
+} from '@c/app/dexmask-template-renderer';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 export default function DexMaskTranslation({ translationKey, variables }) {
   const t = useI18nContext();
-
   return t(
     translationKey,
     variables?.map((variable) => {
@@ -33,11 +32,10 @@ export default function DexMaskTranslation({ translationKey, variables }) {
         variable.element
       ) {
         if (!variable.key) {
-          throw new Error(
-            `When using MetaMask Template Language in a DexMaskTranslation variable, you must provide a key for the section regardless of syntax.
-            Section with element '${variable.element}' for translationKey: '${translationKey}' has no key property`,
-          );
+          throw new Error(`When using MetaMask Template Language in a DexMaskTranslation variable, you must provide a key for the section regardless of syntax.
+            Section with element '${variable.element}' for translationKey: '${translationKey}' has no key property`);
         }
+
         if (
           variable.children &&
           Array.isArray(variable.children) &&
@@ -56,6 +54,7 @@ export default function DexMaskTranslation({ translationKey, variables }) {
             'DexMaskTranslation does not allow for component trees of non trivial depth',
           );
         }
+
         return (
           <DexMaskTemplateRenderer
             key={`${translationKey}-${variable.key}`}
@@ -63,11 +62,11 @@ export default function DexMaskTranslation({ translationKey, variables }) {
           />
         );
       }
+
       return variable;
     }),
   );
 }
-
 DexMaskTranslation.propTypes = {
   translationKey: PropTypes.string.isRequired,
   variables: PropTypes.arrayOf(

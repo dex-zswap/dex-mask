@@ -1,10 +1,9 @@
-import { formatSwapsValueForDisplay } from '@pages/swaps/swaps.util';
-import { calcTokenAmount } from '@view/helpers/utils/token-util';
+import React, { useState } from 'react';
 import BigNumber from 'bignumber.js';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-
+import { formatSwapsValueForDisplay } from '@pages/swaps/swaps.util';
+import { calcTokenAmount } from '@view/helpers/utils/token-util';
 export default function ExchangeRateDisplay({
   primaryTokenValue,
   primaryTokenDecimals = 18,
@@ -18,7 +17,6 @@ export default function ExchangeRateDisplay({
 }) {
   const [showPrimaryToSecondary, setShowPrimaryToSecondary] = useState(true);
   const [rotating, setRotating] = useState(false);
-
   const primaryTokenAmount = calcTokenAmount(
     primaryTokenValue,
     primaryTokenDecimals,
@@ -27,7 +25,6 @@ export default function ExchangeRateDisplay({
     secondaryTokenValue,
     secondaryTokenDecimals,
   );
-
   const conversionRateFromPrimaryToSecondary = new BigNumber(
     secondaryTokenAmount,
   )
@@ -38,14 +35,12 @@ export default function ExchangeRateDisplay({
     .div(secondaryTokenAmount)
     .round(9)
     .toString(10);
-
   const baseSymbol = showPrimaryToSecondary
     ? primaryTokenSymbol
     : secondaryTokenSymbol;
   const ratiodSymbol = showPrimaryToSecondary
     ? secondaryTokenSymbol
     : primaryTokenSymbol;
-
   const rate = showPrimaryToSecondary
     ? conversionRateFromPrimaryToSecondary
     : conversionRateFromSecondaryToPrimary;
@@ -65,14 +60,18 @@ export default function ExchangeRateDisplay({
     <div className={classnames('exchange-rate-display', className)}>
       <span>1</span>
       <span
-        className={classnames({ 'exchange-rate-display__bold': boldSymbols })}
+        className={classnames({
+          'exchange-rate-display__bold': boldSymbols,
+        })}
       >
         {baseSymbol}
       </span>
       <span>{comparisonSymbol}</span>
       <span>{rateToDisplay}</span>
       <span
-        className={classnames({ 'exchange-rate-display__bold': boldSymbols })}
+        className={classnames({
+          'exchange-rate-display__bold': boldSymbols,
+        })}
       >
         {ratiodSymbol}
       </span>
@@ -102,7 +101,6 @@ export default function ExchangeRateDisplay({
     </div>
   );
 }
-
 ExchangeRateDisplay.propTypes = {
   primaryTokenValue: PropTypes.oneOfType([
     PropTypes.string,

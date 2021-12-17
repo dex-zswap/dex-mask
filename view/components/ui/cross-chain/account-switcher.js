@@ -1,21 +1,22 @@
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Menu, MenuItem } from '@c/ui/menu';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { getDexMaskAccountsOrdered } from '@view/selectors';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 const AccountSwitcher = ({ onChange, address, needOutSide }) => {
   const accounts = useSelector(getDexMaskAccountsOrdered);
   const anchorElement = useRef(null);
   const t = useI18nContext();
-
   const [menuOpened, setMenuOpened] = useState(false);
-
   const allAccounts = useMemo(() => {
     const outside = needOutSide;
     const allAccounts = accounts.map((account) =>
-      Object.assign({}, account, { outside: false }),
+      Object.assign({}, account, {
+        outside: false,
+      }),
     );
+
     if (outside) {
       allAccounts.push({
         address: 'out-side-address',
@@ -23,17 +24,15 @@ const AccountSwitcher = ({ onChange, address, needOutSide }) => {
         name: t('outSide'),
       });
     }
+
     return allAccounts;
   }, [needOutSide, accounts, t]);
-
   const selectedAccount = useMemo(() => {
     return allAccounts.find((account) => address === account.address) || {};
   }, [address, allAccounts]);
-
   const toggleMenu = useCallback(() => {
     setMenuOpened(!menuOpened);
   }, [menuOpened]);
-
   const accountChange = useCallback(
     (account) => {
       toggleMenu();
@@ -41,7 +40,6 @@ const AccountSwitcher = ({ onChange, address, needOutSide }) => {
     },
     [onChange, toggleMenu],
   );
-
   return (
     <div className="cross-chain__account-switcher">
       <div

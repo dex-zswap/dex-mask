@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 
 class DraggableSeed extends Component {
@@ -19,7 +19,6 @@ class DraggableSeed extends Component {
     className: PropTypes.string,
     selected: PropTypes.bool,
   };
-
   static defaultProps = {
     className: '',
     onClick: undefined,
@@ -27,6 +26,7 @@ class DraggableSeed extends Component {
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     const { isOver, setHoveringIndex } = this.props;
+
     if (isOver && !nextProps.isOver) {
       setHoveringIndex(-1);
     }
@@ -45,7 +45,6 @@ class DraggableSeed extends Component {
       isOver,
       canDrop,
     } = this.props;
-
     return connectDropTarget(
       connectDragSource(
         <div
@@ -72,7 +71,6 @@ class DraggableSeed extends Component {
 }
 
 const SEEDWORD = 'SEEDWORD';
-
 const seedSource = {
   beginDrag(props) {
     setTimeout(() => props.setDraggingSeedIndex(props.seedIndex), 0);
@@ -81,9 +79,11 @@ const seedSource = {
       word: props.word,
     };
   },
+
   canDrag(props) {
     return props.draggable;
   },
+
   endDrag(props, monitor) {
     const dropTarget = monitor.getDropResult();
 
@@ -95,16 +95,17 @@ const seedSource = {
     props.onDrop(dropTarget.targetIndex);
   },
 };
-
 const seedTarget = {
   drop(props) {
     return {
       targetIndex: props.index,
     };
   },
+
   canDrop(props) {
     return props.droppable;
   },
+
   hover(props) {
     props.setHoveringIndex(props.index);
   },

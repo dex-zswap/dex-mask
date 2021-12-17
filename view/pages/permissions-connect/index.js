@@ -1,3 +1,5 @@
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getNativeCurrency } from '@reducer/dexmask/dexmask';
 import {
   CONNECT_CONFIRM_PERMISSIONS_ROUTE,
@@ -18,8 +20,6 @@ import {
   rejectPermissionsRequest,
   showModal,
 } from '@view/store/actions';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import PermissionApproval from './component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -31,18 +31,15 @@ const mapStateToProps = (state, ownProps) => {
   } = ownProps;
   const permissionsRequests = getPermissionsRequests(state);
   const currentAddress = getSelectedAddress(state);
-
   const permissionsRequest = permissionsRequests.find(
     (req) => req.metadata.id === permissionsRequestId,
   );
-
   const { metadata = {} } = permissionsRequest || {};
   const { origin } = metadata;
   const nativeCurrency = getNativeCurrency(state);
-
   const domainMetadata = getDomainMetadata(state);
-
   let targetDomainMetadata = null;
+
   if (origin) {
     if (domainMetadata[origin]) {
       targetDomainMetadata = { ...domainMetadata[origin], origin };
@@ -57,21 +54,18 @@ const mapStateToProps = (state, ownProps) => {
   }
 
   const accountsWithLabels = getAccountsWithLabels(state);
-
   const lastConnectedInfo = getLastConnectedInfo(state) || {};
   const addressLastConnectedMap = lastConnectedInfo[origin]?.accounts || {};
-
   Object.keys(addressLastConnectedMap).forEach((key) => {
     addressLastConnectedMap[key] = formatDate(
       addressLastConnectedMap[key],
       'yyyy-MM-dd',
     );
   });
-
   const connectPath = `${CONNECT_ROUTE}/${permissionsRequestId}`;
   const confirmPermissionPath = `${CONNECT_ROUTE}/${permissionsRequestId}${CONNECT_CONFIRM_PERMISSIONS_ROUTE}`;
-
   let page = '';
+
   if (pathname === connectPath) {
     page = '1';
   } else if (pathname === confirmPermissionPath) {
@@ -121,7 +115,6 @@ const PermissionApprovalContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
 )(PermissionApproval);
-
 PermissionApprovalContainer.propTypes = {
   history: PropTypes.object.isRequired,
   match: PropTypes.shape({
@@ -130,5 +123,4 @@ PermissionApprovalContainer.propTypes = {
     }).isRequired,
   }).isRequired,
 };
-
 export default PermissionApprovalContainer;

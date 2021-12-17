@@ -1,8 +1,7 @@
-import Identicon from '@c/ui/identicon';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
-
+import Identicon from '@c/ui/identicon';
 export default function AccountModalContainer(props, context) {
   const {
     className,
@@ -12,11 +11,12 @@ export default function AccountModalContainer(props, context) {
     hideModal,
     children,
   } = props;
-
   return (
     <div
       className={classnames(className, 'account-modal')}
-      style={{ borderRadius: '4px' }}
+      style={{
+        borderRadius: '4px',
+      }}
     >
       <div className="account-modal__container">
         <div>
@@ -33,17 +33,14 @@ export default function AccountModalContainer(props, context) {
     </div>
   );
 }
-
 AccountModalContainer.contextTypes = {
   t: PropTypes.func,
 };
-
 AccountModalContainer.defaultProps = {
   showBackButton: false,
   children: null,
   backButtonAction: undefined,
 };
-
 AccountModalContainer.propTypes = {
   className: PropTypes.string,
   selectedIdentity: PropTypes.object.isRequired,

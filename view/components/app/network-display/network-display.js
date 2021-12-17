@@ -1,3 +1,7 @@
+import React from 'react';
+import { useSelector } from 'react-redux';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Chip from '@c/ui/chip';
 import ColorIndicator from '@c/ui/color-indicator';
 import LoadingIndicator from '@c/ui/loading-indicator';
@@ -12,11 +16,6 @@ import {
 } from '@view/helpers/constants/design-system';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { isNetworkLoading } from '@view/selectors';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useSelector } from 'react-redux';
-
 export default function NetworkDisplay({
   colored,
   outline,
@@ -33,10 +32,8 @@ export default function NetworkDisplay({
     type: state.metamask.provider.type,
   }));
   const t = useI18nContext();
-
   const { nickname: networkNickname, type: networkType } =
     targetNetwork ?? currentNetwork;
-
   return (
     <Chip
       borderColor={outline ? COLORS.UI3 : COLORS.TRANSPARENT}
@@ -98,7 +95,6 @@ NetworkDisplay.propTypes = {
   iconClassName: PropTypes.string,
   onClick: PropTypes.func,
 };
-
 NetworkDisplay.defaultProps = {
   colored: true,
   indicatorSize: SIZES.LG,

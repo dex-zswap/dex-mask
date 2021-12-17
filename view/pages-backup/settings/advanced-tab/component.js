@@ -1,19 +1,17 @@
-// import { MOBILE_SYNC_ROUTE } from '@view/helpers/constants/routes';
+import React, { PureComponent } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types'; // import { MOBILE_SYNC_ROUTE } from '@view/helpers/constants/routes';
+
 import { getPlatform } from '@app/scripts/lib/util';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import ToggleButton from '@c/ui/toggle-button';
 import { PLATFORM_FIREFOX } from '@shared/constants/app';
 import { exportAsFile } from '@view/helpers/utils';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class AdvancedTab extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     setUseNonceField: PropTypes.func,
     useNonceField: PropTypes.bool,
@@ -39,7 +37,6 @@ export default class AdvancedTab extends PureComponent {
     setDismissSeedBackUpReminder: PropTypes.func.isRequired,
     dismissSeedBackUpReminder: PropTypes.bool.isRequired,
   };
-
   state = {
     autoLockTimeLimit: this.props.autoLockTimeLimit,
     lockTimeError: '',
@@ -50,7 +47,6 @@ export default class AdvancedTab extends PureComponent {
   renderStateLogs() {
     const { t } = this.context;
     const { displayWarning } = this.props;
-
     return (
       <div
         className="settings-page__content-row"
@@ -87,7 +83,6 @@ export default class AdvancedTab extends PureComponent {
   renderResetAccount() {
     const { t } = this.context;
     const { showResetAccountConfirmationModal } = this.props;
-
     return (
       <div
         className="settings-page__content-row"
@@ -120,7 +115,6 @@ export default class AdvancedTab extends PureComponent {
   renderHexDataOptIn() {
     const { t } = this.context;
     const { sendHexData, setHexDataFeatureFlag } = this.props;
-
     return (
       <div
         className="settings-page__content-row"
@@ -149,7 +143,6 @@ export default class AdvancedTab extends PureComponent {
   renderAdvancedGasInputInline() {
     const { t } = this.context;
     const { advancedInlineGas, setAdvancedInlineGasFeatureFlag } = this.props;
-
     return (
       <div
         className="settings-page__content-row"
@@ -181,7 +174,6 @@ export default class AdvancedTab extends PureComponent {
       showFiatInTestnets,
       setShowFiatConversionOnTestnetsPreference,
     } = this.props;
-
     return (
       <div
         className="settings-page__content-row"
@@ -212,7 +204,6 @@ export default class AdvancedTab extends PureComponent {
   renderUseNonceOptIn() {
     const { t } = this.context;
     const { useNonceField, setUseNonceField } = this.props;
-
     return (
       <div
         className="settings-page__content-row"
@@ -241,7 +232,6 @@ export default class AdvancedTab extends PureComponent {
   handleLockChange(time) {
     const { t } = this.context;
     const autoLockTimeLimit = Math.max(Number(time), 0);
-
     this.setState(() => {
       let lockTimeError = '';
 
@@ -260,7 +250,6 @@ export default class AdvancedTab extends PureComponent {
     const { t } = this.context;
     const { lockTimeError } = this.state;
     const { autoLockTimeLimit, setAutoLockTimeLimit } = this.props;
-
     return (
       <div
         className="settings-page__content-row"
@@ -309,7 +298,6 @@ export default class AdvancedTab extends PureComponent {
       setThreeBoxSyncingPermission,
       threeBoxDisabled,
     } = this.props;
-
     let allowed = threeBoxSyncingAllowed;
     let description = t('syncWithThreeBoxDescription');
 
@@ -317,6 +305,7 @@ export default class AdvancedTab extends PureComponent {
       allowed = false;
       description = t('syncWithThreeBoxDisabled');
     }
+
     return (
       <div
         className="settings-page__content-row"
@@ -353,7 +342,6 @@ export default class AdvancedTab extends PureComponent {
   renderLedgerLiveControl() {
     const { t } = this.context;
     const { useLedgerLive, setLedgerLivePreference } = this.props;
-
     return (
       <div className="settings-page__content-row">
         <div className="settings-page__content-item">
@@ -379,17 +367,16 @@ export default class AdvancedTab extends PureComponent {
 
   handleIpfsGatewayChange(url) {
     const { t } = this.context;
-
     this.setState(() => {
       let ipfsGatewayError = '';
 
       try {
         const urlObj = new URL(addUrlProtocolPrefix(url));
+
         if (!urlObj.host) {
           throw new Error();
-        }
+        } // don't allow the use of this gateway
 
-        // don't allow the use of this gateway
         if (urlObj.host === 'gateway.ipfs.io') {
           throw new Error('Forbidden gateway');
         }
@@ -410,14 +397,12 @@ export default class AdvancedTab extends PureComponent {
   handleIpfsGatewaySave() {
     const url = new URL(addUrlProtocolPrefix(this.state.ipfsGateway));
     const { host } = url;
-
     this.props.setIpfsGateway(host);
   }
 
   renderIpfsGatewayControl() {
     const { t } = this.context;
     const { ipfsGatewayError } = this.state;
-
     return (
       <div
         className="settings-page__content-row"
@@ -461,7 +446,6 @@ export default class AdvancedTab extends PureComponent {
       dismissSeedBackUpReminder,
       setDismissSeedBackUpReminder,
     } = this.props;
-
     return (
       <div
         className="settings-page__content-row"
@@ -489,7 +473,6 @@ export default class AdvancedTab extends PureComponent {
 
   render() {
     const { warning } = this.props;
-
     return (
       <div className="settings-page__body">
         {warning && <div className="settings-tab__error">{warning}</div>}
@@ -513,5 +496,6 @@ function addUrlProtocolPrefix(urlString) {
   if (!urlString.match(/(^http:\/\/)|(^https:\/\/)/u)) {
     return `https://${urlString}`;
   }
+
   return urlString;
 }

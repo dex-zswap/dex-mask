@@ -1,3 +1,8 @@
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { ethers } from 'ethers';
+import { isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 import LongLetter from '@c/ui/long-letter';
 import TokenImage from '@c/ui/token-image';
 import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask';
@@ -15,12 +20,6 @@ import {
   getNativeCurrencyImage,
   getShouldHideZeroBalanceTokens,
 } from '@view/selectors';
-import { ethers } from 'ethers';
-import { isEqual } from 'lodash';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useSelector } from 'react-redux';
-
 export default function TokenInfo({ isNative, token }) {
   const address = isNative ? null : token.address;
   const t = useI18nContext();
@@ -39,12 +38,15 @@ export default function TokenInfo({ isNative, token }) {
   const {
     currency: primaryCurrency,
     numberOfDecimals: primaryNumberOfDecimals,
-  } = useUserPreferencedCurrency(PRIMARY, { ethNumberOfDecimals: 4 });
+  } = useUserPreferencedCurrency(PRIMARY, {
+    ethNumberOfDecimals: 4,
+  });
   const {
     currency: secondaryCurrency,
     numberOfDecimals: secondaryNumberOfDecimals,
-  } = useUserPreferencedCurrency(SECONDARY, { ethNumberOfDecimals: 4 });
-
+  } = useUserPreferencedCurrency(SECONDARY, {
+    ethNumberOfDecimals: 4,
+  });
   const [, primaryCurrencyProperties] = useCurrencyDisplay(
     selectedAccountBalance,
     {
@@ -52,7 +54,6 @@ export default function TokenInfo({ isNative, token }) {
       currency: primaryCurrency,
     },
   );
-
   const [
     secondaryCurrencyDisplay,
     secondaryCurrencyProperties,
@@ -61,14 +62,12 @@ export default function TokenInfo({ isNative, token }) {
     currency: secondaryCurrency,
   });
   const primaryTokenImage = useSelector(getNativeCurrencyImage);
-
   const tokens = useSelector(getTokens, isEqual);
   const { loading, tokensWithBalances } = useTokenTracker(
     tokens,
     true,
     shouldHideZeroBalanceTokens,
   );
-
   let tokenBalance, tokenSymbol, tokenImage, formattedFiat;
 
   if (isNative) {
@@ -94,7 +93,9 @@ export default function TokenInfo({ isNative, token }) {
     token?.address,
     tokenBalance,
     token?.symbol,
-    { showFiat: true },
+    {
+      showFiat: true,
+    },
   );
 
   if (isNative) {
@@ -106,9 +107,9 @@ export default function TokenInfo({ isNative, token }) {
       <div className="asset__token-info__token-image">
         <div className="asset__token-info__token-image-wrapper">
           {/* {isNative ? (
-            <img className="image" src={tokenImage} />
+           <img className="image" src={tokenImage} />
           ) : (
-            <Identicon address={address} diameter={54} />
+           <Identicon address={address} diameter={54} />
           )} */}
           <TokenImage
             symbol={tokenSymbol}
@@ -132,7 +133,6 @@ export default function TokenInfo({ isNative, token }) {
     </div>
   );
 }
-
 TokenInfo.propTypes = {
   isNative: PropTypes.bool,
   token: PropTypes.object,

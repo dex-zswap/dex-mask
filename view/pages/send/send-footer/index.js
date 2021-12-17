@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { addHexPrefix } from '@app/scripts/lib/util';
 import { getSendToAccounts } from '@reducer/dexmask/dexmask';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
@@ -11,9 +12,7 @@ import {
   signTransaction,
 } from '@reducer/send';
 import { addToAddressBook } from '@view/store/actions';
-import { connect } from 'react-redux';
 import SendFooter from './component';
-
 export default connect(mapStateToProps, mapDispatchToProps)(SendFooter);
 
 function addressIsNew(toAccounts, newAddress) {
@@ -26,8 +25,7 @@ function addressIsNew(toAccounts, newAddress) {
 
 function mapStateToProps(state) {
   // const gasButtonInfo = getRenderableEstimateDataForSmallButtonsFromGWEI(state);
-  const gasPrice = getGasPrice(state);
-  // const activeButtonIndex = getDefaultActiveButtonIndex(
+  const gasPrice = getGasPrice(state); // const activeButtonIndex = getDefaultActiveButtonIndex(
   //   gasButtonInfo,
   //   gasPrice,
   // );
@@ -53,6 +51,7 @@ function mapDispatchToProps(dispatch) {
     sign: () => dispatch(signTransaction()),
     addToAddressBookIfNew: (newAddress, toAccounts, nickname = '') => {
       const hexPrefixedAddress = addHexPrefix(newAddress);
+
       if (addressIsNew(toAccounts, hexPrefixedAddress)) {
         // TODO: nickname, i.e. addToAddressBook(recipient, nickname)
         dispatch(addToAddressBook(hexPrefixedAddress, nickname));

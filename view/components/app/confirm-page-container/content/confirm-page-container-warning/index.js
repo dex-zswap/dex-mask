@@ -19,5 +19,4 @@ const ConfirmPageContainerWarning = (props) => {
 ConfirmPageContainerWarning.propTypes = {
   warning: PropTypes.string,
 };
-
 export default ConfirmPageContainerWarning;

@@ -34,11 +34,9 @@ const Receive = ({ className, size, color }) => (
 Receive.defaultProps = {
   className: undefined,
 };
-
 Receive.propTypes = {
   className: PropTypes.string,
   size: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
 };
-
 export default Receive;

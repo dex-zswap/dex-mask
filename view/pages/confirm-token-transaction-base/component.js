@@ -1,3 +1,6 @@
+import React, { useContext, useMemo } from 'react';
+import BigNumber from 'bignumber.js';
+import PropTypes from 'prop-types';
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
 import ConfirmTransactionBase from '@pages/confirm-transaction-base';
 import { I18nContext } from '@view/contexts/i18n';
@@ -9,10 +12,6 @@ import {
   roundExponential,
 } from '@view/helpers/utils/confirm-tx.util';
 import { getWeiHexFromDecimalValue } from '@view/helpers/utils/conversions.util';
-import BigNumber from 'bignumber.js';
-import PropTypes from 'prop-types';
-import React, { useContext, useMemo } from 'react';
-
 export default function ConfirmTokenTransactionBase({
   toAddress,
   tokenAddress,
@@ -28,7 +27,6 @@ export default function ConfirmTokenTransactionBase({
   onEdit,
 }) {
   const t = useContext(I18nContext);
-
   const hexWeiValue = useMemo(() => {
     if (tokenAmount === '0' || !contractExchangeRate) {
       return '0';
@@ -37,14 +35,12 @@ export default function ConfirmTokenTransactionBase({
     const decimalEthValue = new BigNumber(tokenAmount)
       .times(new BigNumber(contractExchangeRate))
       .toFixed();
-
     return getWeiHexFromDecimalValue({
       value: decimalEthValue,
       fromCurrency: ETH,
       fromDenomination: ETH,
     });
   }, [tokenAmount, contractExchangeRate]);
-
   const secondaryTotalTextOverride = useMemo(() => {
     if (typeof contractExchangeRate === 'undefined') {
       return formatCurrency(fiatTransactionTotal, currentCurrency);
@@ -71,9 +67,7 @@ export default function ConfirmTokenTransactionBase({
     fiatTransactionTotal,
     tokenAmount,
   ]);
-
   const tokensText = `${tokenAmount} ${tokenSymbol}`;
-
   return (
     <ConfirmTransactionBase
       toAddress={toAddress}
@@ -97,7 +91,6 @@ export default function ConfirmTokenTransactionBase({
     />
   );
 }
-
 ConfirmTokenTransactionBase.propTypes = {
   tokenAddress: PropTypes.string,
   toAddress: PropTypes.string,

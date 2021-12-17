@@ -1,13 +1,11 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import { NETWORK_TO_NAME_MAP } from '@shared/constants/network';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class DepositEtherModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     chainId: PropTypes.string.isRequired,
     isTestnet: PropTypes.bool.isRequired,
@@ -20,7 +18,6 @@ export default class DepositEtherModal extends Component {
     hideModal: PropTypes.func.isRequired,
     showAccountDetailModal: PropTypes.func.isRequired,
   };
-
   goToAccountDetailsModal = () => {
     this.props.hideWarning();
     this.props.hideModal();
@@ -94,7 +91,6 @@ export default class DepositEtherModal extends Component {
       isMainnet,
     } = this.props;
     const networkName = NETWORK_TO_NAME_MAP[chainId];
-
     return (
       <div className="page-container page-container--full-width page-container--full-height">
         <div className="page-container__header">

@@ -1,30 +1,25 @@
 import React, { useState, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import { getDexMaskState } from '@view/reducer/dexmask/dexmask';
 import useDeepEffect from '@view/hooks/useDeepEffect';
 import { I18nContext } from '@view/contexts/i18n';
-
 import LocaleSwitcher from '@c/ui/locale-switcher';
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
-
 import {
   INITIALIZE_CREATE_PASSWORD_ROUTE,
   INITIALIZE_SELECT_ACTION_ROUTE,
 } from '@view/helpers/constants/routes';
-
 export default function Welcome() {
   const history = useHistory();
   const t = useContext(I18nContext);
-
   const handleContinue = useCallback(() => {
     history.push(INITIALIZE_SELECT_ACTION_ROUTE);
   }, [history]);
-
-  const { participateInMetaMetrics, welcomeScreenSeen } = useSelector(getDexMaskState);
-
+  const { participateInMetaMetrics, welcomeScreenSeen } = useSelector(
+    getDexMaskState,
+  );
   useDeepEffect(() => {
     if (welcomeScreenSeen && participateInMetaMetrics !== null) {
       history.push(INITIALIZE_CREATE_PASSWORD_ROUTE);
@@ -32,7 +27,6 @@ export default function Welcome() {
       history.push(INITIALIZE_SELECT_ACTION_ROUTE);
     }
   }, [history, participateInMetaMetrics, welcomeScreenSeen]);
-
   return (
     <div className="welcome-page__wrapper">
       <div className="welcome-page">
@@ -53,4 +47,4 @@ export default function Welcome() {
       </div>
     </div>
   );
-};
+}

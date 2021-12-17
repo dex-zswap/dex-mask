@@ -3,12 +3,10 @@ import {
   multiplyCurrencies,
 } from '@shared/modules/conversion.utils';
 import { addHexPrefix } from '@app/scripts/lib/util';
-
 const MIN_GAS_PRICE_DEC = '0';
 const MIN_GAS_PRICE_HEX = parseInt(MIN_GAS_PRICE_DEC, 10).toString(16);
 const MIN_GAS_LIMIT_DEC = '21000';
 const MIN_GAS_LIMIT_HEX = parseInt(MIN_GAS_LIMIT_DEC, 10).toString(16);
-
 const MIN_GAS_PRICE_GWEI = addHexPrefix(
   conversionUtil(MIN_GAS_PRICE_HEX, {
     fromDenomination: 'WEI',
@@ -18,15 +16,12 @@ const MIN_GAS_PRICE_GWEI = addHexPrefix(
     numberOfDecimals: 1,
   }),
 );
-
 const MIN_GAS_TOTAL = multiplyCurrencies(MIN_GAS_LIMIT_HEX, MIN_GAS_PRICE_HEX, {
   toNumericBase: 'hex',
   multiplicandBase: 16,
   multiplierBase: 16,
 });
-
 const TOKEN_TRANSFER_FUNCTION_SIGNATURE = '0xa9059cbb';
-
 const INSUFFICIENT_FUNDS_ERROR = 'insufficientFunds';
 const INSUFFICIENT_TOKENS_ERROR = 'insufficientTokens';
 const NEGATIVE_ETH_ERROR = 'negativeETH';
@@ -43,7 +38,6 @@ const ENS_NOT_SUPPORTED_ON_NETWORK = 'ensNotSupportedOnNetwork';
 const ENS_ILLEGAL_CHARACTER = 'ensIllegalCharacter';
 const ENS_UNKNOWN_ERROR = 'ensUnknownError';
 const ENS_REGISTRATION_ERROR = 'ensRegistrationError';
-
 export {
   INSUFFICIENT_FUNDS_ERROR,
   INSUFFICIENT_TOKENS_ERROR,

@@ -1,3 +1,7 @@
+import React, { PureComponent } from 'react';
+import { matchPath, Route, Switch } from 'react-router-dom';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import PageTitle from '@c/app/page-title';
 import TabBar from '@c/app/tab-bar';
 import {
@@ -14,10 +18,6 @@ import {
   SECURITY_ROUTE,
   SETTINGS_ROUTE,
 } from '@view/helpers/constants/routes';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import { matchPath, Route, Switch } from 'react-router-dom';
 import AdvancedTab from './advanced-tab';
 import AlertsTab from './alerts-tab';
 import ContactListTab from './contact-list-tab';
@@ -40,7 +40,6 @@ class SettingsPage extends PureComponent {
     initialBreadCrumbKey: PropTypes.string,
     mostRecentOverviewPage: PropTypes.string.isRequired,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -53,7 +52,6 @@ class SettingsPage extends PureComponent {
       mostRecentOverviewPage,
       location: { pathname },
     } = this.props;
-
     return (
       <div
         className={classnames('main-container settings-page', {
@@ -136,7 +134,6 @@ class SettingsPage extends PureComponent {
       history,
       initialBreadCrumbKey,
     } = this.props;
-
     let subheaderText;
 
     if (isPopup && isAddressEntryPage) {
@@ -180,7 +177,6 @@ class SettingsPage extends PureComponent {
   renderTabs() {
     const { history, currentPath } = this.props;
     const { t } = this.context;
-
     return (
       <TabBar
         tabs={[
@@ -201,8 +197,7 @@ class SettingsPage extends PureComponent {
             classNames: 'networks',
             description: t('networkSettingsDescription'),
             key: NETWORKS_ROUTE,
-          },
-          // {
+          }, // {
           //   content: t('contacts'),
           //   classNames: 'contacts',
           //   description: t('contactsSettingsDescription'),
@@ -231,7 +226,11 @@ class SettingsPage extends PureComponent {
           if (key === GENERAL_ROUTE && currentPath === SETTINGS_ROUTE) {
             return true;
           }
-          return matchPath(currentPath, { path: key, exact: true });
+
+          return matchPath(currentPath, {
+            path: key,
+            exact: true,
+          });
         }}
         onSelect={(key) => history.push(key)}
       />

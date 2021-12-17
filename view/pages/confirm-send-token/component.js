@@ -1,8 +1,7 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ConfirmTokenTransactionBaseContainer from '@pages/confirm-token-transaction-base';
 import { SEND_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmSendToken extends Component {
   static propTypes = {
     history: PropTypes.object,
@@ -18,7 +17,6 @@ export default class ConfirmSendToken extends Component {
 
   render() {
     const { tokenAmount } = this.props;
-
     return (
       <ConfirmTokenTransactionBaseContainer
         onEdit={(confirmTransactionData) =>

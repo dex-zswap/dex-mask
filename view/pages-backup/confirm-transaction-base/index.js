@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import contractMap from '@metamask/contract-metadata';
 import { calcGasTotal, isBalanceSufficient } from '@pages/send/utils';
 import { getGasLoadingAnimationIsShowing } from '@reducer/app';
@@ -37,26 +40,14 @@ import {
   updateAndApproveTx,
   updateCustomNonce,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import ConfirmTransactionBase from './component';
-
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
-  return {
-    ...acc,
-    [base.toLowerCase()]: contractMap[base],
-  };
+  return { ...acc, [base.toLowerCase()]: contractMap[base] };
 }, {});
-
 let customNonceValue = '';
+
 const customNonceMerge = (txData) =>
-  customNonceValue
-    ? {
-        ...txData,
-        customNonceValue,
-      }
-    : txData;
+  customNonceValue ? { ...txData, customNonceValue } : txData;
 
 const mapStateToProps = (state, ownProps) => {
   const {
@@ -67,10 +58,8 @@ const mapStateToProps = (state, ownProps) => {
   const { id: paramsTransactionId } = params;
   const isMainnet = getIsMainnet(state);
   const supportsEIP1599 = checkNetworkAndAccountSupports1559(state);
-
   const isGasEstimatesLoading = getIsGasEstimatesLoading(state);
   const gasLoadingAnimationIsShowing = getGasLoadingAnimationIsShowing(state);
-
   const { confirmTransaction, metamask } = state;
   const {
     ensResolutionsByAddress,
@@ -98,24 +87,19 @@ const mapStateToProps = (state, ownProps) => {
     data,
   } = (transaction && transaction.txParams) || txParams;
   const accounts = getDexMaskAccounts(state);
-
   const assetImage = assetImages[txParamsToAddress];
-
   const { balance } = accounts[fromAddress];
   const { name: fromName } = identities[fromAddress];
   const toAddress = propsToAddress || txParamsToAddress;
-
   const toName =
     identities[toAddress]?.name ||
     casedContractMap[toAddress]?.name ||
     shortenAddress(toChecksumHexAddress(toAddress));
-
   const checksummedAddress = toChecksumHexAddress(toAddress);
   const addressBookObject = addressBook[checksummedAddress];
   const toEns = ensResolutionsByAddress[checksummedAddress] || '';
   const toNickname = addressBookObject ? addressBookObject.name : '';
   const transactionStatus = transaction ? transaction.status : '';
-
   const {
     hexTransactionAmount,
     hexMinimumTransactionFee,
@@ -134,26 +118,22 @@ const mapStateToProps = (state, ownProps) => {
     )
     .reduce((acc, key) => ({ ...acc, [key]: unapprovedTxs[key] }), {});
   const unapprovedTxCount = valuesFor(currentNetworkUnapprovedTxs).length;
-
   const insufficientBalance = !isBalanceSufficient({
     amount,
     gasTotal: calcGasTotal(gasLimit, gasPrice),
     balance,
     conversionRate,
   });
-
   const methodData = getKnownMethodData(state, data) || {};
-
   let fullTxData = { ...txData, ...transaction };
+
   if (customTxParamsData) {
     fullTxData = {
       ...fullTxData,
-      txParams: {
-        ...fullTxData.txParams,
-        data: customTxParamsData,
-      },
+      txParams: { ...fullTxData.txParams, data: customTxParamsData },
     };
   }
+
   customNonceValue = getCustomNonceValue(state);
   const isEthGasPrice = getIsEthGasPriceFetched(state);
   const noGasPrice = !supportsEIP1599 && getNoGasPriceFetched(state);
@@ -161,7 +141,6 @@ const mapStateToProps = (state, ownProps) => {
   const gasFeeIsCustom =
     fullTxData.userFeeLevel === 'custom' ||
     txParamsAreDappSuggested(fullTxData);
-
   return {
     balance,
     fromAddress,
@@ -222,17 +201,31 @@ export const mapDispatchToProps = (dispatch) => {
     },
     clearConfirmTransaction: () => dispatch(clearConfirmTransaction()),
     showTransactionConfirmedModal: ({ onSubmit }) => {
-      return dispatch(showModal({ name: 'TRANSACTION_CONFIRMED', onSubmit }));
+      return dispatch(
+        showModal({
+          name: 'TRANSACTION_CONFIRMED',
+          onSubmit,
+        }),
+      );
     },
     showRejectTransactionsConfirmationModal: ({
       onSubmit,
       unapprovedTxCount,
     }) => {
       return dispatch(
-        showModal({ name: 'REJECT_TRANSACTIONS', onSubmit, unapprovedTxCount }),
+        showModal({
+          name: 'REJECT_TRANSACTIONS',
+          onSubmit,
+          unapprovedTxCount,
+        }),
       );
     },
-    cancelTransaction: ({ id }) => dispatch(cancelTx({ id })),
+    cancelTransaction: ({ id }) =>
+      dispatch(
+        cancelTx({
+          id,
+        }),
+      ),
     cancelAllTransactions: (txList) => dispatch(cancelTxs(txList)),
     sendTransaction: (txData) =>
       dispatch(updateAndApproveTx(customNonceMerge(txData))),
@@ -247,13 +240,11 @@ export const mapDispatchToProps = (dispatch) => {
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { txData, unapprovedTxs } = stateProps;
-
   const {
     cancelAllTransactions: dispatchCancelAllTransactions,
     updateTransactionGasFees: dispatchUpdateTransactionGasFees,
     ...otherDispatchProps
   } = dispatchProps;
-
   return {
     ...stateProps,
     ...otherDispatchProps,

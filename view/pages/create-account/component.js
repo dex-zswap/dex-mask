@@ -4,12 +4,10 @@ import Logo from '@c/ui/logo';
 import BackBar from '@c/ui/back-bar';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
-
 export default class NewAccountCreateForm extends Component {
   static defaultProps = {
     newAccountNumber: 0,
   };
-
   state = {
     newAccountName: '',
     defaultAccountName: this.context.t('newAccountNumberName', [
@@ -20,12 +18,13 @@ export default class NewAccountCreateForm extends Component {
   render() {
     const { newAccountName, defaultAccountName } = this.state;
     const { history, createAccount, mostRecentOverviewPage } = this.props;
+
     const createClick = (_) => {
       createAccount(newAccountName || defaultAccountName)
         .then(() => {
           history.push(mostRecentOverviewPage);
         })
-        .catch((e) => { });
+        .catch((e) => {});
     };
 
     return (
@@ -41,7 +40,9 @@ export default class NewAccountCreateForm extends Component {
                 value={newAccountName}
                 placeholder={defaultAccountName}
                 onChange={(event) =>
-                  this.setState({ newAccountName: event.target.value })
+                  this.setState({
+                    newAccountName: event.target.value,
+                  })
                 }
                 bordered
                 autoFocus
@@ -68,14 +69,12 @@ export default class NewAccountCreateForm extends Component {
     );
   }
 }
-
 NewAccountCreateForm.propTypes = {
   createAccount: PropTypes.func,
   newAccountNumber: PropTypes.number,
   history: PropTypes.object,
   mostRecentOverviewPage: PropTypes.string.isRequired,
 };
-
 NewAccountCreateForm.contextTypes = {
   t: PropTypes.func,
 };

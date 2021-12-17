@@ -1,8 +1,8 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { addToken, removeSuggestedTokens } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import ConfirmAddSuggestedTokenComponent from './component';
 
 const mapStateToProps = (state) => {
@@ -10,7 +10,6 @@ const mapStateToProps = (state) => {
     metamask: { pendingTokens, suggestedTokens, tokens },
   } = state;
   const params = { ...pendingTokens, ...suggestedTokens };
-
   return {
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
     pendingTokens: params,

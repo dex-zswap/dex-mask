@@ -1,13 +1,16 @@
-import TokenTracker from '@metamask/eth-token-tracker';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import TokenTracker from '@metamask/eth-token-tracker';
 import isEqual from 'lodash/isEqual';
 import clone from 'lodash/clone';
 import { SECOND } from '@shared/constants/time';
-import { getCurrentChainId, getSelectedAddress, getTokenDisplayOrders } from '@view/selectors';
+import {
+  getCurrentChainId,
+  getSelectedAddress,
+  getTokenDisplayOrders,
+} from '@view/selectors';
 import { setTokenDisplayOrders } from '@view/store/actions';
 import { useEqualityCheck } from './useEqualityCheck';
-
 export function useTokenTracker(
   tokens,
   includeFailedTokens = false,
@@ -16,7 +19,9 @@ export function useTokenTracker(
 ) {
   const chainId = useSelector(getCurrentChainId);
   const selectedAddress = useSelector(getSelectedAddress);
-  const tokenOrders = useSelector((state) => getTokenDisplayOrders(state, false));
+  const tokenOrders = useSelector((state) =>
+    getTokenDisplayOrders(state, false),
+  );
   const userAddress = useMemo(() => address || selectedAddress, [
     address,
     selectedAddress,
@@ -29,14 +34,13 @@ export function useTokenTracker(
   const memoizedTokens = useEqualityCheck(tokens);
   const memoizedTokenOrders = useEqualityCheck(tokenOrders);
   const dispatch = useDispatch();
-
   const updateBalances = useCallback(
     (tokenWithBalances) => {
       const matchingTokens = hideZeroBalanceTokens
         ? tokenWithBalances.filter((token) => Number(token.balance) > 0)
-        : tokenWithBalances;
-      // TODO: improve this pattern for adding this field when we improve support for
+        : tokenWithBalances; // TODO: improve this pattern for adding this field when we improve support for
       // EIP721 tokens.
+
       const matchingTokensWithIsERC721Flag = matchingTokens.map((token) => {
         const additionalTokenData = memoizedTokens.find(
           (t) => t.address === token.address,
@@ -49,48 +53,67 @@ export function useTokenTracker(
     },
     [hideZeroBalanceTokens, memoizedTokens],
   );
+  const updateFirstTokenAddress = useCallback(
+    (tokenBalances) => {
+      if (userTokens.current.length === 0) {
+        userTokens.current = tokenBalances;
+        return;
+      }
 
-  const updateFirstTokenAddress = useCallback((tokenBalances) => {
-    if (userTokens.current.length === 0) {
+      let diffed;
+
+      for (
+        let i = 0, { length } = tokenBalances, current = null, cached = null;
+        i < length;
+        i++
+      ) {
+        current = tokenBalances[i];
+        cached = userTokens.current.find(
+          ({ address }) => address === current.address,
+        );
+
+        if (cached && current.string !== cached.string) {
+          diffed = current;
+          break;
+        }
+      }
+
+      if (diffed) {
+        const tokenOrdersInfo = clone(memoizedTokenOrders);
+
+        if (tokenOrdersInfo[chainId]) {
+          const existOrders = clone(
+            tokenOrdersInfo[chainId]?.[selectedAddress] ?? [],
+          );
+          tokenOrdersInfo[chainId] = Object.assign(tokenOrdersInfo[chainId], {
+            [selectedAddress]: [diffed.address].concat(
+              existOrders.filter((address) => address !== diffed.address),
+            ),
+          });
+        } else {
+          tokenOrdersInfo[chainId] = {
+            [selectedAddress]: [diffed.address],
+          };
+        }
+
+        dispatch(setTokenDisplayOrders(tokenOrdersInfo));
+      }
+
       userTokens.current = tokenBalances;
-      return;
-    }
-
-    let diffed;
-
-    for (let i = 0, { length } = tokenBalances, current = null, cached = null; i < length; i ++) {
-      current = tokenBalances[i];
-      cached = userTokens.current.find(({ address }) => address === current.address);
-      if (cached && current.string !== cached.string) {
-        diffed = current;
-        break;
-      }
-    }
-
-    if (diffed) {
-      const tokenOrdersInfo = clone(memoizedTokenOrders);
-  
-      if (tokenOrdersInfo[chainId]) {
-        const existOrders = clone(tokenOrdersInfo[chainId]?.[selectedAddress] ?? []);
-        tokenOrdersInfo[chainId] = Object.assign(tokenOrdersInfo[chainId], {
-          [selectedAddress]: [diffed.address].concat(existOrders.filter((address) => address !== diffed.address))
-        });
-      } else {
-        tokenOrdersInfo[chainId] = {
-          [selectedAddress]: [diffed.address]
-        };
-      }
-      dispatch(setTokenDisplayOrders(tokenOrdersInfo));
-    }
-
-    userTokens.current = tokenBalances;
-  }, [userTokens, dispatch, setTokenDisplayOrders, selectedAddress, chainId, memoizedTokenOrders]);
-
+    },
+    [
+      userTokens,
+      dispatch,
+      setTokenDisplayOrders,
+      selectedAddress,
+      chainId,
+      memoizedTokenOrders,
+    ],
+  );
   const showError = useCallback((err) => {
     setError(err);
     setLoading(false);
   }, []);
-
   const teardownTracker = useCallback(() => {
     if (tokenTracker.current) {
       tokenTracker.current.stop();
@@ -99,7 +122,6 @@ export function useTokenTracker(
       tokenTracker.current = null;
     }
   }, []);
-
   const buildTracker = useCallback(
     (address, tokenList) => {
       // clear out previous tracker, if it exists.
@@ -111,7 +133,6 @@ export function useTokenTracker(
         includeFailedTokens,
         pollingInterval: SECOND * 5,
       });
-
       tokenTracker.current.on('update', (tokenBalances) => {
         updateBalances(tokenBalances);
         updateFirstTokenAddress(tokenBalances);
@@ -119,19 +140,23 @@ export function useTokenTracker(
       tokenTracker.current.on('error', showError);
       tokenTracker.current.updateBalances();
     },
-    [updateBalances, updateFirstTokenAddress, includeFailedTokens, showError, teardownTracker],
-  );
-
-  // Effect to remove the tracker when the component is removed from DOM
+    [
+      updateBalances,
+      updateFirstTokenAddress,
+      includeFailedTokens,
+      showError,
+      teardownTracker,
+    ],
+  ); // Effect to remove the tracker when the component is removed from DOM
   // Do not overload this effect with additional dependencies. teardownTracker
   // is the only dependency here, which itself has no dependencies and will
   // never update. The lack of dependencies that change is what confirms
   // that this effect only runs on mount/unmount
+
   useEffect(() => {
     return teardownTracker;
-  }, [teardownTracker]);
+  }, [teardownTracker]); // Effect to set loading state and initialize tracker when values change
 
-  // Effect to set loading state and initialize tracker when values change
   useEffect(() => {
     // This effect will only run initially and when:
     // 1. chainId is updated,
@@ -163,6 +188,9 @@ export function useTokenTracker(
     updateBalances,
     buildTracker,
   ]);
-
-  return { loading, tokensWithBalances, error };
+  return {
+    loading,
+    tokensWithBalances,
+    error,
+  };
 }

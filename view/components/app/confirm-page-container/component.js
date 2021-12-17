@@ -1,20 +1,18 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import EditGasPopover from '@c/app/edit-gas/popover';
 import { PageContainerFooter } from '@c/ui/page-container';
 import { EDIT_GAS_MODES } from '@shared/constants/gas';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import {
   ConfirmPageContainerContent,
   ConfirmPageContainerHeader,
   ConfirmPageContainerHeaderContent,
   ConfirmPageContainerNavigation,
 } from '.';
-
 export default class ConfirmPageContainer extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     // Header
     tokenData: PropTypes.object,
@@ -118,7 +116,6 @@ export default class ConfirmPageContainer extends Component {
       currentTransaction,
     } = this.props;
     const renderAssetImage = contentComponent || !identiconAddress;
-
     return (
       <div className="page-container">
         <ConfirmPageContainerNavigation
@@ -139,20 +136,21 @@ export default class ConfirmPageContainer extends Component {
           showAccountInHeader={showAccountInHeader}
           accountAddress={fromAddress}
         >
-          {hideSenderToRecipient ? null : (
-            <ConfirmPageContainerHeaderContent
-              tokenData={tokenData}
-              title={title}
-              titleComponent={titleComponent}
-              senderName={fromName}
-              senderAddress={fromAddress}
-              recipientName={toName}
-              recipientAddress={toAddress}
-              recipientEns={toEns}
-              recipientNickname={toNickname}
-              assetImage={renderAssetImage ? assetImage : undefined}
-            />
-            // <SenderToRecipient
+          {
+            hideSenderToRecipient ? null : (
+              <ConfirmPageContainerHeaderContent
+                tokenData={tokenData}
+                title={title}
+                titleComponent={titleComponent}
+                senderName={fromName}
+                senderAddress={fromAddress}
+                recipientName={toName}
+                recipientAddress={toAddress}
+                recipientEns={toEns}
+                recipientNickname={toNickname}
+                assetImage={renderAssetImage ? assetImage : undefined}
+              />
+            ) // <SenderToRecipient
             //   senderName={fromName}
             //   senderAddress={fromAddress}
             //   recipientName={toName}
@@ -161,7 +159,7 @@ export default class ConfirmPageContainer extends Component {
             //   recipientNickname={toNickname}
             //   assetImage={renderAssetImage ? assetImage : undefined}
             // />
-          )}
+          }
         </ConfirmPageContainerHeader>
         {contentComponent || (
           <ConfirmPageContainerContent

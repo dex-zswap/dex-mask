@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
@@ -13,11 +13,10 @@ class PrivateKeyImportView extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   inputRef = React.createRef();
-
-  state = { isEmpty: true };
-
+  state = {
+    isEmpty: true,
+  };
   createNewKeychain = () => {
     const privateKey = this.inputRef.current.value;
     const {
@@ -28,7 +27,6 @@ class PrivateKeyImportView extends Component {
       setSelectedAddress,
       firstAddress,
     } = this.props;
-
     importNewAccount('Private Key', [privateKey])
       .then(({ selectedAddress }) => {
         if (selectedAddress) {
@@ -40,16 +38,11 @@ class PrivateKeyImportView extends Component {
         }
       })
       .catch((err) => err && displayWarning(err.message || err));
-  }
-
+  };
   back = () => {
-    const {
-      history,
-      mostRecentOverviewPage
-    } = this.props;
+    const { history, mostRecentOverviewPage } = this.props;
     history.push(mostRecentOverviewPage);
-  }
-
+  };
   createKeyringOnEnter = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -60,16 +53,19 @@ class PrivateKeyImportView extends Component {
   checkInputEmpty() {
     const privateKey = this.inputRef.current.value;
     let isEmpty = true;
+
     if (privateKey !== '') {
       isEmpty = false;
     }
-    this.setState({ isEmpty });
+
+    this.setState({
+      isEmpty,
+    });
   }
 
   render() {
     const { error, displayWarning } = this.props;
     const { isEmpty } = this.state;
-
     return (
       <div className="new-account-import-form__private-key flex space-between">
         <div>
@@ -89,10 +85,7 @@ class PrivateKeyImportView extends Component {
           {error ? <span className="error">{error}</span> : null}
         </div>
         <div className="new-account-import-form-buttons flex space-between">
-          <Button
-            className="half-button"
-            onClick={this.back}
-          >
+          <Button className="half-button" onClick={this.back}>
             {this.context.t('pre')}
           </Button>
           <Button
@@ -133,5 +126,6 @@ const ComposedComponent = compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
 )(PrivateKeyImportView);
-
-export default React.forwardRef((props, ref) => <ComposedComponent {...props} forwardedRef={ref} />);
+export default React.forwardRef((props, ref) => (
+  <ComposedComponent {...props} forwardedRef={ref} />
+));

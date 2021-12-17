@@ -1,3 +1,6 @@
+import React, { PureComponent } from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import AssetList from '@c/app/asset-list';
 import ChainSwitcher from '@c/app/chain-switcher';
 import HomeNotification from '@c/app/home-notification';
@@ -23,22 +26,16 @@ import {
   VIEW_QUOTE_ROUTE,
 } from '@view/helpers/constants/routes';
 import { formatDate } from '@view/helpers/utils';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import { Redirect, Route } from 'react-router-dom';
-
 const LEARN_MORE_URL =
   'https://metamask.zendesk.com/hc/en-us/articles/360045129011-Intro-to-MetaMask-v8-extension';
 const LEGACY_WEB3_URL =
   'https://metamask.zendesk.com/hc/en-us/articles/360053147012';
 const INFURA_BLOCKAGE_URL =
   'https://metamask.zendesk.com/hc/en-us/articles/360059386712';
-
 export default class Home extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object,
     forgottenPassword: PropTypes.bool,
@@ -77,7 +74,6 @@ export default class Home extends PureComponent {
     setRecoveryPhraseReminderHasBeenShown: PropTypes.func.isRequired,
     setRecoveryPhraseReminderLastShown: PropTypes.func.isRequired,
   };
-
   state = {
     mounted: false,
     canShowBlockageNotification: true,
@@ -96,8 +92,10 @@ export default class Home extends PureComponent {
       swapsFetchParams,
       pendingConfirmations,
     } = this.props;
+    this.setState({
+      mounted: true,
+    });
 
-    this.setState({ mounted: true });
     if (isNotification && totalUnapprovedCount === 0) {
       global.platform.closeCurrentWindow();
     } else if (!isNotification && showAwaitingSwapScreen) {
@@ -132,7 +130,9 @@ export default class Home extends PureComponent {
   ) {
     if (!mounted) {
       if (isNotification && totalUnapprovedCount === 0) {
-        return { closing: true };
+        return {
+          closing: true,
+        };
       } else if (
         firstPermissionsRequestId ||
         unconfirmedTransactionsCount > 0 ||
@@ -140,9 +140,12 @@ export default class Home extends PureComponent {
         (!isNotification &&
           (showAwaitingSwapScreen || haveSwapsQuotes || swapsFetchParams))
       ) {
-        return { redirecting: true };
+        return {
+          redirecting: true,
+        };
       }
     }
+
     return null;
   }
 
@@ -190,7 +193,6 @@ export default class Home extends PureComponent {
       disableWeb3ShimUsageAlert,
       infuraBlocked,
     } = this.props;
-
     return (
       <MultipleNotifications>
         {shouldShowWeb3ShimUsageNotification ? (
@@ -200,7 +202,9 @@ export default class Home extends PureComponent {
                 key="web3ShimUsageNotificationLink"
                 className="home-notification__text-link"
                 onClick={() =>
-                  global.platform.openTab({ url: LEGACY_WEB3_URL })
+                  global.platform.openTab({
+                    url: LEGACY_WEB3_URL,
+                  })
                 }
               >
                 {t('here')}
@@ -209,6 +213,7 @@ export default class Home extends PureComponent {
             ignoreText={t('dismiss')}
             onIgnore={(disable) => {
               setWeb3ShimUsageAlertDismissed(originOfCurrentTab);
+
               if (disable) {
                 disableWeb3ShimUsageAlert();
               }
@@ -261,7 +266,9 @@ export default class Home extends PureComponent {
                 key="infuraBlockedNotificationLink"
                 className="home-notification__text-link"
                 onClick={() =>
-                  global.platform.openTab({ url: INFURA_BLOCKAGE_URL })
+                  global.platform.openTab({
+                    url: INFURA_BLOCKAGE_URL,
+                  })
                 }
               >
                 {t('here')}
@@ -338,13 +345,18 @@ export default class Home extends PureComponent {
     } = this.props;
 
     if (forgottenPassword) {
-      return <Redirect to={{ pathname: RESTORE_VAULT_ROUTE }} />;
+      return (
+        <Redirect
+          to={{
+            pathname: RESTORE_VAULT_ROUTE,
+          }}
+        />
+      );
     } else if (this.state.closing || this.state.redirecting) {
       return null;
     }
 
     const showWhatsNew = notificationsToShow && showWhatsNewPopup;
-
     return (
       <div className="main-container">
         <Route path={CONNECTED_ROUTE} component={ConnectedSites} exact />
@@ -364,30 +376,30 @@ export default class Home extends PureComponent {
               <EthOverview />
             </div>
             {/* <Tabs
-              defaultActiveTabName={defaultHomeActiveTabName}
-              onTabClick={onTabClick}
-              tabsClassName="home__tabs"
+             defaultActiveTabName={defaultHomeActiveTabName}
+             onTabClick={onTabClick}
+             tabsClassName="home__tabs"
             >
-              <Tab
-                activeClassName="home__tab--active"
-                className="home__tab"
-                data-testid="home__asset-tab"
-                name={t('assets')}
-              >
-                <AssetList
-                  onClickAsset={(asset) =>
-                    history.push(`${ASSET_ROUTE}/${asset}`)
-                  }
-                />
-              </Tab>
-              <Tab
-                activeClassName="home__tab--active"
-                className="home__tab"
-                data-testid="home__activity-tab"
-                name={t('activity')}
-              >
-                <TransactionList />
-              </Tab>
+             <Tab
+               activeClassName="home__tab--active"
+               className="home__tab"
+               data-testid="home__asset-tab"
+               name={t('assets')}
+             >
+               <AssetList
+                 onClickAsset={(asset) =>
+                   history.push(`${ASSET_ROUTE}/${asset}`)
+                 }
+               />
+             </Tab>
+             <Tab
+               activeClassName="home__tab--active"
+               className="home__tab"
+               data-testid="home__activity-tab"
+               name={t('activity')}
+             >
+               <TransactionList />
+             </Tab>
             </Tabs> */}
             <AssetList
               onClickAsset={(asset) => history.push(`${ASSET_ROUTE}/${asset}`)}

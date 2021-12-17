@@ -1,7 +1,5 @@
 import { useState, useLayoutEffect } from 'react';
-
 import { isEqual } from 'lodash';
-
 /**
  * Given a value and a function to determine equality, return a
  * referentially equal value if the equality function returns true.
@@ -14,14 +12,13 @@ import { isEqual } from 'lodash';
  * @param {(T, T) => boolean} equalityFn - A function to determine equality
  * @returns {T}
  */
+
 export function useEqualityCheck(value, equalityFn = isEqual) {
   const [computedValue, setComputedValue] = useState(value);
-
   useLayoutEffect(() => {
     if (!equalityFn(value, computedValue)) {
       setComputedValue(value);
     }
   }, [value, equalityFn, computedValue]);
-
   return computedValue;
 }

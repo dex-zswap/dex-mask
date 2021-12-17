@@ -1,3 +1,6 @@
+import React, { PureComponent } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Unlock from '@pages/unlock-page';
 import {
   DEFAULT_ROUTE,
@@ -10,16 +13,12 @@ import {
   INITIALIZE_UNLOCK_ROUTE,
   INITIALIZE_WELCOME_ROUTE,
 } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import { Route, Switch } from 'react-router-dom';
 import CreatePassword from './create-password';
 import EndOfFlow from './end-of-flow';
 import FirstTimeFlowSwitch from './first-time-flow-switch';
 import SeedPhrase from './seed-phrase';
 import SelectAction from './select-action';
 import Welcome from './welcome';
-
 export default class FirstTimeFlow extends PureComponent {
   static propTypes = {
     completedOnboarding: PropTypes.bool,
@@ -34,7 +33,6 @@ export default class FirstTimeFlow extends PureComponent {
     seedPhraseBackedUp: PropTypes.bool,
     verifySeedPhrase: PropTypes.func,
   };
-
   state = {
     seedPhrase: '',
   };
@@ -67,12 +65,13 @@ export default class FirstTimeFlow extends PureComponent {
 
     try {
       const seedPhrase = await createNewAccount(password);
-      this.setState({ seedPhrase });
+      this.setState({
+        seedPhrase,
+      });
     } catch (error) {
       throw new Error(error.message);
     }
   };
-
   handleImportWithSeedPhrase = async (password, seedPhrase) => {
     const { createNewAccountFromSeed } = this.props;
 
@@ -83,15 +82,19 @@ export default class FirstTimeFlow extends PureComponent {
       throw new Error(error.message);
     }
   };
-
   handleUnlock = async (password) => {
     const { unlockAccount, history, nextRoute } = this.props;
 
     try {
       const seedPhrase = await unlockAccount(password);
-      this.setState({ seedPhrase }, () => {
-        history.push(nextRoute);
-      });
+      this.setState(
+        {
+          seedPhrase,
+        },
+        () => {
+          history.push(nextRoute);
+        },
+      );
     } catch (error) {
       throw new Error(error.message);
     }
@@ -100,7 +103,6 @@ export default class FirstTimeFlow extends PureComponent {
   render() {
     const { seedPhrase } = this.state;
     const { verifySeedPhrase } = this.props;
-
     return (
       <div className="first-time-flow">
         <Switch>

@@ -1,13 +1,22 @@
 @keyframes blink {
-  0% { opacity: 1 }
-  100% { opacity: 0 }
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .cross-chain-from {
   &__wrapper {
-
     margin: 10px auto;
-    background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
+    background: linear-gradient(
+      58deg,
+      #7813c4 0%,
+      #691bb5 17%,
+      #3b11b8 79%,
+      #2206a0 100%
+    );
     border-radius: 14px;
     padding: 12px;
 
@@ -21,7 +30,7 @@
       margin: 15px 0 0;
       font-size: 14px;
       font-weight: 400;
-      color: #D2D2D2;
+      color: #d2d2d2;
       line-height: 24px;
     }
   }
@@ -43,7 +52,7 @@
 
       .number-display-text {
         display: block;
-        color: #FFFFFF;
+        color: #ffffff;
         background: transparent;
         outline: none;
         border: none;
@@ -73,7 +82,7 @@
 
       .number-symbol {
         font-size: 12px;
-        color: rgba(#F6F6F6, 0.6);
+        color: rgba(#f6f6f6, 0.6);
         padding: 0 0 0 2px;
       }
     }
@@ -82,7 +91,7 @@
       display: flex;
       align-items: center;
       font-size: 12px;
-      color: rgba(#F6F6F6, 0.6);
+      color: rgba(#f6f6f6, 0.6);
     }
 
     .switch-btn {

@@ -1,10 +1,9 @@
-import Typography from '@c/ui/typography';
-import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system';
+import React from 'react';
 import classnames from 'classnames';
 import { omit } from 'lodash';
 import PropTypes from 'prop-types';
-import React from 'react';
-
+import Typography from '@c/ui/typography';
+import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system';
 export default function Chip({
   className,
   children,
@@ -22,7 +21,6 @@ export default function Chip({
   };
 
   const isInteractive = typeof onClick === 'function';
-
   return (
     <div
       onClick={onClick}
@@ -51,7 +49,6 @@ export default function Chip({
     </div>
   );
 }
-
 Chip.propTypes = {
   borderColor: PropTypes.oneOf(Object.values(COLORS)),
   label: PropTypes.string,

@@ -1,17 +1,14 @@
-import SendRowWrapper from '@pages/send/send-content/send-row-wrapper';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import SendRowWrapper from '@pages/send/send-content/send-row-wrapper';
 export default class SendHexDataRow extends Component {
   static propTypes = {
     inError: PropTypes.bool,
     updateSendHexData: PropTypes.func.isRequired,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   onInput = (event) => {
     const { updateSendHexData } = this.props;
     const data = event.target.value.replace(/\n/gu, '') || null;
@@ -21,7 +18,6 @@ export default class SendHexDataRow extends Component {
   render() {
     const { inError } = this.props;
     const { t } = this.context;
-
     return (
       <SendRowWrapper
         label={`${t('hexData')}:`}

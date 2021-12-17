@@ -1,7 +1,6 @@
-import PageContainerFooter from '@c/ui/page-container/page-container-footer';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import PageContainerFooter from '@c/ui/page-container/page-container-footer';
 export default class MetaMetricsOptIn extends Component {
   static propTypes = {
     history: PropTypes.object,
@@ -10,7 +9,6 @@ export default class MetaMetricsOptIn extends Component {
     firstTimeSelectionMetaMetricsName: PropTypes.string,
     participateInMetaMetrics: PropTypes.bool,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -24,7 +22,6 @@ export default class MetaMetricsOptIn extends Component {
       firstTimeSelectionMetaMetricsName,
       participateInMetaMetrics,
     } = this.props;
-
     return (
       <div className="metametrics-opt-in">
         <div className="metametrics-opt-in__main">

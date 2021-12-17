@@ -1,16 +1,18 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import { isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 import { safeComponentList } from './safe-component-list';
 
 function getElement(section) {
   const { element } = section;
   const Element = safeComponentList[element];
+
   if (!Element) {
     throw new Error(
       `${element} is not in the safe component list for MetaMask template renderer`,
     );
   }
+
   return Element;
 }
 
@@ -37,9 +39,8 @@ const DexMaskTemplateRenderer = ({ sections }) => {
         )}
       </Element>
     );
-  }
+  } // The last case is dealing with an array of objects
 
-  // The last case is dealing with an array of objects
   return (
     <>
       {sections.reduce((allChildren, child) => {
@@ -55,6 +56,7 @@ const DexMaskTemplateRenderer = ({ sections }) => {
               'When using array syntax in MetaMask Template Language, you must specify a key for each child of the array',
             );
           }
+
           if (typeof child?.children === 'object') {
             // If this child has its own children, check if children is an
             // object, and in that case use recursion to render.
@@ -71,6 +73,7 @@ const DexMaskTemplateRenderer = ({ sections }) => {
             );
           }
         }
+
         return allChildren;
       }, [])}
     </>
@@ -82,7 +85,6 @@ export const SectionShape = {
   element: PropTypes.oneOf(Object.keys(safeComponentList)).isRequired,
   key: PropTypes.string,
 };
-
 const ValidChildren = PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.shape(SectionShape),
@@ -90,13 +92,10 @@ const ValidChildren = PropTypes.oneOfType([
     PropTypes.oneOfType([PropTypes.shape(SectionShape), PropTypes.string]),
   ),
 ]);
-
 SectionShape.children = ValidChildren;
-
 DexMaskTemplateRenderer.propTypes = {
   sections: ValidChildren,
 };
-
 export default memo(DexMaskTemplateRenderer, (prevProps, nextProps) => {
   return isEqual(prevProps.sections, nextProps.sections);
 });

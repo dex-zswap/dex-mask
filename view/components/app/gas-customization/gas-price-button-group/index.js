@@ -1,9 +1,8 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import ButtonGroup from '@c/ui/button-group';
 import { GAS_ESTIMATE_TYPES } from '@view/helpers/constants/common';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 const GAS_OBJECT_PROPTYPES_SHAPE = {
   gasEstimateType: PropTypes.oneOf(Object.values(GAS_ESTIMATE_TYPES))
     .isRequired,
@@ -12,12 +11,10 @@ const GAS_OBJECT_PROPTYPES_SHAPE = {
   timeEstimate: PropTypes.string,
   priceInHexWei: PropTypes.string,
 };
-
 export default class GasPriceButtonGroup extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     buttonDataLoading: PropTypes.bool,
     className: PropTypes.string,
@@ -41,6 +38,7 @@ export default class GasPriceButtonGroup extends Component {
     } else if (gasEstimateType === GAS_ESTIMATE_TYPES.FASTEST) {
       return this.context.t('fastest');
     }
+
     throw new Error(`Unrecognized gas estimate type: ${gasEstimateType}`);
   }
 
@@ -118,7 +116,6 @@ export default class GasPriceButtonGroup extends Component {
       buttonDataLoading,
       ...buttonPropsAndFlags
     } = this.props;
-
     return buttonDataLoading ? (
       <div className={`${buttonPropsAndFlags.className}__loading-container`}>
         {this.context.t('loading')}

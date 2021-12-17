@@ -1,3 +1,10 @@
+import { createSlice } from '@reduxjs/toolkit';
+import networkMap from 'ethereum-ens-network-map';
+import { isHexString } from 'ethereumjs-util';
+import ENS from 'ethjs-ens';
+import log from 'loglevel';
+import { isConfusing } from 'unicode-confusables'; // Local Constants
+
 import {
   CONFUSING_ENS_ERROR,
   ENS_ILLEGAL_CHARACTER,
@@ -7,7 +14,6 @@ import {
   ENS_REGISTRATION_ERROR,
   ENS_UNKNOWN_ERROR,
 } from '@pages/send/constants';
-import { createSlice } from '@reduxjs/toolkit';
 import {
   CHAIN_ID_TO_NETWORK_ID_MAP,
   MAINNET_NETWORK_ID,
@@ -20,15 +26,7 @@ import {
 import { isValidDomainName } from '@view/helpers/utils';
 import { getCurrentChainId } from '@view/selectors';
 import { CHAIN_CHANGED } from '@view/store/actionConstants';
-import networkMap from 'ethereum-ens-network-map';
-import { isHexString } from 'ethereumjs-util';
-import ENS from 'ethjs-ens';
-import log from 'loglevel';
-import { isConfusing } from 'unicode-confusables';
-
-// Local Constants
 const ZERO_X_ERROR_ADDRESS = '0x';
-
 const initialState = {
   stage: 'UNINITIALIZED',
   resolution: null,
@@ -36,13 +34,9 @@ const initialState = {
   warning: null,
   network: null,
 };
-
 export const ensInitialState = initialState;
-
 const name = 'ENS';
-
 let ens = null;
-
 const slice = createSlice({
   name,
   initialState,
@@ -77,6 +71,7 @@ const slice = createSlice({
         } else {
           state.resolution = address;
         }
+
         if (isValidDomainName(address) && isConfusing(address)) {
           state.warning = CONFUSING_ENS_ERROR;
         }
@@ -116,10 +111,8 @@ const slice = createSlice({
     });
   },
 });
-
 const { reducer, actions } = slice;
 export default reducer;
-
 const {
   disableEnsLookup,
   ensLookup,
@@ -128,15 +121,18 @@ const {
   resetEnsResolution,
 } = actions;
 export { resetEnsResolution };
-
 export function initializeEnsSlice() {
   return (dispatch, getState) => {
     const state = getState();
     const chainId = getCurrentChainId(state);
     const network = CHAIN_ID_TO_NETWORK_ID_MAP[chainId];
     const networkIsSupported = Boolean(networkMap[network]);
+
     if (networkIsSupported) {
-      ens = new ENS({ provider: global.ethereumProvider, network });
+      ens = new ENS({
+        provider: global.ethereumProvider,
+        network,
+      });
       dispatch(enableEnsLookup(network));
     } else {
       ens = null;
@@ -144,20 +140,24 @@ export function initializeEnsSlice() {
     }
   };
 }
-
 export function lookupEnsName(ensName) {
   return async (dispatch, getState) => {
     const trimmedEnsName = ensName.trim();
     let state = getState();
+
     if (state[name].stage === 'UNINITIALIZED') {
       await dispatch(initializeEnsSlice());
     }
+
     state = getState();
+
     if (
       state[name].stage === 'NO_NETWORK_SUPPORT' &&
       !(
         isBurnAddress(trimmedEnsName) === false &&
-        isValidHexAddress(trimmedEnsName, { mixedCaseUseChecksum: true })
+        isValidHexAddress(trimmedEnsName, {
+          mixedCaseUseChecksum: true,
+        })
       ) &&
       !isHexString(trimmedEnsName)
     ) {
@@ -166,11 +166,13 @@ export function lookupEnsName(ensName) {
       log.info(`ENS attempting to resolve name: ${trimmedEnsName}`);
       let address;
       let error;
+
       try {
         address = await ens.lookup(trimmedEnsName);
       } catch (err) {
         error = err;
       }
+
       const chainId = getCurrentChainId(state);
       const network = CHAIN_ID_TO_NETWORK_ID_MAP[chainId];
       await dispatch(
@@ -185,15 +187,12 @@ export function lookupEnsName(ensName) {
     }
   };
 }
-
 export function getEnsResolution(state) {
   return state[name].resolution;
 }
-
 export function getEnsError(state) {
   return state[name].error;
 }
-
 export function getEnsWarning(state) {
   return state[name].warning;
 }

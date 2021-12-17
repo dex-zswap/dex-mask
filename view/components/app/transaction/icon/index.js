@@ -1,3 +1,6 @@
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import Approve from '@c/ui/icon/approve-icon.component';
 import Interaction from '@c/ui/icon/interaction-icon.component';
 import Receive from '@c/ui/icon/receive-icon.component';
@@ -10,10 +13,6 @@ import {
   TRANSACTION_STATUSES,
 } from '@shared/constants/transaction';
 import { captureSingleException } from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-
 const ICON_MAP = {
   [TRANSACTION_GROUP_CATEGORIES.APPROVAL]: Approve,
   [TRANSACTION_GROUP_CATEGORIES.INTERACTION]: Interaction,
@@ -22,11 +21,9 @@ const ICON_MAP = {
   [TRANSACTION_GROUP_CATEGORIES.RECEIVE]: Receive,
   [TRANSACTION_GROUP_CATEGORIES.SWAP]: Swap,
 };
-
 const FAIL_COLOR = '#23233F';
 const PENDING_COLOR = '#585A64';
 const OK_COLOR = '#651AB5';
-
 const COLOR_MAP = {
   [TRANSACTION_GROUP_STATUSES.PENDING]: PENDING_COLOR,
   [TRANSACTION_STATUSES.UNAPPROVED]: PENDING_COLOR,
@@ -37,10 +34,8 @@ const COLOR_MAP = {
   [TRANSACTION_STATUSES.DROPPED]: FAIL_COLOR,
   [TRANSACTION_STATUSES.SUBMITTED]: PENDING_COLOR,
 };
-
 export default function TransactionIcon({ status, category }) {
   const dispatch = useDispatch();
-
   const color = COLOR_MAP[status] || OK_COLOR;
   const Icon = ICON_MAP[category];
 
@@ -55,7 +50,6 @@ export default function TransactionIcon({ status, category }) {
 
   return <Icon color={color} size={36} />;
 }
-
 TransactionIcon.propTypes = {
   status: PropTypes.oneOf([
     TRANSACTION_GROUP_STATUSES.PENDING,

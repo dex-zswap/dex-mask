@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-
 /**
  * Determine whether a transaction can be approved and provide a method to
  * kick off the approval process.
@@ -9,6 +8,7 @@ import { useCallback, useState } from 'react';
  * @param {Object} transactionGroup
  * @return {[boolean, Function]}
  */
+
 export function useApproveTransaction() {
   const [showCustomizeGasPopover, setShowCustomizeGasPopover] = useState(false);
 
@@ -17,7 +17,6 @@ export function useApproveTransaction() {
   const approveTransaction = useCallback(() => {
     return setShowCustomizeGasPopover(true);
   }, []);
-
   return {
     approveTransaction,
     showCustomizeGasPopover,

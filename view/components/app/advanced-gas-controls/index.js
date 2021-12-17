@@ -1,13 +1,12 @@
+import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import FormField from '@c/ui/form-field';
 import { getIsGasEstimatesLoading } from '@reducer/dexmask/dexmask';
 import { GAS_ESTIMATE_TYPES } from '@shared/constants/gas';
 import { I18nContext } from '@view/contexts/i18n';
 import { getGasFormErrorText } from '@view/helpers/constants/gas';
 import { checkNetworkAndAccountSupports1559 } from '@view/selectors';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
-
 export default function AdvancedGasControls({
   gasEstimateType,
   maxPriorityFee,
@@ -29,20 +28,20 @@ export default function AdvancedGasControls({
     checkNetworkAndAccountSupports1559,
   );
   const isGasEstimatesLoading = useSelector(getIsGasEstimatesLoading);
-
   const showFeeMarketFields =
     networkAndAccountSupport1559 &&
     (gasEstimateType === GAS_ESTIMATE_TYPES.FEE_MARKET ||
       gasEstimateType === GAS_ESTIMATE_TYPES.ETH_GASPRICE ||
       isGasEstimatesLoading);
-
   return (
     <div className="advanced-gas-controls">
       <FormField
         titleText={t('gasLimit')}
         error={
           gasErrors?.gasLimit
-            ? getGasFormErrorText(gasErrors.gasLimit, t, { minimumGasLimit })
+            ? getGasFormErrorText(gasErrors.gasLimit, t, {
+                minimumGasLimit,
+              })
             : null
         }
         onChange={(value) => {
@@ -115,7 +114,6 @@ export default function AdvancedGasControls({
     </div>
   );
 }
-
 AdvancedGasControls.propTypes = {
   gasEstimateType: PropTypes.oneOf(Object.values(GAS_ESTIMATE_TYPES)),
   setMaxPriorityFee: PropTypes.func,

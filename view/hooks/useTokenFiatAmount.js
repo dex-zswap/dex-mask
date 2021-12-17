@@ -1,13 +1,5 @@
-import { getConversionRate } from '@reducer/dexmask/dexmask';
-import { getTokenFiatAmount } from '@view/helpers/utils/token-util';
-import {
-  getCurrentCurrency,
-  getShouldShowFiat,
-  getTokenExchangeRates,
-} from '@view/selectors';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-
 /**
  * Get the token balance converted to fiat and formatted for display
  *
@@ -21,6 +13,14 @@ import { useSelector } from 'react-redux';
  * @param {boolean} hideCurrencySymbol Indicates whether the returned formatted amount should include the trailing currency symbol
  * @return {string} - The formatted token amount in the user's chosen fiat currency
  */
+
+import { getConversionRate } from '@reducer/dexmask/dexmask';
+import { getTokenFiatAmount } from '@view/helpers/utils/token-util';
+import {
+  getCurrentCurrency,
+  getShouldShowFiat,
+  getTokenExchangeRates,
+} from '@view/selectors';
 export function useTokenFiatAmount(
   tokenAddress,
   tokenAmount,

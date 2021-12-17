@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
-import { Menu, MenuItem } from '@c/ui/menu';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   createCustomAccountLink,
   getAccountLink,
 } from '@metamask/etherscan-link';
+import { Menu, MenuItem } from '@c/ui/menu';
 import {
   CHAINID_EXPLORE_MAP,
   MAINNET_CHAIN_ID,
@@ -21,12 +20,10 @@ import {
   getSelectedIdentity,
 } from '@view/selectors';
 import { showModal } from '@view/store/actions';
-
 export default function AccountOptionsMenu({ anchorElement, onClose }) {
   const t = useI18nContext();
   const dispatch = useDispatch();
   const history = useHistory();
-
   const provider = useSelector((state) => state.metamask.provider);
   const keyring = useSelector(getCurrentKeyring);
   const chainId = useSelector(getCurrentChainId);
@@ -45,7 +42,6 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
 
   const providerType =
     NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
-
   const isMainnet = useMemo(() => chainId === MAINNET_CHAIN_ID, [chainId]);
 
   const getBlockExplorerUrlHost = () => {
@@ -58,7 +54,6 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
 
   const isRemovable = keyring.type !== 'HD Key Tree';
   const blockExplorerUrlSubTitle = getBlockExplorerUrlHost();
-
   return (
     <Menu
       anchorElement={anchorElement}
@@ -79,7 +74,11 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
       <MenuItem
         data-testid="account-options-menu__account-details"
         onClick={() => {
-          dispatch(showModal({ name: 'ACCOUNT_DETAILS' }));
+          dispatch(
+            showModal({
+              name: 'ACCOUNT_DETAILS',
+            }),
+          );
           onClose();
         }}
         iconClassName="account-options-menu__account-details"

@@ -8,6 +8,7 @@ const switchDirection = async (direction) => {
     // eslint-disable-next-line no-param-reassign
     direction = 'ltr';
   }
+
   let updatedLink;
   Array.from(document.getElementsByTagName('link'))
     .filter((link) => link.rel === 'stylesheet')
@@ -19,11 +20,13 @@ const switchDirection = async (direction) => {
         link.disabled = true;
       }
     });
+
   if (updatedLink) {
     return new Promise((resolve, reject) => {
       updatedLink.onload = () => {
         resolve();
       };
+
       updatedLink.onerror = () =>
         reject(new Error(`Failed to load '${direction}' stylesheet`));
     });

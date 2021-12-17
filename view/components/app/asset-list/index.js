@@ -1,3 +1,7 @@
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import AddTokenButton from '@c/app/add-token-button';
 import AssetListItem from '@c/app/asset-list-item';
 import CrossChainButton from '@c/app/cross-chain';
@@ -14,10 +18,6 @@ import {
   getNativeCurrencyImage,
   getShouldShowFiat,
 } from '@view/selectors';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 const AssetList = ({ onClickAsset }) => {
   const history = useHistory();
@@ -27,16 +27,18 @@ const AssetList = ({ onClickAsset }) => {
   const nativeCurrency = useSelector(getNativeCurrency);
   const showFiat = useSelector(getShouldShowFiat);
   const provider = useSelector((state) => state.metamask.provider);
-
   const {
     currency: primaryCurrency,
     numberOfDecimals: primaryNumberOfDecimals,
-  } = useUserPreferencedCurrency(PRIMARY, { ethNumberOfDecimals: 4 });
+  } = useUserPreferencedCurrency(PRIMARY, {
+    ethNumberOfDecimals: 4,
+  });
   const {
     currency: secondaryCurrency,
     numberOfDecimals: secondaryNumberOfDecimals,
-  } = useUserPreferencedCurrency(SECONDARY, { ethNumberOfDecimals: 4 });
-
+  } = useUserPreferencedCurrency(SECONDARY, {
+    ethNumberOfDecimals: 4,
+  });
   const [, primaryCurrencyProperties] = useCurrencyDisplay(
     selectedAccountBalance,
     {
@@ -44,7 +46,6 @@ const AssetList = ({ onClickAsset }) => {
       currency: primaryCurrency,
     },
   );
-
   const [
     secondaryCurrencyDisplay,
     secondaryCurrencyProperties,
@@ -52,13 +53,10 @@ const AssetList = ({ onClickAsset }) => {
     numberOfDecimals: secondaryNumberOfDecimals,
     currency: secondaryCurrency,
   });
-
   const primaryTokenImage = useSelector(getNativeCurrencyImage);
-
   const providerType = (
     NETWORK_TO_NAME_MAP[provider.type] ?? provider.type
   ).toUpperCase();
-
   return (
     <div className="assets-list-wrapper">
       <AssetListItem
@@ -67,9 +65,7 @@ const AssetList = ({ onClickAsset }) => {
         primary={
           <div className="token-detail">
             {showFiat && (
-              <div className="token-usd">
-                {secondaryCurrencyDisplay}
-              </div>
+              <div className="token-usd">{secondaryCurrencyDisplay}</div>
             )}
             <div
               className="token-amount"
@@ -102,5 +98,4 @@ const AssetList = ({ onClickAsset }) => {
 AssetList.propTypes = {
   onClickAsset: PropTypes.func.isRequired,
 };
-
 export default AssetList;

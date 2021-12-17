@@ -1,9 +1,8 @@
-import TextField from '@c/ui/text-field';
-import DropdownSearchList from '@pages/swaps/dropdown-search-list';
+import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
-
+import TextField from '@c/ui/text-field';
+import DropdownSearchList from '@pages/swaps/dropdown-search-list';
 const characterWidthMap = {
   1: 5.86,
   2: 10.05,
@@ -26,6 +25,7 @@ const getInputWidth = (value) => {
     12,
   );
 };
+
 export default function DropdownInputPair({
   itemsToSearch = [],
   onInputChange,
@@ -42,17 +42,20 @@ export default function DropdownInputPair({
   autoFocus,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
-  const inputRef = useRef();
-  const onTextFieldChange = (event) => {
-    event.stopPropagation();
-    // Automatically prefix value with 0. if user begins typing .
-    const valueToUse = event.target.value === '.' ? '0.' : event.target.value;
 
-    // Regex that validates strings with only numbers, 'x.', '.x', and 'x.x'
-    const regexp = /^(\.\d+|\d+(\.\d+)?|\d+\.)$/u;
-    // If the value is either empty or contains only numbers and '.' and only has one '.', update input to match
+  const open = () => setIsOpen(true);
+
+  const close = () => setIsOpen(false);
+
+  const inputRef = useRef();
+
+  const onTextFieldChange = (event) => {
+    event.stopPropagation(); // Automatically prefix value with 0. if user begins typing .
+
+    const valueToUse = event.target.value === '.' ? '0.' : event.target.value; // Regex that validates strings with only numbers, 'x.', '.x', and 'x.x'
+
+    const regexp = /^(\.\d+|\d+(\.\d+)?|\d+\.)$/u; // If the value is either empty or contains only numbers and '.' and only has one '.', update input to match
+
     if (valueToUse === '' || regexp.test(valueToUse)) {
       onInputChange(valueToUse);
     } else {
@@ -61,6 +64,7 @@ export default function DropdownInputPair({
       onInputChange(inputValue || '');
     }
   };
+
   const [applyTwoLineStyle, setApplyTwoLineStyle] = useState(null);
   useEffect(() => {
     setApplyTwoLineStyle(
@@ -69,16 +73,24 @@ export default function DropdownInputPair({
         137,
     );
   }, [inputValue, inputRef]);
-
   return (
     <div className="dropdown-input-pair">
       <DropdownSearchList
         itemsToSearch={itemsToSearch}
         SearchListPlaceholder={SearchListPlaceholder}
         fuseSearchKeys={[
-          { name: 'name', weight: 0.499 },
-          { name: 'symbol', weight: 0.499 },
-          { name: 'address', weight: 0.002 },
+          {
+            name: 'name',
+            weight: 0.499,
+          },
+          {
+            name: 'symbol',
+            weight: 0.499,
+          },
+          {
+            name: 'address',
+            weight: 0.002,
+          },
         ]}
         maxListItems={maxListItems}
         onOpen={open}
@@ -120,7 +132,6 @@ export default function DropdownInputPair({
     </div>
   );
 }
-
 DropdownInputPair.propTypes = {
   itemsToSearch: PropTypes.array,
   onInputChange: PropTypes.func,

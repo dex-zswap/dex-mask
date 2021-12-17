@@ -1,13 +1,11 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ConfirmTransactionBase from '@pages/confirm-transaction-base';
 import { SEND_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmSendEther extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     editTransaction: PropTypes.func,
     history: PropTypes.object,
@@ -28,7 +26,6 @@ export default class ConfirmSendEther extends Component {
 
   render() {
     const hideData = this.shouldHideData();
-
     return (
       <ConfirmTransactionBase
         actionKey="confirm"

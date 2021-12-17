@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import {
   DEFAULT_ROUTE,
   INITIALIZE_BACKUP_SEED_PHRASE_ROUTE,
@@ -6,19 +8,15 @@ import {
   INITIALIZE_SEED_PHRASE_INTRO_ROUTE,
   INITIALIZE_SEED_PHRASE_ROUTE,
 } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
 import ConfirmSeedPhrase from './confirm-seed-phrase';
 import RevealSeedPhrase from './reveal-seed-phrase';
 import SeedPhraseIntro from './seed-phrase-intro';
-
 export default class SeedPhrase extends PureComponent {
   static propTypes = {
     history: PropTypes.object,
     seedPhrase: PropTypes.string,
     verifySeedPhrase: PropTypes.func,
   };
-
   state = {
     verifiedSeedPhrase: '',
   };
@@ -29,7 +27,9 @@ export default class SeedPhrase extends PureComponent {
     if (!seedPhrase) {
       verifySeedPhrase().then((verifiedSeedPhrase) => {
         if (verifiedSeedPhrase) {
-          this.setState({ verifiedSeedPhrase });
+          this.setState({
+            verifiedSeedPhrase,
+          });
         } else {
           history.push(DEFAULT_ROUTE);
         }
@@ -40,7 +40,6 @@ export default class SeedPhrase extends PureComponent {
   render() {
     const { seedPhrase, history } = this.props;
     const { verifiedSeedPhrase } = this.state;
-
     return (
       <Switch>
         <Route

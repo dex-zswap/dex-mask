@@ -1,14 +1,13 @@
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
+import FileInput from 'react-simple-file-input';
 import Button from '@c/ui/button';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { getDexMaskAccounts } from '@view/selectors';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import FileInput from 'react-simple-file-input';
-import { compose } from 'redux';
-
 const HELP_LINK =
   'https://metamask.zendesk.com/hc/en-us/articles/360015489331-Importing-an-Account';
 
@@ -17,13 +16,11 @@ class JsonImportSubview extends Component {
     fileContents: '',
     isEmpty: true,
   };
-
   inputRef = React.createRef();
 
   render() {
     const { error, history, mostRecentOverviewPage } = this.props;
     const enabled = !this.state.isEmpty && this.state.fileContents !== '';
-
     return (
       <div className="new-account-import-form__json">
         <p>{this.context.t('usedByClients')}</p>
@@ -57,10 +54,10 @@ class JsonImportSubview extends Component {
         />
         <div className="new-account-create-form__buttons">
           {/* <Button
-            className="new-account-create-form__button"
-            onClick={() => history.push(mostRecentOverviewPage)}
+           className="new-account-create-form__button"
+           onClick={() => history.push(mostRecentOverviewPage)}
           >
-            {this.context.t('cancel')}
+           {this.context.t('cancel')}
           </Button> */}
           <Button
             type="primary"
@@ -107,7 +104,6 @@ class JsonImportSubview extends Component {
     }
 
     const password = this.inputRef.current.value;
-
     importNewJsonAccount([fileContents, password])
       .then(({ selectedAddress }) => {
         if (selectedAddress) {
@@ -124,10 +120,14 @@ class JsonImportSubview extends Component {
   checkInputEmpty() {
     const password = this.inputRef.current.value;
     let isEmpty = true;
+
     if (password !== '') {
       isEmpty = false;
     }
-    this.setState({ isEmpty });
+
+    this.setState({
+      isEmpty,
+    });
   }
 }
 
@@ -162,7 +162,6 @@ const mapDispatchToProps = (dispatch) => {
 JsonImportSubview.contextTypes = {
   t: PropTypes.func,
 };
-
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),

@@ -1,27 +1,24 @@
-import Button from '@c/ui/button';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import Button from '@c/ui/button';
 export default class SelectHardware extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     connectToHardwareWallet: PropTypes.func.isRequired,
     browserSupported: PropTypes.bool.isRequired,
     useLedgerLive: PropTypes.bool.isRequired,
   };
-
   state = {
     selectedDevice: null,
   };
-
   connect = () => {
     if (this.state.selectedDevice) {
       this.props.connectToHardwareWallet(this.state.selectedDevice);
     }
+
     return null;
   };
 
@@ -31,7 +28,11 @@ export default class SelectHardware extends Component {
         className={classnames('hw-connect__btn', {
           selected: this.state.selectedDevice === 'trezor',
         })}
-        onClick={(_) => this.setState({ selectedDevice: 'trezor' })}
+        onClick={(_) =>
+          this.setState({
+            selectedDevice: 'trezor',
+          })
+        }
       >
         <img
           className="hw-connect__btn__img"
@@ -48,7 +49,11 @@ export default class SelectHardware extends Component {
         className={classnames('hw-connect__btn', {
           selected: this.state.selectedDevice === 'ledger',
         })}
-        onClick={(_) => this.setState({ selectedDevice: 'ledger' })}
+        onClick={(_) =>
+          this.setState({
+            selectedDevice: 'ledger',
+          })
+        }
       >
         <img
           className="hw-connect__btn__img"
@@ -127,8 +132,10 @@ export default class SelectHardware extends Component {
     switch (this.state.selectedDevice) {
       case 'ledger':
         return this.renderLedgerTutorialSteps();
+
       case 'trezor':
         return this.renderTrezorTutorialSteps();
+
       default:
         return '';
     }
@@ -136,6 +143,7 @@ export default class SelectHardware extends Component {
 
   renderLedgerTutorialSteps() {
     const steps = [];
+
     if (this.props.useLedgerLive) {
       steps.push({
         title: this.context.t('step1LedgerWallet'),
@@ -155,7 +163,10 @@ export default class SelectHardware extends Component {
 
     steps.push({
       asset: 'plug-in-wallet',
-      dimensions: { width: '225px', height: '75px' },
+      dimensions: {
+        width: '225px',
+        height: '75px',
+      },
       title: this.context.t('step2LedgerWallet'),
       message: this.context.t('step2LedgerWalletMsg', [
         <a
@@ -169,7 +180,6 @@ export default class SelectHardware extends Component {
         </a>,
       ]),
     });
-
     return (
       <div className="hw-tutorial">
         {steps.map((step, index) => (
@@ -194,7 +204,10 @@ export default class SelectHardware extends Component {
     const steps = [
       {
         asset: 'plug-in-wallet',
-        dimensions: { width: '225px', height: '75px' },
+        dimensions: {
+          width: '225px',
+          height: '75px',
+        },
         title: this.context.t('step1TrezorWallet'),
         message: this.context.t('step1TrezorWalletMsg', [
           <a
@@ -209,7 +222,6 @@ export default class SelectHardware extends Component {
         ]),
       },
     ];
-
     return (
       <div className="hw-tutorial">
         {steps.map((step, index) => (
@@ -245,6 +257,7 @@ export default class SelectHardware extends Component {
     if (this.props.browserSupported) {
       return this.renderConnectScreen();
     }
+
     return this.renderUnsupportedBrowser();
   }
 }

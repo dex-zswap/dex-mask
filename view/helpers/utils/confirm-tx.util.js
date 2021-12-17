@@ -1,8 +1,7 @@
+import BigNumber from 'bignumber.js';
 import currencyFormatter from 'currency-formatter';
 import currencies from 'currency-formatter/currencies';
-import BigNumber from 'bignumber.js';
 import { addHexPrefix } from '@app/scripts/lib/util';
-
 import { unconfirmedTransactionsCountSelector } from '@view/selectors';
 import {
   conversionUtil,
@@ -10,7 +9,6 @@ import {
   multiplyCurrencies,
   conversionGreaterThan,
 } from '@shared/modules/conversion.utils';
-
 export function increaseLastGasPrice(lastGasPrice) {
   return addHexPrefix(
     multiplyCurrencies(lastGasPrice || '0x0', 1.1, {
@@ -20,14 +18,18 @@ export function increaseLastGasPrice(lastGasPrice) {
     }),
   );
 }
-
 export function hexGreaterThan(a, b) {
   return conversionGreaterThan(
-    { value: a, fromNumericBase: 'hex' },
-    { value: b, fromNumericBase: 'hex' },
+    {
+      value: a,
+      fromNumericBase: 'hex',
+    },
+    {
+      value: b,
+      fromNumericBase: 'hex',
+    },
   );
 }
-
 export function getHexGasTotal({ gasLimit, gasPrice }) {
   return addHexPrefix(
     multiplyCurrencies(gasLimit || '0x0', gasPrice || '0x0', {
@@ -37,7 +39,6 @@ export function getHexGasTotal({ gasLimit, gasPrice }) {
     }),
   );
 }
-
 export function addEth(...args) {
   return args.reduce((acc, ethAmount) => {
     return addCurrencies(acc, ethAmount, {
@@ -48,7 +49,6 @@ export function addEth(...args) {
     });
   });
 }
-
 export function addFiat(...args) {
   return args.reduce((acc, fiatAmount) => {
     return addCurrencies(acc, fiatAmount, {
@@ -59,7 +59,6 @@ export function addFiat(...args) {
     });
   });
 }
-
 export function getValueFromWeiHex({
   value,
   fromCurrency = 'ETH',
@@ -79,7 +78,6 @@ export function getValueFromWeiHex({
     conversionRate,
   });
 }
-
 export function getTransactionFee({
   value,
   fromCurrency = 'ETH',
@@ -97,10 +95,8 @@ export function getTransactionFee({
     conversionRate,
   });
 }
-
 export function formatCurrency(value, currencyCode) {
   const upperCaseCurrencyCode = currencyCode.toUpperCase();
-
   return currencies.find((currency) => currency.code === upperCaseCurrencyCode)
     ? currencyFormatter.format(Number(value), {
         code: upperCaseCurrencyCode,
@@ -108,7 +104,6 @@ export function formatCurrency(value, currencyCode) {
       })
     : value;
 }
-
 export function convertTokenToFiat({
   value,
   fromCurrency = 'ETH',
@@ -117,7 +112,6 @@ export function convertTokenToFiat({
   contractExchangeRate,
 }) {
   const totalExchangeRate = conversionRate * contractExchangeRate;
-
   return conversionUtil(value, {
     fromNumericBase: 'dec',
     toNumericBase: 'dec',
@@ -127,11 +121,9 @@ export function convertTokenToFiat({
     conversionRate: totalExchangeRate,
   });
 }
-
 export function hasUnconfirmedTransactions(state) {
   return unconfirmedTransactionsCountSelector(state) > 0;
 }
-
 /**
  * Rounds the given decimal string to 4 significant digits.
  *
@@ -139,16 +131,15 @@ export function hasUnconfirmedTransactions(state) {
  * @returns {string} The rounded number, or the original number if no
  * rounding was necessary.
  */
+
 export function roundExponential(decimalString) {
   const PRECISION = 4;
-  const bigNumberValue = new BigNumber(decimalString);
+  const bigNumberValue = new BigNumber(decimalString); // In JS, numbers with exponentials greater than 20 get displayed as an exponential.
 
-  // In JS, numbers with exponentials greater than 20 get displayed as an exponential.
   return bigNumberValue.e > 20
     ? bigNumberValue.toPrecision(PRECISION)
     : decimalString;
 }
-
 export function areDappSuggestedAndTxParamGasFeesTheSame(txData = {}) {
   const { txParams, dappSuggestedGasFees } = txData;
   const {
@@ -161,11 +152,11 @@ export function areDappSuggestedAndTxParamGasFeesTheSame(txData = {}) {
     maxFeePerGas: dappMaxFeePerGas,
     maxPriorityFeePerGas: dappMaxPriorityFeePerGas,
   } = dappSuggestedGasFees || {};
-
   const txParamsDoesNotHaveFeeProperties =
     !txParamsGasPrice && !txParamsMaxFeePerGas && !txParamsMaxPriorityFeePerGas;
   const dappDidNotSuggestFeeProperties =
     !dappGasPrice && !dappMaxFeePerGas && !dappMaxPriorityFeePerGas;
+
   if (txParamsDoesNotHaveFeeProperties || dappDidNotSuggestFeeProperties) {
     return false;
   }
@@ -180,7 +171,6 @@ export function areDappSuggestedAndTxParamGasFeesTheSame(txData = {}) {
     txParamsMaxFeePerGas &&
     txParamsMaxFeePerGas === dappMaxFeePerGas &&
     txParamsMaxPriorityFeePerGas === dappMaxPriorityFeePerGas;
-
   return (
     txParamsGasPriceMatchesDappSuggestedGasPrice ||
     txParamsEIP1559FeesMatchDappSuggestedGasPrice ||

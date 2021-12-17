@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Tooltip as ReactTippy } from 'react-tippy';
-
 import merge from 'lodash/merge';
-
 const defaultProps = {
   arrow: true,
   children: null,
@@ -19,7 +17,6 @@ const defaultProps = {
   theme: '',
   tag: 'div',
 };
-
 export default function Tooltip(props) {
   const {
     arrow,
@@ -47,7 +44,9 @@ export default function Tooltip(props) {
 
   return React.createElement(
     tag,
-    { className: wrapperClassName },
+    {
+      className: wrapperClassName,
+    },
     <ReactTippy
       arrow={arrow}
       className={containerClassName}

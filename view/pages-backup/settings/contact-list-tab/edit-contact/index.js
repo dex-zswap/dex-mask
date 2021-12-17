@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import {
   CONTACT_LIST_ROUTE,
   CONTACT_VIEW_ROUTE,
@@ -8,9 +11,6 @@ import {
   removeFromAddressBook,
   setAccountLabel,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import EditContact from './component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -21,13 +21,10 @@ const mapStateToProps = (state, ownProps) => {
   const address = pathNameTailIsAddress
     ? pathNameTail.toLowerCase()
     : ownProps.match.params.id;
-
   const contact =
     getAddressBookEntry(state, address) || state.metamask.identities[address];
   const { memo, name } = contact || {};
-
   const { chainId } = state.metamask.provider;
-
   return {
     address: contact ? address : null,
     chainId,

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 export default function LoadingIndicator({
   alt,
   title,
@@ -20,7 +19,6 @@ export default function LoadingIndicator({
     children
   );
 }
-
 LoadingIndicator.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   alt: PropTypes.string.isRequired,

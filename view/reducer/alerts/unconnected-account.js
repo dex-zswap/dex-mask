@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-
 import { ALERT_TYPES } from '@shared/constants/alerts';
 import * as actionConstants from '@view/store/actionConstants';
 import {
@@ -8,17 +7,12 @@ import {
   setSelectedAddress,
 } from '@view/store/actions';
 import { getOriginOfCurrentTab, getSelectedAddress } from '@view/selectors';
-import { ALERT_STATE } from './enums';
-
-// Constants
+import { ALERT_STATE } from './enums'; // Constants
 
 const name = ALERT_TYPES.unconnectedAccount;
-
 const initialState = {
   state: ALERT_STATE.CLOSED,
-};
-
-// Slice (reducer plus auto-generated actions and action creators)
+}; // Slice (reducer plus auto-generated actions and action creators)
 
 const slice = createSlice({
   name,
@@ -67,18 +61,11 @@ const slice = createSlice({
     },
   },
 });
-
 const { actions, reducer } = slice;
-
-export default reducer;
-
-// Selectors
+export default reducer; // Selectors
 
 export const getAlertState = (state) => state[name].state;
-
-export const alertIsOpen = (state) => state[name].state !== ALERT_STATE.CLOSED;
-
-// Actions / action-creators
+export const alertIsOpen = (state) => state[name].state !== ALERT_STATE.CLOSED; // Actions / action-creators
 
 const {
   connectAccountFailed,
@@ -93,9 +80,7 @@ const {
   switchAccountSucceeded,
   switchedToUnconnectedAccount,
 } = actions;
-
 export { dismissAlert, switchedToUnconnectedAccount };
-
 export const dismissAndDisableAlert = () => {
   return async (dispatch) => {
     try {
@@ -108,7 +93,6 @@ export const dismissAndDisableAlert = () => {
     }
   };
 };
-
 export const switchToAccount = (address) => {
   return async (dispatch) => {
     try {
@@ -121,12 +105,12 @@ export const switchToAccount = (address) => {
     }
   };
 };
-
 export const connectAccount = () => {
   return async (dispatch, getState) => {
     const state = getState();
     const selectedAddress = getSelectedAddress(state);
     const origin = getOriginOfCurrentTab(state);
+
     try {
       await dispatch(connectAccountRequested());
       await dispatch(addPermittedAccount(origin, selectedAddress));

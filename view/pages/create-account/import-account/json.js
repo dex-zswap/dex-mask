@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import FileInput from 'react-simple-file-input';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
+import PropTypes from 'prop-types';
+import FileInput from 'react-simple-file-input';
 import Logo from '@c/ui/logo';
 import BackBar from '@c/ui/back-bar';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
-
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { getDexMaskAccounts } from '@view/selectors';
 import * as actions from '@view/store/actions';
-
 const HELP_LINK =
   'https://metamask.zendesk.com/hc/en-us/articles/360015489331-Importing-an-Account';
 
@@ -20,12 +18,10 @@ class JsonImportSubview extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     fileContents: '',
     isEmpty: true,
   };
-
   inputRef = React.createRef();
 
   shouldDisableImport() {
@@ -36,22 +32,14 @@ class JsonImportSubview extends Component {
   render() {
     const { error, history, mostRecentOverviewPage } = this.props;
     const enabled = !this.state.isEmpty && this.state.fileContents !== '';
-
     return (
       <div className="new-account-import-form__json flex space-between">
         <div>
           <p className="used-by-clients">{this.context.t('usedByClients')}</p>
-          <FileInput
-            readAs="text"
-            onLoad={this.onLoad.bind(this)}
-            style={{
-              padding: '20px 0px 12px 15%',
-              fontSize: '15px',
-              display: 'flex',
-              justifyContent: 'center',
-              width: '100%',
-            }}
-          />
+          <div className="file-selector half-button">
+            <FileInput readAs="text" onLoad={this.onLoad.bind(this)} />
+            {this.context.t('selectFile')}
+          </div>
           <TextField
             className="new-account-import-form__input-password"
             type="password"
@@ -65,10 +53,7 @@ class JsonImportSubview extends Component {
           {error ? <span className="error">{error}</span> : null}
         </div>
         <div className="new-account-import-form-buttons flex space-between">
-          <Button
-            className="half-button"
-            onClick={this.back}
-          >
+          <Button className="half-button" onClick={this.back}>
             {this.context.t('pre')}
           </Button>
           <Button
@@ -115,7 +100,6 @@ class JsonImportSubview extends Component {
     }
 
     const password = this.inputRef.current.value;
-
     importNewJsonAccount([fileContents, password])
       .then(({ selectedAddress }) => {
         if (selectedAddress) {
@@ -127,24 +111,25 @@ class JsonImportSubview extends Component {
         }
       })
       .catch((err) => err && displayWarning(err.message || err));
-  }
+  };
 
   checkInputEmpty() {
     const password = this.inputRef.current.value;
     let isEmpty = true;
+
     if (password !== '') {
       isEmpty = false;
     }
-    this.setState({ isEmpty });
+
+    this.setState({
+      isEmpty,
+    });
   }
 
   back = () => {
-    const {
-      history,
-      mostRecentOverviewPage
-    } = this.props;
+    const { history, mostRecentOverviewPage } = this.props;
     history.push(mostRecentOverviewPage);
-  }
+  };
 }
 
 const mapStateToProps = (state) => {
@@ -169,6 +154,6 @@ const ComposedComponent = compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
 )(JsonImportSubview);
-
-
-export default React.forwardRef((props, ref) => <ComposedComponent {...props} forwardedRef={ref} />);
+export default React.forwardRef((props, ref) => (
+  <ComposedComponent {...props} forwardedRef={ref} />
+));

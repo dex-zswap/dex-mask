@@ -1,3 +1,9 @@
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
+import getCaretCoordinates from 'textarea-caret';
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
 import TextField from '@c/ui/text-field';
@@ -13,18 +19,11 @@ import {
   tryUnlockDexmask,
 } from '@view/store/actions';
 import { EventEmitter } from 'events';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-import getCaretCoordinates from 'textarea-caret';
 
 class UnlockPage extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object.isRequired,
     isUnlocked: PropTypes.bool,
@@ -34,14 +33,11 @@ class UnlockPage extends Component {
     showOptInModal: PropTypes.func,
     markPasswordForgotten: PropTypes.func,
   };
-
   state = {
     password: process.env.DEXMASK_DEBUG ? '11111111' : '',
     error: null,
   };
-
   submitting = false;
-
   animationEventEmitter = new EventEmitter();
 
   UNSAFE_componentWillMount() {
@@ -55,11 +51,9 @@ class UnlockPage extends Component {
   handleImport = () => {
     this.props.history.push(RESTORE_VAULT_ROUTE);
   };
-
   handleSubmit = async (event) => {
     event.preventDefault();
     event.stopPropagation();
-
     const { password } = this.state;
     const { onSubmit, forceupdateDexmaskState, showOptInModal } = this.props;
 
@@ -67,7 +61,9 @@ class UnlockPage extends Component {
       return;
     }
 
-    this.setState({ error: null });
+    this.setState({
+      error: null,
+    });
     this.submitting = true;
 
     try {
@@ -78,15 +74,19 @@ class UnlockPage extends Component {
         const newState = await forceupdateDexmaskState();
       }
 
-      this.setState({ error: message });
+      this.setState({
+        error: message,
+      });
       this.submitting = false;
     }
   };
 
   handleInputChange({ target }) {
-    this.setState({ password: target.value, error: null });
+    this.setState({
+      password: target.value,
+      error: null,
+    }); // tell mascot to look at page action
 
-    // tell mascot to look at page action
     if (target.getBoundingClientRect) {
       const element = target;
       const boundingRect = element.getBoundingClientRect();
@@ -107,7 +107,6 @@ class UnlockPage extends Component {
       boxShadow: 'none',
       borderRadius: '4px',
     };
-
     return (
       <Button
         type="primary"
@@ -125,7 +124,6 @@ class UnlockPage extends Component {
     const { password, error } = this.state;
     const { t } = this.context;
     const { onRestore } = this.props;
-
     return (
       <div className="unlock-page__container">
         <div className="unlock-page">
@@ -182,7 +180,11 @@ const mapDispatchToProps = (dispatch) => {
     markPasswordForgotten: () => dispatch(markPasswordForgotten()),
     forceupdateDexmaskState: () => forceupdateDexmaskState(dispatch),
     showOptInModal: () =>
-      dispatch(showModal({ name: 'METAMETRICS_OPT_IN_MODAL' })),
+      dispatch(
+        showModal({
+          name: 'METAMETRICS_OPT_IN_MODAL',
+        }),
+      ),
   };
 };
 

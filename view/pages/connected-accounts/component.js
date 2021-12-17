@@ -1,19 +1,16 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import ConnectedAccountsList from '@c/app/connected/accounts-list';
 import ConnectedAccountsPermissions from '@c/app/connected/accounts-permissions';
 import Popover from '@c/ui/popover';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class ConnectedAccounts extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
   };
-
   static defaultProps = {
     accountToConnect: null,
     permissions: undefined,
   };
-
   static propTypes = {
     accountToConnect: PropTypes.object,
     activeTabOrigin: PropTypes.string.isRequired,
@@ -43,12 +40,10 @@ export default class ConnectedAccounts extends PureComponent {
       setSelectedAddress,
     } = this.props;
     const { t } = this.context;
-
     const connectedAccountsDescription =
       connectedAccounts.length > 1
         ? t('connectedAccountsDescriptionPlural', [connectedAccounts.length])
         : t('connectedAccountsDescriptionSingular');
-
     return (
       <Popover
         title={

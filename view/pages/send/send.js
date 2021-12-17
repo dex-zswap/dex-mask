@@ -1,3 +1,8 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { zeroAddress } from 'ethereumjs-util';
+import { ethers } from 'ethers';
 import ChainSwitcher from '@c/ui/cross-chain/chain-switcher';
 import {
   getNativeCurrency,
@@ -37,11 +42,6 @@ import {
   showQrScanner,
   updateCrossChainState,
 } from '@view/store/actions';
-import { zeroAddress } from 'ethereumjs-util';
-import { ethers } from 'ethers';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
 import EnsInput from './send-content/add-recipient/ens-input';
 import SendTokenInfo from './send-content/send-token-info';
 import SendFooter from './send-footer';
@@ -59,7 +59,6 @@ export default function SendTransactionScreen() {
   const userTokens = useSelector(getTokens);
   const sendAsset = useSelector(getSendAsset);
   const accounts = useSelector(getDexMaskAccounts);
-
   const nativeCurrency = useSelector(getNativeCurrency);
   const gasIsExcessive = useSelector(sendSliceIsCustomPriceExcessive);
   const isUsingMyAccountsForRecipientSearch = useSelector(
@@ -69,17 +68,14 @@ export default function SendTransactionScreen() {
   const showHexData = useSelector(getSendHexDataFeatureFlagState);
   const userInput = useSelector(getRecipientUserInput);
   const location = useLocation();
-
   const selectedAddress = useSelector(getSelectedAddress);
   const [checked, setChecked] = useState(false);
   const [fromAccountAddress, setFromAccountAddress] = useState('');
   const [toAccountAddress, setToAccountAddress] = useState('');
-
   const sendToken = useMemo(
     () => userTokens?.find(({ address }) => address == tokenAddress),
     [userTokens, tokenAddress],
   );
-
   const fromAddress = useMemo(() => fromAccountAddress || selectedAddress, [
     fromAccountAddress,
     selectedAddress,
@@ -97,7 +93,12 @@ export default function SendTransactionScreen() {
   }, []);
   const changeToAccountAddressData = useCallback((address) => {
     dispatch(updateRecipientUserInput(address));
-    dispatch(updateRecipient({ address, nickname: '' }));
+    dispatch(
+      updateRecipient({
+        address,
+        nickname: '',
+      }),
+    );
   }, []);
   const changeToAccountAddress = useCallback(
     (address) => {
@@ -106,7 +107,6 @@ export default function SendTransactionScreen() {
     },
     [changeToAccountAddressData],
   );
-
   const changeChain = useCallback(
     async (type, changedChainId, isRpc, chainInfo, changeFromChain = true) => {
       if (
@@ -133,6 +133,7 @@ export default function SendTransactionScreen() {
           await dispatch(setProviderType(type ?? changedChainId));
         }
       };
+
       const token_address = changeFromChain
         ? zeroAddress()
         : tokenAddress || zeroAddress();
@@ -148,10 +149,12 @@ export default function SendTransactionScreen() {
             if (changeFromChain) {
               await dispatchChainId();
             }
+
             const targetChain = res.d.find(
               (d) =>
                 toBnString(d.target_meta_chain_id) == toBnString(toChainId),
             );
+
             if (targetChain) {
               dispatch(
                 updateCrossChainState({
@@ -174,11 +177,11 @@ export default function SendTransactionScreen() {
               await dispatchChainId();
             }
           } else {
-            await dispatchChainId();
-            // if (changeFromChain) {
+            await dispatchChainId(); // if (changeFromChain) {
             //   await dispatchChainId();
             // }
           }
+
           dispatch(resetRecipientInput());
         })
         .catch(() => {
@@ -189,17 +192,14 @@ export default function SendTransactionScreen() {
     },
     [checked, tokenAddress, fromAddress, toAddress, chainId],
   );
-
   useEffect(() => {
     dispatch(initializeSendState());
   }, [fromAccountBalance]);
-
   useEffect(() => {
     if (checked) {
       changeToAccountAddressData(toAddress);
     }
   }, [chainId, checked, toAddress, changeToAccountAddressData]);
-
   const onAmountChange = useCallback((val) => {
     // dispatch(
     //   updateSendHexData(
@@ -212,34 +212,28 @@ export default function SendTransactionScreen() {
       ),
     );
   }, []);
-
   const cleanup = useCallback(() => {
     dispatch(resetSendState());
   }, [dispatch]);
-
   useEffect(() => {
     if (chainId) {
       window.addEventListener('beforeunload', cleanup);
     }
+
     return () => {
       dispatch(resetSendState());
       window.removeEventListener('beforeunload', cleanup);
     };
   }, [chainId, dispatch, cleanup]);
-
   useEffect(() => {
     if (location.search === '?scan=true') {
-      dispatch(showQrScanner());
+      dispatch(showQrScanner()); // Clear the queryString param after showing the modal
 
-      // Clear the queryString param after showing the modal
       const cleanUrl = window.location.href.split('?')[0];
       window.history.pushState({}, null, `${cleanUrl}`);
       window.location.hash = '#send';
     }
-  }, [location, dispatch]);
-
-  // let content;
-
+  }, [location, dispatch]); // let content;
   // if ([SEND_STAGES.EDIT, SEND_STAGES.DRAFT].includes(stage)) {
   //   content = (
   //     <>
@@ -307,12 +301,22 @@ export default function SendTransactionScreen() {
           className="send__to-row"
           onChange={(address) => dispatch(updateRecipientUserInput(address))}
           onValidAddressTyped={(address) =>
-            dispatch(updateRecipient({ address, nickname: '' }))
+            dispatch(
+              updateRecipient({
+                address,
+                nickname: '',
+              }),
+            )
           }
           internalSearch={isUsingMyAccountsForRecipientSearch}
           selectedAddress={recipient.address}
           selectedName={recipient.nickname}
-          onPaste={(text) => updateRecipient({ address: text, nickname: '' })}
+          onPaste={(text) =>
+            updateRecipient({
+              address: text,
+              nickname: '',
+            })
+          }
           onReset={() => dispatch(resetRecipientInput())}
           scanQrCode={() => {
             dispatch(showQrScanner());
@@ -321,7 +325,7 @@ export default function SendTransactionScreen() {
       )}
       <SendFooter key="send-footer" history={history} />
       {/* {[SEND_STAGES.EDIT, SEND_STAGES.DRAFT].includes(stage) && (
-        <SendFooter key="send-footer" history={history} />
+       <SendFooter key="send-footer" history={history} />
       )} */}
     </div>
   );

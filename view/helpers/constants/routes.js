@@ -31,7 +31,6 @@ const AWAITING_SIGNATURES_ROUTE = '/swaps/awaiting-signatures';
 const AWAITING_SWAP_ROUTE = '/swaps/awaiting-swap';
 const SWAPS_ERROR_ROUTE = '/swaps/swaps-error';
 const SWAPS_MAINTENANCE_ROUTE = '/swaps/maintenance';
-
 const INITIALIZE_ROUTE = '/initialize';
 const INITIALIZE_WELCOME_ROUTE = '/initialize/welcome';
 const INITIALIZE_UNLOCK_ROUTE = '/initialize/unlock';
@@ -44,7 +43,6 @@ const INITIALIZE_BACKUP_SEED_PHRASE_ROUTE = '/initialize/backup-seed-phrase';
 const INITIALIZE_SEED_PHRASE_INTRO_ROUTE = '/initialize/seed-phrase-intro';
 const INITIALIZE_END_OF_FLOW_ROUTE = '/initialize/end-of-flow';
 const INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE = '/initialize/seed-phrase/confirm';
-
 const CONFIRM_TRANSACTION_ROUTE = '/confirm-transaction';
 const CONFIRM_SEND_ETHER_PATH = '/send-ether';
 const CONFIRM_SEND_TOKEN_PATH = '/send-token';
@@ -57,15 +55,12 @@ const DECRYPT_MESSAGE_REQUEST_PATH = '/decrypt-message-request';
 const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH = '/encryption-public-key-request';
 const CONFIRMATION_V_NEXT_ROUTE = '/confirmation';
 const RECIVE_TOKEN_ROUTE = '/recive-token/:address';
-
 const TRADE_ROUTE = '/trade';
 const ZSWAP_ROUTE = '/trade/zswap';
 const LIQUIDITY_ROUTE = '/trade/liquidity';
-
-const CROSSCHAIN_ROUTE = '/cross-chain';
-
-// Used to pull a convenient name for analytics tracking events. The key must
+const CROSSCHAIN_ROUTE = '/cross-chain'; // Used to pull a convenient name for analytics tracking events. The key must
 // be react-router ready path, and can include params such as :id for popup windows
+
 const PATH_NAME_MAP = {
   [DEFAULT_ROUTE]: 'Home',
   [UNLOCK_ROUTE]: 'Unlock Page',
@@ -133,7 +128,6 @@ const PATH_NAME_MAP = {
   [LIQUIDITY_ROUTE]: 'Liquidity',
   [CROSSCHAIN_ROUTE]: 'CrossChain',
 };
-
 export {
   DEFAULT_ROUTE,
   ALERTS_ROUTE,

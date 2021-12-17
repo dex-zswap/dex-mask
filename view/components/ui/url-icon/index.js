@@ -1,8 +1,7 @@
-import IconWithFallback from '@c/ui/icon-with-fallback';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
-
+import IconWithFallback from '@c/ui/icon-with-fallback';
 export default function UrlIcon({ url, className, name, fallbackClassName }) {
   return (
     <IconWithFallback
@@ -13,7 +12,6 @@ export default function UrlIcon({ url, className, name, fallbackClassName }) {
     />
   );
 }
-
 UrlIcon.propTypes = {
   url: PropTypes.string,
   className: PropTypes.string,

@@ -1,5 +1,4 @@
 import { ethers } from 'ethers';
-
 import { ETH, GWEI, WEI } from '@view/helpers/constants/common';
 import { addHexPrefix } from '@app/scripts/lib/util';
 import {
@@ -8,25 +7,21 @@ import {
   subtractCurrencies,
 } from '@shared/modules/conversion.utils';
 import { formatCurrency } from './confirm-tx.util';
-
 export function bnToHex(inputBn) {
   return addHexPrefix(inputBn.toString(16));
 }
-
 export function hexToDecimal(hexValue) {
   return conversionUtil(hexValue, {
     fromNumericBase: 'hex',
     toNumericBase: 'dec',
   });
 }
-
 export function decimalToHex(decimal) {
   return conversionUtil(decimal, {
     fromNumericBase: 'dec',
     toNumericBase: 'hex',
   });
 }
-
 export function getEthConversionFromWeiHex({
   value,
   fromCurrency = ETH,
@@ -34,7 +29,6 @@ export function getEthConversionFromWeiHex({
   numberOfDecimals = 6,
 }) {
   const denominations = [fromCurrency, GWEI, WEI];
-
   let nonZeroDenomination;
 
   for (let i = 0; i < denominations.length; i++) {
@@ -55,7 +49,6 @@ export function getEthConversionFromWeiHex({
 
   return nonZeroDenomination;
 }
-
 export function getValueFromWeiHex({
   value,
   fromCurrency = ETH,
@@ -75,7 +68,6 @@ export function getValueFromWeiHex({
     conversionRate,
   });
 }
-
 export function getWeiHexFromDecimalValue({
   value,
   fromCurrency,
@@ -94,7 +86,6 @@ export function getWeiHexFromDecimalValue({
     toDenomination: WEI,
   });
 }
-
 export function addHexWEIsToDec(aHexWEI, bHexWEI) {
   return addCurrencies(aHexWEI, bHexWEI, {
     aBase: 16,
@@ -103,7 +94,6 @@ export function addHexWEIsToDec(aHexWEI, bHexWEI) {
     numberOfDecimals: 6,
   });
 }
-
 export function subtractHexWEIsToDec(aHexWEI, bHexWEI) {
   return subtractCurrencies(aHexWEI, bHexWEI, {
     aBase: 16,
@@ -112,7 +102,6 @@ export function subtractHexWEIsToDec(aHexWEI, bHexWEI) {
     numberOfDecimals: 6,
   });
 }
-
 export function decEthToConvertedCurrency(
   ethTotal,
   convertedCurrency,
@@ -127,7 +116,6 @@ export function decEthToConvertedCurrency(
     conversionRate,
   });
 }
-
 export function decGWEIToHexWEI(decGWEI) {
   return conversionUtil(decGWEI, {
     fromNumericBase: 'dec',
@@ -136,7 +124,6 @@ export function decGWEIToHexWEI(decGWEI) {
     toDenomination: 'WEI',
   });
 }
-
 export function hexWEIToDecGWEI(decGWEI) {
   return conversionUtil(decGWEI, {
     fromNumericBase: 'hex',
@@ -145,7 +132,6 @@ export function hexWEIToDecGWEI(decGWEI) {
     toDenomination: 'GWEI',
   });
 }
-
 export function decETHToDecWEI(decEth) {
   return conversionUtil(decEth, {
     fromNumericBase: 'dec',
@@ -154,7 +140,6 @@ export function decETHToDecWEI(decEth) {
     toDenomination: 'WEI',
   });
 }
-
 export function hexWEIToDecETH(hexWEI) {
   return conversionUtil(hexWEI, {
     fromNumericBase: 'hex',
@@ -163,7 +148,6 @@ export function hexWEIToDecETH(hexWEI) {
     toDenomination: 'ETH',
   });
 }
-
 export function addHexes(aHexWEI, bHexWEI) {
   return addCurrencies(aHexWEI, bHexWEI, {
     aBase: 16,
@@ -172,7 +156,6 @@ export function addHexes(aHexWEI, bHexWEI) {
     numberOfDecimals: 6,
   });
 }
-
 export function subtractHexes(aHexWEI, bHexWEI) {
   return subtractCurrencies(aHexWEI, bHexWEI, {
     aBase: 16,
@@ -181,11 +164,9 @@ export function subtractHexes(aHexWEI, bHexWEI) {
     numberOfDecimals: 6,
   });
 }
-
 export function sumHexWEIs(hexWEIs) {
   return hexWEIs.filter(Boolean).reduce(addHexes);
 }
-
 export function sumHexWEIsToUnformattedFiat(
   hexWEIs,
   convertedCurrency,
@@ -203,7 +184,6 @@ export function sumHexWEIsToUnformattedFiat(
   );
   return convertedTotal;
 }
-
 export function sumHexWEIsToRenderableFiat(
   hexWEIs,
   convertedCurrency,
@@ -216,16 +196,12 @@ export function sumHexWEIsToRenderableFiat(
   );
   return formatCurrency(convertedTotal, convertedCurrency);
 }
-
 export const expandDecimals = (amount, decimals = 18) => {
   return ethers.utils.parseUnits(String(amount), decimals);
-}
-
-
+};
 export const toBnString = (value = '0') => {
-  return ethers.BigNumber.from(value).toString()
-}
-
+  return ethers.BigNumber.from(value).toString();
+};
 export const toHexString = (amount, decimals = 18) => {
-  return expandDecimals(amount, decimals).toHexString()
-}
+  return expandDecimals(amount, decimals).toHexString();
+};

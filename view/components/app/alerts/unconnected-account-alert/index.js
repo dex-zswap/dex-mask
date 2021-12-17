@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ConnectedAccountsList from '@c/app/connected/accounts-list';
 import Button from '@c/ui/button';
 import Checkbox from '@c/ui/check-box';
@@ -19,9 +21,6 @@ import {
   getSelectedAddress,
   getSelectedIdentity,
 } from '@view/selectors';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 const { ERROR, LOADING } = ALERT_STATE;
 
 const UnconnectedAccountAlert = () => {
@@ -83,7 +82,6 @@ const UnconnectedAccountAlert = () => {
       </div>
     </>
   );
-
   return (
     <Popover
       title={

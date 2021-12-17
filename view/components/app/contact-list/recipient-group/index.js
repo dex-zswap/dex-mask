@@ -1,8 +1,8 @@
-import Identicon from '@c/ui/identicon';
-import { ellipsify } from '@pages/send/utils';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import Identicon from '@c/ui/identicon';
+import { ellipsify } from '@pages/send/utils';
 
 function addressesEqual(address1, address2) {
   return String(address1).toLowerCase() === String(address2).toLowerCase();
@@ -57,7 +57,6 @@ export default function RecipientGroup({
     </div>
   );
 }
-
 RecipientGroup.propTypes = {
   label: PropTypes.string,
   items: PropTypes.arrayOf(

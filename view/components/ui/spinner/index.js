@@ -29,5 +29,4 @@ Spinner.propTypes = {
   className: PropTypes.string,
   color: PropTypes.string,
 };
-
 export default Spinner;

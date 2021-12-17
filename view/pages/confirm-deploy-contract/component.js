@@ -1,13 +1,11 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ConfirmTransactionBase from '@pages/confirm-transaction-base';
 import { toBuffer } from '@shared/modules/buffer-utils';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmDeployContract extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     txData: PropTypes.object,
   };
@@ -15,7 +13,6 @@ export default class ConfirmDeployContract extends Component {
   renderData() {
     const { t } = this.context;
     const { txData: { origin, txParams: { data } = {} } = {} } = this.props;
-
     return (
       <div className="confirm-page-container-content__data">
         <div className="confirm-page-container-content__data-box">

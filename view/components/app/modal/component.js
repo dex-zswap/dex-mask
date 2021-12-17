@@ -1,8 +1,7 @@
-import Button from '@c/ui/button';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
+import Button from '@c/ui/button';
 export default class Modal extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
@@ -23,7 +22,6 @@ export default class Modal extends PureComponent {
     cancelText: PropTypes.string,
     rounded: PropTypes.bool,
   };
-
   static defaultProps = {
     submitType: 'secondary',
     cancelType: 'default',
@@ -47,7 +45,6 @@ export default class Modal extends PureComponent {
       hideFooter,
       rounded,
     } = this.props;
-
     return (
       <div className={classnames('modal-container', containerClass)}>
         {headerText && (

@@ -1,19 +1,18 @@
+import React, { Component } from 'react';
+import {
+  createCustomAccountLink,
+  getAccountLink,
+} from '@metamask/etherscan-link';
+import PropTypes from 'prop-types';
 import AccountModalContainer from '@c/app/modals/account-modal-container';
 import Button from '@c/ui/button';
 import EditableLabel from '@c/ui/editable-label';
 import QrView from '@c/ui/qr-code';
 import {
-  createCustomAccountLink,
-  getAccountLink,
-} from '@metamask/etherscan-link';
-import {
   CHAINID_EXPLORE_MAP,
   MAINNET_CHAIN_ID,
   NETWORK_TO_NAME_MAP,
 } from '@shared/constants/network';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class AccountDetailsModal extends Component {
   static propTypes = {
     selectedIdentity: PropTypes.object,
@@ -24,7 +23,6 @@ export default class AccountDetailsModal extends Component {
     rpcPrefs: PropTypes.object,
     provider: PropTypes.object,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -40,18 +38,14 @@ export default class AccountDetailsModal extends Component {
       provider,
     } = this.props;
     const { name, address } = selectedIdentity;
-
     const isMainnet = chainId === MAINNET_CHAIN_ID;
-
     const providerType =
       NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
-
     const keyring = keyrings.find((kr) => {
       return kr.accounts.includes(address);
     });
+    let exportPrivateKeyFeatureEnabled = true; // This feature is disabled for hardware wallets
 
-    let exportPrivateKeyFeatureEnabled = true;
-    // This feature is disabled for hardware wallets
     if (keyring?.type?.search('Hardware') !== -1) {
       exportPrivateKeyFeatureEnabled = false;
     }
@@ -84,6 +78,7 @@ export default class AccountDetailsModal extends Component {
                 CHAINID_EXPLORE_MAP[chainId],
               );
             }
+
             global.platform.openTab({
               url: accountLink,
             });

@@ -1,9 +1,9 @@
+import { connect } from 'react-redux';
 import { getOnboardingInitiator } from '@view/selectors';
 import {
   setCompletedOnboarding,
   setSeedPhraseBackedUp,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
 import RevealSeedPhrase from './component';
 
 const mapStateToProps = (state) => {

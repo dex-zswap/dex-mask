@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import {
   getAddressConnectedDomainMap,
   getDexMaskAccountsOrdered,
@@ -12,14 +15,11 @@ import {
   showAccountDetail,
   toggleAccountMenu,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import AccountMenu from './component';
-
 /**
  * The min amount of accounts to show search field
  */
+
 const SHOW_SEARCH_ACCOUNTS_MIN_COUNT = 5;
 
 function mapStateToProps(state) {
@@ -29,7 +29,6 @@ function mapStateToProps(state) {
   const accounts = getDexMaskAccountsOrdered(state);
   const origin = getOriginOfCurrentTab(state);
   const selectedAddress = getSelectedAddress(state);
-
   return {
     isAccountMenuOpen,
     addressConnectedDomainMap: getAddressConnectedDomainMap(state),

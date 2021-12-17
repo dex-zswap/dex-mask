@@ -1,8 +1,7 @@
-import Button from '@c/ui/button';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import Button from '@c/ui/button';
 import RecipientGroup from './recipient-group';
-
 export default class ContactList extends PureComponent {
   static propTypes = {
     searchForContacts: PropTypes.func,
@@ -12,11 +11,9 @@ export default class ContactList extends PureComponent {
     children: PropTypes.node,
     selectedAddress: PropTypes.string,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     isShowingAllRecent: false,
   };
@@ -25,9 +22,7 @@ export default class ContactList extends PureComponent {
     const { t } = this.context;
     const { isShowingAllRecent } = this.state;
     const nonContacts = this.props.searchForRecents();
-
     const showLoadMore = !isShowingAllRecent && nonContacts.length > 2;
-
     return (
       <div className="send__select-recipient-wrapper__recent-group-wrapper">
         <RecipientGroup
@@ -40,7 +35,11 @@ export default class ContactList extends PureComponent {
           <Button
             type="link"
             className="send__select-recipient-wrapper__recent-group-wrapper__load-more"
-            onClick={() => this.setState({ isShowingAllRecent: true })}
+            onClick={() =>
+              this.setState({
+                isShowingAllRecent: true,
+              })
+            }
           >
             {t('loadMore')}
           </Button>
@@ -51,7 +50,6 @@ export default class ContactList extends PureComponent {
 
   renderAddressBook() {
     const contacts = this.props.searchForContacts();
-
     const contactGroups = contacts.reduce((acc, contact) => {
       const firstLetter = contact.name.slice(0, 1).toUpperCase();
       acc[firstLetter] = acc[firstLetter] || [];
@@ -59,7 +57,6 @@ export default class ContactList extends PureComponent {
       bucket.push(contact);
       return acc;
     }, {});
-
     return Object.entries(contactGroups)
       .sort(([letter1], [letter2]) => {
         if (letter1 > letter2) {
@@ -67,6 +64,7 @@ export default class ContactList extends PureComponent {
         } else if (letter1 === letter2) {
           return 0;
         }
+
         return -1;
       })
       .map(([letter, groupItems]) => (
@@ -82,7 +80,6 @@ export default class ContactList extends PureComponent {
 
   renderMyAccounts() {
     const myAccounts = this.props.searchForMyAccounts();
-
     return (
       <RecipientGroup
         items={myAccounts}
@@ -99,7 +96,6 @@ export default class ContactList extends PureComponent {
       searchForContacts,
       searchForMyAccounts,
     } = this.props;
-
     return (
       <div className="send__select-recipient-wrapper__list">
         {children || null}

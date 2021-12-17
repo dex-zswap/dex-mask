@@ -9,7 +9,7 @@
   display: flex;
 
   &:before {
-    content: ''!important;
+    content: '' !important;
     display: block;
     width: 14px;
     height: 14px;
@@ -19,7 +19,7 @@
 
   &__checked {
     &:before {
-      content: ''!important;
+      content: '' !important;
       display: block;
       width: 18px;
       height: 18px;
@@ -31,7 +31,7 @@
 
   &__indeterminate {
     &:before {
-      content: ''!important;
+      content: '' !important;
       display: block;
       width: 18px;
       height: 18px;

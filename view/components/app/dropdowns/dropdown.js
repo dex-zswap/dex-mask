@@ -1,7 +1,6 @@
-import MenuDroppo from '@c/app/menu-droppo';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import MenuDroppo from '@c/app/menu-droppo';
 export class Dropdown extends Component {
   render() {
     const {
@@ -13,7 +12,6 @@ export class Dropdown extends Component {
       children,
       useCssTransition,
     } = this.props;
-
     const innerStyleDefaults = {
       borderRadius: '4px',
       padding: '8px 16px',
@@ -21,7 +19,6 @@ export class Dropdown extends Component {
       boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
       ...innerStyle,
     };
-
     return (
       <MenuDroppo
         containerClassName={containerClassName}
@@ -47,11 +44,9 @@ export class Dropdown extends Component {
     );
   }
 }
-
 Dropdown.defaultProps = {
   useCssTransition: false,
 };
-
 Dropdown.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   children: PropTypes.node,
@@ -61,11 +56,9 @@ Dropdown.propTypes = {
   useCssTransition: PropTypes.bool,
   containerClassName: PropTypes.string,
 };
-
 export class DropdownMenuItem extends Component {
   render() {
     const { onClick, closeMenu, children, style } = this.props;
-
     return (
       <li
         className="dropdown-menu-item"
@@ -98,7 +91,6 @@ export class DropdownMenuItem extends Component {
     );
   }
 }
-
 DropdownMenuItem.propTypes = {
   closeMenu: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,

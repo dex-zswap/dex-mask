@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { pageChanged } from '@reducer/history/history';
 import { prepareToLeaveSwaps } from '@reducer/swaps/swaps';
 import {
@@ -13,9 +16,6 @@ import {
   setLastActiveTime,
   setMouseUserState,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import Routes from './component';
 
 function mapStateToProps(state) {
@@ -28,7 +28,6 @@ function mapStateToProps(state) {
     loadingMessage,
   } = appState;
   const { autoLockTimeLimit = 0 } = getPreferences(state);
-
   return {
     sidebar,
     alertOpen,

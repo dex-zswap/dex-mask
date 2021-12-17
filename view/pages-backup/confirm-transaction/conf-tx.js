@@ -1,3 +1,9 @@
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import log from 'loglevel';
+import PropTypes from 'prop-types';
 import SignatureRequest from '@c/app/signature-request';
 import SignatureRequestOriginal from '@c/app/signature-request-original';
 import Loading from '@c/ui/loading-screen';
@@ -7,12 +13,6 @@ import { MESSAGE_TYPE } from '@shared/constants/app';
 import { TRANSACTION_STATUSES } from '@shared/constants/transaction';
 import txHelper from '@view/helpers/utils/tx-helper';
 import * as actions from '@view/store/actions';
-import log from 'loglevel';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 
 function mapStateToProps(state) {
   const { metamask, appState } = state;
@@ -22,7 +22,6 @@ function mapStateToProps(state) {
     unapprovedTypedMessagesCount,
   } = metamask;
   const { txId } = appState;
-
   return {
     identities: state.metamask.identities,
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
@@ -62,7 +61,6 @@ class ConfirmTxScreen extends Component {
         id: PropTypes.string,
       }),
     }),
-
     currentNetworkTxList: PropTypes.array,
     currentCurrency: PropTypes.string,
     blockGasLimit: PropTypes.string,
@@ -78,7 +76,6 @@ class ConfirmTxScreen extends Component {
       unapprovedPersonalMsgCount = 0,
       unapprovedTypedMessagesCount = 0,
     } = this.props;
-
     return (
       unapprovedTypedMessagesCount +
       unapprovedMsgCount +
@@ -97,7 +94,6 @@ class ConfirmTxScreen extends Component {
       match: { params: { id: transactionId } = {} },
       chainId,
     } = this.props;
-
     const unconfTxList = txHelper(
       unapprovedTxs,
       unapprovedMsgs,
@@ -106,9 +102,7 @@ class ConfirmTxScreen extends Component {
       network,
       chainId,
     );
-
     log.info(`rendering a combined ${unconfTxList.length} unconf msgs & txs`);
-
     return transactionId
       ? unconfTxList.find(({ id }) => `${id}` === transactionId)
       : unconfTxList[index];
@@ -205,7 +199,6 @@ class ConfirmTxScreen extends Component {
       match: { params: { id: transactionId } = {} },
       mostRecentOverviewPage,
     } = this.props;
-
     let prevTx;
 
     if (transactionId) {
@@ -234,7 +227,6 @@ class ConfirmTxScreen extends Component {
           onSubmit: () => history.push(mostRecentOverviewPage),
         }),
       );
-
       return;
     }
 
@@ -249,7 +241,6 @@ class ConfirmTxScreen extends Component {
 
   render() {
     const { currentCurrency, blockGasLimit } = this.props;
-
     const txData = this.getTxData() || {};
     const {
       msgParams,

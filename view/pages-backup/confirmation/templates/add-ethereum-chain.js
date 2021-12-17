@@ -1,10 +1,6 @@
 import { ethErrors } from 'eth-rpc-errors';
-import {
-  SEVERITIES,
-  TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
+import { SEVERITIES, TYPOGRAPHY } from '@view/helpers/constants/design-system';
 import fetchWithCache from '@view/helpers/utils/fetch-with-cache';
-
 const UNRECOGNIZED_CHAIN = {
   id: 'UNRECOGNIZED_CHAIN',
   severity: SEVERITIES.WARNING,
@@ -30,7 +26,6 @@ const UNRECOGNIZED_CHAIN = {
     },
   },
 };
-
 const INVALID_CHAIN = {
   id: 'INVALID_CHAIN',
   severity: SEVERITIES.DANGER,
@@ -79,6 +74,7 @@ async function getAlerts(pendingApproval) {
     }
 
     const { origin } = new URL(pendingApproval.requestData.rpcUrl);
+
     if (!matchedChain.rpc.map((rpc) => new URL(rpc).origin).includes(origin)) {
       validated = false;
     }
@@ -89,6 +85,7 @@ async function getAlerts(pendingApproval) {
   } else if (!validated) {
     alerts.push(INVALID_CHAIN);
   }
+
   return alerts;
 }
 
@@ -175,7 +172,13 @@ function getValues(pendingApproval, t, actions) {
             [t('blockExplorerUrl')]: pendingApproval.requestData
               .blockExplorerUrl,
           },
-          prefaceKeys: [t('networkName'), t('networkURL'), t('chainId'), t('currencySymbol'), t('blockExplorerUrl')],
+          prefaceKeys: [
+            t('networkName'),
+            t('networkURL'),
+            t('chainId'),
+            t('currencySymbol'),
+            t('blockExplorerUrl'),
+          ],
         },
       },
     ],
@@ -186,7 +189,6 @@ function getValues(pendingApproval, t, actions) {
         pendingApproval.id,
         pendingApproval.requestData,
       ),
-
     onCancel: () =>
       actions.rejectPendingApproval(
         pendingApproval.id,
@@ -199,5 +201,4 @@ const addEthereumChain = {
   getAlerts,
   getValues,
 };
-
 export default addEthereumChain;

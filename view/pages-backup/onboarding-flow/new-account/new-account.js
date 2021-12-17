@@ -1,3 +1,6 @@
+import React, { useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
 import CheckBox from '@c/ui/check-box';
@@ -12,10 +15,6 @@ import {
 } from '@view/helpers/constants/design-system';
 import { INITIALIZE_SEED_PHRASE_INTRO_ROUTE } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import PropTypes from 'prop-types';
-import React, { useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-
 export default function NewAccount({ onSubmit }) {
   const t = useI18nContext();
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -25,7 +24,6 @@ export default function NewAccount({ onSubmit }) {
   const [termsChecked, setTermsChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory();
-
   const isValid = useMemo(() => {
     if (!password || !confirmPassword || password !== confirmPassword) {
       return false;
@@ -41,6 +39,7 @@ export default function NewAccount({ onSubmit }) {
   const handlePasswordChange = (passwordInput) => {
     let error = '';
     let confirmError = '';
+
     if (passwordInput && passwordInput.length < 8) {
       error = t('passwordNotLongEnough');
     }
@@ -56,6 +55,7 @@ export default function NewAccount({ onSubmit }) {
 
   const handleConfirmPasswordChange = (confirmPasswordInput) => {
     let error = '';
+
     if (password !== confirmPasswordInput) {
       error = t('passwordsDontMatch');
     }
@@ -70,10 +70,12 @@ export default function NewAccount({ onSubmit }) {
     if (!isValid) {
       return;
     }
+
     try {
       if (onSubmit) {
         await onSubmit(password);
       }
+
       history.push(INITIALIZE_SEED_PHRASE_INTRO_ROUTE);
     } catch (error) {
       setPasswordError(error.message);
@@ -88,7 +90,9 @@ export default function NewAccount({ onSubmit }) {
       <Typography
         variant={TYPOGRAPHY.H4}
         align={TEXT_ALIGN.CENTER}
-        boxProps={{ margin: 5 }}
+        boxProps={{
+          margin: 5,
+        }}
       >
         {t('passwordSetupDetails')}
       </Typography>
@@ -141,7 +145,12 @@ export default function NewAccount({ onSubmit }) {
               onClick={() => setTermsChecked(!termsChecked)}
               checked={termsChecked}
             />
-            <Typography variant={TYPOGRAPHY.H5} boxProps={{ marginLeft: 3 }}>
+            <Typography
+              variant={TYPOGRAPHY.H5}
+              boxProps={{
+                marginLeft: 3,
+              }}
+            >
               {t('passwordTermsWarning', [
                 <a
                   onClick={(e) => e.stopPropagation()}
@@ -171,7 +180,6 @@ export default function NewAccount({ onSubmit }) {
     </div>
   );
 }
-
 NewAccount.propTypes = {
   onSubmit: PropTypes.func,
 };

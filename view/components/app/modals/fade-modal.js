@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 let index = 0;
 let extraSheet;
 
@@ -8,13 +7,12 @@ const insertRule = (css) => {
   if (!extraSheet) {
     // First time, create an extra stylesheet for adding rules
     extraSheet = document.createElement('style');
-    document.getElementsByTagName('head')[0].appendChild(extraSheet);
-    // Keep reference to actual StyleSheet object (`styleSheet` for IE < 9)
+    document.getElementsByTagName('head')[0].appendChild(extraSheet); // Keep reference to actual StyleSheet object (`styleSheet` for IE < 9)
+
     extraSheet = extraSheet.sheet || extraSheet.styleSheet;
   }
 
   extraSheet.insertRule(css, (extraSheet.cssRules || extraSheet.rules).length);
-
   return extraSheet;
 };
 
@@ -23,22 +21,16 @@ const insertKeyframesRule = (keyframes) => {
   // eslint-disable-next-line no-plusplus
   const name = `anim_${++index}${Number(new Date())}`;
   let css = `@keyframes ${name} {`;
-
   Object.keys(keyframes).forEach((key) => {
     css += `${key} {`;
-
     Object.keys(keyframes[key]).forEach((property) => {
       const part = `:${keyframes[key][property]};`;
       css += property + part;
     });
-
     css += '}';
   });
-
   css += '}';
-
   insertRule(css);
-
   return name;
 };
 
@@ -84,7 +76,6 @@ const animation = {
     },
   }),
 };
-
 const endEvents = ['transitionend', 'animationend'];
 
 function addEventListener(node, eventName, eventListener) {
@@ -99,6 +90,7 @@ const removeEndEventListener = (node, eventListener) => {
   if (endEvents.length === 0) {
     return;
   }
+
   endEvents.forEach(function (endEvent) {
     removeEventListener(node, endEvent, eventListener);
   });
@@ -111,6 +103,7 @@ const addEndEventListener = (node, eventListener) => {
     window.setTimeout(eventListener, 0);
     return;
   }
+
   endEvents.forEach(function (endEvent) {
     addEventListener(node, endEvent, eventListener);
   });
@@ -118,7 +111,6 @@ const addEndEventListener = (node, eventListener) => {
 
 class FadeModal extends Component {
   content = null;
-
   static propTypes = {
     backdrop: PropTypes.bool,
     backdropStyle: PropTypes.object,
@@ -130,7 +122,6 @@ class FadeModal extends Component {
     onHide: PropTypes.func,
     children: PropTypes.node,
   };
-
   static defaultProps = {
     onShow: () => undefined,
     onHide: () => undefined,
@@ -142,31 +133,29 @@ class FadeModal extends Component {
     contentStyle: {},
     children: [],
   };
-
   state = {
     willHide: true,
     hidden: true,
   };
-
   addTransitionListener = (node, handle) => {
     if (node) {
       const endListener = function (e) {
         if (e && e.target !== node) {
           return;
         }
+
         removeEndEventListener(node, endListener);
         handle();
       };
+
       addEndEventListener(node, endListener);
     }
   };
-
   handleBackdropClick = () => {
     if (this.props.closeOnClick) {
       this.hide();
     }
   };
-
   hasHidden = () => {
     return this.state.hidden;
   };
@@ -196,7 +185,6 @@ class FadeModal extends Component {
         .animationTimingFunction,
       ...this.props.contentStyle,
     };
-
     const backdrop = this.props.backdrop ? (
       <div
         className="modal__backdrop"
@@ -232,11 +220,9 @@ class FadeModal extends Component {
     });
     this.props.onHide(this.state.hideSource);
   };
-
   enter = () => {
     this.props.onShow();
   };
-
   show = () => {
     if (!this.state.hidden) {
       return;
@@ -246,7 +232,6 @@ class FadeModal extends Component {
       willHide: false,
       hidden: false,
     });
-
     setTimeout(
       function () {
         this.addTransitionListener(this.content, this.enter);
@@ -254,7 +239,6 @@ class FadeModal extends Component {
       0,
     );
   };
-
   hide = () => {
     if (this.hasHidden()) {
       return;
@@ -264,7 +248,6 @@ class FadeModal extends Component {
       willHide: true,
     });
   };
-
   listenKeyboard = (event) => {
     if (typeof this.props.keyboard === 'function') {
       this.props.keyboard(event);
@@ -272,7 +255,6 @@ class FadeModal extends Component {
       this.closeOnEsc(event);
     }
   };
-
   closeOnEsc = (event) => {
     if (
       this.props.keyboard &&
@@ -281,11 +263,9 @@ class FadeModal extends Component {
       this.hide();
     }
   };
-
   UNSAFE_componentDidMount = () => {
     window.addEventListener('keydown', this.listenKeyboard, true);
   };
-
   UNSAFE_componentWillUnmount = () => {
     window.removeEventListener('keydown', this.listenKeyboard, true);
   };

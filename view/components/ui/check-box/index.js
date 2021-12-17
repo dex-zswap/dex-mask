@@ -1,13 +1,11 @@
 import React, { useLayoutEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 const CHECKBOX_STATE = {
   CHECKED: 'CHECKED',
   INDETERMINATE: 'INDETERMINATE',
   UNCHECKED: 'UNCHECKED',
 };
-
 export const { CHECKED, INDETERMINATE, UNCHECKED } = CHECKBOX_STATE;
 
 const CheckBox = ({ className, disabled, id, onClick, checked, title }) => {
@@ -15,11 +13,11 @@ const CheckBox = ({ className, disabled, id, onClick, checked, title }) => {
     // eslint-disable-next-line no-param-reassign
     checked = checked ? CHECKBOX_STATE.CHECKED : CHECKBOX_STATE.UNCHECKED;
   }
+
   const ref = useRef(null);
   useLayoutEffect(() => {
     ref.current.indeterminate = checked === CHECKBOX_STATE.INDETERMINATE;
   }, [checked]);
-
   return (
     <input
       checked={checked === CHECKBOX_STATE.CHECKED}
@@ -57,11 +55,9 @@ CheckBox.propTypes = {
     .isRequired,
   title: PropTypes.string,
 };
-
 CheckBox.defaultProps = {
   className: undefined,
   disabled: false,
   id: undefined,
 };
-
 export default CheckBox;

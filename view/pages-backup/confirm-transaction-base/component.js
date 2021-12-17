@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import ConfirmPageContainer from '@c/app/confirm-page-container';
 import GasTiming from '@c/app/gas-timing';
@@ -36,8 +38,6 @@ import {
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
 } from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 
 const renderHeartBeatIfNotInTest = () =>
   process.env.IN_TEST === 'true' ? null : <LoadingHeartBeat />;
@@ -46,7 +46,6 @@ export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     // react-router props
     history: PropTypes.object,
@@ -112,7 +111,6 @@ export default class ConfirmTransactionBase extends Component {
     baseFeePerGas: PropTypes.string,
     gasFeeIsCustom: PropTypes.bool,
   };
-
   state = {
     submitting: false,
     submitError: null,
@@ -155,7 +153,9 @@ export default class ConfirmTransactionBase extends Component {
           submitWarning: this.context.t('nextNonceWarning', [nextNonce]),
         });
       } else {
-        this.setState({ submitWarning: '' });
+        this.setState({
+          submitWarning: '',
+        });
       }
     }
 
@@ -197,7 +197,6 @@ export default class ConfirmTransactionBase extends Component {
       noGasPrice,
       gasFeeIsCustom,
     } = this.props;
-
     const insufficientBalance =
       balance &&
       !isBalanceSufficient({
@@ -248,12 +247,15 @@ export default class ConfirmTransactionBase extends Component {
       txData: { origin },
       methodData = {},
     } = this.props;
-
-    this.setState({ editingGas: true });
+    this.setState({
+      editingGas: true,
+    });
   }
 
   handleCloseEditGas() {
-    this.setState({ editingGas: false });
+    this.setState({
+      editingGas: false,
+    });
   }
 
   renderDetails() {
@@ -274,7 +276,6 @@ export default class ConfirmTransactionBase extends Component {
       maxFeePerGas,
       maxPriorityFeePerGas,
     } = this.props;
-
     const { t } = this.context;
 
     const getRequestingOrigin = () => {
@@ -298,9 +299,8 @@ export default class ConfirmTransactionBase extends Component {
             hideLabel={!useNativeCurrencyAsPrimaryCurrency}
           />
         );
-      }
+      } // Token send
 
-      // Token send
       return useNativeCurrencyAsPrimaryCurrency
         ? primaryTotalTextOverrideMaxAmount
         : secondaryTotalTextOverride;
@@ -319,6 +319,7 @@ export default class ConfirmTransactionBase extends Component {
           />
         );
       }
+
       return useNativeCurrencyAsPrimaryCurrency
         ? primaryTotalTextOverride
         : secondaryTotalTextOverride;
@@ -338,6 +339,7 @@ export default class ConfirmTransactionBase extends Component {
           />
         );
       }
+
       return useNativeCurrencyAsPrimaryCurrency
         ? secondaryTotalTextOverride
         : primaryTotalTextOverride;
@@ -362,6 +364,7 @@ export default class ConfirmTransactionBase extends Component {
                 } else {
                   updateCustomNonce(String(Math.floor(value)));
                 }
+
                 getNextNonce();
               }}
               fullWidth
@@ -372,7 +375,6 @@ export default class ConfirmTransactionBase extends Component {
         </div>
       </div>
     ) : null;
-
     return (
       <div className="confirm-page-container-content__details">
         <TransactionDetail
@@ -402,14 +404,14 @@ export default class ConfirmTransactionBase extends Component {
                           <p>{t('transactionDetailGasTooltipIntro')}</p>
                           <p>{t('transactionDetailGasTooltipExplanation')}</p>
                           {/* <p>
-                            <a
-                              href="https://community.metamask.io/t/what-is-gas-why-do-transactions-take-so-long/3172"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {t('transactionDetailGasTooltipConversion')}
-                            </a>
-                          </p> */}
+             <a
+               href="https://community.metamask.io/t/what-is-gas-why-do-transactions-take-so-long/3172"
+               target="_blank"
+               rel="noopener noreferrer"
+             >
+               {t('transactionDetailGasTooltipConversion')}
+             </a>
+            </p> */}
                         </>
                       }
                       position="top"
@@ -431,8 +433,7 @@ export default class ConfirmTransactionBase extends Component {
                     hideLabel={!useNativeCurrencyAsPrimaryCurrency}
                   />
                 </div>
-              }
-              // detailText={null}
+              } // detailText={null}
               detailText={
                 <div className="confirm-page-container-content__currency-container">
                   {renderHeartBeatIfNotInTest()}
@@ -482,14 +483,11 @@ export default class ConfirmTransactionBase extends Component {
             />,
             <TransactionDetailItem
               key="total-item"
-              detailTitle={t('total')}
-              // detailText={<></>}
+              detailTitle={t('total')} // detailText={<></>}
               detailTotal={renderTotalMaxAmount()}
-              detailText={renderTotalDetailText()}
-              // detailTotal={renderTotalDetailTotal()}
+              detailText={renderTotalDetailText()} // detailTotal={renderTotalDetailTotal()}
               subTitle={<></>}
-              subText={<></>}
-              // subTitle={t('transactionDetailGasTotalSubtitle')}
+              subText={<></>} // subTitle={t('transactionDetailGasTotalSubtitle')}
               // subText={t('editGasSubTextAmount', [
               //   <b key="editGasSubTextAmountLabel">
               //     {t('editGasSubTextAmountLabel')}
@@ -555,8 +553,11 @@ export default class ConfirmTransactionBase extends Component {
       txData: { origin },
       methodData = {},
     } = this.props;
-
-    onEdit({ txData, tokenData, tokenProps });
+    onEdit({
+      txData,
+      tokenData,
+      tokenProps,
+    });
   }
 
   handleCancelAll() {
@@ -568,11 +569,11 @@ export default class ConfirmTransactionBase extends Component {
       showRejectTransactionsConfirmationModal,
       unapprovedTxCount,
     } = this.props;
-
     showRejectTransactionsConfirmationModal({
       unapprovedTxCount,
       onSubmit: async () => {
         this._removeBeforeUnload();
+
         await cancelAllTransactions();
         clearConfirmTransaction();
         history.push(mostRecentOverviewPage);
@@ -591,6 +592,7 @@ export default class ConfirmTransactionBase extends Component {
     } = this.props;
 
     this._removeBeforeUnload();
+
     updateCustomNonce('');
     cancelTransaction(txData).then(() => {
       clearConfirmTransaction();
@@ -621,17 +623,11 @@ export default class ConfirmTransactionBase extends Component {
     }
 
     if (maxFeePerGas) {
-      txData.txParams = {
-        ...txData.txParams,
-        maxFeePerGas,
-      };
+      txData.txParams = { ...txData.txParams, maxFeePerGas };
     }
 
     if (maxPriorityFeePerGas) {
-      txData.txParams = {
-        ...txData.txParams,
-        maxPriorityFeePerGas,
-      };
+      txData.txParams = { ...txData.txParams, maxPriorityFeePerGas };
     }
 
     this.setState(
@@ -667,9 +663,8 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   renderTitleComponent() {
-    const { title, hexTransactionAmount } = this.props;
+    const { title, hexTransactionAmount } = this.props; // Title string passed in by props takes priority
 
-    // Title string passed in by props takes priority
     if (title) {
       return null;
     }
@@ -686,7 +681,6 @@ export default class ConfirmTransactionBase extends Component {
 
   renderSubtitleComponent() {
     const { subtitleComponent, hexTransactionAmount } = this.props;
-
     return (
       subtitleComponent || (
         <UserPreferencedCurrencyDisplay
@@ -711,7 +705,6 @@ export default class ConfirmTransactionBase extends Component {
     const { currentNetworkUnapprovedTxs, txData: { id } = {} } = this.props;
     const enumUnapprovedTxs = Object.keys(currentNetworkUnapprovedTxs);
     const currentPosition = enumUnapprovedTxs.indexOf(id ? id.toString() : '');
-
     return {
       totalTx: enumUnapprovedTxs.length,
       positionOfCurrentTx: currentPosition + 1,
@@ -727,21 +720,23 @@ export default class ConfirmTransactionBase extends Component {
 
   _beforeUnload = () => {
     const { txData: { id } = {}, cancelTransaction } = this.props;
-    cancelTransaction({ id });
+    cancelTransaction({
+      id,
+    });
   };
-
   _beforeUnloadForGasPolling = () => {
     this._isMounted = false;
+
     if (this.state.pollingToken) {
       disconnectGasFeeEstimatePoller(this.state.pollingToken);
       removePollingTokenFromAppState(this.state.pollingToken);
     }
   };
-
   _removeBeforeUnload = () => {
     if (getEnvironmentType() === ENVIRONMENT_TYPE_NOTIFICATION) {
       window.removeEventListener('beforeunload', this._beforeUnload);
     }
+
     window.removeEventListener('beforeunload', this._beforeUnloadForGasPolling);
   };
 
@@ -759,10 +754,10 @@ export default class ConfirmTransactionBase extends Component {
     }
 
     getNextNonce();
+
     if (toAddress) {
       tryReverseResolveAddress(toAddress);
     }
-
     /**
      * This makes a request to get estimates and begin polling, keeping track of the poll
      * token in component state.
@@ -770,10 +765,13 @@ export default class ConfirmTransactionBase extends Component {
      * while waiting for `getGasFeeEstimatesAndStartPolling` to resolve, the `_isMounted`
      * flag ensures that a call to disconnect happens after promise resolution.
      */
+
     getGasFeeEstimatesAndStartPolling().then((pollingToken) => {
       if (this._isMounted) {
         addPollingTokenToAppState(pollingToken);
-        this.setState({ pollingToken });
+        this.setState({
+          pollingToken,
+        });
       } else {
         disconnectGasFeeEstimatePoller(pollingToken);
         removePollingTokenFromAppState(this.state.pollingToken);
@@ -784,6 +782,7 @@ export default class ConfirmTransactionBase extends Component {
 
   componentWillUnmount() {
     this._beforeUnloadForGasPolling();
+
     this._removeBeforeUnload();
   }
 
@@ -822,7 +821,6 @@ export default class ConfirmTransactionBase extends Component {
       ethGasPriceWarning,
       editingGas,
     } = this.state;
-
     const { name } = methodData;
     const { valid, errorKey } = this.getErrorKey();
     const {
@@ -836,8 +834,8 @@ export default class ConfirmTransactionBase extends Component {
       ofText,
       requestsWaitingText,
     } = this.getNavigateTxData();
-
     let functionType = getMethodName(name);
+
     if (!functionType) {
       if (type) {
         functionType = getTransactionTypeTitle(t, type);
@@ -845,6 +843,7 @@ export default class ConfirmTransactionBase extends Component {
         functionType = t('contractInteraction');
       }
     }
+
     return (
       <ConfirmPageContainer
         tokenData={{
@@ -899,7 +898,6 @@ export default class ConfirmTransactionBase extends Component {
     );
   }
 }
-
 export function getMethodName(camelCase) {
   if (!camelCase || typeof camelCase !== 'string') {
     return '';

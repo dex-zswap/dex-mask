@@ -1,3 +1,7 @@
+import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import ActionableMessage from '@c/ui/actionable-message/actionable-message';
 import Button from '@c/ui/button';
 import Identicon from '@c/ui/identicon';
@@ -8,11 +12,6 @@ import {
   getCurrentChainId,
   getRpcPrefsForCurrentProvider,
 } from '@view/selectors';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
-
 export default function ItemList({
   results = [],
   onClickItem,
@@ -33,12 +32,10 @@ export default function ItemList({
     rpcPrefs.blockExplorerUrl ??
     SWAPS_CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[chainId] ??
     null;
-
   const blockExplorerLabel = rpcPrefs.blockExplorerUrl
     ? new URL(blockExplorerLink).hostname
-    : t('etherscan');
+    : t('etherscan'); // If there is a token for import based on a contract address, it's the only one in the list.
 
-  // If there is a token for import based on a contract address, it's the only one in the list.
   const hasTokenForImport = results.length === 1 && results[0].notImported;
   return results.length === 0 ? (
     Placeholder && <Placeholder searchQuery={searchQuery} />
@@ -66,6 +63,7 @@ export default function ItemList({
               onClickItem?.(result);
             }
           };
+
           const {
             iconUrl,
             identiconAddress,
@@ -165,7 +163,6 @@ export default function ItemList({
     </div>
   );
 }
-
 ItemList.propTypes = {
   results: PropTypes.arrayOf(
     PropTypes.shape({

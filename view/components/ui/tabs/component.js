@@ -1,20 +1,17 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 export default class Tabs extends Component {
   static defaultProps = {
     defaultActiveTabName: null,
     onTabClick: null,
     tabsClassName: undefined,
   };
-
   static propTypes = {
     defaultActiveTabName: PropTypes.string,
     onTabClick: PropTypes.func,
     children: PropTypes.node.isRequired,
     tabsClassName: PropTypes.string,
   };
-
   state = {
     activeTabIndex: Math.max(
       this._findChildByName(this.props.defaultActiveTabName),
@@ -42,7 +39,6 @@ export default class Tabs extends Component {
 
   renderTabs() {
     const numberOfTabs = React.Children.count(this.props.children);
-
     return React.Children.map(this.props.children, (child, index) => {
       const tabName = child?.props.name;
       return (
@@ -77,19 +73,19 @@ export default class Tabs extends Component {
     return (
       <div className="tabs">
         {/* <ul className={classnames('tabs__list', tabsClassName)}>
-          {this.renderTabs()}
+         {this.renderTabs()}
         </ul> */}
         <div className="tabs__content">{this.renderActiveTabContent()}</div>
       </div>
     );
   }
-
   /**
    * Returns the index of the child with the given name
    * @param {string} name - the name to search for
    * @returns {number} the index of the child with the given name
    * @private
    */
+
   _findChildByName(name) {
     return React.Children.toArray(this.props.children).findIndex(
       (c) => c?.props.name === name,

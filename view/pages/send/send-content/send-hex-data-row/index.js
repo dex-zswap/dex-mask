@@ -1,7 +1,6 @@
-import { getSendHexData, updateSendHexData } from '@reducer/send';
 import { connect } from 'react-redux';
+import { getSendHexData, updateSendHexData } from '@reducer/send';
 import SendHexDataRow from './component';
-
 export default connect(mapStateToProps, mapDispatchToProps)(SendHexDataRow);
 
 function mapStateToProps(state) {

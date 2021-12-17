@@ -17,7 +17,7 @@ import {
   SETTINGS_ROUTE,
 } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import React, { useMemo } from 'react';
+import { default as React, default as React, useMemo } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import AdvancedTab from './advanced-tab';
 import AlertsTab from './alerts-tab';
@@ -25,7 +25,6 @@ import InfoTab from './info-tab';
 import NetworksTab from './networks-tab';
 import SecurityTab from './security-tab';
 import SettingsTab from './settings-tab';
-
 const ROUTES_TO_I18N_KEYS = {
   [ABOUT_US_ROUTE]: 'about',
   [ADVANCED_ROUTE]: 'advanced',
@@ -35,14 +34,12 @@ const ROUTES_TO_I18N_KEYS = {
   [NETWORKS_FORM_ROUTE]: 'networks',
   [SECURITY_ROUTE]: 'securityAndPrivacy',
 };
-
 let backRoute = SETTINGS_ROUTE;
 
 const SettingsPage = () => {
   const t = useI18nContext();
   const history = useHistory();
   const { pathname } = useLocation();
-
   const isNetworksFormPage = useMemo(
     () => Boolean(pathname.match(NETWORKS_FORM_ROUTE)),
     [pathname],
@@ -106,7 +103,6 @@ const SettingsPage = () => {
     ],
     [t],
   );
-
   const getTitleText = useMemo(() => {
     const subTitle = {
       [GENERAL_ROUTE]: t('general'),
@@ -134,7 +130,6 @@ const SettingsPage = () => {
 
     return titleText;
   }, [t, pathname, isPopup, pathnameI18nKey]);
-
   return (
     <div className="dex-page-container">
       <Logo plain isCenter />

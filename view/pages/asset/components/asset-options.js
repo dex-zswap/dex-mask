@@ -1,7 +1,7 @@
+import React, { useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Menu, MenuItem } from '@c/ui/menu';
 import { I18nContext } from '@view/contexts/i18n';
-import PropTypes from 'prop-types';
-import React, { useContext, useState } from 'react';
 
 const AssetOptions = ({
   onRemove,
@@ -16,7 +16,6 @@ const AssetOptions = ({
     null,
   );
   const [assetOptionsOpen, setAssetOptionsOpen] = useState(false);
-
   return (
     <>
       <button
@@ -77,5 +76,4 @@ AssetOptions.propTypes = {
   onViewAccountDetails: PropTypes.func.isRequired,
   tokenSymbol: PropTypes.string,
 };
-
 export default AssetOptions;

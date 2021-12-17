@@ -8,7 +8,7 @@
     align-items: center;
     min-width: 60px;
     max-width: 108px;
-  
+
     .step-item {
       display: flex;
       align-items: center;
@@ -19,13 +19,13 @@
       color: $gray;
       background: $primary-background;
       border-radius: 50%;
-  
+
       &.active {
-        background: linear-gradient(82.09deg, #7813C4 5.18%, #2206A0 101.7%);
+        background: linear-gradient(82.09deg, #7813c4 5.18%, #2206a0 101.7%);
         color: $white;
       }
     }
-  
+
     .line {
       width: 22px;
       height: 2px;

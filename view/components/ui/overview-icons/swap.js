@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function SwapIcon({ width, height }) {
   return (
     <>
@@ -12,4 +11,3 @@ export default function SwapIcon({ width, height }) {
     </>
   );
 }
-

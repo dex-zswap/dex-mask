@@ -1,13 +1,11 @@
-import Button from '@c/ui/button';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
+import PropTypes from 'prop-types';
+import Button from '@c/ui/button';
 export default class SignatureRequestFooter extends PureComponent {
   static propTypes = {
     cancelAction: PropTypes.func.isRequired,
     signAction: PropTypes.func.isRequired,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };

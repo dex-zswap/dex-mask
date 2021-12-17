@@ -3,11 +3,10 @@ import {
   INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
   DEFAULT_ROUTE,
 } from '@view/helpers/constants/routes';
-
 export function getFirstTimeFlowTypeRoute(state) {
   const { firstTimeFlowType } = state.metamask;
-
   let nextRoute;
+
   if (firstTimeFlowType === 'create') {
     nextRoute = INITIALIZE_CREATE_PASSWORD_ROUTE;
   } else if (firstTimeFlowType === 'import') {
@@ -18,7 +17,6 @@ export function getFirstTimeFlowTypeRoute(state) {
 
   return nextRoute;
 }
-
 export const getOnboardingInitiator = (state) => {
   const { onboardingTabs } = state.metamask;
 

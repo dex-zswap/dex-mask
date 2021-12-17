@@ -1,3 +1,6 @@
+import React, { PureComponent } from 'react';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import Identicon from '@c/ui/identicon';
 import PageContainerFooter from '@c/ui/page-container/page-container-footer';
@@ -6,15 +9,10 @@ import {
   isBurnAddress,
   isValidHexAddress,
 } from '@shared/modules/hexstring-utils';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
-
 export default class EditContact extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     addToAddressBook: PropTypes.func,
     removeFromAddressBook: PropTypes.func,
@@ -28,12 +26,10 @@ export default class EditContact extends PureComponent {
     setAccountLabel: PropTypes.func,
     showingMyAccounts: PropTypes.bool.isRequired,
   };
-
   static defaultProps = {
     name: '',
     memo: '',
   };
-
   state = {
     newName: this.props.name,
     newAddress: this.props.address,
@@ -58,7 +54,13 @@ export default class EditContact extends PureComponent {
     } = this.props;
 
     if (!address) {
-      return <Redirect to={{ pathname: listRoute }} />;
+      return (
+        <Redirect
+          to={{
+            pathname: listRoute,
+          }}
+        />
+      );
     }
 
     return (
@@ -88,7 +90,11 @@ export default class EditContact extends PureComponent {
               id="nickname"
               placeholder={this.context.t('addAlias')}
               value={this.state.newName}
-              onChange={(e) => this.setState({ newName: e.target.value })}
+              onChange={(e) =>
+                this.setState({
+                  newName: e.target.value,
+                })
+              }
               fullWidth
               margin="dense"
             />
@@ -103,7 +109,11 @@ export default class EditContact extends PureComponent {
               id="address"
               value={this.state.newAddress}
               error={this.state.error}
-              onChange={(e) => this.setState({ newAddress: e.target.value })}
+              onChange={(e) =>
+                this.setState({
+                  newAddress: e.target.value,
+                })
+              }
               fullWidth
               margin="dense"
             />
@@ -118,7 +128,11 @@ export default class EditContact extends PureComponent {
               id="memo"
               placeholder={memo}
               value={this.state.newMemo}
-              onChange={(e) => this.setState({ newMemo: e.target.value })}
+              onChange={(e) =>
+                this.setState({
+                  newMemo: e.target.value,
+                })
+              }
               fullWidth
               margin="dense"
               multiline
@@ -150,15 +164,19 @@ export default class EditContact extends PureComponent {
                   this.state.newName || name,
                   this.state.newMemo || memo,
                 );
+
                 if (showingMyAccounts) {
                   setAccountLabel(
                     this.state.newAddress,
                     this.state.newName || name,
                   );
                 }
+
                 history.push(listRoute);
               } else {
-                this.setState({ error: this.context.t('invalidAddress') });
+                this.setState({
+                  error: this.context.t('invalidAddress'),
+                });
               }
             } else {
               // update name
@@ -167,9 +185,11 @@ export default class EditContact extends PureComponent {
                 this.state.newName || name,
                 this.state.newMemo || memo,
               );
+
               if (showingMyAccounts) {
                 setAccountLabel(address, this.state.newName || name);
               }
+
               history.push(listRoute);
             }
           }}

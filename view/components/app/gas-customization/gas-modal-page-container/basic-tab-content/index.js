@@ -1,13 +1,11 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import GasPriceButtonGroup from '@c/app/gas-customization/gas-price-button-group';
 import Loading from '@c/ui/loading-screen';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class BasicTabContent extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     gasPriceButtonGroupProps: PropTypes.object,
   };
@@ -15,7 +13,6 @@ export default class BasicTabContent extends Component {
   render() {
     const { t } = this.context;
     const { gasPriceButtonGroupProps } = this.props;
-
     return (
       <div className="basic-tab-content">
         <div className="basic-tab-content__title">

@@ -1,4 +1,8 @@
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import contractMap from '@metamask/contract-metadata';
+import BigNumber from 'bignumber.js';
+import { isEqual, shuffle, uniqBy } from 'lodash';
 import { getConversionRate } from '@reducer/dexmask/dexmask';
 import { getSwapsTokens } from '@reducer/swaps/swaps';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
@@ -10,12 +14,7 @@ import {
   getSwapsDefaultToken,
   getTokenExchangeRates,
 } from '@view/selectors';
-import BigNumber from 'bignumber.js';
-import { isEqual, shuffle, uniqBy } from 'lodash';
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useEqualityCheck } from './useEqualityCheck';
-
 const tokenList = shuffle(
   Object.entries(contractMap)
     .map(([address, tokenData]) => ({
@@ -24,7 +23,6 @@ const tokenList = shuffle(
     }))
     .filter((tokenData) => Boolean(tokenData.erc20)),
 );
-
 export function getRenderableTokenData(
   token,
   contractExchangeRates,
@@ -33,7 +31,6 @@ export function getRenderableTokenData(
   chainId,
 ) {
   const { symbol, name, address, iconUrl, string, balance, decimals } = token;
-
   const formattedFiat =
     getTokenFiatAmount(
       isSwapsDefaultTokenSymbol(symbol, chainId)
@@ -75,17 +72,14 @@ export function getRenderableTokenData(
     rawFiat,
   };
 }
-
 export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
   const chainId = useSelector(getCurrentChainId);
   const tokenConversionRates = useSelector(getTokenExchangeRates, isEqual);
   const conversionRate = useSelector(getConversionRate);
   const currentCurrency = useSelector(getCurrentCurrency);
   const defaultSwapsToken = useSelector(getSwapsDefaultToken);
-
   const memoizedTopTokens = useEqualityCheck(topTokens);
   const memoizedUsersToken = useEqualityCheck(usersTokens);
-
   const defaultToken = getRenderableTokenData(
     defaultSwapsToken,
     tokenConversionRates,
@@ -94,9 +88,7 @@ export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
     chainId,
   );
   const memoizedDefaultToken = useEqualityCheck(defaultToken);
-
   const swapsTokens = useSelector(getSwapsTokens) || [];
-
   const tokensToSearch = swapsTokens.length
     ? swapsTokens
     : [
@@ -105,25 +97,21 @@ export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
           (token) => token.symbol !== memoizedDefaultToken.symbol,
         ),
       ];
-
   const memoizedTokensToSearch = useEqualityCheck(tokensToSearch);
   return useMemo(() => {
     const usersTokensAddressMap = memoizedUsersToken.reduce(
       (acc, token) => ({ ...acc, [token.address]: token }),
       {},
     );
-
     const tokensToSearchBuckets = {
       owned: [],
       top: [],
       others: [],
     };
-
     const memoizedSwapsAndUserTokensWithoutDuplicities = uniqBy(
       [...memoizedTokensToSearch, ...memoizedUsersToken],
       'address',
     );
-
     memoizedSwapsAndUserTokensWithoutDuplicities.forEach((token) => {
       const renderableDataToken = getRenderableTokenData(
         { ...usersTokensAddressMap[token.address], ...token },
@@ -132,6 +120,7 @@ export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
         currentCurrency,
         chainId,
       );
+
       if (
         isSwapsDefaultTokenSymbol(renderableDataToken.symbol, chainId) ||
         usersTokensAddressMap[token.address]
@@ -145,7 +134,6 @@ export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
         tokensToSearchBuckets.others.push(renderableDataToken);
       }
     });
-
     tokensToSearchBuckets.owned = tokensToSearchBuckets.owned.sort(
       ({ rawFiat }, { rawFiat: secondRawFiat }) => {
         return new BigNumber(rawFiat || 0).gt(secondRawFiat || 0) ? -1 : 1;

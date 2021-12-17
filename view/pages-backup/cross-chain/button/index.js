@@ -1,3 +1,7 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import Button from '@c/ui/button';
 import { getTokens } from '@reducer/dexmask/dexmask';
 import { MAX_UINT_256 } from '@shared/constants/app';
@@ -16,10 +20,6 @@ import {
   updateConfirmAction,
   updateCrossChainState,
 } from '@view/store/actions';
-import { ethers } from 'ethers';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 
 const CrossChainButton = () => {
   const t = useI18nContext();
@@ -27,9 +27,7 @@ const CrossChainButton = () => {
   const history = useHistory();
   const crossInfo = useSelector(getCrossChainState);
   const tokens = useSelector(getTokens);
-
   const isNativeAsset = crossInfo.coinAddress === ethers.constants.AddressZero;
-
   const decimals = useMemo(() => {
     if (isNativeAsset) {
       return 18;
@@ -38,13 +36,10 @@ const CrossChainButton = () => {
     const token = tokens.find(
       ({ address }) => address === crossInfo.coinAddress,
     );
-
     return token?.decimals ?? 18;
   }, [crossInfo.coinAddress, tokens]);
-
   const [mounted, setMounted] = useState(false || isNativeAsset);
   const [allowed, setAllowed] = useState(false || isNativeAsset);
-
   const userInput = useMemo(
     () =>
       crossInfo.userInputValue
@@ -52,15 +47,16 @@ const CrossChainButton = () => {
         : ethers.constants.Zero,
     [crossInfo.userInputValue],
   );
-  const shouldDisable = useMemo(() => userInput.isZero() || !Boolean(crossInfo.dest), [userInput, crossInfo]);
-
+  const shouldDisable = useMemo(
+    () => userInput.isZero() || !Boolean(crossInfo.dest),
+    [userInput, crossInfo],
+  );
   const approve = useCallback(() => {
     const abiInterface = new ethers.utils.Interface(MINTABLE_ABI);
     const data = abiInterface.encodeFunctionData('approve', [
       crossInfo.target.handler,
       MAX_UINT_256,
     ]);
-
     global.ethQuery.sendTransaction(
       {
         from: crossInfo.from,
@@ -69,12 +65,10 @@ const CrossChainButton = () => {
       },
       (e, hash) => {},
     );
-
     dispatch(showConfTxPage());
     dispatch(updateConfirmAction(CROSSCHAIN_ROUTE));
     history.push(CONFIRM_TRANSACTION_ROUTE);
   }, [crossInfo, history]);
-
   const transfer = useCallback(() => {
     const abiInterface = new ethers.utils.Interface(BRIDGE_ABI);
     const sendData = [
@@ -97,7 +91,6 @@ const CrossChainButton = () => {
       crossInfo.target.resource_id,
       sendData,
     ]);
-
     const value = isNativeAsset
       ? ethers.utils.hexZeroPad(
           ethers.BigNumber.from(expandDecimals(crossInfo.target.fee))
@@ -111,7 +104,6 @@ const CrossChainButton = () => {
           ).toHexString(),
           32,
         );
-
     global.ethQuery.sendTransaction(
       {
         from: crossInfo.from,
@@ -125,7 +117,6 @@ const CrossChainButton = () => {
     dispatch(updateConfirmAction(null));
     history.push(CONFIRM_TRANSACTION_ROUTE);
   }, [crossInfo, decimals]);
-
   useInterval(() => {
     if (!isNativeAsset && !allowed && crossInfo.target?.handler) {
       const mintContract = global.eth
@@ -142,7 +133,6 @@ const CrossChainButton = () => {
       setMounted(true);
     }
   }, 2000);
-
   useEffect(() => {
     return () =>
       dispatch(
@@ -151,12 +141,10 @@ const CrossChainButton = () => {
         }),
       );
   }, [dispatch, updateCrossChainState]);
-
   useEffect(() => {
     setMounted(false);
     setAllowed(false);
   }, [crossInfo.coinAddress]);
-
   return mounted ? (
     <div className="cross-chain__button">
       {allowed ? (

@@ -1,24 +1,20 @@
+import React, { PureComponent } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import Steps from '@c/ui/steps';
 import { INITIALIZE_END_OF_FLOW_ROUTE } from '@view/helpers/constants/routes';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class ConfirmSeedPhraseComponent extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object,
     seedPhrase: PropTypes.string,
   };
-
   state = {
     selectedPhrase: [],
   };
-
   handleNext = async (event) => {
     event.preventDefault();
     const { history } = this.props;
@@ -45,15 +41,16 @@ export default class ConfirmSeedPhraseComponent extends PureComponent {
     const { seedPhrase: seedPhraseString } = this.props;
     const seedPhrase = seedPhraseString.split(' ').sort();
     let classes = [];
-
     return (
       <div className="confirm-seed-phrase__word-display">
         <div className="confirm-seed-phrase__word-column">
           {seedPhrase.slice(0, 6).map((str, index) => {
             classes = [];
+
             if (selectedPhrase.includes(str)) {
               classes.push('active');
             }
+
             return (
               <div
                 onClick={() => this.handleSelectPhrase(str)}
@@ -71,9 +68,11 @@ export default class ConfirmSeedPhraseComponent extends PureComponent {
         <div className="confirm-seed-phrase__word-column">
           {seedPhrase.slice(6).map((str, index) => {
             classes = [];
+
             if (selectedPhrase.includes(str)) {
               classes.push('active');
             }
+
             return (
               <div
                 onClick={() => this.handleSelectPhrase(str)}
@@ -94,6 +93,7 @@ export default class ConfirmSeedPhraseComponent extends PureComponent {
 
   renderSelected() {
     const { selectedPhrase } = this.state;
+
     if (selectedPhrase.length === 0) {
       return null;
     }
@@ -117,7 +117,6 @@ export default class ConfirmSeedPhraseComponent extends PureComponent {
 
   render() {
     const { t } = this.context;
-
     return (
       <div>
         <div className="first-time-flow__header">
@@ -133,13 +132,13 @@ export default class ConfirmSeedPhraseComponent extends PureComponent {
           {this.renderSelected()}
           <div className="first-time-flow__account-password-btn">
             {/* <Button
-              type="primary"
-              className="first-time-flow__button"
-              onClick={this.handleNext}
-              disabled={this.isDisabled()}
-              rightArrow={true}
+             type="primary"
+             className="first-time-flow__button"
+             onClick={this.handleNext}
+             disabled={this.isDisabled()}
+             rightArrow={true}
             >
-              {t('next')}
+             {t('next')}
             </Button> */}
             <Button
               type="primary"

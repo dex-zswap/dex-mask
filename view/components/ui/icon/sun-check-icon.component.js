@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 export default function SunCheck({ reverseColors }) {
   const sunColor = reverseColors ? '#037DD6' : 'white';
   const checkColor = reverseColors ? 'white' : '#037DD6';
@@ -23,7 +22,6 @@ export default function SunCheck({ reverseColors }) {
     </svg>
   );
 }
-
 SunCheck.propTypes = {
   reverseColors: PropTypes.bool,
 };

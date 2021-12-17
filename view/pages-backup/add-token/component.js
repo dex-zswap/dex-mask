@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import { getTokenTrackerLink } from '@metamask/etherscan-link';
+import PropTypes from 'prop-types';
 import { addHexPrefix } from '@app/scripts/lib/util';
 import ActionableMessage from '@c/ui/actionable-message';
 import Button from '@c/ui/button';
@@ -5,7 +8,6 @@ import PageContainer from '@c/ui/page-container';
 import { Tab, Tabs } from '@c/ui/tabs';
 import TextField from '@c/ui/text-field';
 import Typography from '@c/ui/typography';
-import { getTokenTrackerLink } from '@metamask/etherscan-link';
 import { CHAINID_EXPLORE_MAP } from '@shared/constants/network';
 import { isValidHexAddress } from '@shared/modules/hexstring-utils';
 import { FONT_WEIGHT, TYPOGRAPHY } from '@view/helpers/constants/design-system';
@@ -15,13 +17,9 @@ import {
 } from '@view/helpers/constants/routes';
 import { checkExistingAddresses } from '@view/helpers/utils';
 import { tokenInfoGetter } from '@view/helpers/utils/token-util';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import TokenList from './token-list';
 import TokenSearch from './token-search';
-
 const emptyAddr = '0x0000000000000000000000000000000000000000';
-
 const MIN_DECIMAL_VALUE = 0;
 const MAX_DECIMAL_VALUE = 36;
 
@@ -29,7 +27,6 @@ class AddToken extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object,
     setPendingTokens: PropTypes.func,
@@ -42,7 +39,6 @@ class AddToken extends Component {
     chainId: PropTypes.string,
     rpcPrefs: PropTypes.object,
   };
-
   state = {
     customAddress: '',
     customSymbol: '',
@@ -66,7 +62,6 @@ class AddToken extends Component {
     if (pendingTokenKeys.length > 0) {
       let selectedTokens = {};
       let customToken = {};
-
       pendingTokenKeys.forEach((tokenAddress) => {
         const token = pendingTokens[tokenAddress];
         const { isCustom } = token;
@@ -77,13 +72,11 @@ class AddToken extends Component {
           selectedTokens = { ...selectedTokens, [tokenAddress]: { ...token } };
         }
       });
-
       const {
         address: customAddress = '',
         symbol: customSymbol = '',
         decimals: customDecimals = 0,
       } = customToken;
-
       this.setState({
         selectedTokens,
         customAddress,
@@ -117,7 +110,6 @@ class AddToken extends Component {
       customSymbolError,
       customDecimalsError,
     } = this.state;
-
     return (
       tokenSelectorError ||
       customAddressError ||
@@ -137,7 +129,9 @@ class AddToken extends Component {
     }
 
     if (!this.hasSelected()) {
-      this.setState({ tokenSelectorError: this.context.t('mustSelectOne') });
+      this.setState({
+        tokenSelectorError: this.context.t('mustSelectOne'),
+      });
       return;
     }
 
@@ -148,23 +142,26 @@ class AddToken extends Component {
       customDecimals: decimals,
       selectedTokens,
     } = this.state;
-
     const customToken = {
       address,
       symbol,
       decimals,
     };
-
-    setPendingTokens({ customToken, selectedTokens });
+    setPendingTokens({
+      customToken,
+      selectedTokens,
+    });
     history.push(CONFIRM_ADD_TOKEN_ROUTE);
   }
 
   async attemptToAutoFillTokenParams(address) {
     const { symbol = '', decimals } = await this.tokenInfoGetter(address);
-
     const symbolAutoFilled = Boolean(symbol);
     const decimalAutoFilled = Boolean(decimals);
-    this.setState({ symbolAutoFilled, decimalAutoFilled });
+    this.setState({
+      symbolAutoFilled,
+      decimalAutoFilled,
+    });
     this.handleCustomSymbolChange(symbol || '');
     this.handleCustomDecimalsChange(decimals);
   }
@@ -178,7 +175,6 @@ class AddToken extends Component {
       symbolAutoFilled: false,
       decimalAutoFilled: false,
     });
-
     const addressIsValid = isValidHexAddress(customAddress, {
       allowNonPrefixed: false,
     });
@@ -193,20 +189,20 @@ class AddToken extends Component {
           customSymbolError: null,
           customDecimalsError: null,
         });
-
         break;
+
       case Boolean(this.props.identities[standardAddress]):
         this.setState({
           customAddressError: this.context.t('personalAddressDetected'),
         });
-
         break;
+
       case checkExistingAddresses(customAddress, this.props.tokens):
         this.setState({
           customAddressError: this.context.t('tokenAlreadyAdded'),
         });
-
         break;
+
       default:
         if (customAddress !== emptyAddr) {
           this.attemptToAutoFillTokenParams(customAddress);
@@ -223,7 +219,10 @@ class AddToken extends Component {
       customSymbolError = this.context.t('symbolBetweenZeroTwelve');
     }
 
-    this.setState({ customSymbol, customSymbolError });
+    this.setState({
+      customSymbol,
+      customSymbolError,
+    });
   }
 
   handleCustomDecimalsChange(value) {
@@ -241,7 +240,10 @@ class AddToken extends Component {
       customDecimalsError = this.context.t('tokenDecimalFetchFailed');
     }
 
-    this.setState({ customDecimals, customDecimalsError });
+    this.setState({
+      customDecimals,
+      customDecimalsError,
+    });
   }
 
   renderCustomTokenForm() {
@@ -256,7 +258,6 @@ class AddToken extends Component {
       symbolAutoFilled,
       decimalAutoFilled,
     } = this.state;
-
     const { chainId, rpcPrefs } = this.props;
     const blockExplorerTokenLink = getTokenTrackerLink(
       customAddress,
@@ -271,7 +272,6 @@ class AddToken extends Component {
     const blockExplorerLabel = rpcPrefs?.blockExplorerUrl
       ? new URL(blockExplorerTokenLink).hostname
       : this.context.t('etherscan');
-
     return (
       <div className="add-token__custom-token-form">
         <TextField
@@ -295,7 +295,11 @@ class AddToken extends Component {
               {symbolAutoFilled && !forceEditSymbol && (
                 <div
                   className="add-token__custom-symbol__edit"
-                  onClick={() => this.setState({ forceEditSymbol: true })}
+                  onClick={() =>
+                    this.setState({
+                      forceEditSymbol: true,
+                    })
+                  }
                 >
                   {this.context.t('edit')}
                 </div>
@@ -363,12 +367,13 @@ class AddToken extends Component {
 
   renderSearchToken() {
     const { tokenSelectorError, selectedTokens, searchResults } = this.state;
-
     return (
       <div className="add-token__search-token">
         <TokenSearch
           onSearch={({ results = [] }) =>
-            this.setState({ searchResults: results })
+            this.setState({
+              searchResults: results,
+            })
           }
           error={tokenSelectorError}
         />
@@ -394,18 +399,17 @@ class AddToken extends Component {
         </Tab>,
       );
     }
+
     tabs.push(
       <Tab name={this.context.t('customToken')} key="custom-tab">
         {this.renderCustomTokenForm()}
       </Tab>,
     );
-
     return <Tabs>{tabs}</Tabs>;
   }
 
   render() {
     const { history, clearPendingTokens, mostRecentOverviewPage } = this.props;
-
     return (
       <PageContainer
         title={this.context.t('addTokens')}

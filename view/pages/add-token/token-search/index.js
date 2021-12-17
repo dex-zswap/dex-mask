@@ -1,14 +1,12 @@
-import TextField from '@c/ui/text-field';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import React, { Component } from 'react';
 import contractMap from '@metamask/contract-metadata';
 import Fuse from 'fuse.js';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import TextField from '@c/ui/text-field';
+import InputAdornment from '@material-ui/core/InputAdornment';
 const contractList = Object.entries(contractMap)
   .map(([address, tokenData]) => ({ ...tokenData, address }))
   .filter((tokenData) => Boolean(tokenData.erc20));
-
 const fuse = new Fuse(contractList, {
   shouldSort: true,
   threshold: 0.45,
@@ -17,42 +15,54 @@ const fuse = new Fuse(contractList, {
   maxPatternLength: 32,
   minMatchCharLength: 1,
   keys: [
-    { name: 'name', weight: 0.5 },
-    { name: 'symbol', weight: 0.5 },
+    {
+      name: 'name',
+      weight: 0.5,
+    },
+    {
+      name: 'symbol',
+      weight: 0.5,
+    },
   ],
 });
-
 export default class TokenSearch extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static defaultProps = {
     error: null,
   };
-
   static propTypes = {
     onSearch: PropTypes.func,
     error: PropTypes.string,
   };
-
   state = {
     searchQuery: '',
   };
 
   handleSearch(searchQuery) {
-    this.setState({ searchQuery });
+    this.setState({
+      searchQuery,
+    });
     const fuseSearchResult = fuse.search(searchQuery);
     const addressSearchResult = contractList.filter((token) => {
       return token.address.toLowerCase() === searchQuery.toLowerCase();
     });
     const results = [...addressSearchResult, ...fuseSearchResult];
-    this.props.onSearch({ searchQuery, results });
+    this.props.onSearch({
+      searchQuery,
+      results,
+    });
   }
 
   renderAdornment() {
     return (
-      <InputAdornment position="start" style={{ marginRight: '12px' }}>
+      <InputAdornment
+        position="start"
+        style={{
+          marginRight: '12px',
+        }}
+      >
         <img src="images/search.svg" width="17" height="17" alt="" />
       </InputAdornment>
     );
@@ -61,7 +71,6 @@ export default class TokenSearch extends Component {
   render() {
     const { error } = this.props;
     const { searchQuery } = this.state;
-
     return (
       <TextField
         id="search-tokens"

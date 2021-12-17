@@ -1,3 +1,6 @@
+import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import Box from '@c/ui/box';
 import InfoTooltip from '@c/ui/info-tooltip';
 import NumericInput from '@c/ui/numeric-input';
@@ -9,10 +12,6 @@ import {
   TEXT_ALIGN,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 export default function FormField({
   titleText,
   titleUnit,
@@ -42,7 +41,9 @@ export default function FormField({
                 tag={TYPOGRAPHY.H6}
                 fontWeight={FONT_WEIGHT.BOLD}
                 variant={TYPOGRAPHY.H6}
-                boxProps={{ display: DISPLAY.INLINE_BLOCK }}
+                boxProps={{
+                  display: DISPLAY.INLINE_BLOCK,
+                }}
               >
                 {titleText}
               </Typography>
@@ -52,7 +53,9 @@ export default function FormField({
                 tag={TYPOGRAPHY.H6}
                 variant={TYPOGRAPHY.H6}
                 color={COLORS.UI4}
-                boxProps={{ display: DISPLAY.INLINE_BLOCK }}
+                boxProps={{
+                  display: DISPLAY.INLINE_BLOCK,
+                }}
               >
                 {titleUnit}
               </Typography>
@@ -107,7 +110,6 @@ export default function FormField({
     </div>
   );
 }
-
 FormField.propTypes = {
   titleText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   titleUnit: PropTypes.string,
@@ -123,7 +125,6 @@ FormField.propTypes = {
   allowDecimals: PropTypes.bool,
   disabled: PropTypes.bool,
 };
-
 FormField.defaultProps = {
   titleText: '',
   titleUnit: '',

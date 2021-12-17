@@ -1,3 +1,5 @@
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import GasTiming from '@c/app/gas-timing';
 import TransactionDetailItem from '@c/app/transaction/detail-item/transaction-detail-item.component';
 import TransactionDetail from '@c/app/transaction/detail/transaction-detail.component';
@@ -16,12 +18,8 @@ import {
   FONT_WEIGHT,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-
 const GAS_FEES_LEARN_MORE_URL =
   'https://community.metamask.io/t/what-is-gas-why-do-transactions-take-so-long/3172';
-
 export default function FeeCard({
   primaryFee,
   secondaryFee,
@@ -41,8 +39,8 @@ export default function FeeCard({
   maxFeePerGasDecGWEI,
 }) {
   const t = useContext(I18nContext);
-
   let bestQuoteText = '';
+
   if (isBestQuote && tokenConversionRate) {
     bestQuoteText = t('swapUsingBestQuote');
   } else if (tokenConversionRate) {
@@ -53,14 +51,19 @@ export default function FeeCard({
     switch (chainId) {
       case MAINNET_CHAIN_ID:
         return t('networkNameEthereum');
+
       case BSC_CHAIN_ID:
         return t('networkNameBSC');
+
       case POLYGON_CHAIN_ID:
         return t('networkNamePolygon');
+
       case LOCALHOST_CHAIN_ID:
         return t('networkNameTestnet');
+
       case RINKEBY_CHAIN_ID:
         return t('networkNameRinkeby');
+
       default:
         throw new Error('This network is not supported for token swaps');
     }
@@ -112,17 +115,17 @@ export default function FeeCard({
                           </p>
                           <p className="fee-card__info-tooltip-paragraph">
                             {/* <a
-                              className="fee-card__link"
-                              onClick={() => {
-                                global.platform.openTab({
-                                  url: GAS_FEES_LEARN_MORE_URL,
-                                });
-                              }}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              {t('swapGasFeesLearnMore')}
-                            </a> */}
+               className="fee-card__link"
+               onClick={() => {
+                 global.platform.openTab({
+                   url: GAS_FEES_LEARN_MORE_URL,
+                 });
+               }}
+               target="_blank"
+               rel="noopener noreferrer"
+              >
+               {t('swapGasFeesLearnMore')}
+              </a> */}
                           </p>
                         </>
                       }
@@ -276,7 +279,6 @@ export default function FeeCard({
     </div>
   );
 }
-
 FeeCard.propTypes = {
   primaryFee: PropTypes.shape({
     fee: PropTypes.string.isRequired,

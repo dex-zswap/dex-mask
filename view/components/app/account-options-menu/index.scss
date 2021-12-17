@@ -6,19 +6,22 @@
 
   .account-options-menu__account-details {
     height: 13px;
-    background: url('/images/account-option/account-detail.png') no-repeat center;
+    background: url('/images/account-option/account-detail.png') no-repeat
+      center;
     background-size: 100%;
   }
 
   .account-options-menu__explorer-origin {
     height: 15px;
-    background: url('/images/account-option/view-on-explore.png') no-repeat center;
+    background: url('/images/account-option/view-on-explore.png') no-repeat
+      center;
     background-size: 100%;
   }
 
   .account-options-menu__connected-sites {
     height: 12px;
-    background: url('/images/account-option/connected-sites.png') no-repeat center;
+    background: url('/images/account-option/connected-sites.png') no-repeat
+      center;
     background-size: auto 100%;
   }
 }

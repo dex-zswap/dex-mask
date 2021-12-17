@@ -1,15 +1,13 @@
-import Tooltip from '@c/ui/tooltip';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
-
+import Tooltip from '@c/ui/tooltip';
 const positionArrowClassMap = {
   top: 'info-tooltip__top-tooltip-arrow',
   bottom: 'info-tooltip__bottom-tooltip-arrow',
   left: 'info-tooltip__left-tooltip-arrow',
   right: 'info-tooltip__right-tooltip-arrow',
 };
-
 export default function InfoTooltip({
   contentText = '',
   position = '',
@@ -39,7 +37,6 @@ export default function InfoTooltip({
     </div>
   );
 }
-
 InfoTooltip.propTypes = {
   contentText: PropTypes.node,
   position: PropTypes.oneOf(['top', 'left', 'bottom', 'right']),

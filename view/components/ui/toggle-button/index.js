@@ -1,8 +1,7 @@
 import React from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import ReactToggleButton from 'react-toggle-button';
-import classnames from 'classnames';
-
 const trackStyle = {
   width: '40px',
   height: '24px',
@@ -13,12 +12,7 @@ const trackStyle = {
   alignItems: 'center',
   justifyContent: 'center',
 };
-
-const offTrackStyle = {
-  ...trackStyle,
-  border: '2px solid #8E8E8E',
-};
-
+const offTrackStyle = { ...trackStyle, border: '2px solid #8E8E8E' };
 const thumbStyle = {
   width: '18px',
   height: '18px',
@@ -28,7 +22,6 @@ const thumbStyle = {
   borderRadius: '50%',
   position: 'relative',
 };
-
 const colors = {
   activeThumb: {
     base: '#651AB5',
@@ -49,14 +42,17 @@ const colors = {
 
 const ToggleButton = (props) => {
   const { value, onToggle, offLabel, onLabel, disabled, className } = props;
-
   const modifier = value ? 'on' : 'off';
-
   return (
     <div
-      className={classnames('toggle-button', `toggle-button--${modifier}`, {
-        'toggle-button--disabled': disabled,
-      }, className)}
+      className={classnames(
+        'toggle-button',
+        `toggle-button--${modifier}`,
+        {
+          'toggle-button--disabled': disabled,
+        },
+        className,
+      )}
     >
       <ReactToggleButton
         value={value}
@@ -83,5 +79,4 @@ ToggleButton.propTypes = {
   onLabel: PropTypes.string,
   disabled: PropTypes.bool,
 };
-
 export default ToggleButton;

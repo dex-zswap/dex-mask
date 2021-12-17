@@ -1,3 +1,8 @@
+import React from 'react';
+import { generatePath } from 'react-router-dom';
+import copyToClipboard from 'copy-to-clipboard';
+import { zeroAddress } from 'ethereumjs-util';
+import PropTypes from 'prop-types';
 import AccountSwitcher from '@c/ui/cross-chain/account-switcher';
 import ChainSwitcher from '@c/ui/cross-chain/chain-switcher';
 import CurrentToken from '@c/ui/cross-chain/current-token';
@@ -7,11 +12,6 @@ import Tooltip from '@c/ui/tooltip';
 import { SECOND } from '@shared/constants/time';
 import { RECIVE_TOKEN_ROUTE } from '@view/helpers/constants/routes';
 import { toBnString } from '@view/helpers/utils/conversions.util';
-import copyToClipboard from 'copy-to-clipboard';
-import { zeroAddress } from 'ethereumjs-util';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { generatePath } from 'react-router-dom';
 
 class ReciveToken extends React.Component {
   static contextTypes = {
@@ -20,7 +20,6 @@ class ReciveToken extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       from: {
         account: 'out-side-address',
@@ -33,7 +32,6 @@ class ReciveToken extends React.Component {
 
   componentDidMount() {
     this.copyTimeout = null;
-
     const {
       selectedAccount,
       allState: {
@@ -43,7 +41,6 @@ class ReciveToken extends React.Component {
         params: { address: coinAddress },
       },
     } = this.props;
-
     this.setState({
       from: {
         chainId: provider.chainId,
@@ -62,15 +59,10 @@ class ReciveToken extends React.Component {
   async accountChange(type, account) {
     const { history, tokens, updateSendAsset, updateRecipient } = this.props;
     const { from, to, coinAddress } = this.state;
-
     const isNative = coinAddress === zeroAddress();
     const token = tokens.find(({ address }) => address === coinAddress);
-
     this.setState({
-      [type]: {
-        ...this.state[type],
-        account: account.address,
-      },
+      [type]: { ...this.state[type], account: account.address },
     });
   }
 
@@ -90,6 +82,7 @@ class ReciveToken extends React.Component {
       } else {
         this.props.setProviderType(chainType);
       }
+
       this.props.history.replace(
         generatePath(RECIVE_TOKEN_ROUTE, {
           address: zeroAddress(),
@@ -99,26 +92,14 @@ class ReciveToken extends React.Component {
 
     if (from.account === 'out-side-address') {
       this.setState({
-        from: {
-          ...this.state.from,
-          chainType,
-          chainId: finalChainId,
-        },
-        to: {
-          ...this.state.to,
-          chainType,
-          chainId: finalChainId,
-        },
+        from: { ...this.state.from, chainType, chainId: finalChainId },
+        to: { ...this.state.to, chainType, chainId: finalChainId },
       });
       return;
     }
 
     this.setState({
-      [type]: {
-        ...this.state[type],
-        chainType,
-        chainId: finalChainId,
-      },
+      [type]: { ...this.state[type], chainType, chainId: finalChainId },
     });
   }
 
@@ -131,7 +112,6 @@ class ReciveToken extends React.Component {
   render() {
     const { from, to, coinAddress } = this.state;
     const isDifferentChain = from.chainId !== to.chainId;
-
     return (
       <div className="recive-token__wrapper">
         <div>
@@ -213,9 +193,14 @@ class ReciveToken extends React.Component {
                   <p
                     className="recive-token__qr_address"
                     onClick={() => {
-                      this.setState({ copied: true });
+                      this.setState({
+                        copied: true,
+                      });
                       this.copyTimeout = setTimeout(
-                        () => this.setState({ copied: false }),
+                        () =>
+                          this.setState({
+                            copied: false,
+                          }),
                         SECOND * 3,
                       );
                       copyToClipboard(to.account);

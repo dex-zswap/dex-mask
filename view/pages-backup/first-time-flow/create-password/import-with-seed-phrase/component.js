@@ -1,24 +1,20 @@
+import React, { PureComponent } from 'react';
+import { ethers } from 'ethers';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import { INITIALIZE_END_OF_FLOW_ROUTE } from '@view/helpers/constants/routes';
-import { ethers } from 'ethers';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 const { isValidMnemonic } = ethers.utils;
-
 export default class ImportWithSeedPhrase extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     setSeedPhraseBackedUp: PropTypes.func,
     initializeThreeBox: PropTypes.func,
   };
-
   state = {
     seedPhrase: '',
     showSeedPhrase: false,
@@ -29,12 +25,12 @@ export default class ImportWithSeedPhrase extends PureComponent {
     confirmPasswordError: '',
     termsChecked: true,
   };
-
   parseSeedPhrase = (seedPhrase) =>
     (seedPhrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
 
   UNSAFE_componentWillMount() {
     this._onBeforeUnload = () => {};
+
     window.addEventListener('beforeunload', this._onBeforeUnload);
   }
 
@@ -48,6 +44,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
     if (seedPhrase) {
       const parsedSeedPhrase = this.parseSeedPhrase(seedPhrase);
       const wordCount = parsedSeedPhrase.split(/\s/u).length;
+
       if (wordCount % 3 !== 0 || wordCount > 24 || wordCount < 12) {
         seedPhraseError = this.context.t('seedPhraseReq');
       } else if (!isValidMnemonic(parsedSeedPhrase)) {
@@ -55,12 +52,14 @@ export default class ImportWithSeedPhrase extends PureComponent {
       }
     }
 
-    this.setState({ seedPhrase, seedPhraseError });
+    this.setState({
+      seedPhrase,
+      seedPhraseError,
+    });
   }
 
   handlePasswordChange(password) {
     const { t } = this.context;
-
     this.setState((state) => {
       const { confirmPassword } = state;
       let confirmPasswordError = '';
@@ -84,7 +83,6 @@ export default class ImportWithSeedPhrase extends PureComponent {
 
   handleConfirmPasswordChange(confirmPassword) {
     const { t } = this.context;
-
     this.setState((state) => {
       const { password } = state;
       let confirmPasswordError = '';
@@ -122,10 +120,11 @@ export default class ImportWithSeedPhrase extends PureComponent {
         history.push(INITIALIZE_END_OF_FLOW_ROUTE);
       });
     } catch (error) {
-      this.setState({ seedPhraseError: error.message });
+      this.setState({
+        seedPhraseError: error.message,
+      });
     }
   };
-
   handleCancel = () => {
     this.props.history.goBack();
   };
@@ -161,7 +160,6 @@ export default class ImportWithSeedPhrase extends PureComponent {
       this.toggleTermsCheck();
     }
   };
-
   toggleShowSeedPhrase = () => {
     this.setState(({ showSeedPhrase }) => ({
       showSeedPhrase: !showSeedPhrase,
@@ -176,7 +174,6 @@ export default class ImportWithSeedPhrase extends PureComponent {
       passwordError,
       confirmPasswordError,
     } = this.state;
-
     return (
       <form
         className="first-time-flow__form import-with-seed-phrase__form"

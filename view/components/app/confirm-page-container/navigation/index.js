@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ConfirmPageContainerNavigation = (props) => {
   const {
@@ -14,7 +14,6 @@ const ConfirmPageContainerNavigation = (props) => {
     ofText,
     requestsWaitingText,
   } = props;
-
   return (
     <div
       className="confirm-page-container-navigation"
@@ -34,7 +33,9 @@ const ConfirmPageContainerNavigation = (props) => {
           onClick={() => onNextTx(firstTx)}
         >
           <img
-            style={{ margin: 'auto' }}
+            style={{
+              margin: 'auto',
+            }}
             width="12px"
             height="8px"
             src="./images/double-arrow.svg"
@@ -47,7 +48,9 @@ const ConfirmPageContainerNavigation = (props) => {
           onClick={() => onNextTx(prevTxId)}
         >
           <img
-            style={{ margin: 'auto' }}
+            style={{
+              margin: 'auto',
+            }}
             width="6px"
             height="8px"
             src="./images/single-arrow.svg"
@@ -75,7 +78,9 @@ const ConfirmPageContainerNavigation = (props) => {
           onClick={() => onNextTx(nextTxId)}
         >
           <img
-            style={{ margin: 'auto' }}
+            style={{
+              margin: 'auto',
+            }}
             width="6px"
             height="8px"
             className="confirm-page-container-navigation__imageflip"
@@ -89,7 +94,9 @@ const ConfirmPageContainerNavigation = (props) => {
           onClick={() => onNextTx(lastTx)}
         >
           <img
-            style={{ margin: 'auto' }}
+            style={{
+              margin: 'auto',
+            }}
             width="12px"
             height="8px"
             className="confirm-page-container-navigation__imageflip"
@@ -114,5 +121,4 @@ ConfirmPageContainerNavigation.propTypes = {
   ofText: PropTypes.string,
   requestsWaitingText: PropTypes.string,
 };
-
 export default ConfirmPageContainerNavigation;

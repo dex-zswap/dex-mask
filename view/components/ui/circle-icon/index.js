@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
 export default class CircleIcon extends PureComponent {
   static propTypes = {
     size: PropTypes.string,
@@ -8,7 +7,6 @@ export default class CircleIcon extends PureComponent {
     iconSource: PropTypes.string.isRequired,
     iconSize: PropTypes.string,
   };
-
   static defaultProps = {
     size: '56px',
     iconSize: '18px',
@@ -17,7 +15,6 @@ export default class CircleIcon extends PureComponent {
 
   render() {
     const { size, circleClass, iconSize, iconSource } = this.props;
-
     return (
       <div
         className="circle-icon__container"

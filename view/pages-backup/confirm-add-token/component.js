@@ -1,15 +1,13 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import TokenBalance from '@c/ui/token-balance';
 import TokenImage from '@c/ui/token-image';
 import { ADD_TOKEN_ROUTE, ASSET_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmAddToken extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object,
     clearPendingTokens: PropTypes.func,
@@ -38,7 +36,6 @@ export default class ConfirmAddToken extends Component {
       mostRecentOverviewPage,
       pendingTokens,
     } = this.props;
-
     return (
       <div className="page-container">
         <div className="page-container__header">
@@ -62,7 +59,6 @@ export default class ConfirmAddToken extends Component {
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingTokens).map(([address, token]) => {
                 const { name, symbol } = token;
-
                 return (
                   <div
                     className="confirm-add-token__token-list-item"
@@ -71,7 +67,9 @@ export default class ConfirmAddToken extends Component {
                     <div className="confirm-add-token__token confirm-add-token__data">
                       <TokenImage symbol={symbol} size={40} address={address} />
                       <div
-                        style={{ marginLeft: '12px' }}
+                        style={{
+                          marginLeft: '12px',
+                        }}
                         className="confirm-add-token__name"
                       >
                         {this.getTokenName(name, symbol)}
@@ -103,6 +101,7 @@ export default class ConfirmAddToken extends Component {
                   const pendingTokenValues = Object.values(pendingTokens);
                   clearPendingTokens();
                   const firstTokenAddress = pendingTokenValues?.[0].address?.toLowerCase();
+
                   if (firstTokenAddress) {
                     history.push(`${ASSET_ROUTE}/${firstTokenAddress}`);
                   } else {

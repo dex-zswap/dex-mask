@@ -7,7 +7,6 @@ class ErrorPage extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
   };
-
   static propTypes = {
     error: PropTypes.object.isRequired,
   };
@@ -32,12 +31,10 @@ class ErrorPage extends PureComponent {
   render() {
     const { error } = this.props;
     const { t } = this.context;
-
     const isPopup = getEnvironmentType() === ENVIRONMENT_TYPE_POPUP;
     const message = isPopup
       ? t('errorPagePopupMessage')
       : t('errorPageMessage');
-
     return (
       <section className="error-page">
         <h1 className="error-page__header">{t('errorPageTitle')}</h1>

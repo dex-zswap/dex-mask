@@ -1,6 +1,5 @@
-import classnames from 'classnames';
 import React, { useCallback, useMemo, useState } from 'react';
-
+import classnames from 'classnames';
 export default function Selector({
   options,
   onSelect,
@@ -19,7 +18,6 @@ export default function Selector({
     },
     [onSelect],
   );
-
   const selectedItem = useMemo(
     () => options.find(({ value }) => value === selectedValue),
     [options, selectedValue],
@@ -28,7 +26,6 @@ export default function Selector({
     () => options.find(({ value }) => value === selectedValue)?.label || '',
     [options, selectedValue],
   );
-
   return (
     <div
       className={classnames([

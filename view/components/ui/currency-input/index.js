@@ -1,6 +1,6 @@
+import { connect } from 'react-redux';
 import { ETH } from '@view/helpers/constants/common';
 import { getShouldShowFiat } from '@view/selectors';
-import { connect } from 'react-redux';
 import CurrencyInput from './component';
 
 const mapStateToProps = (state) => {
@@ -8,7 +8,6 @@ const mapStateToProps = (state) => {
     metamask: { nativeCurrency, currentCurrency, conversionRate },
   } = state;
   const showFiat = getShouldShowFiat(state);
-
   return {
     nativeCurrency,
     currentCurrency,
@@ -19,7 +18,6 @@ const mapStateToProps = (state) => {
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { nativeCurrency, currentCurrency } = stateProps;
-
   return {
     ...stateProps,
     ...dispatchProps,

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 export default function BuyIcon({
   width = '17',
   height = '21',
@@ -29,7 +28,6 @@ export default function BuyIcon({
     </svg>
   );
 }
-
 BuyIcon.propTypes = {
   width: PropTypes.string,
   height: PropTypes.string,

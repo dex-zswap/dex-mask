@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
+import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-
 export default class MenuDroppoComponent extends Component {
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
@@ -18,12 +17,12 @@ export default class MenuDroppoComponent extends Component {
 
   renderPrimary() {
     const { isOpen } = this.props;
+
     if (!isOpen) {
       return null;
     }
 
     const innerStyle = this.props.innerStyle || {};
-
     return (
       <div className="menu-droppo" key="menu-droppo-drawer" style={innerStyle}>
         {this.props.children}
@@ -32,8 +31,8 @@ export default class MenuDroppoComponent extends Component {
   }
 
   globalClickOccurred = (event) => {
-    const { target } = event;
-    // eslint-disable-next-line react/no-find-dom-node
+    const { target } = event; // eslint-disable-next-line react/no-find-dom-node
+
     const container = findDOMNode(this);
 
     if (
@@ -48,8 +47,8 @@ export default class MenuDroppoComponent extends Component {
 
   componentDidMount() {
     if (this && document.body) {
-      document.body.addEventListener('click', this.globalClickOccurred);
-      // eslint-disable-next-line react/no-find-dom-node
+      document.body.addEventListener('click', this.globalClickOccurred); // eslint-disable-next-line react/no-find-dom-node
+
       const container = findDOMNode(this);
       this.container = container;
     }
@@ -66,13 +65,11 @@ export default class MenuDroppoComponent extends Component {
     const speed = this.props.speed || '300ms';
     const { useCssTransition } = this.props;
     const zIndex = 'zIndex' in this.props ? this.props.zIndex : 0;
-
     const baseStyle = {
       position: 'fixed',
       ...style,
       zIndex,
     };
-
     return (
       <div
         style={baseStyle}
@@ -120,10 +117,12 @@ export default class MenuDroppoComponent extends Component {
 
 function isDescendant(parent, child) {
   let node = child.parentNode;
+
   while (node !== null) {
     if (node === parent) {
       return true;
     }
+
     node = node.parentNode;
   }
 

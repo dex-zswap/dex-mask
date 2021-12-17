@@ -1,14 +1,12 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Modal from '@c/app/modal';
 import { TRANSACTION_STATUSES } from '@shared/constants/transaction';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
 import CancelTransactionGasFee from './cancel-transaction-gas-fee';
-
 export default class CancelTransaction extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     createCancelTransaction: PropTypes.func,
     hideModal: PropTypes.func,
@@ -16,7 +14,6 @@ export default class CancelTransaction extends PureComponent {
     transactionStatus: PropTypes.string,
     newGasFee: PropTypes.string,
   };
-
   state = {
     busy: false,
   };
@@ -31,13 +28,17 @@ export default class CancelTransaction extends PureComponent {
 
   handleSubmit = async () => {
     const { createCancelTransaction, hideModal } = this.props;
-
-    this.setState({ busy: true });
-
+    this.setState({
+      busy: true,
+    });
     await createCancelTransaction();
-    this.setState({ busy: false }, () => hideModal());
+    this.setState(
+      {
+        busy: false,
+      },
+      () => hideModal(),
+    );
   };
-
   handleCancel = () => {
     this.props.hideModal();
   };
@@ -46,7 +47,6 @@ export default class CancelTransaction extends PureComponent {
     const { t } = this.context;
     const { newGasFee } = this.props;
     const { busy } = this.state;
-
     return (
       <Modal
         headerText={t('attemptToCancel')}

@@ -1,23 +1,20 @@
-import AccountModalContainer from '@c/app/modals/account-modal-container';
-import Button from '@c/ui/button';
-import ReadOnlyInput from '@c/ui/readonly-input';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
+import React, { Component } from 'react';
 import copyToClipboard from 'copy-to-clipboard';
 import { stripHexPrefix } from 'ethereumjs-util';
 import log from 'loglevel';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import AccountModalContainer from '@c/app/modals/account-modal-container';
+import Button from '@c/ui/button';
+import ReadOnlyInput from '@c/ui/readonly-input';
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 export default class ExportPrivateKeyModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static defaultProps = {
     warning: null,
     previousModalState: null,
   };
-
   static propTypes = {
     exportAccount: PropTypes.func.isRequired,
     selectedIdentity: PropTypes.object.isRequired,
@@ -28,7 +25,6 @@ export default class ExportPrivateKeyModal extends Component {
     clearAccountDetails: PropTypes.func.isRequired,
     previousModalState: PropTypes.string,
   };
-
   state = {
     password: '',
     privateKey: null,
@@ -42,7 +38,6 @@ export default class ExportPrivateKeyModal extends Component {
 
   exportAccountAndGetPrivateKey = (password, address) => {
     const { exportAccount } = this.props;
-
     exportAccount(password, address)
       .then((privateKey) =>
         this.setState({
@@ -71,7 +66,11 @@ export default class ExportPrivateKeyModal extends Component {
         <input
           type="password"
           className="export-private-key-modal__password-input"
-          onChange={(event) => this.setState({ password: event.target.value })}
+          onChange={(event) =>
+            this.setState({
+              password: event.target.value,
+            })
+          }
         />
       );
     }
@@ -131,9 +130,7 @@ export default class ExportPrivateKeyModal extends Component {
       previousModalState,
     } = this.props;
     const { name, address } = selectedIdentity;
-
     const { privateKey, showWarning } = this.state;
-
     return (
       <AccountModalContainer
         className="export-private-key-modal"

@@ -1,5 +1,8 @@
 import extension from 'extensionizer';
-import { getBlockExplorerLink, createCustomExplorerLink } from '@metamask/etherscan-link';
+import {
+  getBlockExplorerLink,
+  createCustomExplorerLink,
+} from '@metamask/etherscan-link';
 import { getEnvironmentType, checkForError } from '@app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_BACKGROUND } from '@shared/constants/app';
 import { TRANSACTION_STATUSES } from '@shared/constants/transaction';

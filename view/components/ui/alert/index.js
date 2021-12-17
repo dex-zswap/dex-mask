@@ -1,6 +1,6 @@
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import { MILLISECOND } from '@shared/constants/time';
 
 class Alert extends Component {
@@ -31,9 +31,10 @@ class Alert extends Component {
       msg: null,
       className: 'hidden',
     });
-
     setTimeout((_) => {
-      this.setState({ visible: false });
+      this.setState({
+        visible: false,
+      });
     }, MILLISECOND * 500);
   }
 
@@ -45,12 +46,14 @@ class Alert extends Component {
         </div>
       );
     }
+
     return null;
   }
 }
 
 Alert.propTypes = {
   visible: PropTypes.bool.isRequired,
-  msg: PropTypes.string /* eslint-disable-line react/no-unused-prop-types */,
+  msg: PropTypes.string,
+  /* eslint-disable-line react/no-unused-prop-types */
 };
 export default Alert;

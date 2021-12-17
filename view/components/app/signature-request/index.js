@@ -1,8 +1,8 @@
+import { connect } from 'react-redux';
 import { clearConfirmTransaction } from '@reducer/confirm-transaction/confirm-transaction.duck';
 import { MESSAGE_TYPE } from '@shared/constants/app';
 import { getAccountByAddress } from '@view/helpers/utils';
 import { accountsWithSendEtherInfoSelector } from '@view/selectors';
-import { connect } from 'react-redux';
 import SignatureRequest from './component';
 
 function mapStateToProps(state) {
@@ -29,14 +29,11 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     cancelMessage,
     txData,
   } = ownProps;
-
   const {
     type,
     msgParams: { from },
   } = txData;
-
   const fromAccount = getAccountByAddress(allAccounts, from);
-
   let cancel;
   let sign;
 
@@ -51,14 +48,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     sign = signMessage;
   }
 
-  return {
-    ...ownProps,
-    ...dispatchProps,
-    fromAccount,
-    txData,
-    cancel,
-    sign,
-  };
+  return { ...ownProps, ...dispatchProps, fromAccount, txData, cancel, sign };
 }
 
 export default connect(

@@ -14,12 +14,12 @@
       @include H7;
 
       font-size: 14px;
-      color: #6E6D70;
+      color: #6e6d70;
       display: flex;
       align-items: center;
 
       .fa-info-circle {
-        color: #6E6D70;
+        color: #6e6d70;
         cursor: pointer;
         margin: 0 0 0 10px;
       }
@@ -127,19 +127,19 @@
       border: 1px solid $orange;
     }
 
-    input[type="number"] {
+    input[type='number'] {
       -webkit-appearance: textfield;
       -moz-appearance: textfield;
       appearance: textfield;
     }
 
-    input[type="number"]::-webkit-inner-spin-button {
+    input[type='number']::-webkit-inner-spin-button {
       -webkit-appearance: none;
       -moz-appearance: none;
       display: none;
     }
 
-    input[type="number"]:hover::-webkit-inner-spin-button {
+    input[type='number']:hover::-webkit-inner-spin-button {
       -webkit-appearance: none;
       -moz-appearance: none;
       display: none;

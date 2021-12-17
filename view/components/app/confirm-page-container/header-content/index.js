@@ -1,3 +1,10 @@
+import React, { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import BigNumber from 'bignumber.js';
+import classnames from 'classnames';
+import copyToClipboard from 'copy-to-clipboard';
+import { zeroAddress } from 'ethereumjs-util';
+import PropTypes from 'prop-types';
 import AccountMismatchWarning from '@c/ui/account-mismatch-warning';
 import Identicon from '@c/ui/identicon';
 import {
@@ -17,14 +24,6 @@ import { useFetch } from '@view/hooks/useFetch';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount';
 import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
-import BigNumber from 'bignumber.js';
-import classnames from 'classnames';
-import copyToClipboard from 'copy-to-clipboard';
-import { zeroAddress } from 'ethereumjs-util';
-import PropTypes from 'prop-types';
-import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-
 const variantHash = {
   [DEFAULT_VARIANT]: 'sender-to-recipient--default',
   [CARDS_VARIANT]: 'sender-to-recipient--cards',
@@ -42,6 +41,7 @@ function SenderAddress({
   const t = useI18nContext();
   const [addressCopied, setAddressCopied] = useState(false);
   let tooltipHtml = <p>{t('copiedExclamation')}</p>;
+
   if (!addressCopied) {
     tooltipHtml = addressOnly ? (
       <p>{t('copyAddress')}</p>
@@ -53,6 +53,7 @@ function SenderAddress({
       </p>
     );
   }
+
   return (
     <div
       className={classnames(
@@ -61,6 +62,7 @@ function SenderAddress({
       onClick={() => {
         setAddressCopied(true);
         copyToClipboard(checksummedSenderAddress);
+
         if (onSenderClick) {
           onSenderClick();
         }
@@ -118,8 +120,8 @@ function RecipientWithAddress({
 }) {
   const t = useI18nContext();
   const [addressCopied, setAddressCopied] = useState(false);
-
   let tooltipHtml = <p>{t('copiedExclamation')}</p>;
+
   if (!addressCopied) {
     if (addressOnly && !recipientNickname && !recipientEns) {
       tooltipHtml = <p>{t('copyAddress')}</p>;
@@ -133,12 +135,14 @@ function RecipientWithAddress({
       );
     }
   }
+
   return (
     <div
       className="sender-to-recipient__party sender-to-recipient__party--recipient sender-to-recipient__party--recipient-with-address"
       onClick={() => {
         setAddressCopied(true);
         copyToClipboard(checksummedRecipientAddress);
+
         if (onRecipientClick) {
           onRecipientClick();
         }
@@ -202,7 +206,6 @@ function Arrow({ variant }) {
 Arrow.propTypes = {
   variant: PropTypes.oneOf([DEFAULT_VARIANT, CARDS_VARIANT, FLAT_VARIANT]),
 };
-
 export default function ConfirmPageContainerHeaderContent({
   tokenData,
   title,
@@ -224,28 +227,24 @@ export default function ConfirmPageContainerHeaderContent({
   const t = useI18nContext();
   const checksummedSenderAddress = toChecksumHexAddress(senderAddress);
   const checksummedRecipientAddress = toChecksumHexAddress(recipientAddress);
-
   const address = useMemo(() => tokenData?.address || zeroAddress(), [
     tokenData?.address,
   ]);
-
   const isNativeCurrency = useMemo(() => address === zeroAddress(), [address]);
-
   const amount = useMemo(
     () => titleComponent?.props?.value || title.split(' ')[0],
     [titleComponent, title],
   );
-
   const symbol = useMemo(() => tokenData?.symbol || nativeCurrency, [
     tokenData?.symbol,
     nativeCurrency,
   ]);
-
   const {
     currency: secondaryCurrency,
     numberOfDecimals: secondaryNumberOfDecimals,
-  } = useUserPreferencedCurrency(SECONDARY, { ethNumberOfDecimals: 4 });
-
+  } = useUserPreferencedCurrency(SECONDARY, {
+    ethNumberOfDecimals: 4,
+  });
   const [
     secondaryCurrencyDisplay,
     secondaryCurrencyProperties,
@@ -253,11 +252,9 @@ export default function ConfirmPageContainerHeaderContent({
     numberOfDecimals: secondaryNumberOfDecimals,
     currency: secondaryCurrency,
   });
-
   const tokenUsdValue = useTokenFiatAmount(address, amount, symbol, {
     showFiat: true,
   });
-
   const { res, error, loading } = useFetch(
     () =>
       getPrice({
@@ -266,30 +263,31 @@ export default function ConfirmPageContainerHeaderContent({
       }),
     [address, symbol],
   );
-
   const usdPrice = useMemo(() => {
     if (error || loading) {
       return 0;
     }
+
     return new BigNumber(
       new BigNumber(res?.d?.price || 0).times(new BigNumber(amount)).toFixed(3),
     ).toFixed();
   }, [res, error, loading, amount]);
-
   return (
     <div className="confirm-page-container-header-content-wrap">
       <div>
         <div className="confirm-page-container-header-content-wrap_sender">
           <TokenImage address={address} symbol={symbol} size={40} showLetter />
           {/* <img
-            style={{ borderRadius: '50%' }}
-            width="40px"
-            height="40px"
-            src={assetImage || nativeCurrencyImage}
+           style={{ borderRadius: '50%' }}
+           width="40px"
+           height="40px"
+           src={assetImage || nativeCurrencyImage}
           /> */}
           <div
             className="confirm-page-container-header-content-wrap_sender_title-wrap"
-            style={{ marginLeft: '6px' }}
+            style={{
+              marginLeft: '6px',
+            }}
           >
             <div
               className="confirm-page-container-header-content-wrap_sender_title"
@@ -323,7 +321,6 @@ export default function ConfirmPageContainerHeaderContent({
       </div>
     </div>
   );
-
   return (
     <div className={classnames('sender-to-recipient', variantHash[variant])}>
       <SenderAddress
@@ -354,12 +351,10 @@ export default function ConfirmPageContainerHeaderContent({
     </div>
   );
 }
-
 ConfirmPageContainerHeaderContent.defaultProps = {
   variant: DEFAULT_VARIANT,
   warnUserOnAccountMismatch: true,
 };
-
 ConfirmPageContainerHeaderContent.propTypes = {
   senderName: PropTypes.string,
   senderAddress: PropTypes.string,

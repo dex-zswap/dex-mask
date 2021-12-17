@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function SwapStepIcon({ stepNumber = 1 }) {
   switch (stepNumber) {
     case 1:
@@ -18,6 +17,7 @@ export default function SwapStepIcon({ stepNumber = 1 }) {
           />
         </svg>
       );
+
     case 2:
       return (
         <svg
@@ -34,7 +34,9 @@ export default function SwapStepIcon({ stepNumber = 1 }) {
           />
         </svg>
       );
+
     default:
-      return undefined; // Don't return any SVG if a step number is not supported.
+      return undefined;
+    // Don't return any SVG if a step number is not supported.
   }
 }

@@ -1,5 +1,5 @@
-import { ALERT_TYPES } from '@shared/constants/alerts';
 import { combineReducers } from 'redux';
+import { ALERT_TYPES } from '@shared/constants/alerts';
 import { invalidCustomNetwork, unconnectedAccount } from './alerts';
 import appStateReducer from './app';
 import confirmTransactionReducer from './confirm-transaction/confirm-transaction.duck';
@@ -11,7 +11,6 @@ import historyReducer from './history/history';
 import localeMessagesReducer from './locale/locale';
 import sendReducer from './send';
 import swapsReducer from './swaps/swaps';
-
 export default combineReducers({
   [ALERT_TYPES.invalidCustomNetwork]: invalidCustomNetwork,
   [ALERT_TYPES.unconnectedAccount]: unconnectedAccount,

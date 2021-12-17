@@ -90,5 +90,4 @@ const quoteDataRows = [
     sourceTokenValue: '250000000000000000',
   },
 ];
-
 export default quoteDataRows;

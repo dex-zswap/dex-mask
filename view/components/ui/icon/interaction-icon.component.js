@@ -38,11 +38,9 @@ const Interaction = ({ className, size, color }) => (
 Interaction.defaultProps = {
   className: undefined,
 };
-
 Interaction.propTypes = {
   className: PropTypes.string,
   size: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
 };
-
 export default Interaction;

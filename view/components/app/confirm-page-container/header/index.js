@@ -1,3 +1,5 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import NetworkDisplay from '@c/app/network-display';
 import AccountMismatchWarning from '@c/ui/account-mismatch-warning';
@@ -8,9 +10,6 @@ import {
 } from '@shared/constants/app';
 import { shortenAddress } from '@view/helpers/utils';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 export default function ConfirmPageContainerHeader({
   onEdit,
   showEdit,
@@ -23,12 +22,12 @@ export default function ConfirmPageContainerHeader({
   const isFullScreen =
     windowType !== ENVIRONMENT_TYPE_NOTIFICATION &&
     windowType !== ENVIRONMENT_TYPE_POPUP;
-
   return children;
 
   if (!showEdit && isFullScreen) {
     return children;
   }
+
   return (
     <div className="confirm-page-container-header">
       <div className="confirm-page-container-header__row">
@@ -63,7 +62,6 @@ export default function ConfirmPageContainerHeader({
     </div>
   );
 }
-
 ConfirmPageContainerHeader.propTypes = {
   accountAddress: PropTypes.string,
   showAccountInHeader: PropTypes.bool,

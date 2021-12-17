@@ -1,6 +1,6 @@
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 
 class EditableLabel extends Component {
   static propTypes = {
@@ -8,7 +8,6 @@ class EditableLabel extends Component {
     defaultValue: PropTypes.string,
     className: PropTypes.string,
   };
-
   state = {
     isEditing: false,
     value: this.props.defaultValue || '',
@@ -22,13 +21,14 @@ class EditableLabel extends Component {
     }
 
     Promise.resolve(this.props.onSubmit(value)).then(() =>
-      this.setState({ isEditing: false }),
+      this.setState({
+        isEditing: false,
+      }),
     );
   }
 
   renderEditing() {
     const { value } = this.state;
-
     return [
       <input
         key={1}
@@ -41,7 +41,11 @@ class EditableLabel extends Component {
             this.handleSubmit();
           }
         }}
-        onChange={(event) => this.setState({ value: event.target.value })}
+        onChange={(event) =>
+          this.setState({
+            value: event.target.value,
+          })
+        }
         className={classnames('large-input', 'editable-label__input', {
           'editable-label__input--error': value === '',
         })}
@@ -65,7 +69,11 @@ class EditableLabel extends Component {
       <button
         key={2}
         className="editable-label__icon-button"
-        onClick={() => this.setState({ isEditing: true })}
+        onClick={() =>
+          this.setState({
+            isEditing: true,
+          })
+        }
       >
         <i className="fas fa-pencil-alt editable-label__icon" />
       </button>,
@@ -75,7 +83,6 @@ class EditableLabel extends Component {
   render() {
     const { isEditing } = this.state;
     const { className } = this.props;
-
     return (
       <div className={classnames('editable-label', className)}>
         {isEditing ? this.renderEditing() : this.renderReadonly()}

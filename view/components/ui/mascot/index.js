@@ -1,17 +1,32 @@
-import PropTypes from 'prop-types';
 import React, { createRef, Component } from 'react';
 import MetaMaskLogo from '@metamask/logo';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
 
 const directionTargetGenerator = ({ top, left, height, width }) => {
   const horizontalMiddle = left + width / 2;
   const verticalMiddle = top + height / 2;
   return {
-    up: { x: horizontalMiddle, y: top - height },
-    down: { x: horizontalMiddle, y: top + height * 2 },
-    left: { x: left - width, y: verticalMiddle },
-    right: { x: left + width * 2, y: verticalMiddle },
-    middle: { x: horizontalMiddle, y: verticalMiddle },
+    up: {
+      x: horizontalMiddle,
+      y: top - height,
+    },
+    down: {
+      x: horizontalMiddle,
+      y: top + height * 2,
+    },
+    left: {
+      x: left - width,
+      y: verticalMiddle,
+    },
+    right: {
+      x: left + width * 2,
+      y: verticalMiddle,
+    },
+    middle: {
+      x: horizontalMiddle,
+      y: verticalMiddle,
+    },
   };
 };
 
@@ -24,7 +39,6 @@ export default class Mascot extends Component {
     lookAtTarget: PropTypes.object,
     lookAtDirection: PropTypes.oneOf(['up', 'down', 'left', 'right', 'middle']),
   };
-
   static defaultProps = {
     width: '200',
     height: '200',
@@ -35,18 +49,14 @@ export default class Mascot extends Component {
 
   constructor(props) {
     super(props);
-
     const { width, height, followMouse } = props;
-
     this.logo = MetaMaskLogo({
       followMouse,
       pxNotRatio: true,
       width,
       height,
     });
-
     this.mascotContainer = createRef();
-
     this.refollowMouse = debounce(
       this.logo.setFollowMouse.bind(this.logo, true),
       1000,
@@ -59,6 +69,7 @@ export default class Mascot extends Component {
     if (this.animations) {
       return;
     }
+
     this.animations = this.props.animationEventEmitter;
     this.animations.on('point', this.lookAt.bind(this));
     this.animations.on(
@@ -78,7 +89,6 @@ export default class Mascot extends Component {
     this.directionTargetMap = directionTargetGenerator(
       this.mascotContainer.current.getBoundingClientRect(),
     );
-
     const { lookAtTarget, lookAtDirection } = this.props;
 
     if (lookAtTarget?.x && lookAtTarget?.y) {
@@ -104,6 +114,7 @@ export default class Mascot extends Component {
     ) {
       this.logo.lookAtAndRender(lookAtTarget);
     }
+
     if (prevFollowMouse !== followMouse) {
       this.unfollowMouse();
       followMouse && this.refollowMouse();
@@ -122,6 +133,13 @@ export default class Mascot extends Component {
     // the event emitter is on `this.props`
     // and we dont get that until render
     this.handleAnimationEvents();
-    return <div ref={this.mascotContainer} style={{ zIndex: 0 }} />;
+    return (
+      <div
+        ref={this.mascotContainer}
+        style={{
+          zIndex: 0,
+        }}
+      />
+    );
   }
 }

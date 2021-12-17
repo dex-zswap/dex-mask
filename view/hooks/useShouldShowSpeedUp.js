@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { SECOND } from '@shared/constants/time';
-
 /**
  * Evaluates whether the transaction is eligible to be sped up, and registers
  * an effect to check the logic again after the transaction has surpassed 5 seconds
@@ -8,6 +7,7 @@ import { SECOND } from '@shared/constants/time';
  * @param {Object} transactionGroup - the transaction group to check against
  * @param {boolean} isEarliestNonce - Whether this group is currently the earliest nonce
  */
+
 export function useShouldShowSpeedUp(transactionGroup, isEarliestNonce) {
   const { transactions, hasRetried } = transactionGroup;
   const [earliestTransaction = {}] = transactions;
@@ -24,6 +24,7 @@ export function useShouldShowSpeedUp(transactionGroup, isEarliestNonce) {
     // condition is already met. This effect will run anytime the variables
     // for determining enabled status change
     let timeoutId;
+
     if (!hasRetried && isEarliestNonce && !speedUpEnabled) {
       if (Date.now() - submittedTime > SECOND * 5) {
         setSpeedUpEnabled(true);
@@ -33,15 +34,14 @@ export function useShouldShowSpeedUp(transactionGroup, isEarliestNonce) {
           clearTimeout(timeoutId);
         }, 5001 - (Date.now() - submittedTime));
       }
-    }
-    // Anytime the effect is re-ran, make sure to remove a previously set timeout
+    } // Anytime the effect is re-ran, make sure to remove a previously set timeout
     // so as to avoid multiple timers potentially overlapping
+
     return () => {
       if (timeoutId) {
         clearTimeout(timeoutId);
       }
     };
   }, [submittedTime, speedUpEnabled, hasRetried, isEarliestNonce]);
-
   return speedUpEnabled;
 }

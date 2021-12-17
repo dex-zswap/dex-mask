@@ -1,3 +1,6 @@
+import React, { useCallback, useContext, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 import EditGasDisplay from '@c/app/edit-gas/display';
 import EditGasDisplayEducation from '@c/app/edit-gas/display-education';
 import Button from '@c/ui/button';
@@ -22,10 +25,6 @@ import {
   updateSwapsUserFeeLevel,
   updateTransaction,
 } from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { useCallback, useContext, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 export default function EditGasPopover({
   popoverTitle = '',
   confirmButtonText = '',
@@ -45,22 +44,17 @@ export default function EditGasPopover({
   const gasLoadingAnimationIsShowing = useSelector(
     getGasLoadingAnimationIsShowing,
   );
-
   const showEducationButton =
     (mode === EDIT_GAS_MODES.MODIFY_IN_PLACE ||
       mode === EDIT_GAS_MODES.SWAPS) &&
     networkAndAccountSupport1559;
   const [showEducationContent, setShowEducationContent] = useState(false);
-
   const [warning] = useState(null);
-
   const [
     dappSuggestedGasFeeAcknowledged,
     setDappSuggestedGasFeeAcknowledged,
   ] = useState(false);
-
   const minimumGasLimitDec = hexToDecimal(minimumGasLimit);
-
   const {
     maxPriorityFeePerGas,
     setMaxPriorityFeePerGas,
@@ -88,16 +82,15 @@ export default function EditGasPopover({
     estimatesUnavailableWarning,
     estimatedBaseFee,
   } = useGasFeeInputs(defaultEstimateToUse, transaction, minimumGasLimit, mode);
-
   const txParamsHaveBeenCustomized =
     estimateToUse === 'custom' || txParamsAreDappSuggested(transaction);
-
   /**
    * Temporary placeholder, this should be managed by the parent component but
    * we will be extracting this component from the hard to maintain modal/
    * sidebar component. For now this is just to be able to appropriately close
    * the modal in testing
    */
+
   const closePopover = useCallback(() => {
     if (onClose) {
       onClose();
@@ -107,7 +100,6 @@ export default function EditGasPopover({
       dispatch(hideModal());
     }
   }, [showSidebar, onClose, dispatch]);
-
   const onSubmit = useCallback(() => {
     if (!transaction || !mode) {
       closePopover();
@@ -127,7 +119,6 @@ export default function EditGasPopover({
           gasLimit: decimalToHex(gasLimit),
           gasPrice: decGWEIToHexWEI(gasPrice),
         };
-
     const cleanTransactionParams = { ...transaction.txParams };
 
     if (networkAndAccountSupport1559) {
@@ -137,10 +128,7 @@ export default function EditGasPopover({
     const updatedTxMeta = {
       ...transaction,
       userFeeLevel: estimateToUse || 'custom',
-      txParams: {
-        ...cleanTransactionParams,
-        ...newGasSettings,
-      },
+      txParams: { ...cleanTransactionParams, ...newGasSettings },
     };
 
     switch (mode) {
@@ -151,6 +139,7 @@ export default function EditGasPopover({
           }),
         );
         break;
+
       case EDIT_GAS_MODES.SPEED_UP:
         dispatch(
           createSpeedUpTransaction(transaction.id, newGasSettings, {
@@ -158,16 +147,20 @@ export default function EditGasPopover({
           }),
         );
         break;
+
       case EDIT_GAS_MODES.MODIFY_IN_PLACE:
         dispatch(updateTransaction(updatedTxMeta));
         break;
+
       case EDIT_GAS_MODES.SWAPS:
         // This popover component should only be used for the "FEE_MARKET" type in Swaps.
         if (networkAndAccountSupport1559) {
           dispatch(updateSwapsUserFeeLevel(estimateToUse || 'custom'));
           dispatch(updateCustomSwapsEIP1559GasParams(newGasSettings));
         }
+
         break;
+
       default:
         break;
     }
@@ -186,8 +179,8 @@ export default function EditGasPopover({
     estimateToUse,
     estimatedBaseFee,
   ]);
-
   let title = t('editGasTitle');
+
   if (popoverTitle) {
     title = popoverTitle;
   } else if (showEducationContent) {
@@ -226,7 +219,12 @@ export default function EditGasPopover({
         )
       }
     >
-      <div style={{ padding: '0 10px 10px', position: 'relative' }}>
+      <div
+        style={{
+          padding: '0 10px 10px',
+          position: 'relative',
+        }}
+      >
         {showEducationContent ? (
           <EditGasDisplayEducation />
         ) : (
@@ -275,7 +273,6 @@ export default function EditGasPopover({
     </Popover>
   );
 }
-
 EditGasPopover.propTypes = {
   popoverTitle: PropTypes.string,
   editGasDisplayProps: PropTypes.object,

@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 export default class TransactionBreakdownRow extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
@@ -11,7 +10,6 @@ export default class TransactionBreakdownRow extends PureComponent {
 
   render() {
     const { title, children, className } = this.props;
-
     return (
       <div className={classnames('transaction-breakdown-row', className)}>
         <div className="transaction-breakdown-row__title">{title}</div>

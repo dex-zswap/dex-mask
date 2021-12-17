@@ -1,10 +1,10 @@
+import { connect } from 'react-redux';
 import {
   getCurrentChainId,
   getRpcPrefsForCurrentProvider,
   getSelectedIdentity,
 } from '@view/selectors';
 import { setAccountLabel, showModal } from '@view/store/actions';
-import { connect } from 'react-redux';
 import AccountDetailsModal from './component';
 
 const mapStateToProps = (state) => {
@@ -20,7 +20,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     showExportPrivateKeyModal: () =>
-      dispatch(showModal({ name: 'EXPORT_PRIVATE_KEY' })),
+      dispatch(
+        showModal({
+          name: 'EXPORT_PRIVATE_KEY',
+        }),
+      ),
     setAccountLabel: (address, label) =>
       dispatch(setAccountLabel(address, label)),
   };

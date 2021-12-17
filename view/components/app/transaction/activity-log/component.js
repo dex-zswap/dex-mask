@@ -1,24 +1,22 @@
+import React, { PureComponent } from 'react';
 import {
   createCustomExplorerLink,
   getBlockExplorerLink,
 } from '@metamask/etherscan-link';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { CHAINID_EXPLORE_MAP } from '@shared/constants/network';
 import { formatDate } from '@view/helpers/utils';
 import {
   getEthConversionFromWeiHex,
   getValueFromWeiHex,
 } from '@view/helpers/utils/conversions.util';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
 import { CONFIRMED_STATUS } from './constants';
 import TransactionActivityLogIcon from './transaction-activity-log-icon';
-
 export default class TransactionActivityLog extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     activities: PropTypes.array,
     className: PropTypes.string,
@@ -32,7 +30,6 @@ export default class TransactionActivityLog extends PureComponent {
     isEarliestNonce: PropTypes.bool,
     rpcPrefs: PropTypes.object,
   };
-
   handleActivityClick = (activity) => {
     const { rpcPrefs } = this.props;
     let etherscanUrl = getBlockExplorerLink(activity, rpcPrefs);
@@ -44,7 +41,9 @@ export default class TransactionActivityLog extends PureComponent {
       );
     }
 
-    global.platform.openTab({ url: etherscanUrl });
+    global.platform.openTab({
+      url: etherscanUrl,
+    });
   };
 
   renderInlineRetry(index) {
@@ -56,7 +55,6 @@ export default class TransactionActivityLog extends PureComponent {
       isEarliestNonce,
     } = this.props;
     const { status } = primaryTransaction;
-
     return isEarliestNonce &&
       status !== CONFIRMED_STATUS &&
       index === inlineRetryIndex ? (
@@ -75,7 +73,6 @@ export default class TransactionActivityLog extends PureComponent {
       isEarliestNonce,
     } = this.props;
     const { status } = primaryTransaction;
-
     return isEarliestNonce &&
       status !== CONFIRMED_STATUS &&
       index === inlineCancelIndex ? (
@@ -108,7 +105,6 @@ export default class TransactionActivityLog extends PureComponent {
       ethValue,
       formattedTimestamp,
     ]);
-
     return (
       <div key={index} className="transaction-activity-log__activity">
         <TransactionActivityLogIcon

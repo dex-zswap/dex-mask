@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-
+import PropTypes from 'prop-types';
 export default function TransactionTotalBanner({
   total = '',
   detail = '',
@@ -10,13 +9,12 @@ export default function TransactionTotalBanner({
     <div className="transaction-total-banner">
       <div className="transaction-total-banner_title">{total}</div>
       {/* <Typography color={COLORS.BLACK} variant={TYPOGRAPHY.H1}>
-        {total}
+       {total}
       </Typography> */}
       {
         detail && (
           <div className="transaction-total-banner__detail">{detail}</div>
-        )
-        // <Typography
+        ) // <Typography
         //   color={COLORS.WHITE}
         //   variant={TYPOGRAPHY.H6}
         //   className="transaction-total-banner__detail"
@@ -28,7 +26,6 @@ export default function TransactionTotalBanner({
     </div>
   );
 }
-
 TransactionTotalBanner.propTypes = {
   total: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   detail: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),

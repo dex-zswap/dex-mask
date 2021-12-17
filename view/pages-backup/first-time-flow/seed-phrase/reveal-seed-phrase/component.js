@@ -1,29 +1,24 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import Steps from '@c/ui/steps';
 import { INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class RevealSeedPhraseComponent extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object,
     seedPhrase: PropTypes.string,
   };
-
   handleNext = async (event) => {
     event.preventDefault();
     const { history } = this.props;
     history.push(INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE);
   };
-
   renderPhrase = () => {
     const { seedPhrase: seedPhraseString } = this.props;
     const seedPhrase = seedPhraseString.split(' ');
-
     return (
       <div className="reveal-seed-phrase__word-display">
         <div className="reveal-seed-phrase__word-column">
@@ -47,7 +42,6 @@ export default class RevealSeedPhraseComponent extends PureComponent {
   render() {
     const { t } = this.context;
     const { seedPhrase } = this.props;
-
     return (
       <div>
         <div className="first-time-flow__header">

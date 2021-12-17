@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 const Dropdown = ({
   className,
@@ -54,7 +54,6 @@ Dropdown.propTypes = {
   selectedOption: PropTypes.string,
   style: PropTypes.object,
 };
-
 Dropdown.defaultProps = {
   className: undefined,
   disabled: false,
@@ -62,5 +61,4 @@ Dropdown.defaultProps = {
   selectedOption: null,
   style: undefined,
 };
-
 export default Dropdown;

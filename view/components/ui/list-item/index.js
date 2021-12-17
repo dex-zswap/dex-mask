@@ -1,10 +1,8 @@
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import TransitionListItemComponent from './component';
-
 export const TransitionListItem = TransitionListItemComponent;
-
 export default function ListItem({
   title,
   subtitle,
@@ -22,7 +20,6 @@ export default function ListItem({
     className,
     subtitle || children ? '' : 'list-item--single-content-row',
   );
-
   return (
     <div
       className={primaryClassName}
@@ -56,7 +53,6 @@ export default function ListItem({
     </div>
   );
 }
-
 ListItem.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   titleIcon: PropTypes.node,

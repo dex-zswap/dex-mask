@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { SECOND } from '@shared/constants/time';
 import { formatBalance } from '@view/helpers/utils';
@@ -8,21 +11,25 @@ import {
   getRpcPrefsForCurrentProvider,
 } from '@view/selectors';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import AccountList from './account-list';
 import SelectHardware from './select-hardware';
-
 const U2F_ERROR = 'U2F';
-
 const LEDGER_LIVE_PATH = `m/44'/60'/0'/0/0`;
 const MEW_PATH = `m/44'/60'/0'`;
 const BIP44_PATH = `m/44'/60'/0'/0`;
 const HD_PATHS = [
-  { name: 'Ledger Live', value: LEDGER_LIVE_PATH },
-  { name: 'Legacy (MEW / MyCrypto)', value: MEW_PATH },
-  { name: `BIP44 Standard (e.g. MetaMask, Trezor)`, value: BIP44_PATH },
+  {
+    name: 'Ledger Live',
+    value: LEDGER_LIVE_PATH,
+  },
+  {
+    name: 'Legacy (MEW / MyCrypto)',
+    value: MEW_PATH,
+  },
+  {
+    name: `BIP44 Standard (e.g. MetaMask, Trezor)`,
+    value: BIP44_PATH,
+  },
 ];
 
 class ConnectHardwareForm extends Component {
@@ -43,7 +50,9 @@ class ConnectHardwareForm extends Component {
       a.balance = balanceValue ? formatBalance(balanceValue, 6) : '...';
       return a;
     });
-    this.setState({ accounts: newAccounts });
+    this.setState({
+      accounts: newAccounts,
+    });
   }
 
   componentDidMount() {
@@ -54,23 +63,27 @@ class ConnectHardwareForm extends Component {
     for (const device of ['trezor', 'ledger']) {
       const path = this.props.defaultHdPaths[device];
       const unlocked = await this.props.checkHardwareStatus(device, path);
+
       if (unlocked) {
-        this.setState({ unlocked: true });
+        this.setState({
+          unlocked: true,
+        });
         this.getPage(device, 0, path);
       }
     }
   }
 
   connectToHardwareWallet = (device) => {
-    this.setState({ device });
+    this.setState({
+      device,
+    });
+
     if (this.state.accounts.length) {
       return;
-    }
+    } // Default values
 
-    // Default values
     this.getPage(device, 0, this.props.defaultHdPaths[device]);
   };
-
   onPathChange = (path) => {
     this.props.setHardwareWalletDefaultHdPath({
       device: this.state.device,
@@ -81,24 +94,29 @@ class ConnectHardwareForm extends Component {
     });
     this.getPage(this.state.device, 0, path);
   };
-
   onAccountChange = (account) => {
     let { selectedAccounts } = this.state;
+
     if (selectedAccounts.includes(account)) {
       selectedAccounts = selectedAccounts.filter((acc) => account !== acc);
     } else {
       selectedAccounts.push(account);
     }
-    this.setState({ selectedAccounts, error: null });
-  };
 
+    this.setState({
+      selectedAccounts,
+      error: null,
+    });
+  };
   onAccountRestriction = () => {
-    this.setState({ error: this.context.t('ledgerAccountRestriction') });
+    this.setState({
+      error: this.context.t('ledgerAccountRestriction'),
+    });
   };
 
   showTemporaryAlert() {
-    this.props.showAlert(this.context.t('hardwareWalletConnected'));
-    // Autohide the alert after 5 seconds
+    this.props.showAlert(this.context.t('hardwareWalletConnected')); // Autohide the alert after 5 seconds
+
     setTimeout((_) => {
       this.props.hideAlert();
     }, SECOND * 5);
@@ -113,9 +131,8 @@ class ConnectHardwareForm extends Component {
           // (device previously locked) show the global alert
           if (this.state.accounts.length === 0 && !this.state.unlocked) {
             this.showTemporaryAlert();
-          }
+          } // Map accounts with balances
 
-          // Map accounts with balances
           const newAccounts = accounts.map((account) => {
             const normalizedAddress = account.address.toLowerCase();
             const balanceValue =
@@ -125,7 +142,6 @@ class ConnectHardwareForm extends Component {
               : '...';
             return account;
           });
-
           this.setState({
             accounts: newAccounts,
             unlocked: true,
@@ -136,10 +152,16 @@ class ConnectHardwareForm extends Component {
       })
       .catch((e) => {
         const errorMessage = typeof e === 'string' ? e : e.message;
+
         if (errorMessage === 'Window blocked') {
-          this.setState({ browserSupported: false, error: null });
+          this.setState({
+            browserSupported: false,
+            error: null,
+          });
         } else if (errorMessage.includes(U2F_ERROR)) {
-          this.setState({ error: U2F_ERROR });
+          this.setState({
+            error: U2F_ERROR,
+          });
         } else if (
           errorMessage === 'LEDGER_LOCKED' ||
           errorMessage === 'LEDGER_WRONG_APP'
@@ -161,7 +183,6 @@ class ConnectHardwareForm extends Component {
         }
       });
   };
-
   onForgetDevice = (device) => {
     this.props
       .forgetDevice(device)
@@ -174,10 +195,11 @@ class ConnectHardwareForm extends Component {
         });
       })
       .catch((e) => {
-        this.setState({ error: e.message });
+        this.setState({
+          error: e.message,
+        });
       });
   };
-
   onUnlockAccounts = (device, path) => {
     const {
       history,
@@ -187,7 +209,9 @@ class ConnectHardwareForm extends Component {
     const { selectedAccounts } = this.state;
 
     if (selectedAccounts.length === 0) {
-      this.setState({ error: this.context.t('accountSelectionRequired') });
+      this.setState({
+        error: this.context.t('accountSelectionRequired'),
+      });
     }
 
     const description =
@@ -204,10 +228,11 @@ class ConnectHardwareForm extends Component {
         history.push(mostRecentOverviewPage);
       })
       .catch((e) => {
-        this.setState({ error: e.message });
+        this.setState({
+          error: e.message,
+        });
       });
   };
-
   onCancel = () => {
     const { history, mostRecentOverviewPage } = this.props;
     history.push(mostRecentOverviewPage);
@@ -218,15 +243,17 @@ class ConnectHardwareForm extends Component {
       return (
         <p className="hw-connect__error">
           {this.context.t('troubleConnectingToWallet', [
-            this.state.device,
-            // eslint-disable-next-line react/jsx-key
+            this.state.device, // eslint-disable-next-line react/jsx-key
             <a
               href="https://metamask.zendesk.com/hc/en-us/articles/360020394612-How-to-connect-a-Trezor-or-Ledger-Hardware-Wallet"
               key="hardware-connection-guide"
               target="_blank"
               rel="noopener noreferrer"
               className="hw-connect__link"
-              style={{ marginLeft: '5px', marginRight: '5px' }}
+              style={{
+                marginLeft: '5px',
+                marginRight: '5px',
+              }}
             >
               {this.context.t('walletConnectionGuide')}
             </a>,
@@ -234,6 +261,7 @@ class ConnectHardwareForm extends Component {
         </p>
       );
     }
+
     return this.state.error ? (
       <span className="hw-connect__error">{this.state.error}</span>
     ) : null;
@@ -312,7 +340,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     setHardwareWalletDefaultHdPath: ({ device, path }) => {
-      return dispatch(actions.setHardwareWalletDefaultHdPath({ device, path }));
+      return dispatch(
+        actions.setHardwareWalletDefaultHdPath({
+          device,
+          path,
+        }),
+      );
     },
     connectHardware: (deviceName, page, hdPath) => {
       return dispatch(actions.connectHardware(deviceName, page, hdPath));
@@ -346,7 +379,6 @@ const mapDispatchToProps = (dispatch) => {
 ConnectHardwareForm.contextTypes = {
   t: PropTypes.func,
 };
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

@@ -1,8 +1,7 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import IconBorder from '@c/ui/icon-border';
 import IconWithFallback from '@c/ui/icon-with-fallback';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 export default function SiteIcon({ icon, name, size }) {
   const iconSize = Math.floor(size * 0.75);
   return (
@@ -11,13 +10,11 @@ export default function SiteIcon({ icon, name, size }) {
     </IconBorder>
   );
 }
-
 SiteIcon.propTypes = {
   icon: PropTypes.string,
   name: PropTypes.string,
   size: PropTypes.number.isRequired,
 };
-
 SiteIcon.defaultProps = {
   icon: undefined,
   name: undefined,

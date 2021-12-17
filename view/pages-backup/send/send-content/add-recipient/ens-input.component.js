@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Identicon from '@c/ui/identicon';
 import { ellipsify } from '@pages/send/utils';
 import {
@@ -12,15 +15,10 @@ import {
 } from '@shared/modules/hexstring-utils';
 import { isValidDomainName } from '@view/helpers/utils';
 import { toBnString } from '@view/helpers/utils/conversions.util';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class EnsInput extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     chainId: PropTypes.string,
     className: PropTypes.string,
@@ -45,15 +43,17 @@ export default class EnsInput extends Component {
   onPaste = (event) => {
     event.clipboardData.items[0].getAsString((text) => {
       const input = text.trim();
+
       if (
         !isBurnAddress(input) &&
-        isValidHexAddress(input, { mixedCaseUseChecksum: true })
+        isValidHexAddress(input, {
+          mixedCaseUseChecksum: true,
+        })
       ) {
         this.props.onPaste(input);
       }
     });
   };
-
   onChange = ({ target: { value } }) => {
     const {
       onValidAddressTyped,
@@ -63,21 +63,24 @@ export default class EnsInput extends Component {
       resetEnsResolution,
     } = this.props;
     const input = value.trim();
-
     onChange(input);
+
     if (internalSearch) {
       return null;
-    }
-    // Empty ENS state if input is empty
+    } // Empty ENS state if input is empty
     // maybe scan ENS
+
     if (isValidDomainName(input)) {
       lookupEnsName(input);
     } else {
       resetEnsResolution();
+
       if (
         onValidAddressTyped &&
         !isBurnAddress(input) &&
-        isValidHexAddress(input, { mixedCaseUseChecksum: true })
+        isValidHexAddress(input, {
+          mixedCaseUseChecksum: true,
+        })
       ) {
         onValidAddressTyped(input);
       }
@@ -95,10 +98,8 @@ export default class EnsInput extends Component {
       selectedName,
       userInput,
     } = this.props;
-
     const bnStrChainId = toBnString(chainId);
     let placeholder = t('recipientAddressPlaceholder2');
-
     Object.keys(NETWORK_TYPE_TO_ID_MAP).map((key) => {
       if (toBnString(NETWORK_TYPE_TO_ID_MAP[key].chainId) == bnStrChainId) {
         placeholder =
@@ -111,9 +112,7 @@ export default class EnsInput extends Component {
             : t('recipientAddressPlaceholder2');
       }
     });
-
     const hasSelectedAddress = Boolean(selectedAddress);
-
     return (
       <div className={classnames('ens-input', className)}>
         <div

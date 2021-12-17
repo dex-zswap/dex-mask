@@ -5,8 +5,9 @@ const returnToOnboardingInitiatorTab = async (onboardingInitiator) => {
   const tab = await new Promise((resolve) => {
     extension.tabs.update(
       onboardingInitiator.tabId,
-      { active: true },
-      // eslint-disable-next-line no-shadow
+      {
+        active: true,
+      }, // eslint-disable-next-line no-shadow
       (tab) => {
         if (tab) {
           resolve(tab);
@@ -15,6 +16,7 @@ const returnToOnboardingInitiatorTab = async (onboardingInitiator) => {
           if (extension.runtime.lastError) {
             log.debug(extension.runtime.lastError);
           }
+
           resolve();
         }
       },
@@ -43,6 +45,7 @@ export const returnToOnboardingInitiator = async (onboardingInitiator) => {
         if (extension.runtime.lastError) {
           log.debug(extension.runtime.lastError);
         }
+
         resolve();
       }
     });

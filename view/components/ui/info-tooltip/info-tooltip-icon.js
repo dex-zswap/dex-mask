@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 export default function InfoTooltipIcon({ fillColor = '#b8b8b8' }) {
   return (
     <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
@@ -11,7 +10,6 @@ export default function InfoTooltipIcon({ fillColor = '#b8b8b8' }) {
     </svg>
   );
 }
-
 InfoTooltipIcon.propTypes = {
   fillColor: PropTypes.string,
 };

@@ -1,3 +1,4 @@
+import abi from 'ethereumjs-abi';
 import { addHexPrefix } from '@app/scripts/lib/util';
 import {
   addCurrencies,
@@ -8,9 +9,7 @@ import {
   multiplyCurrencies,
 } from '@shared/modules/conversion.utils';
 import { calcTokenAmount } from '@view/helpers/utils/token-util';
-import abi from 'ethereumjs-abi';
 import { TOKEN_TRANSFER_FUNCTION_SIGNATURE } from './constants';
-
 export {
   addGasBuffer,
   calcGasTotal,
@@ -40,7 +39,6 @@ function isBalanceSufficient({
     bBase: 16,
     toNumericBase: 'hex',
   });
-
   const balanceIsSufficient = conversionGTE(
     {
       value: balance,
@@ -55,7 +53,6 @@ function isBalanceSufficient({
       fromCurrency: primaryCurrency,
     },
   );
-
   return balanceIsSufficient;
 }
 
@@ -63,7 +60,6 @@ function isTokenBalanceSufficient({ amount = '0x0', tokenBalance, decimals }) {
   const amountInDec = conversionUtil(amount, {
     fromNumericBase: 'hex',
   });
-
   const tokenBalanceIsSufficient = conversionGTE(
     {
       value: tokenBalance,
@@ -73,7 +69,6 @@ function isTokenBalanceSufficient({ amount = '0x0', tokenBalance, decimals }) {
       value: calcTokenAmount(amountInDec, decimals),
     },
   );
-
   return tokenBalanceIsSufficient;
 }
 
@@ -97,27 +92,38 @@ function addGasBuffer(
       multiplierBase: 10,
       numberOfDecimals: '0',
     },
-  );
+  ); // if initialGasLimit is above blockGasLimit, dont modify it
 
-  // if initialGasLimit is above blockGasLimit, dont modify it
   if (
     conversionGreaterThan(
-      { value: initialGasLimitHex, fromNumericBase: 'hex' },
-      { value: upperGasLimit, fromNumericBase: 'hex' },
+      {
+        value: initialGasLimitHex,
+        fromNumericBase: 'hex',
+      },
+      {
+        value: upperGasLimit,
+        fromNumericBase: 'hex',
+      },
     )
   ) {
     return initialGasLimitHex;
-  }
-  // if bufferedGasLimit is below blockGasLimit, use bufferedGasLimit
+  } // if bufferedGasLimit is below blockGasLimit, use bufferedGasLimit
+
   if (
     conversionLessThan(
-      { value: bufferedGasLimit, fromNumericBase: 'hex' },
-      { value: upperGasLimit, fromNumericBase: 'hex' },
+      {
+        value: bufferedGasLimit,
+        fromNumericBase: 'hex',
+      },
+      {
+        value: upperGasLimit,
+        fromNumericBase: 'hex',
+      },
     )
   ) {
     return bufferedGasLimit;
-  }
-  // otherwise use blockGasLimit
+  } // otherwise use blockGasLimit
+
   return upperGasLimit;
 }
 
@@ -129,6 +135,7 @@ function generateTokenTransferData({
   if (!sendToken) {
     return undefined;
   }
+
   return (
     TOKEN_TRANSFER_FUNCTION_SIGNATURE +
     Array.prototype.map

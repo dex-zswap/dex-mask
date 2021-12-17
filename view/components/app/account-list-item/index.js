@@ -1,9 +1,8 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import AccountMismatchWarning from '@c/ui/account-mismatch-warning';
 import Identicon from '@c/ui/identicon';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 export default function AccountListItem({
   account,
   className,
@@ -12,11 +11,16 @@ export default function AccountListItem({
   icon = null,
 }) {
   const { name, address, balance } = account || {};
-
   return (
     <div
       className={`account-list-item ${className}`}
-      onClick={() => handleClick?.({ name, address, balance })}
+      onClick={() =>
+        handleClick?.({
+          name,
+          address,
+          balance,
+        })
+      }
     >
       <div className="account-list-item__top-row">
         <Identicon
@@ -40,7 +44,6 @@ export default function AccountListItem({
     </div>
   );
 }
-
 AccountListItem.propTypes = {
   account: PropTypes.object,
   className: PropTypes.string,

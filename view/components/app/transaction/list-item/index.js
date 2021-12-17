@@ -1,3 +1,7 @@
+import React, { useCallback, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import EditGasPopover from '@c/app/edit-gas/popover';
 import TransactionIcon from '@c/app/transaction/icon';
 import TransactionListItemDetails from '@c/app/transaction/list-item-details';
@@ -16,11 +20,6 @@ import { useI18nContext } from '@view/hooks/useI18nContext';
 import { useRetryTransaction } from '@view/hooks/useRetryTransaction';
 import { useShouldShowSpeedUp } from '@view/hooks/useShouldShowSpeedUp';
 import { useTransactionDisplayData } from '@view/hooks/useTransactionDisplayData';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useCallback, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-
 export default function TransactionListItem({
   transactionGroup,
   isEarliestNonce = false,
@@ -29,7 +28,6 @@ export default function TransactionListItem({
   const history = useHistory();
   const { hasCancelled } = transactionGroup;
   const [showDetails, setShowDetails] = useState(false);
-
   const {
     initialTransaction: { id },
     primaryTransaction: { err, status },
@@ -51,7 +49,6 @@ export default function TransactionListItem({
     transactionGroup,
     isEarliestNonce,
   );
-
   const {
     title,
     subtitle,
@@ -65,13 +62,11 @@ export default function TransactionListItem({
     isPending,
     senderAddress,
   } = useTransactionDisplayData(transactionGroup);
-
   const isSignatureReq =
     category === TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST;
   const isApproval = category === TRANSACTION_GROUP_CATEGORIES.APPROVAL;
   const isUnapproved = status === TRANSACTION_STATUSES.UNAPPROVED;
   const isSwap = category === TRANSACTION_GROUP_CATEGORIES.SWAP;
-
   const className = classnames('transaction-list-item', {
     'transaction-list-item--unconfirmed':
       isPending ||
@@ -81,15 +76,14 @@ export default function TransactionListItem({
         TRANSACTION_STATUSES.REJECTED,
       ].includes(displayedStatusKey),
   });
-
   const toggleShowDetails = useCallback(() => {
     if (isUnapproved) {
       history.push(`${CONFIRM_TRANSACTION_ROUTE}/${id}`);
       return;
     }
+
     setShowDetails((prev) => !prev);
   }, [isUnapproved, history, id]);
-
   const cancelButton = useMemo(() => {
     const btn = (
       <Button
@@ -102,6 +96,7 @@ export default function TransactionListItem({
         {t('cancel')}
       </Button>
     );
+
     if (hasCancelled || !isPending || isUnapproved) {
       return null;
     }
@@ -121,17 +116,23 @@ export default function TransactionListItem({
     cancelTransaction,
     hasCancelled,
   ]);
-
   const speedUpButton = useMemo(() => {
     if (!shouldShowSpeedUp || !isPending || isUnapproved) {
       return null;
     }
+
     return (
       <Button
         type="primary"
         rounded
         onClick={hasCancelled ? cancelTransaction : retryTransaction}
-        style={hasCancelled ? { width: 'auto' } : null}
+        style={
+          hasCancelled
+            ? {
+                width: 'auto',
+              }
+            : null
+        }
       >
         {hasCancelled ? t('speedUpCancellation') : t('speedUp')}
       </Button>
@@ -145,7 +146,6 @@ export default function TransactionListItem({
     hasCancelled,
     cancelTransaction,
   ]);
-
   return (
     <>
       <div className="transaction-list-item__wrapper">
@@ -239,7 +239,6 @@ export default function TransactionListItem({
     </>
   );
 }
-
 TransactionListItem.propTypes = {
   transactionGroup: PropTypes.object.isRequired,
   isEarliestNonce: PropTypes.bool,

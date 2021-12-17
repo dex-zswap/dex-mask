@@ -1,3 +1,5 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import locales from '@app/_locales/index.json';
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
@@ -6,9 +8,6 @@ import {
   INITIALIZE_SELECT_ACTION_ROUTE,
 } from '@view/helpers/constants/routes';
 import EventEmitter from 'events';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class Welcome extends PureComponent {
   static propTypes = {
     history: PropTypes.object,
@@ -17,18 +16,15 @@ export default class Welcome extends PureComponent {
     currentLocale: PropTypes.object,
     updateCurrentLocale: PropTypes.func,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     showLocaleOptions: false,
   };
 
   constructor(props) {
     super(props);
-
     this.animationEventEmitter = new EventEmitter();
   }
 
@@ -44,13 +40,9 @@ export default class Welcome extends PureComponent {
 
   toggleLocaleOption = () => {
     this.setState((prev) => {
-      return {
-        ...prev,
-        showLocaleOptions: !prev.showLocaleOptions,
-      };
+      return { ...prev, showLocaleOptions: !prev.showLocaleOptions };
     });
   };
-
   handleContinue = () => {
     this.props.history.push(INITIALIZE_SELECT_ACTION_ROUTE);
   };
@@ -87,7 +79,6 @@ export default class Welcome extends PureComponent {
       (locale) => locale.code === currentLocale,
     );
     const currentLocaleName = currentLocaleMeta ? currentLocaleMeta.name : '';
-
     return (
       <div className="welcome-page__wrapper">
         <div className="welcome-page">

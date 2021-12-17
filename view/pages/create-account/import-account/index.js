@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
 import Selector from '@c/ui/selector';
 import Logo from '@c/ui/logo';
 import BackBar from '@c/ui/back-bar';
 import Button from '@c/ui/button';
-
 import JsonImportView from './json';
 import PrivateKeyImportView from './private-key';
-
 export default class AccountImportSubview extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
-    type: 'privateKey'
+    type: 'privateKey',
   };
 
   renderImportView() {
@@ -24,8 +20,10 @@ export default class AccountImportSubview extends Component {
     switch (type) {
       case 'privateKey':
         return <PrivateKeyImportView />;
+
       case 'jsonFile':
         return <JsonImportView />;
+
       default:
         return <JsonImportView />;
     }
@@ -33,7 +31,6 @@ export default class AccountImportSubview extends Component {
 
   render() {
     const { type } = this.state;
-
     return (
       <div className="new-account-import-form dex-page-container space-between base-width">
         <div>
@@ -49,16 +46,16 @@ export default class AccountImportSubview extends Component {
               options={[
                 {
                   value: 'privateKey',
-                  label: this.context.t('privateKey')
+                  label: this.context.t('privateKey'),
                 },
                 {
                   value: 'jsonFile',
-                  label: this.context.t('jsonFile')
-                }
+                  label: this.context.t('jsonFile'),
+                },
               ]}
               onSelect={(type) => {
                 this.setState({
-                  type
+                  type,
                 });
               }}
             />

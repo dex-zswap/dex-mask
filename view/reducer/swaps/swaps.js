@@ -1,3 +1,6 @@
+import { createSlice } from '@reduxjs/toolkit';
+import BigNumber from 'bignumber.js';
+import log from 'loglevel';
 import { calcGasTotal } from '@pages/send/utils';
 import {
   fetchSwapsFeatureFlags,
@@ -6,7 +9,6 @@ import {
   isContractAddressValid,
 } from '@pages/swaps/swaps.util';
 import { getGasFeeEstimates } from '@reducer/dexmask/dexmask';
-import { createSlice } from '@reduxjs/toolkit';
 import {
   CONTRACT_DATA_DISABLED_ERROR,
   ERROR_FETCHING_QUOTES,
@@ -62,18 +64,13 @@ import {
   updateAndApproveTx,
   updateTransaction,
 } from '@view/store/actions';
-import BigNumber from 'bignumber.js';
-import log from 'loglevel';
-
 const GAS_PRICES_LOADING_STATES = {
   INITIAL: 'INITIAL',
   LOADING: 'LOADING',
   FAILED: 'FAILED',
   COMPLETED: 'COMPLETED',
 };
-
 export const FALLBACK_GAS_MULTIPLIER = 1.5;
-
 const initialState = {
   aggregatorMetadata: null,
   approveTxId: null,
@@ -92,7 +89,6 @@ const initialState = {
     fallBackPrice: null,
   },
 };
-
 const slice = createSlice({
   name: 'swaps',
   initialState,
@@ -157,49 +153,31 @@ const slice = createSlice({
     },
   },
 });
-
 const { actions, reducer } = slice;
-
-export default reducer;
-
-// Selectors
+export default reducer; // Selectors
 
 export const getAggregatorMetadata = (state) => state.swaps.aggregatorMetadata;
-
 export const getBalanceError = (state) => state.swaps.balanceError;
-
 export const getFromToken = (state) => state.swaps.fromToken;
-
 export const getTopAssets = (state) => state.swaps.topAssets;
-
 export const getToToken = (state) => state.swaps.toToken;
-
 export const getFetchingQuotes = (state) => state.swaps.fetchingQuotes;
-
 export const getQuotesFetchStartTime = (state) =>
   state.swaps.quotesFetchStartTime;
-
 export const getSwapsCustomizationModalPrice = (state) =>
   state.swaps.customGas.price;
-
 export const getSwapsCustomizationModalLimit = (state) =>
   state.swaps.customGas.limit;
-
 export const swapGasPriceEstimateIsLoading = (state) =>
   state.swaps.customGas.loading === GAS_PRICES_LOADING_STATES.LOADING;
-
 export const swapGasEstimateLoadingHasFailed = (state) =>
   state.swaps.customGas.loading === GAS_PRICES_LOADING_STATES.INITIAL;
-
 export const getSwapGasPriceEstimateData = (state) =>
   state.swaps.customGas.priceEstimates;
-
 export const getSwapsFallbackGasPrice = (state) =>
   state.swaps.customGas.fallBackPrice;
-
 export function shouldShowCustomPriceTooLowWarning(state) {
   const { average } = getSwapGasPriceEstimateData(state);
-
   const customGasPrice = getSwapsCustomizationModalPrice(state);
 
   if (!customGasPrice || average === undefined) {
@@ -213,85 +191,61 @@ export function shouldShowCustomPriceTooLowWarning(state) {
       fromDenomination: 'WEI',
       toDenomination: 'GWEI',
     },
-    { value: average, fromNumericBase: 'dec' },
+    {
+      value: average,
+      fromNumericBase: 'dec',
+    },
   );
-
   return customPriceRisksSwapFailure;
-}
-
-// Background selectors
+} // Background selectors
 
 const getSwapsState = (state) => state.metamask.swapsState;
 
 export const getSwapsFeatureIsLive = (state) =>
   state.metamask.swapsState.swapsFeatureIsLive;
-
 export const getUseNewSwapsApi = (state) =>
   state.metamask.swapsState.useNewSwapsApi;
-
 export const getSwapsQuoteRefreshTime = (state) =>
   state.metamask.swapsState.swapsQuoteRefreshTime;
-
 export const getBackgroundSwapRouteState = (state) =>
   state.metamask.swapsState.routeState;
-
 export const getCustomSwapsGas = (state) =>
   state.metamask.swapsState.customMaxGas;
-
 export const getCustomSwapsGasPrice = (state) =>
   state.metamask.swapsState.customGasPrice;
-
 export const getCustomMaxFeePerGas = (state) =>
   state.metamask.swapsState.customMaxFeePerGas;
-
 export const getCustomMaxPriorityFeePerGas = (state) =>
   state.metamask.swapsState.customMaxPriorityFeePerGas;
-
 export const getSwapsUserFeeLevel = (state) =>
   state.metamask.swapsState.swapsUserFeeLevel;
-
 export const getFetchParams = (state) => state.metamask.swapsState.fetchParams;
-
 export const getQuotes = (state) => state.metamask.swapsState.quotes;
-
 export const getQuotesLastFetched = (state) =>
   state.metamask.swapsState.quotesLastFetched;
-
 export const getSelectedQuote = (state) => {
   const { selectedAggId, quotes } = getSwapsState(state);
   return quotes[selectedAggId];
 };
-
 export const getSwapsErrorKey = (state) => getSwapsState(state)?.errorKey;
-
 export const getShowQuoteLoadingScreen = (state) =>
   state.swaps.showQuoteLoadingScreen;
-
 export const getSwapsTokens = (state) => state.metamask.swapsState.tokens;
-
 export const getSwapsWelcomeMessageSeenStatus = (state) =>
   state.metamask.swapsWelcomeMessageHasBeenShown;
-
 export const getTopQuote = (state) => {
   const { topAggId, quotes } = getSwapsState(state);
   return quotes[topAggId];
 };
-
 export const getApproveTxId = (state) => state.metamask.swapsState.approveTxId;
-
 export const getTradeTxId = (state) => state.metamask.swapsState.tradeTxId;
-
 export const getUsedQuote = (state) =>
-  getSelectedQuote(state) || getTopQuote(state);
-
-// Compound selectors
+  getSelectedQuote(state) || getTopQuote(state); // Compound selectors
 
 export const getDestinationTokenInfo = (state) =>
   getFetchParams(state)?.metaData?.destinationTokenInfo;
-
 export const getUsedSwapsGasPrice = (state) =>
   getCustomSwapsGasPrice(state) || getSwapsFallbackGasPrice(state);
-
 export const getApproveTxParams = (state) => {
   const { approvalNeeded } =
     getSelectedQuote(state) || getTopQuote(state) || {};
@@ -299,13 +253,11 @@ export const getApproveTxParams = (state) => {
   if (!approvalNeeded) {
     return null;
   }
-  const data = getSwapsState(state)?.customApproveTxData || approvalNeeded.data;
 
+  const data = getSwapsState(state)?.customApproveTxData || approvalNeeded.data;
   const gasPrice = getUsedSwapsGasPrice(state);
   return { ...approvalNeeded, gasPrice, data };
-};
-
-// Actions / action-creators
+}; // Actions / action-creators
 
 const {
   clearSwapsState,
@@ -326,7 +278,6 @@ const {
   retrievedFallbackSwapsGasPrice,
   swapCustomGasModalClosed,
 } = actions;
-
 export {
   clearSwapsState,
   setAggregatorMetadata,
@@ -340,7 +291,6 @@ export {
   swapCustomGasModalLimitEdited,
   swapCustomGasModalClosed,
 };
-
 export const navigateBackToBuildQuote = (history) => {
   return async (dispatch) => {
     // TODO: Ensure any fetch in progress is cancelled
@@ -349,7 +299,6 @@ export const navigateBackToBuildQuote = (history) => {
     history.push(BUILD_QUOTE_ROUTE);
   };
 };
-
 export const prepareForRetryGetQuotes = () => {
   return async (dispatch) => {
     // TODO: Ensure any fetch in progress is cancelled
@@ -357,14 +306,12 @@ export const prepareForRetryGetQuotes = () => {
     dispatch(retriedGetQuotes());
   };
 };
-
 export const prepareToLeaveSwaps = () => {
   return async (dispatch) => {
     dispatch(clearSwapsState());
     await dispatch(resetBackgroundSwapsState());
   };
 };
-
 export const swapsQuoteSelected = (aggId) => {
   return (dispatch) => {
     dispatch(swapCustomGasModalLimitEdited(null));
@@ -372,7 +319,6 @@ export const swapsQuoteSelected = (aggId) => {
     dispatch(setSwapsTxGasLimit(''));
   };
 };
-
 export const fetchAndSetSwapsGasPriceInfo = () => {
   return async (dispatch) => {
     const basicEstimates = await dispatch(fetchMetaSwapsGasPriceEstimates());
@@ -382,13 +328,13 @@ export const fetchAndSetSwapsGasPriceInfo = () => {
     }
   };
 };
-
 export const fetchSwapsLiveness = () => {
   return async (dispatch, getState) => {
     let swapsLivenessForNetwork = {
       swapsFeatureIsLive: false,
       useNewSwapsApi: false,
     };
+
     try {
       const swapsFeatureFlags = await fetchSwapsFeatureFlags();
       swapsLivenessForNetwork = getSwapsLivenessForNetwork(
@@ -398,11 +344,11 @@ export const fetchSwapsLiveness = () => {
     } catch (error) {
       log.error('Failed to fetch Swaps liveness, defaulting to false.', error);
     }
+
     await dispatch(setSwapsLiveness(swapsLivenessForNetwork));
     return swapsLivenessForNetwork;
   };
 };
-
 export const fetchQuotesAndSetQuoteState = (
   history,
   inputValue,
@@ -416,6 +362,7 @@ export const fetchQuotesAndSetQuoteState = (
       swapsFeatureIsLive: false,
       useNewSwapsApi: false,
     };
+
     try {
       const swapsFeatureFlags = await fetchSwapsFeatureFlags();
       swapsLivenessForNetwork = getSwapsLivenessForNetwork(
@@ -425,6 +372,7 @@ export const fetchQuotesAndSetQuoteState = (
     } catch (error) {
       log.error('Failed to fetch Swaps liveness, defaulting to false.', error);
     }
+
     await dispatch(setSwapsLiveness(swapsLivenessForNetwork));
 
     if (!swapsLivenessForNetwork.swapsFeatureIsLive) {
@@ -460,10 +408,9 @@ export const fetchQuotesAndSetQuoteState = (
     await dispatch(setBackgroundSwapRouteState('loading'));
     history.push(LOADING_QUOTES_ROUTE);
     dispatch(setFetchingQuotes(true));
-
     const contractExchangeRates = getTokenExchangeRates(state);
-
     let destinationTokenAddedForSwap = false;
+
     if (
       toTokenAddress &&
       toTokenSymbol !== swapsDefaultToken.symbol &&
@@ -480,6 +427,7 @@ export const fetchQuotesAndSetQuoteState = (
         ),
       );
     }
+
     if (
       fromTokenAddress &&
       fromTokenSymbol !== swapsDefaultToken.symbol &&
@@ -499,16 +447,13 @@ export const fetchQuotesAndSetQuoteState = (
     }
 
     const swapsTokens = getSwapsTokens(state);
-
     const sourceTokenInfo =
       swapsTokens?.find(({ address }) => address === fromTokenAddress) ||
       selectedFromToken;
     const destinationTokenInfo =
       swapsTokens?.find(({ address }) => address === toTokenAddress) ||
       selectedToToken;
-
     dispatch(setFromToken(selectedFromToken));
-
     const hardwareWalletUsed = isHardwareWallet(state);
     const hardwareWalletType = getHardwareWalletType(state);
     const networkAndAccountSupports1559 = checkNetworkAndAccountSupports1559(
@@ -533,7 +478,6 @@ export const fetchQuotesAndSetQuoteState = (
     try {
       const fetchStartTime = Date.now();
       dispatch(setQuotesFetchStartTime(fetchStartTime));
-
       const fetchAndSetQuotesPromise = dispatch(
         fetchAndSetQuotes(
           {
@@ -554,11 +498,9 @@ export const fetchQuotesAndSetQuoteState = (
           },
         ),
       );
-
       const gasPriceFetchPromise = networkAndAccountSupports1559
         ? null // For EIP 1559 we can get gas prices via "useGasFeeEstimates".
         : dispatch(fetchAndSetSwapsGasPriceInfo());
-
       const [[fetchedQuotes, selectedAggId]] = await Promise.all([
         fetchAndSetQuotesPromise,
         gasPriceFetchPromise,
@@ -582,7 +524,6 @@ export const fetchQuotesAndSetQuoteState = (
         dispatch(setSwapsErrorKey(QUOTES_NOT_AVAILABLE_ERROR));
       } else {
         const newSelectedQuote = fetchedQuotes[selectedAggId];
-
         metaMetricsEvent({
           event: 'Quotes Received',
           category: 'swaps',
@@ -605,7 +546,6 @@ export const fetchQuotesAndSetQuoteState = (
             anonymizedData: true,
           },
         });
-
         dispatch(setInitialGasEstimate(selectedAggId));
       }
     } catch (e) {
@@ -613,17 +553,15 @@ export const fetchQuotesAndSetQuoteState = (
       if (e.message === SWAPS_FETCH_ORDER_CONFLICT) {
         log.debug(`Swap fetch order conflict detected; ignoring older request`);
         return;
-      }
-      // TODO: Check for any errors we should expect to occur in production, and report others to Sentry
-      log.error(`Error fetching quotes: `, e);
+      } // TODO: Check for any errors we should expect to occur in production, and report others to Sentry
 
+      log.error(`Error fetching quotes: `, e);
       dispatch(setSwapsErrorKey(ERROR_FETCHING_QUOTES));
     }
 
     dispatch(setFetchingQuotes(false));
   };
 };
-
 export const signAndSendTransactions = (history, metaMetricsEvent) => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -636,6 +574,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       swapsFeatureIsLive: false,
       useNewSwapsApi: false,
     };
+
     try {
       const swapsFeatureFlags = await fetchSwapsFeatureFlags();
       swapsLivenessForNetwork = getSwapsLivenessForNetwork(
@@ -645,6 +584,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
     } catch (error) {
       log.error('Failed to fetch Swaps liveness, defaulting to false.', error);
     }
+
     await dispatch(setSwapsLiveness(swapsLivenessForNetwork));
 
     if (!swapsLivenessForNetwork.swapsFeatureIsLive) {
@@ -666,7 +606,6 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
     }
 
     const { fast: fastGasEstimate } = getSwapGasPriceEstimateData(state);
-
     let maxFeePerGas;
     let maxPriorityFeePerGas;
     let baseAndPriorityFeePerGas;
@@ -691,7 +630,6 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
 
     const usedQuote = getUsedQuote(state);
     const usedTradeTxParams = usedQuote.trade;
-
     const estimatedGasLimit = new BigNumber(
       usedQuote?.gasEstimate || `0x0`,
       16,
@@ -705,9 +643,9 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       (usedQuote?.gasEstimate
         ? estimatedGasLimitWithMultiplier
         : `0x${decimalToHex(usedQuote?.maxGas || 0)}`);
-
     const usedGasPrice = getUsedSwapsGasPrice(state);
     usedTradeTxParams.gas = maxGasLimit;
+
     if (networkAndAccountSupports1559) {
       usedTradeTxParams.maxFeePerGas = maxFeePerGas;
       usedTradeTxParams.maxPriorityFeePerGas = maxPriorityFeePerGas;
@@ -736,7 +674,6 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       conversionRate: usdConversionRate,
       numberOfDecimals: 6,
     });
-
     const swapMetaData = {
       token_from: sourceTokenInfo.symbol,
       token_from_amount: String(swapTokenValue),
@@ -763,6 +700,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       is_hardware_wallet: hardwareWalletUsed,
       hardware_wallet_type: getHardwareWalletType(state),
     };
+
     if (networkAndAccountSupports1559) {
       swapMetaData.max_fee_per_gas = maxFeePerGas;
       swapMetaData.max_priority_fee_per_gas = maxPriorityFeePerGas;
@@ -790,6 +728,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
         approveTxParams.maxPriorityFeePerGas = maxPriorityFeePerGas;
         delete approveTxParams.gasPrice;
       }
+
       const approveTxMeta = await dispatch(
         addUnapprovedTransaction(
           { ...approveTxParams, amount: '0x0' },
@@ -808,6 +747,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
           true,
         ),
       );
+
       try {
         await dispatch(updateAndApproveTx(finalApproveTxMeta, true));
       } catch (e) {
@@ -828,6 +768,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       history.push(SWAPS_ERROR_ROUTE);
       return;
     }
+
     const finalTradeTxMeta = await dispatch(
       updateTransaction(
         {
@@ -845,6 +786,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
         true,
       ),
     );
+
     try {
       await dispatch(updateAndApproveTx(finalTradeTxMeta, true));
     } catch (e) {
@@ -859,16 +801,14 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
     await forceupdateDexmaskState(dispatch);
   };
 };
-
 export function fetchMetaSwapsGasPriceEstimates() {
   return async (dispatch, getState) => {
     const state = getState();
     const chainId = getCurrentChainId(state);
     const useNewSwapsApi = getUseNewSwapsApi(state);
-
     dispatch(swapGasPriceEstimatesFetchStarted());
-
     let priceEstimates;
+
     try {
       priceEstimates = await fetchSwapsGasPrices(chainId, useNewSwapsApi);
     } catch (e) {
@@ -883,7 +823,6 @@ export function fetchMetaSwapsGasPriceEstimates() {
       try {
         const gasPrice = await global.ethQuery.gasPrice();
         const gasPriceInDecGWEI = hexWEIToDecGWEI(gasPrice.toString(10));
-
         dispatch(retrievedFallbackSwapsGasPrice(gasPriceInDecGWEI));
         return null;
       } catch (networkGasPriceError) {

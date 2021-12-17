@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { clearConfirmTransaction } from '@reducer/confirm-transaction/confirm-transaction.duck';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import {
@@ -11,26 +14,18 @@ import {
   decryptMsgInline,
   goHome,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import ConfirmDecryptMessage from './component';
 
 function mapStateToProps(state) {
   const {
     metamask: { domainMetadata = {} },
   } = state;
-
   const unconfirmedTransactions = unconfirmedTransactionsListSelector(state);
-
   const txData = unconfirmedTransactions[0];
-
   const {
     msgParams: { from },
   } = txData;
-
   const fromAccount = getTargetAccountWithSendEtherInfo(state, from);
-
   return {
     txData,
     domainMetadata,

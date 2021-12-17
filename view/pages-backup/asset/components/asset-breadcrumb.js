@@ -20,5 +20,4 @@ AssetBreadcrumb.propTypes = {
   assetName: PropTypes.string.isRequired,
   onBack: PropTypes.func.isRequired,
 };
-
 export default AssetBreadcrumb;

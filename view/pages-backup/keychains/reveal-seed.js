@@ -1,12 +1,11 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import ExportTextContainer from '@c/ui/export-text-container';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { requestRevealSeedWords } from '@view/store/actions';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
 const PASSWORD_PROMPT_SCREEN = 'PASSWORD_PROMPT_SCREEN';
 const REVEAL_SEED_SCREEN = 'REVEAL_SEED_SCREEN';
 
@@ -20,6 +19,7 @@ class RevealSeedPage extends Component {
 
   componentDidMount() {
     const passwordBox = document.getElementById('password-box');
+
     if (passwordBox) {
       passwordBox.focus();
     }
@@ -27,13 +27,23 @@ class RevealSeedPage extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.setState({ seedWords: null, error: null });
+    this.setState({
+      seedWords: null,
+      error: null,
+    });
     this.props
       .requestRevealSeedWords(this.state.password)
       .then((seedWords) =>
-        this.setState({ seedWords, screen: REVEAL_SEED_SCREEN }),
+        this.setState({
+          seedWords,
+          screen: REVEAL_SEED_SCREEN,
+        }),
       )
-      .catch((error) => this.setState({ error: error.message }));
+      .catch((error) =>
+        this.setState({
+          error: error.message,
+        }),
+      );
   }
 
   renderWarning() {
@@ -62,7 +72,6 @@ class RevealSeedPage extends Component {
 
   renderPasswordPromptContent() {
     const { t } = this.context;
-
     return (
       <form onSubmit={(event) => this.handleSubmit(event)}>
         <label className="input-label" htmlFor="password-box">
@@ -75,7 +84,9 @@ class RevealSeedPage extends Component {
             id="password-box"
             value={this.state.password}
             onChange={(event) =>
-              this.setState({ password: event.target.value })
+              this.setState({
+                password: event.target.value,
+              })
             }
             className={classnames('form-control', {
               'form-control--error': this.state.error,
@@ -91,7 +102,6 @@ class RevealSeedPage extends Component {
 
   renderRevealSeedContent() {
     const { t } = this.context;
-
     return (
       <div>
         <label className="reveal-seed__label">
@@ -178,7 +188,6 @@ RevealSeedPage.propTypes = {
   history: PropTypes.object,
   mostRecentOverviewPage: PropTypes.string.isRequired,
 };
-
 RevealSeedPage.contextTypes = {
   t: PropTypes.func,
 };

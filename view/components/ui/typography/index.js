@@ -1,3 +1,6 @@
+import React from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Box from '@c/ui/box';
 import {
   COLORS,
@@ -5,12 +8,7 @@ import {
   TEXT_ALIGN,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 const { H6, H7, H8, H9 } = TYPOGRAPHY;
-
 export default function Typography({
   variant = TYPOGRAPHY.Paragraph,
   className,
@@ -31,7 +29,6 @@ export default function Typography({
       [`typography--color-${color}`]: Boolean(color),
     },
   );
-
   let Tag = tag ?? variant;
 
   if (Tag === TYPOGRAPHY.Paragraph) {
@@ -50,16 +47,13 @@ export default function Typography({
     </Box>
   );
 }
-
 Typography.propTypes = {
   variant: PropTypes.oneOf(Object.values(TYPOGRAPHY)),
   children: PropTypes.node.isRequired,
   color: PropTypes.oneOf(Object.values(COLORS)),
   className: PropTypes.string,
   align: PropTypes.oneOf(Object.values(TEXT_ALIGN)),
-  boxProps: PropTypes.shape({
-    ...Box.propTypes,
-  }),
+  boxProps: PropTypes.shape({ ...Box.propTypes }),
   fontWeight: PropTypes.oneOf(Object.values(FONT_WEIGHT)),
   tag: PropTypes.oneOf([
     'p',

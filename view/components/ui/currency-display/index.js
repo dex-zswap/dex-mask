@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import { GWEI } from '@view/helpers/constants/common';
 import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
-
 export default function CurrencyDisplay({
   value,
   displayValue,
@@ -26,7 +25,6 @@ export default function CurrencyDisplay({
     currency,
     suffix,
   });
-
   return (
     <div
       className={classnames('currency-display-component', className)}

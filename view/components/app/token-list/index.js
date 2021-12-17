@@ -1,3 +1,7 @@
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 import TokenCell from '@c/app/token-cell';
 import { getTokens } from '@reducer/dexmask/dexmask';
 import { useI18nContext } from '@view/hooks/useI18nContext';
@@ -7,29 +11,22 @@ import {
   getShouldHideZeroBalanceTokens,
   getTokenDisplayOrders,
 } from '@view/selectors';
-import { isEqual } from 'lodash';
-import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-
 export default function TokenList({ onTokenClick }) {
   const t = useI18nContext();
   const tokenDisplayOrders = useSelector(getTokenDisplayOrders);
   const assetImages = useSelector(getAssetImages);
-
   const shouldHideZeroBalanceTokens = useSelector(
     getShouldHideZeroBalanceTokens,
-  );
-  // use `isEqual` comparison function because the token array is serialized
+  ); // use `isEqual` comparison function because the token array is serialized
   // from the background so it has a new reference with each background update,
   // even if the tokens haven't changed
+
   const tokens = useSelector(getTokens, isEqual);
   const { loading, tokensWithBalances } = useTokenTracker(
     tokens,
     true,
     shouldHideZeroBalanceTokens,
   );
-
   const tokenSorted = useMemo(() => {
     if (!tokenDisplayOrders.length) {
       return tokensWithBalances;
@@ -79,7 +76,6 @@ export default function TokenList({ onTokenClick }) {
     </div>
   );
 }
-
 TokenList.propTypes = {
   onTokenClick: PropTypes.func.isRequired,
 };

@@ -1,12 +1,11 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
 import Identicon from '@c/ui/identicon/identicon.component';
 import TokenBalance from '@c/ui/token-balance';
 import SendRowWrapper from '@pages/send/send-content/send-row-wrapper';
 import { ASSET_TYPES } from '@reducer/send';
 import { PRIMARY } from '@view/helpers/constants/common';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class SendAssetRow extends Component {
   static propTypes = {
     tokens: PropTypes.arrayOf(
@@ -24,11 +23,9 @@ export default class SendAssetRow extends Component {
     nativeCurrency: PropTypes.string,
     nativeCurrencyImage: PropTypes.string,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     isShowingDropdown: false,
     sendableTokens: [],
@@ -36,13 +33,19 @@ export default class SendAssetRow extends Component {
 
   async componentDidMount() {
     const sendableTokens = this.props.tokens.filter((token) => !token.isERC721);
-    this.setState({ sendableTokens });
+    this.setState({
+      sendableTokens,
+    });
   }
 
-  openDropdown = () => this.setState({ isShowingDropdown: true });
-
-  closeDropdown = () => this.setState({ isShowingDropdown: false });
-
+  openDropdown = () =>
+    this.setState({
+      isShowingDropdown: true,
+    });
+  closeDropdown = () =>
+    this.setState({
+      isShowingDropdown: false,
+    });
   selectToken = (type, token) => {
     this.setState(
       {
@@ -59,7 +62,6 @@ export default class SendAssetRow extends Component {
 
   render() {
     const { t } = this.context;
-
     return (
       <SendRowWrapper label={`${t('asset')}:`}>
         <div className="send-v2__asset-dropdown">
@@ -114,11 +116,9 @@ export default class SendAssetRow extends Component {
       nativeCurrency,
       nativeCurrencyImage,
     } = this.props;
-
     const balanceValue = accounts[selectedAddress]
       ? accounts[selectedAddress].balance
       : '';
-
     return (
       <div
         className={
@@ -160,7 +160,6 @@ export default class SendAssetRow extends Component {
     const { address, symbol } = token;
     const { t } = this.context;
     const { assetImages } = this.props;
-
     return (
       <div
         key={address}

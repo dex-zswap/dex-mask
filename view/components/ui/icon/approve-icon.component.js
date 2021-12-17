@@ -36,11 +36,9 @@ const Approve = ({ className, size, color }) => (
 Approve.defaultProps = {
   className: undefined,
 };
-
 Approve.propTypes = {
   className: PropTypes.string,
   size: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
 };
-
 export default Approve;

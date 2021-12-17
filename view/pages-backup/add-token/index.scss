@@ -6,12 +6,12 @@
   &__custom-token-form {
     padding: 8px 16px 16px;
 
-    input[type="number"]::-webkit-inner-spin-button {
+    input[type='number']::-webkit-inner-spin-button {
       -webkit-appearance: none;
       display: none;
     }
 
-    input[type="number"]:hover::-webkit-inner-spin-button {
+    input[type='number']:hover::-webkit-inner-spin-button {
       -webkit-appearance: none;
       display: none;
     }
@@ -45,7 +45,7 @@
     &__edit {
       flex: 1 1 auto;
       text-align: right;
-      color: #7813C4;
+      color: #7813c4;
       padding-right: 4px;
       cursor: pointer;
     }
@@ -55,7 +55,7 @@
     @include H7;
 
     display: inline;
-    color: #7813C4;
+    color: #7813c4;
     padding-left: 0;
   }
 }

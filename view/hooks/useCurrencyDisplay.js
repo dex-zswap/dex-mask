@@ -1,13 +1,5 @@
-import { getConversionRate, getNativeCurrency } from '@reducer/dexmask/dexmask';
-import { conversionUtil } from '@shared/modules/conversion.utils';
-import {
-  formatCurrency,
-  getValueFromWeiHex,
-} from '@view/helpers/utils/confirm-tx.util';
-import { getCurrentCurrency } from '@view/selectors';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-
 /**
  * Defines the shape of the options parameter for useCurrencyDisplay
  * @typedef {Object} UseCurrencyOptions
@@ -36,6 +28,14 @@ import { useSelector } from 'react-redux';
  * @param {UseCurrencyOptions} opts    - An object for options to format the inputValue
  * @return {[string, CurrencyDisplayParts]}
  */
+
+import { getConversionRate, getNativeCurrency } from '@reducer/dexmask/dexmask';
+import { conversionUtil } from '@shared/modules/conversion.utils';
+import {
+  formatCurrency,
+  getValueFromWeiHex,
+} from '@view/helpers/utils/confirm-tx.util';
+import { getCurrentCurrency } from '@view/selectors';
 export function useCurrencyDisplay(
   inputValue,
   {
@@ -51,11 +51,11 @@ export function useCurrencyDisplay(
   const nativeCurrency = useSelector(getNativeCurrency);
   const conversionRate = useSelector(getConversionRate);
   const isUserPreferredCurrency = currency === currentCurrency;
-
   const value = useMemo(() => {
     if (displayValue) {
       return displayValue;
     }
+
     if (
       currency === nativeCurrency ||
       (!isUserPreferredCurrency && !nativeCurrency)
@@ -80,6 +80,7 @@ export function useCurrencyDisplay(
         currency,
       );
     }
+
     return '0';
   }, [
     inputValue,
@@ -91,7 +92,6 @@ export function useCurrencyDisplay(
     currency,
     isUserPreferredCurrency,
   ]);
-
   let suffix;
 
   if (!opts.hideLabel) {
@@ -100,6 +100,10 @@ export function useCurrencyDisplay(
 
   return [
     `${prefix || ''}${value}${suffix ? ` ${suffix}` : ''}`,
-    { prefix, value, suffix },
+    {
+      prefix,
+      value,
+      suffix,
+    },
   ];
 }

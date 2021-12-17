@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { SEVERITIES } from '@view/helpers/constants/design-system';
-
 export default function InfoIconInverted({ severity }) {
   const className = classnames('info-icon', {
     'info-icon--success': severity === SEVERITIES.SUCCESS,
@@ -23,7 +22,6 @@ export default function InfoIconInverted({ severity }) {
     </svg>
   );
 }
-
 InfoIconInverted.propTypes = {
   severity: PropTypes.oneOf(Object.values(SEVERITIES)),
 };

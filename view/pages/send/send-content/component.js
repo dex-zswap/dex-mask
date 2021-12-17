@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Dialog from '@c/ui/dialog';
 import PageContainerContent from '@c/ui/page-container/page-container-content.component';
 import {
@@ -6,17 +8,13 @@ import {
   GAS_PRICE_FETCH_FAILURE_ERROR_KEY,
   UNSENDABLE_ASSET_ERROR_KEY,
 } from '@view/helpers/constants/error-keys';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
 import SendAmountRow from './send-amount-row';
 import SendGasRow from './send-gas-row';
 import SendHexDataRow from './send-hex-data-row';
-
 export default class SendContent extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     isAssetSendable: PropTypes.bool,
     showAddToAddressBookModal: PropTypes.func,
@@ -41,11 +39,9 @@ export default class SendContent extends Component {
       isAssetSendable,
       networkAndAccountSupports1559,
     } = this.props;
-
     let gasError;
     if (gasIsExcessive) gasError = GAS_PRICE_EXCESSIVE_ERROR_KEY;
     else if (noGasPrice) gasError = GAS_PRICE_FETCH_FAILURE_ERROR_KEY;
-
     return (
       <PageContainerContent>
         <div className="send-v2__form">

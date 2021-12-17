@@ -1,3 +1,6 @@
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import ChainSwitcher from '@c/ui/cross-chain/chain-switcher';
 import EnsInput from '@pages/send/send-content/add-recipient/ens-input';
 import { checkTokenBridge } from '@view/helpers/cross-chain-api';
@@ -7,11 +10,7 @@ import { useFetch } from '@view/hooks/useFetch';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { getCrossChainState } from '@view/selectors';
 import { showQrScanner, updateCrossChainState } from '@view/store/actions';
-import { ethers } from 'ethers';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Dest from './dest';
-
 export default function CrossChainDestWrapper() {
   const dispatch = useDispatch();
   const t = useI18nContext();
@@ -19,7 +18,6 @@ export default function CrossChainDestWrapper() {
   const isNativeAsset = crossInfo.coinAddress === ethers.constants.AddressZero;
   const targetIsNative =
     crossInfo.targetCoinAddress === ethers.constants.AddressZero;
-
   const { loading, error, res } = useFetch(
     () =>
       checkTokenBridge({
@@ -30,7 +28,6 @@ export default function CrossChainDestWrapper() {
       }),
     [crossInfo.fromChain, crossInfo.coinAddress],
   );
-
   useDeepEffect(() => {
     if (!loading && !error && res?.c === 200) {
       const supportChains = res?.d.map((chain) => ({
@@ -38,7 +35,6 @@ export default function CrossChainDestWrapper() {
         chainId: chain.target_meta_chain_id,
       }));
       const target = supportChains[0];
-
       dispatch(
         updateCrossChainState({
           supportChains,
@@ -46,7 +42,6 @@ export default function CrossChainDestWrapper() {
       );
     }
   }, [loading, error, res, dispatch, updateCrossChainState]);
-
   return (
     <div className="cross-chain-dest__wrapper">
       <div className="cross-chain-dest-type-selector">
@@ -108,7 +103,13 @@ export default function CrossChainDestWrapper() {
               )
             }
             selectedAddress={crossInfo.dest}
-            onPaste={(text) => dispatch(updateCrossChainState({ dest: text }))}
+            onPaste={(text) =>
+              dispatch(
+                updateCrossChainState({
+                  dest: text,
+                }),
+              )
+            }
             onReset={() =>
               dispatch(
                 updateCrossChainState({

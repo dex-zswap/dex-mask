@@ -1,18 +1,15 @@
-import { MenuItem } from '@c/ui/menu';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { MenuItem } from '@c/ui/menu';
 import ConnectedAccountsListItem from './item';
 import ConnectedAccountsListOptions from './options';
-
 export default class ConnectedAccountsList extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
   };
-
   static defaultProps = {
     accountToConnect: null,
   };
-
   static propTypes = {
     accountToConnect: PropTypes.shape({
       address: PropTypes.string.isRequired,
@@ -41,30 +38,30 @@ export default class ConnectedAccountsList extends PureComponent {
           `Warning: Failed prop type: '${propName}' of component '${componentName}' requires prop 'removePermittedAccount'.`,
         );
       }
+
       return undefined;
     },
   };
-
   state = {
     accountWithOptionsShown: null,
   };
-
   disconnectAccount = () => {
     this.hideAccountOptions();
     this.props.removePermittedAccount(this.state.accountWithOptionsShown);
   };
-
   switchAccount = (address) => {
     this.hideAccountOptions();
     this.props.setSelectedAddress(address);
   };
-
   hideAccountOptions = () => {
-    this.setState({ accountWithOptionsShown: null });
+    this.setState({
+      accountWithOptionsShown: null,
+    });
   };
-
   showAccountOptions = (address) => {
-    this.setState({ accountWithOptionsShown: address });
+    this.setState({
+      accountWithOptionsShown: address,
+    });
   };
 
   renderUnconnectedAccount() {
@@ -97,7 +94,6 @@ export default class ConnectedAccountsList extends PureComponent {
   renderListItemOptions(address) {
     const { accountWithOptionsShown } = this.state;
     const { t } = this.context;
-
     return (
       <ConnectedAccountsListOptions
         onHideOptions={this.hideAccountOptions}
@@ -116,7 +112,6 @@ export default class ConnectedAccountsList extends PureComponent {
 
   renderListItemAction(address) {
     const { t } = this.context;
-
     return (
       <a
         className="connected-accounts-list__account-status-link"
@@ -134,7 +129,6 @@ export default class ConnectedAccountsList extends PureComponent {
       shouldRenderListOptions,
     } = this.props;
     const { t } = this.context;
-
     return (
       <>
         <main className="connected-accounts-list">

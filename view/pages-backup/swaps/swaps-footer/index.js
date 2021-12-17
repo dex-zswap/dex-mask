@@ -1,9 +1,8 @@
-import PageContainerFooter from '@c/ui/page-container/page-container-footer';
-import { I18nContext } from '@view/contexts/i18n';
+import React, { useContext } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-
+import PageContainerFooter from '@c/ui/page-container/page-container-footer';
+import { I18nContext } from '@view/contexts/i18n';
 export default function SwapsFooter({
   onCancel,
   hideCancel,
@@ -15,7 +14,6 @@ export default function SwapsFooter({
   className = '',
 }) {
   const t = useContext(I18nContext);
-
   return (
     <div className="swaps-footer">
       <div
@@ -47,7 +45,9 @@ export default function SwapsFooter({
         <div
           className="swaps-footer__bottom-text"
           onClick={() =>
-            global.platform.openTab({ url: 'https://metamask.io/terms.html' })
+            global.platform.openTab({
+              url: 'https://metamask.io/terms.html',
+            })
           }
         >
           {t('termsOfService')}
@@ -56,7 +56,6 @@ export default function SwapsFooter({
     </div>
   );
 }
-
 SwapsFooter.propTypes = {
   onCancel: PropTypes.func,
   hideCancel: PropTypes.bool,

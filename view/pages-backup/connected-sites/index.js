@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { CONNECT_ROUTE } from '@view/helpers/constants/routes';
 import {
@@ -15,7 +16,6 @@ import {
   removePermittedAccount,
   requestAccountsPermissionWithId,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
 import ConnectedSites from './component';
 
 const mapStateToProps = (state) => {
@@ -25,11 +25,10 @@ const mapStateToProps = (state) => {
   const originOfCurrentTab = getOriginOfCurrentTab(state);
   const permittedAccountsByOrigin = getPermittedAccountsByOrigin(state);
   const selectedAddress = getSelectedAddress(state);
-
   const currentTabHasNoAccounts = !permittedAccountsByOrigin[originOfCurrentTab]
     ?.length;
-
   let tabToConnect;
+
   if (originOfCurrentTab && currentTabHasNoAccounts && !openMetaMaskTabs[id]) {
     tabToConnect = {
       origin: originOfCurrentTab,
@@ -94,12 +93,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     closePopover,
     disconnectAccount: (domainKey) => {
       disconnectAccount(domainKey, selectedAddress);
+
       if (connectedDomains.length === 1) {
         closePopover();
       }
     },
     disconnectAllAccounts: (domainKey) => {
       disconnectAllAccounts(domainKey, domains[domainKey]);
+
       if (connectedDomains.length === 1) {
         closePopover();
       }

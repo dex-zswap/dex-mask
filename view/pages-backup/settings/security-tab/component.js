@@ -1,14 +1,12 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import ToggleButton from '@c/ui/toggle-button';
 import { REVEAL_SEED_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class SecurityTab extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     warning: PropTypes.string,
     history: PropTypes.object,
@@ -23,7 +21,6 @@ export default class SecurityTab extends PureComponent {
   renderSeedWords() {
     const { t } = this.context;
     const { history } = this.props;
-
     return (
       <div className="settings-page__content-row">
         <div className="settings-page__content-item">
@@ -52,7 +49,6 @@ export default class SecurityTab extends PureComponent {
       participateInMetaMetrics,
       setParticipateInMetaMetrics,
     } = this.props;
-
     return (
       <div className="settings-page__content-row">
         <div className="settings-page__content-item">
@@ -81,7 +77,6 @@ export default class SecurityTab extends PureComponent {
       showIncomingTransactions,
       setShowIncomingTransactionsFeatureFlag,
     } = this.props;
-
     return (
       <div className="settings-page__content-row">
         <div className="settings-page__content-item">
@@ -109,7 +104,6 @@ export default class SecurityTab extends PureComponent {
   renderPhishingDetectionToggle() {
     const { t } = this.context;
     const { usePhishDetect, setUsePhishDetect } = this.props;
-
     return (
       <div className="settings-page__content-row">
         <div className="settings-page__content-item">
@@ -134,7 +128,6 @@ export default class SecurityTab extends PureComponent {
 
   render() {
     const { warning } = this.props;
-
     return (
       <div className="settings-page__body">
         {warning && <div className="settings-tab__error">{warning}</div>}

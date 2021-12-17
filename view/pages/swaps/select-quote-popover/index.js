@@ -1,8 +1,8 @@
+import React, { useCallback, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import Popover from '@c/ui/popover';
 import { I18nContext } from '@view/contexts/i18n';
-import PropTypes from 'prop-types';
-import React, { useCallback, useContext, useState } from 'react';
 import QuoteDetails from './quote-details';
 import { QUOTE_DATA_ROWS_PROPTYPES_SHAPE } from './select-quote-popover-constants';
 import SortList from './sort-list';
@@ -16,28 +16,22 @@ const SelectQuotePopover = ({
   onQuoteDetailsIsOpened,
 }) => {
   const t = useContext(I18nContext);
-
   const [sortDirection, setSortDirection] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
-
   const [selectedAggId, setSelectedAggId] = useState(initialAggId);
   const [contentView, setContentView] = useState('sortList');
   const [viewingAgg, setViewingAgg] = useState(null);
-
   const onSubmitClick = useCallback(() => {
     onSubmit(selectedAggId);
     onClose();
   }, [selectedAggId, onClose, onSubmit]);
-
   const closeQuoteDetails = useCallback(() => {
     setViewingAgg(null);
     setContentView('sortList');
   }, []);
-
   const onRowClick = useCallback((aggId) => setSelectedAggId(aggId), [
     setSelectedAggId,
   ]);
-
   const onCaretClick = useCallback(
     (aggId) => {
       const agg = quoteDataRows.find((quote) => quote.aggId === aggId);
@@ -47,7 +41,6 @@ const SelectQuotePopover = ({
     },
     [quoteDataRows, onQuoteDetailsIsOpened],
   );
-
   const CustomBackground = useCallback(
     () => (
       <div className="select-quote-popover__popover-bg" onClick={onClose} />
@@ -73,7 +66,6 @@ const SelectQuotePopover = ({
       </Button>
     </>
   );
-
   return (
     <div className="select-quote-popover">
       <Popover
@@ -124,5 +116,4 @@ SelectQuotePopover.propTypes = {
   initialAggId: PropTypes.string,
   onQuoteDetailsIsOpened: PropTypes.func,
 };
-
 export default SelectQuotePopover;

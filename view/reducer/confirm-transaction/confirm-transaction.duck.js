@@ -13,9 +13,8 @@ import {
   conversionRateSelector,
   currentCurrencySelector,
   unconfirmedTransactionsHashSelector,
-} from '@view/selectors';
+} from '@view/selectors'; // Actions
 
-// Actions
 const createActionType = (action) => `metamask/confirm-transaction/${action}`;
 
 const UPDATE_TX_DATA = createActionType('UPDATE_TX_DATA');
@@ -27,9 +26,8 @@ const UPDATE_TRANSACTION_AMOUNTS = createActionType(
 );
 const UPDATE_TRANSACTION_FEES = createActionType('UPDATE_TRANSACTION_FEES');
 const UPDATE_TRANSACTION_TOTALS = createActionType('UPDATE_TRANSACTION_TOTALS');
-const UPDATE_NONCE = createActionType('UPDATE_NONCE');
+const UPDATE_NONCE = createActionType('UPDATE_NONCE'); // Initial state
 
-// Initial state
 const initState = {
   txData: {},
   tokenData: {},
@@ -44,32 +42,19 @@ const initState = {
   hexTransactionFee: '',
   hexTransactionTotal: '',
   nonce: '',
-};
+}; // Reducer
 
-// Reducer
 export default function reducer(state = initState, action = {}) {
   switch (action.type) {
     case UPDATE_TX_DATA:
-      return {
-        ...state,
-        txData: {
-          ...action.payload,
-        },
-      };
+      return { ...state, txData: { ...action.payload } };
+
     case UPDATE_TOKEN_DATA:
-      return {
-        ...state,
-        tokenData: {
-          ...action.payload,
-        },
-      };
+      return { ...state, tokenData: { ...action.payload } };
+
     case UPDATE_TOKEN_PROPS:
-      return {
-        ...state,
-        tokenProps: {
-          ...action.payload,
-        },
-      };
+      return { ...state, tokenProps: { ...action.payload } };
+
     case UPDATE_TRANSACTION_AMOUNTS: {
       const {
         fiatTransactionAmount,
@@ -86,6 +71,7 @@ export default function reducer(state = initState, action = {}) {
           hexTransactionAmount || state.hexTransactionAmount,
       };
     }
+
     case UPDATE_TRANSACTION_FEES: {
       const {
         fiatTransactionFee,
@@ -99,6 +85,7 @@ export default function reducer(state = initState, action = {}) {
         hexTransactionFee: hexTransactionFee || state.hexTransactionFee,
       };
     }
+
     case UPDATE_TRANSACTION_TOTALS: {
       const {
         fiatTransactionTotal,
@@ -113,82 +100,72 @@ export default function reducer(state = initState, action = {}) {
         hexTransactionTotal: hexTransactionTotal || state.hexTransactionTotal,
       };
     }
+
     case UPDATE_NONCE:
-      return {
-        ...state,
-        nonce: action.payload,
-      };
+      return { ...state, nonce: action.payload };
+
     case CLEAR_CONFIRM_TRANSACTION:
       return initState;
+
     default:
       return state;
   }
-}
+} // Action Creators
 
-// Action Creators
 export function updateTxData(txData) {
   return {
     type: UPDATE_TX_DATA,
     payload: txData,
   };
 }
-
 export function updateTokenData(tokenData) {
   return {
     type: UPDATE_TOKEN_DATA,
     payload: tokenData,
   };
 }
-
 export function updateTokenProps(tokenProps) {
   return {
     type: UPDATE_TOKEN_PROPS,
     payload: tokenProps,
   };
 }
-
 export function updateTransactionAmounts(amounts) {
   return {
     type: UPDATE_TRANSACTION_AMOUNTS,
     payload: amounts,
   };
 }
-
 export function updateTransactionFees(fees) {
   return {
     type: UPDATE_TRANSACTION_FEES,
     payload: fees,
   };
 }
-
 export function updateTransactionTotals(totals) {
   return {
     type: UPDATE_TRANSACTION_TOTALS,
     payload: totals,
   };
 }
-
 export function updateNonce(nonce) {
   return {
     type: UPDATE_NONCE,
     payload: nonce,
   };
 }
-
 export function updateTxDataAndCalculate(txData) {
   return (dispatch, getState) => {
     const state = getState();
     const currentCurrency = currentCurrencySelector(state);
     const conversionRate = conversionRateSelector(state);
     const nativeCurrency = getNativeCurrency(state);
-
     dispatch(updateTxData(txData));
-
-    const { txParams: { value = '0x0', gas: gasLimit = '0x0' } = {} } = txData;
-
-    // if the gas price from our infura endpoint is null or undefined
+    const { txParams: { value = '0x0', gas: gasLimit = '0x0' } = {} } = txData; // if the gas price from our infura endpoint is null or undefined
     // use the metaswap average price estimation as a fallback
+
     let { txParams: { gasPrice } = {} } = txData;
+
     if (!gasPrice) {
       gasPrice = getAveragePriceEstimateInHexWEI(state) || '0x0';
     }
@@ -207,7 +184,6 @@ export function updateTxDataAndCalculate(txData) {
       conversionRate,
       numberOfDecimals: 6,
     });
-
     dispatch(
       updateTransactionAmounts({
         fiatTransactionAmount,
@@ -215,9 +191,10 @@ export function updateTxDataAndCalculate(txData) {
         hexTransactionAmount: value,
       }),
     );
-
-    const hexTransactionFee = getHexGasTotal({ gasLimit, gasPrice });
-
+    const hexTransactionFee = getHexGasTotal({
+      gasLimit,
+      gasPrice,
+    });
     const fiatTransactionFee = getTransactionFee({
       value: hexTransactionFee,
       fromCurrency: nativeCurrency,
@@ -232,7 +209,6 @@ export function updateTxDataAndCalculate(txData) {
       numberOfDecimals: 6,
       conversionRate,
     });
-
     dispatch(
       updateTransactionFees({
         fiatTransactionFee,
@@ -240,14 +216,12 @@ export function updateTxDataAndCalculate(txData) {
         hexTransactionFee,
       }),
     );
-
     const fiatTransactionTotal = addFiat(
       fiatTransactionFee,
       fiatTransactionAmount,
     );
     const ethTransactionTotal = addEth(ethTransactionFee, ethTransactionAmount);
     const hexTransactionTotal = sumHexes(value, hexTransactionFee);
-
     dispatch(
       updateTransactionTotals({
         fiatTransactionTotal,
@@ -257,7 +231,6 @@ export function updateTxDataAndCalculate(txData) {
     );
   };
 }
-
 export function setTransactionToConfirm(transactionId) {
   return (dispatch, getState) => {
     const state = getState();
@@ -277,13 +250,11 @@ export function setTransactionToConfirm(transactionId) {
 
       if (txParams.data) {
         const { to: tokenAddress, data } = txParams;
-
         const tokenData = getTokenData(data);
         const tokens = getTokens(state);
         const currentToken = tokens?.find(
           ({ address }) => tokenAddress === address,
         );
-
         dispatch(
           updateTokenProps({
             decimals: currentToken?.decimals,
@@ -298,7 +269,6 @@ export function setTransactionToConfirm(transactionId) {
           fromNumericBase: 'hex',
           toNumericBase: 'dec',
         });
-
         dispatch(updateNonce(nonce));
       }
     } else {
@@ -306,7 +276,6 @@ export function setTransactionToConfirm(transactionId) {
     }
   };
 }
-
 export function clearConfirmTransaction() {
   return {
     type: CLEAR_CONFIRM_TRANSACTION,

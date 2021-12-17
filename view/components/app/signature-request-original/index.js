@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { clearConfirmTransaction } from '@reducer/confirm-transaction/confirm-transaction.duck';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { MESSAGE_TYPE } from '@shared/constants/app';
@@ -8,9 +11,6 @@ import {
   getDomainMetadata,
 } from '@view/selectors';
 import { goHome } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import SignatureRequestOriginal from './component';
 
 function mapStateToProps(state) {
@@ -42,18 +42,15 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     cancelMessage,
     txData,
   } = ownProps;
-
   const { allAccounts, ...otherStateProps } = stateProps;
-
   const {
     type,
     msgParams: { from },
   } = txData;
-
   const fromAccount = getAccountByAddress(allAccounts, from);
-
   let cancel;
   let sign;
+
   if (type === MESSAGE_TYPE.PERSONAL_SIGN) {
     cancel = cancelPersonalMessage;
     sign = signPersonalMessage;

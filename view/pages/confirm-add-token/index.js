@@ -1,6 +1,6 @@
+import { connect } from 'react-redux';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { addTokens, clearPendingTokens } from '@view/store/actions';
-import { connect } from 'react-redux';
 import ConfirmAddToken from './component';
 
 const mapStateToProps = (state) => {

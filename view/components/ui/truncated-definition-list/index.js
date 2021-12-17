@@ -1,13 +1,12 @@
+import React, { useState } from 'react';
+import { pick } from 'lodash';
+import PropTypes from 'prop-types';
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
 import DefinitionList from '@c/ui/definition-list';
 import Popover from '@c/ui/popover';
 import { COLORS, SIZES } from '@view/helpers/constants/design-system';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import { pick } from 'lodash';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-
 export default function TruncatedDefinitionList({
   dictionary,
   tooltips,
@@ -16,7 +15,6 @@ export default function TruncatedDefinitionList({
 }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const t = useI18nContext();
-
   return (
     <>
       <Box
@@ -48,7 +46,9 @@ export default function TruncatedDefinitionList({
               <div />
               <Button
                 type="primary"
-                style={{ width: '50%' }}
+                style={{
+                  width: '50%',
+                }}
                 rounded
                 onClick={() => setIsPopoverOpen(false)}
               >
@@ -69,7 +69,6 @@ export default function TruncatedDefinitionList({
     </>
   );
 }
-
 TruncatedDefinitionList.propTypes = {
   dictionary: DefinitionList.propTypes.dictionary,
   tooltips: DefinitionList.propTypes.dictionary,

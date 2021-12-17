@@ -1,8 +1,7 @@
-import Button from '@c/ui/button';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import Button from '@c/ui/button';
 export default class PageContainerFooter extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -19,7 +18,6 @@ export default class PageContainerFooter extends Component {
     footerButtonClassName: PropTypes.string,
     rightArrow: PropTypes.bool,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -40,7 +38,6 @@ export default class PageContainerFooter extends Component {
       footerButtonClassName,
       rightArrow = false,
     } = this.props;
-
     return (
       <div className={classnames('page-container__footer', footerClassName)}>
         <footer>

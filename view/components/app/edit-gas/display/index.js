@@ -1,3 +1,8 @@
+import React, { useContext, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import BigNumber from 'bignumber.js';
+import { zeroAddress } from 'ethereumjs-util';
+import PropTypes from 'prop-types';
 import AdvancedGasControls from '@c/app/advanced-gas-controls';
 import GasTiming from '@c/app/gas-timing';
 import TransactionTotalBanner from '@c/app/transaction/total-banner';
@@ -27,12 +32,6 @@ import {
   getAdvancedInlineGasShown,
   getIsMainnet,
 } from '@view/selectors';
-import BigNumber from 'bignumber.js';
-import { zeroAddress } from 'ethereumjs-util';
-import PropTypes from 'prop-types';
-import React, { useContext, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-
 export default function EditGasDisplay({
   mode = EDIT_GAS_MODES.MODIFY_IN_PLACE,
   showEducationButton = false,
@@ -78,7 +77,6 @@ export default function EditGasDisplay({
     getAdvancedInlineGasShown,
   );
   const nativeCurrency = useSelector(getNativeCurrency);
-
   const { res, error, loading } = useFetch(
     () =>
       getPrice({
@@ -87,11 +85,11 @@ export default function EditGasDisplay({
       }),
     [nativeCurrency],
   );
-
   const estimatedMinimumNativeUsdPrice = useMemo(() => {
     if (error || loading) {
       return 0;
     }
+
     return (
       '≈ $' +
       new BigNumber(
@@ -101,11 +99,11 @@ export default function EditGasDisplay({
       ).toFixed()
     );
   }, [res, error, loading, estimatedMinimumNative]);
-
   const estimatedMaximumNativeUsdPrice = useMemo(() => {
     if (error || loading || !estimatedMaximumNative) {
       return '$0';
     }
+
     return (
       '$' +
       new BigNumber(
@@ -115,7 +113,6 @@ export default function EditGasDisplay({
       ).toFixed()
     );
   }, [res, error, loading, estimatedMaximumNative]);
-
   const [showAdvancedForm, setShowAdvancedForm] = useState(
     !estimateToUse ||
       estimateToUse === 'custom' ||
@@ -124,17 +121,14 @@ export default function EditGasDisplay({
   const [hideRadioButtons, setHideRadioButtons] = useState(
     showAdvancedInlineGasIfPossible,
   );
-
   const dappSuggestedAndTxParamGasFeesAreTheSame = areDappSuggestedAndTxParamGasFeesTheSame(
     transaction,
   );
-
   const requireDappAcknowledgement = Boolean(
     transaction?.dappSuggestedGasFees &&
       !dappSuggestedGasFeeAcknowledged &&
       dappSuggestedAndTxParamGasFeesAreTheSame,
   );
-
   const showTopError =
     (balanceError || estimatesUnavailableWarning) &&
     (!isGasEstimatesLoading || txParamsHaveBeenCustomized);
@@ -142,8 +136,8 @@ export default function EditGasDisplay({
     networkAndAccountSupport1559 &&
     gasEstimateType === GAS_ESTIMATE_TYPES.FEE_MARKET &&
     !requireDappAcknowledgement;
-
   let errorKey;
+
   if (balanceError) {
     errorKey = 'insufficientFunds';
   } else if (estimatesUnavailableWarning) {
@@ -192,8 +186,7 @@ export default function EditGasDisplay({
           </div>
         )}
         <TransactionTotalBanner
-          className="gas-fee-display__banner"
-          // total={
+          className="gas-fee-display__banner" // total={
           //   (networkAndAccountSupport1559 || isMainnet) && estimatedMinimumFiat
           //     ? estimatedMinimumFiat
           //     : estimatedMinimumNative
@@ -310,7 +303,6 @@ export default function EditGasDisplay({
     </div>
   );
 }
-
 EditGasDisplay.propTypes = {
   mode: PropTypes.oneOf(Object.values(EDIT_GAS_MODES)),
   showEducationButton: PropTypes.bool,

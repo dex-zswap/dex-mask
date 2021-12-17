@@ -1,3 +1,8 @@
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import ColorIndicator from '@c/ui/color-indicator';
 import { Menu, MenuItem } from '@c/ui/menu';
@@ -11,14 +16,8 @@ import {
   NETWORKS_ROUTE,
 } from '@view/helpers/constants/routes';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
-import { Dropdown, DropdownMenuItem } from './dropdown';
+import { Dropdown, DropdownMenuItem } from './dropdown'; // classes from nodes of the toggle element.
 
-// classes from nodes of the toggle element.
 const notToggleElementClassnames = [
   'menu-icon',
   'network-name',
@@ -27,7 +26,6 @@ const notToggleElementClassnames = [
   'network-component',
   'modal-container__footer-button',
 ];
-
 const DROP_DOWN_MENU_ITEM_STYLE = {
   fontSize: '16px',
   lineHeight: '20px',
@@ -77,7 +75,6 @@ class NetworkDropdown extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     provider: PropTypes.shape({
       nickname: PropTypes.string,
@@ -104,19 +101,16 @@ class NetworkDropdown extends Component {
       provider: { type: providerType },
       setProviderType,
     } = this.props;
-
     this.props.hideNetworkDropdown();
     setProviderType(newProviderType);
   }
 
   renderCustomRpcList(rpcListDetail, provider) {
     const reversedRpcListDetail = rpcListDetail.slice().reverse();
-
     return reversedRpcListDetail.map((entry) => {
       const { rpcUrl, chainId, ticker = 'ETH', nickname = '' } = entry;
       const isCurrentRpcTarget =
         provider.type === NETWORK_TYPE_RPC && rpcUrl === provider.rpcUrl;
-
       return (
         <DropdownMenuItem
           key={`common${rpcUrl}`}
@@ -173,7 +167,6 @@ class NetworkDropdown extends Component {
   getNetworkName() {
     const { provider } = this.props;
     const providerName = provider.type;
-
     let name;
 
     if (providerName === 'mainnet') {
@@ -233,18 +226,17 @@ class NetworkDropdown extends Component {
 
   renderCustomRpcListMenus(rpcListDetail, provider) {
     const reversedRpcListDetail = rpcListDetail.slice().reverse();
-
     return reversedRpcListDetail.map((entry) => {
       const { rpcUrl, chainId, ticker = 'ETH', nickname = '' } = entry;
       const isCurrentRpcTarget =
         provider.type === NETWORK_TYPE_RPC && rpcUrl === provider.rpcUrl;
-
       return (
         <MenuItem
           className={isCurrentRpcTarget ? 'active' : ''}
           key={`common${rpcUrl}`}
           onClick={() => {
             this.props.hideNetworkDropdown();
+
             if (isPrefixedFormattedHexString(chainId)) {
               this.props.setRpcTarget(rpcUrl, chainId, ticker, nickname);
             } else {
@@ -263,7 +255,6 @@ class NetworkDropdown extends Component {
     const {
       provider: { type: providerType },
     } = this.props;
-
     const iconBg =
       'dexMainnet' === network
         ? '/images/dex-token.png'
@@ -272,7 +263,6 @@ class NetworkDropdown extends Component {
         : 'bscMainnet' === network
         ? '/images/bnb.png'
         : '/images/dex/settings/chain-icon.png';
-
     return (
       <MenuItem
         className={network === providerType ? 'active' : ''}
@@ -299,13 +289,14 @@ class NetworkDropdown extends Component {
     } = this.props;
     const rpcListDetail = this.props.frequentRpcListDetail;
     const isOpen = this.props.networkDropdownOpen;
-
     return (
       <Dropdown
         isOpen={isOpen}
         onClickOutside={(event) => {
           const { classList } = event.target;
+
           const isInClassList = (className) => classList.contains(className);
+
           const notToggleElementIndex = notToggleElementClassnames.findIndex(
             isInClassList,
           );
@@ -382,7 +373,6 @@ class NetworkDropdown extends Component {
     } = this.props;
     const rpcListDetail = this.props.frequentRpcListDetail;
     const isOpen = this.props.networkDropdownOpen;
-
     return (
       <>
         {isOpen ? (

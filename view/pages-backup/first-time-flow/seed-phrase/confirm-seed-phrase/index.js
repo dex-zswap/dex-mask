@@ -1,5 +1,5 @@
-import { initializeThreeBox, setSeedPhraseBackedUp } from '@view/store/actions';
 import { connect } from 'react-redux';
+import { initializeThreeBox, setSeedPhraseBackedUp } from '@view/store/actions';
 import ConfirmSeedPhrase from './component';
 
 const mapDispatchToProps = (dispatch) => {

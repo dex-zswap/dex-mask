@@ -1,12 +1,11 @@
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import classnames from 'classnames';
+import { ethers } from 'ethers';
 import { Menu, MenuItem } from '@c/ui/menu';
 import TokenImage from '@c/ui/token-image';
 import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask';
-import classnames from 'classnames';
-import { ethers } from 'ethers';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { CHAIN_ID_NAME_LETTER_MAP } from './constants';
-
 const chainIdKeys = Object.keys(CHAIN_ID_NAME_LETTER_MAP);
 
 const CurrentCoin = ({
@@ -21,13 +20,11 @@ const CurrentCoin = ({
 }) => {
   const nativeCurrency = useSelector(getNativeCurrency);
   const tokens = useSelector(getTokens);
-
   const [tokenMenu, setTokenMenu] = useState(false);
   const anchorElement = useRef(null);
   const toggleTokenMenu = useCallback(() => setTokenMenu(!tokenMenu), [
     tokenMenu,
   ]);
-
   const selectToken = useCallback(
     (token) => {
       onChange(token);
@@ -35,26 +32,29 @@ const CurrentCoin = ({
     },
     [onChange, toggleTokenMenu],
   );
-
   const currencyName = useMemo(() => {
     if (useOut) {
       return coinSymbol;
     }
+
     if (coinAddress === ethers.constants.AddressZero || !coinAddress) {
       return nativeCurrency;
     }
+
     const token = tokens.find(
       ({ address }) => address.toLowerCase() === coinAddress.toLowerCase(),
     );
+
     if (token) {
       return token.symbol;
     }
+
     if (coinSymbol) {
       return coinSymbol;
     }
+
     return 'UNKOWN';
   }, [tokens, nativeCurrency, coinSymbol, coinAddress, useOut]);
-
   const allTokens = useMemo(() => {
     return [
       {
@@ -63,7 +63,6 @@ const CurrentCoin = ({
       },
     ].concat(tokens);
   }, [nativeCurrency, tokens]);
-
   return (
     <div className="cross-chain__current-token">
       <div className="cross-chain__current-token-image">

@@ -19,9 +19,8 @@ import {
   BSC_RPC_URL,
   DEX_MAINNET,
   DEX_CHAIN_ID,
-  DEX_RPC_URL
+  DEX_RPC_URL,
 } from '@shared/constants/network';
-
 const defaultNetworksData = [
   {
     labelKey: MAINNET,
@@ -87,5 +86,4 @@ const defaultNetworksData = [
     blockExplorerUrl: 'https://kovan.etherscan.io',
   },
 ];
-
 export { defaultNetworksData };

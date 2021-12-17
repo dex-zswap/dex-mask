@@ -1,3 +1,7 @@
+import React, { PureComponent } from 'react';
+import log from 'loglevel';
+import PropTypes from 'prop-types';
+import validUrl from 'valid-url';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import Tooltip from '@c/ui/tooltip';
@@ -7,11 +11,6 @@ import {
 } from '@shared/modules/network.utils';
 import { jsonRpcRequest } from '@shared/modules/rpc.utils';
 import { decimalToHex } from '@view/helpers/utils/conversions.util';
-import log from 'loglevel';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import validUrl from 'valid-url';
-
 const FORM_STATE_KEYS = [
   'rpcUrl',
   'chainId',
@@ -19,12 +18,10 @@ const FORM_STATE_KEYS = [
   'networkName',
   'blockExplorerUrl',
 ];
-
 export default class NetworkForm extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
   };
-
   static propTypes = {
     editRpc: PropTypes.func.isRequired,
     showConfirmDeleteNetworkModal: PropTypes.func.isRequired,
@@ -42,7 +39,6 @@ export default class NetworkForm extends PureComponent {
     networksToRender: PropTypes.array,
     isFullScreen: PropTypes.bool,
   };
-
   static defaultProps = {
     rpcUrl: '',
     chainId: '',
@@ -50,7 +46,6 @@ export default class NetworkForm extends PureComponent {
     networkName: '',
     blockExplorerUrl: '',
   };
-
   state = {
     rpcUrl: this.props.rpcUrl,
     chainId: this.getDisplayChainId(this.props.chainId),
@@ -93,11 +88,10 @@ export default class NetworkForm extends PureComponent {
       networkName: '',
       blockExplorerUrl: '',
       errors: {},
-    });
-
-    // onClear will push the network settings route unless was pass false.
+    }); // onClear will push the network settings route unless was pass false.
     // Since we call onClear to cause this component to be unmounted, the
     // route will already have been updated, and we avoid setting it twice.
+
     this.props.onClear(false);
   }
 
@@ -109,7 +103,6 @@ export default class NetworkForm extends PureComponent {
       networkName,
       blockExplorerUrl,
     } = this.props;
-
     this.setState({
       rpcUrl,
       chainId: this.getDisplayChainId(chainId),
@@ -120,7 +113,6 @@ export default class NetworkForm extends PureComponent {
       isSubmitting: false,
     });
   }
-
   /**
    * Attempts to convert the given chainId to a decimal string, for display
    * purposes.
@@ -132,24 +124,28 @@ export default class NetworkForm extends PureComponent {
    * @returns {string} The props chainId in decimal, or the original value if
    * it can't be converted.
    */
+
   getDisplayChainId(chainId) {
     if (!chainId || typeof chainId !== 'string' || !chainId.startsWith('0x')) {
       return chainId;
     }
+
     return parseInt(chainId, 16).toString(10);
   }
-
   /**
    * Prefixes a given id with '0x' if the prefix does not exist
    *
    * @param {string} chainId - The chainId to prefix
    * @returns {string} The chainId, prefixed with '0x'
    */
+
   prefixChainId(chainId) {
     let prefixedChainId = chainId;
+
     if (!chainId.startsWith('0x')) {
       prefixedChainId = `0x${parseInt(chainId, 10).toString(16)}`;
     }
+
     return prefixedChainId;
   }
 
@@ -174,7 +170,6 @@ export default class NetworkForm extends PureComponent {
         ticker,
         blockExplorerUrl,
       } = this.state;
-
       const formChainId = stateChainId.trim().toLowerCase();
       const chainId = this.prefixChainId(formChainId);
 
@@ -183,9 +178,8 @@ export default class NetworkForm extends PureComponent {
           isSubmitting: false,
         });
         return;
-      }
+      } // After this point, isSubmitting will be reset in componentDidUpdate
 
-      // After this point, isSubmitting will be reset in componentDidUpdate
       if (propsRpcUrl && rpcUrl !== propsRpcUrl) {
         await editRpc(propsRpcUrl, rpcUrl, chainId, ticker, networkName, {
           ...rpcPrefs,
@@ -208,7 +202,6 @@ export default class NetworkForm extends PureComponent {
       throw error;
     }
   };
-
   onCancel = () => {
     const {
       isFullScreen,
@@ -218,7 +211,6 @@ export default class NetworkForm extends PureComponent {
     } = this.props;
     onClear();
   };
-
   onDelete = () => {
     const { showConfirmDeleteNetworkModal, rpcUrl, onClear } = this.props;
     showConfirmDeleteNetworkModal({
@@ -242,23 +234,20 @@ export default class NetworkForm extends PureComponent {
       networkName,
       blockExplorerUrl,
     } = this.props;
-
     const {
       rpcUrl: stateRpcUrl,
       chainId: stateChainId,
       ticker: stateTicker,
       networkName: stateNetworkName,
       blockExplorerUrl: stateBlockExplorerUrl,
-    } = this.state;
-
-    // These added conditions are in case the saved chainId is invalid, which
+    } = this.state; // These added conditions are in case the saved chainId is invalid, which
     // was possible in versions <8.1 of the extension.
     // Basically, we always want to be able to overwrite an invalid chain ID.
+
     const chainIdIsUnchanged =
       typeof propsChainId === 'string' &&
       propsChainId.toLowerCase().startsWith('0x') &&
       stateChainId === this.getDisplayChainId(propsChainId);
-
     return (
       stateRpcUrl === rpcUrl &&
       chainIdIsUnchanged &&
@@ -280,7 +269,6 @@ export default class NetworkForm extends PureComponent {
     const { errors } = this.state;
     const { viewOnly } = this.props;
     const errorMessage = errors[fieldKey]?.msg || '';
-
     return (
       <div className="networks-tab__network-form-row">
         <div className="networks-tab__network-form-label">
@@ -315,19 +303,16 @@ export default class NetworkForm extends PureComponent {
   setStateWithValue = (stateKey, validator) => {
     return (e) => {
       validator?.(e.target.value, stateKey);
-      this.setState({ [stateKey]: e.target.value });
+      this.setState({
+        [stateKey]: e.target.value,
+      });
     };
   };
-
   setErrorTo = (errorKey, errorVal) => {
     this.setState({
-      errors: {
-        ...this.state.errors,
-        [errorKey]: errorVal,
-      },
+      errors: { ...this.state.errors, [errorKey]: errorVal },
     });
   };
-
   setErrorEmpty = (errorKey) => {
     this.setState({
       errors: {
@@ -339,28 +324,25 @@ export default class NetworkForm extends PureComponent {
       },
     });
   };
-
   hasError = (errorKey, errorKeyVal) => {
     return this.state.errors[errorKey]?.key === errorKeyVal;
   };
-
   hasErrors = () => {
     const { errors } = this.state;
     return Object.keys(errors).some((key) => {
-      const error = errors[key];
-      // Do not factor in duplicate chain id error for submission disabling
+      const error = errors[key]; // Do not factor in duplicate chain id error for submission disabling
+
       if (key === 'chainId' && error.key === 'chainIdExistsErrorMsg') {
         return false;
       }
+
       return error.key && error.msg;
     });
   };
-
   validateChainIdOnChange = (selfRpcUrl, chainIdArg = '') => {
     const { t } = this.context;
     const { networksToRender } = this.props;
     const chainId = chainIdArg.trim();
-
     let errorKey = '';
     let errorMessage = '';
     let radix = 10;
@@ -392,6 +374,7 @@ export default class NetworkForm extends PureComponent {
       ]);
     } else if (chainId.startsWith('0x')) {
       radix = 16;
+
       if (!/^0x[0-9a-f]+$/iu.test(chainId)) {
         errorKey = 'invalidHexNumber';
         errorMessage = t('invalidHexNumber');
@@ -414,7 +397,6 @@ export default class NetworkForm extends PureComponent {
       msg: errorMessage,
     });
   };
-
   /**
    * Validates the chain ID by checking it against the `eth_chainId` return
    * value from the given RPC URL.
@@ -425,6 +407,7 @@ export default class NetworkForm extends PureComponent {
    * @param {string} parsedChainId - The parsed, hex string chain ID.
    * @param {string} rpcUrl - The RPC URL from the form.
    */
+
   validateChainIdOnSubmit = async (formChainId, parsedChainId, rpcUrl) => {
     const { t } = this.context;
     let errorKey;
@@ -477,14 +460,13 @@ export default class NetworkForm extends PureComponent {
     this.setErrorEmpty('chainId');
     return true;
   };
-
   isValidWhenAppended = (url) => {
     const appendedRpc = `http://${url}`;
     return validUrl.isWebUri(appendedRpc) && !url.match(/^https?:\/\/$/u);
   };
-
   validateBlockExplorerURL = (url, stateKey) => {
     const { t } = this.context;
+
     if (!validUrl.isWebUri(url) && url !== '') {
       let errorKey;
       let errorMessage;
@@ -505,7 +487,6 @@ export default class NetworkForm extends PureComponent {
       this.setErrorEmpty(stateKey);
     }
   };
-
   validateUrlRpcUrl = (url, stateKey) => {
     const { t } = this.context;
     const { networksToRender } = this.props;
@@ -517,6 +498,7 @@ export default class NetworkForm extends PureComponent {
     if (!isValidUrl && url !== '') {
       let errorKey;
       let errorMessage;
+
       if (this.isValidWhenAppended(url)) {
         errorKey = 'urlErrorMsg';
         errorMessage = t('urlErrorMsg');
@@ -524,6 +506,7 @@ export default class NetworkForm extends PureComponent {
         errorKey = 'invalidRPC';
         errorMessage = t('invalidRPC');
       }
+
       this.setErrorTo(stateKey, {
         key: errorKey,
         msg: errorMessage,
@@ -537,9 +520,8 @@ export default class NetworkForm extends PureComponent {
       });
     } else {
       this.setErrorEmpty(stateKey);
-    }
+    } // Re-validate the chain id if it could not be found with previous rpc url
 
-    // Re-validate the chain id if it could not be found with previous rpc url
     if (stateChainId && isValidUrl && chainIdFetchFailed) {
       const formChainId = stateChainId.trim().toLowerCase();
       const chainId = this.prefixChainId(formChainId);
@@ -566,7 +548,6 @@ export default class NetworkForm extends PureComponent {
       ticker,
       blockExplorerUrl,
     } = this.state;
-
     const deletable =
       !networksTabIsInAddMode && !isCurrentRpcTarget && !viewOnly;
     const isSubmitDisabled =
@@ -575,7 +556,6 @@ export default class NetworkForm extends PureComponent {
       this.stateIsUnchanged() ||
       !rpcUrl ||
       !chainId;
-
     return (
       <div className="networks-tab__network-form">
         {viewOnly ? null : this.renderWarning()}

@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import {
   resetCustomData,
   setCustomGasLimit,
@@ -24,9 +25,7 @@ import {
   getRenderableEstimateDataForSmallButtonsFromGWEI,
 } from '@view/selectors';
 import { showModal } from '@view/store/actions';
-import { connect } from 'react-redux';
 import SendGasRow from './component';
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
@@ -41,11 +40,8 @@ function mapStateToProps(state) {
     gasButtonInfo,
     gasPrice,
   );
-
   const gasTotal = getGasTotal(state);
-
   const minimumGasLimit = getMinimumGasLimitForSend(state);
-
   return {
     gasTotal,
     minimumGasLimit: hexToDecimal(minimumGasLimit),
@@ -68,7 +64,12 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     showLegacyCustomizeGasModal: () =>
-      dispatch(showModal({ name: 'LEGACY_CUSTOMIZE_GAS', hideBasic: true })),
+      dispatch(
+        showModal({
+          name: 'LEGACY_CUSTOMIZE_GAS',
+          hideBasic: true,
+        }),
+      ),
     updateGasPrice: (gasPrice) => {
       dispatch(updateGasPrice(gasPrice));
       dispatch(setCustomGasPrice(gasPrice));
@@ -91,7 +92,6 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     resetCustomData: dispatchResetCustomData,
     ...otherDispatchProps
   } = dispatchProps;
-
   return {
     ...stateProps,
     ...otherDispatchProps,

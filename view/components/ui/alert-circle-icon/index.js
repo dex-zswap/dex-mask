@@ -1,7 +1,6 @@
-import CircleIcon from '@c/ui/circle-icon';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import CircleIcon from '@c/ui/circle-icon';
 const typeConfig = {
   danger: {
     circleClass: 'alert-circle-icon--danger',
@@ -12,7 +11,6 @@ const typeConfig = {
     iconSource: 'images/icons/yellow-bell.svg',
   },
 };
-
 export default class AlertCircleIcon extends Component {
   static propTypes = {
     type: PropTypes.oneOf(Object.keys(typeConfig)).isRequired,

@@ -1,22 +1,20 @@
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import LoadingScreen from '@c/ui/loading-screen';
 import { NETWORK_TYPE_RPC } from '@shared/constants/network';
 import { SECOND } from '@shared/constants/time';
 import { getNetworkIdentifier, isNetworkLoading } from '@view/selectors';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 
 class LoadingNetworkScreen extends PureComponent {
   state = {
     showErrorScreen: false,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     loadingMessage: PropTypes.string,
     cancelTime: PropTypes.number,
@@ -28,21 +26,19 @@ class LoadingNetworkScreen extends PureComponent {
     rollbackToPreviousProvider: PropTypes.func,
     isNetworkLoading: PropTypes.bool,
   };
-
   componentDidMount = () => {
     this.cancelCallTimeout = setTimeout(
       this.cancelCall,
       this.props.cancelTime || SECOND * 15,
     );
   };
-
   getConnectingLabel = function (loadingMessage) {
     if (loadingMessage) {
       return loadingMessage;
     }
+
     const { provider, providerId } = this.props;
     const providerName = provider.type;
-
     let name;
 
     if (providerName === 'mainnet') {
@@ -61,14 +57,12 @@ class LoadingNetworkScreen extends PureComponent {
 
     return name;
   };
-
   renderErrorScreenContent = () => {
     const {
       showNetworkDropdown,
       setProviderArgs,
       setProviderType,
     } = this.props;
-
     return (
       <div className="loading-overlay__error-screen">
         <span className="loading-overlay__emoji">&#128542;</span>
@@ -89,7 +83,9 @@ class LoadingNetworkScreen extends PureComponent {
           <Button
             type="primary"
             onClick={() => {
-              this.setState({ showErrorScreen: false });
+              this.setState({
+                showErrorScreen: false,
+              });
               setProviderType(...setProviderArgs);
               window.clearTimeout(this.cancelCallTimeout);
               this.cancelCallTimeout = setTimeout(
@@ -104,35 +100,36 @@ class LoadingNetworkScreen extends PureComponent {
       </div>
     );
   };
-
   cancelCall = () => {
     const { isNetworkLoading } = this.props;
 
     if (isNetworkLoading) {
-      this.setState({ showErrorScreen: true });
+      this.setState({
+        showErrorScreen: true,
+      });
     }
   };
-
   componentDidUpdate = (prevProps) => {
     const { provider } = this.props;
     const { provider: prevProvider } = prevProps;
+
     if (provider.type !== prevProvider.type) {
       window.clearTimeout(this.cancelCallTimeout);
-      this.setState({ showErrorScreen: false });
+      this.setState({
+        showErrorScreen: false,
+      });
       this.cancelCallTimeout = setTimeout(
         this.cancelCall,
         this.props.cancelTime || SECOND * 15,
       );
     }
   };
-
   componentWillUnmount = () => {
     window.clearTimeout(this.cancelCallTimeout);
   };
 
   render() {
     const { rollbackToPreviousProvider } = this.props;
-
     return (
       <LoadingScreen
         header={
@@ -156,12 +153,10 @@ const mapStateToProps = (state) => {
   const { loadingMessage } = state.appState;
   const { provider } = state.metamask;
   const { rpcUrl, chainId, ticker, nickname, type } = provider;
-
   const setProviderArgs =
     type === NETWORK_TYPE_RPC
       ? [rpcUrl, chainId, ticker, nickname]
       : [provider.type];
-
   return {
     isNetworkLoading: isNetworkLoading(state),
     loadingMessage,

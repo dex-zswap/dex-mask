@@ -5,7 +5,6 @@ const mapStateToProps = (state) => {
   const {
     metamask: { useBlockie },
   } = state;
-
   return {
     useBlockie,
   };

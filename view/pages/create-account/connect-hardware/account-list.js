@@ -1,21 +1,20 @@
-import Button from '@c/ui/button';
-import Checkbox from '@c/ui/check-box';
-import Dropdown from '@c/ui/dropdown';
-import Popover from '@c/ui/popover';
+import React, { Component } from 'react';
 import {
   createCustomAccountLink,
   getAccountLink,
 } from '@metamask/etherscan-link';
-import { CHAINID_EXPLORE_MAP } from '@shared/constants/network';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import Button from '@c/ui/button';
+import Checkbox from '@c/ui/check-box';
+import Dropdown from '@c/ui/dropdown';
+import Popover from '@c/ui/popover';
+import { CHAINID_EXPLORE_MAP } from '@shared/constants/network';
 
 class AccountList extends Component {
   state = {
     showPopover: false,
     pathValue: null,
   };
-
   goToNextPage = () => {
     // If we have < 5 accounts, it's restricted by BIP-44
     if (this.props.accounts.length === 5) {
@@ -24,19 +23,19 @@ class AccountList extends Component {
       this.props.onAccountRestriction();
     }
   };
-
   goToPreviousPage = () => {
     this.props.getPage(this.props.device, -1, this.props.selectedPath);
   };
 
   setPath(pathValue) {
-    this.setState({ pathValue });
+    this.setState({
+      pathValue,
+    });
   }
 
   renderHdPathSelector() {
     const { selectedPath, hdPaths } = this.props;
     const { pathValue } = this.state;
-
     return (
       <div>
         <h3 className="hw-connect__hdPath__title">
@@ -75,7 +74,11 @@ class AccountList extends Component {
           {this.context.t('selectAnAccountHelpDirections', [
             <button
               className="hw-connect__msg-link"
-              onClick={() => this.setState({ showPopover: true })}
+              onClick={() =>
+                this.setState({
+                  showPopover: true,
+                })
+              }
               key="account-help"
             >
               {this.context.t('hardwareWalletSupportLinkConversion')}
@@ -88,7 +91,6 @@ class AccountList extends Component {
 
   renderAccounts() {
     const { accounts, connectedAccounts, rpcPrefs, chainId } = this.props;
-
     return (
       <div className="hw-account-list">
         {accounts.map((account, idx) => {
@@ -99,7 +101,6 @@ class AccountList extends Component {
           const checked =
             this.props.selectedAccounts.includes(account.index) ||
             accountAlreadyConnected;
-
           return (
             <div
               className="hw-account-list__item"
@@ -140,6 +141,7 @@ class AccountList extends Component {
                     chainId,
                     rpcPrefs,
                   );
+
                   if (!accountLink && CHAINID_EXPLORE_MAP[chainId]) {
                     accountLink = createCustomAccountLink(
                       account.address,
@@ -186,6 +188,7 @@ class AccountList extends Component {
   renderButtons() {
     const disabled = this.props.selectedAccounts.length === 0;
     const buttonProps = {};
+
     if (disabled) {
       buttonProps.disabled = true;
     }
@@ -230,11 +233,14 @@ class AccountList extends Component {
   renderSelectPathPopover() {
     const { pathValue } = this.state;
     const { onPathChange } = this.props;
-
     const footer = (
       <div className="switch-ledger-path-popover__footer">
         <Button
-          onClick={() => this.setState({ showPopover: false })}
+          onClick={() =>
+            this.setState({
+              showPopover: false,
+            })
+          }
           type="secondary"
         >
           {this.context.t('cancel')}
@@ -242,7 +248,9 @@ class AccountList extends Component {
         <Button
           onClick={() => {
             onPathChange(pathValue);
-            this.setState({ showPopover: false });
+            this.setState({
+              showPopover: false,
+            });
           }}
           type="primary"
         >
@@ -250,7 +258,6 @@ class AccountList extends Component {
         </Button>
       </div>
     );
-
     return (
       <Popover
         title={this.context.t('switchLedgerPaths')}
@@ -295,9 +302,7 @@ AccountList.propTypes = {
   onAccountRestriction: PropTypes.func,
   hdPaths: PropTypes.array.isRequired,
 };
-
 AccountList.contextTypes = {
   t: PropTypes.func,
 };
-
 export default AccountList;

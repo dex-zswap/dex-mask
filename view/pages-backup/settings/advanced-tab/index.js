@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getPreferences } from '@view/selectors';
 import {
   displayWarning,
@@ -12,11 +15,7 @@ import {
   showModal,
   turnThreeBoxSyncingOnAndInitialize,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import AdvancedTab from './component';
-
 export const mapStateToProps = (state) => {
   const {
     appState: { warning },
@@ -32,7 +31,6 @@ export const mapStateToProps = (state) => {
     dismissSeedBackUpReminder,
   } = metamask;
   const { showFiatInTestnets, autoLockTimeLimit } = getPreferences(state);
-
   return {
     warning,
     sendHexData,
@@ -47,14 +45,17 @@ export const mapStateToProps = (state) => {
     dismissSeedBackUpReminder,
   };
 };
-
 export const mapDispatchToProps = (dispatch) => {
   return {
     setHexDataFeatureFlag: (shouldShow) =>
       dispatch(setFeatureFlag('sendHexData', shouldShow)),
     displayWarning: (warning) => dispatch(displayWarning(warning)),
     showResetAccountConfirmationModal: () =>
-      dispatch(showModal({ name: 'CONFIRM_RESET_ACCOUNT' })),
+      dispatch(
+        showModal({
+          name: 'CONFIRM_RESET_ACCOUNT',
+        }),
+      ),
     setAdvancedInlineGasFeatureFlag: (shouldShow) =>
       dispatch(setFeatureFlag('advancedInlineGas', shouldShow)),
     setUseNonceField: (value) => dispatch(setUseNonceField(value)),
@@ -82,7 +83,6 @@ export const mapDispatchToProps = (dispatch) => {
     },
   };
 };
-
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),

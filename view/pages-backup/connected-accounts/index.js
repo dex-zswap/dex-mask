@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { isExtensionUrl } from '@view/helpers/utils';
 import {
@@ -11,7 +12,6 @@ import {
   removePermittedAccount,
   setSelectedAddress,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
 import ConnectedAccounts from './component';
 
 const mapStateToProps = (state) => {
@@ -20,7 +20,6 @@ const mapStateToProps = (state) => {
   const connectedAccounts = getOrderedConnectedAccountsForActiveTab(state);
   const permissions = getPermissionsForActiveTab(state);
   const selectedAddress = getSelectedAddress(state);
-
   const isActiveTabExtension = isExtensionUrl(activeTab);
   return {
     accountToConnect,
@@ -45,7 +44,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const { activeTabOrigin } = stateProps;
-
   return {
     ...ownProps,
     ...stateProps,

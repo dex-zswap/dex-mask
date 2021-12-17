@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 export default class IconWithFallback extends PureComponent {
   static propTypes = {
     icon: PropTypes.string,
@@ -10,23 +9,29 @@ export default class IconWithFallback extends PureComponent {
     className: PropTypes.string,
     fallbackClassName: PropTypes.string,
   };
-
   static defaultProps = {
     name: '',
     icon: null,
   };
-
   state = {
     iconError: false,
   };
 
   render() {
     const { icon, name, size, className, fallbackClassName } = this.props;
-    const style = size ? { height: `${size}px`, width: `${size}px` } : {};
-
+    const style = size
+      ? {
+          height: `${size}px`,
+          width: `${size}px`,
+        }
+      : {};
     return !this.state.iconError && icon ? (
       <img
-        onError={() => this.setState({ iconError: true })}
+        onError={() =>
+          this.setState({
+            iconError: true,
+          })
+        }
         src={icon}
         style={style}
         className={className}

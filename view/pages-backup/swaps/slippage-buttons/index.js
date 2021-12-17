@@ -1,11 +1,10 @@
+import React, { useContext, useEffect, useState } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import ButtonGroup from '@c/ui/button-group';
 import InfoTooltip from '@c/ui/info-tooltip';
 import { I18nContext } from '@view/contexts/i18n';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useState } from 'react';
-
 export default function SlippageButtons({
   onSelect,
   maxAllowedSlippage,
@@ -20,6 +19,7 @@ export default function SlippageButtons({
     ) {
       return currentSlippage.toString();
     }
+
     return '';
   });
   const [enteringCustomValue, setEnteringCustomValue] = useState(false);
@@ -31,11 +31,12 @@ export default function SlippageButtons({
     } else if (typeof currentSlippage === 'number') {
       return 2;
     }
+
     return 1; // Choose activeButtonIndex = 1 for 3% slippage by default.
   });
   const [inputRef, setInputRef] = useState(null);
-
   let errorText = '';
+
   if (customValue) {
     // customValue is a string, e.g. '0'
     if (Number(customValue) < 0) {
@@ -55,7 +56,6 @@ export default function SlippageButtons({
   }
 
   const customValueText = customValue || t('swapCustom');
-
   useEffect(() => {
     if (
       inputRef &&
@@ -65,7 +65,6 @@ export default function SlippageButtons({
       inputRef.focus();
     }
   }, [inputRef, enteringCustomValue]);
-
   return (
     <div className="slippage-buttons">
       <div className="slippage-buttons__header">
@@ -163,7 +162,6 @@ export default function SlippageButtons({
     </div>
   );
 }
-
 SlippageButtons.propTypes = {
   onSelect: PropTypes.func.isRequired,
   maxAllowedSlippage: PropTypes.number.isRequired,

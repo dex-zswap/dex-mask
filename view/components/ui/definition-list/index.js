@@ -1,3 +1,6 @@
+import React from 'react';
+import { omit } from 'lodash';
+import PropTypes from 'prop-types';
 import Tooltip from '@c/ui/tooltip';
 import Typography from '@c/ui/typography';
 import {
@@ -6,10 +9,6 @@ import {
   SIZES,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-import { omit } from 'lodash';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 const MARGIN_MAP = {
   [SIZES.XS]: 0,
   [SIZES.SM]: 2,
@@ -17,7 +16,6 @@ const MARGIN_MAP = {
   [SIZES.LG]: 6,
   [SIZES.XL]: 8,
 };
-
 export default function DefinitionList({
   dictionary,
   termTypography = {},
@@ -69,7 +67,6 @@ export default function DefinitionList({
     </dl>
   );
 }
-
 DefinitionList.propTypes = {
   gapSize: PropTypes.oneOf(Object.values(SIZES)),
   dictionary: PropTypes.objectOf(

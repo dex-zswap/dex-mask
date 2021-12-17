@@ -1,3 +1,5 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import Steps from '@c/ui/steps';
 import TextField from '@c/ui/text-field';
@@ -5,20 +7,15 @@ import {
   INITIALIZE_SEED_PHRASE_ROUTE,
   INITIALIZE_SELECT_ACTION_ROUTE,
 } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class NewAccount extends PureComponent {
   static contextTypes = {
     metricsEvent: PropTypes.func,
     t: PropTypes.func,
   };
-
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
   };
-
   state = {
     password: '',
     confirmPassword: '',
@@ -48,7 +45,6 @@ export default class NewAccount extends PureComponent {
 
   handlePasswordChange(password) {
     const { t } = this.context;
-
     this.setState((state) => {
       const { confirmPassword } = state;
       let passwordError = '';
@@ -72,7 +68,6 @@ export default class NewAccount extends PureComponent {
 
   handleConfirmPasswordChange(confirmPassword) {
     const { t } = this.context;
-
     this.setState((state) => {
       const { password } = state;
       let confirmPasswordError = '';
@@ -100,24 +95,22 @@ export default class NewAccount extends PureComponent {
 
     try {
       await onSubmit(password);
-
       history.push(INITIALIZE_SEED_PHRASE_ROUTE);
     } catch (error) {
-      this.setState({ passwordError: error.message });
+      this.setState({
+        passwordError: error.message,
+      });
     }
   };
-
   handleCancel = () => {
     const { history } = this.props;
     history.push(INITIALIZE_SELECT_ACTION_ROUTE);
   };
-
   toggleTermsCheck = () => {
     this.setState((prevState) => ({
       termsChecked: !prevState.termsChecked,
     }));
   };
-
   onTermsKeyPress = ({ key }) => {
     if (key === ' ' || key === 'Enter') {
       this.toggleTermsCheck();
@@ -133,7 +126,6 @@ export default class NewAccount extends PureComponent {
       confirmPasswordError,
       termsChecked,
     } = this.state;
-
     return (
       <div className="new-account__container">
         <div className="first-time-flow__header">

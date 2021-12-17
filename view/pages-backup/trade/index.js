@@ -1,7 +1,3 @@
-import PageTitle from '@c/app/page-title';
-import { LIQUIDITY_ROUTE, ZSWAP_ROUTE } from '@view/helpers/constants/routes';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import classnames from 'classnames';
 import React, { useMemo } from 'react';
 import {
   Link,
@@ -11,13 +7,15 @@ import {
   Switch,
   useLocation,
 } from 'react-router-dom';
+import classnames from 'classnames';
+import PageTitle from '@c/app/page-title';
+import { LIQUIDITY_ROUTE, ZSWAP_ROUTE } from '@view/helpers/constants/routes';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 import Liquidity from './liquidity';
 import Zswap from './swap';
-
 export default function Trade() {
   const t = useI18nContext();
   const { pathname } = useLocation();
-
   const activeInfo = useMemo(() => {
     return {
       swap: matchPath(pathname, {
@@ -30,7 +28,6 @@ export default function Trade() {
       }),
     };
   }, [pathname]);
-
   return (
     <div className="trade-component__wrapper">
       <PageTitle

@@ -1,10 +1,10 @@
+import { connect } from 'react-redux';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import {
   getIsMainnet,
   getRpcPrefsForCurrentProvider,
 } from '@selectors/selectors';
 import { clearPendingTokens, setPendingTokens } from '@view/store/actions';
-import { connect } from 'react-redux';
 import AddToken from './component';
 
 const mapStateToProps = (state) => {

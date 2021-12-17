@@ -1,22 +1,19 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
 import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class GasFeeDisplay extends Component {
   static propTypes = {
     gasLoadingError: PropTypes.bool,
     gasTotal: PropTypes.string,
     onReset: PropTypes.func,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
 
   render() {
     const { gasTotal, gasLoadingError, onReset } = this.props;
-
     return (
       <div className="send-v2__gas-fee-display">
         {/* eslint-disable-next-line no-nested-ternary */}

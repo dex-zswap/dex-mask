@@ -5,7 +5,6 @@ import {
   getTokenAddressParam,
 } from '@view/helpers/utils/token-util';
 import { getTokenData } from '@view/helpers/utils/transactions.util';
-
 export function getCustomTxParamsData(
   data,
   { customPermissionAmount, decimals },
@@ -19,10 +18,13 @@ export function getCustomTxParamsData(
       `Invalid data; should be 'approve' method, but instead is '${tokenData.name}'`,
     );
   }
+
   let spender = getTokenAddressParam(tokenData);
+
   if (spender.startsWith('0x')) {
     spender = spender.substring(2);
   }
+
   const [signature, tokenValue] = data.split(spender);
 
   if (!signature || !tokenValue) {
@@ -36,6 +38,7 @@ export function getCustomTxParamsData(
   let customPermissionValue = decimalToHex(
     calcTokenValue(customPermissionAmount, decimals),
   );
+
   if (customPermissionValue.length > 64) {
     throw new Error('Custom value is larger than u256');
   }

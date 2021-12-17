@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { ConfirmPageContainerWarning } from '@c/app/confirm-page-container/content';
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
@@ -10,15 +13,10 @@ import {
 } from '@view/helpers/constants/design-system';
 import { addressSummary } from '@view/helpers/utils';
 import { formatCurrency } from '@view/helpers/utils/confirm-tx.util';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmApproveContent extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     decimals: PropTypes.number,
     tokenAmount: PropTypes.string,
@@ -44,7 +42,6 @@ export default class ConfirmApproveContent extends Component {
     showCustomizeNonceModal: PropTypes.func,
     warning: PropTypes.string,
   };
-
   state = {
     showFullTxDetails: false,
   };
@@ -92,9 +89,8 @@ export default class ConfirmApproveContent extends Component {
         {footer}
       </div>
     );
-  }
+  } // TODO: Add "Learn Why" with link to the feeAssociatedRequest text
 
-  // TODO: Add "Learn Why" with link to the feeAssociatedRequest text
   renderTransactionDetailsContent() {
     const { t } = this.context;
     const {
@@ -129,7 +125,6 @@ export default class ConfirmApproveContent extends Component {
       origin,
       toAddress,
     } = this.props;
-
     return (
       <div className="flex-column">
         <div className="confirm-approve-content__small-text">
@@ -239,7 +234,6 @@ export default class ConfirmApproveContent extends Component {
       warning,
     } = this.props;
     const { showFullTxDetails } = this.state;
-
     return (
       <div
         className={classnames('confirm-approve-content', {
@@ -252,12 +246,12 @@ export default class ConfirmApproveContent extends Component {
           </div>
         )}
         {/* <div className="confirm-approve-content__identicon-wrapper">
-          <UrlIcon
-            className="confirm-approve-content__identicon"
-            fallbackClassName="confirm-approve-content__identicon"
-            name={origin ? new URL(origin).hostname : ''}
-            url={siteImage}
-          />
+         <UrlIcon
+           className="confirm-approve-content__identicon"
+           fallbackClassName="confirm-approve-content__identicon"
+           name={origin ? new URL(origin).hostname : ''}
+           url={siteImage}
+         />
         </div> */}
         <div className="confirm-approve-content__title">
           {t('allowOriginSpendToken', [origin, tokenSymbol])}

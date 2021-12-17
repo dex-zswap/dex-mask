@@ -1,8 +1,8 @@
-import TokenInput from '@c/ui/token-input';
-import { getPreferences } from '@view/selectors';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import TokenInput from '@c/ui/token-input';
+import { getPreferences } from '@view/selectors';
 
 class UserPreferencedTokenInput extends PureComponent {
   static propTypes = {
@@ -16,7 +16,6 @@ class UserPreferencedTokenInput extends PureComponent {
 
   render() {
     const { useNativeCurrencyAsPrimaryCurrency, ...restProps } = this.props;
-
     return (
       <TokenInput
         {...restProps}
@@ -28,7 +27,6 @@ class UserPreferencedTokenInput extends PureComponent {
 
 const mapStateToProps = (state) => {
   const { useNativeCurrencyAsPrimaryCurrency } = getPreferences(state);
-
   return {
     useNativeCurrencyAsPrimaryCurrency,
   };
@@ -37,7 +35,6 @@ const mapStateToProps = (state) => {
 const UserPreferencedTokenInputContainer = connect(mapStateToProps)(
   UserPreferencedTokenInput,
 );
-
 UserPreferencedTokenInputContainer.propTypes = {
   token: PropTypes.shape({
     address: PropTypes.string.isRequired,
@@ -45,5 +42,4 @@ UserPreferencedTokenInputContainer.propTypes = {
     symbol: PropTypes.string,
   }).isRequired,
 };
-
 export default UserPreferencedTokenInputContainer;

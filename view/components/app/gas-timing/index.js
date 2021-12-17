@@ -1,3 +1,9 @@
+import React, { useContext, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux'; // Once we reach this second threshold, we switch to minutes as a unit
+
+import BigNumber from 'bignumber.js';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import InfoTooltip from '@c/ui/info-tooltip';
 import Typography from '@c/ui/typography';
 import {
@@ -11,23 +17,18 @@ import { FONT_WEIGHT, TYPOGRAPHY } from '@view/helpers/constants/design-system';
 import { GAS_FORM_ERRORS } from '@view/helpers/constants/gas';
 import { usePrevious } from '@view/hooks/usePrevious';
 import { getGasFeeTimeEstimate } from '@view/store/actions';
-import BigNumber from 'bignumber.js';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+const SECOND_CUTOFF = 90; // Shows "seconds" as unit of time if under SECOND_CUTOFF, otherwise "minutes"
 
-// Once we reach this second threshold, we switch to minutes as a unit
-const SECOND_CUTOFF = 90;
-
-// Shows "seconds" as unit of time if under SECOND_CUTOFF, otherwise "minutes"
 const toHumanReadableTime = (milliseconds = 1, t) => {
   const seconds = Math.ceil(milliseconds / 1000);
+
   if (seconds <= SECOND_CUTOFF) {
     return t('gasTimingSeconds', [seconds]);
   }
+
   return t('gasTimingMinutes', [Math.ceil(seconds / 60)]);
 };
+
 export default function GasTiming({
   maxFeePerGas = 0,
   maxPriorityFeePerGas = 0,
@@ -36,22 +37,18 @@ export default function GasTiming({
   const gasEstimateType = useSelector(getGasEstimateType);
   const gasFeeEstimates = useSelector(getGasFeeEstimates);
   const isGasEstimatesLoading = useSelector(getIsGasEstimatesLoading);
-
   const [customEstimatedTime, setCustomEstimatedTime] = useState(null);
-  const t = useContext(I18nContext);
-
-  // If the user has chosen a value lower than the low gas fee estimate,
+  const t = useContext(I18nContext); // If the user has chosen a value lower than the low gas fee estimate,
   // We'll need to use the useEffect hook below to make a call to calculate
   // the time to show
+
   const isUnknownLow =
     gasFeeEstimates?.low &&
     Number(maxPriorityFeePerGas) <
       Number(gasFeeEstimates.low.suggestedMaxPriorityFeePerGas);
-
   const previousMaxFeePerGas = usePrevious(maxFeePerGas);
   const previousMaxPriorityFeePerGas = usePrevious(maxPriorityFeePerGas);
   const previousIsUnknownLow = usePrevious(isUnknownLow);
-
   useEffect(() => {
     const priority = maxPriorityFeePerGas;
     const fee = maxFeePerGas;
@@ -83,7 +80,6 @@ export default function GasTiming({
     previousMaxPriorityFeePerGas,
     previousIsUnknownLow,
   ]);
-
   const unknownProcessingTimeText = (
     <>
       {t('editGasTooLow')}{' '}
@@ -104,9 +100,8 @@ export default function GasTiming({
         {unknownProcessingTimeText}
       </Typography>
     );
-  }
+  } // Don't show anything if we don't have enough information
 
-  // Don't show anything if we don't have enough information
   if (
     isGasEstimatesLoading ||
     gasEstimateType !== GAS_ESTIMATE_TYPES.FEE_MARKET
@@ -115,12 +110,10 @@ export default function GasTiming({
   }
 
   const { low = {}, medium = {}, high = {} } = gasFeeEstimates;
-
   let text = '';
   let attitude = 'positive';
-  let fontWeight = FONT_WEIGHT.NORMAL;
+  let fontWeight = FONT_WEIGHT.NORMAL; // Anything medium or faster is positive
 
-  // Anything medium or faster is positive
   if (
     Number(maxPriorityFeePerGas) >= Number(medium.suggestedMaxPriorityFeePerGas)
   ) {
@@ -139,10 +132,9 @@ export default function GasTiming({
       ]);
     }
   } else {
-    attitude = 'negative';
-
-    // If the user has chosen a value less than our low estimate,
+    attitude = 'negative'; // If the user has chosen a value less than our low estimate,
     // calculate a potential wait time
+
     if (isUnknownLow) {
       // If we didn't get any useful information, show the
       // "unknown processing time" message
@@ -177,7 +169,6 @@ export default function GasTiming({
     </Typography>
   );
 }
-
 GasTiming.propTypes = {
   maxPriorityFeePerGas: PropTypes.string,
   maxFeePerGas: PropTypes.string,

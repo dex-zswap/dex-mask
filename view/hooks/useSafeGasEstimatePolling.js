@@ -5,7 +5,6 @@ import {
   addPollingTokenToAppState,
   removePollingTokenFromAppState,
 } from '@view/store/actions';
-
 /**
  * Provides a reusable hook that can be used for safely updating the polling
  * data in the gas fee controller. It makes a request to get estimates and
@@ -14,6 +13,7 @@ import {
  * for `getGasFeeEstimatesAndStartPolling` to resolve, the `active` flag ensures
  * that a call to disconnect happens after promise resolution.
  */
+
 export function useSafeGasEstimatePolling() {
   useEffect(() => {
     let active = true;
@@ -21,6 +21,7 @@ export function useSafeGasEstimatePolling() {
 
     const cleanup = () => {
       active = false;
+
       if (pollToken) {
         disconnectGasFeeEstimatePoller(pollToken);
         removePollingTokenFromAppState(pollToken);
@@ -36,9 +37,7 @@ export function useSafeGasEstimatePolling() {
         removePollingTokenFromAppState(pollToken);
       }
     });
-
     window.addEventListener('beforeunload', cleanup);
-
     return () => {
       cleanup();
       window.removeEventListener('beforeunload', cleanup);

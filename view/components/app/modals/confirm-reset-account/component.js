@@ -1,24 +1,20 @@
-import Modal, { ModalContent } from '@c/app/modal';
-import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-
+import PropTypes from 'prop-types';
+import Modal, { ModalContent } from '@c/app/modal';
 export default class ConfirmResetAccount extends PureComponent {
   static propTypes = {
     hideModal: PropTypes.func.isRequired,
     resetAccount: PropTypes.func.isRequired,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   handleReset = () => {
     this.props.resetAccount().then(() => this.props.hideModal());
   };
 
   render() {
     const { t } = this.context;
-
     return (
       <Modal
         onSubmit={this.handleReset}

@@ -1,3 +1,5 @@
+import React, { useContext } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getPlatform } from '@app/scripts/lib/util';
 import Button from '@c/ui/button';
 import Switch from '@c/ui/switch';
@@ -19,18 +21,16 @@ import {
   showModal,
   turnThreeBoxSyncingOnAndInitialize,
 } from '@view/store/actions';
-import React, { useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 function addUrlProtocolPrefix(urlString) {
   if (!urlString.match(/(^http:\/\/)|(^https:\/\/)/u)) {
     return `https://${urlString}`;
   }
+
   return urlString;
 }
 
 let ipfsGatewayError = '';
-
 export default function AdvancedTab({ lockTimeError }) {
   const t = useContext(I18nContext);
   const dispatch = useDispatch();
@@ -46,7 +46,6 @@ export default function AdvancedTab({ lockTimeError }) {
     dismissSeedBackUpReminder,
   } = metamask;
   const { showFiatInTestnets, autoLockTimeLimit } = useSelector(getPreferences);
-
   let allowed = threeBoxSyncingAllowed;
   let description = t('syncWithThreeBoxDescription');
 
@@ -58,14 +57,15 @@ export default function AdvancedTab({ lockTimeError }) {
   const handleIpfsGatewayChange = (url) => {
     try {
       const urlObj = new URL(addUrlProtocolPrefix(url));
+
       if (!urlObj.host) {
         throw new Error();
-      }
+      } // don't allow the use of this gateway
 
-      // don't allow the use of this gateway
       if (urlObj.host === 'gateway.ipfs.io') {
         throw new Error('Forbidden gateway');
       }
+
       setIpfsGateway(url);
     } catch (error) {
       ipfsGatewayError =
@@ -103,7 +103,11 @@ export default function AdvancedTab({ lockTimeError }) {
           type="warning"
           onClick={(event) => {
             event.preventDefault();
-            dispatch(showModal({ name: 'CONFIRM_RESET_ACCOUNT' }));
+            dispatch(
+              showModal({
+                name: 'CONFIRM_RESET_ACCOUNT',
+              }),
+            );
           }}
         >
           {t('resetAccount')}

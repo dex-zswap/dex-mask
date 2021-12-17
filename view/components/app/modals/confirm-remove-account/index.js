@@ -1,11 +1,11 @@
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
 import {
   getCurrentChainId,
   getRpcPrefsForCurrentProvider,
 } from '@view/selectors';
 import { removeAccount } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import ConfirmRemoveAccount from './component';
 
 const mapStateToProps = (state) => {

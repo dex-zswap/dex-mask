@@ -4,10 +4,7 @@ import { hideModal } from '@view/store/actions';
 const mapStateToProps = (state) => {
   const { appState } = state;
   const { props: modalProps } = appState.modal.modalState;
-
-  return {
-    ...modalProps,
-  };
+  return { ...modalProps };
 };
 
 const mapDispatchToProps = (dispatch) => {

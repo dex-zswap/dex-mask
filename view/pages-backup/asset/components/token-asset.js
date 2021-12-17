@@ -1,18 +1,17 @@
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTokenTrackerLink } from '@metamask/etherscan-link';
+import PropTypes from 'prop-types';
 import TransactionList from '@c/app/transaction/list';
 import { TokenOverview } from '@c/app/wallet-overview';
-import { getTokenTrackerLink } from '@metamask/etherscan-link';
 import {
   getCurrentChainId,
   getRpcPrefsForCurrentProvider,
   getSelectedIdentity,
 } from '@selectors/selectors';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import Switchers from './switchers';
 import TokenInfo from './token-info';
-
 export default function TokenAsset({ token }) {
   const dispatch = useDispatch();
   const chainId = useSelector(getCurrentChainId);
@@ -28,7 +27,6 @@ export default function TokenAsset({ token }) {
     selectedAddress,
     rpcPrefs,
   );
-
   return (
     <>
       <Switchers />
@@ -38,7 +36,6 @@ export default function TokenAsset({ token }) {
     </>
   );
 }
-
 TokenAsset.propTypes = {
   token: PropTypes.shape({
     address: PropTypes.string.isRequired,

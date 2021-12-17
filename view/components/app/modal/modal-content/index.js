@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-
 export default class ModalContent extends PureComponent {
   static propTypes = {
     title: PropTypes.string,
@@ -9,7 +8,6 @@ export default class ModalContent extends PureComponent {
 
   render() {
     const { title, description } = this.props;
-
     return (
       <div className="modal-content">
         {title && <div className="modal-content__title">{title}</div>}

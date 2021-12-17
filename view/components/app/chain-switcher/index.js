@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
-
+import PropTypes from 'prop-types';
 import LongLetter from '@c/ui/long-letter';
 import { Menu, MenuItem } from '@c/ui/menu';
 import Selector from '@c/ui/selector';
@@ -14,7 +13,7 @@ import {
   DEX_MAINNET,
   MAINNET,
   NETWORK_TYPE_RPC,
-  DEFAULT_NETWORK_LIST
+  DEFAULT_NETWORK_LIST,
 } from '@shared/constants/network';
 import { isPrefixedFormattedHexString } from '@shared/modules/network.utils';
 import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes';
@@ -22,29 +21,31 @@ import * as actions from '@view/store/actions';
 
 const SelectorOption = (props) => {
   return (
-    <div className={classnames('chain-option-item flex items-center', props.value.toLowerCase())}>
+    <div
+      className={classnames(
+        'chain-option-item flex items-center',
+        props.value.toLowerCase(),
+      )}
+    >
       <i className="option-item-chain"></i>
       {props.label}
     </div>
   );
-}
+};
 
 class ChainSwitcher extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   defaultChains = DEFAULT_NETWORK_LIST.map(({ chainId, provider, label }) => {
     return {
       key: chainId,
       value: provider,
       render: (item) => <SelectorOption {...item} />,
-      label
+      label,
     };
   });
-
   triggerEl = null;
-
   state = {
     showMenu: false,
   };
@@ -62,17 +63,13 @@ class ChainSwitcher extends Component {
 
   toggleNetworkDrop() {
     this.setState((prev) => {
-      return {
-        ...prev,
-        showMenu: !prev.showMenu,
-      };
+      return { ...prev, showMenu: !prev.showMenu };
     });
   }
 
   getNetworkName() {
     const { provider } = this.props;
     const providerName = provider.type;
-
     let name;
 
     if (providerName === 'mainnet') {
@@ -103,35 +100,34 @@ class ChainSwitcher extends Component {
   renderDefaultChains() {
     const { provider, setProviderType } = this.props;
     const providerName = provider.type;
-
     return (
       <div className="chain-switcher__default-chains base-width">
         {/* <div
-          className={classnames([
-            'chain-switcher__default-chain-item',
-            providerName === DEX_MAINNET && 'chain-switcher__current-chain',
-          ])}
-          onClick={() => this.switchNetWork(DEX_MAINNET)}
+         className={classnames([
+           'chain-switcher__default-chain-item',
+           providerName === DEX_MAINNET && 'chain-switcher__current-chain',
+         ])}
+         onClick={() => this.switchNetWork(DEX_MAINNET)}
         >
-          DEX
+         DEX
         </div>
         <div
-          className={classnames([
-            'chain-switcher__default-chain-item',
-            providerName === MAINNET && 'chain-switcher__current-chain',
-          ])}
-          onClick={() => this.switchNetWork(MAINNET)}
+         className={classnames([
+           'chain-switcher__default-chain-item',
+           providerName === MAINNET && 'chain-switcher__current-chain',
+         ])}
+         onClick={() => this.switchNetWork(MAINNET)}
         >
-          ETH
+         ETH
         </div>
         <div
-          className={classnames([
-            'chain-switcher__default-chain-item',
-            providerName === BSC_MAINNET && 'chain-switcher__current-chain',
-          ])}
-          onClick={() => this.switchNetWork(BSC_MAINNET)}
+         className={classnames([
+           'chain-switcher__default-chain-item',
+           providerName === BSC_MAINNET && 'chain-switcher__current-chain',
+         ])}
+         onClick={() => this.switchNetWork(BSC_MAINNET)}
         >
-          BSC
+         BSC
         </div> */}
       </div>
     );
@@ -139,23 +135,23 @@ class ChainSwitcher extends Component {
 
   renderCustomRpcListMenus(rpcListDetail, provider) {
     const reversedRpcListDetail = rpcListDetail.slice().reverse();
-
     return reversedRpcListDetail.map((entry) => {
       const { rpcUrl, chainId, ticker = 'ETH', nickname = '' } = entry;
       const isCurrentRpcTarget =
         provider.type === NETWORK_TYPE_RPC && rpcUrl === provider.rpcUrl;
-
       return (
         <MenuItem
           className={isCurrentRpcTarget ? 'active' : ''}
           key={`common${rpcUrl}`}
           onClick={() => {
             this.props.hideNetworkDropdown();
+
             if (isPrefixedFormattedHexString(chainId)) {
               this.props.setRpcTarget(rpcUrl, chainId, ticker, nickname);
             } else {
               this.props.displayInvalidCustomNetworkAlert(nickname || rpcUrl);
             }
+
             this.toggleNetworkDrop();
           }}
         >
@@ -183,7 +179,6 @@ class ChainSwitcher extends Component {
     const {
       provider: { type: providerType },
     } = this.props;
-
     const iconBg =
       'dexMainnet' === network
         ? '/images/dex-token.png'
@@ -192,7 +187,6 @@ class ChainSwitcher extends Component {
         : 'bscMainnet' === network
         ? '/images/bnb.png'
         : '/images/dex/settings/chain-icon.png';
-
     return (
       <MenuItem
         className={network === providerType ? 'active' : ''}
@@ -233,7 +227,6 @@ class ChainSwitcher extends Component {
       hideNetworkDropdown,
     } = this.props;
     const rpcListDetail = this.props.frequentRpcListDetail;
-
     return (
       <Menu
         className="network-droppo__menu"
@@ -267,21 +260,27 @@ class ChainSwitcher extends Component {
     const { showNetworkDropdown, provider, frequentRpcListDetail } = this.props;
     const { showMenu } = this.state;
     const networkOptions = this.defaultChains;
-
     return (
       <>
         <div className="chain-switcher">
           {/* <div className="chain-switcher__wrapper">
-            
-            <div
-              className="chain-switcher__modal-trigger"
-              ref={(el) => (this.triggerEl = el)}
-              onClick={() => this.toggleNetworkDrop()}
-            >
-              ...
-            </div>
+           
+           <div
+             className="chain-switcher__modal-trigger"
+             ref={(el) => (this.triggerEl = el)}
+             onClick={() => this.toggleNetworkDrop()}
+           >
+             ...
+           </div>
           </div> */}
-          <Selector className="chain-switcher-selector" selectedValue={provider.type} options={networkOptions} labelRender={SelectorOption} itemRender={SelectorOption} small />
+          <Selector
+            className="chain-switcher-selector"
+            selectedValue={provider.type}
+            options={networkOptions}
+            labelRender={SelectorOption}
+            itemRender={SelectorOption}
+            small
+          />
         </div>
         {showMenu && this.renderNetWorkMenu()}
       </>

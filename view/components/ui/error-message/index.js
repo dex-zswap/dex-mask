@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 const ErrorMessage = (props, context) => {
   const { errorMessage, errorKey } = props;
   const error = errorKey ? context.t(errorKey) : errorMessage;
-
   return (
     <div className="error-message">
       <img
@@ -21,9 +20,7 @@ ErrorMessage.propTypes = {
   errorMessage: PropTypes.string,
   errorKey: PropTypes.string,
 };
-
 ErrorMessage.contextTypes = {
   t: PropTypes.func,
 };
-
 export default ErrorMessage;

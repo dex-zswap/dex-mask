@@ -1,3 +1,6 @@
+import React, { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import AccountSwitcher from '@c/ui/cross-chain/account-switcher';
 import ChainSwitcher from '@c/ui/cross-chain/chain-switcher';
 import CurrentToken from '@c/ui/cross-chain/current-token-cross';
@@ -14,9 +17,6 @@ import {
   showAccountDetail,
   updateCrossChainState,
 } from '@view/store/actions';
-import { ethers } from 'ethers';
-import React, { useCallback, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import UserInputValue from './user-input-value';
 
 const CrossChainFrom = () => {
@@ -25,14 +25,12 @@ const CrossChainFrom = () => {
   const crossInfo = useSelector(getCrossChainState);
   const nativeCurrency = useSelector(getNativeCurrency);
   const isNativeAsset = crossInfo.coinAddress === ethers.constants.AddressZero;
-
   const tokenBalance = useTokenBalance({
     tokenAddress: isNativeAsset ? null : crossInfo.coinAddress,
     wallet: crossInfo.from,
     chainId: crossInfo.fromChain,
     isNativeAsset,
   });
-
   const { loading, error, res } = useFetch(
     () =>
       getTokenGroup({
@@ -43,18 +41,13 @@ const CrossChainFrom = () => {
       }),
     [crossInfo.coinAddress, crossInfo.fromChain],
   );
-
   const groups = useMemo(() => {
     if (loading || error || res?.c !== 200) {
       return [];
     }
 
-    return res?.d.map((chain) => ({
-      ...chain,
-      chainId: chain.meta_chain_id,
-    }));
+    return res?.d.map((chain) => ({ ...chain, chainId: chain.meta_chain_id }));
   }, [loading, error, res]);
-
   const chainChange = useCallback(
     (chainType, chain) => {
       const targetChain = ethers.BigNumber.from(chain).toString();
@@ -65,7 +58,6 @@ const CrossChainFrom = () => {
       }
 
       dispatch(setProviderType(chainType));
-
       dispatch(
         updateCrossChainState({
           fromChain: targetInfo.chainId,
@@ -76,7 +68,6 @@ const CrossChainFrom = () => {
     },
     [dispatch, updateCrossChainState, setProviderType, groups, nativeCurrency],
   );
-
   const accountChange = useCallback(
     (account) => {
       dispatch(showAccountDetail(account.address));
@@ -89,13 +80,11 @@ const CrossChainFrom = () => {
     },
     [dispatch, showAccountDetail, updateCrossChainState],
   );
-
   const outSideChains = useMemo(() => {
     return groups.filter(
       ({ chainId }) => toBnString(chainId) !== toBnString(crossInfo.destChain),
     );
   }, [groups, crossInfo]);
-
   const tokenChange = useCallback(
     (token) => {
       checkTokenBridge({
@@ -110,6 +99,7 @@ const CrossChainFrom = () => {
                 toBnString(target_meta_chain_id) ===
                 toBnString(crossInfo.destChain),
             );
+
             if (target) {
               dispatch(
                 updateCrossChainState({
@@ -142,7 +132,6 @@ const CrossChainFrom = () => {
     },
     [crossInfo, dispatch, updateCrossChainState],
   );
-
   useDeepEffect(() => {
     if (isNativeAsset) {
       dispatch(
@@ -152,7 +141,6 @@ const CrossChainFrom = () => {
       );
     }
   }, [nativeCurrency, dispatch, updateCrossChainState]);
-
   return (
     <div className="cross-chain-from__wrapper">
       <div className="top">

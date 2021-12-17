@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { getTokens } from '@reducer/dexmask/dexmask';
 import { getKnownMethodData } from '@selectors/selectors';
 import {
@@ -22,7 +23,6 @@ import {
   getTransactionTypeTitle,
 } from '@view/helpers/utils/transactions.util';
 import { captureSingleException } from '@view/store/actions';
-import { useDispatch, useSelector } from 'react-redux';
 import { useCurrencyDisplay } from './useCurrencyDisplay';
 import { useCurrentAsset } from './useCurrentAsset';
 import { useI18nContext } from './useI18nContext';
@@ -31,7 +31,6 @@ import { useTokenData } from './useTokenData';
 import { useTokenDisplayValue } from './useTokenDisplayValue';
 import { useTokenFiatAmount } from './useTokenFiatAmount';
 import { useUserPreferencedCurrency } from './useUserPreferencedCurrency';
-
 /**
  * @typedef {Object} TransactionDisplayData
  * @property {string} title                  - primary description of the transaction
@@ -55,6 +54,7 @@ import { useUserPreferencedCurrency } from './useUserPreferencedCurrency';
  * @param {Object} transactionGroup - group of transactions
  * @return {TransactionDisplayData}
  */
+
 export function useTransactionDisplayData(transactionGroup) {
   // To determine which primary currency to display for swaps transactions we need to be aware
   // of which asset, if any, we are viewing at present
@@ -62,39 +62,33 @@ export function useTransactionDisplayData(transactionGroup) {
   const currentAsset = useCurrentAsset();
   const knownTokens = useSelector(getTokens);
   const t = useI18nContext();
-  const { initialTransaction, primaryTransaction } = transactionGroup;
-  // initialTransaction contains the data we need to derive the primary purpose of this transaction group
+  const { initialTransaction, primaryTransaction } = transactionGroup; // initialTransaction contains the data we need to derive the primary purpose of this transaction group
+
   const { type } = initialTransaction;
+  const { from: senderAddress, to } = initialTransaction.txParams || {}; // for smart contract interactions, methodData can be used to derive the name of the action being taken
 
-  const { from: senderAddress, to } = initialTransaction.txParams || {};
-
-  // for smart contract interactions, methodData can be used to derive the name of the action being taken
   const methodData =
     useSelector((state) =>
       getKnownMethodData(state, initialTransaction?.txParams?.data),
     ) || {};
-
   const displayedStatusKey = getStatusKey(primaryTransaction);
   const isPending = displayedStatusKey in PENDING_STATUS_HASH;
   const isSubmitted = displayedStatusKey === TRANSACTION_STATUSES.SUBMITTED;
-
   const primaryValue = primaryTransaction.txParams?.value;
   let prefix = '-';
   const date = formatDateWithYearContext(initialTransaction.time);
   let subtitle;
   let subtitleContainsOrigin = false;
-  let recipientAddress = to;
-
-  // This value is used to determine whether we should look inside txParams.data
+  let recipientAddress = to; // This value is used to determine whether we should look inside txParams.data
   // to pull out and render token related information
-  const isTokenCategory = TOKEN_CATEGORY_HASH[type];
 
-  // these values are always instantiated because they are either
+  const isTokenCategory = TOKEN_CATEGORY_HASH[type]; // these values are always instantiated because they are either
   // used by or returned from hooks. Hooks must be called at the top level,
   // so as an additional safeguard against inappropriately associating token
   // transfers, we pass an additional argument to these hooks that will be
   // false for non-token transactions. This additional argument forces the
   // hook to return null
+
   const token =
     isTokenCategory &&
     knownTokens.find(({ address }) => address === recipientAddress);
@@ -112,33 +106,28 @@ export function useTransactionDisplayData(transactionGroup) {
     tokenDisplayValue,
     token?.symbol,
   );
-
   const origin = stripHttpSchemes(
     initialTransaction.origin || initialTransaction.msgParams?.origin || '',
-  );
+  ); // used to append to the primary display value. initialized to either token.symbol or undefined
+  // but can later be modified if dealing with a swap
 
-  // used to append to the primary display value. initialized to either token.symbol or undefined
+  let primarySuffix = isTokenCategory ? token?.symbol : undefined; // used to display the primary value of tx. initialized to either tokenDisplayValue or undefined
   // but can later be modified if dealing with a swap
-  let primarySuffix = isTokenCategory ? token?.symbol : undefined;
-  // used to display the primary value of tx. initialized to either tokenDisplayValue or undefined
+
+  let primaryDisplayValue = isTokenCategory ? tokenDisplayValue : undefined; // used to display fiat amount of tx. initialized to either tokenFiatAmount or undefined
   // but can later be modified if dealing with a swap
-  let primaryDisplayValue = isTokenCategory ? tokenDisplayValue : undefined;
-  // used to display fiat amount of tx. initialized to either tokenFiatAmount or undefined
-  // but can later be modified if dealing with a swap
-  let secondaryDisplayValue = isTokenCategory ? tokenFiatAmount : undefined;
-  // The transaction group category that will be used for rendering the icon in the activity list
-  let category;
-  // The primary title of the Tx that will be displayed in the activity list
+
+  let secondaryDisplayValue = isTokenCategory ? tokenFiatAmount : undefined; // The transaction group category that will be used for rendering the icon in the activity list
+
+  let category; // The primary title of the Tx that will be displayed in the activity list
+
   let title;
-
   const {
     swapTokenValue,
     isNegative,
     swapTokenFiatAmount,
     isViewingReceivedTokenFromSwap,
-  } = useSwappedTokenValue(transactionGroup, currentAsset);
-
-  // There are seven types of transaction entries that are currently differentiated in the design
+  } = useSwappedTokenValue(transactionGroup, currentAsset); // There are seven types of transaction entries that are currently differentiated in the design
   // 1. Signature request
   // 2. Send (sendEth sendTokens)
   // 3. Deposit
@@ -175,6 +164,7 @@ export function useTransactionDisplayData(transactionGroup) {
       : initialTransaction.sourceTokenSymbol;
     primaryDisplayValue = swapTokenValue;
     secondaryDisplayValue = swapTokenFiatAmount;
+
     if (isNegative) {
       prefix = '';
     } else if (isViewingReceivedTokenFromSwap) {
@@ -232,21 +222,18 @@ export function useTransactionDisplayData(transactionGroup) {
 
   const primaryCurrencyPreferences = useUserPreferencedCurrency(PRIMARY);
   const secondaryCurrencyPreferences = useUserPreferencedCurrency(SECONDARY);
-
   const [primaryCurrency] = useCurrencyDisplay(primaryValue, {
     prefix,
     displayValue: primaryDisplayValue,
     suffix: primarySuffix,
     ...primaryCurrencyPreferences,
   });
-
   const [secondaryCurrency] = useCurrencyDisplay(primaryValue, {
     prefix,
     displayValue: secondaryDisplayValue,
     hideLabel: isTokenCategory || Boolean(swapTokenValue),
     ...secondaryCurrencyPreferences,
   });
-
   return {
     title,
     category,

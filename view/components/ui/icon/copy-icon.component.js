@@ -22,11 +22,9 @@ const Copy = ({ className, size, color }) => (
 Copy.defaultProps = {
   className: undefined,
 };
-
 Copy.propTypes = {
   className: PropTypes.string,
   size: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
 };
-
 export default Copy;

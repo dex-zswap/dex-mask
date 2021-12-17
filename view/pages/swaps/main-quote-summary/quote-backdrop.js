@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 export default function QuotesBackdrop({ withTopTab }) {
   return (
     <svg
@@ -82,7 +81,6 @@ export default function QuotesBackdrop({ withTopTab }) {
     </svg>
   );
 }
-
 QuotesBackdrop.propTypes = {
   withTopTab: PropTypes.bool,
 };

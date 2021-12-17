@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
 export default class PermissionsConnectFooter extends Component {
   static contextTypes = {
     t: PropTypes.func,

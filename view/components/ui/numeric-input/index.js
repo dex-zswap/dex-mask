@@ -1,9 +1,8 @@
-import Typography from '@c/ui/typography';
-import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system';
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
-
+import Typography from '@c/ui/typography';
+import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system';
 export default function NumericInput({
   detailText = '',
   value = 0,
@@ -15,7 +14,9 @@ export default function NumericInput({
 }) {
   return (
     <div
-      className={classNames('numeric-input', { 'numeric-input--error': error })}
+      className={classNames('numeric-input', {
+        'numeric-input--error': error,
+      })}
     >
       <input
         type="number"
@@ -40,7 +41,6 @@ export default function NumericInput({
     </div>
   );
 }
-
 NumericInput.propTypes = {
   value: PropTypes.oneOf([PropTypes.number, PropTypes.string]),
   detailText: PropTypes.string,

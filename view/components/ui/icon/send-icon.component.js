@@ -32,11 +32,9 @@ const Send = ({ className, size, color }) => (
 Send.defaultProps = {
   className: undefined,
 };
-
 Send.propTypes = {
   className: PropTypes.string,
   size: PropTypes.number.isRequired,
   color: PropTypes.string.isRequired,
 };
-
 export default Send;

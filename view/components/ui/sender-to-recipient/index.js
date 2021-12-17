@@ -1,15 +1,14 @@
+import React, { useState } from 'react';
+import classnames from 'classnames';
+import copyToClipboard from 'copy-to-clipboard';
+import PropTypes from 'prop-types';
 import AccountMismatchWarning from '@c/ui/account-mismatch-warning';
 import Identicon from '@c/ui/identicon';
 import Tooltip from '@c/ui/tooltip';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import { shortenAddress } from '@view/helpers/utils';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import classnames from 'classnames';
-import copyToClipboard from 'copy-to-clipboard';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
 import { CARDS_VARIANT, DEFAULT_VARIANT, FLAT_VARIANT } from './constants';
-
 const variantHash = {
   [DEFAULT_VARIANT]: 'sender-to-recipient--default',
   [CARDS_VARIANT]: 'sender-to-recipient--cards',
@@ -27,6 +26,7 @@ function SenderAddress({
   const t = useI18nContext();
   const [addressCopied, setAddressCopied] = useState(false);
   let tooltipHtml = <p>{t('copiedExclamation')}</p>;
+
   if (!addressCopied) {
     tooltipHtml = addressOnly ? (
       <p>{t('copyAddress')}</p>
@@ -38,6 +38,7 @@ function SenderAddress({
       </p>
     );
   }
+
   return (
     <div
       className={classnames(
@@ -46,6 +47,7 @@ function SenderAddress({
       onClick={() => {
         setAddressCopied(true);
         copyToClipboard(checksummedSenderAddress);
+
         if (onSenderClick) {
           onSenderClick();
         }
@@ -103,8 +105,8 @@ function RecipientWithAddress({
 }) {
   const t = useI18nContext();
   const [addressCopied, setAddressCopied] = useState(false);
-
   let tooltipHtml = <p>{t('copiedExclamation')}</p>;
+
   if (!addressCopied) {
     if (addressOnly && !recipientNickname && !recipientEns) {
       tooltipHtml = <p>{t('copyAddress')}</p>;
@@ -118,12 +120,14 @@ function RecipientWithAddress({
       );
     }
   }
+
   return (
     <div
       className="sender-to-recipient__party sender-to-recipient__party--recipient sender-to-recipient__party--recipient-with-address"
       onClick={() => {
         setAddressCopied(true);
         copyToClipboard(checksummedRecipientAddress);
+
         if (onRecipientClick) {
           onRecipientClick();
         }
@@ -187,7 +191,6 @@ function Arrow({ variant }) {
 Arrow.propTypes = {
   variant: PropTypes.oneOf([DEFAULT_VARIANT, CARDS_VARIANT, FLAT_VARIANT]),
 };
-
 export default function SenderToRecipient({
   senderAddress,
   addressOnly,
@@ -205,7 +208,6 @@ export default function SenderToRecipient({
   const t = useI18nContext();
   const checksummedSenderAddress = toChecksumHexAddress(senderAddress);
   const checksummedRecipientAddress = toChecksumHexAddress(recipientAddress);
-
   return (
     <div className={classnames('sender-to-recipient', variantHash[variant])}>
       <SenderAddress
@@ -236,12 +238,10 @@ export default function SenderToRecipient({
     </div>
   );
 }
-
 SenderToRecipient.defaultProps = {
   variant: DEFAULT_VARIANT,
   warnUserOnAccountMismatch: true,
 };
-
 SenderToRecipient.propTypes = {
   senderName: PropTypes.string,
   senderAddress: PropTypes.string,

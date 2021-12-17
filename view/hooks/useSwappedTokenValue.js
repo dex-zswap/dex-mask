@@ -6,7 +6,6 @@ import {
 } from '@shared/modules/swaps.utils';
 import { getCurrentChainId } from '@view/selectors';
 import { useTokenFiatAmount } from './useTokenFiatAmount';
-
 /**
  * @typedef {Object} SwappedTokenValue
  * @property {string} swapTokenValue - a primary currency string formatted for display
@@ -27,13 +26,13 @@ import { useTokenFiatAmount } from './useTokenFiatAmount';
  * @param {import('./useTokenDisplayValue').Token} currentAsset - The current asset the user is looking at
  * @returns {SwappedTokenValue}
  */
+
 export function useSwappedTokenValue(transactionGroup, currentAsset) {
   const { symbol, decimals, address } = currentAsset;
   const { primaryTransaction, initialTransaction } = transactionGroup;
   const { type } = initialTransaction;
   const { from: senderAddress } = initialTransaction.txParams || {};
   const chainId = useSelector(getCurrentChainId);
-
   const isViewingReceivedTokenFromSwap =
     currentAsset?.symbol === primaryTransaction.destinationTokenSymbol ||
     (isSwapsDefaultTokenAddress(currentAsset.address, chainId) &&
@@ -41,9 +40,7 @@ export function useSwappedTokenValue(transactionGroup, currentAsset) {
         primaryTransaction.destinationTokenSymbol,
         chainId,
       ));
-
   const swapTokenValue = '0';
-
   const isNegative =
     typeof swapTokenValue === 'string'
       ? Math.sign(swapTokenValue) === -1
@@ -54,6 +51,7 @@ export function useSwappedTokenValue(transactionGroup, currentAsset) {
     swapTokenValue || '',
     symbol,
   );
+
   const swapTokenFiatAmount =
     swapTokenValue && isViewingReceivedTokenFromSwap && _swapTokenFiatAmount;
   return {

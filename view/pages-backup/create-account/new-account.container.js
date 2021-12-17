@@ -1,6 +1,6 @@
+import { connect } from 'react-redux';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import * as actions from '@view/store/actions';
-import { connect } from 'react-redux';
 import NewAccountCreateForm from './new-account.component';
 
 const mapStateToProps = (state) => {
@@ -9,7 +9,6 @@ const mapStateToProps = (state) => {
   } = state;
   const numberOfExistingAccounts = Object.keys(identities).length;
   const newAccountNumber = numberOfExistingAccounts + 1;
-
   return {
     newAccountNumber,
     mostRecentOverviewPage: getMostRecentOverviewPage(state),

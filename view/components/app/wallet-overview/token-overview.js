@@ -1,3 +1,7 @@
+import React, { useContext, useMemo } from 'react';
+import { generatePath, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import CurrencyDisplay from '@c/ui/currency-display';
 import IconButton from '@c/ui/icon-button';
 import Identicon from '@c/ui/identicon';
@@ -25,34 +29,14 @@ import { useFetch } from '@view/hooks/useFetch';
 import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount';
 import { useTokenTracker } from '@view/hooks/useTokenTracker';
 import { updateCrossChainState } from '@view/store/actions';
-import { ethers } from 'ethers';
-import PropTypes from 'prop-types';
-import React, { useContext, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { generatePath, useHistory } from 'react-router-dom';
 import WalletOverview from './wallet-overview';
 
 const TokenOverview = ({ className, token }) => {
   const dispatch = useDispatch();
   const t = useContext(I18nContext);
   const history = useHistory();
-  const assetImages = useSelector(getAssetImages);
-
   const selectedAccount = useSelector(getSelectedAccount);
-
-  const keyring = useSelector(getCurrentKeyring);
-  const usingHardwareWallet = keyring.type.search('Hardware') !== -1;
-  const { tokensWithBalances } = useTokenTracker([token]);
-  const balanceToRender = tokensWithBalances[0]?.string;
-  const balance = tokensWithBalances[0]?.balance;
-  const formattedFiatBalance = useTokenFiatAmount(
-    token.address,
-    balanceToRender,
-    token.symbol,
-  );
-  const isSwapsChain = useSelector(getIsSwapsChain);
   const chainId = useSelector(getCurrentChainId);
-
   const { loading, error, res } = useFetch(
     () =>
       checkTokenBridge({
@@ -61,7 +45,6 @@ const TokenOverview = ({ className, token }) => {
       }),
     [chainId, token.address],
   );
-
   const supportCrossChain = useMemo(() => {
     if (loading || error || res?.c !== 200) {
       return false;
@@ -69,126 +52,76 @@ const TokenOverview = ({ className, token }) => {
 
     return res?.d?.length;
   }, [loading, error, res]);
-
   const defaultTargetChain = useMemo(
     () => (supportCrossChain ? res.d[0] : null),
     [supportCrossChain, res],
   );
+  const overViewButtons = useMemo(() => {
+    const buttons = [
+      {
+        key: 'send',
+        iconClass: 'send-icon',
+        label: t('send'),
+        onClick: () => history.push(SEND_ROUTE),
+      },
+      {
+        key: 'recive',
+        iconClass: 'recive-icon',
+        label: t('buy'),
+        onClick: () =>
+          history.push(
+            generatePath(RECIVE_TOKEN_ROUTE, {
+              address: token.address,
+            }),
+          ),
+      },
+      {
+        key: 'swap',
+        iconClass: 'swap-icon',
+        label: t('swap'),
+        onClick: () => history.push(TRADE_ROUTE),
+      },
+    ];
 
-  return (
-    <WalletOverview
-      balance={
-        <div className="token-overview__balance">
-          <CurrencyDisplay
-            className="token-overview__primary-balance"
-            displayValue={balanceToRender}
-            suffix={token.symbol}
-          />
-          {formattedFiatBalance ? (
-            <CurrencyDisplay
-              className="token-overview__secondary-balance"
-              displayValue={formattedFiatBalance}
-              hideLabel
-            />
-          ) : null}
-        </div>
-      }
-      buttons={
-        <>
-          <IconButton
-            className="token-overview__button"
-            onClick={() => {
-              dispatch(
-                updateSendAsset({
-                  type: ASSET_TYPES.TOKEN,
-                  details: token,
-                }),
-              ).then(() => {
-                history.push(SEND_ROUTE);
-              });
-            }}
-            Icon={BuyIcon}
-            iconSize={40}
-            label={t('send')}
-            data-testid="eth-overview-send"
-            disabled={token.isERC721}
-          />
-          <IconButton
-            className="eth-overview__button"
-            Icon={SendIcon}
-            iconSize={40}
-            label={t('buy')}
-            onClick={() => {
-              history.push(
-                generatePath(RECIVE_TOKEN_ROUTE, {
-                  address: token.address,
-                }),
-              );
-            }}
-          />
-          <IconButton
-            className="token-overview__button"
-            Icon={SwapIcon}
-            iconSize={40}
-            onClick={() => {
-              history.push(TRADE_ROUTE);
-            }}
-            label={t('swap')}
-          />
-          {supportCrossChain ? (
-            <IconButton
-              className="eth-overview__button"
-              Icon={SwapIcon}
-              iconSize={40}
-              onClick={() => {
-                const destChain = ethers.BigNumber.from(
-                  defaultTargetChain.target_meta_chain_id,
-                ).toHexString();
-                dispatch(
-                  updateCrossChainState({
-                    coinAddress: token.address,
-                    coinSymbol: token.symbol,
-                    targetCoinAddress: defaultTargetChain.target_token_address,
-                    targetCoinSymbol: defaultTargetChain.target_token,
-                    from: selectedAccount.address,
-                    fromChain: chainId,
-                    target: defaultTargetChain,
-                    destChain,
-                    supportChains: [],
-                    chainTokens: [],
-                  }),
-                );
-                history.push(CROSSCHAIN_ROUTE);
-              }}
-              label={t('crossChain')}
-            />
-          ) : null}
-        </>
-      }
-      className={className}
-      icon={
-        <Identicon
-          diameter={32}
-          address={token.address}
-          image={assetImages[token.address]}
-        />
-      }
-    />
-  );
-};
+    if (supportCrossChain) {
+      buttons.push({
+        key: 'cross-chain',
+        iconClass: 'cross-chain-icon',
+        label: t('crossChain'),
+        onClick: () => {
+          const destChain = toHexString(
+            defaultTargetChain.target_meta_chain_id,
+          );
+          dispatch(
+            updateCrossChainState({
+              coinAddress: token.address,
+              targetCoinAddress: defaultTargetChain.target_token_address,
+              coinSymbol: token.symbol,
+              targetCoinSymbol: defaultTargetChain.target_token,
+              from: selectedAccount.address,
+              fromChain: chainId,
+              target: defaultTargetChain,
+              destChain,
+              supportChains: [],
+              chainTokens: [],
+            }),
+          );
+          history.push(CROSSCHAIN_ROUTE);
+        },
+      });
+    }
 
-TokenOverview.propTypes = {
-  className: PropTypes.string,
-  token: PropTypes.shape({
-    address: PropTypes.string.isRequired,
-    decimals: PropTypes.number,
-    symbol: PropTypes.string,
-    isERC721: PropTypes.bool,
-  }).isRequired,
-};
-
-TokenOverview.defaultProps = {
-  className: undefined,
+    return buttons;
+  }, [
+    dispatch,
+    updateCrossChainState,
+    supportCrossChain,
+    defaultTargetChain,
+    t,
+    token,
+    history,
+  ]);
+  return <WalletOverview buttons={overViewButtons} />;
 };
 
 export default TokenOverview;

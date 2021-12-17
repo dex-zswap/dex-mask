@@ -1,5 +1,4 @@
 import React from 'react';
-
 export default function BuyIcon({ width, height }) {
   return (
     <>
@@ -12,4 +11,3 @@ export default function BuyIcon({ width, height }) {
     </>
   );
 }
-

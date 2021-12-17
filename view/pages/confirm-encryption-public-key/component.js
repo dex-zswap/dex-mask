@@ -1,17 +1,15 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import AccountListItem from '@c/app/account-list-item';
 import Button from '@c/ui/button';
 import Identicon from '@c/ui/identicon';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app';
 import { conversionUtil } from '@shared/modules/conversion.utils';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmEncryptionPublicKey extends Component {
   static contextTypes = {
     t: PropTypes.func.isRequired,
   };
-
   static propTypes = {
     fromAccount: PropTypes.shape({
       address: PropTypes.string.isRequired,
@@ -29,7 +27,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
     mostRecentOverviewPage: PropTypes.string.isRequired,
     nativeCurrency: PropTypes.string.isRequired,
   };
-
   componentDidMount = () => {
     if (
       getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_NOTIFICATION
@@ -37,11 +34,9 @@ export default class ConfirmEncryptionPublicKey extends Component {
       window.addEventListener('beforeunload', this._beforeUnload);
     }
   };
-
   componentWillUnmount = () => {
     this._removeBeforeUnload();
   };
-
   _beforeUnload = async (event) => {
     const {
       clearConfirmTransaction,
@@ -51,7 +46,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
     await cancelEncryptionPublicKey(txData, event);
     clearConfirmTransaction();
   };
-
   _removeBeforeUnload = () => {
     if (
       getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_NOTIFICATION
@@ -59,7 +53,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
       window.removeEventListener('beforeunload', this._beforeUnload);
     }
   };
-
   renderHeader = () => {
     return (
       <div className="request-encryption-public-key__header">
@@ -75,11 +68,9 @@ export default class ConfirmEncryptionPublicKey extends Component {
       </div>
     );
   };
-
   renderAccount = () => {
     const { fromAccount } = this.props;
     const { t } = this.context;
-
     return (
       <div className="request-encryption-public-key__account">
         <div className="request-encryption-public-key__account-text">
@@ -92,7 +83,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
       </div>
     );
   };
-
   renderBalance = () => {
     const {
       conversionRate,
@@ -100,7 +90,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
       fromAccount: { balance },
     } = this.props;
     const { t } = this.context;
-
     const nativeCurrencyBalance = conversionUtil(balance, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
@@ -108,7 +97,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
       numberOfDecimals: 6,
       conversionRate,
     });
-
     return (
       <div className="request-encryption-public-key__balance">
         <div className="request-encryption-public-key__balance-text">
@@ -120,17 +108,14 @@ export default class ConfirmEncryptionPublicKey extends Component {
       </div>
     );
   };
-
   renderRequestIcon = () => {
     const { requesterAddress } = this.props;
-
     return (
       <div className="request-encryption-public-key__request-icon">
         <Identicon diameter={40} address={requesterAddress} />
       </div>
     );
   };
-
   renderAccountInfo = () => {
     return (
       <div className="request-encryption-public-key__account-info">
@@ -140,15 +125,12 @@ export default class ConfirmEncryptionPublicKey extends Component {
       </div>
     );
   };
-
   renderBody = () => {
     const { domainMetadata, txData } = this.props;
     const { t } = this.context;
-
     const originMetadata = domainMetadata[txData.origin];
     const notice = t('encryptionPublicKeyNotice', [txData.origin]);
     const name = originMetadata?.hostname || txData.origin;
-
     return (
       <div className="request-encryption-public-key__body">
         {this.renderAccountInfo()}
@@ -173,7 +155,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
       </div>
     );
   };
-
   renderFooter = () => {
     const {
       cancelEncryptionPublicKey,
@@ -184,7 +165,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
       txData,
     } = this.props;
     const { t } = this.context;
-
     return (
       <div className="request-encryption-public-key__footer">
         <Button
@@ -193,6 +173,7 @@ export default class ConfirmEncryptionPublicKey extends Component {
           className="request-encryption-public-key__footer__cancel-button"
           onClick={async (event) => {
             this._removeBeforeUnload();
+
             await cancelEncryptionPublicKey(txData, event);
             clearConfirmTransaction();
             history.push(mostRecentOverviewPage);
@@ -206,6 +187,7 @@ export default class ConfirmEncryptionPublicKey extends Component {
           className="request-encryption-public-key__footer__sign-button"
           onClick={async (event) => {
             this._removeBeforeUnload();
+
             await encryptionPublicKey(txData, event);
             clearConfirmTransaction();
             history.push(mostRecentOverviewPage);
@@ -216,7 +198,6 @@ export default class ConfirmEncryptionPublicKey extends Component {
       </div>
     );
   };
-
   render = () => {
     return (
       <div className="request-encryption-public-key__container">

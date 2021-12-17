@@ -1,8 +1,8 @@
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import InfoTooltip from '@c/ui/info-tooltip';
 import ExchangeRateDisplay from '@pages/swaps/exchange-rate-display';
 import { I18nContext } from '@view/contexts/i18n';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
 
 const QuoteDetails = ({
   slippage,
@@ -106,5 +106,4 @@ QuoteDetails.propTypes = {
   networkFees: PropTypes.string.isRequired,
   metaMaskFee: PropTypes.number.isRequired,
 };
-
 export default QuoteDetails;

@@ -1,3 +1,5 @@
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import ActionableMessage from '@c/ui/actionable-message/actionable-message';
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
@@ -11,9 +13,6 @@ import {
   FONT_WEIGHT,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-
 export default function ImportToken({
   onImportTokenCloseClick,
   onImportTokenClick,
@@ -41,7 +40,6 @@ export default function ImportToken({
       </Button>
     </>
   );
-
   return (
     <Popover
       title={t('importTokenQuestion')}
@@ -64,7 +62,10 @@ export default function ImportToken({
         <Typography
           ariant={TYPOGRAPHY.H4}
           fontWeight={FONT_WEIGHT.BOLD}
-          boxProps={{ marginTop: 2, marginBottom: 3 }}
+          boxProps={{
+            marginTop: 2,
+            marginBottom: 3,
+          }}
         >
           {tokenForImport.name}
         </Typography>
@@ -72,7 +73,9 @@ export default function ImportToken({
         <Typography
           className="import-token__contract-address"
           variant={TYPOGRAPHY.H7}
-          boxProps={{ marginBottom: 6 }}
+          boxProps={{
+            marginBottom: 6,
+          }}
         >
           {tokenForImport.address}
         </Typography>
@@ -80,7 +83,6 @@ export default function ImportToken({
     </Popover>
   );
 }
-
 ImportToken.propTypes = {
   onImportTokenCloseClick: PropTypes.func,
   onImportTokenClick: PropTypes.func,

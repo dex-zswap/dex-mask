@@ -1,6 +1,5 @@
 .cross-chain-dest {
   &__wrapper {
-
     margin: 10px auto;
     position: relative;
 
@@ -23,7 +22,13 @@
       }
 
       .cross-chain__chain-switcher {
-        background: linear-gradient(58deg, #7813c4 0%, #691bb5 17%, #3b11b8 79%, #2206a0 100%);
+        background: linear-gradient(
+          58deg,
+          #7813c4 0%,
+          #691bb5 17%,
+          #3b11b8 79%,
+          #2206a0 100%
+        );
       }
     }
 
@@ -33,9 +38,14 @@
   }
 
   &__component {
-
     margin: 10px auto;
-    background: linear-gradient(58deg, #7813C4 0%, #691BB5 17%, #3B11B8 79%, #2206A0 100%);
+    background: linear-gradient(
+      58deg,
+      #7813c4 0%,
+      #691bb5 17%,
+      #3b11b8 79%,
+      #2206a0 100%
+    );
     border-radius: 14px;
     padding: 12px;
 
@@ -49,7 +59,7 @@
       margin: 15px 0 0;
       font-size: 14px;
       font-weight: 400;
-      color: #D2D2D2;
+      color: #d2d2d2;
       line-height: 24px;
     }
   }

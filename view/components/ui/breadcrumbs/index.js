@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 export default class Breadcrumbs extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
@@ -11,7 +10,6 @@ export default class Breadcrumbs extends PureComponent {
 
   render() {
     const { className, currentIndex, total } = this.props;
-
     return (
       <div className={classnames('breadcrumbs', className)}>
         {Array(total)

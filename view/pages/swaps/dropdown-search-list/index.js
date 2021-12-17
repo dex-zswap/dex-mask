@@ -1,3 +1,14 @@
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { useSelector } from 'react-redux';
+import classnames from 'classnames';
+import { isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 import ActionableMessage from '@c/ui/actionable-message/actionable-message';
 import PulseLoader from '@c/ui/pulse-loader';
 import UrlIcon from '@c/ui/url-icon';
@@ -11,18 +22,6 @@ import {
 } from '@selectors/selectors';
 import { SWAPS_CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP } from '@shared/constants/swaps';
 import { I18nContext } from '@view/contexts/i18n';
-import classnames from 'classnames';
-import { isEqual } from 'lodash';
-import PropTypes from 'prop-types';
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { useSelector } from 'react-redux';
-
 export default function DropdownSearchList({
   searchListClassName,
   itemsToSearch,
@@ -48,17 +47,14 @@ export default function DropdownSearchList({
   const [isImportTokenModalOpen, setIsImportTokenModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(startingItem);
   const [tokenForImport, setTokenForImport] = useState(null);
-
   const hardwareWalletUsed = useSelector(isHardwareWallet);
   const hardwareWalletType = useSelector(getHardwareWalletType);
   const chainId = useSelector(getCurrentChainId);
   const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
-
   const close = useCallback(() => {
     setIsOpen(false);
     onClose?.();
   }, [onClose]);
-
   const onClickItem = useCallback(
     (item) => {
       onSelect?.(item);
@@ -92,13 +88,11 @@ export default function DropdownSearchList({
       onOpen?.();
     }
   }, [isOpen, onOpen]);
-
   const prevExternallySelectedItemRef = useRef();
   useEffect(() => {
     prevExternallySelectedItemRef.current = externallySelectedItem;
   });
   const prevExternallySelectedItem = prevExternallySelectedItemRef.current;
-
   useEffect(() => {
     if (
       externallySelectedItem &&
@@ -122,18 +116,15 @@ export default function DropdownSearchList({
     rpcPrefs.blockExplorerUrl ??
     SWAPS_CHAINID_DEFAULT_BLOCK_EXPLORER_URL_MAP[chainId] ??
     null;
-
   const blockExplorerLabel = rpcPrefs.blockExplorerUrl
     ? new URL(blockExplorerLink).hostname
     : t('etherscan');
-
   const importTokenProps = {
     onImportTokenCloseClick,
     onImportTokenClick,
     setIsImportTokenModalOpen,
     tokenForImport,
   };
-
   return (
     <div
       className={classnames('dropdown-search-list', className)}
@@ -257,7 +248,6 @@ export default function DropdownSearchList({
     </div>
   );
 }
-
 DropdownSearchList.propTypes = {
   itemsToSearch: PropTypes.array,
   onSelect: PropTypes.func,

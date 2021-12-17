@@ -1,8 +1,7 @@
-import Button from '@c/ui/button';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
+import Button from '@c/ui/button';
 export default class PageContainerHeader extends Component {
   static propTypes = {
     title: PropTypes.string,
@@ -19,7 +18,6 @@ export default class PageContainerHeader extends Component {
 
   renderTabs() {
     const { tabs } = this.props;
-
     return tabs && <ul className="page-container__tabs">{tabs}</ul>;
   }
 
@@ -30,7 +28,6 @@ export default class PageContainerHeader extends Component {
       backButtonStyles,
       backButtonString,
     } = this.props;
-
     return (
       showBackButton && (
         <div className="page-container__header-row">
@@ -55,7 +52,6 @@ export default class PageContainerHeader extends Component {
       headerCloseText,
       className,
     } = this.props;
-
     return (
       <div
         className={classnames('page-container__header', className, {

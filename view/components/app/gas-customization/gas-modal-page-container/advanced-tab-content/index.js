@@ -1,12 +1,10 @@
-import AdvancedGasInputs from '@c/app/gas-customization/advanced-gas-inputs';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
+import PropTypes from 'prop-types';
+import AdvancedGasInputs from '@c/app/gas-customization/advanced-gas-inputs';
 export default class AdvancedTabContent extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     updateCustomGasPrice: PropTypes.func,
     updateCustomGasLimit: PropTypes.func,
@@ -50,7 +48,6 @@ export default class AdvancedTabContent extends Component {
       minimumGasLimit,
       customPriceIsExcessive,
     } = this.props;
-
     return (
       <div className="advanced-tab">
         {this.renderDataSummary(transactionFee)}

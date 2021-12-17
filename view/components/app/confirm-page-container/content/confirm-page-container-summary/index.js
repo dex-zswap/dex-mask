@@ -1,7 +1,7 @@
-import Identicon from '@c/ui/identicon';
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import Identicon from '@c/ui/identicon';
 
 const ConfirmPageContainerSummary = (props) => {
   const {
@@ -16,7 +16,6 @@ const ConfirmPageContainerSummary = (props) => {
     assetImage,
     origin,
   } = props;
-
   return (
     <div className={classnames('confirm-page-container-summary', className)}>
       {origin === 'metamask' ? null : (
@@ -64,5 +63,4 @@ ConfirmPageContainerSummary.propTypes = {
   assetImage: PropTypes.string,
   origin: PropTypes.string.isRequired,
 };
-
 export default ConfirmPageContainerSummary;

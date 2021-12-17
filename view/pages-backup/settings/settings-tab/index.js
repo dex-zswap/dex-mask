@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { getPreferences } from '@view/selectors';
 import {
   setCurrentCurrency,
@@ -7,7 +8,6 @@ import {
   setUseNativeCurrencyAsPrimaryCurrencyPreference,
   updateCurrentLocale,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
 import SettingsTab from './component';
 
 const mapStateToProps = (state) => {
@@ -26,7 +26,6 @@ const mapStateToProps = (state) => {
     useNativeCurrencyAsPrimaryCurrency,
     hideZeroBalanceTokens,
   } = getPreferences(state);
-
   return {
     warning,
     currentLocale,

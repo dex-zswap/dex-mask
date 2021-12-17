@@ -1,11 +1,10 @@
-import ReadOnlyInput from '@c/ui/readonly-input';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
-import { isHexPrefixed } from 'ethereumjs-util';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { isHexPrefixed } from 'ethereumjs-util';
+import PropTypes from 'prop-types';
+import ReadOnlyInput from '@c/ui/readonly-input';
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import qrCode from './qrcode-generator';
-
 export default connect(mapStateToProps)(QrCodeView);
 
 function mapStateToProps(state) {
@@ -33,7 +32,6 @@ function QrCodeView(props) {
   const qrImage = qrCode(cellWidth || 4, 'M');
   qrImage.addData(address);
   qrImage.make();
-
   return (
     <div className="qr-code">
       {Array.isArray(message) ? (

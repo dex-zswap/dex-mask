@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Loading from '@c/ui/loading-screen';
 import ConfirmApprove from '@pages/confirm-approve';
 import ConfirmDecryptMessage from '@pages/confirm-decrypt-message';
@@ -27,14 +30,9 @@ import {
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
 } from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
 import ConfTx from './conf-tx';
-
 export default class ConfirmTransaction extends Component {
   static contextTypes = {};
-
   static propTypes = {
     history: PropTypes.object.isRequired,
     totalUnapprovedCount: PropTypes.number.isRequired,
@@ -59,6 +57,7 @@ export default class ConfirmTransaction extends Component {
 
   _beforeUnload = () => {
     this._isMounted = false;
+
     if (this.state.pollingToken) {
       disconnectGasFeeEstimatePoller(this.state.pollingToken);
       removePollingTokenFromAppState(this.state.pollingToken);
@@ -79,30 +78,31 @@ export default class ConfirmTransaction extends Component {
       getTokenParams,
       isTokenMethodAction,
     } = this.props;
-
     getGasFeeEstimatesAndStartPolling().then((pollingToken) => {
       if (this._isMounted) {
-        this.setState({ pollingToken });
+        this.setState({
+          pollingToken,
+        });
         addPollingTokenToAppState(pollingToken);
       } else {
         disconnectGasFeeEstimatePoller(pollingToken);
         removePollingTokenFromAppState(pollingToken);
       }
     });
-
-    window.addEventListener('beforeunload', this._beforeUnload);
-
-    //  TODO: Why totalUnapprovedCount equals 0
+    window.addEventListener('beforeunload', this._beforeUnload); //  TODO: Why totalUnapprovedCount equals 0
     // if (!totalUnapprovedCount && !sendTo) {
     //   history.replace(mostRecentOverviewPage);
     //   return;
     // }
 
     getContractMethodData(data);
+
     if (isTokenMethodAction) {
       getTokenParams(to);
     }
+
     const txId = transactionId || paramsTransactionId;
+
     if (txId) {
       this.props.setTransactionToConfirm(txId);
     }
@@ -110,6 +110,7 @@ export default class ConfirmTransaction extends Component {
 
   componentWillUnmount() {
     this._beforeUnload();
+
     window.removeEventListener('beforeunload', this._beforeUnload);
   }
 
@@ -158,10 +159,10 @@ export default class ConfirmTransaction extends Component {
   }
 
   render() {
-    const { transactionId, paramsTransactionId } = this.props;
-    // Show routes when state.confirmTransaction has been set and when either the ID in the params
+    const { transactionId, paramsTransactionId } = this.props; // Show routes when state.confirmTransaction has been set and when either the ID in the params
     // isn't specified or is specified and matches the ID in state.confirmTransaction in order to
     // support URLs of /confirm-transaction or /confirm-transaction/<transactionId>
+
     return transactionId &&
       (!paramsTransactionId || paramsTransactionId === transactionId) ? (
       <Switch>

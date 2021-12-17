@@ -1,16 +1,6 @@
-$align-items:
-  baseline,
-  center,
-  flex-end,
-  flex-start,
-  stretch;
+$align-items: baseline, center, flex-end, flex-start, stretch;
 
-$justify-content:
-  center,
-  flex-end,
-  flex-start,
-  space-around,
-  space-between,
+$justify-content: center, flex-end, flex-start, space-around, space-between,
   space-evenly;
 
 $fractions: (
@@ -39,31 +29,12 @@ $fractions: (
   8\/12: 66.666667%,
   9\/12: 75%,
   10\/12: 83.333333%,
-  11\/12: 91.666667%,
+  11\/12: 91.666667%
 );
 
-$sizes-numeric:
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12;
+$sizes-numeric: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12;
 
-$sizes-strings:
-  xs,
-  sm,
-  md,
-  lg,
-  xl,
-  none;
+$sizes-strings: xs, sm, md, lg, xl, none;
 
 $border-style: solid, double, none, dashed, dotted;
 $directions: top, right, bottom, left;

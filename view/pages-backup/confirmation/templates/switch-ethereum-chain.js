@@ -5,7 +5,6 @@ import {
   SEVERITIES,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-
 const PENDING_TX_DROP_NOTICE = {
   id: 'PENDING_TX_DROP_NOTICE',
   severity: SEVERITIES.WARNING,
@@ -79,7 +78,6 @@ function getValues(pendingApproval, t, actions) {
         pendingApproval.id,
         pendingApproval.requestData,
       ),
-
     onCancel: () =>
       actions.rejectPendingApproval(
         pendingApproval.id,
@@ -92,5 +90,4 @@ const switchEthereumChain = {
   getAlerts,
   getValues,
 };
-
 export default switchEthereumChain;

@@ -1,3 +1,6 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import EditGasPopover from '@c/app/edit-gas/popover';
 import Loading from '@c/ui/loading-screen';
 import ConfirmTransactionBase from '@pages/confirm-transaction-base';
@@ -26,12 +29,8 @@ import {
   showModal,
   updateCustomNonce,
 } from '@view/store/actions';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import ConfirmApproveContent from './confirm-approve-content';
 import { getCustomTxParamsData } from './util';
-
 export default function ConfirmApprove() {
   const dispatch = useDispatch();
   const { id: paramsTransactionId } = useParams();
@@ -39,7 +38,6 @@ export default function ConfirmApprove() {
     id: transactionId,
     txParams: { to: tokenAddress, data } = {},
   } = useSelector(txDataSelector);
-
   const currentCurrency = useSelector(getCurrentCurrency);
   const nativeCurrency = useSelector(getNativeCurrency);
   const currentNetworkTxList = useSelector(currentNetworkTxListSelector);
@@ -48,7 +46,6 @@ export default function ConfirmApprove() {
   const useNonceField = useSelector(getUseNonceField);
   const nextNonce = useSelector(getNextSuggestedNonce);
   const customNonceValue = useSelector(getCustomNonceValue);
-
   const transaction =
     currentNetworkTxList.find(
       ({ id }) => id === (Number(paramsTransactionId) || transactionId),
@@ -56,15 +53,12 @@ export default function ConfirmApprove() {
   const { ethTransactionTotal, fiatTransactionTotal } = useSelector((state) =>
     transactionFeeSelector(state, transaction),
   );
-
   const currentToken = (tokens &&
     tokens.find(({ address }) => tokenAddress === address)) || {
     address: tokenAddress,
   };
-
   const { tokensWithBalances } = useTokenTracker([currentToken]);
   const tokenTrackerBalance = tokensWithBalances[0]?.balance || '';
-
   const tokenSymbol = currentToken?.symbol;
   const decimals = Number(currentToken?.decimals);
   const tokenData = getTokenData(data);
@@ -72,24 +66,20 @@ export default function ConfirmApprove() {
   const toAddress = getTokenAddressParam(tokenData);
   const tokenAmount =
     tokenData && calcTokenAmount(tokenValue, decimals).toString(10);
-
   const [customPermissionAmount, setCustomPermissionAmount] = useState('');
-
   const previousTokenAmount = useRef(tokenAmount);
-
   const {
     approveTransaction,
     showCustomizeGasPopover,
     closeCustomizeGasPopover,
   } = useApproveTransaction();
-
   useEffect(() => {
     if (customPermissionAmount && previousTokenAmount.current !== tokenAmount) {
       setCustomPermissionAmount(tokenAmount);
     }
+
     previousTokenAmount.current = tokenAmount;
   }, [customPermissionAmount, tokenAmount]);
-
   const [submitWarning, setSubmitWarning] = useState('');
   const prevNonce = useRef(nextNonce);
   const prevCustomNonce = useRef(customNonceValue);
@@ -106,6 +96,7 @@ export default function ConfirmApprove() {
         setSubmitWarning('');
       }
     }
+
     prevCustomNonce.current = customNonceValue;
     prevNonce.current = nextNonce;
   }, [customNonceValue, nextNonce]);
@@ -115,17 +106,17 @@ export default function ConfirmApprove() {
       ? 'DexMask'
       : origin[0].toUpperCase() + origin.slice(1)
     : '';
-
   const { icon: siteImage = '' } = domainMetadata[origin] || {};
-
   const tokensText = `${Number(tokenAmount)} ${tokenSymbol}`;
   const tokenBalance = tokenTrackerBalance
     ? calcTokenAmount(tokenTrackerBalance, decimals).toString(10)
     : '';
   const customData = customPermissionAmount
-    ? getCustomTxParamsData(data, { customPermissionAmount, decimals })
+    ? getCustomTxParamsData(data, {
+        customPermissionAmount,
+        decimals,
+      })
     : null;
-
   return tokenSymbol === undefined ? (
     <Loading />
   ) : (

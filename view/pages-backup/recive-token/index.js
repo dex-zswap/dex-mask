@@ -1,3 +1,5 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask';
 import { updateRecipient } from '@reducer/send';
 import {
@@ -8,8 +10,6 @@ import {
   getSelectedIdentity,
 } from '@view/selectors';
 import * as actions from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import ReciveToken from './component';
 
 const mapStateToProps = (state) => {

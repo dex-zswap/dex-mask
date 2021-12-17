@@ -4,7 +4,6 @@ import {
   calcTokenAmount,
 } from '@view/helpers/utils/token-util';
 import { useTokenData } from './useTokenData';
-
 /**
  * Defines the shape for the Token input parameter for useTokenDisplayValue
  * @typedef {Object} Token
@@ -27,6 +26,7 @@ import { useTokenData } from './useTokenData';
  *                                         with a token.
  * @return {string} - The computed displayValue of the provided transactionData and token
  */
+
 export function useTokenDisplayValue(
   transactionData,
   token,
@@ -35,22 +35,18 @@ export function useTokenDisplayValue(
   const tokenData = useTokenData(transactionData, isTokenTransaction);
   const shouldCalculateTokenValue = Boolean(
     // If we are currently processing a token transaction
-    isTokenTransaction &&
-      // and raw transaction data string is provided
-      transactionData &&
-      // and a token object has been provided
-      token &&
-      // and we are able to parse the token details from the raw data
+    isTokenTransaction && // and raw transaction data string is provided
+      transactionData && // and a token object has been provided
+      token && // and we are able to parse the token details from the raw data
       tokenData?.args?.length,
   );
-
   const displayValue = useMemo(() => {
     if (!shouldCalculateTokenValue) {
       return null;
     }
+
     const tokenValue = getTokenValueParam(tokenData);
     return calcTokenAmount(tokenValue, token.decimals).toString(10);
   }, [shouldCalculateTokenValue, tokenData, token]);
-
   return displayValue;
 }

@@ -1,3 +1,7 @@
+import React, { PureComponent } from 'react';
+import { matchPath } from 'react-router-dom';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import ColorIndicator from '@c/ui/color-indicator';
 import LockIcon from '@c/ui/lock-icon';
@@ -7,17 +11,11 @@ import {
   DEFAULT_ROUTE,
   NETWORKS_FORM_ROUTE,
 } from '@view/helpers/constants/routes';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-import { matchPath } from 'react-router-dom';
 import NetworkForm from './network-form';
-
 export default class NetworksTab extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
   };
-
   static propTypes = {
     editRpc: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
@@ -98,7 +96,6 @@ export default class NetworksTab extends PureComponent {
       rpcUrl,
       providerType: currentProviderType,
     } = network;
-
     const listItemNetworkIsSelected = selectRpcUrl && selectRpcUrl === rpcUrl;
     const listItemUrlIsProviderUrl = rpcUrl === providerUrl;
     const listItemTypeIsProviderNonRpcType =
@@ -109,7 +106,6 @@ export default class NetworksTab extends PureComponent {
       (listItemUrlIsProviderUrl || listItemTypeIsProviderNonRpcType);
     const displayNetworkListItemAsSelected =
       listItemNetworkIsSelected || listItemNetworkIsCurrentProvider;
-
     return (
       <div
         key={`settings-network-list-item:${rpcUrl}`}
@@ -216,7 +212,6 @@ export default class NetworksTab extends PureComponent {
       isFullScreen,
       shouldRenderNetworkForm,
     } = this.props;
-
     return (
       <>
         {this.renderNetworksList()}
@@ -255,7 +250,6 @@ export default class NetworksTab extends PureComponent {
       isFullScreen,
       shouldRenderNetworkForm,
     } = this.props;
-
     return (
       <div className="networks-tab__body">
         {this.renderSubHeader()}

@@ -1,3 +1,11 @@
+import React, { PureComponent } from 'react';
+/**
+ * Component that allows user to enter currency values as a number, and props receive a converted
+ * hex value in WEI. props.value, used as a default or forced value, should be a hex value, which
+ * gets converted into a decimal value depending on the currency (ETH or Fiat).
+ */
+
+import PropTypes from 'prop-types';
 import CurrencyDisplay from '@c/ui/currency-display';
 import UnitInput from '@c/ui/unit-input';
 import { ETH } from '@view/helpers/constants/common';
@@ -5,19 +13,10 @@ import {
   getValueFromWeiHex,
   getWeiHexFromDecimalValue,
 } from '@view/helpers/utils/conversions.util';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
-/**
- * Component that allows user to enter currency values as a number, and props receive a converted
- * hex value in WEI. props.value, used as a default or forced value, should be a hex value, which
- * gets converted into a decimal value depending on the currency (ETH or Fiat).
- */
 export default class CurrencyInput extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     conversionRate: PropTypes.number,
     currentCurrency: PropTypes.string,
@@ -32,10 +31,8 @@ export default class CurrencyInput extends PureComponent {
 
   constructor(props) {
     super(props);
-
     const { value: hexValue } = props;
     const decimalValue = hexValue ? this.getDecimalValue(props) : 0;
-
     this.state = {
       decimalValue,
       hexValue,
@@ -53,7 +50,10 @@ export default class CurrencyInput extends PureComponent {
       propsHexValue !== stateHexValue
     ) {
       const decimalValue = this.getDecimalValue(this.props);
-      this.setState({ hexValue: propsHexValue, decimalValue });
+      this.setState({
+        hexValue: propsHexValue,
+        decimalValue,
+      });
     }
   }
 
@@ -71,7 +71,6 @@ export default class CurrencyInput extends PureComponent {
           toCurrency: ETH,
           numberOfDecimals: 6,
         });
-
     return Number(decimalValueString) || 0;
   }
 
@@ -85,21 +84,23 @@ export default class CurrencyInput extends PureComponent {
 
     return isSwapped ? !useFiat : useFiat;
   };
-
   swap = () => {
     const { isSwapped, decimalValue } = this.state;
-    this.setState({ isSwapped: !isSwapped }, () => {
-      this.handleChange(decimalValue);
-    });
+    this.setState(
+      {
+        isSwapped: !isSwapped,
+      },
+      () => {
+        this.handleChange(decimalValue);
+      },
+    );
   };
-
   handleChange = (decimalValue) => {
     const {
       currentCurrency: fromCurrency,
       conversionRate,
       onChange,
     } = this.props;
-
     const hexValue = this.shouldUseFiat()
       ? getWeiHexFromDecimalValue({
           value: decimalValue,
@@ -113,8 +114,10 @@ export default class CurrencyInput extends PureComponent {
           fromDenomination: ETH,
           conversionRate,
         });
-
-    this.setState({ hexValue, decimalValue });
+    this.setState({
+      hexValue,
+      decimalValue,
+    });
     onChange(hexValue);
   };
 
@@ -154,7 +157,6 @@ export default class CurrencyInput extends PureComponent {
   render() {
     const { fiatSuffix, nativeSuffix, ...restProps } = this.props;
     const { decimalValue } = this.state;
-
     return (
       <UnitInput
         {...restProps}

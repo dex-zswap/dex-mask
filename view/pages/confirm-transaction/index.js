@@ -1,3 +1,6 @@
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import {
   clearConfirmTransaction,
   setTransactionToConfirm,
@@ -12,9 +15,6 @@ import {
   getTokenParams,
   setDefaultHomeActiveTabName,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 import ConfirmTransaction from './component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -26,14 +26,12 @@ const mapStateToProps = (state, ownProps) => {
   } = ownProps;
   const { id } = params;
   const sendTo = getSendTo(state);
-
   const unconfirmedTransactions = unconfirmedTransactionsListSelector(state);
   const totalUnconfirmed = unconfirmedTransactions.length;
   const transaction = totalUnconfirmed
     ? unapprovedTxs[id] || unconfirmedTransactions[0]
     : {};
   const { id: transactionId, type } = transaction;
-
   return {
     totalUnapprovedCount: totalUnconfirmed,
     sendTo,

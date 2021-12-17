@@ -1,10 +1,10 @@
+import { connect } from 'react-redux';
 import { MIN_GAS_LIMIT_DEC } from '@pages/send/constants';
 import {
   decGWEIToHexWEI,
   decimalToHex,
   hexWEIToDecGWEI,
 } from '@view/helpers/utils/conversions.util';
-import { connect } from 'react-redux';
 import AdvancedGasInputs from './component';
 
 function convertGasPriceForInputs(gasPriceInHexWEI) {

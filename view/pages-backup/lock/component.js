@@ -1,8 +1,7 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Loading from '@c/ui/loading-screen';
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class Lock extends PureComponent {
   static propTypes = {
     history: PropTypes.object,

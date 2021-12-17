@@ -1,7 +1,6 @@
-import Button from '@c/ui/button';
-import PropTypes from 'prop-types';
 import React from 'react';
-
+import PropTypes from 'prop-types';
+import Button from '@c/ui/button';
 export default function ConfirmationFooter({
   onApprove,
   onCancel,
@@ -21,7 +20,6 @@ export default function ConfirmationFooter({
     </div>
   );
 }
-
 ConfirmationFooter.propTypes = {
   alerts: PropTypes.node,
   onApprove: PropTypes.func.isRequired,

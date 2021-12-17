@@ -1,3 +1,6 @@
+import React, { Component } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import PermissionsConnectFooter from '@c/app/permission/connect-footer';
 import PermissionsConnectHeader from '@c/app/permission/connect-header';
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
@@ -6,10 +9,6 @@ import CheckBox, { CHECKED, INDETERMINATE, UNCHECKED } from '@c/ui/check-box';
 import Identicon from '@c/ui/identicon';
 import Tooltip from '@c/ui/tooltip';
 import { PRIMARY } from '@view/helpers/constants/common';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ChooseAccount extends Component {
   static propTypes = {
     accounts: PropTypes.arrayOf(
@@ -35,22 +34,18 @@ export default class ChooseAccount extends Component {
       origin: PropTypes.string.isRequired,
     }),
   };
-
   state = {
     selectedAccounts: this.props.selectedAccountAddresses,
   };
-
   static defaultProps = {
     addressLastConnectedMap: {},
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
 
   handleAccountClick(address) {
     const { selectedAccounts } = this.state;
-
     const newSelectedAccounts = new Set(selectedAccounts);
 
     if (newSelectedAccounts.has(address)) {
@@ -59,27 +54,30 @@ export default class ChooseAccount extends Component {
       newSelectedAccounts.add(address);
     }
 
-    this.setState({ selectedAccounts: newSelectedAccounts });
+    this.setState({
+      selectedAccounts: newSelectedAccounts,
+    });
   }
 
   selectAll() {
     const { accounts } = this.props;
-
     const newSelectedAccounts = new Set(
       accounts.map((account) => account.address),
     );
-
-    this.setState({ selectedAccounts: newSelectedAccounts });
+    this.setState({
+      selectedAccounts: newSelectedAccounts,
+    });
   }
 
   deselectAll() {
-    this.setState({ selectedAccounts: new Set() });
+    this.setState({
+      selectedAccounts: new Set(),
+    });
   }
 
   allAreSelected() {
     const { accounts } = this.props;
     const { selectedAccounts } = this.state;
-
     return accounts.every(({ address }) => selectedAccounts.has(address));
   }
 
@@ -110,7 +108,9 @@ export default class ChooseAccount extends Component {
                     className="permissions-connect-choose-account__account__balance"
                     type={PRIMARY}
                     value={balance}
-                    style={{ color: '#6A737D' }}
+                    style={{
+                      color: '#6A737D',
+                    }}
                     suffix={nativeCurrency}
                   />
                 </div>
@@ -135,8 +135,8 @@ export default class ChooseAccount extends Component {
     const { t } = this.context;
     const { selectNewAccountViaModal, accounts } = this.props;
     const { selectedAccounts } = this.state;
-
     let checked;
+
     if (this.allAreSelected()) {
       checked = CHECKED;
     } else if (selectedAccounts.size === 0) {
@@ -169,7 +169,12 @@ export default class ChooseAccount extends Component {
             <Tooltip
               position="bottom"
               html={
-                <div style={{ width: 200, padding: 4 }}>
+                <div
+                  style={{
+                    width: 200,
+                    padding: 4,
+                  }}
+                >
                   {t('selectingAllWillAllow')}
                 </div>
               }
@@ -179,12 +184,12 @@ export default class ChooseAccount extends Component {
           </div>
         ) : null}
         {/* <div
-          className="permissions-connect-choose-account__text-blue"
-          onClick={() =>
-            selectNewAccountViaModal(this.handleAccountClick.bind(this))
-          }
+         className="permissions-connect-choose-account__text-blue"
+         onClick={() =>
+           selectNewAccountViaModal(this.handleAccountClick.bind(this))
+         }
         >
-          {this.context.t('newAccount')}
+         {this.context.t('newAccount')}
         </div> */}
       </div>
     );

@@ -1,15 +1,13 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { I18nContext } from '@view/contexts/i18n';
-
 export default function ViewOnEtherScanLink({
   txHash,
   blockExplorerUrl,
   isCustomBlockExplorerUrl,
 }) {
   const t = useContext(I18nContext);
-
   return (
     <div
       className={classnames('awaiting-swap__view-on-etherscan', {
@@ -17,7 +15,9 @@ export default function ViewOnEtherScanLink({
         'awaiting-swap__view-on-etherscan--invisible': !txHash,
       })}
       onClick={() => {
-        global.platform.openTab({ url: blockExplorerUrl });
+        global.platform.openTab({
+          url: blockExplorerUrl,
+        });
       }}
     >
       {isCustomBlockExplorerUrl
@@ -26,7 +26,6 @@ export default function ViewOnEtherScanLink({
     </div>
   );
 }
-
 ViewOnEtherScanLink.propTypes = {
   txHash: PropTypes.string,
   blockExplorerUrl: PropTypes.string,

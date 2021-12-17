@@ -3,7 +3,7 @@ import Switch from '@c/ui/switch';
 import { REVEAL_SEED_ROUTE } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { setFeatureFlag, setUsePhishDetect } from '@view/store/actions';
-import React from 'react';
+import { default as React, default as React } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -17,7 +17,6 @@ export default function SecurityTab() {
     featureFlags: { showIncomingTransactions } = {},
     usePhishDetect,
   } = metamask;
-
   return (
     <div className="base-width">
       {warning && <div className="settings-tab__error">{warning}</div>}

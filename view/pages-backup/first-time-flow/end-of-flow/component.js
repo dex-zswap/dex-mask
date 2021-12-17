@@ -1,14 +1,12 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import { returnToOnboardingInitiator } from '@pages/first-time-flow/util';
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
-import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
-
 export default class EndOfFlowScreen extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object,
     completionMetaMetricsName: PropTypes.string,
@@ -36,10 +34,13 @@ export default class EndOfFlowScreen extends PureComponent {
     const { history, onboardingInitiator } = this.props;
 
     this._removeBeforeUnload();
+
     await this._onOnboardingComplete();
+
     if (onboardingInitiator) {
       await returnToOnboardingInitiator(onboardingInitiator);
     }
+
     history.push(DEFAULT_ROUTE);
   };
 
@@ -53,7 +54,6 @@ export default class EndOfFlowScreen extends PureComponent {
 
   render() {
     const { t } = this.context;
-
     return (
       <div className="end-of-flow">
         <div className="end-of-flow__success-icon"></div>

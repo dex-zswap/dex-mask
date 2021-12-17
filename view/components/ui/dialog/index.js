@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 export default function Dialog(props) {
   const { children, type, className, onClick } = props;
   return (
@@ -17,7 +16,6 @@ export default function Dialog(props) {
     </div>
   );
 }
-
 Dialog.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node,

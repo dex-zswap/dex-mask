@@ -1,11 +1,11 @@
+import React, { useContext, useMemo, useState } from 'react';
+import BigNumber from 'bignumber.js';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import SunCheckIcon from '@c/ui/icon/sun-check-icon.component';
 import InfoTooltip from '@c/ui/info-tooltip';
 import { QUOTE_DATA_ROWS_PROPTYPES_SHAPE } from '@pages/swaps/select-quote-popover/select-quote-popover-constants';
 import { I18nContext } from '@view/contexts/i18n';
-import BigNumber from 'bignumber.js';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useContext, useMemo, useState } from 'react';
 
 const ToggleArrows = () => (
   <svg
@@ -42,13 +42,12 @@ export default function SortList({
     } else {
       setSortColumn(nextSortColumn);
     }
-  };
-
-  // This sort aims to do the following:
+  }; // This sort aims to do the following:
   // If there is no selected sort column, then the best quotes should be first in the list
   // If there is no selected sort column, then quotes that are not the best quotes should be in random order, after the first in the list
   // If the sort column is 'quoteSource', sort alphabetically by 'quoteSource'
   // Otherwise, sort in either ascending or descending numerical order on the selected column
+
   const sortedRows = useMemo(() => {
     return [...quoteDataRows].sort((rowDataA, rowDataB) => {
       if (sortColumn === null && rowDataA.isBestQuote) {
@@ -65,6 +64,7 @@ export default function SortList({
           ? sortDirection * -1
           : sortDirection;
       }
+
       return new BigNumber(rowDataA[sortColumn]).gt(rowDataB[sortColumn])
         ? sortDirection * -1
         : sortDirection;
@@ -73,7 +73,6 @@ export default function SortList({
   const selectedRow = sortedRows.findIndex(
     ({ aggId }) => selectedAggId === aggId,
   );
-
   return (
     <div className="select-quote-popover__sort-list">
       <div className="select-quote-popover__column-headers">
@@ -188,7 +187,6 @@ export default function SortList({
     </div>
   );
 }
-
 SortList.propTypes = {
   selectedAggId: PropTypes.string.isRequired,
   onSelect: PropTypes.func.isRequired,

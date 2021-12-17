@@ -1,3 +1,6 @@
+import React from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Box from '@c/ui/box';
 import Chip from '@c/ui/chip';
 import { ChipWithInput } from '@c/ui/chip-with-input';
@@ -10,10 +13,6 @@ import {
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-
 export default function RecoveryPhraseChips({
   seedPhrase,
   seedPhraseRevealed,
@@ -62,6 +61,7 @@ export default function RecoveryPhraseChips({
               </div>
             );
           }
+
           return (
             <div className="recovery-phrase__chip-item" key={index}>
               <div className="recovery-phrase__chip-item__number">
@@ -90,7 +90,6 @@ export default function RecoveryPhraseChips({
     </Box>
   );
 }
-
 RecoveryPhraseChips.propTypes = {
   seedPhrase: PropTypes.array,
   seedPhraseRevealed: PropTypes.bool,

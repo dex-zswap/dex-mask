@@ -1,3 +1,8 @@
+import React, { Component } from 'react';
+import { matchPath, Route, Switch } from 'react-router-dom';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import IdleTimer from 'react-idle-timer';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import AccountMenu from '@c/app/account-menu';
 import Alerts from '@c/app/alerts';
@@ -55,12 +60,6 @@ import {
 } from '@view/helpers/constants/routes';
 import Authenticated from '@view/helpers/higher-order-components/authenticated';
 import Initialized from '@view/helpers/higher-order-components/initialized';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import IdleTimer from 'react-idle-timer';
-import { matchPath, Route, Switch } from 'react-router-dom';
-
 export default class Routes extends Component {
   static propTypes = {
     currentCurrency: PropTypes.string,
@@ -89,7 +88,6 @@ export default class Routes extends Component {
     prepareToLeaveSwaps: PropTypes.func,
     browserEnvironment: PropTypes.object,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -101,6 +99,7 @@ export default class Routes extends Component {
       setCurrentCurrencyToUSD,
       history,
     } = this.props;
+
     if (!currentCurrency) {
       setCurrentCurrencyToUSD();
     }
@@ -114,7 +113,6 @@ export default class Routes extends Component {
 
   renderRoutes() {
     const { autoLockTimeLimit, setLastActiveTime } = this.props;
-
     const routes = (
       <Switch>
         <Route path={LOCK_ROUTE} component={Lock} exact />
@@ -202,27 +200,31 @@ export default class Routes extends Component {
   onSwapsPage() {
     const { location } = this.props;
     return Boolean(
-      matchPath(location.pathname, { path: SWAPS_ROUTE, exact: false }),
+      matchPath(location.pathname, {
+        path: SWAPS_ROUTE,
+        exact: false,
+      }),
     );
   }
 
   onSwapsBuildQuotePage() {
     const { location } = this.props;
     return Boolean(
-      matchPath(location.pathname, { path: BUILD_QUOTE_ROUTE, exact: false }),
+      matchPath(location.pathname, {
+        path: BUILD_QUOTE_ROUTE,
+        exact: false,
+      }),
     );
   }
 
   hideAppHeader() {
     const { location } = this.props;
-
     const isInitializing = Boolean(
       matchPath(location.pathname, {
         path: INITIALIZE_ROUTE,
         exact: false,
       }),
     );
-
     const isUnlockingPage =
       Boolean(
         matchPath(location.pathname, {
@@ -248,9 +250,7 @@ export default class Routes extends Component {
 
     if (windowType === ENVIRONMENT_TYPE_NOTIFICATION) {
       return true;
-    }
-
-    // if (windowType === ENVIRONMENT_TYPE_POPUP && this.onConfirmPage()) {
+    } // if (windowType === ENVIRONMENT_TYPE_POPUP && this.onConfirmPage()) {
     //   return true;
     // }
 
@@ -260,14 +260,12 @@ export default class Routes extends Component {
         exact: false,
       }),
     );
-
     const isHandlingAddEthereumChainRequest = Boolean(
       matchPath(location.pathname, {
         path: CONFIRMATION_V_NEXT_ROUTE,
         exact: false,
       }),
     );
-
     return isHandlingPermissionsRequest || isHandlingAddEthereumChainRequest;
   }
 
@@ -292,7 +290,6 @@ export default class Routes extends Component {
       loadingMessage || isNetworkLoading
         ? this.getConnectingLabel(loadingMessage)
         : null;
-
     const {
       isOpen: sidebarIsOpen,
       transitionName: sidebarTransitionName,
@@ -300,14 +297,12 @@ export default class Routes extends Component {
       props,
     } = sidebar;
     const { transaction: sidebarTransaction } = props || {};
-
     const sidebarShouldClose =
       sidebarTransaction &&
       !sidebarTransaction.status === TRANSACTION_STATUSES.FAILED &&
       !submittedPendingTransactions.find(
         ({ id }) => id === sidebarTransaction.id,
       );
-
     const { os, browser } = browserEnvironment;
     return (
       <div
@@ -354,19 +349,25 @@ export default class Routes extends Component {
     if (loadingMessage) {
       return loadingMessage;
     }
+
     const { provider, providerId } = this.props;
 
     switch (provider.type) {
       case 'mainnet':
         return this.context.t('connectingToMainnet');
+
       case 'ropsten':
         return this.context.t('connectingToRopsten');
+
       case 'kovan':
         return this.context.t('connectingToKovan');
+
       case 'rinkeby':
         return this.context.t('connectingToRinkeby');
+
       case 'goerli':
         return this.context.t('connectingToGoerli');
+
       default:
         return this.context.t('connectingTo', [providerId]);
     }
@@ -376,14 +377,19 @@ export default class Routes extends Component {
     switch (this.props.provider.type) {
       case 'mainnet':
         return this.context.t('mainnet');
+
       case 'ropsten':
         return this.context.t('ropsten');
+
       case 'kovan':
         return this.context.t('kovan');
+
       case 'rinkeby':
         return this.context.t('rinkeby');
+
       case 'goerli':
         return this.context.t('goerli');
+
       default:
         return this.context.t('unknownNetwork');
     }

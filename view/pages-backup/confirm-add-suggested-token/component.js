@@ -1,16 +1,14 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import Button from '@c/ui/button';
 import TokenBalance from '@c/ui/token-balance';
 import TokenImage from '@c/ui/token-image';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-
 export default class ConfirmAddSuggestedToken extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
-
   static propTypes = {
     history: PropTypes.object,
     addToken: PropTypes.func,
@@ -59,7 +57,6 @@ export default class ConfirmAddSuggestedToken extends Component {
     const pendingToken = pendingTokens[pendingTokenKey];
     const hasTokenDuplicates = this.checkTokenDuplicates(pendingTokens, tokens);
     const reusesName = this.checkNameReuse(pendingTokens, tokens);
-
     return (
       <div className="page-container">
         <div className="page-container__header">
@@ -91,7 +88,6 @@ export default class ConfirmAddSuggestedToken extends Component {
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingTokens).map(([address, token]) => {
                 const { name, symbol, image } = token;
-
                 return (
                   <div
                     className="confirm-add-token__token-list-item"
@@ -100,7 +96,9 @@ export default class ConfirmAddSuggestedToken extends Component {
                     <div className="confirm-add-token__token confirm-add-token__data">
                       <TokenImage symbol={symbol} size={40} address={address} />
                       <div
-                        style={{ marginLeft: '12px' }}
+                        style={{
+                          marginLeft: '12px',
+                        }}
                         className="confirm-add-token__name"
                       >
                         {this.getTokenName(name, symbol)}
@@ -154,16 +152,15 @@ export default class ConfirmAddSuggestedToken extends Component {
     const dupes = pending.filter((proposed) => {
       return existing.includes(proposed);
     });
-
     return dupes.length > 0;
   }
-
   /**
    * Returns true if any pendingTokens both:
    * - Share a symbol with an existing `tokens` member.
    * - Does not share an address with that same `tokens` member.
    * This should be flagged as possibly deceptive or confusing.
    */
+
   checkNameReuse(pendingTokens, tokens) {
     const duplicates = Object.keys(pendingTokens)
       .map((addr) => pendingTokens[addr])

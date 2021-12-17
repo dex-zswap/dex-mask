@@ -1,3 +1,6 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
 import LongLetter from '@c/ui/long-letter';
 import { Menu, MenuItem } from '@c/ui/menu';
@@ -10,15 +13,11 @@ import {
   getSelectedIdentity,
 } from '@view/selectors';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from 'react-redux';
 
 class Switchers extends React.Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   static propTypes = {
     provider: PropTypes.object.isRequired,
     selectedIdentity: PropTypes.object.isRequired,
@@ -33,10 +32,8 @@ class Switchers extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.accountSwitchRef = null;
     this.networkSwitchRef = null;
-
     this.state = {
       showAccount: false,
       showChainSwitcher: false,
@@ -58,7 +55,6 @@ class Switchers extends React.Component {
   getNetworkName() {
     const { provider } = this.props;
     const providerName = provider.type;
-
     let name;
 
     if (providerName === 'mainnet') {
@@ -87,7 +83,6 @@ class Switchers extends React.Component {
 
   getAccountName() {
     const { selectedIdentity: { name } = {} } = this.props;
-
     return {
       display: name.length > 10 ? `${name.substr(0, 10)}...` : name,
       name,
@@ -96,12 +91,10 @@ class Switchers extends React.Component {
 
   renderCustomRpcListMenus(rpcListDetail, provider) {
     const reversedRpcListDetail = rpcListDetail.slice().reverse();
-
     return reversedRpcListDetail.map((entry) => {
       const { rpcUrl, chainId, ticker = 'ETH', nickname = '' } = entry;
       const isCurrentRpcTarget =
         provider.type === NETWORK_TYPE_RPC && rpcUrl === provider.rpcUrl;
-
       return (
         <MenuItem
           className={isCurrentRpcTarget ? 'active' : ''}
@@ -112,6 +105,7 @@ class Switchers extends React.Component {
             } else {
               this.props.displayInvalidCustomNetworkAlert(nickname || rpcUrl);
             }
+
             this.toggleSwitchNetwork();
           }}
         >
@@ -139,7 +133,6 @@ class Switchers extends React.Component {
     const {
       provider: { type: providerType },
     } = this.props;
-
     const iconBg =
       'dexMainnet' === network
         ? '/images/dex-token.png'
@@ -148,7 +141,6 @@ class Switchers extends React.Component {
         : 'bscMainnet' === network
         ? '/images/bnb.png'
         : '/images/dex/settings/chain-icon.png';
-
     return (
       <MenuItem
         className={network === providerType ? 'active' : ''}
@@ -182,7 +174,6 @@ class Switchers extends React.Component {
 
   renderNetworkMenu() {
     const { frequentRpcList } = this.props;
-
     return (
       <Menu
         className="network-droppo__menu"
@@ -203,7 +194,6 @@ class Switchers extends React.Component {
 
   renderNetrowkSwitcher() {
     const { display, name } = this.getNetworkName();
-
     return (
       <div
         className="switcher-bar"
@@ -223,13 +213,11 @@ class Switchers extends React.Component {
       showAccount: !this.state.showAccount,
     });
   };
-
   toggleSwitchNetwork = () => {
     this.setState({
       showChainSwitcher: !this.state.showChainSwitcher,
     });
   };
-
   selectAccount = (address) => {
     this.toggleSwitchAccount();
     this.props.setSelectedAddress(address);
@@ -237,7 +225,6 @@ class Switchers extends React.Component {
 
   renderAccountSwitcher() {
     const { display, name } = this.getAccountName();
-
     return (
       <div
         className="switcher-bar"
@@ -258,7 +245,6 @@ class Switchers extends React.Component {
       nativeCurrency,
       selectedAccount: { address },
     } = this.props;
-
     return (
       <Menu
         anchorElement={this.accountSwitchRef}

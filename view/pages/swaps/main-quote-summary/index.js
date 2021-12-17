@@ -1,20 +1,22 @@
+import React from 'react';
+import BigNumber from 'bignumber.js';
+import PropTypes from 'prop-types';
 import Tooltip from '@c/ui/tooltip';
 import UrlIcon from '@c/ui/url-icon';
 import ExchangeRateDisplay from '@pages/swaps/exchange-rate-display';
 import { formatSwapsValueForDisplay } from '@pages/swaps/swaps.util';
 import { toPrecisionWithoutTrailingZeros } from '@view/helpers/utils';
 import { calcTokenAmount } from '@view/helpers/utils/token-util';
-import BigNumber from 'bignumber.js';
-import PropTypes from 'prop-types';
-import React from 'react';
 
 function getFontSizesAndLineHeights(fontSizeScore) {
   if (fontSizeScore <= 9) {
     return [60, 48];
   }
+
   if (fontSizeScore <= 13) {
     return [40, 32];
   }
+
   return [26, 15];
 }
 
@@ -36,7 +38,6 @@ export default function MainQuoteSummary({
     destinationValue,
     destinationDecimals,
   );
-
   const amountToDisplay = formatSwapsValueForDisplay(destinationAmount);
   const amountDigitLength = amountToDisplay.match(/\d+/gu).join('').length;
   const [numberFontSize, lineHeight] = getFontSizesAndLineHeights(
@@ -130,7 +131,6 @@ export default function MainQuoteSummary({
     </div>
   );
 }
-
 MainQuoteSummary.propTypes = {
   sourceValue: PropTypes.oneOfType([
     PropTypes.string,

@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import Typography from '@c/ui/typography';
 import { I18nContext } from '@view/contexts/i18n';
 import {
@@ -5,11 +6,8 @@ import {
   FONT_WEIGHT,
   TYPOGRAPHY,
 } from '@view/helpers/constants/design-system';
-import React, { useContext } from 'react';
-
 export default function EditGasDisplayEducation() {
   const t = useContext(I18nContext);
-
   return (
     <div className="edit-gas-display-education">
       <Typography tag="p" color={COLORS.UI4} variant={TYPOGRAPHY.H6}>

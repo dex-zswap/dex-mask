@@ -1,10 +1,9 @@
-import PermissionsConnectFooter from '@c/app/permission/connect-footer';
-import { PageContainerFooter } from '@c/ui/page-container';
+import React, { Component } from 'react';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import PermissionsConnectFooter from '@c/app/permission/connect-footer';
+import { PageContainerFooter } from '@c/ui/page-container';
 import { PermissionPageContainerContent } from '.';
-
 export default class PermissionPageContainer extends Component {
   static propTypes = {
     approvePermissionsRequest: PropTypes.func.isRequired,
@@ -21,18 +20,15 @@ export default class PermissionPageContainer extends Component {
       origin: PropTypes.string.isRequired,
     }),
   };
-
   static defaultProps = {
     request: {},
     requestMetadata: {},
     selectedIdentities: [],
     allIdentitiesSelected: false,
   };
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     selectedPermissions: this.getRequestedMethodState(
       this.getRequestedMethodNames(this.props),
@@ -69,12 +65,10 @@ export default class PermissionPageContainer extends Component {
       },
     });
   };
-
   onCancel = () => {
     const { request, rejectPermissionsRequest } = this.props;
     rejectPermissionsRequest(request.metadata.id);
   };
-
   onSubmit = () => {
     const {
       request: _request,
@@ -82,12 +76,7 @@ export default class PermissionPageContainer extends Component {
       rejectPermissionsRequest,
       selectedIdentities,
     } = this.props;
-
-    const request = {
-      ..._request,
-      permissions: { ..._request.permissions },
-    };
-
+    const request = { ..._request, permissions: { ..._request.permissions } };
     Object.keys(this.state.selectedPermissions).forEach((key) => {
       if (!this.state.selectedPermissions[key]) {
         delete request.permissions[key];
@@ -111,7 +100,6 @@ export default class PermissionPageContainer extends Component {
       selectedIdentities,
       allIdentitiesSelected,
     } = this.props;
-
     return (
       <div className="page-container permission-approval-container">
         <PermissionPageContainerContent

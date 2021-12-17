@@ -140,7 +140,7 @@
     "message": "This alert is shown in the popup when you are browsing a site that tries to use the removed window.web3 API, and may be broken as a result."
   },
   "alerts": {
-    "message": "Alerts"
+    "message": "Note"
   },
   "alertsSettingsDescription": {
     "message": "Enable or disable each alert"
@@ -1959,6 +1959,9 @@
   },
   "selectEachPhrase": {
     "message": "Please select each phrase in order to make sure it is correct."
+  },
+  "selectFile": {
+    "message": "Select File"
   },
   "selectHdPath": {
     "message": "Select HD Path"

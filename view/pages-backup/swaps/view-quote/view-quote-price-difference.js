@@ -1,3 +1,6 @@
+import React, { useContext } from 'react';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import ActionableMessage from '@c/ui/actionable-message';
 import Box from '@c/ui/box';
 import Tooltip from '@c/ui/tooltip';
@@ -6,10 +9,6 @@ import {
   DISPLAY,
   JUSTIFY_CONTENT,
 } from '@view/helpers/constants/design-system';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
-
 export default function ViewQuotePriceDifference(props) {
   const {
     usedQuote,
@@ -22,13 +21,12 @@ export default function ViewQuotePriceDifference(props) {
     priceDifferencePercentage,
     priceSlippageUnknownFiatValue,
   } = props;
-
   const t = useContext(I18nContext);
-
   let priceDifferenceTitle = '';
   let priceDifferenceMessage = '';
   let priceDifferenceClass = '';
   let priceDifferenceAcknowledgementText = '';
+
   if (priceSlippageUnknownFiatValue) {
     // A calculation error signals we cannot determine dollar value
     priceDifferenceTitle = t('swapPriceUnavailableTitle');
@@ -97,7 +95,6 @@ export default function ViewQuotePriceDifference(props) {
     </div>
   );
 }
-
 ViewQuotePriceDifference.propTypes = {
   usedQuote: PropTypes.object,
   sourceTokenValue: PropTypes.string,

@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { addHexPrefix } from '@app/scripts/lib/util';
 import { MIN_GAS_LIMIT_DEC } from '@pages/send/constants';
 import { calcGasTotal, isBalanceSufficient } from '@pages/send/utils';
@@ -53,7 +54,6 @@ import {
   hideModal,
   hideSidebar,
 } from '@view/store/actions';
-import { connect } from 'react-redux';
 import GasModalPageContainer from './component';
 
 const mapStateToProps = (state, ownProps) => {
@@ -68,9 +68,8 @@ const mapStateToProps = (state, ownProps) => {
     ({ id }) => id === (transaction.id || txData.id),
   );
   const buttonDataLoading = getBasicGasEstimateLoadingStatus(state);
-  const asset = getSendAsset(state);
+  const asset = getSendAsset(state); // a "default" txParams is used during the send flow, since the transaction doesn't exist yet in that case
 
-  // a "default" txParams is used during the send flow, since the transaction doesn't exist yet in that case
   const txParams = selectedTransaction?.txParams
     ? selectedTransaction.txParams
     : {
@@ -78,7 +77,6 @@ const mapStateToProps = (state, ownProps) => {
         gasPrice: gasPrice || getAveragePriceEstimateInHexWEI(state, true),
         value: asset.type === ASSET_TYPES.TOKEN ? '0x0' : amount,
       };
-
   const { gasPrice: currentGasPrice, gas: currentGasLimit } = txParams;
   const value = ownProps.transaction?.txParams?.value || txParams.value;
   const customModalGasPriceInHex = getCustomGasPrice(state) || currentGasPrice;
@@ -88,12 +86,10 @@ const mapStateToProps = (state, ownProps) => {
     customModalGasLimitInHex,
     customModalGasPriceInHex,
   );
-
   const gasButtonInfo = getRenderableBasicEstimateData(
     state,
     customModalGasLimitInHex,
   );
-
   const currentCurrency = getCurrentCurrency(state);
   const conversionRate = getConversionRate(state);
   const newTotalFiat = sumHexWEIsToRenderableFiat(
@@ -101,29 +97,21 @@ const mapStateToProps = (state, ownProps) => {
     currentCurrency,
     conversionRate,
   );
-
   const { hideBasic } = state.appState.modal.modalState.props;
-
   const customGasPrice = calcCustomGasPrice(customModalGasPriceInHex);
-
   const maxModeOn = getSendMaxModeState(state);
-
   const balance = getCurrentEthBalance(state);
-
   const isMainnet = getIsMainnet(state);
   const isTestnet = getIsTestnet(state);
   const showFiat = getShouldShowFiat(state);
-
   const newTotalEth =
     maxModeOn && asset.type === ASSET_TYPES.NATIVE
       ? sumHexWEIsToRenderableEth([balance, '0x0'])
       : sumHexWEIsToRenderableEth([value, customGasTotal]);
-
   const sendAmount =
     maxModeOn && asset.type === ASSET_TYPES.NATIVE
       ? subtractHexWEIsFromRenderableEth(balance, customGasTotal)
       : sumHexWEIsToRenderableEth([value, '0x0']);
-
   const insufficientBalance = maxModeOn
     ? false
     : !isBalanceSufficient({
@@ -136,8 +124,8 @@ const mapStateToProps = (state, ownProps) => {
   const customNetworkEstimateWasFetched = getIsCustomNetworkGasPriceFetched(
     state,
   );
-
   let customPriceIsSafe = true;
+
   if ((isMainnet || process.env.IN_TEST) && isGasEstimate) {
     customPriceIsSafe = isCustomPriceSafe(state);
   } else if (
@@ -247,7 +235,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     hideModal: dispatchHideModal,
     ...otherDispatchProps
   } = dispatchProps;
-
   return {
     ...stateProps,
     ...otherDispatchProps,
@@ -256,9 +243,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       if (ownProps.onSubmit) {
         dispatchHideSidebar();
         dispatchCancelAndClose();
-        ownProps.onSubmit({ gasLimit, gasPrice });
+        ownProps.onSubmit({
+          gasLimit,
+          gasPrice,
+        });
         return;
       }
+
       if (isConfirm) {
         dispatchUpdateTransactionGasFees({
           gasLimit,
@@ -269,11 +260,17 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         dispatchHideModal();
         dispatchCancelAndClose();
       } else if (isSpeedUp) {
-        dispatchCreateSpeedUpTransaction(txId, { gasPrice, gasLimit });
+        dispatchCreateSpeedUpTransaction(txId, {
+          gasPrice,
+          gasLimit,
+        });
         dispatchHideSidebar();
         dispatchCancelAndClose();
       } else if (isRetry) {
-        dispatchCreateRetryTransaction(txId, { gasPrice, gasLimit });
+        dispatchCreateRetryTransaction(txId, {
+          gasPrice,
+          gasLimit,
+        });
         dispatchHideSidebar();
         dispatchCancelAndClose();
       } else {
@@ -289,6 +286,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     },
     cancelAndClose: () => {
       dispatchCancelAndClose();
+
       if (isSpeedUp || isRetry) {
         dispatchHideSidebar();
       }

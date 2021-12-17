@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classnames from 'classnames';
-
+import PropTypes from 'prop-types';
 export default function ReadOnlyInput(props) {
   const {
     wrapperClass = '',
@@ -11,9 +10,7 @@ export default function ReadOnlyInput(props) {
     onClick,
     autoFocus = false,
   } = props;
-
   const InputType = textarea ? 'textarea' : 'input';
-
   return (
     <div className={classnames('readonly-input', wrapperClass)}>
       <InputType
@@ -27,7 +24,6 @@ export default function ReadOnlyInput(props) {
     </div>
   );
 }
-
 ReadOnlyInput.propTypes = {
   wrapperClass: PropTypes.string,
   inputClass: PropTypes.string,

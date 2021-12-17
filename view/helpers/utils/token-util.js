@@ -1,20 +1,15 @@
 import contractMap from '@metamask/contract-metadata';
+import BigNumber from 'bignumber.js';
+import log from 'loglevel';
 import {
   conversionUtil,
   multiplyCurrencies,
 } from '@shared/modules/conversion.utils';
-import BigNumber from 'bignumber.js';
-import log from 'loglevel';
 import * as util from '.';
 import { formatCurrency } from './confirm-tx.util';
-
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
-  return {
-    ...acc,
-    [base.toLowerCase()]: contractMap[base],
-  };
+  return { ...acc, [base.toLowerCase()]: contractMap[base] };
 }, {});
-
 const DEFAULT_SYMBOL = '';
 
 async function getSymbolFromContract(tokenAddress) {
@@ -109,31 +104,25 @@ export async function getSymbolAndDecimals(tokenAddress, existingTokens = []) {
     decimals,
   };
 }
-
 export function tokenInfoGetter() {
   const tokens = {};
-
   return async (address) => {
     if (tokens[address]) {
       return tokens[address];
     }
 
     tokens[address] = await getSymbolAndDecimals(address);
-
     return tokens[address];
   };
 }
-
 export function calcTokenAmount(value, decimals) {
   const multiplier = Math.pow(10, Number(decimals || 0));
   return new BigNumber(String(value)).div(multiplier);
 }
-
 export function calcTokenValue(value, decimals) {
   const multiplier = Math.pow(10, Number(decimals || 0));
   return new BigNumber(String(value)).times(multiplier);
 }
-
 /**
  * Attempts to get the address parameter of the given token transaction data
  * (i.e. function call) per the Human Standard Token ABI, in the following
@@ -144,11 +133,11 @@ export function calcTokenValue(value, decimals) {
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A lowercase address string.
  */
+
 export function getTokenAddressParam(tokenData = {}) {
   const value = tokenData?.args?._to || tokenData?.args?.[0];
   return value?.toString().toLowerCase();
 }
-
 /**
  * Gets the '_value' parameter of the given token transaction data
  * (i.e function call) per the Human Standard Token ABI, if present.
@@ -156,15 +145,14 @@ export function getTokenAddressParam(tokenData = {}) {
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A decimal string value.
  */
+
 export function getTokenValueParam(tokenData = {}) {
   return tokenData?.args?._value?.toString();
 }
-
 export function getTokenValue(tokenParams = []) {
   const valueData = tokenParams.find((param) => param.name === '_value');
   return valueData && valueData.value;
 }
-
 /**
  * Get the token balance converted to fiat and optionally formatted for display
  *
@@ -177,6 +165,7 @@ export function getTokenValue(tokenParams = []) {
  * @param {boolean} [hideCurrencySymbol] - excludes the currency symbol in the result if true
  * @returns {string|undefined} The token amount in the user's chosen fiat currency, optionally formatted and localize
  */
+
 export function getTokenFiatAmount(
   contractExchangeRate,
   conversionRate,
@@ -213,6 +202,7 @@ export function getTokenFiatAmount(
     conversionRate: currentTokenToFiatRate,
   });
   let result;
+
   if (hideCurrencySymbol) {
     result = formatCurrency(currentTokenInFiat, currentCurrency);
   } else if (formatted) {
@@ -223,5 +213,6 @@ export function getTokenFiatAmount(
   } else {
     result = currentTokenInFiat;
   }
+
   return result;
 }

@@ -2,10 +2,7 @@ import extension from 'extensionizer';
 import { stripHexPrefix } from 'ethereumjs-util';
 import BN from 'bn.js';
 import { memoize } from 'lodash';
-import {
-  MAINNET_CHAIN_ID,
-  TEST_CHAINS,
-} from '@shared/constants/network';
+import { MAINNET_CHAIN_ID, TEST_CHAINS } from '@shared/constants/network';
 
 import {
   ENVIRONMENT_TYPE_POPUP,

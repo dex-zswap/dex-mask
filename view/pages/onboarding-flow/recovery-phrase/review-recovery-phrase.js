@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import ProgressBar from '@c/app/step-progress-bar';
 import Box from '@c/ui/box';
 import Button from '@c/ui/button';
@@ -12,11 +15,7 @@ import {
 import { INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
 import { useCopyToClipboard } from '@view/hooks/useCopyToClipboard';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import RecoveryPhraseChips from './recovery-phrase-chips';
-
 export default function RecoveryPhrase({ seedPhrase }) {
   const history = useHistory();
   const t = useI18nContext();
@@ -118,7 +117,6 @@ export default function RecoveryPhrase({ seedPhrase }) {
     </div>
   );
 }
-
 RecoveryPhrase.propTypes = {
   seedPhrase: PropTypes.string,
 };

@@ -1,9 +1,9 @@
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import LongLetter from '@c/ui/long-letter';
 import { Menu, MenuItem } from '@c/ui/menu';
 import { toBnString } from '@view/helpers/utils/conversions.util';
-import { ethers } from 'ethers';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import {
   BSC_CHAIN_ID,
   CHAIN_ID_NAME_MAP,
@@ -15,7 +15,6 @@ import {
   RINKEBY_CHAIN_ID,
   ROPSTEN_CHAIN_ID,
 } from './constants';
-
 const chainIdOrders = [
   DEX_CHAIN_ID,
   MAINNET_CHAIN_ID,
@@ -31,16 +30,14 @@ const ChainSwitcher = ({ onChange, currentChainId, outSideChains }) => {
   const frequentRpcList = useSelector(
     (state) => state.metamask.frequentRpcListDetail || [],
   );
-
   const [menuOpened, setMenuOpened] = useState(false);
-
   const toggleMenu = useCallback(() => {
     setMenuOpened(!menuOpened);
   }, [menuOpened]);
-
   const selectChain = useCallback(
     (chainId, type, isRpc, chainInfo) => {
       toggleMenu();
+
       if (isRpc) {
         onChange(chainId, chainInfo, true);
         return;
@@ -53,7 +50,6 @@ const ChainSwitcher = ({ onChange, currentChainId, outSideChains }) => {
     },
     [toggleMenu, onChange],
   );
-
   const chainList = useMemo(() => {
     const chains = chainIdOrders
       .map((chainId) => ({
@@ -91,20 +87,21 @@ const ChainSwitcher = ({ onChange, currentChainId, outSideChains }) => {
 
     return chains;
   }, [outSideChains, frequentRpcList]);
-
   const chainName = useMemo(() => {
     if (!currentChainId) {
       return 'UNKNOWN';
     }
+
     const find = chainList.find(
       ({ chainNumber }) => chainNumber === toBnString(currentChainId),
     );
+
     if (find) {
       return find.nickName;
     }
+
     return 'UNKNOWN';
   }, [chainList, currentChainId]);
-
   return (
     <>
       <div

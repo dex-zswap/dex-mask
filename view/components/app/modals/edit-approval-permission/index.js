@@ -1,7 +1,7 @@
-import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
-import { getSelectedIdentity } from '@view/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
+import { getSelectedIdentity } from '@view/selectors';
 import EditApprovalPermission from './component';
 
 const mapStateToProps = (state) => {
