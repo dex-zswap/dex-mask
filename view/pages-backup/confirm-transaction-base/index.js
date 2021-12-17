@@ -20,7 +20,7 @@ import {
   getIsEthGasPriceFetched,
   getIsMainnet,
   getKnownMethodData,
-  getMetaMaskAccounts,
+  getDexMaskAccounts,
   getNoGasPriceFetched,
   getPreferences,
   getShouldShowFiat,
@@ -97,7 +97,7 @@ const mapStateToProps = (state, ownProps) => {
     value: amount,
     data,
   } = (transaction && transaction.txParams) || txParams;
-  const accounts = getMetaMaskAccounts(state);
+  const accounts = getDexMaskAccounts(state);
 
   const assetImage = assetImages[txParamsToAddress];
 

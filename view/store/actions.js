@@ -19,7 +19,7 @@ import { getSymbolAndDecimals } from '@view/helpers/utils/token-util';
 import { getMethodDataAsync } from '@view/helpers/utils/transactions.util';
 import txHelper from '@view/helpers/utils/tx-helper';
 import {
-  getMetaMaskAccounts,
+  getDexMaskAccounts,
   getPermittedAccountsForCurrentTab,
   getSelectedAddress,
 } from '@view/selectors';
@@ -1029,8 +1029,8 @@ export function updateDexmaskState(newState) {
 
     const newAddressBook = newState.addressBook?.[newProvider?.chainId] ?? {};
     const oldAddressBook = currentState.addressBook?.[provider?.chainId] ?? {};
-    const newAccounts = getMetaMaskAccounts({ metamask: newState });
-    const oldAccounts = getMetaMaskAccounts({ metamask: currentState });
+    const newAccounts = getDexMaskAccounts({ metamask: newState });
+    const oldAccounts = getDexMaskAccounts({ metamask: currentState });
     const newSelectedAccount = newAccounts[newSelectedAddress];
     const oldSelectedAccount = newAccounts[selectedAddress];
     // dispatch an ACCOUNT_CHANGED for any account whose balance or other

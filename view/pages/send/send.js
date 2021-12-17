@@ -27,7 +27,7 @@ import {
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import {
   getCurrentChainId,
-  getMetaMaskAccounts,
+  getDexMaskAccounts,
   getSelectedAddress,
   isCustomPriceExcessive,
 } from '@view/selectors';
@@ -58,7 +58,7 @@ export default function SendTransactionScreen() {
   const tokenAddress = useSelector(getSendAssetAddress);
   const userTokens = useSelector(getTokens);
   const sendAsset = useSelector(getSendAsset);
-  const accounts = useSelector(getMetaMaskAccounts);
+  const accounts = useSelector(getDexMaskAccounts);
 
   const nativeCurrency = useSelector(getNativeCurrency);
   const gasIsExcessive = useSelector(sendSliceIsCustomPriceExcessive);

@@ -1706,6 +1706,9 @@
   "recipientAddressPlaceholder2": {
     "message": "Search, public address (0x)"
   },
+  "reciveToken": {
+    "message": "Recive Token"
+  },
   "recommendedGasLabel": {
     "message": "Recommended"
   },
@@ -1990,6 +1993,9 @@
   },
   "settings": {
     "message": "Settings"
+  },
+  "shareAddress": {
+    "message": "Share your account’s unique address by send the QR code or copy the address below to receive any token or collectible."
   },
   "show": {
     "message": "Show"
@@ -2444,6 +2450,12 @@
     "message": "Multiple tokens can use the same name and symbol. Check $1 to verify this is the token you're looking for.",
     "description": "This appears in a tooltip next to the verifyThisTokenOn message. It gives the user more information about why they should check the token on a block explorer. $1 will be the name or url of the block explorer, which will be the translation of 'etherscan' or a block explorer url specified for a custom network."
   },
+  "swapWelcome": {
+    "message": "Welcome to ZSwap"
+  },
+  "swapWelcomeDescription": {
+    "message": "The most advanced decentralized platform. Enter to swap and add liquidity now."
+  },
   "swapYourTokenBalance": {
     "message": "$1 $2 available to swap",
     "description": "Tells the user how much of a token they have in their balance. $1 is a decimal number amount of tokens, and $2 is a token symbol"
@@ -2552,11 +2564,8 @@
     "message": "To: $1",
     "description": "$1 is the address to include in the To label. It is typically shortened first using shortenAddress"
   },
-  "toLiquidity": {
-    "message": "Click the button to enter the Liquidity page"
-  },
   "toSwap": {
-    "message": "Click the button to enter the Swap page"
+    "message": "Enter ZSwap"
   },
   "toWithColon": {
     "message": "To:"

@@ -2,7 +2,7 @@ import { getNativeCurrency } from '@reducer/dexmask/dexmask';
 import { getSendAssetAddress, updateSendAsset } from '@reducer/send';
 import {
   getAssetImages,
-  getMetaMaskAccounts,
+  getDexMaskAccounts,
   getNativeCurrencyImage,
 } from '@view/selectors';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ function mapStateToProps(state) {
     tokens: state.metamask.tokens,
     selectedAddress: state.metamask.selectedAddress,
     sendAssetAddress: getSendAssetAddress(state),
-    accounts: getMetaMaskAccounts(state),
+    accounts: getDexMaskAccounts(state),
     nativeCurrency: getNativeCurrency(state),
     nativeCurrencyImage: getNativeCurrencyImage(state),
     assetImages: getAssetImages(state),

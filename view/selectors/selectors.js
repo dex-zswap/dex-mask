@@ -141,8 +141,8 @@ export function deprecatedGetCurrentNetworkId(state) {
   return state.metamask.network;
 }
 
-export const getMetaMaskAccounts = createSelector(
-  getMetaMaskAccountsRaw,
+export const getDexMaskAccounts = createSelector(
+  getDexMaskAccountsRaw,
   getMetaMaskCachedBalances,
   (currentAccounts, cachedBalances) =>
     Object.entries(currentAccounts).reduce(
@@ -193,7 +193,7 @@ export function getMetaMaskIdentities(state) {
   return state.metamask.identities;
 }
 
-export function getMetaMaskAccountsRaw(state) {
+export function getDexMaskAccountsRaw(state) {
   return state.metamask.accounts;
 }
 
@@ -216,7 +216,7 @@ export function getMetaMaskCachedBalances(state) {
 export const getDexMaskAccountsOrdered = createSelector(
   getMetaMaskKeyrings,
   getMetaMaskIdentities,
-  getMetaMaskAccounts,
+  getDexMaskAccounts,
   (keyrings, identities, accounts) =>
     keyrings
       .reduce((list, keyring) => list.concat(keyring.accounts), [])
@@ -224,7 +224,7 @@ export const getDexMaskAccountsOrdered = createSelector(
       .map((address) => ({ ...identities[address], ...accounts[address] })),
 );
 
-export const getMetaMaskAccountsConnected = createSelector(
+export const getDexMaskAccountsConnected = createSelector(
   getDexMaskAccountsOrdered,
   (connectedAccounts) =>
     connectedAccounts.map(({ address }) => address.toLowerCase()),
@@ -246,14 +246,14 @@ export function getSelectedAccountCachedBalance(state) {
 }
 
 export function getSelectedAccount(state) {
-  const accounts = getMetaMaskAccounts(state);
+  const accounts = getDexMaskAccounts(state);
   const selectedAddress = getSelectedAddress(state);
 
   return accounts[selectedAddress];
 }
 
 export function getTargetAccount(state, targetAddress) {
-  const accounts = getMetaMaskAccounts(state);
+  const accounts = getDexMaskAccounts(state);
   return accounts[targetAddress];
 }
 
@@ -288,7 +288,7 @@ export function getAddressBookEntryName(state, address) {
 }
 
 export function accountsWithSendEtherInfoSelector(state) {
-  const accounts = getMetaMaskAccounts(state);
+  const accounts = getDexMaskAccounts(state);
   const identities = getMetaMaskIdentities(state);
 
   const accountsWithSendEtherInfo = Object.entries(identities).map(

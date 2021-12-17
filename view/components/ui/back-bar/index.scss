@@ -1,7 +1,6 @@
 .back-bar-wrap {
   @include flex(flex-start);
   margin: 25px auto;
-  padding: 0 8px;
   .back-bar-icon-wrap {
     @include w-h(24px, 24px);
     @include flex;

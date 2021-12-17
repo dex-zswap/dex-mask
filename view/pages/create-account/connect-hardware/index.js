@@ -3,8 +3,8 @@ import { SECOND } from '@shared/constants/time';
 import { formatBalance } from '@view/helpers/utils';
 import {
   getCurrentChainId,
-  getMetaMaskAccounts,
-  getMetaMaskAccountsConnected,
+  getDexMaskAccounts,
+  getDexMaskAccountsConnected,
   getRpcPrefsForCurrentProvider,
 } from '@view/selectors';
 import * as actions from '@view/store/actions';
@@ -302,8 +302,8 @@ ConnectHardwareForm.propTypes = {
 const mapStateToProps = (state) => ({
   chainId: getCurrentChainId(state),
   rpcPrefs: getRpcPrefsForCurrentProvider(state),
-  accounts: getMetaMaskAccounts(state),
-  connectedAccounts: getMetaMaskAccountsConnected(state),
+  accounts: getDexMaskAccounts(state),
+  connectedAccounts: getDexMaskAccountsConnected(state),
   defaultHdPaths: state.appState.defaultHdPaths,
   mostRecentOverviewPage: getMostRecentOverviewPage(state),
   useLedgerLive: state.metamask.useLedgerLive,

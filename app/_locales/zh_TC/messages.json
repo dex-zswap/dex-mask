@@ -1862,11 +1862,8 @@
     "message": "至：$1",
     "description": "$1 is the address to include in the To label. It is typically shortened first using shortenAddress"
   },
-  "toLiquidity": {
-    "message": "點擊按鈕進入流動性挖礦頁面"
-  },
   "toSwap": {
-    "message": "點擊按鈕進入ZSWAP頁面"
+    "message": "進入ZSWAP"
   },
   "toWithColon": {
     "message": "至："

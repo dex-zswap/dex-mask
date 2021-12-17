@@ -11,4 +11,20 @@
       width: 195px;
     }
   }
+
+  .new-account-import-bottom {
+    flex: 1;
+
+    .new-account-import-form__private-key,
+    .new-account-import-form__json {
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .used-by-clients {
+      font-size: $size-12;
+      font-weight: bold;
+      color: $white;
+    }
+  }
 }
