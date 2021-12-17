@@ -1,16 +1,10 @@
-@import 'tab/index';
-
-.tabs {
-  flex-grow: 1;
-  // Just for Firefox — https://github.com/MetaMask/metamask-extension/issues/8700
-  -moz-transform: translateZ(0);
-
-  &__list {
-    display: flex;
-    justify-content: flex-start;
-    border-bottom: 1px solid $geyser;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+.dex-tabs {
+  .tabs-tab {
+    margin: 10px 0 15px;
+    .tab-item {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+    } 
   }
 }

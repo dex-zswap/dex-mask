@@ -31,25 +31,25 @@ export default function SelectedToken({ token }) {
     copied: false,
     accountOptionsMenuOpen: false,
   });
-
   const tokens = useSelector(getTokens);
-
-  const shouldHideZeroBalanceTokens = useSelector(getShouldHideZeroBalanceTokens);
+  const shouldHideZeroBalanceTokens = useSelector(
+    getShouldHideZeroBalanceTokens,
+  );
   const { tokensWithBalancesLoading, tokensWithBalances } = useTokenTracker(
     tokens,
     true,
     shouldHideZeroBalanceTokens,
   );
-
   const copyTimeout = useRef(null);
   const dropTrigger = useRef(null);
   const checksummedAddress = useMemo(
     () => toChecksumHexAddress(selectedIdentity.address),
     [selectedIdentity.address],
   );
-
-  const targetToken = useMemo(() => tokensWithBalances.find(({ address }) => address === token.address), [token, tokensWithBalances]);
-
+  const targetToken = useMemo(
+    () => tokensWithBalances.find(({ address }) => address === token.address),
+    [token, tokensWithBalances],
+  );
   const tokenBalance = useMemo(() => {
     if (tokensWithBalancesLoading) {
       return `0.00 ${token.symbol}`;
@@ -57,7 +57,6 @@ export default function SelectedToken({ token }) {
 
     return [targetToken?.string ?? '0.00', token.symbol].join(' ');
   }, [targetToken]);
-
   const formattedFiat = useTokenFiatAmount(
     token?.address,
     targetToken?.string,
@@ -66,7 +65,6 @@ export default function SelectedToken({ token }) {
       showFiat: true,
     },
   );
-
   const copyAddress = useCallback(() => {
     setState((state) =>
       Object.assign({}, state, {
@@ -127,14 +125,10 @@ export default function SelectedToken({ token }) {
         </div>
         <div className="native-currency flex space-between items-center">
           <div className="native-currency-balance">
-            <div className="token-balance">{ tokenBalance }</div>
-            <div className="token-usd">{ formattedFiat }</div>
+            <div className="token-balance">{tokenBalance}</div>
+            <div className="token-usd">{formattedFiat}</div>
           </div>
-          <TokenImage
-            symbol={token.symbol}
-            address={token.address}
-            size={48}
-          />
+          <TokenImage symbol={token.symbol} address={token.address} size={48} />
         </div>
       </div>
     </>

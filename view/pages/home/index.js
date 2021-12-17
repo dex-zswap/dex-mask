@@ -120,27 +120,26 @@ export default function HomePage() {
           <ChainSwitcher />
           <SelectedAccount />
           <EthOverview />
-          <Tabs defaultActiveTabName={t('assets')} tabsClassName="home__tabs">
-            <Tab
-              activeClassName="home__tab--active"
-              className="home__tab"
-              data-testid="home__asset-tab"
-              name={t('assets')}
-            >
-              <AssetList
-                onClickAsset={(asset) =>
-                  history.push(`${ASSET_ROUTE}/${asset}`)
+          <Tabs 
+            tabs={
+              [
+                {
+                  label: t('assets'),
+                  key: 'assets'
+                },
+                {
+                  label: t('activity'),
+                  key: 'activity'
                 }
-              />
-            </Tab>
-            <Tab
-              activeClassName="home__tab--active"
-              className="home__tab"
-              data-testid="home__activity-tab"
-              name={t('activity')}
-            >
-              <TransactionList />
-            </Tab>
+              ]
+            }
+          >
+            <AssetList
+              onClickAsset={(asset) =>
+                history.push(`${ASSET_ROUTE}/${asset}`)
+              }
+            />
+            <TransactionList />
           </Tabs>
         </div>
       </div>

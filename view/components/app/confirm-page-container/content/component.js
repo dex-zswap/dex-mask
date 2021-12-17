@@ -97,8 +97,8 @@ export default class ConfirmPageContainerContent extends Component {
         )}
         {/* <ConfirmPageContainerSummary
         className={classnames({
-          'confirm-page-container-summary--border':
-            !detailsComponent || !dataComponent,
+         'confirm-page-container-summary--border':
+           !detailsComponent || !dataComponent,
         })}
         action={action}
         title={title}

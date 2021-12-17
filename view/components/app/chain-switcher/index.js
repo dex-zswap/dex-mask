@@ -104,8 +104,8 @@ class ChainSwitcher extends Component {
       <div className="chain-switcher__default-chains base-width">
         {/* <div
         className={classnames([
-          'chain-switcher__default-chain-item',
-          providerName === DEX_MAINNET && 'chain-switcher__current-chain',
+         'chain-switcher__default-chain-item',
+         providerName === DEX_MAINNET && 'chain-switcher__current-chain',
         ])}
         onClick={() => this.switchNetWork(DEX_MAINNET)}
         >
@@ -113,8 +113,8 @@ class ChainSwitcher extends Component {
         </div>
         <div
         className={classnames([
-          'chain-switcher__default-chain-item',
-          providerName === MAINNET && 'chain-switcher__current-chain',
+         'chain-switcher__default-chain-item',
+         providerName === MAINNET && 'chain-switcher__current-chain',
         ])}
         onClick={() => this.switchNetWork(MAINNET)}
         >
@@ -122,8 +122,8 @@ class ChainSwitcher extends Component {
         </div>
         <div
         className={classnames([
-          'chain-switcher__default-chain-item',
-          providerName === BSC_MAINNET && 'chain-switcher__current-chain',
+         'chain-switcher__default-chain-item',
+         providerName === BSC_MAINNET && 'chain-switcher__current-chain',
         ])}
         onClick={() => this.switchNetWork(BSC_MAINNET)}
         >
@@ -264,13 +264,12 @@ class ChainSwitcher extends Component {
       <>
         <div className="chain-switcher">
           {/* <div className="chain-switcher__wrapper">
-          
-          <div
-            className="chain-switcher__modal-trigger"
-            ref={(el) => (this.triggerEl = el)}
-            onClick={() => this.toggleNetworkDrop()}
+                    <div
+           className="chain-switcher__modal-trigger"
+           ref={(el) => (this.triggerEl = el)}
+           onClick={() => this.toggleNetworkDrop()}
           >
-            ...
+           ...
           </div>
           </div> */}
           <Selector

@@ -20,10 +20,7 @@ import { getNativeCurrency } from '@reducer/dexmask/dexmask';
 import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
 import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
 import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
-import {
-  getSelectedAccount,
-  getSelectedIdentity,
-} from '@view/selectors';
+import { getSelectedAccount, getSelectedIdentity } from '@view/selectors';
 export default function SelectedAccount() {
   const t = useContext(I18nContext);
   const selectedIdentity = useSelector(getSelectedIdentity);
@@ -48,13 +45,10 @@ export default function SelectedAccount() {
   } = useUserPreferencedCurrency(SECONDARY, {
     ethNumberOfDecimals: 4,
   });
-  const [, primaryCurrencyProperties] = useCurrencyDisplay(
-    balance,
-    {
-      numberOfDecimals: primaryNumberOfDecimals,
-      currency: primaryCurrency,
-    },
-  );
+  const [, primaryCurrencyProperties] = useCurrencyDisplay(balance, {
+    numberOfDecimals: primaryNumberOfDecimals,
+    currency: primaryCurrency,
+  });
   const [
     secondaryCurrencyDisplay,
     secondaryCurrencyProperties,
@@ -126,8 +120,14 @@ export default function SelectedAccount() {
         </div>
         <div className="native-currency flex space-between items-center">
           <div className="native-currency-balance">
-            <div className="token-balance">{primaryCurrencyProperties.value} {primaryCurrencyProperties.suffix}</div>
-            <div className="token-usd">{secondaryCurrencyProperties.value} {secondaryCurrencyProperties.suffix}</div>
+            <div className="token-balance">
+              {primaryCurrencyProperties.value}{' '}
+              {primaryCurrencyProperties.suffix}
+            </div>
+            <div className="token-usd">
+              {secondaryCurrencyProperties.value}{' '}
+              {secondaryCurrencyProperties.suffix}
+            </div>
           </div>
           <TokenImage
             symbol={nativeCurrency}

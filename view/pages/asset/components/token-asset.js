@@ -8,7 +8,6 @@ import BackBar from '@c/ui/back-bar';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 export default function TokenAsset({ token }) {
   const t = useI18nContext();
-
   return (
     <>
       <TopHeader />

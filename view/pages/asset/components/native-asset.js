@@ -6,10 +6,8 @@ import TransactionList from '@c/app/transaction/list';
 import { EthOverview } from '@c/app/wallet-overview';
 import BackBar from '@c/ui/back-bar';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-
 export default function NativeAsset({ nativeCurrency }) {
   const t = useI18nContext();
-
   return (
     <>
       <TopHeader />

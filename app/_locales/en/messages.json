@@ -2842,6 +2842,9 @@
   "youSign": {
     "message": "You are signing"
   },
+  "yourAsset": {
+    "message": "Your $1"
+  },
   "yourPrivateSeedPhrase": {
     "message": "Your private Secret Recovery Phrase"
   },
@@ -2850,8 +2853,5 @@
   },
   "zswap": {
     "message": "ZSWAP"
-  },
-  "yourAsset": {
-    "message": "Your $1"
   }
 }
