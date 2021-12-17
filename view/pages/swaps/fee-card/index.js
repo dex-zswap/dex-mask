@@ -115,16 +115,16 @@ export default function FeeCard({
                           </p>
                           <p className="fee-card__info-tooltip-paragraph">
                             {/* <a
-               className="fee-card__link"
-               onClick={() => {
-                 global.platform.openTab({
-                   url: GAS_FEES_LEARN_MORE_URL,
-                 });
-               }}
-               target="_blank"
-               rel="noopener noreferrer"
+              className="fee-card__link"
+              onClick={() => {
+              global.platform.openTab({
+              url: GAS_FEES_LEARN_MORE_URL,
+              });
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
               >
-               {t('swapGasFeesLearnMore')}
+              {t('swapGasFeesLearnMore')}
               </a> */}
                           </p>
                         </>

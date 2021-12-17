@@ -30,58 +30,58 @@ const AutoInitTokens = () => {
     [userTokens],
   );
   useDeepEffect(() => {
-    getIndexAssets({
-      offset: 0,
-      limit: 1000,
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.c === 200) {
-          const chain = toBnString(chainId);
-          const tokenMap = {};
-          const tokenAddesses = [];
-          res.d.forEach((token) => {
-            if (
-              !userTokenAddress.includes(token.token_address) &&
-              chain === token.meta_chain_id
-            ) {
-              tokenMap[token.token_address] = {
-                address: token.token_address,
-                decimals: token.decimals,
-                symbol: token.token,
-              };
-              tokenAddesses.push(token.token_address);
-            }
-          });
+    // getIndexAssets({
+    //   offset: 0,
+    //   limit: 1000,
+    // })
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     if (res.c === 200) {
+    //       const chain = toBnString(chainId);
+    //       const tokenMap = {};
+    //       const tokenAddesses = [];
+    //       res.d.forEach((token) => {
+    //         if (
+    //           !userTokenAddress.includes(token.token_address) &&
+    //           chain === token.meta_chain_id
+    //         ) {
+    //           tokenMap[token.token_address] = {
+    //             address: token.token_address,
+    //             decimals: token.decimals,
+    //             symbol: token.token,
+    //           };
+    //           tokenAddesses.push(token.token_address);
+    //         }
+    //       });
 
-          if (tokenAddesses.length) {
-            const orderInfo = clone(memoizedTokenOrders);
+    //       if (tokenAddesses.length) {
+    //         const orderInfo = clone(memoizedTokenOrders);
 
-            if (orderInfo[chainId]) {
-              const existOrders = clone(
-                orderInfo[chainId]?.[userAddress] ?? [],
-              );
-              orderInfo[chainId] = Object.assign(orderInfo[chainId], {
-                [userAddress]: tokenAddesses.concat(
-                  existOrders.filter(
-                    (address) => !tokenAddesses.includes(address),
-                  ),
-                ),
-              });
-            } else {
-              orderInfo[chainId] = {
-                [userAddress]: tokenAddesses,
-              };
-            }
+    //         if (orderInfo[chainId]) {
+    //           const existOrders = clone(
+    //             orderInfo[chainId]?.[userAddress] ?? [],
+    //           );
+    //           orderInfo[chainId] = Object.assign(orderInfo[chainId], {
+    //             [userAddress]: tokenAddesses.concat(
+    //               existOrders.filter(
+    //                 (address) => !tokenAddesses.includes(address),
+    //               ),
+    //             ),
+    //           });
+    //         } else {
+    //           orderInfo[chainId] = {
+    //             [userAddress]: tokenAddesses,
+    //           };
+    //         }
 
-            if (!isEqual(orderInfo, memoizedTokenOrders)) {
-              dispatch(setTokenDisplayOrders(orderInfo));
-            }
-          }
+    //         if (!isEqual(orderInfo, memoizedTokenOrders)) {
+    //           dispatch(setTokenDisplayOrders(orderInfo));
+    //         }
+    //       }
 
-          setPaddingTokens(tokenMap);
-        }
-      });
+    //       setPaddingTokens(tokenMap);
+    //     }
+    //   });
   }, [
     chainId,
     userAddress,

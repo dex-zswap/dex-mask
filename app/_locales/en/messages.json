@@ -2850,5 +2850,8 @@
   },
   "zswap": {
     "message": "ZSWAP"
+  },
+  "yourAsset": {
+    "message": "Your $1"
   }
 }

@@ -1,9 +1,9 @@
-.selected-account {
+.selected-token {
   height: 132px;
-  background: url('/images/background/selected-account.png') no-repeat center;
-  background-size: 100%;
+  background: $primary-background;
   margin: 10px auto 18px;
   padding: 0 18px;
+  border-radius: $size-12;
 
   .account-address {
     height: 50px;
@@ -42,11 +42,16 @@
     padding: 16px 5px 0;
 
     .native-currency-balance {
-      .currency-display-component__text,
-      .currency-display-component__suffix {
+      .token-balance {
         font-size: 26px;
         font-weight: bold;
         color: $white;
+      }
+
+      .token-usd {
+        font-size: $size-12;
+        color: $gray;
+        margin: 6px 0 0;
       }
     }
   }

@@ -278,10 +278,10 @@ export default function ConfirmPageContainerHeaderContent({
         <div className="confirm-page-container-header-content-wrap_sender">
           <TokenImage address={address} symbol={symbol} size={40} showLetter />
           {/* <img
-           style={{ borderRadius: '50%' }}
-           width="40px"
-           height="40px"
-           src={assetImage || nativeCurrencyImage}
+          style={{ borderRadius: '50%' }}
+          width="40px"
+          height="40px"
+          src={assetImage || nativeCurrencyImage}
           /> */}
           <div
             className="confirm-page-container-header-content-wrap_sender_title-wrap"

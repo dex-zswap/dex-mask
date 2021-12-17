@@ -184,12 +184,12 @@ export default class ChooseAccount extends Component {
           </div>
         ) : null}
         {/* <div
-         className="permissions-connect-choose-account__text-blue"
-         onClick={() =>
-           selectNewAccountViaModal(this.handleAccountClick.bind(this))
-         }
+        className="permissions-connect-choose-account__text-blue"
+        onClick={() =>
+          selectNewAccountViaModal(this.handleAccountClick.bind(this))
+        }
         >
-         {this.context.t('newAccount')}
+        {this.context.t('newAccount')}
         </div> */}
       </div>
     );

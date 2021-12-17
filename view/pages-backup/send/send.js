@@ -302,7 +302,7 @@ export default function SendTransactionScreen() {
       )}
       <SendFooter key="send-footer" history={history} />
       {/* {[SEND_STAGES.EDIT, SEND_STAGES.DRAFT].includes(stage) && (
-       <SendFooter key="send-footer" history={history} />
+      <SendFooter key="send-footer" history={history} />
       )} */}
     </div>
   );

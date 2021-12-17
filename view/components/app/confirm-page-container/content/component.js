@@ -96,19 +96,19 @@ export default class ConfirmPageContainerContent extends Component {
           <ConfirmPageContainerWarning warning={ethGasPriceWarning} />
         )}
         {/* <ConfirmPageContainerSummary
-         className={classnames({
-           'confirm-page-container-summary--border':
-             !detailsComponent || !dataComponent,
-         })}
-         action={action}
-         title={title}
-         titleComponent={titleComponent}
-         subtitleComponent={subtitleComponent}
-         hideSubtitle={hideSubtitle}
-         identiconAddress={identiconAddress}
-         nonce={nonce}
-         assetImage={assetImage}
-         origin={origin}
+        className={classnames({
+          'confirm-page-container-summary--border':
+            !detailsComponent || !dataComponent,
+        })}
+        action={action}
+        title={title}
+        titleComponent={titleComponent}
+        subtitleComponent={subtitleComponent}
+        hideSubtitle={hideSubtitle}
+        identiconAddress={identiconAddress}
+        nonce={nonce}
+        assetImage={assetImage}
+        origin={origin}
         /> */}
         {this.renderContent()}
         {(errorKey || errorMessage) && (

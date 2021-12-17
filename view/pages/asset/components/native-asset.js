@@ -1,39 +1,21 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  createCustomAccountLink,
-  getAccountLink,
-} from '@metamask/etherscan-link';
+import TopHeader from '@c/ui/top-header';
+import ChainSwitcher from '@c/app/chain-switcher';
+import SelectedNativeToken from '@c/app/selected-token/native';
 import TransactionList from '@c/app/transaction/list';
 import { EthOverview } from '@c/app/wallet-overview';
-import {
-  getCurrentChainId,
-  getRpcPrefsForCurrentProvider,
-  getSelectedAddress,
-  getSelectedIdentity,
-} from '@selectors/selectors';
-import { CHAINID_EXPLORE_MAP } from '@shared/constants/network';
-export default function NativeAsset({ nativeCurrency }) {
-  const selectedAccountName = useSelector(
-    (state) => getSelectedIdentity(state).name,
-  );
-  const dispatch = useDispatch();
-  const chainId = useSelector(getCurrentChainId);
-  const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
-  const address = useSelector(getSelectedAddress);
-  const history = useHistory();
-  let accountLink = getAccountLink(address, chainId, rpcPrefs);
+import BackBar from '@c/ui/back-bar';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 
-  if (!accountLink && CHAINID_EXPLORE_MAP[chainId]) {
-    accountLink = createCustomAccountLink(
-      address,
-      CHAINID_EXPLORE_MAP[chainId],
-    );
-  }
+export default function NativeAsset({ nativeCurrency }) {
+  const t = useI18nContext();
 
   return (
     <>
+      <TopHeader />
+      <BackBar title={t('yourAsset', [nativeCurrency])} />
+      <ChainSwitcher />
+      <SelectedNativeToken />
       <EthOverview className="asset__overview" />
       <TransactionList hideTokenTransactions />
     </>

@@ -89,14 +89,14 @@ class PrivateKeyImportView extends Component {
         </div>
         <div className="new-account-import-form__buttons">
           {/* <Button
-           className="new-account-create-form__button"
-           onClick={() => {
-             const { history, mostRecentOverviewPage } = this.props;
-             displayWarning(null);
-             history.push(mostRecentOverviewPage);
-           }}
+          className="new-account-create-form__button"
+          onClick={() => {
+            const { history, mostRecentOverviewPage } = this.props;
+            displayWarning(null);
+            history.push(mostRecentOverviewPage);
+          }}
           >
-           {this.context.t('cancel')}
+          {this.context.t('cancel')}
           </Button> */}
           <Button
             type="primary"

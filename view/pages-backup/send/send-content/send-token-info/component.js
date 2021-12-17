@@ -96,8 +96,8 @@ export default class SendAssetRow extends Component {
         <div className="send-v2__asset-dropdown">
           {this.renderSendToken()}
           {/* {this.state.sendableTokens.length > 0
-           ? this.renderAssetDropdown()
-           : null} */}
+          ? this.renderAssetDropdown()
+          : null} */}
         </div>
       </div>
     );
@@ -170,9 +170,9 @@ export default class SendAssetRow extends Component {
                 showLetter
               />
               {/* <Identicon
-               diameter={insideDropdown ? 30 : 40}
-               image={nativeCurrencyImage}
-               address={nativeCurrency}
+              diameter={insideDropdown ? 30 : 40}
+              image={nativeCurrencyImage}
+              address={nativeCurrency}
               /> */}
               <div className="send-v2__asset-dropdown__symbol">
                 <div title={nativeCurrency}>{nativeCurrency}</div>
@@ -209,9 +209,9 @@ export default class SendAssetRow extends Component {
                 onAmountChange={onAmountChange}
               />
               {/* <UserPreferencedCurrencyDisplay
-             numberOfDecimals={3}
-             value={balanceValue}
-             type={PRIMARY}
+            numberOfDecimals={3}
+            value={balanceValue}
+            type={PRIMARY}
             /> */}
             </div>
           </div>
@@ -257,9 +257,9 @@ export default class SendAssetRow extends Component {
                 showLetter
               />
               {/* <Identicon
-               address={address}
-               diameter={insideDropdown ? 30 : 40}
-               image={assetImages[address]}
+              address={address}
+              diameter={insideDropdown ? 30 : 40}
+              image={assetImages[address]}
               /> */}
               <div className="send-v2__asset-dropdown__symbol">
                 <div title={symbol}>{symbol}</div>

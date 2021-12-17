@@ -51,15 +51,15 @@ export default function TransactionDetailItem({
       )}
       <div className="transaction-detail-item__row justify-end">
         {/* {React.isValidElement(subTitle) ? (
-         <div className="transaction-detail-item__subtitle">{subTitle}</div>
+        <div className="transaction-detail-item__subtitle">{subTitle}</div>
         ) : (
-         <Typography
-           variant={TYPOGRAPHY.H7}
-           className="transaction-detail-item__subtitle"
-           color={COLORS.UI4}
-         >
-           {subTitle}
-         </Typography>
+        <Typography
+          variant={TYPOGRAPHY.H7}
+          className="transaction-detail-item__subtitle"
+          color={COLORS.UI4}
+        >
+          {subTitle}
+        </Typography>
         )} */}
 
         <Typography

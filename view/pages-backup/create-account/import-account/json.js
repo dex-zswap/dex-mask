@@ -54,10 +54,10 @@ class JsonImportSubview extends Component {
         />
         <div className="new-account-create-form__buttons">
           {/* <Button
-           className="new-account-create-form__button"
-           onClick={() => history.push(mostRecentOverviewPage)}
+          className="new-account-create-form__button"
+          onClick={() => history.push(mostRecentOverviewPage)}
           >
-           {this.context.t('cancel')}
+          {this.context.t('cancel')}
           </Button> */}
           <Button
             type="primary"
