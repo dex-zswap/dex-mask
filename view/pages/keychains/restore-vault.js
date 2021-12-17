@@ -1,218 +1,135 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { ethers } from 'ethers';
-import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
+import Logo from '@c/ui/logo';
 import TextField from '@c/ui/text-field';
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 import {
   createNewVaultAndRestore,
   initializeThreeBox,
   unMarkPasswordForgotten,
 } from '@view/store/actions';
+import { ethers } from 'ethers';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 const { isValidMnemonic } = ethers.utils;
 
-class RestoreVaultPage extends Component {
-  static contextTypes = {
-    t: PropTypes.func,
-  };
-  static propTypes = {
-    createNewVaultAndRestore: PropTypes.func.isRequired,
-    leaveImportSeedScreenState: PropTypes.func,
-    history: PropTypes.object,
-    isLoading: PropTypes.bool,
-    initializeThreeBox: PropTypes.func,
-  };
-  state = {
-    seedPhrase: '',
-    showSeedPhrase: false,
-    password: '',
-    confirmPassword: '',
-    seedPhraseError: null,
-    passwordError: null,
-    confirmPasswordError: null,
-  };
-  parseSeedPhrase = (seedPhrase) =>
-    (seedPhrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
+export default function RestoreVaultPage() {
+  const t = useI18nContext();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector((state) => state.appState);
 
-  handleSeedPhraseChange(seedPhrase) {
-    const { t } = this.context;
-    let seedPhraseError = null;
-    const wordCount = this.parseSeedPhrase(seedPhrase).split(/\s/u).length;
+  const [seedPhrase, setSeedPhrase] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [seedPhraseError, setSeedPhraseError] = useState();
+  const [passwordError, setPasswordError] = useState();
+  const [confirmPasswordError, setConfirmPasswordError] = useState();
 
-    if (
-      seedPhrase &&
-      (wordCount % 3 !== 0 || wordCount < 12 || wordCount > 24)
-    ) {
-      seedPhraseError = t('seedPhraseReq');
-    } else if (!isValidMnemonic(seedPhrase)) {
-      seedPhraseError = t('invalidSeedPhrase');
+  const parseSeedPhrase = (phrase) =>
+    (phrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
+
+  const handleSeedPhraseChange = (phrase) => {
+    let phraseError = null;
+    const wordCount = parseSeedPhrase(phrase).split(/\s/u).length;
+
+    if (phrase && (wordCount % 3 !== 0 || wordCount < 12 || wordCount > 24)) {
+      phraseError = t('seedPhraseReq');
+    } else if (!isValidMnemonic(phrase)) {
+      phraseError = t('invalidSeedPhrase');
     }
+    setSeedPhrase(phrase);
+    setSeedPhraseError(phraseError);
+  };
 
-    this.setState({
-      seedPhrase,
-      seedPhraseError,
+  const handlePasswordChange = (pwd) => {
+    let confirmPwdError = null;
+    let pwdError = null;
+    if (pwd && pwd.length < 8) {
+      pwdError = t('passwordNotLongEnough');
+    }
+    if (confirmPassword && pwd !== confirmPassword) {
+      confirmPwdError = t('passwordsDontMatch');
+    }
+    setPassword(pwd);
+    setPasswordError(pwdError);
+    setConfirmPasswordError(confirmPwdError);
+  };
+
+  const handleConfirmPasswordChange = (confirmPwd) => {
+    let confirmPwdError = null;
+    if (password !== confirmPwd) {
+      confirmPwdError = t('passwordsDontMatch');
+    }
+    setConfirmPassword(confirmPwd);
+    setConfirmPasswordError(confirmPwdError);
+  };
+
+  const onClick = () => {
+    dispatch(unMarkPasswordForgotten());
+    dispatch(
+      createNewVaultAndRestore(password, parseSeedPhrase(seedPhrase)),
+    ).then(() => {
+      dispatch(initializeThreeBox());
+      history.push(DEFAULT_ROUTE);
     });
-  }
-
-  handlePasswordChange(password) {
-    const { confirmPassword } = this.state;
-    let confirmPasswordError = null;
-    let passwordError = null;
-
-    if (password && password.length < 8) {
-      passwordError = this.context.t('passwordNotLongEnough');
-    }
-
-    if (confirmPassword && password !== confirmPassword) {
-      confirmPasswordError = this.context.t('passwordsDontMatch');
-    }
-
-    this.setState({
-      password,
-      passwordError,
-      confirmPasswordError,
-    });
-  }
-
-  handleConfirmPasswordChange(confirmPassword) {
-    const { password } = this.state;
-    let confirmPasswordError = null;
-
-    if (password !== confirmPassword) {
-      confirmPasswordError = this.context.t('passwordsDontMatch');
-    }
-
-    this.setState({
-      confirmPassword,
-      confirmPasswordError,
-    });
-  }
-
-  onClick = () => {
-    const { password, seedPhrase } = this.state;
-    const {
-      // eslint-disable-next-line no-shadow
-      createNewVaultAndRestore,
-      leaveImportSeedScreenState,
-      history,
-      // eslint-disable-next-line no-shadow
-      initializeThreeBox,
-    } = this.props;
-    leaveImportSeedScreenState();
-    createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
-      () => {
-        initializeThreeBox();
-        history.push(DEFAULT_ROUTE);
-      },
-    );
   };
 
-  hasError() {
-    const { passwordError, confirmPasswordError, seedPhraseError } = this.state;
+  const hasError = () => {
     return passwordError || confirmPasswordError || seedPhraseError;
-  }
-
-  toggleShowSeedPhrase = () => {
-    this.setState(({ showSeedPhrase }) => ({
-      showSeedPhrase: !showSeedPhrase,
-    }));
   };
 
-  render() {
-    const {
-      seedPhrase,
-      showSeedPhrase,
-      password,
-      confirmPassword,
-      seedPhraseError,
-      passwordError,
-      confirmPasswordError,
-    } = this.state;
-    const { t } = this.context;
-    const { isLoading } = this.props;
-    const disabled =
-      !seedPhrase ||
-      !password ||
-      !confirmPassword ||
-      isLoading ||
-      this.hasError();
-    return (
-      <div className="first-view-main-wrapper">
-        <div className="first-view-main">
-          <div className="import-account">
-            <div className="import-account__title">
-              {this.context.t('restoreAccountWithSeed')}
-            </div>
-            <div className="import-account__selector-label">
-              {this.context.t('secretPhrase')}
-            </div>
-            <div className="import-account__input-wrapper">
-              <label className="import-account__input-label">
-                {this.context.t('walletSeedRestore')}
-              </label>
-              <textarea
-                className="import-account__secret-phrase"
-                onChange={(e) => this.handleSeedPhraseChange(e.target.value)}
-                value={seedPhrase}
-                autoFocus
-                placeholder={this.context.t('separateEachWord')}
-              />
-              <span className="error">{seedPhraseError}</span>
-            </div>
-            <TextField
-              id="password"
-              label={t('newPassword')}
-              type="password"
-              className="first-time-flow__input"
-              value={this.state.password}
-              onChange={(event) =>
-                this.handlePasswordChange(event.target.value)
-              }
-              error={passwordError}
-              autoComplete="new-password"
-              margin="normal"
-              largeLabel
-            />
-            <TextField
-              id="confirm-password"
-              label={t('confirmPassword')}
-              type="password"
-              className="first-time-flow__input"
-              value={this.state.confirmPassword}
-              onChange={(event) =>
-                this.handleConfirmPasswordChange(event.target.value)
-              }
-              error={confirmPasswordError}
-              autoComplete="confirm-password"
-              margin="normal"
-              largeLabel
-            />
-            <Button
-              type="primary"
-              className="first-time-flow__button restore-vault__button"
-              onClick={() => !disabled && this.onClick()}
-              disabled={disabled}
-            >
-              {this.context.t('restore')}
-            </Button>
-          </div>
+  const disabled =
+    !seedPhrase || !password || !confirmPassword || isLoading || hasError();
+
+  return (
+    <div className="dex-page-container">
+      <Logo plain isCenter />
+      <div className="restore-vault-wrap base-width">
+        <div className="restore-vault-title">{t('restoreAccountWithSeed')}</div>
+        <div className="restore-vault-subtitle">{t('secretPhrase')}</div>
+        <div className="setting-item">
+          <div className="setting-label">{t('walletSeedRestore')}</div>
+          <TextField
+            value={seedPhrase}
+            onChange={(e) => handleSeedPhraseChange(e.target.value)}
+            placeholder={t('separateEachWord')}
+            autoFocus
+          />
+        </div>
+        <div className="setting-item">
+          <div className="setting-label">{t('newPassword')}</div>
+          <TextField
+            type="password"
+            value={password}
+            onChange={(event) => handlePasswordChange(event.target.value)}
+            error={passwordError}
+            autoComplete="new-password"
+            margin="normal"
+          />
+        </div>
+        <div className="setting-item">
+          <div className="setting-label">{t('confirmPassword')}</div>
+          <TextField
+            type="password"
+            className="first-time-flow__input"
+            value={confirmPassword}
+            onChange={({ target }) => handleConfirmPasswordChange(target.value)}
+            error={confirmPasswordError}
+            autoComplete="confirm-password"
+          />
+        </div>
+        <div className="bottom-fixed-btn-group">
+          <Button
+            type="primary"
+            onClick={() => !disabled && onClick()}
+            disabled={disabled}
+          >
+            {t('restore')}
+          </Button>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default connect(
-  ({ appState: { isLoading } }) => ({
-    isLoading,
-  }),
-  (dispatch) => ({
-    leaveImportSeedScreenState: () => {
-      dispatch(unMarkPasswordForgotten());
-    },
-    createNewVaultAndRestore: (pw, seed) =>
-      dispatch(createNewVaultAndRestore(pw, seed)),
-    initializeThreeBox: () => dispatch(initializeThreeBox()),
-  }),
-)(RestoreVaultPage);
