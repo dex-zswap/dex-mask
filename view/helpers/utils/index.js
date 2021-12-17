@@ -3,7 +3,14 @@ import * as ethUtil from 'ethereumjs-util';
 import abi from 'human-standard-token-abi';
 import { DateTime } from 'luxon';
 import { addHexPrefix } from '@app/scripts/lib/util';
-import { GOERLI_CHAIN_ID, KOVAN_CHAIN_ID, LOCALHOST_CHAIN_ID, MAINNET_CHAIN_ID, RINKEBY_CHAIN_ID, ROPSTEN_CHAIN_ID } from '@shared/constants/network';
+import {
+  GOERLI_CHAIN_ID,
+  KOVAN_CHAIN_ID,
+  LOCALHOST_CHAIN_ID,
+  MAINNET_CHAIN_ID,
+  RINKEBY_CHAIN_ID,
+  ROPSTEN_CHAIN_ID,
+} from '@shared/constants/network';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import punycode from 'punycode/punycode'; // formatData :: ( date: <Unix Timestamp> ) -> String
 
@@ -14,14 +21,20 @@ export function formatDate(date, format = "M/d/y 'at' T") {
 
   return DateTime.fromMillis(date).toFormat(format);
 }
-export function formatDateWithYearContext(date, formatThisYear = 'MMM d', fallback = 'MMM d, y') {
+export function formatDateWithYearContext(
+  date,
+  formatThisYear = 'MMM d',
+  fallback = 'MMM d, y',
+) {
   if (!date) {
     return '';
   }
 
   const dateTime = DateTime.fromMillis(date);
   const now = DateTime.local();
-  return dateTime.toFormat(now.year === dateTime.year ? formatThisYear : fallback);
+  return dateTime.toFormat(
+    now.year === dateTime.year ? formatThisYear : fallback,
+  );
 }
 /**
  * Determines if the provided chainId is a default MetaMask chain
@@ -29,7 +42,15 @@ export function formatDateWithYearContext(date, formatThisYear = 'MMM d', fallba
  */
 
 export function isDefaultMetaMaskChain(chainId) {
-  if (!chainId || chainId === MAINNET_CHAIN_ID || chainId === ROPSTEN_CHAIN_ID || chainId === RINKEBY_CHAIN_ID || chainId === KOVAN_CHAIN_ID || chainId === GOERLI_CHAIN_ID || chainId === LOCALHOST_CHAIN_ID) {
+  if (
+    !chainId ||
+    chainId === MAINNET_CHAIN_ID ||
+    chainId === ROPSTEN_CHAIN_ID ||
+    chainId === RINKEBY_CHAIN_ID ||
+    chainId === KOVAN_CHAIN_ID ||
+    chainId === GOERLI_CHAIN_ID ||
+    chainId === LOCALHOST_CHAIN_ID
+  ) {
     return true;
   }
 
@@ -44,7 +65,12 @@ export function valuesFor(obj) {
     return obj[key];
   });
 }
-export function addressSummary(address, firstSegLength = 10, lastSegLength = 4, includeHex = true) {
+export function addressSummary(
+  address,
+  firstSegLength = 10,
+  lastSegLength = 4,
+  includeHex = true,
+) {
   if (!address) {
     return '';
   }
@@ -55,13 +81,21 @@ export function addressSummary(address, firstSegLength = 10, lastSegLength = 4, 
     checked = ethUtil.stripHexPrefix(checked);
   }
 
-  return checked ? `${checked.slice(0, firstSegLength)}...${checked.slice(checked.length - lastSegLength)}` : '...';
+  return checked
+    ? `${checked.slice(0, firstSegLength)}...${checked.slice(
+        checked.length - lastSegLength,
+      )}`
+    : '...';
 }
 export function isValidDomainName(address) {
-  const match = punycode.toASCII(address).toLowerCase() // Checks that the domain consists of at least one valid domain pieces separated by periods, followed by a tld
-  // Each piece of domain name has only the characters a-z, 0-9, and a hyphen (but not at the start or end of chunk)
-  // A chunk has minimum length of 1, but minimum tld is set to 2 for now (no 1-character tlds exist yet)
-  .match(/^(?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)+[a-z0-9][-a-z0-9]*[a-z0-9]$/u);
+  const match = punycode
+    .toASCII(address)
+    .toLowerCase() // Checks that the domain consists of at least one valid domain pieces separated by periods, followed by a tld
+    // Each piece of domain name has only the characters a-z, 0-9, and a hyphen (but not at the start or end of chunk)
+    // A chunk has minimum length of 1, but minimum tld is set to 2 for now (no 1-character tlds exist yet)
+    .match(
+      /^(?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)+[a-z0-9][-a-z0-9]*[a-z0-9]$/u,
+    );
   return match !== null;
 }
 export function isOriginContractAddress(to, sendTokenAddress) {
@@ -86,8 +120,11 @@ export function parseBalance(balance) {
   const wei = numericBalance(balance);
   const weiString = wei.toString();
   const trailingZeros = /0+$/u;
-  const beforeDecimal = weiString.length > 18 ? weiString.slice(0, weiString.length - 18) : '0';
-  afterDecimal = `000000000000000000${wei}`.slice(-18).replace(trailingZeros, '');
+  const beforeDecimal =
+    weiString.length > 18 ? weiString.slice(0, weiString.length - 18) : '0';
+  afterDecimal = `000000000000000000${wei}`
+    .slice(-18)
+    .replace(trailingZeros, '');
 
   if (afterDecimal === '') {
     afterDecimal = '0';
@@ -97,7 +134,12 @@ export function parseBalance(balance) {
 } // Takes wei hex, returns an object with three properties.
 // Its "formatted" property is what we generally use to render values.
 
-export function formatBalance(balance, decimalsToKeep, needsParse = true, ticker = 'ETH') {
+export function formatBalance(
+  balance,
+  decimalsToKeep,
+  needsParse = true,
+  ticker = 'ETH',
+) {
   const parsed = needsParse ? parseBalance(balance) : balance.split('.');
   const beforeDecimal = parsed[0];
   let afterDecimal = parsed[1];
@@ -119,7 +161,10 @@ export function formatBalance(balance, decimalsToKeep, needsParse = true, ticker
     }
   } else {
     afterDecimal += Array(decimalsToKeep).join('0');
-    formatted = `${beforeDecimal}.${afterDecimal.slice(0, decimalsToKeep)} ${ticker}`;
+    formatted = `${beforeDecimal}.${afterDecimal.slice(
+      0,
+      decimalsToKeep,
+    )} ${ticker}`;
   }
 
   return formatted;
@@ -129,7 +174,9 @@ export function getContractAtAddress(tokenAddress) {
 }
 export function getRandomFileName() {
   let fileName = '';
-  const charBank = [...'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'];
+  const charBank = [
+    ...'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+  ];
   const fileNameLength = Math.floor(Math.random() * 7 + 6);
 
   for (let i = 0; i < fileNameLength; i++) {
@@ -143,7 +190,7 @@ export function exportAsFile(filename, data, type = 'text/csv') {
   filename = filename || getRandomFileName(); // source: https://stackoverflow.com/a/33542499 by Ludovic Feltz
 
   const blob = new window.Blob([data], {
-    type
+    type,
   });
 
   if (window.navigator.msSaveOrOpenBlob) {
@@ -178,9 +225,7 @@ export function shortenAddress(address = '', pre = 8, suffix = -8) {
   return `${address.slice(0, pre)}***${address.slice(suffix)}`;
 }
 export function getAccountByAddress(accounts = [], targetAddress) {
-  return accounts.find(({
-    address
-  }) => address === targetAddress);
+  return accounts.find(({ address }) => address === targetAddress);
 }
 /**
  * Strips the following schemes from URL strings:
@@ -243,7 +288,7 @@ export function checkExistingAddresses(address, list = []) {
     return false;
   }
 
-  const matchesAddress = obj => {
+  const matchesAddress = (obj) => {
     return obj.address.toLowerCase() === address.toLowerCase();
   };
 
@@ -260,7 +305,9 @@ export function checkExistingAddresses(address, list = []) {
  */
 
 export function toPrecisionWithoutTrailingZeros(n, precision) {
-  return new BigNumber(n).toPrecision(precision).replace(/(\.[0-9]*[1-9])0*|(\.0*)/u, '$1');
+  return new BigNumber(n)
+    .toPrecision(precision)
+    .replace(/(\.[0-9]*[1-9])0*|(\.0*)/u, '$1');
 }
 /**
  * Given and object where all values are strings, returns the same object with all values
@@ -269,9 +316,7 @@ export function toPrecisionWithoutTrailingZeros(n, precision) {
 
 export function addHexPrefixToObjectValues(obj) {
   return Object.keys(obj).reduce((newObj, key) => {
-    return { ...newObj,
-      [key]: addHexPrefix(obj[key])
-    };
+    return { ...newObj, [key]: addHexPrefix(obj[key]) };
   }, {});
 }
 /**
@@ -294,14 +339,14 @@ export function constructTxParams({
   amount,
   from,
   gas,
-  gasPrice
+  gasPrice,
 }) {
   const txParams = {
     data,
     from,
     value: '0',
     gas,
-    gasPrice
+    gasPrice,
   };
 
   if (!sendToken) {

@@ -17,19 +17,19 @@
       padding: 0 10px;
       border-radius: 4px;
       background: #020202;
-      color: #A2A2AA;
+      color: #a2a2aa;
       margin: 0 0 6px;
       font-size: 14px;
       line-height: 28px;
 
       &.active {
-        background: #6A4DEF;
+        background: #6a4def;
       }
 
       .word-text {
         font-size: 12px;
         font-weight: normal;
-        color: #FFFFFF;
+        color: #ffffff;
         line-height: 28px;
         padding: 0 0 0 4px;
       }
@@ -46,19 +46,18 @@
       margin: 0 5px 5px 0;
       border-radius: 4px;
       background: #020202;
-      color: #A2A2AA;
+      color: #a2a2aa;
 
       .word-text {
         font-size: 12px;
         font-weight: normal;
-        color: #FFFFFF;
+        color: #ffffff;
         line-height: 24px;
         padding: 0 0 0 2px;
       }
     }
   }
 }
-
 
 .confirm-seed__form {
   width: 224px;

@@ -10,24 +10,24 @@ export default function SecurityTab() {
   const t = useContext(I18nContext);
   const history = useHistory();
   const dispatch = useDispatch();
+  const { warning } = useSelector((state) => state.appState);
+  const metamask = useSelector((state) => state.metamask);
   const {
-    warning
-  } = useSelector(state => state.appState);
-  const metamask = useSelector(state => state.metamask);
-  const {
-    featureFlags: {
-      showIncomingTransactions
-    } = {},
-    usePhishDetect
+    featureFlags: { showIncomingTransactions } = {},
+    usePhishDetect,
   } = metamask;
-  return <div className="base-width">
+  return (
+    <div className="base-width">
       {warning && <div className="settings-tab__error">{warning}</div>}
       <div className="setting-item">
         <div className="setting-label">{t('revealSeedWords')}</div>
-        <Button type="primary" onClick={event => {
-        event.preventDefault();
-        history.push(REVEAL_SEED_ROUTE);
-      }}>
+        <Button
+          type="primary"
+          onClick={(event) => {
+            event.preventDefault();
+            history.push(REVEAL_SEED_ROUTE);
+          }}
+        >
           {t('revealSeedWords')}
         </Button>
       </div>
@@ -36,14 +36,28 @@ export default function SecurityTab() {
         <div className="setting-value">
           {t('showIncomingTransactionsDescription')}
         </div>
-        <Switch value={showIncomingTransactions} onChange={() => dispatch(setFeatureFlag('showIncomingTransactions', !showIncomingTransactions))} />
+        <Switch
+          value={showIncomingTransactions}
+          onChange={() =>
+            dispatch(
+              setFeatureFlag(
+                'showIncomingTransactions',
+                !showIncomingTransactions,
+              ),
+            )
+          }
+        />
       </div>
       <div className="setting-item">
         <div className="setting-label">{t('usePhishingDetection')}</div>
         <div className="setting-value">
           {t('usePhishingDetectionDescription')}
         </div>
-        <Switch value={usePhishDetect} onChange={() => dispatch(setUsePhishDetect(!usePhishDetect))} />
+        <Switch
+          value={usePhishDetect}
+          onChange={() => dispatch(setUsePhishDetect(!usePhishDetect))}
+        />
       </div>
-    </div>;
+    </div>
+  );
 }

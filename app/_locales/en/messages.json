@@ -1,22 +1,4 @@
 {
-  "metaMaskConnectStatusParagraphOne": {
-    "message": "You now have more control over your account connections in DEXMask."
-  },
-  "metaMaskConnectStatusParagraphThree": {
-    "message": "Click it to manage your connected accounts."
-  },
-  "metaMaskConnectStatusParagraphTwo": {
-    "message": "The connection status button shows if the website you’re visiting is connected to your currently selected account."
-  },
-  "metaMaskDescription": {
-    "message": "Connecting you to Ethereum and the Decentralized Web."
-  },
-  "metaMaskSwapsOfflineDescription": {
-    "message": "DEXMask Swaps is undergoing maintenance. Please check back later."
-  },
-  "metaMaskVersion": {
-    "message": "DEXMask Version"
-  },
   "InterBlockchain": {
     "message": "Inter-Blockchain From $1"
   },
@@ -352,6 +334,12 @@
   "confirmPassword": {
     "message": "Confirm password"
   },
+  "confirmRecoveryPhrase": {
+    "message": "Confirm your Secret Recivery Phrase"
+  },
+  "confirmRecoveryPhraseDescription": {
+    "message": "Please select each phrase in order to make sure it is correct."
+  },
   "confirmSecretBackupPhrase": {
     "message": "Confirm your Secret Backup Phrase"
   },
@@ -516,9 +504,6 @@
   "createWallet": {
     "message": "Create Wallet"
   },
-  "rightWay": {
-    "message": "The right way to metaverse, DeFi, Dex, NFT, GameFi and many more ..."
-  },
   "crossChain": {
     "message": "Bridge"
   },
@@ -539,9 +524,6 @@
   },
   "currentLanguage": {
     "message": "Current Language"
-  },
-  "language": {
-    "message": "Language"
   },
   "custom": {
     "message": "Custom"
@@ -1225,6 +1207,9 @@
   "kovan": {
     "message": "Kovan Test Network"
   },
+  "language": {
+    "message": "Language"
+  },
   "lastConnected": {
     "message": "Last Connected"
   },
@@ -1309,6 +1294,24 @@
   },
   "message": {
     "message": "Message"
+  },
+  "metaMaskConnectStatusParagraphOne": {
+    "message": "You now have more control over your account connections in DEXMask."
+  },
+  "metaMaskConnectStatusParagraphThree": {
+    "message": "Click it to manage your connected accounts."
+  },
+  "metaMaskConnectStatusParagraphTwo": {
+    "message": "The connection status button shows if the website you’re visiting is connected to your currently selected account."
+  },
+  "metaMaskDescription": {
+    "message": "Connecting you to Ethereum and the Decentralized Web."
+  },
+  "metaMaskSwapsOfflineDescription": {
+    "message": "DEXMask Swaps is undergoing maintenance. Please check back later."
+  },
+  "metaMaskVersion": {
+    "message": "DEXMask Version"
   },
   "metametricsCommitmentsAllowOptOut": {
     "message": "Always allow you to opt-out via Settings"
@@ -1703,8 +1706,17 @@
   "recipientAddressPlaceholder2": {
     "message": "Search, public address (0x)"
   },
+  "reciveToken": {
+    "message": "Recive Token"
+  },
   "recommendedGasLabel": {
     "message": "Recommended"
+  },
+  "recoveryPhrase": {
+    "message": "Secret Recovery Phrase"
+  },
+  "recoveryPhraseDescription": {
+    "message": "Your Secret Recovery Phrase makes it easy to back up and restore your account."
   },
   "recoveryPhraseReminderBackupStart": {
     "message": "Start here"
@@ -1802,6 +1814,9 @@
   },
   "revealSeedWordsWarningTitle": {
     "message": "DO NOT share this phrase with anyone!"
+  },
+  "rightWay": {
+    "message": "The right way to metaverse, DeFi, Dex, NFT, GameFi and many more ..."
   },
   "rinkeby": {
     "message": "Rinkeby Test Network"
@@ -1945,6 +1960,9 @@
   "selectEachPhrase": {
     "message": "Please select each phrase in order to make sure it is correct."
   },
+  "selectFile": {
+    "message": "Select File"
+  },
   "selectHdPath": {
     "message": "Select HD Path"
   },
@@ -1978,6 +1996,9 @@
   },
   "settings": {
     "message": "Settings"
+  },
+  "shareAddress": {
+    "message": "Share your account’s unique address by send the QR code or copy the address below to receive any token or collectible."
   },
   "show": {
     "message": "Show"
@@ -2432,6 +2453,12 @@
     "message": "Multiple tokens can use the same name and symbol. Check $1 to verify this is the token you're looking for.",
     "description": "This appears in a tooltip next to the verifyThisTokenOn message. It gives the user more information about why they should check the token on a block explorer. $1 will be the name or url of the block explorer, which will be the translation of 'etherscan' or a block explorer url specified for a custom network."
   },
+  "swapWelcome": {
+    "message": "Welcome to ZSwap"
+  },
+  "swapWelcomeDescription": {
+    "message": "The most advanced decentralized platform. Enter to swap and add liquidity now."
+  },
   "swapYourTokenBalance": {
     "message": "$1 $2 available to swap",
     "description": "Tells the user how much of a token they have in their balance. $1 is a decimal number amount of tokens, and $2 is a token symbol"
@@ -2823,32 +2850,5 @@
   },
   "zswap": {
     "message": "ZSWAP"
-  },
-  "recoveryPhrase": {
-    "message": "Secret Recovery Phrase"
-  },
-  "recoveryPhraseDescription": {
-    "message": "Your Secret Recovery Phrase makes it easy to back up and restore your account."
-  },
-  "confirmRecoveryPhrase": {
-    "message": "Confirm your Secret Recivery Phrase"
-  },
-  "confirmRecoveryPhraseDescription": {
-    "message": "Please select each phrase in order to make sure it is correct."
-  },
-  "reciveToken": {
-    "message": "Recive Token"
-  },
-  "shareAddress": {
-    "message": "Share your account’s unique address by send the QR code or copy the address below to receive any token or collectible."
-  },
-  "swapWelcome": {
-    "message": "Welcome to ZSwap"
-  },
-  "swapWelcomeDescription": {
-    "message": "The most advanced decentralized platform. Enter to swap and add liquidity now."
-  },
-  "selectFile": {
-    "message": "Select File"
   }
 }

@@ -17,7 +17,7 @@ const reactOrders = [
   'react-dom',
   'react-router-dom',
   'react-redux',
-  'redux'
+  'redux',
 ];
 
 const jsConfigOrders = Object.keys(jsConfig.compilerOptions.paths).sort();
@@ -28,7 +28,7 @@ const sortImport = (file) => {
 
   const ast = babelParser.parse(content, {
     sourceType: 'module',
-    plugins: ['jsx', 'flow', 'classProperties']
+    plugins: ['jsx', 'flow', 'classProperties'],
   });
 
   const deps = [];
@@ -40,9 +40,9 @@ const sortImport = (file) => {
     ImportDeclaration(path) {
       deps.push({
         value: path.node.source.value,
-        path
+        path,
       });
-    }
+    },
   });
 
   console.log([file, '扫描完成。共发现: ', deps.length, '处依赖导入'].join(''));
@@ -86,7 +86,9 @@ const sortImport = (file) => {
 
   console.log([file, '依赖排序完成, 正在写入文件.'].join(''));
 
-  ast.program.body = newDeps.concat(ast.program.body.filter(({ type }) => type !== 'ImportDeclaration'));
+  ast.program.body = newDeps.concat(
+    ast.program.body.filter(({ type }) => type !== 'ImportDeclaration'),
+  );
   newCodeContent = babelGenerator(ast);
 
   fs.writeFileSync(file, newCodeContent.code, 'utf8');

@@ -17,33 +17,63 @@ import React from 'react';
  */
 
 import PropTypes from 'prop-types';
-import DexMaskTemplateRenderer, { SectionShape } from '@c/app/dexmask-template-renderer';
+import DexMaskTemplateRenderer, {
+  SectionShape,
+} from '@c/app/dexmask-template-renderer';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-export default function DexMaskTranslation({
-  translationKey,
-  variables
-}) {
+export default function DexMaskTranslation({ translationKey, variables }) {
   const t = useI18nContext();
-  return t(translationKey, variables?.map(variable => {
-    if (typeof variable === 'object' && !Array.isArray(variable) && variable.element) {
-      if (!variable.key) {
-        throw new Error(`When using MetaMask Template Language in a DexMaskTranslation variable, you must provide a key for the section regardless of syntax.
+  return t(
+    translationKey,
+    variables?.map((variable) => {
+      if (
+        typeof variable === 'object' &&
+        !Array.isArray(variable) &&
+        variable.element
+      ) {
+        if (!variable.key) {
+          throw new Error(`When using MetaMask Template Language in a DexMaskTranslation variable, you must provide a key for the section regardless of syntax.
             Section with element '${variable.element}' for translationKey: '${translationKey}' has no key property`);
+        }
+
+        if (
+          variable.children &&
+          Array.isArray(variable.children) &&
+          variable.children.length > 2
+        ) {
+          throw new Error(
+            'DexMaskTranslation only renders templates with a single section and maximum two children',
+          );
+        } else if (
+          (variable.children?.[0]?.children !== undefined &&
+            typeof variable.children[0].children !== 'string') ||
+          (variable.children?.[1]?.children !== undefined &&
+            typeof variable.children[1].children !== 'string')
+        ) {
+          throw new Error(
+            'DexMaskTranslation does not allow for component trees of non trivial depth',
+          );
+        }
+
+        return (
+          <DexMaskTemplateRenderer
+            key={`${translationKey}-${variable.key}`}
+            sections={variable}
+          />
+        );
       }
 
-      if (variable.children && Array.isArray(variable.children) && variable.children.length > 2) {
-        throw new Error('DexMaskTranslation only renders templates with a single section and maximum two children');
-      } else if (variable.children?.[0]?.children !== undefined && typeof variable.children[0].children !== 'string' || variable.children?.[1]?.children !== undefined && typeof variable.children[1].children !== 'string') {
-        throw new Error('DexMaskTranslation does not allow for component trees of non trivial depth');
-      }
-
-      return <DexMaskTemplateRenderer key={`${translationKey}-${variable.key}`} sections={variable} />;
-    }
-
-    return variable;
-  }));
+      return variable;
+    }),
+  );
 }
 DexMaskTranslation.propTypes = {
   translationKey: PropTypes.string.isRequired,
-  variables: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.shape(SectionShape)]))
+  variables: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.shape(SectionShape),
+    ]),
+  ),
 };

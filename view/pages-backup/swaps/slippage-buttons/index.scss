@@ -75,29 +75,35 @@
       color: white;
       font-weight: inherit;
 
-      &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+      &::-webkit-input-placeholder {
+        /* WebKit, Blink, Edge */
         color: white;
       }
 
-      &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-        color: white;
-        opacity: 1;
-      }
-
-      &::-moz-placeholder { /* Mozilla Firefox 19+ */
+      &:-moz-placeholder {
+        /* Mozilla Firefox 4 to 18 */
         color: white;
         opacity: 1;
       }
 
-      &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+      &::-moz-placeholder {
+        /* Mozilla Firefox 19+ */
+        color: white;
+        opacity: 1;
+      }
+
+      &:-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
         color: white;
       }
 
-      &::-ms-input-placeholder { /* Microsoft Edge */
+      &::-ms-input-placeholder {
+        /* Microsoft Edge */
         color: white;
       }
 
-      &::placeholder { /* Most modern browsers support this now. */
+      &::placeholder {
+        /* Most modern browsers support this now. */
         color: white;
       }
     }
@@ -109,7 +115,7 @@
       margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
     }
 
-    input[type=number] {
+    input[type='number'] {
       -moz-appearance: textfield;
     }
 

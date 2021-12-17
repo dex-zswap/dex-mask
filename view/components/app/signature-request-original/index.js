@@ -5,7 +5,11 @@ import { clearConfirmTransaction } from '@reducer/confirm-transaction/confirm-tr
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { MESSAGE_TYPE } from '@shared/constants/app';
 import { getAccountByAddress } from '@view/helpers/utils';
-import { accountsWithSendEtherInfoSelector, conversionRateSelector, getDomainMetadata } from '@view/selectors';
+import {
+  accountsWithSendEtherInfoSelector,
+  conversionRateSelector,
+  getDomainMetadata,
+} from '@view/selectors';
 import { goHome } from '@view/store/actions';
 import SignatureRequestOriginal from './component';
 
@@ -17,14 +21,14 @@ function mapStateToProps(state) {
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
     // not passed to component
     allAccounts: accountsWithSendEtherInfoSelector(state),
-    domainMetadata: getDomainMetadata(state)
+    domainMetadata: getDomainMetadata(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     goHome: () => dispatch(goHome()),
-    clearConfirmTransaction: () => dispatch(clearConfirmTransaction())
+    clearConfirmTransaction: () => dispatch(clearConfirmTransaction()),
   };
 }
 
@@ -36,17 +40,12 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     cancelTypedMessage,
     signMessage,
     cancelMessage,
-    txData
+    txData,
   } = ownProps;
-  const {
-    allAccounts,
-    ...otherStateProps
-  } = stateProps;
+  const { allAccounts, ...otherStateProps } = stateProps;
   const {
     type,
-    msgParams: {
-      from
-    }
+    msgParams: { from },
   } = txData;
   const fromAccount = getAccountByAddress(allAccounts, from);
   let cancel;
@@ -63,14 +62,18 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     sign = signMessage;
   }
 
-  return { ...ownProps,
+  return {
+    ...ownProps,
     ...otherStateProps,
     ...dispatchProps,
     fromAccount,
     txData,
     cancel,
-    sign
+    sign,
   };
 }
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps, mergeProps))(SignatureRequestOriginal);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+)(SignatureRequestOriginal);

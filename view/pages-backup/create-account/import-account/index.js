@@ -6,7 +6,7 @@ import JsonImportView from './json';
 import PrivateKeyImportView from './private-key';
 export default class AccountImportSubview extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   state = {};
 
@@ -15,9 +15,7 @@ export default class AccountImportSubview extends Component {
   }
 
   renderImportView() {
-    const {
-      type
-    } = this.state;
+    const { type } = this.state;
     const menuItems = this.getMenuItemTexts();
     const current = type || menuItems[0];
 
@@ -35,12 +33,10 @@ export default class AccountImportSubview extends Component {
 
   render() {
     const menuItems = this.getMenuItemTexts();
-    const {
-      type
-    } = this.state;
-    return <div className="new-account-import-form">
-        {
-        /* <div className="new-account-import-disclaimer">
+    const { type } = this.state;
+    return (
+      <div className="new-account-import-form">
+        {/* <div className="new-account-import-disclaimer">
          <span>{this.context.t('importAccountMsg')}</span>
          <span
            style={{
@@ -56,22 +52,26 @@ export default class AccountImportSubview extends Component {
          >
            {this.context.t('here')}
          </span>
-        </div> */
-      }
+        </div> */}
         <div className="new-account-import-form__select-section">
           <div className="new-account-import-form__select-label">
             {this.context.t('selectType')}
           </div>
-          <Dropdown className="new-account-import-form__select" options={menuItems.map(text => ({
-          value: text
-        }))} selectedOption={type || menuItems[0]} onChange={value => {
-          this.setState({
-            type: value
-          });
-        }} />
+          <Dropdown
+            className="new-account-import-form__select"
+            options={menuItems.map((text) => ({
+              value: text,
+            }))}
+            selectedOption={type || menuItems[0]}
+            onChange={(value) => {
+              this.setState({
+                type: value,
+              });
+            }}
+          />
         </div>
         {this.renderImportView()}
-      </div>;
+      </div>
+    );
   }
-
 }

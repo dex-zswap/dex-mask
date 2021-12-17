@@ -1,8 +1,10 @@
-import { INITIALIZE_CREATE_PASSWORD_ROUTE, INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE, DEFAULT_ROUTE } from '@view/helpers/constants/routes';
+import {
+  INITIALIZE_CREATE_PASSWORD_ROUTE,
+  INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
+  DEFAULT_ROUTE,
+} from '@view/helpers/constants/routes';
 export function getFirstTimeFlowTypeRoute(state) {
-  const {
-    firstTimeFlowType
-  } = state.metamask;
+  const { firstTimeFlowType } = state.metamask;
   let nextRoute;
 
   if (firstTimeFlowType === 'create') {
@@ -15,10 +17,8 @@ export function getFirstTimeFlowTypeRoute(state) {
 
   return nextRoute;
 }
-export const getOnboardingInitiator = state => {
-  const {
-    onboardingTabs
-  } = state.metamask;
+export const getOnboardingInitiator = (state) => {
+  const { onboardingTabs } = state.metamask;
 
   if (!onboardingTabs || Object.keys(onboardingTabs).length !== 1) {
     return null;
@@ -28,6 +28,6 @@ export const getOnboardingInitiator = state => {
   const tabId = onboardingTabs[location];
   return {
     location,
-    tabId
+    tabId,
   };
 };

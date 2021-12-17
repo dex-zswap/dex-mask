@@ -6,15 +6,11 @@ export default class Lock extends PureComponent {
   static propTypes = {
     history: PropTypes.object,
     isUnlocked: PropTypes.bool,
-    lockDexmask: PropTypes.func
+    lockDexmask: PropTypes.func,
   };
 
   componentDidMount() {
-    const {
-      lockDexmask,
-      isUnlocked,
-      history
-    } = this.props;
+    const { lockDexmask, isUnlocked, history } = this.props;
 
     if (isUnlocked) {
       lockDexmask().then(() => history.push(DEFAULT_ROUTE));
@@ -26,5 +22,4 @@ export default class Lock extends PureComponent {
   render() {
     return <Loading />;
   }
-
 }

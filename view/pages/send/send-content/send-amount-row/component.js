@@ -10,29 +10,37 @@ export default class SendAmountRow extends Component {
     amount: PropTypes.string,
     inError: PropTypes.bool,
     asset: PropTypes.object,
-    updateSendAmount: PropTypes.func
+    updateSendAmount: PropTypes.func,
   };
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
-  handleChange = newAmount => {
+  handleChange = (newAmount) => {
     this.props.updateSendAmount(newAmount);
   };
 
   renderInput() {
-    const {
-      amount,
-      inError,
-      asset
-    } = this.props;
-    return asset.type === ASSET_TYPES.TOKEN ? <UserPreferencedTokenInput error={inError} onChange={this.handleChange} token={asset.details} value={amount} /> : <UserPreferencedCurrencyInput error={inError} onChange={this.handleChange} value={amount} />;
+    const { amount, inError, asset } = this.props;
+    return asset.type === ASSET_TYPES.TOKEN ? (
+      <UserPreferencedTokenInput
+        error={inError}
+        onChange={this.handleChange}
+        token={asset.details}
+        value={amount}
+      />
+    ) : (
+      <UserPreferencedCurrencyInput
+        error={inError}
+        onChange={this.handleChange}
+        value={amount}
+      />
+    );
   }
 
   render() {
-    const {
-      inError
-    } = this.props;
-    return <div className="send-amount-row">
+    const { inError } = this.props;
+    return (
+      <div className="send-amount-row">
         <SendRowWrapper>
           <>
             <div className="send-amount-row__amount-label">
@@ -42,7 +50,7 @@ export default class SendAmountRow extends Component {
             <AmountMaxButton inError={inError} />
           </>
         </SendRowWrapper>
-      </div>;
+      </div>
+    );
   }
-
 }

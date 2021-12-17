@@ -1,5 +1,10 @@
 import { useSelector } from 'react-redux';
-import { getEstimatedGasFeeTimeBounds, getGasEstimateType, getGasFeeEstimates, getIsGasEstimatesLoading } from '@reducer/dexmask/dexmask';
+import {
+  getEstimatedGasFeeTimeBounds,
+  getGasEstimateType,
+  getGasFeeEstimates,
+  getIsGasEstimatesLoading,
+} from '@reducer/dexmask/dexmask';
 import { useSafeGasEstimatePolling } from './useSafeGasEstimatePolling';
 /**
  * @typedef {object} GasEstimates
@@ -34,6 +39,6 @@ export function useGasFeeEstimates() {
     gasFeeEstimates,
     gasEstimateType,
     estimatedGasFeeTimeBounds,
-    isGasEstimatesLoading
+    isGasEstimatesLoading,
   };
 }

@@ -21,7 +21,7 @@ export function useRetryTransaction(transactionGroup) {
 
   const closeRetryEditGasPopover = () => setShowRetryEditGasPopover(false);
 
-  const retryTransaction = useCallback(async event => {
+  const retryTransaction = useCallback(async (event) => {
     event.stopPropagation();
     setShowRetryEditGasPopover(true);
   }, []);
@@ -29,6 +29,6 @@ export function useRetryTransaction(transactionGroup) {
     retryTransaction,
     showRetryEditGasPopover,
     closeRetryEditGasPopover,
-    customRetryGasSettings
+    customRetryGasSettings,
   };
 }

@@ -14,7 +14,7 @@
     "devtools:react": "react-devtools",
     "devtools:redux": "remotedev --hostname=localhost --port=8000",
     "build:dev": "node scripts/build/index.js",
-    "lint:fix": "prettier --write '**/*.json' && eslint . --ext js --cache --fix"
+    "lint:fix": "prettier --write '**/*.json' '**/*.js' '**/*.scss'"
   },
   "dependencies": {
     "3box": "^1.10.2",

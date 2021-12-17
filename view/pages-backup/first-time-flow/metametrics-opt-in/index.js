@@ -4,24 +4,23 @@ import { setParticipateInMetaMetrics } from '@view/store/actions';
 import MetaMetricsOptIn from './component';
 const firstTimeFlowTypeNameMap = {
   create: 'Selected Create New Wallet',
-  import: 'Selected Import Wallet'
+  import: 'Selected Import Wallet',
 };
 
-const mapStateToProps = state => {
-  const {
-    firstTimeFlowType,
-    participateInMetaMetrics
-  } = state.metamask;
+const mapStateToProps = (state) => {
+  const { firstTimeFlowType, participateInMetaMetrics } = state.metamask;
   return {
     nextRoute: getFirstTimeFlowTypeRoute(state),
-    firstTimeSelectionMetaMetricsName: firstTimeFlowTypeNameMap[firstTimeFlowType],
-    participateInMetaMetrics
+    firstTimeSelectionMetaMetricsName:
+      firstTimeFlowTypeNameMap[firstTimeFlowType],
+    participateInMetaMetrics,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setParticipateInMetaMetrics: val => dispatch(setParticipateInMetaMetrics(val))
+    setParticipateInMetaMetrics: (val) =>
+      dispatch(setParticipateInMetaMetrics(val)),
   };
 };
 

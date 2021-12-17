@@ -24,7 +24,9 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
   if (!localeMessages[key]) {
     if (localeCode === 'en') {
       if (!missingMessageErrors[key]) {
-        missingMessageErrors[key] = new Error(`Unable to find value of key "${key}" for locale "${localeCode}"`);
+        missingMessageErrors[key] = new Error(
+          `Unable to find value of key "${key}" for locale "${localeCode}"`,
+        );
         log.error(missingMessageErrors[key]);
 
         if (process.env.IN_TEST === 'true') {
@@ -37,7 +39,9 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
       }
 
       warned[localeCode][key] = true;
-      log.warn(`Translator - Unable to find value of key "${key}" for locale "${localeCode}"`);
+      log.warn(
+        `Translator - Unable to find value of key "${key}" for locale "${localeCode}"`,
+      );
     }
 
     return null;
@@ -46,11 +50,17 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
   const entry = localeMessages[key];
   let phrase = entry.message;
   const hasSubstitutions = Boolean(substitutions && substitutions.length);
-  const hasReactSubstitutions = hasSubstitutions && substitutions.some(element => element !== null && (typeof element === 'function' || typeof element === 'object')); // perform substitutions
+  const hasReactSubstitutions =
+    hasSubstitutions &&
+    substitutions.some(
+      (element) =>
+        element !== null &&
+        (typeof element === 'function' || typeof element === 'object'),
+    ); // perform substitutions
 
   if (hasSubstitutions) {
     const parts = phrase.split(/(\$\d)/gu);
-    const substitutedParts = parts.map(part => {
+    const substitutedParts = parts.map((part) => {
       const subMatch = part.match(/\$(\d)/u);
 
       if (!subMatch) {
@@ -59,26 +69,38 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
 
       const substituteIndex = Number(subMatch[1]) - 1;
 
-      if ((substitutions[substituteIndex] === null || substitutions[substituteIndex] === undefined) && !missingSubstitutionErrors[localeCode]?.[key]) {
+      if (
+        (substitutions[substituteIndex] === null ||
+          substitutions[substituteIndex] === undefined) &&
+        !missingSubstitutionErrors[localeCode]?.[key]
+      ) {
         if (!missingSubstitutionErrors[localeCode]) {
           missingSubstitutionErrors[localeCode] = {};
         }
 
         missingSubstitutionErrors[localeCode][key] = true;
-        const error = new Error(`Insufficient number of substitutions for key "${key}" with locale "${localeCode}"`);
+        const error = new Error(
+          `Insufficient number of substitutions for key "${key}" with locale "${localeCode}"`,
+        );
         log.error(error);
       }
 
       return substitutions[substituteIndex];
     });
-    phrase = hasReactSubstitutions ? <span> {substitutedParts} </span> : substitutedParts.join('');
+    phrase = hasReactSubstitutions ? (
+      <span> {substitutedParts} </span>
+    ) : (
+      substitutedParts.join('')
+    );
   }
 
   return phrase;
 };
 export async function fetchLocale(localeCode) {
   try {
-    const response = await fetchWithTimeout(`./_locales/${localeCode}/messages.json`);
+    const response = await fetchWithTimeout(
+      `./_locales/${localeCode}/messages.json`,
+    );
     return await response.json();
   } catch (error) {
     log.error(`failed to fetch ${localeCode} locale because of ${error}`);
@@ -89,7 +111,11 @@ const relativeTimeFormatLocaleData = new Set();
 export async function loadRelativeTimeFormatLocaleData(localeCode) {
   const languageTag = localeCode.split('_')[0];
 
-  if (Intl.RelativeTimeFormat && typeof Intl.RelativeTimeFormat.__addLocaleData === 'function' && !relativeTimeFormatLocaleData.has(languageTag)) {
+  if (
+    Intl.RelativeTimeFormat &&
+    typeof Intl.RelativeTimeFormat.__addLocaleData === 'function' &&
+    !relativeTimeFormatLocaleData.has(languageTag)
+  ) {
     const localeData = await fetchRelativeTimeFormatData(languageTag);
 
     Intl.RelativeTimeFormat.__addLocaleData(localeData);
@@ -97,6 +123,8 @@ export async function loadRelativeTimeFormatLocaleData(localeCode) {
 }
 
 async function fetchRelativeTimeFormatData(languageTag) {
-  const response = await fetchWithTimeout(`./intl/${languageTag}/relative-time-format-data.json`);
+  const response = await fetchWithTimeout(
+    `./intl/${languageTag}/relative-time-format-data.json`,
+  );
   return await response.json();
 }

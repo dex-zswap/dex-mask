@@ -7,17 +7,29 @@ export function ChipWithInput({
   className,
   borderColor = COLORS.UI1,
   inputValue,
-  setInputValue
+  setInputValue,
 }) {
-  return <Chip className={classnames(className, 'chip--with-input')} borderColor={borderColor}>
-      {setInputValue && <input type="text" className="chip__input" onChange={e => {
-      setInputValue(e.target.value);
-    }} value={inputValue} />}
-    </Chip>;
+  return (
+    <Chip
+      className={classnames(className, 'chip--with-input')}
+      borderColor={borderColor}
+    >
+      {setInputValue && (
+        <input
+          type="text"
+          className="chip__input"
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+          value={inputValue}
+        />
+      )}
+    </Chip>
+  );
 }
 ChipWithInput.propTypes = {
   borderColor: PropTypes.oneOf(Object.values(COLORS)),
   className: PropTypes.string,
   inputValue: PropTypes.string,
-  setInputValue: PropTypes.func
+  setInputValue: PropTypes.func,
 };

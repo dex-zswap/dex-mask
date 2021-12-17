@@ -13,14 +13,12 @@ export default function crossChainReducer(state = {}, action) {
     userInputValue: '',
     supportChains: [],
     target: null,
-    ...state
+    ...state,
   };
 
   switch (action.type) {
     case actionConstants.UPDATE_CROSS_CHAIN_STATE:
-      return { ...crossChainState,
-        ...action.value
-      };
+      return { ...crossChainState, ...action.value };
 
     default:
       return crossChainState;

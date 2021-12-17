@@ -14,7 +14,7 @@ import swapsReducer from './swaps/swaps';
 export default combineReducers({
   [ALERT_TYPES.invalidCustomNetwork]: invalidCustomNetwork,
   [ALERT_TYPES.unconnectedAccount]: unconnectedAccount,
-  activeTab: s => s === undefined ? null : s,
+  activeTab: (s) => (s === undefined ? null : s),
   metamask: dexmaskReducer,
   appState: appStateReducer,
   ENS: ensReducer,
@@ -24,5 +24,5 @@ export default combineReducers({
   swaps: swapsReducer,
   gas: gasReducer,
   localeMessages: localeMessagesReducer,
-  crossChain: crossChainReducer
+  crossChain: crossChainReducer,
 });

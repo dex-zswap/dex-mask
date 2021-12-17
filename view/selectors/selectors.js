@@ -11,40 +11,48 @@ import { createSelector } from 'reselect';
 
 import { addHexPrefix } from '@app/scripts/lib/util';
 import { TEMPLATED_CONFIRMATION_MESSAGE_TYPES } from '@pages/confirmation/templates';
-import { getConversionRate, getNativeCurrency, isEIP1559Network } from '@reducer/dexmask/dexmask';
+import {
+  getConversionRate,
+  getNativeCurrency,
+  isEIP1559Network,
+} from '@reducer/dexmask/dexmask';
 import { KEYRING_TYPES } from '@shared/constants/hardware-wallets';
-import { BSC_CHAIN_ID, MAINNET_CHAIN_ID, NATIVE_CURRENCY_TOKEN_IMAGE_MAP, NETWORK_TYPE_RPC, TEST_CHAINS } from '@shared/constants/network';
-import { ALLOWED_SWAPS_CHAIN_IDS, SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '@shared/constants/swaps';
+import {
+  BSC_CHAIN_ID,
+  MAINNET_CHAIN_ID,
+  NATIVE_CURRENCY_TOKEN_IMAGE_MAP,
+  NETWORK_TYPE_RPC,
+  TEST_CHAINS,
+} from '@shared/constants/network';
+import {
+  ALLOWED_SWAPS_CHAIN_IDS,
+  SWAPS_CHAINID_DEFAULT_TOKEN_MAP,
+} from '@shared/constants/swaps';
 import { DAY } from '@shared/constants/time';
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import { getAccountByAddress, shortenAddress } from '@view/helpers/utils';
-import { getValueFromWeiHex, hexToDecimal } from '@view/helpers/utils/conversions.util';
+import {
+  getValueFromWeiHex,
+  hexToDecimal,
+} from '@view/helpers/utils/conversions.util';
 export function isNetworkLoading(state) {
   return state.metamask.network === 'loading';
 }
-export const getAllState = state => state;
+export const getAllState = (state) => state;
 export function getNetworkIdentifier(state) {
   const {
     metamask: {
-      provider: {
-        type,
-        nickname,
-        rpcUrl
-      }
-    }
+      provider: { type, nickname, rpcUrl },
+    },
   } = state;
   return nickname || rpcUrl || type;
 }
 export function getMetricsNetworkIdentifier(state) {
-  const {
-    provider
-  } = state.metamask;
+  const { provider } = state.metamask;
   return provider.type === NETWORK_TYPE_RPC ? provider.rpcUrl : provider.type;
 }
 export function getCurrentChainId(state) {
-  const {
-    chainId
-  } = state.metamask.provider;
+  const { chainId } = state.metamask.provider;
   return chainId;
 }
 export function getCurrentKeyring(state) {
@@ -55,8 +63,11 @@ export function getCurrentKeyring(state) {
   }
 
   const simpleAddress = stripHexPrefix(identity.address).toLowerCase();
-  const keyring = state.metamask.keyrings.find(kr => {
-    return kr.accounts.includes(simpleAddress) || kr.accounts.includes(identity.address);
+  const keyring = state.metamask.keyrings.find((kr) => {
+    return (
+      kr.accounts.includes(simpleAddress) ||
+      kr.accounts.includes(identity.address)
+    );
   });
   return keyring;
 }
@@ -119,36 +130,40 @@ export function getAccountType(state) {
 export function deprecatedGetCurrentNetworkId(state) {
   return state.metamask.network;
 }
-export const getDexMaskAccounts = createSelector(getDexMaskAccountsRaw, getMetaMaskCachedBalances, (currentAccounts, cachedBalances) => Object.entries(currentAccounts).reduce((selectedAccounts, [accountID, account]) => {
-  if (account.balance === null || account.balance === undefined) {
-    return { ...selectedAccounts,
-      [accountID]: { ...account,
-        balance: cachedBalances && cachedBalances[accountID]
-      }
-    };
-  }
+export const getDexMaskAccounts = createSelector(
+  getDexMaskAccountsRaw,
+  getMetaMaskCachedBalances,
+  (currentAccounts, cachedBalances) =>
+    Object.entries(currentAccounts).reduce(
+      (selectedAccounts, [accountID, account]) => {
+        if (account.balance === null || account.balance === undefined) {
+          return {
+            ...selectedAccounts,
+            [accountID]: {
+              ...account,
+              balance: cachedBalances && cachedBalances[accountID],
+            },
+          };
+        }
 
-  return { ...selectedAccounts,
-    [accountID]: account
-  };
-}, {}));
+        return { ...selectedAccounts, [accountID]: account };
+      },
+      {},
+    ),
+);
 export function getSelectedAddress(state) {
   return state.metamask.selectedAddress;
 }
 export function getSelectedIdentity(state) {
   const selectedAddress = getSelectedAddress(state);
-  const {
-    identities
-  } = state.metamask;
+  const { identities } = state.metamask;
   return identities[selectedAddress];
 }
 export function getNumberOfAccounts(state) {
   return Object.keys(state.metamask.accounts).length;
 }
 export function getNumberOfTokens(state) {
-  const {
-    tokens
-  } = state.metamask;
+  const { tokens } = state.metamask;
   return tokens ? tokens.length : 0;
 }
 export function getMetaMaskKeyrings(state) {
@@ -165,20 +180,33 @@ export function getMetaMaskCachedBalances(state) {
   // this can eventually be removed
 
   const network = deprecatedGetCurrentNetworkId(state);
-  return state.metamask.cachedBalances[chainId] ?? state.metamask.cachedBalances[network];
+  return (
+    state.metamask.cachedBalances[chainId] ??
+    state.metamask.cachedBalances[network]
+  );
 }
 /**
  * Get ordered (by keyrings) accounts with identity and balance
  */
 
-export const getDexMaskAccountsOrdered = createSelector(getMetaMaskKeyrings, getMetaMaskIdentities, getDexMaskAccounts, (keyrings, identities, accounts) => keyrings.reduce((list, keyring) => list.concat(keyring.accounts), []).filter(address => Boolean(identities[address])).map(address => ({ ...identities[address],
-  ...accounts[address]
-})));
-export const getDexMaskAccountsConnected = createSelector(getDexMaskAccountsOrdered, connectedAccounts => connectedAccounts.map(({
-  address
-}) => address.toLowerCase()));
+export const getDexMaskAccountsOrdered = createSelector(
+  getMetaMaskKeyrings,
+  getMetaMaskIdentities,
+  getDexMaskAccounts,
+  (keyrings, identities, accounts) =>
+    keyrings
+      .reduce((list, keyring) => list.concat(keyring.accounts), [])
+      .filter((address) => Boolean(identities[address]))
+      .map((address) => ({ ...identities[address], ...accounts[address] })),
+);
+export const getDexMaskAccountsConnected = createSelector(
+  getDexMaskAccountsOrdered,
+  (connectedAccounts) =>
+    connectedAccounts.map(({ address }) => address.toLowerCase()),
+);
 export function isBalanceCached(state) {
-  const selectedAccountBalance = state.metamask.accounts[getSelectedAddress(state)].balance;
+  const selectedAccountBalance =
+    state.metamask.accounts[getSelectedAddress(state)].balance;
   const cachedBalance = getSelectedAccountCachedBalance(state);
   return Boolean(!selectedAccountBalance && cachedBalance);
 }
@@ -196,7 +224,8 @@ export function getTargetAccount(state, targetAddress) {
   const accounts = getDexMaskAccounts(state);
   return accounts[targetAddress];
 }
-export const getTokenExchangeRates = state => state.metamask.contractExchangeRates;
+export const getTokenExchangeRates = (state) =>
+  state.metamask.contractExchangeRates;
 export function getAssetImages(state) {
   const assetImages = state.metamask.assetImages || {};
   return assetImages;
@@ -212,33 +241,32 @@ export function getAddressBook(state) {
 }
 export function getAddressBookEntry(state, address) {
   const addressBook = getAddressBook(state);
-  const entry = addressBook.find(contact => contact.address === toChecksumHexAddress(address));
+  const entry = addressBook.find(
+    (contact) => contact.address === toChecksumHexAddress(address),
+  );
   return entry;
 }
 export function getAddressBookEntryName(state, address) {
-  const entry = getAddressBookEntry(state, address) || state.metamask.identities[address];
+  const entry =
+    getAddressBookEntry(state, address) || state.metamask.identities[address];
   return entry && entry.name !== '' ? entry.name : shortenAddress(address);
 }
 export function accountsWithSendEtherInfoSelector(state) {
   const accounts = getDexMaskAccounts(state);
   const identities = getMetaMaskIdentities(state);
-  const accountsWithSendEtherInfo = Object.entries(identities).map(([key, identity]) => {
-    return { ...identity,
-      ...accounts[key]
-    };
-  });
+  const accountsWithSendEtherInfo = Object.entries(identities).map(
+    ([key, identity]) => {
+      return { ...identity, ...accounts[key] };
+    },
+  );
   return accountsWithSendEtherInfo;
 }
 export function getAccountsWithLabels(state) {
-  return getDexMaskAccountsOrdered(state).map(({
-    address,
-    name,
-    balance
-  }) => ({
+  return getDexMaskAccountsOrdered(state).map(({ address, name, balance }) => ({
     address,
     addressLabel: `${name} (...${address.slice(address.length - 4)})`,
     label: name,
-    balance
+    balance,
   }));
 }
 export function getCurrentAccountWithSendEtherInfo(state) {
@@ -266,33 +294,38 @@ export function getTotalUnapprovedCount(state) {
     unapprovedDecryptMsgCount = 0,
     unapprovedEncryptionPublicKeyMsgCount = 0,
     unapprovedTypedMessagesCount = 0,
-    pendingApprovalCount = 0
+    pendingApprovalCount = 0,
   } = state.metamask;
-  return unapprovedMsgCount + unapprovedPersonalMsgCount + unapprovedDecryptMsgCount + unapprovedEncryptionPublicKeyMsgCount + unapprovedTypedMessagesCount + getUnapprovedTxCount(state) + pendingApprovalCount + getSuggestedTokenCount(state);
+  return (
+    unapprovedMsgCount +
+    unapprovedPersonalMsgCount +
+    unapprovedDecryptMsgCount +
+    unapprovedEncryptionPublicKeyMsgCount +
+    unapprovedTypedMessagesCount +
+    getUnapprovedTxCount(state) +
+    pendingApprovalCount +
+    getSuggestedTokenCount(state)
+  );
 }
 
 function getUnapprovedTxCount(state) {
-  const {
-    unapprovedTxs = {}
-  } = state.metamask;
+  const { unapprovedTxs = {} } = state.metamask;
   return Object.keys(unapprovedTxs).length;
 }
 
 export function getUnapprovedConfirmations(state) {
-  const {
-    pendingApprovals
-  } = state.metamask;
+  const { pendingApprovals } = state.metamask;
   return Object.values(pendingApprovals);
 }
 export function getUnapprovedTemplatedConfirmations(state) {
   const unapprovedConfirmations = getUnapprovedConfirmations(state);
-  return unapprovedConfirmations.filter(approval => TEMPLATED_CONFIRMATION_MESSAGE_TYPES.includes(approval.type));
+  return unapprovedConfirmations.filter((approval) =>
+    TEMPLATED_CONFIRMATION_MESSAGE_TYPES.includes(approval.type),
+  );
 }
 
 function getSuggestedTokenCount(state) {
-  const {
-    suggestedTokens = {}
-  } = state.metamask;
+  const { suggestedTokens = {} } = state.metamask;
   return Object.keys(suggestedTokens).length;
 }
 
@@ -307,30 +340,22 @@ export function getIsTestnet(state) {
 export function getIsNonStandardEthChain(state) {
   return !(getIsMainnet(state) || getIsTestnet(state) || process.env.IN_TEST);
 }
-export function getPreferences({
-  metamask
-}) {
+export function getPreferences({ metamask }) {
   return metamask.preferences;
 }
 export function getShouldShowFiat(state) {
   return true;
   const isMainNet = getIsMainnet(state);
   const conversionRate = getConversionRate(state);
-  const {
-    showFiatInTestnets
-  } = getPreferences(state);
+  const { showFiatInTestnets } = getPreferences(state);
   return Boolean((isMainNet || showFiatInTestnets) && conversionRate);
 }
 export function getShouldHideZeroBalanceTokens(state) {
-  const {
-    hideZeroBalanceTokens
-  } = getPreferences(state);
+  const { hideZeroBalanceTokens } = getPreferences(state);
   return hideZeroBalanceTokens;
 }
 export function getTokenDisplayOrders(state, autoPick = true) {
-  const {
-    tokenDisplayOrders
-  } = getPreferences(state);
+  const { tokenDisplayOrders } = getPreferences(state);
   const selectedAddress = getSelectedAddress(state);
   const chainId = getCurrentChainId(state);
   let ordersInfo = {};
@@ -356,14 +381,11 @@ export function getDomainMetadata(state) {
   return state.metamask.domainMetadata;
 }
 export function getRpcPrefsForCurrentProvider(state) {
-  const {
-    frequentRpcListDetail,
-    provider
-  } = state.metamask;
-  const selectRpcInfo = frequentRpcListDetail.find(rpcInfo => rpcInfo.rpcUrl === provider.rpcUrl);
-  const {
-    rpcPrefs = {}
-  } = selectRpcInfo || {};
+  const { frequentRpcListDetail, provider } = state.metamask;
+  const selectRpcInfo = frequentRpcListDetail.find(
+    (rpcInfo) => rpcInfo.rpcUrl === provider.rpcUrl,
+  );
+  const { rpcPrefs = {} } = selectRpcInfo || {};
   return rpcPrefs;
 }
 export function getKnownMethodData(state, data) {
@@ -373,9 +395,7 @@ export function getKnownMethodData(state, data) {
 
   const prefixedData = addHexPrefix(data);
   const fourBytePrefix = prefixedData.slice(0, 10);
-  const {
-    knownMethodData
-  } = state.metamask;
+  const { knownMethodData } = state.metamask;
   return knownMethodData && knownMethodData[fourBytePrefix];
 }
 export function getFeatureFlags(state) {
@@ -432,18 +452,17 @@ export function getWeb3ShimUsageStateForOrigin(state, origin) {
 
 export function getSwapsDefaultToken(state) {
   const selectedAccount = getSelectedAccount(state);
-  const {
-    balance
-  } = selectedAccount;
+  const { balance } = selectedAccount;
   const chainId = getCurrentChainId(state);
   const defaultTokenObject = SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId];
-  return { ...defaultTokenObject,
+  return {
+    ...defaultTokenObject,
     balance: hexToDecimal(balance),
     string: getValueFromWeiHex({
       value: balance,
       numberOfDecimals: 4,
-      toDenomination: 'ETH'
-    })
+      toDenomination: 'ETH',
+    }),
   };
 }
 export function getIsSwapsChain(state) {
@@ -473,7 +492,7 @@ function getAllowedNotificationIds(state) {
     3: true,
     4: getCurrentChainId(state) === BSC_CHAIN_ID,
     5: true,
-    6: true
+    6: true,
   };
 }
 /**
@@ -494,18 +513,22 @@ function getAllowedNotificationIds(state) {
  * @returns {Notification[]} An array of notifications that can be shown to the user
  */
 
-
 export function getSortedNotificationsToShow(state) {
   const notifications = Object.values(state.metamask.notifications);
   const allowedNotificationIds = getAllowedNotificationIds(state);
-  const notificationsToShow = notifications.filter(notification => !notification.isShown && allowedNotificationIds[notification.id]);
-  const notificationsSortedByDate = notificationsToShow.sort((a, b) => new Date(b.date) - new Date(a.date));
+  const notificationsToShow = notifications.filter(
+    (notification) =>
+      !notification.isShown && allowedNotificationIds[notification.id],
+  );
+  const notificationsSortedByDate = notificationsToShow.sort(
+    (a, b) => new Date(b.date) - new Date(a.date),
+  );
   return notificationsSortedByDate;
 }
 export function getShowRecoveryPhraseReminder(state) {
   const {
     recoveryPhraseReminderLastShown,
-    recoveryPhraseReminderHasBeenShown
+    recoveryPhraseReminderHasBeenShown,
   } = state.metamask;
   const currentTime = new Date().getTime();
   const frequency = recoveryPhraseReminderHasBeenShown ? DAY * 90 : DAY * 2;

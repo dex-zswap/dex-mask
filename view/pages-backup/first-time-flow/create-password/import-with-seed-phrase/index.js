@@ -2,10 +2,11 @@ import { connect } from 'react-redux';
 import { setSeedPhraseBackedUp, initializeThreeBox } from '@view/store/actions';
 import ImportWithSeedPhrase from './component';
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setSeedPhraseBackedUp: seedPhraseBackupState => dispatch(setSeedPhraseBackedUp(seedPhraseBackupState)),
-    initializeThreeBox: () => dispatch(initializeThreeBox())
+    setSeedPhraseBackedUp: (seedPhraseBackupState) =>
+      dispatch(setSeedPhraseBackedUp(seedPhraseBackupState)),
+    initializeThreeBox: () => dispatch(initializeThreeBox()),
   };
 };
 

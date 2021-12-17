@@ -6,7 +6,7 @@ import { Tab, Tabs } from '@c/ui/tabs';
 import { ConfirmPageContainerWarning } from '.';
 export default class ConfirmPageContainerContent extends Component {
   static contextTypes = {
-    t: PropTypes.func.isRequired
+    t: PropTypes.func.isRequired,
   };
   static propTypes = {
     action: PropTypes.string,
@@ -32,14 +32,11 @@ export default class ConfirmPageContainerContent extends Component {
     submitText: PropTypes.string,
     disabled: PropTypes.bool,
     unapprovedTxCount: PropTypes.number,
-    rejectNText: PropTypes.string
+    rejectNText: PropTypes.string,
   };
 
   renderContent() {
-    const {
-      detailsComponent,
-      dataComponent
-    } = this.props;
+    const { detailsComponent, dataComponent } = this.props;
 
     if (detailsComponent && dataComponent) {
       return this.renderTabs();
@@ -49,21 +46,21 @@ export default class ConfirmPageContainerContent extends Component {
   }
 
   renderTabs() {
-    const {
-      t
-    } = this.context;
-    const {
-      detailsComponent,
-      dataComponent
-    } = this.props;
-    return <Tabs>
-        <Tab className="confirm-page-container-content__tab" name={t('details')}>
+    const { t } = this.context;
+    const { detailsComponent, dataComponent } = this.props;
+    return (
+      <Tabs>
+        <Tab
+          className="confirm-page-container-content__tab"
+          name={t('details')}
+        >
           {detailsComponent}
         </Tab>
         <Tab className="confirm-page-container-content__tab" name={t('data')}>
           {dataComponent}
         </Tab>
-      </Tabs>;
+      </Tabs>
+    );
   }
 
   render() {
@@ -90,13 +87,15 @@ export default class ConfirmPageContainerContent extends Component {
       unapprovedTxCount,
       rejectNText,
       origin,
-      ethGasPriceWarning
+      ethGasPriceWarning,
     } = this.props;
-    return <div className="confirm-page-container-content">
+    return (
+      <div className="confirm-page-container-content">
         {warning && <ConfirmPageContainerWarning warning={warning} />}
-        {ethGasPriceWarning && <ConfirmPageContainerWarning warning={ethGasPriceWarning} />}
-        {
-        /* <ConfirmPageContainerSummary
+        {ethGasPriceWarning && (
+          <ConfirmPageContainerWarning warning={ethGasPriceWarning} />
+        )}
+        {/* <ConfirmPageContainerSummary
          className={classnames({
            'confirm-page-container-summary--border':
              !detailsComponent || !dataComponent,
@@ -110,16 +109,24 @@ export default class ConfirmPageContainerContent extends Component {
          nonce={nonce}
          assetImage={assetImage}
          origin={origin}
-        /> */
-      }
+        /> */}
         {this.renderContent()}
-        {(errorKey || errorMessage) && <div className="confirm-page-container-content__error-container">
+        {(errorKey || errorMessage) && (
+          <div className="confirm-page-container-content__error-container">
             <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
-          </div>}
-        <PageContainerFooter onCancel={onCancel} cancelText={cancelText} onSubmit={onSubmit} submitText={submitText} submitButtonType="confirm" disabled={disabled}>
+          </div>
+        )}
+        <PageContainerFooter
+          onCancel={onCancel}
+          cancelText={cancelText}
+          onSubmit={onSubmit}
+          submitText={submitText}
+          submitButtonType="confirm"
+          disabled={disabled}
+        >
           {unapprovedTxCount > 1 && <a onClick={onCancelAll}>{rejectNText}</a>}
         </PageContainerFooter>
-      </div>;
+      </div>
+    );
   }
-
 }

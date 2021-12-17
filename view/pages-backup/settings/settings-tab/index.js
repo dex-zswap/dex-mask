@@ -1,25 +1,30 @@
 import { connect } from 'react-redux';
 import { getPreferences } from '@view/selectors';
-import { setCurrentCurrency, setHideZeroBalanceTokens, setParticipateInMetaMetrics, setUseBlockie, setUseNativeCurrencyAsPrimaryCurrencyPreference, updateCurrentLocale } from '@view/store/actions';
+import {
+  setCurrentCurrency,
+  setHideZeroBalanceTokens,
+  setParticipateInMetaMetrics,
+  setUseBlockie,
+  setUseNativeCurrencyAsPrimaryCurrencyPreference,
+  updateCurrentLocale,
+} from '@view/store/actions';
 import SettingsTab from './component';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
-    appState: {
-      warning
-    },
-    metamask
+    appState: { warning },
+    metamask,
   } = state;
   const {
     currentCurrency,
     conversionDate,
     nativeCurrency,
     useBlockie,
-    currentLocale
+    currentLocale,
   } = metamask;
   const {
     useNativeCurrencyAsPrimaryCurrency,
-    hideZeroBalanceTokens
+    hideZeroBalanceTokens,
   } = getPreferences(state);
   return {
     warning,
@@ -29,20 +34,22 @@ const mapStateToProps = state => {
     nativeCurrency,
     useBlockie,
     useNativeCurrencyAsPrimaryCurrency,
-    hideZeroBalanceTokens
+    hideZeroBalanceTokens,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setCurrentCurrency: currency => dispatch(setCurrentCurrency(currency)),
-    setUseBlockie: value => dispatch(setUseBlockie(value)),
-    updateCurrentLocale: key => dispatch(updateCurrentLocale(key)),
-    setUseNativeCurrencyAsPrimaryCurrencyPreference: value => {
+    setCurrentCurrency: (currency) => dispatch(setCurrentCurrency(currency)),
+    setUseBlockie: (value) => dispatch(setUseBlockie(value)),
+    updateCurrentLocale: (key) => dispatch(updateCurrentLocale(key)),
+    setUseNativeCurrencyAsPrimaryCurrencyPreference: (value) => {
       return dispatch(setUseNativeCurrencyAsPrimaryCurrencyPreference(value));
     },
-    setParticipateInMetaMetrics: val => dispatch(setParticipateInMetaMetrics(val)),
-    setHideZeroBalanceTokens: value => dispatch(setHideZeroBalanceTokens(value))
+    setParticipateInMetaMetrics: (val) =>
+      dispatch(setParticipateInMetaMetrics(val)),
+    setHideZeroBalanceTokens: (value) =>
+      dispatch(setHideZeroBalanceTokens(value)),
   };
 };
 

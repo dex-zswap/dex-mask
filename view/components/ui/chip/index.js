@@ -12,37 +12,54 @@ export default function Chip({
   labelProps = {},
   leftIcon,
   rightIcon,
-  onClick
+  onClick,
 }) {
-  const onKeyPress = event => {
+  const onKeyPress = (event) => {
     if (event.key === 'Enter' && onClick) {
       onClick(event);
     }
   };
 
   const isInteractive = typeof onClick === 'function';
-  return <div onClick={onClick} onKeyPress={onKeyPress} className={classnames(className, 'chip', {
-    'chip--with-left-icon': Boolean(leftIcon),
-    'chip--with-right-icon': Boolean(rightIcon),
-    [`chip--${borderColor}`]: true
-  })} role={isInteractive ? 'button' : undefined} tabIndex={isInteractive ? 0 : undefined}>
+  return (
+    <div
+      onClick={onClick}
+      onKeyPress={onKeyPress}
+      className={classnames(className, 'chip', {
+        'chip--with-left-icon': Boolean(leftIcon),
+        'chip--with-right-icon': Boolean(rightIcon),
+        [`chip--${borderColor}`]: true,
+      })}
+      role={isInteractive ? 'button' : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+    >
       {leftIcon && <div className="chip__left-icon">{leftIcon}</div>}
-      {children ?? <Typography className="chip__label" variant={TYPOGRAPHY.H6} tag="span" color={COLORS.UI4} {...labelProps}>
+      {children ?? (
+        <Typography
+          className="chip__label"
+          variant={TYPOGRAPHY.H6}
+          tag="span"
+          color={COLORS.UI4}
+          {...labelProps}
+        >
           {label}
-        </Typography>}
+        </Typography>
+      )}
       {rightIcon && <div className="chip__right-icon">{rightIcon}</div>}
-    </div>;
+    </div>
+  );
 }
 Chip.propTypes = {
   borderColor: PropTypes.oneOf(Object.values(COLORS)),
   label: PropTypes.string,
   children: PropTypes.node,
-  labelProps: PropTypes.shape({ ...omit(Typography.propTypes, ['children', 'className'])
+  labelProps: PropTypes.shape({
+    ...omit(Typography.propTypes, ['children', 'className']),
   }),
   leftIcon: PropTypes.node,
   rightIcon: PropTypes.node,
   className: PropTypes.string,
   onClick: PropTypes.func,
   inputValue: PropTypes.string,
-  setInputValue: PropTypes.func
+  setInputValue: PropTypes.func,
 };

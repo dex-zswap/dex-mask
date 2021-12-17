@@ -8,10 +8,15 @@ const LOADING_CLASS = `${BASE_CLASS}--active`;
 export default function LoadingHeartBeat() {
   useShouldAnimateGasEstimations();
   const active = useSelector(getGasLoadingAnimationIsShowing);
-  return <div className={classNames('loading-heartbeat', {
-    [LOADING_CLASS]: active
-  })} onClick={e => {
-    e.preventDefault();
-    e.stopPropagation();
-  }}></div>;
+  return (
+    <div
+      className={classNames('loading-heartbeat', {
+        [LOADING_CLASS]: active,
+      })}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    ></div>
+  );
 }

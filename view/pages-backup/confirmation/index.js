@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { produce } from 'immer';
@@ -41,15 +47,15 @@ const alertStateReducer = produce((state, action) => {
         state[action.confirmationId] = {};
       }
 
-      action.alerts.forEach(alert => {
-        state[action.confirmationId][alert.id] = { ...alert,
-          dismissed: false
-        };
+      action.alerts.forEach((alert) => {
+        state[action.confirmationId][alert.id] = { ...alert, dismissed: false };
       });
       break;
 
     default:
-      throw new Error('You must provide a type when dispatching an action for alertState');
+      throw new Error(
+        'You must provide a type when dispatching an action for alertState',
+      );
   }
 });
 /**
@@ -78,12 +84,12 @@ function useAlertState(pendingConfirmation) {
     let isMounted = true;
 
     if (pendingConfirmation) {
-      getTemplateAlerts(pendingConfirmation).then(alerts => {
+      getTemplateAlerts(pendingConfirmation).then((alerts) => {
         if (isMounted && alerts) {
           dispatch({
             type: 'set',
             confirmationId: pendingConfirmation.id,
-            alerts
+            alerts,
           });
         }
       });
@@ -93,13 +99,16 @@ function useAlertState(pendingConfirmation) {
       isMounted = false;
     };
   }, [pendingConfirmation]);
-  const dismissAlert = useCallback(alertId => {
-    dispatch({
-      type: 'dismiss',
-      confirmationId: pendingConfirmation.id,
-      alertId
-    });
-  }, [pendingConfirmation]);
+  const dismissAlert = useCallback(
+    (alertId) => {
+      dispatch({
+        type: 'dismiss',
+        confirmationId: pendingConfirmation.id,
+        alertId,
+      });
+    },
+    [pendingConfirmation],
+  );
   return [alertState, dismissAlert];
 }
 
@@ -107,8 +116,13 @@ export default function ConfirmationPage() {
   const t = useI18nContext();
   const dispatch = useDispatch();
   const history = useHistory();
-  const pendingConfirmations = useSelector(getUnapprovedTemplatedConfirmations, isEqual);
-  const [currentPendingConfirmation, setCurrentPendingConfirmation] = useState(0);
+  const pendingConfirmations = useSelector(
+    getUnapprovedTemplatedConfirmations,
+    isEqual,
+  );
+  const [currentPendingConfirmation, setCurrentPendingConfirmation] = useState(
+    0,
+  );
   const pendingConfirmation = pendingConfirmations[currentPendingConfirmation];
   const originMetadata = useOriginMetadata(pendingConfirmation?.origin);
   const [alertState, dismissAlert] = useAlertState(pendingConfirmation); // Generating templatedValues is potentially expensive, and if done on every render
@@ -116,7 +130,9 @@ export default function ConfirmationPage() {
   // improve performance and prevent unnecessary draws.
 
   const templatedValues = useMemo(() => {
-    return pendingConfirmation ? getTemplateValues(pendingConfirmation, t, dispatch) : {};
+    return pendingConfirmation
+      ? getTemplateValues(pendingConfirmation, t, dispatch)
+      : {};
   }, [pendingConfirmation, t, dispatch]);
   useEffect(() => {
     // If the number of pending confirmations reduces to zero when the user
@@ -134,31 +150,86 @@ export default function ConfirmationPage() {
     return null;
   }
 
-  return <div className="confirmation-page">
-      {pendingConfirmations.length > 1 && <div className="confirmation-page__navigation">
+  return (
+    <div className="confirmation-page">
+      {pendingConfirmations.length > 1 && (
+        <div className="confirmation-page__navigation">
           <p>
-            {t('xOfYPending', [currentPendingConfirmation + 1, pendingConfirmations.length])}
+            {t('xOfYPending', [
+              currentPendingConfirmation + 1,
+              pendingConfirmations.length,
+            ])}
           </p>
-          {currentPendingConfirmation > 0 && <button className="confirmation-page__navigation-button" onClick={() => setCurrentPendingConfirmation(currentPendingConfirmation - 1)}>
+          {currentPendingConfirmation > 0 && (
+            <button
+              className="confirmation-page__navigation-button"
+              onClick={() =>
+                setCurrentPendingConfirmation(currentPendingConfirmation - 1)
+              }
+            >
               <i className="fas fa-chevron-left"></i>
-            </button>}
-          <button className="confirmation-page__navigation-button" disabled={currentPendingConfirmation + 1 === pendingConfirmations.length} onClick={() => setCurrentPendingConfirmation(currentPendingConfirmation + 1)}>
+            </button>
+          )}
+          <button
+            className="confirmation-page__navigation-button"
+            disabled={
+              currentPendingConfirmation + 1 === pendingConfirmations.length
+            }
+            onClick={() =>
+              setCurrentPendingConfirmation(currentPendingConfirmation + 1)
+            }
+          >
             <i className="fas fa-chevron-right"></i>
           </button>
-        </div>}
+        </div>
+      )}
       <div className="confirmation-page__content">
         <Box justifyContent="center">
-          <NetworkDisplay colored={false} indicatorSize={SIZES.XS} labelProps={{
-          color: COLORS.BLACK
-        }} />
+          <NetworkDisplay
+            colored={false}
+            indicatorSize={SIZES.XS}
+            labelProps={{
+              color: COLORS.BLACK,
+            }}
+          />
         </Box>
         <Box justifyContent="center" padding={[1, 4, 4]}>
-          <Chip label={stripHttpsScheme(originMetadata.origin)} leftIcon={<SiteIcon icon={originMetadata.icon} name={originMetadata.hostname} size={32} />} />
+          <Chip
+            label={stripHttpsScheme(originMetadata.origin)}
+            leftIcon={
+              <SiteIcon
+                icon={originMetadata.icon}
+                name={originMetadata.hostname}
+                size={32}
+              />
+            }
+          />
         </Box>
         <MetaMaskTemplateRenderer sections={templatedValues.content} />
       </div>
-      <ConfirmationFooter alerts={alertState[pendingConfirmation.id] && Object.values(alertState[pendingConfirmation.id]).filter(alert => alert.dismissed === false).map((alert, idx, filtered) => <Callout key={alert.id} severity={alert.severity} dismiss={() => dismissAlert(alert.id)} isFirst={idx === 0} isLast={idx === filtered.length - 1} isMultiple={filtered.length > 1}>
+      <ConfirmationFooter
+        alerts={
+          alertState[pendingConfirmation.id] &&
+          Object.values(alertState[pendingConfirmation.id])
+            .filter((alert) => alert.dismissed === false)
+            .map((alert, idx, filtered) => (
+              <Callout
+                key={alert.id}
+                severity={alert.severity}
+                dismiss={() => dismissAlert(alert.id)}
+                isFirst={idx === 0}
+                isLast={idx === filtered.length - 1}
+                isMultiple={filtered.length > 1}
+              >
                 <MetaMaskTemplateRenderer sections={alert.content} />
-              </Callout>)} onApprove={templatedValues.onApprove} onCancel={templatedValues.onCancel} approveText={templatedValues.approvalText} cancelText={templatedValues.cancelText} />
-    </div>;
+              </Callout>
+            ))
+        }
+        onApprove={templatedValues.onApprove}
+        onCancel={templatedValues.onCancel}
+        approveText={templatedValues.approvalText}
+        cancelText={templatedValues.cancelText}
+      />
+    </div>
+  );
 }

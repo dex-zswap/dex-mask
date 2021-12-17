@@ -4,36 +4,36 @@ import ConfirmTransactionBase from '@pages/confirm-transaction-base';
 import { SEND_ROUTE } from '@view/helpers/constants/routes';
 export default class ConfirmSendEther extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     editTransaction: PropTypes.func,
     history: PropTypes.object,
-    txParams: PropTypes.object
+    txParams: PropTypes.object,
   };
 
-  handleEdit({
-    txData
-  }) {
-    const {
-      editTransaction,
-      history
-    } = this.props;
+  handleEdit({ txData }) {
+    const { editTransaction, history } = this.props;
     editTransaction(txData).then(() => {
       history.push(SEND_ROUTE);
     });
   }
 
   shouldHideData() {
-    const {
-      txParams = {}
-    } = this.props;
+    const { txParams = {} } = this.props;
     return !txParams.data;
   }
 
   render() {
     const hideData = this.shouldHideData();
-    return <ConfirmTransactionBase actionKey="confirm" hideData={hideData} onEdit={confirmTransactionData => this.handleEdit(confirmTransactionData)} />;
+    return (
+      <ConfirmTransactionBase
+        actionKey="confirm"
+        hideData={hideData}
+        onEdit={(confirmTransactionData) =>
+          this.handleEdit(confirmTransactionData)
+        }
+      />
+    );
   }
-
 }

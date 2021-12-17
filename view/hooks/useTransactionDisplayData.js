@@ -1,13 +1,27 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getTokens } from '@reducer/dexmask/dexmask';
 import { getKnownMethodData } from '@selectors/selectors';
-import { TRANSACTION_GROUP_CATEGORIES, TRANSACTION_STATUSES, TRANSACTION_TYPES } from '@shared/constants/transaction';
+import {
+  TRANSACTION_GROUP_CATEGORIES,
+  TRANSACTION_STATUSES,
+  TRANSACTION_TYPES,
+} from '@shared/constants/transaction';
 import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
-import { PENDING_STATUS_HASH, TOKEN_CATEGORY_HASH } from '@view/helpers/constants/transactions';
-import { formatDateWithYearContext, shortenAddress, stripHttpSchemes } from '@view/helpers/utils';
+import {
+  PENDING_STATUS_HASH,
+  TOKEN_CATEGORY_HASH,
+} from '@view/helpers/constants/transactions';
+import {
+  formatDateWithYearContext,
+  shortenAddress,
+  stripHttpSchemes,
+} from '@view/helpers/utils';
 import { camelCaseToCapitalize } from '@view/helpers/utils/common.util';
 import { getTokenAddressParam } from '@view/helpers/utils/token-util';
-import { getStatusKey, getTransactionTypeTitle } from '@view/helpers/utils/transactions.util';
+import {
+  getStatusKey,
+  getTransactionTypeTitle,
+} from '@view/helpers/utils/transactions.util';
 import { captureSingleException } from '@view/store/actions';
 import { useCurrencyDisplay } from './useCurrencyDisplay';
 import { useCurrentAsset } from './useCurrentAsset';
@@ -48,22 +62,17 @@ export function useTransactionDisplayData(transactionGroup) {
   const currentAsset = useCurrentAsset();
   const knownTokens = useSelector(getTokens);
   const t = useI18nContext();
-  const {
-    initialTransaction,
-    primaryTransaction
-  } = transactionGroup; // initialTransaction contains the data we need to derive the primary purpose of this transaction group
+  const { initialTransaction, primaryTransaction } = transactionGroup; // initialTransaction contains the data we need to derive the primary purpose of this transaction group
 
-  const {
-    type
-  } = initialTransaction;
-  const {
-    from: senderAddress,
-    to
-  } = initialTransaction.txParams || {}; // for smart contract interactions, methodData can be used to derive the name of the action being taken
+  const { type } = initialTransaction;
+  const { from: senderAddress, to } = initialTransaction.txParams || {}; // for smart contract interactions, methodData can be used to derive the name of the action being taken
 
-  const methodData = useSelector(state => getKnownMethodData(state, initialTransaction?.txParams?.data)) || {};
+  const methodData =
+    useSelector((state) =>
+      getKnownMethodData(state, initialTransaction?.txParams?.data),
+    ) || {};
   const displayedStatusKey = getStatusKey(primaryTransaction);
-  const isPending = (displayedStatusKey in PENDING_STATUS_HASH);
+  const isPending = displayedStatusKey in PENDING_STATUS_HASH;
   const isSubmitted = displayedStatusKey === TRANSACTION_STATUSES.SUBMITTED;
   const primaryValue = primaryTransaction.txParams?.value;
   let prefix = '-';
@@ -80,13 +89,26 @@ export function useTransactionDisplayData(transactionGroup) {
   // false for non-token transactions. This additional argument forces the
   // hook to return null
 
-  const token = isTokenCategory && knownTokens.find(({
-    address
-  }) => address === recipientAddress);
-  const tokenData = useTokenData(initialTransaction?.txParams?.data, isTokenCategory);
-  const tokenDisplayValue = useTokenDisplayValue(initialTransaction?.txParams?.data, token, isTokenCategory);
-  const tokenFiatAmount = useTokenFiatAmount(token?.address, tokenDisplayValue, token?.symbol);
-  const origin = stripHttpSchemes(initialTransaction.origin || initialTransaction.msgParams?.origin || ''); // used to append to the primary display value. initialized to either token.symbol or undefined
+  const token =
+    isTokenCategory &&
+    knownTokens.find(({ address }) => address === recipientAddress);
+  const tokenData = useTokenData(
+    initialTransaction?.txParams?.data,
+    isTokenCategory,
+  );
+  const tokenDisplayValue = useTokenDisplayValue(
+    initialTransaction?.txParams?.data,
+    token,
+    isTokenCategory,
+  );
+  const tokenFiatAmount = useTokenFiatAmount(
+    token?.address,
+    tokenDisplayValue,
+    token?.symbol,
+  );
+  const origin = stripHttpSchemes(
+    initialTransaction.origin || initialTransaction.msgParams?.origin || '',
+  ); // used to append to the primary display value. initialized to either token.symbol or undefined
   // but can later be modified if dealing with a swap
 
   let primarySuffix = isTokenCategory ? token?.symbol : undefined; // used to display the primary value of tx. initialized to either tokenDisplayValue or undefined
@@ -104,7 +126,7 @@ export function useTransactionDisplayData(transactionGroup) {
     swapTokenValue,
     isNegative,
     swapTokenFiatAmount,
-    isViewingReceivedTokenFromSwap
+    isViewingReceivedTokenFromSwap,
   } = useSwappedTokenValue(transactionGroup, currentAsset); // There are seven types of transaction entries that are currently differentiated in the design
   // 1. Signature request
   // 2. Send (sendEth sendTokens)
@@ -114,7 +136,15 @@ export function useTransactionDisplayData(transactionGroup) {
   // 6. Swap
   // 7. Swap Approval
 
-  const signatureTypes = [null, undefined, TRANSACTION_TYPES.SIGN, TRANSACTION_TYPES.PERSONAL_SIGN, TRANSACTION_TYPES.SIGN_TYPED_DATA, TRANSACTION_TYPES.ETH_DECRYPT, TRANSACTION_TYPES.ETH_GET_ENCRYPTION_PUBLIC_KEY];
+  const signatureTypes = [
+    null,
+    undefined,
+    TRANSACTION_TYPES.SIGN,
+    TRANSACTION_TYPES.PERSONAL_SIGN,
+    TRANSACTION_TYPES.SIGN_TYPED_DATA,
+    TRANSACTION_TYPES.ETH_DECRYPT,
+    TRANSACTION_TYPES.ETH_GET_ENCRYPTION_PUBLIC_KEY,
+  ];
 
   if (signatureTypes.includes(type)) {
     category = TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST;
@@ -123,10 +153,15 @@ export function useTransactionDisplayData(transactionGroup) {
     subtitleContainsOrigin = true;
   } else if (type === TRANSACTION_TYPES.SWAP) {
     category = TRANSACTION_GROUP_CATEGORIES.SWAP;
-    title = t('swapTokenToToken', [initialTransaction.sourceTokenSymbol, initialTransaction.destinationTokenSymbol]);
+    title = t('swapTokenToToken', [
+      initialTransaction.sourceTokenSymbol,
+      initialTransaction.destinationTokenSymbol,
+    ]);
     subtitle = origin;
     subtitleContainsOrigin = true;
-    primarySuffix = isViewingReceivedTokenFromSwap ? currentAsset.symbol : initialTransaction.sourceTokenSymbol;
+    primarySuffix = isViewingReceivedTokenFromSwap
+      ? currentAsset.symbol
+      : initialTransaction.sourceTokenSymbol;
     primaryDisplayValue = swapTokenValue;
     secondaryDisplayValue = swapTokenFiatAmount;
 
@@ -149,10 +184,15 @@ export function useTransactionDisplayData(transactionGroup) {
     title = t('approveSpendLimit', [token?.symbol || t('token')]);
     subtitle = origin;
     subtitleContainsOrigin = true;
-  } else if (type === TRANSACTION_TYPES.DEPLOY_CONTRACT || type === TRANSACTION_TYPES.CONTRACT_INTERACTION) {
+  } else if (
+    type === TRANSACTION_TYPES.DEPLOY_CONTRACT ||
+    type === TRANSACTION_TYPES.CONTRACT_INTERACTION
+  ) {
     category = TRANSACTION_GROUP_CATEGORIES.INTERACTION;
     const transactionTypeTitle = getTransactionTypeTitle(t, type);
-    title = methodData?.name && camelCaseToCapitalize(methodData.name) || transactionTypeTitle;
+    title =
+      (methodData?.name && camelCaseToCapitalize(methodData.name)) ||
+      transactionTypeTitle;
     subtitle = origin;
     subtitleContainsOrigin = true;
   } else if (type === TRANSACTION_TYPES.INCOMING) {
@@ -160,7 +200,10 @@ export function useTransactionDisplayData(transactionGroup) {
     title = t('receive');
     prefix = '';
     subtitle = t('fromAddress', [shortenAddress(senderAddress)]);
-  } else if (type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM || type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER) {
+  } else if (
+    type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM ||
+    type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER
+  ) {
     category = TRANSACTION_GROUP_CATEGORIES.SEND;
     title = t('sendSpecifiedTokens', [token?.symbol || t('token')]);
     recipientAddress = getTokenAddressParam(tokenData);
@@ -170,7 +213,11 @@ export function useTransactionDisplayData(transactionGroup) {
     title = t('send');
     subtitle = t('toAddress', [shortenAddress(recipientAddress)]);
   } else {
-    dispatch(captureSingleException(`useTransactionDisplayData does not recognize transaction type. Type received is: ${type}`));
+    dispatch(
+      captureSingleException(
+        `useTransactionDisplayData does not recognize transaction type. Type received is: ${type}`,
+      ),
+    );
   }
 
   const primaryCurrencyPreferences = useUserPreferencedCurrency(PRIMARY);
@@ -179,13 +226,13 @@ export function useTransactionDisplayData(transactionGroup) {
     prefix,
     displayValue: primaryDisplayValue,
     suffix: primarySuffix,
-    ...primaryCurrencyPreferences
+    ...primaryCurrencyPreferences,
   });
   const [secondaryCurrency] = useCurrencyDisplay(primaryValue, {
     prefix,
     displayValue: secondaryDisplayValue,
     hideLabel: isTokenCategory || Boolean(swapTokenValue),
-    ...secondaryCurrencyPreferences
+    ...secondaryCurrencyPreferences,
   });
   return {
     title,
@@ -193,12 +240,17 @@ export function useTransactionDisplayData(transactionGroup) {
     date,
     subtitle,
     subtitleContainsOrigin,
-    primaryCurrency: type === TRANSACTION_TYPES.SWAP && isPending ? '' : primaryCurrency,
+    primaryCurrency:
+      type === TRANSACTION_TYPES.SWAP && isPending ? '' : primaryCurrency,
     senderAddress,
     recipientAddress,
-    secondaryCurrency: isTokenCategory && !tokenFiatAmount || type === TRANSACTION_TYPES.SWAP && !swapTokenFiatAmount ? undefined : secondaryCurrency,
+    secondaryCurrency:
+      (isTokenCategory && !tokenFiatAmount) ||
+      (type === TRANSACTION_TYPES.SWAP && !swapTokenFiatAmount)
+        ? undefined
+        : secondaryCurrency,
     displayedStatusKey,
     isPending,
-    isSubmitted
+    isSubmitted,
   };
 }

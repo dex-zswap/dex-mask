@@ -4,21 +4,17 @@ import PageContainerFooter from '@c/ui/page-container/page-container-footer';
 export default class MetaMetricsOptInModal extends Component {
   static propTypes = {
     setParticipateInMetaMetrics: PropTypes.func,
-    hideModal: PropTypes.func
+    hideModal: PropTypes.func,
   };
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   render() {
-    const {
-      t
-    } = this.context;
-    const {
-      setParticipateInMetaMetrics,
-      hideModal
-    } = this.props;
-    return <div className="metametrics-opt-in metametrics-opt-in-modal">
+    const { t } = this.context;
+    const { setParticipateInMetaMetrics, hideModal } = this.props;
+    return (
+      <div className="metametrics-opt-in metametrics-opt-in-modal">
         <div className="metametrics-opt-in__main">
           <div className="metametrics-opt-in__content">
             <div className="metametrics-opt-in__body-graphic">
@@ -51,48 +47,78 @@ export default class MetaMetricsOptInModal extends Component {
                 <div className="metametrics-opt-in__row metametrics-opt-in__break-row">
                   <i className="fa fa-times" />
                   <div className="metametrics-opt-in__row-description">
-                    {t('metametricsCommitmentsNeverCollectKeysEtc', [<span className="metametrics-opt-in__bold" key="neverCollectKeys">
+                    {t('metametricsCommitmentsNeverCollectKeysEtc', [
+                      <span
+                        className="metametrics-opt-in__bold"
+                        key="neverCollectKeys"
+                      >
                         {t('metametricsCommitmentsBoldNever')}
-                      </span>])}
+                      </span>,
+                    ])}
                   </div>
                 </div>
                 <div className="metametrics-opt-in__row">
                   <i className="fa fa-times" />
                   <div className="metametrics-opt-in__row-description">
-                    {t('metametricsCommitmentsNeverCollectIP', [<span className="metametrics-opt-in__bold" key="neverCollectIP">
+                    {t('metametricsCommitmentsNeverCollectIP', [
+                      <span
+                        className="metametrics-opt-in__bold"
+                        key="neverCollectIP"
+                      >
                         {t('metametricsCommitmentsBoldNever')}
-                      </span>])}
+                      </span>,
+                    ])}
                   </div>
                 </div>
                 <div className="metametrics-opt-in__row">
                   <i className="fa fa-times" />
                   <div className="metametrics-opt-in__row-description">
-                    {t('metametricsCommitmentsNeverSellDataForProfit', [<span className="metametrics-opt-in__bold" key="neverSellData">
+                    {t('metametricsCommitmentsNeverSellDataForProfit', [
+                      <span
+                        className="metametrics-opt-in__bold"
+                        key="neverSellData"
+                      >
                         {t('metametricsCommitmentsBoldNever')}
-                      </span>])}
+                      </span>,
+                    ])}
                   </div>
                 </div>
               </div>
             </div>
             <div className="metametrics-opt-in__bottom-text">
-              {t('gdprMessage', [<a key="metametrics-bottom-text-wrapper" href="https://metamask.io/privacy.html" target="_blank" rel="noopener noreferrer">
+              {t('gdprMessage', [
+                <a
+                  key="metametrics-bottom-text-wrapper"
+                  href="https://metamask.io/privacy.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {t('gdprMessagePrivacyPolicy')}
-                </a>])}
+                </a>,
+              ])}
             </div>
           </div>
           <div className="metametrics-opt-in__footer">
-            <PageContainerFooter onCancel={() => {
-            setParticipateInMetaMetrics(false).then(() => {
-              hideModal();
-            });
-          }} cancelText={t('noThanks')} hideCancel={false} onSubmit={() => {
-            setParticipateInMetaMetrics(true).then(() => {
-              hideModal();
-            });
-          }} submitText={t('affirmAgree')} submitButtonType="confirm" disabled={false} />
+            <PageContainerFooter
+              onCancel={() => {
+                setParticipateInMetaMetrics(false).then(() => {
+                  hideModal();
+                });
+              }}
+              cancelText={t('noThanks')}
+              hideCancel={false}
+              onSubmit={() => {
+                setParticipateInMetaMetrics(true).then(() => {
+                  hideModal();
+                });
+              }}
+              submitText={t('affirmAgree')}
+              submitButtonType="confirm"
+              disabled={false}
+            />
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
-
 }

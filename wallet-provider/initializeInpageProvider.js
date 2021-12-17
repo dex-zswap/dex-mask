@@ -12,24 +12,32 @@ import shimWeb3 from './shimWeb3';
  * @param options.shouldShimWeb3 - Whether a window.web3 shim should be injected.
  * @returns The initialized provider (whether set or not).
  */
-export function initializeProvider({ connectionStream, jsonRpcStreamName, logger = console, maxEventListeners = 100, shouldSendMetadata = true, shouldSetOnWindow = true, shouldShimWeb3 = false, }) {
-    let provider = new MetaMaskInpageProvider(connectionStream, {
-        jsonRpcStreamName,
-        logger,
-        maxEventListeners,
-        shouldSendMetadata,
-    });
-    provider = new Proxy(provider, {
-        // some common libraries, e.g. web3@1.x, mess with our API
-        deleteProperty: () => true,
-    });
-    if (shouldSetOnWindow) {
-        setGlobalProvider(provider);
-    }
-    if (shouldShimWeb3) {
-        shimWeb3(provider, logger);
-    }
-    return provider;
+export function initializeProvider({
+  connectionStream,
+  jsonRpcStreamName,
+  logger = console,
+  maxEventListeners = 100,
+  shouldSendMetadata = true,
+  shouldSetOnWindow = true,
+  shouldShimWeb3 = false,
+}) {
+  let provider = new MetaMaskInpageProvider(connectionStream, {
+    jsonRpcStreamName,
+    logger,
+    maxEventListeners,
+    shouldSendMetadata,
+  });
+  provider = new Proxy(provider, {
+    // some common libraries, e.g. web3@1.x, mess with our API
+    deleteProperty: () => true,
+  });
+  if (shouldSetOnWindow) {
+    setGlobalProvider(provider);
+  }
+  if (shouldShimWeb3) {
+    shimWeb3(provider, logger);
+  }
+  return provider;
 }
 /**
  * Sets the given provider instance as window.dexEthereum and dispatches the
@@ -38,6 +46,6 @@ export function initializeProvider({ connectionStream, jsonRpcStreamName, logger
  * @param providerInstance - The provider instance.
  */
 export function setGlobalProvider(providerInstance) {
-    window.dexEthereum = providerInstance;
-    window.dispatchEvent(new Event('dexEthereum#initialized'));
+  window.dexEthereum = providerInstance;
+  window.dispatchEvent(new Event('dexEthereum#initialized'));
 }

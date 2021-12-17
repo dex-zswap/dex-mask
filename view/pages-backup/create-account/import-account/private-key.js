@@ -10,7 +10,7 @@ import * as actions from '@view/store/actions';
 
 class PrivateKeyImportView extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     importNewAccount: PropTypes.func.isRequired,
@@ -19,11 +19,11 @@ class PrivateKeyImportView extends Component {
     setSelectedAddress: PropTypes.func.isRequired,
     firstAddress: PropTypes.string.isRequired,
     error: PropTypes.node,
-    mostRecentOverviewPage: PropTypes.string.isRequired
+    mostRecentOverviewPage: PropTypes.string.isRequired,
   };
   inputRef = React.createRef();
   state = {
-    isEmpty: true
+    isEmpty: true,
   };
 
   createNewKeychain() {
@@ -34,22 +34,22 @@ class PrivateKeyImportView extends Component {
       displayWarning,
       mostRecentOverviewPage,
       setSelectedAddress,
-      firstAddress
+      firstAddress,
     } = this.props;
-    importNewAccount('Private Key', [privateKey]).then(({
-      selectedAddress
-    }) => {
-      if (selectedAddress) {
-        history.push(mostRecentOverviewPage);
-        displayWarning(null);
-      } else {
-        displayWarning('Error importing account.');
-        setSelectedAddress(firstAddress);
-      }
-    }).catch(err => err && displayWarning(err.message || err));
+    importNewAccount('Private Key', [privateKey])
+      .then(({ selectedAddress }) => {
+        if (selectedAddress) {
+          history.push(mostRecentOverviewPage);
+          displayWarning(null);
+        } else {
+          displayWarning('Error importing account.');
+          setSelectedAddress(firstAddress);
+        }
+      })
+      .catch((err) => err && displayWarning(err.message || err));
   }
 
-  createKeyringOnEnter = event => {
+  createKeyringOnEnter = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
       this.createNewKeychain();
@@ -65,25 +65,30 @@ class PrivateKeyImportView extends Component {
     }
 
     this.setState({
-      isEmpty
+      isEmpty,
     });
   }
 
   render() {
-    const {
-      error,
-      displayWarning
-    } = this.props;
-    return <div className="new-account-import-form__private-key">
+    const { error, displayWarning } = this.props;
+    return (
+      <div className="new-account-import-form__private-key">
         <span className="new-account-create-form__instruction">
           {this.context.t('pastePrivateKey')}
         </span>
         <div className="new-account-import-form__private-key-password-container">
-          <input className="new-account-import-form__input-password" type="password" id="private-key-box" onKeyPress={e => this.createKeyringOnEnter(e)} onChange={() => this.checkInputEmpty()} ref={this.inputRef} autoFocus />
+          <input
+            className="new-account-import-form__input-password"
+            type="password"
+            id="private-key-box"
+            onKeyPress={(e) => this.createKeyringOnEnter(e)}
+            onChange={() => this.checkInputEmpty()}
+            ref={this.inputRef}
+            autoFocus
+          />
         </div>
         <div className="new-account-import-form__buttons">
-          {
-          /* <Button
+          {/* <Button
            className="new-account-create-form__button"
            onClick={() => {
              const { history, mostRecentOverviewPage } = this.props;
@@ -92,25 +97,32 @@ class PrivateKeyImportView extends Component {
            }}
           >
            {this.context.t('cancel')}
-          </Button> */
-        }
-          <Button type="primary" className="new-account-create-form__button" onClick={() => this.createNewKeychain()} disabled={this.state.isEmpty}>
+          </Button> */}
+          <Button
+            type="primary"
+            className="new-account-create-form__button"
+            onClick={() => this.createNewKeychain()}
+            disabled={this.state.isEmpty}
+          >
             {this.context.t('import')}
           </Button>
         </div>
         {error ? <span className="error">{error}</span> : null}
-      </div>;
+      </div>
+    );
   }
-
 }
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(PrivateKeyImportView);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(PrivateKeyImportView);
 
 function mapStateToProps(state) {
   return {
     error: state.appState.warning,
     firstAddress: Object.keys(getDexMaskAccounts(state))[0],
-    mostRecentOverviewPage: getMostRecentOverviewPage(state)
+    mostRecentOverviewPage: getMostRecentOverviewPage(state),
   };
 }
 
@@ -119,7 +131,9 @@ function mapDispatchToProps(dispatch) {
     importNewAccount: (strategy, [privateKey]) => {
       return dispatch(actions.importNewAccount(strategy, [privateKey]));
     },
-    displayWarning: message => dispatch(actions.displayWarning(message || null)),
-    setSelectedAddress: address => dispatch(actions.setSelectedAddress(address))
+    displayWarning: (message) =>
+      dispatch(actions.displayWarning(message || null)),
+    setSelectedAddress: (address) =>
+      dispatch(actions.setSelectedAddress(address)),
   };
 }

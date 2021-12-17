@@ -14,76 +14,100 @@ export default function SendCardAmountInput({
   token = {
     address: '',
     symbol: '',
-    decimals: 18
+    decimals: 18,
   },
   onAmountChange,
-  accountAddress
+  accountAddress,
 }) {
   const chainId = useSelector(getCurrentChainId);
   const nativeCurrency = useSelector(getNativeCurrency);
-  const {
-    tokensWithBalances
-  } = useTokenTracker(token ? [token] : [], false, false, accountAddress);
-  const {
-    string
-  } = tokensWithBalances[0] || {};
-  const initVal = useMemo(() => isNativeCurrency ? Number(conversionUtil(accountVal, {
-    fromNumericBase: 'hex',
-    toNumericBase: 'dec',
-    fromDenomination: 'WEI',
-    numberOfDecimals: 6,
-    fromCurrency: null,
-    toCurrency: null,
-    toDenomination: null,
-    conversionRate: null,
-    invertConversionRate: null
-  })) : Number(string), [isNativeCurrency, accountVal, string]);
-  const tokenSymbol = useMemo(() => isNativeCurrency ? nativeCurrency : token?.symbol, [isNativeCurrency, nativeCurrency, token?.symbol]);
+  const { tokensWithBalances } = useTokenTracker(
+    token ? [token] : [],
+    false,
+    false,
+    accountAddress,
+  );
+  const { string } = tokensWithBalances[0] || {};
+  const initVal = useMemo(
+    () =>
+      isNativeCurrency
+        ? Number(
+            conversionUtil(accountVal, {
+              fromNumericBase: 'hex',
+              toNumericBase: 'dec',
+              fromDenomination: 'WEI',
+              numberOfDecimals: 6,
+              fromCurrency: null,
+              toCurrency: null,
+              toDenomination: null,
+              conversionRate: null,
+              invertConversionRate: null,
+            }),
+          )
+        : Number(string),
+    [isNativeCurrency, accountVal, string],
+  );
+  const tokenSymbol = useMemo(
+    () => (isNativeCurrency ? nativeCurrency : token?.symbol),
+    [isNativeCurrency, nativeCurrency, token?.symbol],
+  );
   const [tokenVal, setTokenVal] = useState(''); // useEffect(() => {
   //   setTokenVal(initVal);
   //   onAmountChange(initVal);
   // }, [initVal]);
 
-  const {
-    res,
-    error,
-    loading
-  } = useFetch(() => getPrice({
-    token_address: isNativeCurrency ? zeroAddress() : token?.address,
-    symbol: isNativeCurrency ? nativeCurrency : token?.symbol
-  }), [isNativeCurrency, nativeCurrency, token?.address, token?.symbol]);
+  const { res, error, loading } = useFetch(
+    () =>
+      getPrice({
+        token_address: isNativeCurrency ? zeroAddress() : token?.address,
+        symbol: isNativeCurrency ? nativeCurrency : token?.symbol,
+      }),
+    [isNativeCurrency, nativeCurrency, token?.address, token?.symbol],
+  );
   const usdPrice = useMemo(() => {
     if (error || loading) {
       return 0;
     }
 
-    return new BigNumber(new BigNumber(res?.d?.price || 0).times(new BigNumber(tokenVal || 0)).toFixed(3)).toFixed();
+    return new BigNumber(
+      new BigNumber(res?.d?.price || 0)
+        .times(new BigNumber(tokenVal || 0))
+        .toFixed(3),
+    ).toFixed();
   }, [res, error, loading, tokenVal]);
-  const changeTokenVal = useCallback(({
-    target
-  }) => {
-    let val = target.value.trim().replace(/\n/gu, '') || null;
+  const changeTokenVal = useCallback(
+    ({ target }) => {
+      let val = target.value.trim().replace(/\n/gu, '') || null;
 
-    if (!val || isNaN(Number(val)) || val < 0) {
-      val = '';
-    }
+      if (!val || isNaN(Number(val)) || val < 0) {
+        val = '';
+      }
 
-    if (val > initVal) {
-      val = initVal;
-    }
+      if (val > initVal) {
+        val = initVal;
+      }
 
-    setTokenVal(val);
-    onAmountChange(val);
-  }, [initVal]);
+      setTokenVal(val);
+      onAmountChange(val);
+    },
+    [initVal],
+  );
   useEffect(() => {
     setTokenVal('');
   }, [chainId]);
-  return <div className="send-card-amount-input-wrap">
+  return (
+    <div className="send-card-amount-input-wrap">
       <div>
         <label>{tokenVal}</label>
-        <input type="text" placeholder="0" value={tokenVal} onChange={changeTokenVal} />
+        <input
+          type="text"
+          placeholder="0"
+          value={tokenVal}
+          onChange={changeTokenVal}
+        />
         <span>{tokenSymbol}</span>
       </div>
       <div>≈ {usdPrice} USD</div>
-    </div>;
+    </div>
+  );
 }

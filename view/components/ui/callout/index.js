@@ -10,7 +10,7 @@ export default function Callout({
   dismiss,
   isFirst,
   isLast,
-  isMultiple
+  isMultiple,
 }) {
   const [removed, setRemoved] = useState(false);
   const calloutClassName = classnames('callout', `callout--${severity}`, {
@@ -18,7 +18,7 @@ export default function Callout({
     'callout--multiple': isMultiple === true,
     'callout--dismissible': Boolean(dismiss),
     'callout--first': isFirst === true || isMultiple !== true,
-    'callout--last': isLast === true || isMultiple !== true
+    'callout--last': isLast === true || isMultiple !== true,
   }); // Clicking the close button will set removed state, which will trigger this
   // effect to refire due to changing dependencies. When that happens, after a
   // half of a second we fire the dismiss method from the parent. The
@@ -32,17 +32,27 @@ export default function Callout({
       }, MILLISECOND * 500);
     }
   }, [removed, dismiss]);
-  return <div className={calloutClassName}>
+  return (
+    <div className={calloutClassName}>
       <InfoIconInverted severity={severity} />
       <div className="callout__content">{children}</div>
-      {dismiss && <i onClick={() => {
-      setRemoved(true);
-    }} onKeyUp={event => {
-      if (event.key === 'Enter') {
-        setRemoved(true);
-      }
-    }} role="button" tabIndex={0} className="fas fa-times callout__close-button" />}
-    </div>;
+      {dismiss && (
+        <i
+          onClick={() => {
+            setRemoved(true);
+          }}
+          onKeyUp={(event) => {
+            if (event.key === 'Enter') {
+              setRemoved(true);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          className="fas fa-times callout__close-button"
+        />
+      )}
+    </div>
+  );
 }
 Callout.propTypes = {
   severity: PropTypes.oneOf(Object.values(SEVERITIES)).isRequired,
@@ -50,5 +60,5 @@ Callout.propTypes = {
   dismiss: PropTypes.func,
   isFirst: PropTypes.bool,
   isLast: PropTypes.bool,
-  isMultiple: PropTypes.bool
+  isMultiple: PropTypes.bool,
 };

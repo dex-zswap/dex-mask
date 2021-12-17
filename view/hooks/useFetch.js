@@ -7,16 +7,22 @@ export function useFetch(fetcher, deps) {
   useDeepEffect(() => {
     if (typeof fetcher === 'function') {
       setLoading(true);
-      fetcher().then(res => res.json()).then(res => {
-        setRes(res);
-        setLoading(false);
-      }, error => {
-        setError(true);
-        setLoading(false);
-      }).catch(error => {
-        setError(true);
-        setLoading(false);
-      });
+      fetcher()
+        .then((res) => res.json())
+        .then(
+          (res) => {
+            setRes(res);
+            setLoading(false);
+          },
+          (error) => {
+            setError(true);
+            setLoading(false);
+          },
+        )
+        .catch((error) => {
+          setError(true);
+          setLoading(false);
+        });
     } else {
       setRes(null);
       setError(false);
@@ -26,6 +32,6 @@ export function useFetch(fetcher, deps) {
   return {
     loading,
     res,
-    error
+    error,
   };
 }

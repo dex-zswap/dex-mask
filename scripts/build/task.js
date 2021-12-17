@@ -35,7 +35,9 @@ async function runTask(taskName, { skipStats } = {}) {
   }
   if (!skipStats) {
     setupTaskDisplay(taskEvents);
-    console.log(chalk.cyanBright(`DexMask build: running task "${taskName}"...`));
+    console.log(
+      chalk.cyanBright(`DexMask build: running task "${taskName}"...`),
+    );
   }
   try {
     await tasks[taskName]();

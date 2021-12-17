@@ -1,14 +1,25 @@
 import { omit, pick } from 'lodash';
 import { MESSAGE_TYPE } from '@shared/constants/app';
-import { rejectPendingApproval, resolvePendingApproval } from '@view/store/actions';
+import {
+  rejectPendingApproval,
+  resolvePendingApproval,
+} from '@view/store/actions';
 import addEthereumChain from './add-ethereum-chain';
 import switchEthereumChain from './switch-ethereum-chain';
 const APPROVAL_TEMPLATES = {
   [MESSAGE_TYPE.ADD_ETHEREUM_CHAIN]: addEthereumChain,
-  [MESSAGE_TYPE.SWITCH_ETHEREUM_CHAIN]: switchEthereumChain
+  [MESSAGE_TYPE.SWITCH_ETHEREUM_CHAIN]: switchEthereumChain,
 };
-export const TEMPLATED_CONFIRMATION_MESSAGE_TYPES = Object.keys(APPROVAL_TEMPLATES);
-const ALLOWED_TEMPLATE_KEYS = ['content', 'approvalText', 'cancelText', 'onApprove', 'onCancel'];
+export const TEMPLATED_CONFIRMATION_MESSAGE_TYPES = Object.keys(
+  APPROVAL_TEMPLATES,
+);
+const ALLOWED_TEMPLATE_KEYS = [
+  'content',
+  'approvalText',
+  'cancelText',
+  'onApprove',
+  'onCancel',
+];
 /**
  * @typedef {Object} PendingApproval
  * @property {string} id - The randomly generated id of the approval
@@ -35,8 +46,10 @@ export async function getTemplateAlerts(pendingApproval) {
     throw new Error(`Template alerts must be an array, received: ${results}`);
   }
 
-  if (results.some(result => result?.id === undefined)) {
-    throw new Error(`Template alert entries must be objects with an id key. Received: ${results}`);
+  if (results.some((result) => result?.id === undefined)) {
+    throw new Error(
+      `Template alert entries must be objects with an id key. Received: ${results}`,
+    );
   }
 
   return results;
@@ -58,7 +71,6 @@ async function emptyState() {
  * itself.
  * @param {Object} pendingApproval - the object representing the confirmation
  */
-
 
 export async function getTemplateState(pendingApproval) {
   const fn = APPROVAL_TEMPLATES[pendingApproval.type]?.getState ?? emptyState;
@@ -83,8 +95,10 @@ export async function getTemplateState(pendingApproval) {
 
 function getAttenuatedDispatch(dispatch) {
   return {
-    rejectPendingApproval: (...args) => dispatch(rejectPendingApproval(...args)),
-    resolvePendingApproval: (...args) => dispatch(resolvePendingApproval(...args))
+    rejectPendingApproval: (...args) =>
+      dispatch(rejectPendingApproval(...args)),
+    resolvePendingApproval: (...args) =>
+      dispatch(resolvePendingApproval(...args)),
   };
 }
 /**
@@ -94,12 +108,13 @@ function getAttenuatedDispatch(dispatch) {
  * @param {Function} dispatch - Redux dispatch function
  */
 
-
 export function getTemplateValues(pendingApproval, t, dispatch) {
   const fn = APPROVAL_TEMPLATES[pendingApproval.type]?.getValues;
 
   if (!fn) {
-    throw new Error(`MESSAGE_TYPE: '${pendingApproval.type}' is not specified in approval templates`);
+    throw new Error(
+      `MESSAGE_TYPE: '${pendingApproval.type}' is not specified in approval templates`,
+    );
   }
 
   const safeActions = getAttenuatedDispatch(dispatch);
@@ -108,7 +123,13 @@ export function getTemplateValues(pendingApproval, t, dispatch) {
   const safeValues = pick(values, ALLOWED_TEMPLATE_KEYS);
 
   if (extraneousKeys.length > 0) {
-    throw new Error(`Received extraneous keys from ${pendingApproval.type}.getValues. These keys are not passed to the confirmation page: ${Object.keys(extraneousKeys)}`);
+    throw new Error(
+      `Received extraneous keys from ${
+        pendingApproval.type
+      }.getValues. These keys are not passed to the confirmation page: ${Object.keys(
+        extraneousKeys,
+      )}`,
+    );
   }
 
   return safeValues;

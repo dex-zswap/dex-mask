@@ -1,20 +1,15 @@
 import { connect } from 'react-redux';
 import { hideModal } from '@view/store/actions';
 
-const mapStateToProps = state => {
-  const {
-    appState
-  } = state;
-  const {
-    props: modalProps
-  } = appState.modal.modalState;
-  return { ...modalProps
-  };
+const mapStateToProps = (state) => {
+  const { appState } = state;
+  const { props: modalProps } = appState.modal.modalState;
+  return { ...modalProps };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    hideModal: () => dispatch(hideModal())
+    hideModal: () => dispatch(hideModal()),
   };
 };
 

@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
-import { createCustomExplorerLink, getBlockExplorerLink } from '@metamask/etherscan-link';
+import {
+  createCustomExplorerLink,
+  getBlockExplorerLink,
+} from '@metamask/etherscan-link';
 import copyToClipboard from 'copy-to-clipboard';
 import PropTypes from 'prop-types';
 import TransactionActivityLog from '@c/app/transaction/activity-log';
@@ -10,15 +13,19 @@ import Popover from '@c/ui/popover';
 import SenderToRecipient from '@c/ui/sender-to-recipient';
 import { FLAT_VARIANT } from '@c/ui/sender-to-recipient/constants';
 import Tooltip from '@c/ui/tooltip';
-import { CHAINID_EXPLORE_MAP, MAINNET_CHAIN_ID, NETWORK_TO_NAME_MAP } from '@shared/constants/network';
+import {
+  CHAINID_EXPLORE_MAP,
+  MAINNET_CHAIN_ID,
+  NETWORK_TO_NAME_MAP,
+} from '@shared/constants/network';
 import { SECOND } from '@shared/constants/time';
 import { TRANSACTION_TYPES } from '@shared/constants/transaction';
 export default class TransactionListItemDetails extends PureComponent {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static defaultProps = {
-    recipientEns: null
+    recipientEns: null,
   };
   static propTypes = {
     onCancel: PropTypes.func,
@@ -40,73 +47,63 @@ export default class TransactionListItemDetails extends PureComponent {
     senderNickname: PropTypes.string.isRequired,
     recipientNickname: PropTypes.string,
     provider: PropTypes.object,
-    chainId: PropTypes.string
+    chainId: PropTypes.string,
   };
   state = {
-    justCopied: false
+    justCopied: false,
   };
   handleBlockExplorerClick = () => {
     const {
-      transactionGroup: {
-        primaryTransaction
-      },
-      rpcPrefs
+      transactionGroup: { primaryTransaction },
+      rpcPrefs,
     } = this.props;
-    const {
-      chainId,
-      hash
-    } = primaryTransaction;
+    const { chainId, hash } = primaryTransaction;
     let blockExplorerLink = getBlockExplorerLink(primaryTransaction, rpcPrefs);
 
     if (!blockExplorerLink && CHAINID_EXPLORE_MAP[chainId]) {
-      blockExplorerLink = createCustomExplorerLink(hash, CHAINID_EXPLORE_MAP[chainId]);
+      blockExplorerLink = createCustomExplorerLink(
+        hash,
+        CHAINID_EXPLORE_MAP[chainId],
+      );
     }
 
     global.platform.openTab({
-      url: blockExplorerLink
+      url: blockExplorerLink,
     });
   };
-  handleCancel = event => {
-    const {
-      onCancel,
-      onClose
-    } = this.props;
+  handleCancel = (event) => {
+    const { onCancel, onClose } = this.props;
     onCancel(event);
     onClose();
   };
-  handleRetry = event => {
-    const {
-      onClose,
-      onRetry
-    } = this.props;
+  handleRetry = (event) => {
+    const { onClose, onRetry } = this.props;
     onRetry(event);
     onClose();
   };
   handleCopyTxId = () => {
-    const {
-      transactionGroup
-    } = this.props;
-    const {
-      primaryTransaction: transaction
-    } = transactionGroup;
-    const {
-      hash
-    } = transaction;
-    this.setState({
-      justCopied: true
-    }, () => {
-      copyToClipboard(hash);
-      setTimeout(() => this.setState({
-        justCopied: false
-      }), SECOND);
-    });
+    const { transactionGroup } = this.props;
+    const { primaryTransaction: transaction } = transactionGroup;
+    const { hash } = transaction;
+    this.setState(
+      {
+        justCopied: true,
+      },
+      () => {
+        copyToClipboard(hash);
+        setTimeout(
+          () =>
+            this.setState({
+              justCopied: false,
+            }),
+          SECOND,
+        );
+      },
+    );
   };
 
   componentDidMount() {
-    const {
-      recipientAddress,
-      tryReverseResolveAddress
-    } = this.props;
+    const { recipientAddress, tryReverseResolveAddress } = this.props;
 
     if (recipientAddress) {
       tryReverseResolveAddress(recipientAddress);
@@ -114,36 +111,40 @@ export default class TransactionListItemDetails extends PureComponent {
   }
 
   renderCancel() {
-    const {
-      t
-    } = this.context;
-    const {
-      showCancel,
-      cancelDisabled
-    } = this.props;
+    const { t } = this.context;
+    const { showCancel, cancelDisabled } = this.props;
 
     if (!showCancel) {
       return null;
     }
 
-    return cancelDisabled ? <Tooltip title={t('notEnoughGas')} position="bottom">
+    return cancelDisabled ? (
+      <Tooltip title={t('notEnoughGas')} position="bottom">
         <div>
-          <Button type="raised" onClick={this.handleCancel} className="transaction-list-item-details__header-button" disabled>
+          <Button
+            type="raised"
+            onClick={this.handleCancel}
+            className="transaction-list-item-details__header-button"
+            disabled
+          >
             {t('cancel')}
           </Button>
         </div>
-      </Tooltip> : <Button type="raised" onClick={this.handleCancel} className="transaction-list-item-details__header-button">
+      </Tooltip>
+    ) : (
+      <Button
+        type="raised"
+        onClick={this.handleCancel}
+        className="transaction-list-item-details__header-button"
+      >
         {t('cancel')}
-      </Button>;
+      </Button>
+    );
   }
 
   render() {
-    const {
-      t
-    } = this.context;
-    const {
-      justCopied
-    } = this.state;
+    const { t } = this.context;
+    const { justCopied } = this.state;
     const {
       transactionGroup,
       primaryCurrency,
@@ -151,66 +152,119 @@ export default class TransactionListItemDetails extends PureComponent {
       showRetry,
       recipientEns,
       recipientAddress,
-      rpcPrefs: {
-        blockExplorerUrl
-      } = {},
+      rpcPrefs: { blockExplorerUrl } = {},
       senderAddress,
       isEarliestNonce,
       senderNickname,
       title,
       onClose,
       recipientNickname,
-      provider
+      provider,
     } = this.props;
     const {
       primaryTransaction: transaction,
-      initialTransaction: {
-        type
-      }
+      initialTransaction: { type },
     } = transactionGroup;
-    const {
-      hash,
-      chainId
-    } = transaction;
+    const { hash, chainId } = transaction;
     const isMainnet = chainId === MAINNET_CHAIN_ID;
-    const providerType = NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
-    return <Popover title={title} onClose={onClose}>
+    const providerType =
+      NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
+    return (
+      <Popover title={title} onClose={onClose}>
         <div className="transaction-list-item-details">
           <div className="transaction-list-item-details__header">
             <div>{t('details')}</div>
             <div className="transaction-list-item-details__header-buttons">
-              {showSpeedUp && <Button type="raised" onClick={this.handleRetry} className="transaction-list-item-details__header-button">
+              {showSpeedUp && (
+                <Button
+                  type="raised"
+                  onClick={this.handleRetry}
+                  className="transaction-list-item-details__header-button"
+                >
                   {t('speedUp')}
-                </Button>}
+                </Button>
+              )}
               {this.renderCancel()}
-              <Tooltip wrapperClassName="transaction-list-item-details__header-button" containerClassName="transaction-list-item-details__header-button-tooltip-container" title={justCopied ? t('copiedTransactionId') : t('copyTransactionId')}>
-                <Button type="raised" onClick={this.handleCopyTxId} disabled={!hash}>
+              <Tooltip
+                wrapperClassName="transaction-list-item-details__header-button"
+                containerClassName="transaction-list-item-details__header-button-tooltip-container"
+                title={
+                  justCopied ? t('copiedTransactionId') : t('copyTransactionId')
+                }
+              >
+                <Button
+                  type="raised"
+                  onClick={this.handleCopyTxId}
+                  disabled={!hash}
+                >
                   <Copy size={10} color="#3098DC" />
                 </Button>
               </Tooltip>
-              <Tooltip wrapperClassName="transaction-list-item-details__header-button" containerClassName="transaction-list-item-details__header-button-tooltip-container" title={blockExplorerUrl ? t('viewOnCustomBlockExplorer', [blockExplorerUrl]) : isMainnet ? t('viewOnEtherscan') : t('viewinExplorer', [providerType])}>
-                <Button type="raised" onClick={this.handleBlockExplorerClick} disabled={!hash}>
+              <Tooltip
+                wrapperClassName="transaction-list-item-details__header-button"
+                containerClassName="transaction-list-item-details__header-button-tooltip-container"
+                title={
+                  blockExplorerUrl
+                    ? t('viewOnCustomBlockExplorer', [blockExplorerUrl])
+                    : isMainnet
+                    ? t('viewOnEtherscan')
+                    : t('viewinExplorer', [providerType])
+                }
+              >
+                <Button
+                  type="raised"
+                  onClick={this.handleBlockExplorerClick}
+                  disabled={!hash}
+                >
                   <img src="./images/arrow-popout.svg" alt="" />
                 </Button>
               </Tooltip>
-              {showRetry && <Tooltip title={t('retryTransaction')}>
-                  <Button type="raised" onClick={this.handleRetry} className="transaction-list-item-details__header-button">
+              {showRetry && (
+                <Tooltip title={t('retryTransaction')}>
+                  <Button
+                    type="raised"
+                    onClick={this.handleRetry}
+                    className="transaction-list-item-details__header-button"
+                  >
                     <i className="fa fa-sync"></i>
                   </Button>
-                </Tooltip>}
+                </Tooltip>
+              )}
             </div>
           </div>
           <div className="transaction-list-item-details__body">
             <div className="transaction-list-item-details__sender-to-recipient-container">
-              <SenderToRecipient warnUserOnAccountMismatch={false} variant={FLAT_VARIANT} addressOnly recipientEns={recipientEns} recipientAddress={recipientAddress} recipientNickname={recipientNickname} senderName={senderNickname} senderAddress={senderAddress} onRecipientClick={() => {}} />
+              <SenderToRecipient
+                warnUserOnAccountMismatch={false}
+                variant={FLAT_VARIANT}
+                addressOnly
+                recipientEns={recipientEns}
+                recipientAddress={recipientAddress}
+                recipientNickname={recipientNickname}
+                senderName={senderNickname}
+                senderAddress={senderAddress}
+                onRecipientClick={() => {}}
+              />
             </div>
             <div className="transaction-list-item-details__cards-container">
-              <TransactionBreakdown nonce={transactionGroup.initialTransaction.txParams.nonce} isTokenApprove={type === TRANSACTION_TYPES.TOKEN_METHOD_APPROVE} transaction={transaction} primaryCurrency={primaryCurrency} className="transaction-list-item-details__transaction-breakdown" />
-              <TransactionActivityLog transactionGroup={transactionGroup} className="transaction-list-item-details__transaction-activity-log" onCancel={this.handleCancel} onRetry={this.handleRetry} isEarliestNonce={isEarliestNonce} />
+              <TransactionBreakdown
+                nonce={transactionGroup.initialTransaction.txParams.nonce}
+                isTokenApprove={type === TRANSACTION_TYPES.TOKEN_METHOD_APPROVE}
+                transaction={transaction}
+                primaryCurrency={primaryCurrency}
+                className="transaction-list-item-details__transaction-breakdown"
+              />
+              <TransactionActivityLog
+                transactionGroup={transactionGroup}
+                className="transaction-list-item-details__transaction-activity-log"
+                onCancel={this.handleCancel}
+                onRetry={this.handleRetry}
+                isEarliestNonce={isEarliestNonce}
+              />
             </div>
           </div>
         </div>
-      </Popover>;
+      </Popover>
+    );
   }
-
 }

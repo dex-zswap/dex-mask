@@ -33,7 +33,7 @@ export const COLORS = {
   GOERLI: 'goerli',
   BSC: 'bscMainnet',
   DEX: 'dexMainnet',
-  TRANSPARENT: 'transparent'
+  TRANSPARENT: 'transparent',
 };
 export const TYPOGRAPHY = {
   H1: 'h1',
@@ -45,7 +45,7 @@ export const TYPOGRAPHY = {
   H7: 'h7',
   H8: 'h8',
   H9: 'h9',
-  Paragraph: 'paragraph'
+  Paragraph: 'paragraph',
 };
 const NONE = 'none';
 export const SIZES = {
@@ -54,14 +54,14 @@ export const SIZES = {
   MD: 'md',
   LG: 'lg',
   XL: 'xl',
-  NONE
+  NONE,
 };
 export const BORDER_STYLE = {
   DASHED: 'dashed',
   SOLID: 'solid',
   DOTTED: 'dotted',
   DOUBLE: 'double',
-  NONE
+  NONE,
 };
 const FLEX_END = 'flex-end';
 const FLEX_START = 'flex-start';
@@ -71,7 +71,7 @@ export const ALIGN_ITEMS = {
   FLEX_END,
   CENTER,
   BASELINE: 'baseline',
-  STRETCH: 'stretch'
+  STRETCH: 'stretch',
 };
 export const JUSTIFY_CONTENT = {
   FLEX_START,
@@ -79,7 +79,7 @@ export const JUSTIFY_CONTENT = {
   CENTER,
   SPACE_AROUND: 'space-around',
   SPACE_BETWEEN: 'space-between',
-  SPACE_EVENLY: 'space-evenly'
+  SPACE_EVENLY: 'space-evenly',
 };
 export const DISPLAY = {
   BLOCK: 'block',
@@ -88,7 +88,7 @@ export const DISPLAY = {
   INLINE_BLOCK: 'inline-block',
   INLINE_FLEX: 'inline-flex',
   INLINE_GRID: 'inline-grid',
-  LIST_ITEM: 'list-item'
+  LIST_ITEM: 'list-item',
 };
 const FRACTIONS = {
   HALF: '1/2',
@@ -116,20 +116,21 @@ const FRACTIONS = {
   EIGHT_TWELFTHS: '8/12',
   NINE_TWELFTHS: '9/12',
   TEN_TWELFTHS: '10/12',
-  ELEVEN_TWELFTHS: '11/12'
+  ELEVEN_TWELFTHS: '11/12',
 };
-export const BLOCK_SIZES = { ...FRACTIONS,
+export const BLOCK_SIZES = {
+  ...FRACTIONS,
   SCREEN: 'screen',
   MAX: 'max',
   MIN: 'min',
-  FULL: 'full'
+  FULL: 'full',
 };
 export const TEXT_ALIGN = {
   LEFT: 'left',
   CENTER: 'center',
   RIGHT: 'right',
   JUSTIFY: 'justify',
-  END: 'end'
+  END: 'end',
 };
 export const FONT_WEIGHT = {
   BOLD: 'bold',
@@ -142,11 +143,11 @@ export const FONT_WEIGHT = {
   600: 600,
   700: 700,
   800: 800,
-  900: 900
+  900: 900,
 };
 export const SEVERITIES = {
   DANGER: 'danger',
   WARNING: 'warning',
   INFO: 'info',
-  SUCCESS: 'success'
+  SUCCESS: 'success',
 };

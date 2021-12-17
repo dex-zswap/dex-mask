@@ -1,14 +1,12 @@
 import { connect } from 'react-redux';
 import Initialized from './component';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
-    metamask: {
-      completedOnboarding
-    }
+    metamask: { completedOnboarding },
   } = state;
   return {
-    completedOnboarding
+    completedOnboarding,
   };
 };
 

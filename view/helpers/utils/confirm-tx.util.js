@@ -3,32 +3,41 @@ import currencyFormatter from 'currency-formatter';
 import currencies from 'currency-formatter/currencies';
 import { addHexPrefix } from '@app/scripts/lib/util';
 import { unconfirmedTransactionsCountSelector } from '@view/selectors';
-import { conversionUtil, addCurrencies, multiplyCurrencies, conversionGreaterThan } from '@shared/modules/conversion.utils';
+import {
+  conversionUtil,
+  addCurrencies,
+  multiplyCurrencies,
+  conversionGreaterThan,
+} from '@shared/modules/conversion.utils';
 export function increaseLastGasPrice(lastGasPrice) {
-  return addHexPrefix(multiplyCurrencies(lastGasPrice || '0x0', 1.1, {
-    multiplicandBase: 16,
-    multiplierBase: 10,
-    toNumericBase: 'hex'
-  }));
+  return addHexPrefix(
+    multiplyCurrencies(lastGasPrice || '0x0', 1.1, {
+      multiplicandBase: 16,
+      multiplierBase: 10,
+      toNumericBase: 'hex',
+    }),
+  );
 }
 export function hexGreaterThan(a, b) {
-  return conversionGreaterThan({
-    value: a,
-    fromNumericBase: 'hex'
-  }, {
-    value: b,
-    fromNumericBase: 'hex'
-  });
+  return conversionGreaterThan(
+    {
+      value: a,
+      fromNumericBase: 'hex',
+    },
+    {
+      value: b,
+      fromNumericBase: 'hex',
+    },
+  );
 }
-export function getHexGasTotal({
-  gasLimit,
-  gasPrice
-}) {
-  return addHexPrefix(multiplyCurrencies(gasLimit || '0x0', gasPrice || '0x0', {
-    toNumericBase: 'hex',
-    multiplicandBase: 16,
-    multiplierBase: 16
-  }));
+export function getHexGasTotal({ gasLimit, gasPrice }) {
+  return addHexPrefix(
+    multiplyCurrencies(gasLimit || '0x0', gasPrice || '0x0', {
+      toNumericBase: 'hex',
+      multiplicandBase: 16,
+      multiplierBase: 16,
+    }),
+  );
 }
 export function addEth(...args) {
   return args.reduce((acc, ethAmount) => {
@@ -36,7 +45,7 @@ export function addEth(...args) {
       toNumericBase: 'dec',
       numberOfDecimals: 6,
       aBase: 10,
-      bBase: 10
+      bBase: 10,
     });
   });
 }
@@ -46,7 +55,7 @@ export function addFiat(...args) {
       toNumericBase: 'dec',
       numberOfDecimals: 2,
       aBase: 10,
-      bBase: 10
+      bBase: 10,
     });
   });
 }
@@ -56,7 +65,7 @@ export function getValueFromWeiHex({
   toCurrency,
   conversionRate,
   numberOfDecimals,
-  toDenomination
+  toDenomination,
 }) {
   return conversionUtil(value, {
     fromNumericBase: 'hex',
@@ -66,7 +75,7 @@ export function getValueFromWeiHex({
     numberOfDecimals,
     fromDenomination: 'WEI',
     toDenomination,
-    conversionRate
+    conversionRate,
   });
 }
 export function getTransactionFee({
@@ -74,7 +83,7 @@ export function getTransactionFee({
   fromCurrency = 'ETH',
   toCurrency,
   conversionRate,
-  numberOfDecimals
+  numberOfDecimals,
 }) {
   return conversionUtil(value, {
     fromNumericBase: 'BN',
@@ -83,22 +92,24 @@ export function getTransactionFee({
     fromCurrency,
     toCurrency,
     numberOfDecimals,
-    conversionRate
+    conversionRate,
   });
 }
 export function formatCurrency(value, currencyCode) {
   const upperCaseCurrencyCode = currencyCode.toUpperCase();
-  return currencies.find(currency => currency.code === upperCaseCurrencyCode) ? currencyFormatter.format(Number(value), {
-    code: upperCaseCurrencyCode,
-    style: 'currency'
-  }) : value;
+  return currencies.find((currency) => currency.code === upperCaseCurrencyCode)
+    ? currencyFormatter.format(Number(value), {
+        code: upperCaseCurrencyCode,
+        style: 'currency',
+      })
+    : value;
 }
 export function convertTokenToFiat({
   value,
   fromCurrency = 'ETH',
   toCurrency,
   conversionRate,
-  contractExchangeRate
+  contractExchangeRate,
 }) {
   const totalExchangeRate = conversionRate * contractExchangeRate;
   return conversionUtil(value, {
@@ -107,7 +118,7 @@ export function convertTokenToFiat({
     fromCurrency,
     toCurrency,
     numberOfDecimals: 2,
-    conversionRate: totalExchangeRate
+    conversionRate: totalExchangeRate,
   });
 }
 export function hasUnconfirmedTransactions(state) {
@@ -125,32 +136,44 @@ export function roundExponential(decimalString) {
   const PRECISION = 4;
   const bigNumberValue = new BigNumber(decimalString); // In JS, numbers with exponentials greater than 20 get displayed as an exponential.
 
-  return bigNumberValue.e > 20 ? bigNumberValue.toPrecision(PRECISION) : decimalString;
+  return bigNumberValue.e > 20
+    ? bigNumberValue.toPrecision(PRECISION)
+    : decimalString;
 }
 export function areDappSuggestedAndTxParamGasFeesTheSame(txData = {}) {
-  const {
-    txParams,
-    dappSuggestedGasFees
-  } = txData;
+  const { txParams, dappSuggestedGasFees } = txData;
   const {
     gasPrice: txParamsGasPrice,
     maxFeePerGas: txParamsMaxFeePerGas,
-    maxPriorityFeePerGas: txParamsMaxPriorityFeePerGas
+    maxPriorityFeePerGas: txParamsMaxPriorityFeePerGas,
   } = txParams || {};
   const {
     gasPrice: dappGasPrice,
     maxFeePerGas: dappMaxFeePerGas,
-    maxPriorityFeePerGas: dappMaxPriorityFeePerGas
+    maxPriorityFeePerGas: dappMaxPriorityFeePerGas,
   } = dappSuggestedGasFees || {};
-  const txParamsDoesNotHaveFeeProperties = !txParamsGasPrice && !txParamsMaxFeePerGas && !txParamsMaxPriorityFeePerGas;
-  const dappDidNotSuggestFeeProperties = !dappGasPrice && !dappMaxFeePerGas && !dappMaxPriorityFeePerGas;
+  const txParamsDoesNotHaveFeeProperties =
+    !txParamsGasPrice && !txParamsMaxFeePerGas && !txParamsMaxPriorityFeePerGas;
+  const dappDidNotSuggestFeeProperties =
+    !dappGasPrice && !dappMaxFeePerGas && !dappMaxPriorityFeePerGas;
 
   if (txParamsDoesNotHaveFeeProperties || dappDidNotSuggestFeeProperties) {
     return false;
   }
 
-  const txParamsGasPriceMatchesDappSuggestedGasPrice = txParamsGasPrice && txParamsGasPrice === dappGasPrice;
-  const txParamsEIP1559FeesMatchDappSuggestedGasPrice = [txParamsMaxFeePerGas, txParamsMaxPriorityFeePerGas].every(fee => fee === dappGasPrice);
-  const txParamsEIP1559FeesMatchDappSuggestedEIP1559Fees = txParamsMaxFeePerGas && txParamsMaxFeePerGas === dappMaxFeePerGas && txParamsMaxPriorityFeePerGas === dappMaxPriorityFeePerGas;
-  return txParamsGasPriceMatchesDappSuggestedGasPrice || txParamsEIP1559FeesMatchDappSuggestedGasPrice || txParamsEIP1559FeesMatchDappSuggestedEIP1559Fees;
+  const txParamsGasPriceMatchesDappSuggestedGasPrice =
+    txParamsGasPrice && txParamsGasPrice === dappGasPrice;
+  const txParamsEIP1559FeesMatchDappSuggestedGasPrice = [
+    txParamsMaxFeePerGas,
+    txParamsMaxPriorityFeePerGas,
+  ].every((fee) => fee === dappGasPrice);
+  const txParamsEIP1559FeesMatchDappSuggestedEIP1559Fees =
+    txParamsMaxFeePerGas &&
+    txParamsMaxFeePerGas === dappMaxFeePerGas &&
+    txParamsMaxPriorityFeePerGas === dappMaxPriorityFeePerGas;
+  return (
+    txParamsGasPriceMatchesDappSuggestedGasPrice ||
+    txParamsEIP1559FeesMatchDappSuggestedGasPrice ||
+    txParamsEIP1559FeesMatchDappSuggestedEIP1559Fees
+  );
 }

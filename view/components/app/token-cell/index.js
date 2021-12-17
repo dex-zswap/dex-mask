@@ -15,23 +15,35 @@ export default function TokenCell({
   string,
   image,
   onClick,
-  isERC721
+  isERC721,
 }) {
   const userAddress = useSelector(getSelectedAddress);
   const t = useI18nContext();
   const formattedFiat = useTokenFiatAmount(address, string, symbol, {
-    showFiat: true
+    showFiat: true,
   });
-  return <AssetListItem className={classnames('token-cell', {
-    'token-cell--outdated': Boolean(balanceError)
-  })} onClick={onClick.bind(null, address)} tokenAddress={address} tokenSymbol={symbol} tokenDecimals={decimals} primary={<div className="token-detail">
+  return (
+    <AssetListItem
+      className={classnames('token-cell', {
+        'token-cell--outdated': Boolean(balanceError),
+      })}
+      onClick={onClick.bind(null, address)}
+      tokenAddress={address}
+      tokenSymbol={symbol}
+      tokenDecimals={decimals}
+      primary={
+        <div className="token-detail">
           {formattedFiat && <div className="token-usd">{formattedFiat}</div>}
           <div className="token-amount" title={`${string || '0'}${symbol}`}>
             <LongLetter text={string || '0'} length={10} />
             &nbsp;&nbsp;
             {symbol}
           </div>
-        </div>} isERC721={isERC721} />;
+        </div>
+      }
+      isERC721={isERC721}
+    />
+  );
 }
 TokenCell.propTypes = {
   address: PropTypes.string,
@@ -41,8 +53,8 @@ TokenCell.propTypes = {
   string: PropTypes.string,
   image: PropTypes.string,
   onClick: PropTypes.func.isRequired,
-  isERC721: PropTypes.bool
+  isERC721: PropTypes.bool,
 };
 TokenCell.defaultProps = {
-  balanceError: null
+  balanceError: null,
 };

@@ -27,8 +27,8 @@ export default class AddRecipient extends Component {
       address: PropTypes.string,
       nickname: PropTypes.nickname,
       error: PropTypes.string,
-      warning: PropTypes.string
-    })
+      warning: PropTypes.string,
+    }),
   };
 
   constructor(props) {
@@ -40,10 +40,12 @@ export default class AddRecipient extends Component {
       distance: 100,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: [{
-        name: 'address',
-        weight: 0.5
-      }]
+      keys: [
+        {
+          name: 'address',
+          weight: 0.5,
+        },
+      ],
     });
     this.contactFuse = new Fuse(props.contacts, {
       shouldSort: true,
@@ -52,30 +54,30 @@ export default class AddRecipient extends Component {
       distance: 100,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: [{
-        name: 'name',
-        weight: 0.5
-      }, {
-        name: 'address',
-        weight: 0.5
-      }]
+      keys: [
+        {
+          name: 'name',
+          weight: 0.5,
+        },
+        {
+          name: 'address',
+          weight: 0.5,
+        },
+      ],
     });
   }
 
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   selectRecipient = (address, nickname = '') => {
     this.props.updateRecipient({
       address,
-      nickname
+      nickname,
     });
   };
   searchForContacts = () => {
-    const {
-      userInput,
-      contacts
-    } = this.props;
+    const { userInput, contacts } = this.props;
     let _contacts = contacts;
 
     if (userInput) {
@@ -86,10 +88,7 @@ export default class AddRecipient extends Component {
     return _contacts;
   };
   searchForRecents = () => {
-    const {
-      userInput,
-      nonContacts
-    } = this.props;
+    const { userInput, nonContacts } = this.props;
     let _nonContacts = nonContacts;
 
     if (userInput) {
@@ -106,101 +105,132 @@ export default class AddRecipient extends Component {
       recipient,
       userInput,
       addressBookEntryName,
-      isUsingMyAccountsForRecipientSearch
+      isUsingMyAccountsForRecipientSearch,
     } = this.props;
     let content;
 
     if (recipient.address) {
-      content = this.renderExplicitAddress(recipient.address, recipient.nickname);
+      content = this.renderExplicitAddress(
+        recipient.address,
+        recipient.nickname,
+      );
     } else if (ensResolution) {
-      content = this.renderExplicitAddress(ensResolution, addressBookEntryName || userInput);
+      content = this.renderExplicitAddress(
+        ensResolution,
+        addressBookEntryName || userInput,
+      );
     } else if (isUsingMyAccountsForRecipientSearch) {
       content = this.renderTransfer();
     }
 
     content = this.renderTransfer();
-    return <div className="send__select-recipient-wrapper">
+    return (
+      <div className="send__select-recipient-wrapper">
         {this.renderDialogs()}
         {content || this.renderMain()}
-      </div>;
+      </div>
+    );
   }
 
   renderExplicitAddress(address, name) {
-    return <div key={address} className="send__select-recipient-wrapper__group-item" onClick={() => this.selectRecipient(address, name)}>
+    return (
+      <div
+        key={address}
+        className="send__select-recipient-wrapper__group-item"
+        onClick={() => this.selectRecipient(address, name)}
+      >
         <Identicon address={address} diameter={28} />
         <div className="send__select-recipient-wrapper__group-item__content">
           <div className="send__select-recipient-wrapper__group-item__title">
             {name ? <Confusable input={name} /> : ellipsify(address)}
           </div>
-          {name && <div className="send__select-recipient-wrapper__group-item__subtitle">
+          {name && (
+            <div className="send__select-recipient-wrapper__group-item__subtitle">
               {ellipsify(address)}
-            </div>}
+            </div>
+          )}
         </div>
-      </div>;
+      </div>
+    );
   }
 
   renderTransfer() {
-    let {
-      ownedAccounts
-    } = this.props;
+    let { ownedAccounts } = this.props;
     const {
       userInput,
       useContactListForRecipientSearch,
-      isUsingMyAccountsForRecipientSearch
+      isUsingMyAccountsForRecipientSearch,
     } = this.props;
-    const {
-      t
-    } = this.context;
+    const { t } = this.context;
 
     if (isUsingMyAccountsForRecipientSearch && userInput) {
-      ownedAccounts = ownedAccounts.filter(item => item.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1 || item.address.toLowerCase().indexOf(userInput.toLowerCase()) > -1);
+      ownedAccounts = ownedAccounts.filter(
+        (item) =>
+          item.name.toLowerCase().indexOf(userInput.toLowerCase()) > -1 ||
+          item.address.toLowerCase().indexOf(userInput.toLowerCase()) > -1,
+      );
     }
 
-    return <div className="send__select-recipient-wrapper__list">
-        <RecipientGroup label={t('myAccounts')} diameter={42} items={ownedAccounts} onSelect={this.selectRecipient} />
-      </div>;
+    return (
+      <div className="send__select-recipient-wrapper__list">
+        <RecipientGroup
+          label={t('myAccounts')}
+          diameter={42}
+          items={ownedAccounts}
+          onSelect={this.selectRecipient}
+        />
+      </div>
+    );
   }
 
   renderMain() {
-    const {
-      t
-    } = this.context;
+    const { t } = this.context;
     const {
       userInput,
       ownedAccounts = [],
       addressBook,
-      useMyAccountsForRecipientSearch
+      useMyAccountsForRecipientSearch,
     } = this.props;
-    return <div className="send__select-recipient-wrapper__list">
-        <ContactList addressBook={addressBook} searchForContacts={this.searchForContacts.bind(this)} searchForRecents={this.searchForRecents.bind(this)} selectRecipient={this.selectRecipient.bind(this)}>
-          {ownedAccounts && ownedAccounts.length > 1 && !userInput && <Button type="link" className="send__select-recipient-wrapper__list__link" onClick={useMyAccountsForRecipientSearch}>
+    return (
+      <div className="send__select-recipient-wrapper__list">
+        <ContactList
+          addressBook={addressBook}
+          searchForContacts={this.searchForContacts.bind(this)}
+          searchForRecents={this.searchForRecents.bind(this)}
+          selectRecipient={this.selectRecipient.bind(this)}
+        >
+          {ownedAccounts && ownedAccounts.length > 1 && !userInput && (
+            <Button
+              type="link"
+              className="send__select-recipient-wrapper__list__link"
+              onClick={useMyAccountsForRecipientSearch}
+            >
               {t('transferBetweenAccounts')}
-            </Button>}
+            </Button>
+          )}
         </ContactList>
-      </div>;
+      </div>
+    );
   }
 
   renderDialogs() {
-    const {
-      ensError,
-      recipient,
-      ensWarning
-    } = this.props;
-    const {
-      t
-    } = this.context;
+    const { ensError, recipient, ensWarning } = this.props;
+    const { t } = this.context;
 
-    if (ensError || recipient.error && recipient.error !== 'required') {
-      return <Dialog type="error" className="send__error-dialog">
+    if (ensError || (recipient.error && recipient.error !== 'required')) {
+      return (
+        <Dialog type="error" className="send__error-dialog">
           {t(ensError ?? recipient.error)}
-        </Dialog>;
+        </Dialog>
+      );
     } else if (ensWarning || recipient.warning) {
-      return <Dialog type="warning" className="send__error-dialog">
+      return (
+        <Dialog type="warning" className="send__error-dialog">
           {t(ensWarning ?? recipient.warning)}
-        </Dialog>;
+        </Dialog>
+      );
     }
 
     return null;
   }
-
 }

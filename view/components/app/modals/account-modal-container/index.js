@@ -5,7 +5,7 @@ import AccountModalContainer from './component';
 
 function mapStateToProps(state, ownProps) {
   return {
-    selectedIdentity: ownProps.selectedIdentity || getSelectedIdentity(state)
+    selectedIdentity: ownProps.selectedIdentity || getSelectedIdentity(state),
   };
 }
 
@@ -13,8 +13,11 @@ function mapDispatchToProps(dispatch) {
   return {
     hideModal: () => {
       dispatch(hideModal());
-    }
+    },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountModalContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AccountModalContainer);

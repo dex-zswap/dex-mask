@@ -1,4 +1,10 @@
-import React, { useCallback, useState, useContext, useMemo, useEffect } from 'react';
+import React, {
+  useCallback,
+  useState,
+  useContext,
+  useMemo,
+  useEffect,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
@@ -13,11 +19,15 @@ export default function EndOfFlow() {
   const t = useContext(I18nContext);
   const history = useHistory();
   const dispatch = useDispatch();
-  const {
-    firstTimeFlowType
-  } = useSelector(getDexMaskState);
+  const { firstTimeFlowType } = useSelector(getDexMaskState);
   const onboardingInitiator = useSelector(getOnboardingInitiator);
-  const localeKey = useMemo(() => firstTimeFlowType === 'create' ? 'endOfFlowMessage1' : 'endOfFlowMessage11', [firstTimeFlowType]);
+  const localeKey = useMemo(
+    () =>
+      firstTimeFlowType === 'create'
+        ? 'endOfFlowMessage1'
+        : 'endOfFlowMessage11',
+    [firstTimeFlowType],
+  );
   const onOnboardingComplete = useCallback(async () => {
     await dispatch(setCompletedOnboarding());
   }, [setCompletedOnboarding, dispatch]);
@@ -43,14 +53,21 @@ export default function EndOfFlow() {
       window.removeEventListener('beforeunload', beforeUnload);
     };
   }, [beforeUnload]);
-  return <div className="end-of-flow base-width">
+  return (
+    <div className="end-of-flow base-width">
       <Logo plain />
       <div className="end-of-flow__success-icon"></div>
       <div className="end-of-flow__text-block end-of-flow__success-text">
         {t(localeKey)}
       </div>
-      <Button type="primary" className="first-time-flow__button end-of-flow__button" onClick={onComplete} rightArrow={true}>
+      <Button
+        type="primary"
+        className="first-time-flow__button end-of-flow__button"
+        onClick={onComplete}
+        rightArrow={true}
+      >
         {t('endOfFlowMessage10')}
       </Button>
-    </div>;
+    </div>
+  );
 }

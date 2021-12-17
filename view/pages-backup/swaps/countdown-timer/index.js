@@ -23,7 +23,10 @@ function decreaseTimerByOne(timer) {
 
 function timeBelowWarningTime(timer, warningTime) {
   const [warningTimeMinutes, warningTimeSeconds] = warningTime.split(':');
-  return timer <= (Number(warningTimeMinutes) * 60 + Number(warningTimeSeconds)) * SECOND;
+  return (
+    timer <=
+    (Number(warningTimeMinutes) * 60 + Number(warningTimeSeconds)) * SECOND
+  );
 }
 
 export default function CountdownTimer({
@@ -32,7 +35,7 @@ export default function CountdownTimer({
   timerBase,
   warningTime,
   labelKey,
-  infoTooltipLabelKey
+  infoTooltipLabelKey,
 }) {
   const t = useContext(I18nContext);
   const intervalRef = useRef();
@@ -40,7 +43,9 @@ export default function CountdownTimer({
   const swapsQuoteRefreshTime = useSelector(getSwapsQuoteRefreshTime);
   const timerStart = Number(timerBase) || swapsQuoteRefreshTime;
   const [currentTime, setCurrentTime] = useState(() => Date.now());
-  const [timer, setTimer] = useState(() => getNewTimer(currentTime, timeStarted, timerStart));
+  const [timer, setTimer] = useState(() =>
+    getNewTimer(currentTime, timeStarted, timerStart),
+  );
   useEffect(() => {
     if (intervalRef.current === undefined) {
       intervalRef.current = setInterval(() => {
@@ -75,19 +80,29 @@ export default function CountdownTimer({
   if (timeOnly) {
     time = <div className="countdown-timer__time">{formattedTimer}</div>;
   } else if (labelKey) {
-    time = t(labelKey, [<div key="countdown-time-1" className="countdown-timer__time">
+    time = t(labelKey, [
+      <div key="countdown-time-1" className="countdown-timer__time">
         {formattedTimer}
-      </div>]);
+      </div>,
+    ]);
   }
 
-  return <div className="countdown-timer">
-      <div data-testid="countdown-timer__timer-container" className={classnames('countdown-timer__timer-container', {
-      'countdown-timer__timer-container--warning': warningTime && timeBelowWarningTime(timer, warningTime)
-    })}>
+  return (
+    <div className="countdown-timer">
+      <div
+        data-testid="countdown-timer__timer-container"
+        className={classnames('countdown-timer__timer-container', {
+          'countdown-timer__timer-container--warning':
+            warningTime && timeBelowWarningTime(timer, warningTime),
+        })}
+      >
         {time}
       </div>
-      {!timeOnly && infoTooltipLabelKey ? <InfoTooltip position="bottom" contentText={t(infoTooltipLabelKey)} /> : null}
-    </div>;
+      {!timeOnly && infoTooltipLabelKey ? (
+        <InfoTooltip position="bottom" contentText={t(infoTooltipLabelKey)} />
+      ) : null}
+    </div>
+  );
 }
 CountdownTimer.propTypes = {
   timeStarted: PropTypes.number,
@@ -95,5 +110,5 @@ CountdownTimer.propTypes = {
   timerBase: PropTypes.number,
   warningTime: PropTypes.string,
   labelKey: PropTypes.string,
-  infoTooltipLabelKey: PropTypes.string
+  infoTooltipLabelKey: PropTypes.string,
 };

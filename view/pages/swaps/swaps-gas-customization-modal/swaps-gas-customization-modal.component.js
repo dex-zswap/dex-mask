@@ -8,7 +8,7 @@ import { calcGasTotal } from '@pages/send/utils';
 import { GAS_ESTIMATE_TYPES } from '@view/helpers/constants/common';
 export default class GasModalPageContainer extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     insufficientBalance: PropTypes.bool,
@@ -22,8 +22,8 @@ export default class GasModalPageContainer extends Component {
       transactionFee: PropTypes.string,
       extraInfoRow: PropTypes.shape({
         label: PropTypes.string,
-        value: PropTypes.string
-      })
+        value: PropTypes.string,
+      }),
     }),
     onSubmit: PropTypes.func,
     cancelAndClose: PropTypes.func,
@@ -37,51 +37,52 @@ export default class GasModalPageContainer extends Component {
     setSwapsCustomizationModalPrice: PropTypes.func,
     setSwapsCustomizationModalLimit: PropTypes.func,
     gasEstimateLoadingHasFailed: PropTypes.bool,
-    minimumGasLimit: PropTypes.number.isRequired
+    minimumGasLimit: PropTypes.number.isRequired,
   };
   state = {
-    gasSpeedType: ''
+    gasSpeedType: '',
   };
 
   setGasSpeedType(gasEstimateType) {
     if (gasEstimateType === GAS_ESTIMATE_TYPES.AVERAGE) {
       this.setState({
-        gasSpeedType: 'average'
+        gasSpeedType: 'average',
       });
     } else {
       this.setState({
-        gasSpeedType: 'fast'
+        gasSpeedType: 'fast',
       });
     }
   }
 
   renderBasicTabContent(gasPriceButtonGroupProps) {
-    return <BasicTabContent gasPriceButtonGroupProps={{ ...gasPriceButtonGroupProps,
-      handleGasPriceSelection: ({
-        gasPrice,
-        gasEstimateType
-      }) => {
-        this.setGasSpeedType(gasEstimateType);
-        this.props.setSwapsCustomizationModalPrice(gasPrice);
-      }
-    }} />;
+    return (
+      <BasicTabContent
+        gasPriceButtonGroupProps={{
+          ...gasPriceButtonGroupProps,
+          handleGasPriceSelection: ({ gasPrice, gasEstimateType }) => {
+            this.setGasSpeedType(gasEstimateType);
+            this.props.setSwapsCustomizationModalPrice(gasPrice);
+          },
+        }}
+      />
+    );
   }
 
   renderAdvancedTabContent() {
     const {
       insufficientBalance,
       showCustomPriceTooLowWarning,
-      infoRowProps: {
-        transactionFee
-      },
+      infoRowProps: { transactionFee },
       customGasLimitMessage,
       setSwapsCustomizationModalPrice,
       setSwapsCustomizationModalLimit,
       customGasPrice,
       customGasLimit,
-      minimumGasLimit
+      minimumGasLimit,
     } = this.props;
-    return <div className="advanced-tab">
+    return (
+      <div className="advanced-tab">
         <div className="advanced-tab__transaction-data-summary">
           <div className="advanced-tab__transaction-data-summary__titles">
             <span>{this.context.t('newTransactionFee')}</span>
@@ -94,26 +95,46 @@ export default class GasModalPageContainer extends Component {
         </div>
         <div className="advanced-tab__fee-chart">
           <div className="advanced-tab__gas-inputs">
-            <AdvancedGasInputs updateCustomGasPrice={updatedPrice => {
-            this.setState({
-              gasSpeedType: 'custom'
-            });
-            setSwapsCustomizationModalPrice(updatedPrice);
-          }} updateCustomGasLimit={updatedLimit => {
-            this.setState({
-              gasSpeedType: 'custom'
-            });
-            setSwapsCustomizationModalLimit(updatedLimit);
-          }} customGasPrice={customGasPrice} customGasLimit={customGasLimit} insufficientBalance={insufficientBalance} customPriceIsSafe={!showCustomPriceTooLowWarning} customGasLimitMessage={customGasLimitMessage} minimumGasLimit={minimumGasLimit} />
+            <AdvancedGasInputs
+              updateCustomGasPrice={(updatedPrice) => {
+                this.setState({
+                  gasSpeedType: 'custom',
+                });
+                setSwapsCustomizationModalPrice(updatedPrice);
+              }}
+              updateCustomGasLimit={(updatedLimit) => {
+                this.setState({
+                  gasSpeedType: 'custom',
+                });
+                setSwapsCustomizationModalLimit(updatedLimit);
+              }}
+              customGasPrice={customGasPrice}
+              customGasLimit={customGasLimit}
+              insufficientBalance={insufficientBalance}
+              customPriceIsSafe={!showCustomPriceTooLowWarning}
+              customGasLimitMessage={customGasLimitMessage}
+              minimumGasLimit={minimumGasLimit}
+            />
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 
-  renderInfoRows(newTotalFiat, newTotalEth, sendAmount, transactionFee, extraInfoRow) {
-    return <div className="gas-modal-content__info-row-wrapper">
+  renderInfoRows(
+    newTotalFiat,
+    newTotalEth,
+    sendAmount,
+    transactionFee,
+    extraInfoRow,
+  ) {
+    return (
+      <div className="gas-modal-content__info-row-wrapper">
         <div className="gas-modal-content__info-row">
-          <div className="gas-modal-content__info-row__send-info" data-testid="gas-modal-content__info-row__send-info">
+          <div
+            className="gas-modal-content__info-row__send-info"
+            data-testid="gas-modal-content__info-row__send-info"
+          >
             <span className="gas-modal-content__info-row__send-info__label">
               {this.context.t('sendAmount')}
             </span>
@@ -121,7 +142,10 @@ export default class GasModalPageContainer extends Component {
               {sendAmount}
             </span>
           </div>
-          <div className="gas-modal-content__info-row__transaction-info" data-testid="gas-modal-content__info-row__transaction-info">
+          <div
+            className="gas-modal-content__info-row__transaction-info"
+            data-testid="gas-modal-content__info-row__transaction-info"
+          >
             <span className="gas-modal-content__info-row__transaction-info__label">
               {this.context.t('transactionFee')}
             </span>
@@ -129,15 +153,20 @@ export default class GasModalPageContainer extends Component {
               {transactionFee}
             </span>
           </div>
-          {extraInfoRow && <div className="gas-modal-content__info-row__transaction-info">
+          {extraInfoRow && (
+            <div className="gas-modal-content__info-row__transaction-info">
               <span className="gas-modal-content__info-row__transaction-info__label">
                 {extraInfoRow.label}
               </span>
               <span className="gas-modal-content__info-row__transaction-info__value">
                 {extraInfoRow.value}
               </span>
-            </div>}
-          <div className="gas-modal-content__info-row__total-info" data-testid="gas-modal-content__info-row__total-info">
+            </div>
+          )}
+          <div
+            className="gas-modal-content__info-row__total-info"
+            data-testid="gas-modal-content__info-row__total-info"
+          >
             <span className="gas-modal-content__info-row__total-info__label">
               {this.context.t('newTotal')}
             </span>
@@ -151,7 +180,8 @@ export default class GasModalPageContainer extends Component {
             </span>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 
   renderTabs() {
@@ -162,32 +192,42 @@ export default class GasModalPageContainer extends Component {
         newTotalEth,
         sendAmount,
         transactionFee,
-        extraInfoRow
+        extraInfoRow,
       },
-      gasEstimateLoadingHasFailed
+      gasEstimateLoadingHasFailed,
     } = this.props;
     const basicTabInfo = {
       name: this.context.t('basic'),
-      content: this.renderBasicTabContent({ ...gasPriceButtonGroupProps,
-        handleGasPriceSelection: this.props.setSwapsCustomizationModalPrice
-      })
+      content: this.renderBasicTabContent({
+        ...gasPriceButtonGroupProps,
+        handleGasPriceSelection: this.props.setSwapsCustomizationModalPrice,
+      }),
     };
     const advancedTabInfo = {
       name: this.context.t('advanced'),
-      content: this.renderAdvancedTabContent()
+      content: this.renderAdvancedTabContent(),
     };
-    const tabsToRender = gasEstimateLoadingHasFailed ? [advancedTabInfo] : [basicTabInfo, advancedTabInfo];
-    return <Tabs>
-        {tabsToRender.map(({
-        name,
-        content
-      }, i) => <Tab name={name} key={`gas-modal-tab-${i}`}>
+    const tabsToRender = gasEstimateLoadingHasFailed
+      ? [advancedTabInfo]
+      : [basicTabInfo, advancedTabInfo];
+    return (
+      <Tabs>
+        {tabsToRender.map(({ name, content }, i) => (
+          <Tab name={name} key={`gas-modal-tab-${i}`}>
             <div className="gas-modal-content">
               {content}
-              {this.renderInfoRows(newTotalFiat, newTotalEth, sendAmount, transactionFee, extraInfoRow)}
+              {this.renderInfoRows(
+                newTotalFiat,
+                newTotalEth,
+                sendAmount,
+                transactionFee,
+                extraInfoRow,
+              )}
             </div>
-          </Tab>)}
-      </Tabs>;
+          </Tab>
+        ))}
+      </Tabs>
+    );
   }
 
   render() {
@@ -196,14 +236,29 @@ export default class GasModalPageContainer extends Component {
       onSubmit,
       disableSave,
       customGasPrice,
-      customGasLimit
+      customGasLimit,
     } = this.props;
-    return <div className="gas-modal-page-container">
-        <PageContainer title={this.context.t('customGas')} subtitle={this.context.t('customGasSubTitle')} tabsComponent={this.renderTabs()} disabled={disableSave} onCancel={() => cancelAndClose()} onClose={() => cancelAndClose()} onSubmit={() => {
-        const newSwapGasTotal = calcGasTotal(customGasLimit, customGasPrice);
-        onSubmit(customGasLimit, customGasPrice);
-      }} submitText={this.context.t('save')} headerCloseText={this.context.t('close')} hideCancel />
-      </div>;
+    return (
+      <div className="gas-modal-page-container">
+        <PageContainer
+          title={this.context.t('customGas')}
+          subtitle={this.context.t('customGasSubTitle')}
+          tabsComponent={this.renderTabs()}
+          disabled={disableSave}
+          onCancel={() => cancelAndClose()}
+          onClose={() => cancelAndClose()}
+          onSubmit={() => {
+            const newSwapGasTotal = calcGasTotal(
+              customGasLimit,
+              customGasPrice,
+            );
+            onSubmit(customGasLimit, customGasPrice);
+          }}
+          submitText={this.context.t('save')}
+          headerCloseText={this.context.t('close')}
+          hideCancel
+        />
+      </div>
+    );
   }
-
 }

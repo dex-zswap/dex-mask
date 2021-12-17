@@ -4,29 +4,32 @@ import SendRowWrapper from '@pages/send/send-content/send-row-wrapper';
 export default class SendHexDataRow extends Component {
   static propTypes = {
     inError: PropTypes.bool,
-    updateSendHexData: PropTypes.func.isRequired
+    updateSendHexData: PropTypes.func.isRequired,
   };
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
-  onInput = event => {
-    const {
-      updateSendHexData
-    } = this.props;
+  onInput = (event) => {
+    const { updateSendHexData } = this.props;
     const data = event.target.value.replace(/\n/gu, '') || null;
     updateSendHexData(data);
   };
 
   render() {
-    const {
-      inError
-    } = this.props;
-    const {
-      t
-    } = this.context;
-    return <SendRowWrapper label={`${t('hexData')}:`} showError={inError} errorType="amount">
-        <textarea onInput={this.onInput} placeholder={t('optional')} className="send-v2__hex-data__input" />
-      </SendRowWrapper>;
+    const { inError } = this.props;
+    const { t } = this.context;
+    return (
+      <SendRowWrapper
+        label={`${t('hexData')}:`}
+        showError={inError}
+        errorType="amount"
+      >
+        <textarea
+          onInput={this.onInput}
+          placeholder={t('optional')}
+          className="send-v2__hex-data__input"
+        />
+      </SendRowWrapper>
+    );
   }
-
 }

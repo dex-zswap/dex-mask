@@ -31,19 +31,21 @@
   @each $name, $value in $values {
     @if $value <= 0.03928 {
       $value: $value / 12.92;
-    }
-
-    @else {
+    } @else {
       $value: ($value + 0.055) / 1.055;
       $value: math.pow($value, 2.4);
     }
 
-    $values: map.merge($values, ($name: $value));
+    $values: map.merge(
+      $values,
+      (
+        $name: $value,
+      )
+    );
   }
 
-  @return (0.2126 * map.get($values, 'red'))
-    + (0.7152 * map.get($values, 'green'))
-    + (0.0722 * map.get($values, 'blue'));
+  @return (0.2126 * map.get($values, 'red')) +
+    (0.7152 * map.get($values, 'green')) + (0.0722 * map.get($values, 'blue'));
 }
 
 /**
@@ -67,9 +69,7 @@
 
   @if ($lightContrast > $darkContrast) {
     @return white;
-  }
-
-  @else {
+  } @else {
     @return black;
   }
 }

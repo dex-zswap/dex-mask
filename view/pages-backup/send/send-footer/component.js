@@ -14,18 +14,14 @@ export default class SendFooter extends Component {
     toAccounts: PropTypes.array,
     sendErrors: PropTypes.object,
     gasEstimateType: PropTypes.string,
-    mostRecentOverviewPage: PropTypes.string.isRequired
+    mostRecentOverviewPage: PropTypes.string.isRequired,
   };
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   onCancel() {
-    const {
-      resetSendState,
-      history,
-      mostRecentOverviewPage
-    } = this.props;
+    const { resetSendState, history, mostRecentOverviewPage } = this.props;
     resetSendState();
     history.push(mostRecentOverviewPage);
   }
@@ -37,8 +33,7 @@ export default class SendFooter extends Component {
       sign,
       to,
       toAccounts,
-      history // gasEstimateType,
-
+      history, // gasEstimateType,
     } = this.props; // TODO: add nickname functionality
     // await addToAddressBookIfNew(to, toAccounts);
 
@@ -49,18 +44,27 @@ export default class SendFooter extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      sendErrors
-    } = this.props;
+    const { sendErrors } = this.props;
 
-    if (Object.keys(sendErrors).length > 0 && isEqual(sendErrors, prevProps.sendErrors) === false) {
-      const errorField = Object.keys(sendErrors).find(key => sendErrors[key]);
+    if (
+      Object.keys(sendErrors).length > 0 &&
+      isEqual(sendErrors, prevProps.sendErrors) === false
+    ) {
+      const errorField = Object.keys(sendErrors).find((key) => sendErrors[key]);
       const errorMessage = sendErrors[errorField];
     }
   }
 
   render() {
-    return <PageContainerFooter submitButtonType="primary" submitText="Trans" hideCancel={true} onSubmit={e => this.onSubmit(e)} disabled={this.props.disabled} rightArrow />;
+    return (
+      <PageContainerFooter
+        submitButtonType="primary"
+        submitText="Trans"
+        hideCancel={true}
+        onSubmit={(e) => this.onSubmit(e)}
+        disabled={this.props.disabled}
+        rightArrow
+      />
+    );
   }
-
 }

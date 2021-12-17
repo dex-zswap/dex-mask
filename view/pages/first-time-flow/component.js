@@ -2,7 +2,17 @@ import React, { PureComponent } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Unlock from '@pages/unlock-page';
-import { DEFAULT_ROUTE, INITIALIZE_BACKUP_SEED_PHRASE_ROUTE, INITIALIZE_CREATE_PASSWORD_ROUTE, INITIALIZE_END_OF_FLOW_ROUTE, INITIALIZE_SEED_PHRASE_INTRO_ROUTE, INITIALIZE_SEED_PHRASE_ROUTE, INITIALIZE_SELECT_ACTION_ROUTE, INITIALIZE_UNLOCK_ROUTE, INITIALIZE_WELCOME_ROUTE } from '@view/helpers/constants/routes';
+import {
+  DEFAULT_ROUTE,
+  INITIALIZE_BACKUP_SEED_PHRASE_ROUTE,
+  INITIALIZE_CREATE_PASSWORD_ROUTE,
+  INITIALIZE_END_OF_FLOW_ROUTE,
+  INITIALIZE_SEED_PHRASE_INTRO_ROUTE,
+  INITIALIZE_SEED_PHRASE_ROUTE,
+  INITIALIZE_SELECT_ACTION_ROUTE,
+  INITIALIZE_UNLOCK_ROUTE,
+  INITIALIZE_WELCOME_ROUTE,
+} from '@view/helpers/constants/routes';
 import CreatePassword from './create-password';
 import EndOfFlow from './end-of-flow';
 import FirstTimeFlowSwitch from './first-time-flow-switch';
@@ -21,10 +31,10 @@ export default class FirstTimeFlow extends PureComponent {
     nextRoute: PropTypes.string,
     showingSeedPhraseBackupAfterOnboarding: PropTypes.bool,
     seedPhraseBackedUp: PropTypes.bool,
-    verifySeedPhrase: PropTypes.func
+    verifySeedPhrase: PropTypes.func,
   };
   state = {
-    seedPhrase: ''
+    seedPhrase: '',
   };
 
   componentDidMount() {
@@ -34,10 +44,13 @@ export default class FirstTimeFlow extends PureComponent {
       isInitialized,
       isUnlocked,
       showingSeedPhraseBackupAfterOnboarding,
-      seedPhraseBackedUp
+      seedPhraseBackedUp,
     } = this.props;
 
-    if (completedOnboarding && (!showingSeedPhraseBackupAfterOnboarding || seedPhraseBackedUp)) {
+    if (
+      completedOnboarding &&
+      (!showingSeedPhraseBackupAfterOnboarding || seedPhraseBackedUp)
+    ) {
       history.push(DEFAULT_ROUTE);
       return;
     }
@@ -47,24 +60,20 @@ export default class FirstTimeFlow extends PureComponent {
     }
   }
 
-  handleCreateNewAccount = async password => {
-    const {
-      createNewAccount
-    } = this.props;
+  handleCreateNewAccount = async (password) => {
+    const { createNewAccount } = this.props;
 
     try {
       const seedPhrase = await createNewAccount(password);
       this.setState({
-        seedPhrase
+        seedPhrase,
       });
     } catch (error) {
       throw new Error(error.message);
     }
   };
   handleImportWithSeedPhrase = async (password, seedPhrase) => {
-    const {
-      createNewAccountFromSeed
-    } = this.props;
+    const { createNewAccountFromSeed } = this.props;
 
     try {
       const vault = await createNewAccountFromSeed(password, seedPhrase);
@@ -73,43 +82,84 @@ export default class FirstTimeFlow extends PureComponent {
       throw new Error(error.message);
     }
   };
-  handleUnlock = async password => {
-    const {
-      unlockAccount,
-      history,
-      nextRoute
-    } = this.props;
+  handleUnlock = async (password) => {
+    const { unlockAccount, history, nextRoute } = this.props;
 
     try {
       const seedPhrase = await unlockAccount(password);
-      this.setState({
-        seedPhrase
-      }, () => {
-        history.push(nextRoute);
-      });
+      this.setState(
+        {
+          seedPhrase,
+        },
+        () => {
+          history.push(nextRoute);
+        },
+      );
     } catch (error) {
       throw new Error(error.message);
     }
   };
 
   render() {
-    const {
-      seedPhrase
-    } = this.state;
-    const {
-      verifySeedPhrase
-    } = this.props;
-    return <Switch>
-        <Route path={INITIALIZE_SEED_PHRASE_ROUTE} render={routeProps => <SeedPhrase {...routeProps} seedPhrase={seedPhrase} verifySeedPhrase={verifySeedPhrase} />} />
-        <Route path={INITIALIZE_BACKUP_SEED_PHRASE_ROUTE} render={routeProps => <SeedPhrase {...routeProps} seedPhrase={seedPhrase} verifySeedPhrase={verifySeedPhrase} />} />
-        <Route path={INITIALIZE_SEED_PHRASE_INTRO_ROUTE} render={routeProps => <SeedPhrase {...routeProps} seedPhrase={seedPhrase} verifySeedPhrase={verifySeedPhrase} />} />
-        <Route path={INITIALIZE_CREATE_PASSWORD_ROUTE} render={routeProps => <CreatePassword {...routeProps} onCreateNewAccount={this.handleCreateNewAccount} onCreateNewAccountFromSeed={this.handleImportWithSeedPhrase} />} />
+    const { seedPhrase } = this.state;
+    const { verifySeedPhrase } = this.props;
+    return (
+      <Switch>
+        <Route
+          path={INITIALIZE_SEED_PHRASE_ROUTE}
+          render={(routeProps) => (
+            <SeedPhrase
+              {...routeProps}
+              seedPhrase={seedPhrase}
+              verifySeedPhrase={verifySeedPhrase}
+            />
+          )}
+        />
+        <Route
+          path={INITIALIZE_BACKUP_SEED_PHRASE_ROUTE}
+          render={(routeProps) => (
+            <SeedPhrase
+              {...routeProps}
+              seedPhrase={seedPhrase}
+              verifySeedPhrase={verifySeedPhrase}
+            />
+          )}
+        />
+        <Route
+          path={INITIALIZE_SEED_PHRASE_INTRO_ROUTE}
+          render={(routeProps) => (
+            <SeedPhrase
+              {...routeProps}
+              seedPhrase={seedPhrase}
+              verifySeedPhrase={verifySeedPhrase}
+            />
+          )}
+        />
+        <Route
+          path={INITIALIZE_CREATE_PASSWORD_ROUTE}
+          render={(routeProps) => (
+            <CreatePassword
+              {...routeProps}
+              onCreateNewAccount={this.handleCreateNewAccount}
+              onCreateNewAccountFromSeed={this.handleImportWithSeedPhrase}
+            />
+          )}
+        />
         <Route path={INITIALIZE_SELECT_ACTION_ROUTE} component={SelectAction} />
-        <Route path={INITIALIZE_UNLOCK_ROUTE} render={routeProps => <Unlock {...routeProps} onSubmit={this.handleUnlock} />} />
-        <Route exact path={INITIALIZE_END_OF_FLOW_ROUTE} component={EndOfFlow} />
+        <Route
+          path={INITIALIZE_UNLOCK_ROUTE}
+          render={(routeProps) => (
+            <Unlock {...routeProps} onSubmit={this.handleUnlock} />
+          )}
+        />
+        <Route
+          exact
+          path={INITIALIZE_END_OF_FLOW_ROUTE}
+          component={EndOfFlow}
+        />
         <Route exact path={INITIALIZE_WELCOME_ROUTE} component={Welcome} />
         <Route exact path="*" component={FirstTimeFlowSwitch} />
-      </Switch>;
+      </Switch>
+    );
   }
-
 }

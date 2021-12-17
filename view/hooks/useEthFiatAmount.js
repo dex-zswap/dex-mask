@@ -15,16 +15,33 @@ import { getConversionRate } from '@reducer/dexmask/dexmask';
 import { formatCurrency } from '@view/helpers/utils/confirm-tx.util';
 import { decEthToConvertedCurrency } from '@view/helpers/utils/conversions.util';
 import { getCurrentCurrency, getShouldShowFiat } from '@view/selectors';
-export function useEthFiatAmount(ethAmount, overrides = {}, hideCurrencySymbol) {
+export function useEthFiatAmount(
+  ethAmount,
+  overrides = {},
+  hideCurrencySymbol,
+) {
   const conversionRate = useSelector(getConversionRate);
   const currentCurrency = useSelector(getCurrentCurrency);
   const userPrefersShownFiat = useSelector(getShouldShowFiat);
   const showFiat = overrides.showFiat ?? userPrefersShownFiat;
-  const formattedFiat = useMemo(() => decEthToConvertedCurrency(ethAmount, currentCurrency, conversionRate), [conversionRate, currentCurrency, ethAmount]);
+  const formattedFiat = useMemo(
+    () => decEthToConvertedCurrency(ethAmount, currentCurrency, conversionRate),
+    [conversionRate, currentCurrency, ethAmount],
+  );
 
-  if (!showFiat || currentCurrency.toUpperCase() === 'ETH' || conversionRate <= 0 || ethAmount === undefined) {
+  if (
+    !showFiat ||
+    currentCurrency.toUpperCase() === 'ETH' ||
+    conversionRate <= 0 ||
+    ethAmount === undefined
+  ) {
     return undefined;
   }
 
-  return hideCurrencySymbol ? formatCurrency(formattedFiat, currentCurrency) : `${formatCurrency(formattedFiat, currentCurrency)} ${currentCurrency.toUpperCase()}`;
+  return hideCurrencySymbol
+    ? formatCurrency(formattedFiat, currentCurrency)
+    : `${formatCurrency(
+        formattedFiat,
+        currentCurrency,
+      )} ${currentCurrency.toUpperCase()}`;
 }

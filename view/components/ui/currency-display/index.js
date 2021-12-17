@@ -14,7 +14,7 @@ export default function CurrencyDisplay({
   numberOfDecimals,
   denomination,
   currency,
-  suffix
+  suffix,
 }) {
   const [title, parts] = useCurrencyDisplay(value, {
     displayValue,
@@ -23,16 +23,24 @@ export default function CurrencyDisplay({
     hideLabel,
     denomination,
     currency,
-    suffix
+    suffix,
   });
-  return <div className={classnames('currency-display-component', className)} style={style} title={!hideTitle && title || null}>
+  return (
+    <div
+      className={classnames('currency-display-component', className)}
+      style={style}
+      title={(!hideTitle && title) || null}
+    >
       {prefixComponent}
       <span className="currency-display-component__text">
         {parts.prefix}
         {['0.00', '$0.00'].includes(parts.value) ? '0' : parts.value ?? '0'}
       </span>
-      {parts.suffix && <span className="currency-display-component__suffix">
+      {parts.suffix && (
+        <span className="currency-display-component__suffix">
           {parts.suffix}
-        </span>}
-    </div>;
+        </span>
+      )}
+    </div>
+  );
 }

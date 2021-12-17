@@ -8,15 +8,16 @@ import { I18nContext } from '@view/contexts/i18n';
 import { setFirstTimeFlowType } from '@view/store/actions';
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
-import { INITIALIZE_CREATE_PASSWORD_ROUTE, INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
+import {
+  INITIALIZE_CREATE_PASSWORD_ROUTE,
+  INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE,
+} from '@view/helpers/constants/routes';
 export default function SelectAction() {
   const history = useHistory();
   const dispatch = useDispatch();
   const t = useContext(I18nContext);
   const nextRoute = useSelector(getFirstTimeFlowTypeRoute);
-  const {
-    isInitialized
-  } = useSelector(getDexMaskState);
+  const { isInitialized } = useSelector(getDexMaskState);
   const handleCreate = useCallback(() => {
     dispatch(setFirstTimeFlowType('create'));
     history.push(INITIALIZE_CREATE_PASSWORD_ROUTE);
@@ -30,7 +31,8 @@ export default function SelectAction() {
       history.push(nextRoute);
     }
   }, [isInitialized, nextRoute, history]);
-  return <div className="select-action select-action__page">
+  return (
+    <div className="select-action select-action__page">
       <div className="select-action__wrapper base-width">
         <Logo />
         <div className="select-action__body">
@@ -39,14 +41,23 @@ export default function SelectAction() {
             <div>{t('rightWay')}</div>
           </div>
           <div className="select-action__select-buttons">
-            <Button type="primary" className="create-wallet-button" onClick={handleCreate}>
+            <Button
+              type="primary"
+              className="create-wallet-button"
+              onClick={handleCreate}
+            >
               {t('createWallet')}
             </Button>
-            <Button type="default" className="import-wallet-button" onClick={handleImport}>
+            <Button
+              type="default"
+              className="import-wallet-button"
+              onClick={handleImport}
+            >
               {t('importWallet')}
             </Button>
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 }

@@ -11,20 +11,31 @@ const AssetListItem = ({
   tokenDecimals,
   tokenImage,
   primary,
-  secondary
+  secondary,
 }) => {
   const isNativeAsset = !tokenAddress;
-  return <div className={classnames('asset-list-item', `asset-${tokenAddress ?? 'native'}`, className)} onClick={onClick}>
+  return (
+    <div
+      className={classnames(
+        'asset-list-item',
+        `asset-${tokenAddress ?? 'native'}`,
+        className,
+      )}
+      onClick={onClick}
+    >
       <div className="symbol-image">
-        <TokenImage symbol={tokenSymbol} size={32} address={isNativeAsset ? ethers.constants.AddressZero : tokenAddress} />
+        <TokenImage
+          symbol={tokenSymbol}
+          size={32}
+          address={isNativeAsset ? ethers.constants.AddressZero : tokenAddress}
+        />
         <p className="token-symbol">{tokenSymbol}</p>
       </div>
       <div className="token-balance">
-        <div className="balance">
-          {primary}
-        </div>
+        <div className="balance">{primary}</div>
       </div>
-    </div>;
+    </div>
+  );
 };
 
 export default AssetListItem;

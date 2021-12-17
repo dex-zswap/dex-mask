@@ -7,36 +7,32 @@ export default class PermissionsConnectHeader extends Component {
     iconName: PropTypes.string.isRequired,
     siteOrigin: PropTypes.string.isRequired,
     headerTitle: PropTypes.node,
-    headerText: PropTypes.string
+    headerText: PropTypes.string,
   };
   static defaultProps = {
     icon: null,
     headerTitle: '',
-    headerText: ''
+    headerText: '',
   };
 
   renderHeaderIcon() {
-    const {
-      icon,
-      iconName,
-      siteOrigin
-    } = this.props;
-    return <div className="permissions-connect-header__icon">
+    const { icon, iconName, siteOrigin } = this.props;
+    return (
+      <div className="permissions-connect-header__icon">
         <SiteIcon icon={icon} name={iconName} size={64} />
         <div className="permissions-connect-header__text">{siteOrigin}</div>
-      </div>;
+      </div>
+    );
   }
 
   render() {
-    const {
-      headerTitle,
-      headerText
-    } = this.props;
-    return <div className="permissions-connect-header">
+    const { headerTitle, headerText } = this.props;
+    return (
+      <div className="permissions-connect-header">
         {this.renderHeaderIcon()}
         <div className="permissions-connect-header__title">{headerTitle}</div>
         <div className="permissions-connect-header__subtitle">{headerText}</div>
-      </div>;
+      </div>
+    );
   }
-
 }

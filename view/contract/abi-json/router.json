@@ -952,6 +952,7 @@
       "type": "function"
     }
   ],
+  "bytecode": "",
   "evm": {
     "bytecode": {
       "linkReferences": {},
@@ -1919,6 +1920,5 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ],
-  "bytecode": ""
+  ]
 }

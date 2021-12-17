@@ -20,6 +20,6 @@ export function useApproveTransaction() {
   return {
     approveTransaction,
     showCustomizeGasPopover,
-    closeCustomizeGasPopover
+    closeCustomizeGasPopover,
   };
 }

@@ -5,29 +5,26 @@ import { clearConfirmTransaction } from '@reducer/confirm-transaction/confirm-tr
 import { ASSET_TYPES, editTransaction } from '@reducer/send';
 import ConfirmSendEther from './component';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
-    confirmTransaction: {
-      txData: {
-        txParams
-      } = {}
-    }
+    confirmTransaction: { txData: { txParams } = {} },
   } = state;
   return {
-    txParams
+    txParams,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    editTransaction: async txData => {
-      const {
-        id
-      } = txData;
+    editTransaction: async (txData) => {
+      const { id } = txData;
       await dispatch(editTransaction(ASSET_TYPES.NATIVE, id.toString()));
       dispatch(clearConfirmTransaction());
-    }
+    },
   };
 };
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(ConfirmSendEther);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(ConfirmSendEther);

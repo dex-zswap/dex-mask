@@ -17,31 +17,33 @@ import { useIncrementedGasFees } from './useIncrementedGasFees';
  */
 
 export function useCancelTransaction(transactionGroup) {
-  const {
-    primaryTransaction
-  } = transactionGroup;
+  const { primaryTransaction } = transactionGroup;
   const customCancelGasSettings = useIncrementedGasFees(transactionGroup);
   const selectedAccount = useSelector(getSelectedAccount);
   const conversionRate = useSelector(getConversionRate);
-  const [showCancelEditGasPopover, setShowCancelEditGasPopover] = useState(false);
+  const [showCancelEditGasPopover, setShowCancelEditGasPopover] = useState(
+    false,
+  );
 
   const closeCancelEditGasPopover = () => setShowCancelEditGasPopover(false);
 
-  const cancelTransaction = useCallback(event => {
+  const cancelTransaction = useCallback((event) => {
     event.stopPropagation();
     return setShowCancelEditGasPopover(true);
   }, []);
-  const hasEnoughCancelGas = primaryTransaction.txParams && isBalanceSufficient({
-    amount: '0x0',
-    gasTotal: getMaximumGasTotalInHexWei(customCancelGasSettings),
-    balance: selectedAccount.balance,
-    conversionRate
-  });
+  const hasEnoughCancelGas =
+    primaryTransaction.txParams &&
+    isBalanceSufficient({
+      amount: '0x0',
+      gasTotal: getMaximumGasTotalInHexWei(customCancelGasSettings),
+      balance: selectedAccount.balance,
+      conversionRate,
+    });
   return {
     hasEnoughCancelGas,
     customCancelGasSettings,
     cancelTransaction,
     showCancelEditGasPopover,
-    closeCancelEditGasPopover
+    closeCancelEditGasPopover,
   };
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AdvancedGasInputs from '@c/app/gas-customization/advanced-gas-inputs';
 export default class AdvancedTabContent extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     updateCustomGasPrice: PropTypes.func,
@@ -16,11 +16,12 @@ export default class AdvancedTabContent extends Component {
     isSpeedUp: PropTypes.bool,
     customGasLimitMessage: PropTypes.string,
     minimumGasLimit: PropTypes.number,
-    customPriceIsExcessive: PropTypes.bool.isRequired
+    customPriceIsExcessive: PropTypes.bool.isRequired,
   };
 
   renderDataSummary(transactionFee) {
-    return <div className="advanced-tab__transaction-data-summary">
+    return (
+      <div className="advanced-tab__transaction-data-summary">
         <div className="advanced-tab__transaction-data-summary__titles">
           <span>{this.context.t('newTransactionFee')}</span>
         </div>
@@ -29,7 +30,8 @@ export default class AdvancedTabContent extends Component {
             {transactionFee}
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 
   render() {
@@ -44,16 +46,28 @@ export default class AdvancedTabContent extends Component {
       transactionFee,
       customGasLimitMessage,
       minimumGasLimit,
-      customPriceIsExcessive
+      customPriceIsExcessive,
     } = this.props;
-    return <div className="advanced-tab">
+    return (
+      <div className="advanced-tab">
         {this.renderDataSummary(transactionFee)}
         <div className="advanced-tab__fee-chart">
           <div className="advanced-tab__gas-inputs">
-            <AdvancedGasInputs updateCustomGasPrice={updateCustomGasPrice} updateCustomGasLimit={updateCustomGasLimit} customGasPrice={customModalGasPriceInHex} customGasLimit={customModalGasLimitInHex} insufficientBalance={insufficientBalance} customPriceIsSafe={customPriceIsSafe} isSpeedUp={isSpeedUp} customGasLimitMessage={customGasLimitMessage} minimumGasLimit={minimumGasLimit} customPriceIsExcessive={customPriceIsExcessive} />
+            <AdvancedGasInputs
+              updateCustomGasPrice={updateCustomGasPrice}
+              updateCustomGasLimit={updateCustomGasLimit}
+              customGasPrice={customModalGasPriceInHex}
+              customGasLimit={customModalGasLimitInHex}
+              insufficientBalance={insufficientBalance}
+              customPriceIsSafe={customPriceIsSafe}
+              isSpeedUp={isSpeedUp}
+              customGasLimitMessage={customGasLimitMessage}
+              minimumGasLimit={minimumGasLimit}
+              customPriceIsExcessive={customPriceIsExcessive}
+            />
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
-
 }

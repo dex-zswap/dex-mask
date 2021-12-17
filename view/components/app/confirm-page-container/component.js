@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import EditGasPopover from '@c/app/edit-gas/popover';
 import { PageContainerFooter } from '@c/ui/page-container';
 import { EDIT_GAS_MODES } from '@shared/constants/gas';
-import { ConfirmPageContainerContent, ConfirmPageContainerHeader, ConfirmPageContainerHeaderContent, ConfirmPageContainerNavigation } from '.';
+import {
+  ConfirmPageContainerContent,
+  ConfirmPageContainerHeader,
+  ConfirmPageContainerHeaderContent,
+  ConfirmPageContainerNavigation,
+} from '.';
 export default class ConfirmPageContainer extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     // Header
@@ -59,7 +64,7 @@ export default class ConfirmPageContainer extends Component {
     editingGas: PropTypes.bool,
     handleCloseEditGas: PropTypes.func,
     // Gas Popover
-    currentTransaction: PropTypes.object.isRequired
+    currentTransaction: PropTypes.object.isRequired,
   };
 
   render() {
@@ -108,31 +113,105 @@ export default class ConfirmPageContainer extends Component {
       ethGasPriceWarning,
       editingGas,
       handleCloseEditGas,
-      currentTransaction
+      currentTransaction,
     } = this.props;
     const renderAssetImage = contentComponent || !identiconAddress;
-    return <div className="page-container">
-        <ConfirmPageContainerNavigation totalTx={totalTx} positionOfCurrentTx={positionOfCurrentTx} nextTxId={nextTxId} prevTxId={prevTxId} showNavigation={showNavigation} onNextTx={txId => onNextTx(txId)} firstTx={firstTx} lastTx={lastTx} ofText={ofText} requestsWaitingText={requestsWaitingText} />
-        <ConfirmPageContainerHeader showEdit={showEdit} onEdit={() => onEdit()} showAccountInHeader={showAccountInHeader} accountAddress={fromAddress}>
-          {hideSenderToRecipient ? null : <ConfirmPageContainerHeaderContent tokenData={tokenData} title={title} titleComponent={titleComponent} senderName={fromName} senderAddress={fromAddress} recipientName={toName} recipientAddress={toAddress} recipientEns={toEns} recipientNickname={toNickname} assetImage={renderAssetImage ? assetImage : undefined} /> // <SenderToRecipient
-        //   senderName={fromName}
-        //   senderAddress={fromAddress}
-        //   recipientName={toName}
-        //   recipientAddress={toAddress}
-        //   recipientEns={toEns}
-        //   recipientNickname={toNickname}
-        //   assetImage={renderAssetImage ? assetImage : undefined}
-        // />
-        }
+    return (
+      <div className="page-container">
+        <ConfirmPageContainerNavigation
+          totalTx={totalTx}
+          positionOfCurrentTx={positionOfCurrentTx}
+          nextTxId={nextTxId}
+          prevTxId={prevTxId}
+          showNavigation={showNavigation}
+          onNextTx={(txId) => onNextTx(txId)}
+          firstTx={firstTx}
+          lastTx={lastTx}
+          ofText={ofText}
+          requestsWaitingText={requestsWaitingText}
+        />
+        <ConfirmPageContainerHeader
+          showEdit={showEdit}
+          onEdit={() => onEdit()}
+          showAccountInHeader={showAccountInHeader}
+          accountAddress={fromAddress}
+        >
+          {
+            hideSenderToRecipient ? null : (
+              <ConfirmPageContainerHeaderContent
+                tokenData={tokenData}
+                title={title}
+                titleComponent={titleComponent}
+                senderName={fromName}
+                senderAddress={fromAddress}
+                recipientName={toName}
+                recipientAddress={toAddress}
+                recipientEns={toEns}
+                recipientNickname={toNickname}
+                assetImage={renderAssetImage ? assetImage : undefined}
+              />
+            ) // <SenderToRecipient
+            //   senderName={fromName}
+            //   senderAddress={fromAddress}
+            //   recipientName={toName}
+            //   recipientAddress={toAddress}
+            //   recipientEns={toEns}
+            //   recipientNickname={toNickname}
+            //   assetImage={renderAssetImage ? assetImage : undefined}
+            // />
+          }
         </ConfirmPageContainerHeader>
-        {contentComponent || <ConfirmPageContainerContent action={action} title={title} titleComponent={titleComponent} subtitleComponent={subtitleComponent} hideSubtitle={hideSubtitle} detailsComponent={detailsComponent} dataComponent={dataComponent} errorMessage={errorMessage} errorKey={errorKey} identiconAddress={identiconAddress} nonce={nonce} assetImage={assetImage} warning={warning} onCancelAll={onCancelAll} onCancel={onCancel} cancelText={this.context.t('reject')} onSubmit={onSubmit} submitText={this.context.t('confirm')} disabled={disabled} unapprovedTxCount={unapprovedTxCount} rejectNText={this.context.t('rejectTxsN', [unapprovedTxCount])} origin={origin} ethGasPriceWarning={ethGasPriceWarning} />}
-        {contentComponent && <PageContainerFooter onCancel={onCancel} cancelText={this.context.t('reject')} onSubmit={onSubmit} submitText={this.context.t('confirm')} submitButtonType="confirm" disabled={disabled}>
-            {unapprovedTxCount > 1 && <a onClick={onCancelAll}>
+        {contentComponent || (
+          <ConfirmPageContainerContent
+            action={action}
+            title={title}
+            titleComponent={titleComponent}
+            subtitleComponent={subtitleComponent}
+            hideSubtitle={hideSubtitle}
+            detailsComponent={detailsComponent}
+            dataComponent={dataComponent}
+            errorMessage={errorMessage}
+            errorKey={errorKey}
+            identiconAddress={identiconAddress}
+            nonce={nonce}
+            assetImage={assetImage}
+            warning={warning}
+            onCancelAll={onCancelAll}
+            onCancel={onCancel}
+            cancelText={this.context.t('reject')}
+            onSubmit={onSubmit}
+            submitText={this.context.t('confirm')}
+            disabled={disabled}
+            unapprovedTxCount={unapprovedTxCount}
+            rejectNText={this.context.t('rejectTxsN', [unapprovedTxCount])}
+            origin={origin}
+            ethGasPriceWarning={ethGasPriceWarning}
+          />
+        )}
+        {contentComponent && (
+          <PageContainerFooter
+            onCancel={onCancel}
+            cancelText={this.context.t('reject')}
+            onSubmit={onSubmit}
+            submitText={this.context.t('confirm')}
+            submitButtonType="confirm"
+            disabled={disabled}
+          >
+            {unapprovedTxCount > 1 && (
+              <a onClick={onCancelAll}>
                 {this.context.t('rejectTxsN', [unapprovedTxCount])}
-              </a>}
-          </PageContainerFooter>}
-        {editingGas && <EditGasPopover mode={EDIT_GAS_MODES.MODIFY_IN_PLACE} onClose={handleCloseEditGas} transaction={currentTransaction} />}
-      </div>;
+              </a>
+            )}
+          </PageContainerFooter>
+        )}
+        {editingGas && (
+          <EditGasPopover
+            mode={EDIT_GAS_MODES.MODIFY_IN_PLACE}
+            onClose={handleCloseEditGas}
+            transaction={currentTransaction}
+          />
+        )}
+      </div>
+    );
   }
-
 }

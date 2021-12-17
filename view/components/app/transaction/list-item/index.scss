@@ -1,13 +1,13 @@
 .transaction-list-item {
-  background: #101422!important;
-  margin: 0!important;
-  width: auto!important;
-  border: none!important;
+  background: #101422 !important;
+  margin: 0 !important;
+  width: auto !important;
+  border: none !important;
   border-radius: 0;
 
   &__wrapper {
     margin: 10px 10px 0;
-    background: #101422!important;
+    background: #101422 !important;
     border-radius: 4px;
   }
 
@@ -63,7 +63,7 @@
   }
 
   .transaction-status::after {
-    content: "·";
+    content: '·';
     margin: 0 4px;
   }
 

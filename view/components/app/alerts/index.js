@@ -6,12 +6,14 @@ import { alertIsOpen as unconnectedAccountAlertIsOpen } from '@reducer/alerts/un
 import InvalidCustomNetworkAlert from './invalid-custom-network-alert';
 import UnconnectedAccountAlert from './unconnected-account-alert';
 
-const Alerts = ({
-  history
-}) => {
-  const _invalidCustomNetworkAlertIsOpen = useSelector(invalidCustomNetworkAlertIsOpen);
+const Alerts = ({ history }) => {
+  const _invalidCustomNetworkAlertIsOpen = useSelector(
+    invalidCustomNetworkAlertIsOpen,
+  );
 
-  const _unconnectedAccountAlertIsOpen = useSelector(unconnectedAccountAlertIsOpen);
+  const _unconnectedAccountAlertIsOpen = useSelector(
+    unconnectedAccountAlertIsOpen,
+  );
 
   if (_invalidCustomNetworkAlertIsOpen) {
     return <InvalidCustomNetworkAlert history={history} />;
@@ -25,6 +27,6 @@ const Alerts = ({
 };
 
 Alerts.propTypes = {
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 export default Alerts;

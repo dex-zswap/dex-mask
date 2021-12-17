@@ -4,18 +4,16 @@ import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import { INITIALIZE_END_OF_FLOW_ROUTE } from '@view/helpers/constants/routes';
-const {
-  isValidMnemonic
-} = ethers.utils;
+const { isValidMnemonic } = ethers.utils;
 export default class ImportWithSeedPhrase extends PureComponent {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     history: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     setSeedPhraseBackedUp: PropTypes.func,
-    initializeThreeBox: PropTypes.func
+    initializeThreeBox: PropTypes.func,
   };
   state = {
     seedPhrase: '',
@@ -25,9 +23,10 @@ export default class ImportWithSeedPhrase extends PureComponent {
     seedPhraseError: '',
     passwordError: '',
     confirmPasswordError: '',
-    termsChecked: true
+    termsChecked: true,
   };
-  parseSeedPhrase = seedPhrase => (seedPhrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
+  parseSeedPhrase = (seedPhrase) =>
+    (seedPhrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
 
   UNSAFE_componentWillMount() {
     this._onBeforeUnload = () => {};
@@ -55,18 +54,14 @@ export default class ImportWithSeedPhrase extends PureComponent {
 
     this.setState({
       seedPhrase,
-      seedPhraseError
+      seedPhraseError,
     });
   }
 
   handlePasswordChange(password) {
-    const {
-      t
-    } = this.context;
-    this.setState(state => {
-      const {
-        confirmPassword
-      } = state;
+    const { t } = this.context;
+    this.setState((state) => {
+      const { confirmPassword } = state;
       let confirmPasswordError = '';
       let passwordError = '';
 
@@ -81,19 +76,15 @@ export default class ImportWithSeedPhrase extends PureComponent {
       return {
         password,
         passwordError,
-        confirmPasswordError
+        confirmPasswordError,
       };
     });
   }
 
   handleConfirmPasswordChange(confirmPassword) {
-    const {
-      t
-    } = this.context;
-    this.setState(state => {
-      const {
-        password
-      } = state;
+    const { t } = this.context;
+    this.setState((state) => {
+      const { password } = state;
       let confirmPasswordError = '';
 
       if (password !== confirmPassword) {
@@ -102,27 +93,24 @@ export default class ImportWithSeedPhrase extends PureComponent {
 
       return {
         confirmPassword,
-        confirmPasswordError
+        confirmPasswordError,
       };
     });
   }
 
-  handleImport = async event => {
+  handleImport = async (event) => {
     event.preventDefault();
 
     if (!this.isValid()) {
       return;
     }
 
-    const {
-      password,
-      seedPhrase
-    } = this.state;
+    const { password, seedPhrase } = this.state;
     const {
       history,
       onSubmit,
       setSeedPhraseBackedUp,
-      initializeThreeBox
+      initializeThreeBox,
     } = this.props;
 
     try {
@@ -133,7 +121,7 @@ export default class ImportWithSeedPhrase extends PureComponent {
       });
     } catch (error) {
       this.setState({
-        seedPhraseError: error.message
+        seedPhraseError: error.message,
       });
     }
   };
@@ -148,10 +136,15 @@ export default class ImportWithSeedPhrase extends PureComponent {
       confirmPassword,
       passwordError,
       confirmPasswordError,
-      seedPhraseError
+      seedPhraseError,
     } = this.state;
 
-    if (!password || !confirmPassword || !seedPhrase || password !== confirmPassword) {
+    if (
+      !password ||
+      !confirmPassword ||
+      !seedPhrase ||
+      password !== confirmPassword
+    ) {
       return false;
     }
 
@@ -162,52 +155,91 @@ export default class ImportWithSeedPhrase extends PureComponent {
     return !passwordError && !confirmPasswordError && !seedPhraseError;
   }
 
-  onTermsKeyPress = ({
-    key
-  }) => {
+  onTermsKeyPress = ({ key }) => {
     if (key === ' ' || key === 'Enter') {
       this.toggleTermsCheck();
     }
   };
   toggleShowSeedPhrase = () => {
-    this.setState(({
-      showSeedPhrase
-    }) => ({
-      showSeedPhrase: !showSeedPhrase
+    this.setState(({ showSeedPhrase }) => ({
+      showSeedPhrase: !showSeedPhrase,
     }));
   };
 
   render() {
-    const {
-      t
-    } = this.context;
+    const { t } = this.context;
     const {
       seedPhraseError,
       showSeedPhrase,
       passwordError,
-      confirmPasswordError
+      confirmPasswordError,
     } = this.state;
-    return <form className="first-time-flow__form import-with-seed-phrase__form" onSubmit={this.handleImport}>
+    return (
+      <form
+        className="first-time-flow__form import-with-seed-phrase__form"
+        onSubmit={this.handleImport}
+      >
         <div className="first-time-flow__header">
           {t('importAccountSeedPhrase')}
         </div>
         <div className="first-time-flow__text-block">{t('secretPhrase')}</div>
         <div className="first-time-flow__textarea-wrapper">
           <label>{t('walletSeed')}</label>
-          <textarea className="first-time-flow__textarea" onChange={e => this.handleSeedPhraseChange(e.target.value)} value={this.state.seedPhrase} placeholder={t('seedPhrasePlaceholder')} autoComplete="off" />
+          <textarea
+            className="first-time-flow__textarea"
+            onChange={(e) => this.handleSeedPhraseChange(e.target.value)}
+            value={this.state.seedPhrase}
+            placeholder={t('seedPhrasePlaceholder')}
+            autoComplete="off"
+          />
           {seedPhraseError && <span className="error">{seedPhraseError}</span>}
         </div>
-        <TextField id="password" label={t('newPassword')} type="password" className="first-time-flow__input" value={this.state.password} onChange={event => this.handlePasswordChange(event.target.value)} error={passwordError} autoComplete="new-password" margin="normal" largeLabel />
-        <TextField id="confirm-password" label={t('confirmPassword')} type="password" className="first-time-flow__input" value={this.state.confirmPassword} onChange={event => this.handleConfirmPasswordChange(event.target.value)} error={confirmPasswordError} autoComplete="new-password" margin="normal" largeLabel />
+        <TextField
+          id="password"
+          label={t('newPassword')}
+          type="password"
+          className="first-time-flow__input"
+          value={this.state.password}
+          onChange={(event) => this.handlePasswordChange(event.target.value)}
+          error={passwordError}
+          autoComplete="new-password"
+          margin="normal"
+          largeLabel
+        />
+        <TextField
+          id="confirm-password"
+          label={t('confirmPassword')}
+          type="password"
+          className="first-time-flow__input"
+          value={this.state.confirmPassword}
+          onChange={(event) =>
+            this.handleConfirmPasswordChange(event.target.value)
+          }
+          error={confirmPasswordError}
+          autoComplete="new-password"
+          margin="normal"
+          largeLabel
+        />
         <div className="import-seed__btn-wrapper">
-          <Button className="first-time-flow__button" leftArrow onClick={this.handleCancel} as="div">
+          <Button
+            className="first-time-flow__button"
+            leftArrow
+            onClick={this.handleCancel}
+            as="div"
+          >
             {t('pre')}
           </Button>
-          <Button type="primary" submit className="first-time-flow__button" rightArrow disabled={!this.isValid()}>
+          <Button
+            type="primary"
+            submit
+            className="first-time-flow__button"
+            rightArrow
+            disabled={!this.isValid()}
+          >
             {t('import')}
           </Button>
         </div>
-      </form>;
+      </form>
+    );
   }
-
 }

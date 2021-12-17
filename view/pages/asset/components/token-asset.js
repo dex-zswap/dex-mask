@@ -5,10 +5,12 @@ import { getTokenTrackerLink } from '@metamask/etherscan-link';
 import PropTypes from 'prop-types';
 import TransactionList from '@c/app/transaction/list';
 import { TokenOverview } from '@c/app/wallet-overview';
-import { getCurrentChainId, getRpcPrefsForCurrentProvider, getSelectedIdentity } from '@selectors/selectors';
-export default function TokenAsset({
-  token
-}) {
+import {
+  getCurrentChainId,
+  getRpcPrefsForCurrentProvider,
+  getSelectedIdentity,
+} from '@selectors/selectors';
+export default function TokenAsset({ token }) {
   const dispatch = useDispatch();
   const chainId = useSelector(getCurrentChainId);
   const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
@@ -16,16 +18,24 @@ export default function TokenAsset({
   const selectedAccountName = selectedIdentity.name;
   const selectedAddress = selectedIdentity.address;
   const history = useHistory();
-  const tokenTrackerLink = getTokenTrackerLink(token.address, chainId, null, selectedAddress, rpcPrefs);
-  return <> 
+  const tokenTrackerLink = getTokenTrackerLink(
+    token.address,
+    chainId,
+    null,
+    selectedAddress,
+    rpcPrefs,
+  );
+  return (
+    <>
       <TokenOverview className="asset__overview" token={token} />
       <TransactionList tokenAddress={token.address} />
-    </>;
+    </>
+  );
 }
 TokenAsset.propTypes = {
   token: PropTypes.shape({
     address: PropTypes.string.isRequired,
     decimals: PropTypes.number,
-    symbol: PropTypes.string
-  }).isRequired
+    symbol: PropTypes.string,
+  }).isRequired,
 };

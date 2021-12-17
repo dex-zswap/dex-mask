@@ -6,16 +6,23 @@ export default function TokenBalance({
   numberOfDecimals,
   className,
   token,
-  accountAddress = ''
+  accountAddress = '',
 }) {
-  const {
-    tokensWithBalances
-  } = useTokenTracker([token], false, false, accountAddress);
-  const {
-    string,
-    symbol
-  } = tokensWithBalances[0] || {};
-  return <CurrencyDisplay numberOfDecimals={numberOfDecimals} className={className} displayValue={string || ''} suffix={symbol || ''} />;
+  const { tokensWithBalances } = useTokenTracker(
+    [token],
+    false,
+    false,
+    accountAddress,
+  );
+  const { string, symbol } = tokensWithBalances[0] || {};
+  return (
+    <CurrencyDisplay
+      numberOfDecimals={numberOfDecimals}
+      className={className}
+      displayValue={string || ''}
+      suffix={symbol || ''}
+    />
+  );
 }
 TokenBalance.propTypes = {
   numberOfDecimals: PropTypes.number,
@@ -23,9 +30,9 @@ TokenBalance.propTypes = {
   token: PropTypes.shape({
     address: PropTypes.string.isRequired,
     decimals: PropTypes.number,
-    symbol: PropTypes.string
-  }).isRequired
+    symbol: PropTypes.string,
+  }).isRequired,
 };
 TokenBalance.defaultProps = {
-  className: undefined
+  className: undefined,
 };

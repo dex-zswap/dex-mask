@@ -8,16 +8,14 @@ import JsonImportView from './json';
 import PrivateKeyImportView from './private-key';
 export default class AccountImportSubview extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   state = {
-    type: 'privateKey'
+    type: 'privateKey',
   };
 
   renderImportView() {
-    const {
-      type
-    } = this.state;
+    const { type } = this.state;
 
     switch (type) {
       case 'privateKey':
@@ -32,10 +30,9 @@ export default class AccountImportSubview extends Component {
   }
 
   render() {
-    const {
-      type
-    } = this.state;
-    return <div className="new-account-import-form dex-page-container space-between base-width">
+    const { type } = this.state;
+    return (
+      <div className="new-account-import-form dex-page-container space-between base-width">
         <div>
           <Logo plain isCenter />
           <BackBar title={this.context.t('importAccount')} />
@@ -43,23 +40,31 @@ export default class AccountImportSubview extends Component {
             <div className="new-account-import-form__select-label">
               {this.context.t('selectType')}
             </div>
-            <Selector className="select-import-type" selectedValue={type} options={[{
-            value: 'privateKey',
-            label: this.context.t('privateKey')
-          }, {
-            value: 'jsonFile',
-            label: this.context.t('jsonFile')
-          }]} onSelect={type => {
-            this.setState({
-              type
-            });
-          }} />
+            <Selector
+              className="select-import-type"
+              selectedValue={type}
+              options={[
+                {
+                  value: 'privateKey',
+                  label: this.context.t('privateKey'),
+                },
+                {
+                  value: 'jsonFile',
+                  label: this.context.t('jsonFile'),
+                },
+              ]}
+              onSelect={(type) => {
+                this.setState({
+                  type,
+                });
+              }}
+            />
           </div>
         </div>
         <div className="new-account-import-bottom">
           {this.renderImportView()}
         </div>
-      </div>;
+      </div>
+    );
   }
-
 }

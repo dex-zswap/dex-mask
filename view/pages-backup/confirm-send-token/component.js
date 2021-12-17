@@ -6,23 +6,24 @@ export default class ConfirmSendToken extends Component {
   static propTypes = {
     history: PropTypes.object,
     editTransaction: PropTypes.func,
-    tokenAmount: PropTypes.string
+    tokenAmount: PropTypes.string,
   };
 
   handleEdit(confirmTransactionData) {
-    const {
-      editTransaction,
-      history
-    } = this.props;
+    const { editTransaction, history } = this.props;
     editTransaction(confirmTransactionData);
     history.push(SEND_ROUTE);
   }
 
   render() {
-    const {
-      tokenAmount
-    } = this.props;
-    return <ConfirmTokenTransactionBaseContainer onEdit={confirmTransactionData => this.handleEdit(confirmTransactionData)} tokenAmount={tokenAmount} />;
+    const { tokenAmount } = this.props;
+    return (
+      <ConfirmTokenTransactionBaseContainer
+        onEdit={(confirmTransactionData) =>
+          this.handleEdit(confirmTransactionData)
+        }
+        tokenAmount={tokenAmount}
+      />
+    );
   }
-
 }

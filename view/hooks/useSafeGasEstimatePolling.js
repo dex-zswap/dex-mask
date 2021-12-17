@@ -1,5 +1,10 @@
 import { useEffect } from 'react';
-import { disconnectGasFeeEstimatePoller, getGasFeeEstimatesAndStartPolling, addPollingTokenToAppState, removePollingTokenFromAppState } from '@view/store/actions';
+import {
+  disconnectGasFeeEstimatePoller,
+  getGasFeeEstimatesAndStartPolling,
+  addPollingTokenToAppState,
+  removePollingTokenFromAppState,
+} from '@view/store/actions';
 /**
  * Provides a reusable hook that can be used for safely updating the polling
  * data in the gas fee controller. It makes a request to get estimates and
@@ -23,7 +28,7 @@ export function useSafeGasEstimatePolling() {
       }
     };
 
-    getGasFeeEstimatesAndStartPolling().then(newPollToken => {
+    getGasFeeEstimatesAndStartPolling().then((newPollToken) => {
       if (active) {
         pollToken = newPollToken;
         addPollingTokenToAppState(pollToken);

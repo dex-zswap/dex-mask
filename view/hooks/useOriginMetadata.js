@@ -30,13 +30,11 @@ export function useOriginMetadata(origin) {
   const minimumOriginMetadata = {
     host: url.host,
     hostname: url.hostname,
-    origin
+    origin,
   };
 
   if (domainMetaData?.[origin]) {
-    return { ...minimumOriginMetadata,
-      ...domainMetaData[origin]
-    };
+    return { ...minimumOriginMetadata, ...domainMetaData[origin] };
   }
 
   return minimumOriginMetadata;

@@ -17,18 +17,15 @@ class DraggableSeed extends Component {
     index: PropTypes.number,
     word: PropTypes.string,
     className: PropTypes.string,
-    selected: PropTypes.bool
+    selected: PropTypes.bool,
   };
   static defaultProps = {
     className: '',
-    onClick: undefined
+    onClick: undefined,
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    const {
-      isOver,
-      setHoveringIndex
-    } = this.props;
+    const { isOver, setHoveringIndex } = this.props;
 
     if (isOver && !nextProps.isOver) {
       setHoveringIndex(-1);
@@ -46,19 +43,31 @@ class DraggableSeed extends Component {
       className,
       onClick,
       isOver,
-      canDrop
+      canDrop,
     } = this.props;
-    return connectDropTarget(connectDragSource(<div key={index} className={classnames('btn-secondary notranslate confirm-seed-phrase__seed-word', className, {
-      'confirm-seed-phrase__seed-word--selected btn-primary': selected,
-      'confirm-seed-phrase__seed-word--dragging': isDragging,
-      'confirm-seed-phrase__seed-word--empty': !word,
-      'confirm-seed-phrase__seed-word--active-drop': !isOver && canDrop,
-      'confirm-seed-phrase__seed-word--drop-hover': isOver && canDrop
-    })} onClick={onClick} data-testid={`draggable-seed-${selected ? 'selected-' : ''}${word}`}>
+    return connectDropTarget(
+      connectDragSource(
+        <div
+          key={index}
+          className={classnames(
+            'btn-secondary notranslate confirm-seed-phrase__seed-word',
+            className,
+            {
+              'confirm-seed-phrase__seed-word--selected btn-primary': selected,
+              'confirm-seed-phrase__seed-word--dragging': isDragging,
+              'confirm-seed-phrase__seed-word--empty': !word,
+              'confirm-seed-phrase__seed-word--active-drop': !isOver && canDrop,
+              'confirm-seed-phrase__seed-word--drop-hover': isOver && canDrop,
+            },
+          )}
+          onClick={onClick}
+          data-testid={`draggable-seed-${selected ? 'selected-' : ''}${word}`}
+        >
           {word}
-        </div>));
+        </div>,
+      ),
+    );
   }
-
 }
 
 const SEEDWORD = 'SEEDWORD';
@@ -67,7 +76,7 @@ const seedSource = {
     setTimeout(() => props.setDraggingSeedIndex(props.seedIndex), 0);
     return {
       seedIndex: props.seedIndex,
-      word: props.word
+      word: props.word,
     };
   },
 
@@ -84,13 +93,12 @@ const seedSource = {
     }
 
     props.onDrop(dropTarget.targetIndex);
-  }
-
+  },
 };
 const seedTarget = {
   drop(props) {
     return {
-      targetIndex: props.index
+      targetIndex: props.index,
     };
   },
 
@@ -100,14 +108,13 @@ const seedTarget = {
 
   hover(props) {
     props.setHoveringIndex(props.index);
-  }
-
+  },
 };
 
 const collectDrag = (connect, monitor) => {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
   };
 };
 
@@ -115,8 +122,12 @@ const collectDrop = (connect, monitor) => {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver(),
-    canDrop: monitor.canDrop()
+    canDrop: monitor.canDrop(),
   };
 };
 
-export default DropTarget(SEEDWORD, seedTarget, collectDrop)(DragSource(SEEDWORD, seedSource, collectDrag)(DraggableSeed));
+export default DropTarget(
+  SEEDWORD,
+  seedTarget,
+  collectDrop,
+)(DragSource(SEEDWORD, seedSource, collectDrag)(DraggableSeed));

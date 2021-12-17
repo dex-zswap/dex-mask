@@ -4,25 +4,28 @@ import Button from '@c/ui/button';
 import ButtonGroup from '@c/ui/button-group';
 import { GAS_ESTIMATE_TYPES } from '@view/helpers/constants/common';
 const GAS_OBJECT_PROPTYPES_SHAPE = {
-  gasEstimateType: PropTypes.oneOf(Object.values(GAS_ESTIMATE_TYPES)).isRequired,
+  gasEstimateType: PropTypes.oneOf(Object.values(GAS_ESTIMATE_TYPES))
+    .isRequired,
   feeInPrimaryCurrency: PropTypes.string,
   feeInSecondaryCurrency: PropTypes.string,
   timeEstimate: PropTypes.string,
-  priceInHexWei: PropTypes.string
+  priceInHexWei: PropTypes.string,
 };
 export default class GasPriceButtonGroup extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     buttonDataLoading: PropTypes.bool,
     className: PropTypes.string,
     defaultActiveButtonIndex: PropTypes.number,
-    gasButtonInfo: PropTypes.arrayOf(PropTypes.shape(GAS_OBJECT_PROPTYPES_SHAPE)),
+    gasButtonInfo: PropTypes.arrayOf(
+      PropTypes.shape(GAS_OBJECT_PROPTYPES_SHAPE),
+    ),
     handleGasPriceSelection: PropTypes.func,
     newActiveButtonIndex: PropTypes.number,
     noButtonActiveByDefault: PropTypes.bool,
-    showCheck: PropTypes.bool
+    showCheck: PropTypes.bool,
   };
 
   gasEstimateTypeLabel(gasEstimateType) {
@@ -39,46 +42,69 @@ export default class GasPriceButtonGroup extends Component {
     throw new Error(`Unrecognized gas estimate type: ${gasEstimateType}`);
   }
 
-  renderButtonContent({
-    gasEstimateType,
-    feeInPrimaryCurrency,
-    feeInSecondaryCurrency,
-    timeEstimate
-  }, {
-    className,
-    showCheck
-  }) {
-    return <div>
-        {gasEstimateType && <div className={`${className}__label`}>
+  renderButtonContent(
+    {
+      gasEstimateType,
+      feeInPrimaryCurrency,
+      feeInSecondaryCurrency,
+      timeEstimate,
+    },
+    { className, showCheck },
+  ) {
+    return (
+      <div>
+        {gasEstimateType && (
+          <div className={`${className}__label`}>
             {this.gasEstimateTypeLabel(gasEstimateType)}
-          </div>}
-        {timeEstimate && <div className={`${className}__time-estimate`}>{timeEstimate}</div>}
-        {feeInPrimaryCurrency && <div className={`${className}__primary-currency`}>
+          </div>
+        )}
+        {timeEstimate && (
+          <div className={`${className}__time-estimate`}>{timeEstimate}</div>
+        )}
+        {feeInPrimaryCurrency && (
+          <div className={`${className}__primary-currency`}>
             {feeInPrimaryCurrency}
-          </div>}
-        {feeInSecondaryCurrency && <div className={`${className}__secondary-currency`}>
+          </div>
+        )}
+        {feeInSecondaryCurrency && (
+          <div className={`${className}__secondary-currency`}>
             {feeInSecondaryCurrency}
-          </div>}
-        {showCheck && <div className="button-check-wrapper">
+          </div>
+        )}
+        {showCheck && (
+          <div className="button-check-wrapper">
             <i className="fa fa-check fa-sm" />
-          </div>}
-      </div>;
+          </div>
+        )}
+      </div>
+    );
   }
 
-  renderButton({
-    priceInHexWei,
-    ...renderableGasInfo
-  }, {
-    buttonDataLoading: _,
-    handleGasPriceSelection,
-    ...buttonContentPropsAndFlags
-  }, index) {
-    return <Button onClick={() => handleGasPriceSelection({
-      gasPrice: priceInHexWei,
-      gasEstimateType: renderableGasInfo.gasEstimateType
-    })} key={`gas-price-button-${index}`}>
-        {this.renderButtonContent(renderableGasInfo, buttonContentPropsAndFlags)}
-      </Button>;
+  renderButton(
+    { priceInHexWei, ...renderableGasInfo },
+    {
+      buttonDataLoading: _,
+      handleGasPriceSelection,
+      ...buttonContentPropsAndFlags
+    },
+    index,
+  ) {
+    return (
+      <Button
+        onClick={() =>
+          handleGasPriceSelection({
+            gasPrice: priceInHexWei,
+            gasEstimateType: renderableGasInfo.gasEstimateType,
+          })
+        }
+        key={`gas-price-button-${index}`}
+      >
+        {this.renderButtonContent(
+          renderableGasInfo,
+          buttonContentPropsAndFlags,
+        )}
+      </Button>
+    );
   }
 
   render() {
@@ -90,11 +116,21 @@ export default class GasPriceButtonGroup extends Component {
       buttonDataLoading,
       ...buttonPropsAndFlags
     } = this.props;
-    return buttonDataLoading ? <div className={`${buttonPropsAndFlags.className}__loading-container`}>
+    return buttonDataLoading ? (
+      <div className={`${buttonPropsAndFlags.className}__loading-container`}>
         {this.context.t('loading')}
-      </div> : <ButtonGroup className={buttonPropsAndFlags.className} defaultActiveButtonIndex={defaultActiveButtonIndex} newActiveButtonIndex={newActiveButtonIndex} noButtonActiveByDefault={noButtonActiveByDefault}>
-        {gasButtonInfo.map((obj, index) => this.renderButton(obj, buttonPropsAndFlags, index))}
-      </ButtonGroup>;
+      </div>
+    ) : (
+      <ButtonGroup
+        className={buttonPropsAndFlags.className}
+        defaultActiveButtonIndex={defaultActiveButtonIndex}
+        newActiveButtonIndex={newActiveButtonIndex}
+        noButtonActiveByDefault={noButtonActiveByDefault}
+      >
+        {gasButtonInfo.map((obj, index) =>
+          this.renderButton(obj, buttonPropsAndFlags, index),
+        )}
+      </ButtonGroup>
+    );
   }
-
 }

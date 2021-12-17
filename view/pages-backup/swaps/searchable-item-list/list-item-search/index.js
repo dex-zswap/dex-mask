@@ -11,11 +11,16 @@ import { getCurrentChainId } from '@selectors/selectors';
 import { isValidHexAddress } from '@shared/modules/hexstring-utils';
 import { usePrevious } from '@view/hooks/usePrevious';
 
-const renderAdornment = () => <InputAdornment position="start" style={{
-  marginRight: '12px'
-}}>
+const renderAdornment = () => (
+  <InputAdornment
+    position="start"
+    style={{
+      marginRight: '12px',
+    }}
+  >
     <img src="images/search.svg" width="17" height="17" alt="" />
-  </InputAdornment>;
+  </InputAdornment>
+);
 
 export default function ListItemSearch({
   onSearch,
@@ -24,7 +29,7 @@ export default function ListItemSearch({
   fuseSearchKeys,
   searchPlaceholderText,
   defaultToAll,
-  shouldSearchForImports
+  shouldSearchForImports,
 }) {
   const fuseRef = useRef();
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,7 +40,7 @@ export default function ListItemSearch({
    * @param {String} contractAddress
    */
 
-  const handleSearchTokenForImport = async contractAddress => {
+  const handleSearchTokenForImport = async (contractAddress) => {
     setSearchQuery(contractAddress);
 
     try {
@@ -47,7 +52,7 @@ export default function ListItemSearch({
         token.notImported = true;
         onSearch({
           searchQuery: contractAddress,
-          results: [token]
+          results: [token],
         });
         return;
       }
@@ -57,16 +62,16 @@ export default function ListItemSearch({
 
     onSearch({
       searchQuery: contractAddress,
-      results: [] // No token for import found.
-
+      results: [], // No token for import found.
     });
   };
 
-  const handleSearch = async newSearchQuery => {
+  const handleSearch = async (newSearchQuery) => {
     const trimmedNewSearchQuery = newSearchQuery.trim();
     const validHexAddress = isValidHexAddress(trimmedNewSearchQuery);
     const fuseSearchResult = fuseRef.current.search(newSearchQuery);
-    const results = defaultToAll && newSearchQuery === '' ? listToSearch : fuseSearchResult;
+    const results =
+      defaultToAll && newSearchQuery === '' ? listToSearch : fuseSearchResult;
 
     if (shouldSearchForImports && results.length === 0 && validHexAddress) {
       await handleSearchTokenForImport(trimmedNewSearchQuery);
@@ -76,7 +81,7 @@ export default function ListItemSearch({
     setSearchQuery(newSearchQuery);
     onSearch({
       searchQuery: newSearchQuery,
-      results
+      results,
     });
   };
 
@@ -89,22 +94,40 @@ export default function ListItemSearch({
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: fuseSearchKeys
+        keys: fuseSearchKeys,
       });
     }
   }, [fuseSearchKeys, listToSearch]);
   const previousListToSearch = usePrevious(listToSearch ?? []);
   useEffect(() => {
-    if (fuseRef.current && searchQuery && previousListToSearch !== listToSearch) {
+    if (
+      fuseRef.current &&
+      searchQuery &&
+      previousListToSearch !== listToSearch
+    ) {
       fuseRef.current.setCollection(listToSearch);
       const fuseSearchResult = fuseRef.current.search(searchQuery);
       onSearch({
         searchQuery,
-        results: fuseSearchResult
+        results: fuseSearchResult,
       });
     }
   }, [listToSearch, searchQuery, onSearch, previousListToSearch]);
-  return <TextField data-testid="search-list-items" className="searchable-item-list__search" placeholder={searchPlaceholderText} type="text" value={searchQuery} onChange={e => handleSearch(e.target.value)} error={error} fullWidth startAdornment={renderAdornment()} autoComplete="off" autoFocus />;
+  return (
+    <TextField
+      data-testid="search-list-items"
+      className="searchable-item-list__search"
+      placeholder={searchPlaceholderText}
+      type="text"
+      value={searchQuery}
+      onChange={(e) => handleSearch(e.target.value)}
+      error={error}
+      fullWidth
+      startAdornment={renderAdornment()}
+      autoComplete="off"
+      autoFocus
+    />
+  );
 }
 ListItemSearch.propTypes = {
   onSearch: PropTypes.func,
@@ -113,5 +136,5 @@ ListItemSearch.propTypes = {
   fuseSearchKeys: PropTypes.arrayOf(PropTypes.object).isRequired,
   searchPlaceholderText: PropTypes.string,
   defaultToAll: PropTypes.bool,
-  shouldSearchForImports: PropTypes.bool
+  shouldSearchForImports: PropTypes.bool,
 };

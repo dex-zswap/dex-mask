@@ -1,14 +1,10 @@
 import { connect } from 'react-redux';
 import TokenList from './component';
 
-const mapStateToProps = ({
-  metamask
-}) => {
-  const {
-    tokens
-  } = metamask;
+const mapStateToProps = ({ metamask }) => {
+  const { tokens } = metamask;
   return {
-    tokens
+    tokens,
   };
 };
 

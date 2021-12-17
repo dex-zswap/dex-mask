@@ -12,7 +12,7 @@ export default function TokenImage({
   symbol,
   size,
   chainId = '',
-  showLetter = false
+  showLetter = false,
 }) {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
@@ -32,10 +32,13 @@ export default function TokenImage({
 
     return '1';
   }, [chainId, currentChainId]);
-  const style = useMemo(() => ({
-    width: `${size}px`,
-    height: `${size}px`
-  }), [size]);
+  const style = useMemo(
+    () => ({
+      width: `${size}px`,
+      height: `${size}px`,
+    }),
+    [size],
+  );
   const tokenImage = useMemo(() => {
     if (success) {
       return <img className="img" src={src} style={style} />;
@@ -50,7 +53,7 @@ export default function TokenImage({
     const img = new Image();
     img.src = getAssetIcon({
       meta_chain_id: networkId,
-      token_address: address
+      token_address: address,
     });
     img.addEventListener('load', () => {
       setLoading(false);
@@ -62,8 +65,12 @@ export default function TokenImage({
       setSuccess(false);
     });
   }, [networkId, address]);
-  return <div className="token-image__component" style={style}>
+  return (
+    <div className="token-image__component" style={style}>
       {tokenImage}
-      {showLetter && <span className="token-image__component-letter">{letter}</span>}
-    </div>;
+      {showLetter && (
+        <span className="token-image__component-letter">{letter}</span>
+      )}
+    </div>
+  );
 }

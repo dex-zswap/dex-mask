@@ -9,7 +9,10 @@ import { useRouteMatch } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 import { getTokens } from '@reducer/dexmask/dexmask';
-import { ETH_SWAPS_TOKEN_OBJECT, SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '@shared/constants/swaps';
+import {
+  ETH_SWAPS_TOKEN_OBJECT,
+  SWAPS_CHAINID_DEFAULT_TOKEN_MAP,
+} from '@shared/constants/swaps';
 import { ASSET_ROUTE } from '@view/helpers/constants/routes';
 import { getCurrentChainId } from '@view/selectors';
 export function useCurrentAsset() {
@@ -18,13 +21,15 @@ export function useCurrentAsset() {
   const match = useRouteMatch({
     path: `${ASSET_ROUTE}/:asset`,
     exact: true,
-    strict: true
+    strict: true,
   });
   const tokenAddress = match?.params?.asset;
   const knownTokens = useSelector(getTokens);
-  const token = tokenAddress && knownTokens.find(({
-    address
-  }) => address === tokenAddress);
+  const token =
+    tokenAddress && knownTokens.find(({ address }) => address === tokenAddress);
   const chainId = useSelector(getCurrentChainId);
-  return token ?? (SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId] || ETH_SWAPS_TOKEN_OBJECT);
+  return (
+    token ??
+    (SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId] || ETH_SWAPS_TOKEN_OBJECT)
+  );
 }

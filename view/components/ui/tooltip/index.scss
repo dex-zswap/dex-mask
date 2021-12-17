@@ -13,18 +13,18 @@
   }
 }
 
-.tippy-popper[x-placement^=top] .white-theme [x-arrow] {
+.tippy-popper[x-placement^='top'] .white-theme [x-arrow] {
   border-top-color: $white;
 }
 
-.tippy-popper[x-placement^=right] .white-theme [x-arrow] {
+.tippy-popper[x-placement^='right'] .white-theme [x-arrow] {
   border-right-color: $white;
 }
 
-.tippy-popper[x-placement^=left] .white-theme [x-arrow] {
+.tippy-popper[x-placement^='left'] .white-theme [x-arrow] {
   border-left-color: $white;
 }
 
-.tippy-popper[x-placement^=bottom] .white-theme [x-arrow] {
+.tippy-popper[x-placement^='bottom'] .white-theme [x-arrow] {
   border-bottom-color: $white;
 }

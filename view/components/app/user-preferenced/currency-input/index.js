@@ -6,25 +6,24 @@ import { getPreferences } from '@view/selectors';
 
 class UserPreferencedCurrencyInput extends PureComponent {
   static propTypes = {
-    useNativeCurrencyAsPrimaryCurrency: PropTypes.bool
+    useNativeCurrencyAsPrimaryCurrency: PropTypes.bool,
   };
 
   render() {
-    const {
-      useNativeCurrencyAsPrimaryCurrency,
-      ...restProps
-    } = this.props;
-    return <CurrencyInput {...restProps} useFiat={!useNativeCurrencyAsPrimaryCurrency} />;
+    const { useNativeCurrencyAsPrimaryCurrency, ...restProps } = this.props;
+    return (
+      <CurrencyInput
+        {...restProps}
+        useFiat={!useNativeCurrencyAsPrimaryCurrency}
+      />
+    );
   }
-
 }
 
-const mapStateToProps = state => {
-  const {
-    useNativeCurrencyAsPrimaryCurrency
-  } = getPreferences(state);
+const mapStateToProps = (state) => {
+  const { useNativeCurrencyAsPrimaryCurrency } = getPreferences(state);
   return {
-    useNativeCurrencyAsPrimaryCurrency
+    useNativeCurrencyAsPrimaryCurrency,
   };
 };
 

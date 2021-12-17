@@ -12,7 +12,7 @@ import { CARDS_VARIANT, DEFAULT_VARIANT, FLAT_VARIANT } from './constants';
 const variantHash = {
   [DEFAULT_VARIANT]: 'sender-to-recipient--default',
   [CARDS_VARIANT]: 'sender-to-recipient--cards',
-  [FLAT_VARIANT]: 'sender-to-recipient--flat'
+  [FLAT_VARIANT]: 'sender-to-recipient--flat',
 };
 
 function SenderAddress({
@@ -21,40 +21,68 @@ function SenderAddress({
   senderName,
   onSenderClick,
   senderAddress,
-  warnUserOnAccountMismatch
+  warnUserOnAccountMismatch,
 }) {
   const t = useI18nContext();
   const [addressCopied, setAddressCopied] = useState(false);
   let tooltipHtml = <p>{t('copiedExclamation')}</p>;
 
   if (!addressCopied) {
-    tooltipHtml = addressOnly ? <p>{t('copyAddress')}</p> : <p>
+    tooltipHtml = addressOnly ? (
+      <p>{t('copyAddress')}</p>
+    ) : (
+      <p>
         {shortenAddress(checksummedSenderAddress)}
         <br />
         {t('copyAddress')}
-      </p>;
+      </p>
+    );
   }
 
-  return <div className={classnames('sender-to-recipient__party sender-to-recipient__party--sender')} onClick={() => {
-    setAddressCopied(true);
-    copyToClipboard(checksummedSenderAddress);
+  return (
+    <div
+      className={classnames(
+        'sender-to-recipient__party sender-to-recipient__party--sender',
+      )}
+      onClick={() => {
+        setAddressCopied(true);
+        copyToClipboard(checksummedSenderAddress);
 
-    if (onSenderClick) {
-      onSenderClick();
-    }
-  }}>
-      {!addressOnly && <div className="sender-to-recipient__sender-icon">
-          <Identicon address={toChecksumHexAddress(senderAddress)} diameter={24} />
-        </div>}
-      <Tooltip position="bottom" html={tooltipHtml} wrapperClassName="sender-to-recipient__tooltip-wrapper" containerClassName="sender-to-recipient__tooltip-container" onHidden={() => setAddressCopied(false)}>
+        if (onSenderClick) {
+          onSenderClick();
+        }
+      }}
+    >
+      {!addressOnly && (
+        <div className="sender-to-recipient__sender-icon">
+          <Identicon
+            address={toChecksumHexAddress(senderAddress)}
+            diameter={24}
+          />
+        </div>
+      )}
+      <Tooltip
+        position="bottom"
+        html={tooltipHtml}
+        wrapperClassName="sender-to-recipient__tooltip-wrapper"
+        containerClassName="sender-to-recipient__tooltip-container"
+        onHidden={() => setAddressCopied(false)}
+      >
         <div className="sender-to-recipient__name">
-          {addressOnly ? <span>
+          {addressOnly ? (
+            <span>
               {`${t('from')}: ${senderName || checksummedSenderAddress}`}
-            </span> : senderName}
+            </span>
+          ) : (
+            senderName
+          )}
         </div>
       </Tooltip>
-      {warnUserOnAccountMismatch && <AccountMismatchWarning address={senderAddress} />}
-    </div>;
+      {warnUserOnAccountMismatch && (
+        <AccountMismatchWarning address={senderAddress} />
+      )}
+    </div>
+  );
 }
 
 SenderAddress.propTypes = {
@@ -63,7 +91,7 @@ SenderAddress.propTypes = {
   addressOnly: PropTypes.bool,
   senderAddress: PropTypes.string,
   onSenderClick: PropTypes.func,
-  warnUserOnAccountMismatch: PropTypes.bool
+  warnUserOnAccountMismatch: PropTypes.bool,
 };
 
 function RecipientWithAddress({
@@ -73,7 +101,7 @@ function RecipientWithAddress({
   addressOnly,
   recipientNickname,
   recipientEns,
-  recipientName
+  recipientName,
 }) {
   const t = useI18nContext();
   const [addressCopied, setAddressCopied] = useState(false);
@@ -83,32 +111,57 @@ function RecipientWithAddress({
     if (addressOnly && !recipientNickname && !recipientEns) {
       tooltipHtml = <p>{t('copyAddress')}</p>;
     } else {
-      tooltipHtml = <p>
+      tooltipHtml = (
+        <p>
           {shortenAddress(checksummedRecipientAddress)}
           <br />
           {t('copyAddress')}
-        </p>;
+        </p>
+      );
     }
   }
 
-  return <div className="sender-to-recipient__party sender-to-recipient__party--recipient sender-to-recipient__party--recipient-with-address" onClick={() => {
-    setAddressCopied(true);
-    copyToClipboard(checksummedRecipientAddress);
+  return (
+    <div
+      className="sender-to-recipient__party sender-to-recipient__party--recipient sender-to-recipient__party--recipient-with-address"
+      onClick={() => {
+        setAddressCopied(true);
+        copyToClipboard(checksummedRecipientAddress);
 
-    if (onRecipientClick) {
-      onRecipientClick();
-    }
-  }}>
-      {!addressOnly && <div className="sender-to-recipient__sender-icon">
-          <Identicon address={checksummedRecipientAddress} diameter={24} image={assetImage} />
-        </div>}
-      <Tooltip position="bottom" html={tooltipHtml} offset={-10} wrapperClassName="sender-to-recipient__tooltip-wrapper" containerClassName="sender-to-recipient__tooltip-container" onHidden={() => setAddressCopied(false)}>
+        if (onRecipientClick) {
+          onRecipientClick();
+        }
+      }}
+    >
+      {!addressOnly && (
+        <div className="sender-to-recipient__sender-icon">
+          <Identicon
+            address={checksummedRecipientAddress}
+            diameter={24}
+            image={assetImage}
+          />
+        </div>
+      )}
+      <Tooltip
+        position="bottom"
+        html={tooltipHtml}
+        offset={-10}
+        wrapperClassName="sender-to-recipient__tooltip-wrapper"
+        containerClassName="sender-to-recipient__tooltip-container"
+        onHidden={() => setAddressCopied(false)}
+      >
         <div className="sender-to-recipient__name">
           <span>{addressOnly ? `${t('to')}: ` : ''}</span>
-          {addressOnly ? recipientNickname || recipientEns || checksummedRecipientAddress : recipientNickname || recipientEns || recipientName || t('newContract')}
+          {addressOnly
+            ? recipientNickname || recipientEns || checksummedRecipientAddress
+            : recipientNickname ||
+              recipientEns ||
+              recipientName ||
+              t('newContract')}
         </div>
       </Tooltip>
-    </div>;
+    </div>
+  );
 }
 
 RecipientWithAddress.propTypes = {
@@ -118,23 +171,25 @@ RecipientWithAddress.propTypes = {
   recipientNickname: PropTypes.string,
   addressOnly: PropTypes.bool,
   assetImage: PropTypes.string,
-  onRecipientClick: PropTypes.func
+  onRecipientClick: PropTypes.func,
 };
 
-function Arrow({
-  variant
-}) {
-  return variant === DEFAULT_VARIANT ? <div className="sender-to-recipient__arrow-container">
+function Arrow({ variant }) {
+  return variant === DEFAULT_VARIANT ? (
+    <div className="sender-to-recipient__arrow-container">
       <div className="sender-to-recipient__arrow-circle">
         <img height="10" width="10" src="./images/arrow-right.svg" alt="" />
       </div>
-    </div> : <div className="sender-to-recipient__arrow-container">
+    </div>
+  ) : (
+    <div className="sender-to-recipient__arrow-container">
       <img height="20" src="./images/caret-right.svg" alt="" />
-    </div>;
+    </div>
+  );
 }
 
 Arrow.propTypes = {
-  variant: PropTypes.oneOf([DEFAULT_VARIANT, CARDS_VARIANT, FLAT_VARIANT])
+  variant: PropTypes.oneOf([DEFAULT_VARIANT, CARDS_VARIANT, FLAT_VARIANT]),
 };
 export default function SenderToRecipient({
   senderAddress,
@@ -148,23 +203,44 @@ export default function SenderToRecipient({
   onSenderClick,
   recipientAddress,
   variant,
-  warnUserOnAccountMismatch
+  warnUserOnAccountMismatch,
 }) {
   const t = useI18nContext();
   const checksummedSenderAddress = toChecksumHexAddress(senderAddress);
   const checksummedRecipientAddress = toChecksumHexAddress(recipientAddress);
-  return <div className={classnames('sender-to-recipient', variantHash[variant])}>
-      <SenderAddress checksummedSenderAddress={checksummedSenderAddress} addressOnly={addressOnly} senderName={senderName} onSenderClick={onSenderClick} senderAddress={senderAddress} warnUserOnAccountMismatch={warnUserOnAccountMismatch} />
+  return (
+    <div className={classnames('sender-to-recipient', variantHash[variant])}>
+      <SenderAddress
+        checksummedSenderAddress={checksummedSenderAddress}
+        addressOnly={addressOnly}
+        senderName={senderName}
+        onSenderClick={onSenderClick}
+        senderAddress={senderAddress}
+        warnUserOnAccountMismatch={warnUserOnAccountMismatch}
+      />
       <Arrow variant={variant} />
-      {recipientAddress ? <RecipientWithAddress assetImage={assetImage} checksummedRecipientAddress={checksummedRecipientAddress} onRecipientClick={onRecipientClick} addressOnly={addressOnly} recipientNickname={recipientNickname} recipientEns={recipientEns} recipientName={recipientName} /> : <div className="sender-to-recipient__party sender-to-recipient__party--recipient">
+      {recipientAddress ? (
+        <RecipientWithAddress
+          assetImage={assetImage}
+          checksummedRecipientAddress={checksummedRecipientAddress}
+          onRecipientClick={onRecipientClick}
+          addressOnly={addressOnly}
+          recipientNickname={recipientNickname}
+          recipientEns={recipientEns}
+          recipientName={recipientName}
+        />
+      ) : (
+        <div className="sender-to-recipient__party sender-to-recipient__party--recipient">
           {!addressOnly && <i className="fa fa-file-text-o" />}
           <div className="sender-to-recipient__name">{t('newContract')}</div>
-        </div>}
-    </div>;
+        </div>
+      )}
+    </div>
+  );
 }
 SenderToRecipient.defaultProps = {
   variant: DEFAULT_VARIANT,
-  warnUserOnAccountMismatch: true
+  warnUserOnAccountMismatch: true,
 };
 SenderToRecipient.propTypes = {
   senderName: PropTypes.string,
@@ -178,5 +254,5 @@ SenderToRecipient.propTypes = {
   assetImage: PropTypes.string,
   onRecipientClick: PropTypes.func,
   onSenderClick: PropTypes.func,
-  warnUserOnAccountMismatch: PropTypes.bool
+  warnUserOnAccountMismatch: PropTypes.bool,
 };

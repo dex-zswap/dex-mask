@@ -5,7 +5,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(SendHexDataRow);
 
 function mapStateToProps(state) {
   return {
-    data: getSendHexData(state)
+    data: getSendHexData(state),
   };
 }
 
@@ -13,7 +13,6 @@ function mapDispatchToProps(dispatch) {
   return {
     updateSendHexData(data) {
       return dispatch(updateSendHexData(data));
-    }
-
+    },
   };
 }

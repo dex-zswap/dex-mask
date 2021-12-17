@@ -3,7 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import PageContainerHeader from '@c/ui/page-container/page-container-header';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
-import { ASSET_TYPES, getSendAsset, getSendStage, resetSendState, SEND_STAGES } from '@reducer/send';
+import {
+  ASSET_TYPES,
+  getSendAsset,
+  getSendStage,
+  resetSendState,
+  SEND_STAGES,
+} from '@reducer/send';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 export default function SendHeader() {
   const history = useHistory();
@@ -30,5 +36,12 @@ export default function SendHeader() {
     return null;
   }
 
-  return <PageContainerHeader className="send__header" onClose={onClose} title={title} headerCloseText={t('cancel')} />;
+  return (
+    <PageContainerHeader
+      className="send__header"
+      onClose={onClose}
+      title={title}
+      headerCloseText={t('cancel')}
+    />
+  );
 }

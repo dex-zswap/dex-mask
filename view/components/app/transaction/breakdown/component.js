@@ -8,7 +8,7 @@ import { ETH, GWEI, PRIMARY, SECONDARY } from '@view/helpers/constants/common';
 import TransactionBreakdownRow from './transaction-breakdown-row';
 export default class TransactionBreakdown extends PureComponent {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     className: PropTypes.string,
@@ -24,16 +24,14 @@ export default class TransactionBreakdown extends PureComponent {
     baseFee: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     priorityFee: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     hexGasTotal: PropTypes.string,
-    isEIP1559Transaction: PropTypes.bool
+    isEIP1559Transaction: PropTypes.bool,
   };
   static defaultProps = {
-    showFiat: true
+    showFiat: true,
   };
 
   render() {
-    const {
-      t
-    } = this.context;
+    const { t } = this.context;
     const {
       gas,
       gasPrice,
@@ -48,42 +46,136 @@ export default class TransactionBreakdown extends PureComponent {
       baseFee,
       priorityFee,
       hexGasTotal,
-      isEIP1559Transaction
+      isEIP1559Transaction,
     } = this.props;
-    return <div className={classnames('transaction-breakdown', className)}>
+    return (
+      <div className={classnames('transaction-breakdown', className)}>
         <div className="transaction-breakdown__title">{t('transaction')}</div>
         <TransactionBreakdownRow title={t('nonce')}>
-          {typeof nonce === 'undefined' ? null : <HexToDecimal className="transaction-breakdown__value" value={nonce} />}
+          {typeof nonce === 'undefined' ? null : (
+            <HexToDecimal
+              className="transaction-breakdown__value"
+              value={nonce}
+            />
+          )}
         </TransactionBreakdownRow>
-        <TransactionBreakdownRow title={isTokenApprove ? t('spendLimitAmount') : t('amount')}>
+        <TransactionBreakdownRow
+          title={isTokenApprove ? t('spendLimitAmount') : t('amount')}
+        >
           <span className="transaction-breakdown__value">
             {primaryCurrency}
           </span>
         </TransactionBreakdownRow>
-        <TransactionBreakdownRow title={`${t('gasLimit')} (${t('units')})`} className="transaction-breakdown__row-title">
-          {typeof gas === 'undefined' ? '?' : <HexToDecimal className="transaction-breakdown__value" value={gas} />}
+        <TransactionBreakdownRow
+          title={`${t('gasLimit')} (${t('units')})`}
+          className="transaction-breakdown__row-title"
+        >
+          {typeof gas === 'undefined' ? (
+            '?'
+          ) : (
+            <HexToDecimal
+              className="transaction-breakdown__value"
+              value={gas}
+            />
+          )}
         </TransactionBreakdownRow>
-        {typeof gasUsed === 'string' && <TransactionBreakdownRow title={`${t('gasUsed')} (${t('units')})`} className="transaction-breakdown__row-title">
-            <HexToDecimal className="transaction-breakdown__value" value={gasUsed} />
-          </TransactionBreakdownRow>}
-        {isEIP1559Transaction && <TransactionBreakdownRow title={t('transactionHistoryBaseFee')}>
-            {typeof baseFee === 'undefined' ? '?' : <CurrencyDisplay className="transaction-breakdown__value" data-testid="transaction-breakdown__base-fee" currency={nativeCurrency} denomination={GWEI} value={baseFee} numberOfDecimals={10} hideLabel />}
-          </TransactionBreakdownRow>}
-        {isEIP1559Transaction && <TransactionBreakdownRow title={t('transactionHistoryPriorityFee')}>
-            {typeof priorityFee === 'undefined' ? '?' : <CurrencyDisplay className="transaction-breakdown__value" data-testid="transaction-breakdown__priority-fee" currency={nativeCurrency} denomination={GWEI} value={priorityFee} numberOfDecimals={10} hideLabel />}
-          </TransactionBreakdownRow>}
-        {!isEIP1559Transaction && <TransactionBreakdownRow title={t('advancedGasPriceTitle')}>
-            {typeof gasPrice === 'undefined' ? '?' : <CurrencyDisplay className="transaction-breakdown__value" data-testid="transaction-breakdown__gas-price" currency={nativeCurrency} denomination={GWEI} value={gasPrice} numberOfDecimals={9} hideLabel />}
-          </TransactionBreakdownRow>}
-        {isEIP1559Transaction && <TransactionBreakdownRow title={t('transactionHistoryTotalGasFee')}>
-            <UserPreferencedCurrencyDisplay className="transaction-breakdown__value" data-testid="transaction-breakdown__effective-gas-price" currency={nativeCurrency} denomination={ETH} numberOfDecimals={6} value={hexGasTotal} type={PRIMARY} />
-            {showFiat && <UserPreferencedCurrencyDisplay className="transaction-breakdown__value" type={SECONDARY} value={hexGasTotal} />}
-          </TransactionBreakdownRow>}
+        {typeof gasUsed === 'string' && (
+          <TransactionBreakdownRow
+            title={`${t('gasUsed')} (${t('units')})`}
+            className="transaction-breakdown__row-title"
+          >
+            <HexToDecimal
+              className="transaction-breakdown__value"
+              value={gasUsed}
+            />
+          </TransactionBreakdownRow>
+        )}
+        {isEIP1559Transaction && (
+          <TransactionBreakdownRow title={t('transactionHistoryBaseFee')}>
+            {typeof baseFee === 'undefined' ? (
+              '?'
+            ) : (
+              <CurrencyDisplay
+                className="transaction-breakdown__value"
+                data-testid="transaction-breakdown__base-fee"
+                currency={nativeCurrency}
+                denomination={GWEI}
+                value={baseFee}
+                numberOfDecimals={10}
+                hideLabel
+              />
+            )}
+          </TransactionBreakdownRow>
+        )}
+        {isEIP1559Transaction && (
+          <TransactionBreakdownRow title={t('transactionHistoryPriorityFee')}>
+            {typeof priorityFee === 'undefined' ? (
+              '?'
+            ) : (
+              <CurrencyDisplay
+                className="transaction-breakdown__value"
+                data-testid="transaction-breakdown__priority-fee"
+                currency={nativeCurrency}
+                denomination={GWEI}
+                value={priorityFee}
+                numberOfDecimals={10}
+                hideLabel
+              />
+            )}
+          </TransactionBreakdownRow>
+        )}
+        {!isEIP1559Transaction && (
+          <TransactionBreakdownRow title={t('advancedGasPriceTitle')}>
+            {typeof gasPrice === 'undefined' ? (
+              '?'
+            ) : (
+              <CurrencyDisplay
+                className="transaction-breakdown__value"
+                data-testid="transaction-breakdown__gas-price"
+                currency={nativeCurrency}
+                denomination={GWEI}
+                value={gasPrice}
+                numberOfDecimals={9}
+                hideLabel
+              />
+            )}
+          </TransactionBreakdownRow>
+        )}
+        {isEIP1559Transaction && (
+          <TransactionBreakdownRow title={t('transactionHistoryTotalGasFee')}>
+            <UserPreferencedCurrencyDisplay
+              className="transaction-breakdown__value"
+              data-testid="transaction-breakdown__effective-gas-price"
+              currency={nativeCurrency}
+              denomination={ETH}
+              numberOfDecimals={6}
+              value={hexGasTotal}
+              type={PRIMARY}
+            />
+            {showFiat && (
+              <UserPreferencedCurrencyDisplay
+                className="transaction-breakdown__value"
+                type={SECONDARY}
+                value={hexGasTotal}
+              />
+            )}
+          </TransactionBreakdownRow>
+        )}
         <TransactionBreakdownRow title={t('total')}>
-          <UserPreferencedCurrencyDisplay className="transaction-breakdown__value transaction-breakdown__value--eth-total" type={PRIMARY} value={totalInHex} />
-          {showFiat && <UserPreferencedCurrencyDisplay className="transaction-breakdown__value" type={SECONDARY} value={totalInHex} />}
+          <UserPreferencedCurrencyDisplay
+            className="transaction-breakdown__value transaction-breakdown__value--eth-total"
+            type={PRIMARY}
+            value={totalInHex}
+          />
+          {showFiat && (
+            <UserPreferencedCurrencyDisplay
+              className="transaction-breakdown__value"
+              type={SECONDARY}
+              value={totalInHex}
+            />
+          )}
         </TransactionBreakdownRow>
-      </div>;
+      </div>
+    );
   }
-
 }

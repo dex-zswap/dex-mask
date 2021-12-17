@@ -6,11 +6,9 @@ export const GAS_FORM_ERRORS = {
   MAX_PRIORITY_FEE_HIGH_WARNING: 'editGasMaxPriorityFeeHigh',
   MAX_FEE_HIGH_WARNING: 'editGasMaxFeeHigh',
   MAX_FEE_IMBALANCE: 'editGasMaxFeeImbalance',
-  GAS_PRICE_TOO_LOW: 'editGasPriceTooLow'
+  GAS_PRICE_TOO_LOW: 'editGasPriceTooLow',
 };
-export function getGasFormErrorText(type, t, {
-  minimumGasLimit
-} = {}) {
+export function getGasFormErrorText(type, t, { minimumGasLimit } = {}) {
   switch (type) {
     case GAS_FORM_ERRORS.GAS_LIMIT_OUT_OF_BOUNDS:
       return t('editGasLimitOutOfBounds', [minimumGasLimit]);

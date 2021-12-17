@@ -1,14 +1,12 @@
 import { connect } from 'react-redux';
 import CreatePassword from './component';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
-    metamask: {
-      isInitialized
-    }
+    metamask: { isInitialized },
   } = state;
   return {
-    isInitialized
+    isInitialized,
   };
 };
 

@@ -9,14 +9,9 @@ import { SECOND } from '@shared/constants/time';
  */
 
 export function useShouldShowSpeedUp(transactionGroup, isEarliestNonce) {
-  const {
-    transactions,
-    hasRetried
-  } = transactionGroup;
+  const { transactions, hasRetried } = transactionGroup;
   const [earliestTransaction = {}] = transactions;
-  const {
-    submittedTime
-  } = earliestTransaction;
+  const { submittedTime } = earliestTransaction;
   const [speedUpEnabled, setSpeedUpEnabled] = useState(() => {
     return Date.now() - submittedTime > 5000 && isEarliestNonce && !hasRetried;
   });
@@ -41,7 +36,6 @@ export function useShouldShowSpeedUp(transactionGroup, isEarliestNonce) {
       }
     } // Anytime the effect is re-ran, make sure to remove a previously set timeout
     // so as to avoid multiple timers potentially overlapping
-
 
     return () => {
       if (timeoutId) {

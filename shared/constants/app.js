@@ -40,5 +40,4 @@ export const POLLING_TOKEN_ENVIRONMENT_TYPES = {
   [ENVIRONMENT_TYPE_FULLSCREEN]: 'fullScreenGasPollTokens',
 };
 
-
 export const MAX_UINT_256 = ethers.constants.MaxUint256.toHexString();

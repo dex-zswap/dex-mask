@@ -3,35 +3,30 @@ import MetaMaskLogo from '@metamask/logo';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 
-const directionTargetGenerator = ({
-  top,
-  left,
-  height,
-  width
-}) => {
+const directionTargetGenerator = ({ top, left, height, width }) => {
   const horizontalMiddle = left + width / 2;
   const verticalMiddle = top + height / 2;
   return {
     up: {
       x: horizontalMiddle,
-      y: top - height
+      y: top - height,
     },
     down: {
       x: horizontalMiddle,
-      y: top + height * 2
+      y: top + height * 2,
     },
     left: {
       x: left - width,
-      y: verticalMiddle
+      y: verticalMiddle,
     },
     right: {
       x: left + width * 2,
-      y: verticalMiddle
+      y: verticalMiddle,
     },
     middle: {
       x: horizontalMiddle,
-      y: verticalMiddle
-    }
+      y: verticalMiddle,
+    },
   };
 };
 
@@ -42,31 +37,30 @@ export default class Mascot extends Component {
     height: PropTypes.string,
     followMouse: PropTypes.bool,
     lookAtTarget: PropTypes.object,
-    lookAtDirection: PropTypes.oneOf(['up', 'down', 'left', 'right', 'middle'])
+    lookAtDirection: PropTypes.oneOf(['up', 'down', 'left', 'right', 'middle']),
   };
   static defaultProps = {
     width: '200',
     height: '200',
     followMouse: true,
     lookAtTarget: {},
-    lookAtDirection: null
+    lookAtDirection: null,
   };
 
   constructor(props) {
     super(props);
-    const {
-      width,
-      height,
-      followMouse
-    } = props;
+    const { width, height, followMouse } = props;
     this.logo = MetaMaskLogo({
       followMouse,
       pxNotRatio: true,
       width,
-      height
+      height,
     });
     this.mascotContainer = createRef();
-    this.refollowMouse = debounce(this.logo.setFollowMouse.bind(this.logo, true), 1000);
+    this.refollowMouse = debounce(
+      this.logo.setFollowMouse.bind(this.logo, true),
+      1000,
+    );
     this.unfollowMouse = this.logo.setFollowMouse.bind(this.logo, false);
   }
 
@@ -78,7 +72,10 @@ export default class Mascot extends Component {
 
     this.animations = this.props.animationEventEmitter;
     this.animations.on('point', this.lookAt.bind(this));
-    this.animations.on('setFollowMouse', this.logo.setFollowMouse.bind(this.logo));
+    this.animations.on(
+      'setFollowMouse',
+      this.logo.setFollowMouse.bind(this.logo),
+    );
   }
 
   lookAt(target) {
@@ -89,11 +86,10 @@ export default class Mascot extends Component {
 
   componentDidMount() {
     this.mascotContainer.current.appendChild(this.logo.container);
-    this.directionTargetMap = directionTargetGenerator(this.mascotContainer.current.getBoundingClientRect());
-    const {
-      lookAtTarget,
-      lookAtDirection
-    } = this.props;
+    this.directionTargetMap = directionTargetGenerator(
+      this.mascotContainer.current.getBoundingClientRect(),
+    );
+    const { lookAtTarget, lookAtDirection } = this.props;
 
     if (lookAtTarget?.x && lookAtTarget?.y) {
       this.logo.lookAtAndRender(lookAtTarget);
@@ -106,17 +102,16 @@ export default class Mascot extends Component {
     const {
       lookAtTarget: prevTarget = {},
       lookAtDirection: prevDirection = null,
-      followMouse: prevFollowMouse
+      followMouse: prevFollowMouse,
     } = prevProps;
-    const {
-      lookAtTarget = {},
-      followMouse,
-      lookAtDirection
-    } = this.props;
+    const { lookAtTarget = {}, followMouse, lookAtDirection } = this.props;
 
     if (lookAtDirection && prevDirection !== lookAtDirection) {
       this.logo.lookAtAndRender(this.directionTargetMap[lookAtDirection]);
-    } else if (lookAtTarget?.x !== prevTarget?.x || lookAtTarget?.y !== prevTarget?.y) {
+    } else if (
+      lookAtTarget?.x !== prevTarget?.x ||
+      lookAtTarget?.y !== prevTarget?.y
+    ) {
       this.logo.lookAtAndRender(lookAtTarget);
     }
 
@@ -138,9 +133,13 @@ export default class Mascot extends Component {
     // the event emitter is on `this.props`
     // and we dont get that until render
     this.handleAnimationEvents();
-    return <div ref={this.mascotContainer} style={{
-      zIndex: 0
-    }} />;
+    return (
+      <div
+        ref={this.mascotContainer}
+        style={{
+          zIndex: 0,
+        }}
+      />
+    );
   }
-
 }

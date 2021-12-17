@@ -3,7 +3,11 @@ import { ethers } from 'ethers';
 import abi from 'human-standard-token-abi';
 import log from 'loglevel';
 import { addHexPrefix } from '@app/scripts/lib/util';
-import { TRANSACTION_TYPES, TRANSACTION_GROUP_STATUSES, TRANSACTION_STATUSES } from '@shared/constants/transaction';
+import {
+  TRANSACTION_TYPES,
+  TRANSACTION_GROUP_STATUSES,
+  TRANSACTION_STATUSES,
+} from '@shared/constants/transaction';
 import { addCurrencies } from '@shared/modules/conversion.utils';
 import fetchWithCache from './fetch-with-cache';
 const hstInterface = new ethers.utils.Interface(abi);
@@ -27,7 +31,7 @@ const hstInterface = new ethers.utils.Interface(abi);
 export function getTokenData(data) {
   try {
     return hstInterface.parseTransaction({
-      data
+      data,
     });
   } catch (error) {
     log.debug('Failed to parse transaction data.', error, data);
@@ -36,12 +40,15 @@ export function getTokenData(data) {
 }
 
 async function getMethodFrom4Byte(fourBytePrefix) {
-  const fourByteResponse = await fetchWithCache(`https://www.4byte.directory/api/v1/signatures/?hex_signature=${fourBytePrefix}`, {
-    referrerPolicy: 'no-referrer-when-downgrade',
-    body: null,
-    method: 'GET',
-    mode: 'cors'
-  });
+  const fourByteResponse = await fetchWithCache(
+    `https://www.4byte.directory/api/v1/signatures/?hex_signature=${fourBytePrefix}`,
+    {
+      referrerPolicy: 'no-referrer-when-downgrade',
+      body: null,
+      method: 'GET',
+      mode: 'cors',
+    },
+  );
 
   if (fourByteResponse.count === 1) {
     return fourByteResponse.results[0].text_signature;
@@ -59,14 +66,14 @@ let registry;
 
 export async function getMethodDataAsync(fourBytePrefix) {
   try {
-    const fourByteSig = getMethodFrom4Byte(fourBytePrefix).catch(e => {
+    const fourByteSig = getMethodFrom4Byte(fourBytePrefix).catch((e) => {
       log.error(e);
       return null;
     });
 
     if (!registry) {
       registry = new MethodRegistry({
-        provider: global.ethereumProvider
+        provider: global.ethereumProvider,
       });
     }
 
@@ -83,7 +90,7 @@ export async function getMethodDataAsync(fourBytePrefix) {
     const parsedResult = registry.parse(sig);
     return {
       name: parsedResult.name,
-      params: parsedResult.args
+      params: parsedResult.args,
     };
   } catch (error) {
     log.error(error);
@@ -110,20 +117,22 @@ export function getFourBytePrefix(data = '') {
  */
 
 export function isTokenMethodAction(type) {
-  return [TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER, TRANSACTION_TYPES.TOKEN_METHOD_APPROVE, TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM].includes(type);
+  return [
+    TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER,
+    TRANSACTION_TYPES.TOKEN_METHOD_APPROVE,
+    TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM,
+  ].includes(type);
 }
-export function getLatestSubmittedTxWithNonce(transactions = [], nonce = '0x0') {
+export function getLatestSubmittedTxWithNonce(
+  transactions = [],
+  nonce = '0x0',
+) {
   if (!transactions.length) {
     return {};
   }
 
   return transactions.reduce((acc, current) => {
-    const {
-      submittedTime,
-      txParams: {
-        nonce: currentNonce
-      } = {}
-    } = current;
+    const { submittedTime, txParams: { nonce: currentNonce } = {} } = current;
 
     if (currentNonce === nonce) {
       if (!acc.submittedTime) {
@@ -147,7 +156,7 @@ export function sumHexes(...args) {
     return addCurrencies(acc, hexAmount, {
       toNumericBase: 'hex',
       aBase: 16,
-      bBase: 16
+      bBase: 16,
     });
   });
   return addHexPrefix(total);
@@ -162,18 +171,19 @@ export function sumHexes(...args) {
 
 export function getStatusKey(transaction) {
   const {
-    txReceipt: {
-      status: receiptStatus
-    } = {},
+    txReceipt: { status: receiptStatus } = {},
     type,
-    status
+    status,
   } = transaction; // There was an on-chain failure
 
   if (receiptStatus === '0x0') {
     return TRANSACTION_STATUSES.FAILED;
   }
 
-  if (status === TRANSACTION_STATUSES.CONFIRMED && type === TRANSACTION_TYPES.CANCEL) {
+  if (
+    status === TRANSACTION_STATUSES.CONFIRMED &&
+    type === TRANSACTION_TYPES.CANCEL
+  ) {
     return TRANSACTION_GROUP_STATUSES.CANCELLED;
   }
 
@@ -190,49 +200,40 @@ export function getStatusKey(transaction) {
 
 export function getTransactionTypeTitle(t, type) {
   switch (type) {
-    case TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER:
-      {
-        return t('transfer');
-      }
+    case TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER: {
+      return t('transfer');
+    }
 
-    case TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM:
-      {
-        return t('transferFrom');
-      }
+    case TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM: {
+      return t('transferFrom');
+    }
 
-    case TRANSACTION_TYPES.TOKEN_METHOD_APPROVE:
-      {
-        return t('approve');
-      }
+    case TRANSACTION_TYPES.TOKEN_METHOD_APPROVE: {
+      return t('approve');
+    }
 
-    case TRANSACTION_TYPES.SENT_ETHER:
-      {
-        return t('sentEther');
-      }
+    case TRANSACTION_TYPES.SENT_ETHER: {
+      return t('sentEther');
+    }
 
-    case TRANSACTION_TYPES.CONTRACT_INTERACTION:
-      {
-        return t('contractInteraction');
-      }
+    case TRANSACTION_TYPES.CONTRACT_INTERACTION: {
+      return t('contractInteraction');
+    }
 
-    case TRANSACTION_TYPES.DEPLOY_CONTRACT:
-      {
-        return t('contractDeployment');
-      }
+    case TRANSACTION_TYPES.DEPLOY_CONTRACT: {
+      return t('contractDeployment');
+    }
 
-    case TRANSACTION_TYPES.SWAP:
-      {
-        return t('swap');
-      }
+    case TRANSACTION_TYPES.SWAP: {
+      return t('swap');
+    }
 
-    case TRANSACTION_TYPES.SWAP_APPROVAL:
-      {
-        return t('swapApproval');
-      }
+    case TRANSACTION_TYPES.SWAP_APPROVAL: {
+      return t('swapApproval');
+    }
 
-    default:
-      {
-        throw new Error(`Unrecognized transaction type: ${type}`);
-      }
+    default: {
+      throw new Error(`Unrecognized transaction type: ${type}`);
+    }
   }
 }

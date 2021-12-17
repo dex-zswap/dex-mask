@@ -1,21 +1,27 @@
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import withModalProps from '@view/helpers/higher-order-components/with-modal-props';
-import { getCurrentChainId, getRpcPrefsForCurrentProvider } from '@view/selectors';
+import {
+  getCurrentChainId,
+  getRpcPrefsForCurrentProvider,
+} from '@view/selectors';
 import { removeAccount } from '@view/store/actions';
 import ConfirmRemoveAccount from './component';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     chainId: getCurrentChainId(state),
-    rpcPrefs: getRpcPrefsForCurrentProvider(state)
+    rpcPrefs: getRpcPrefsForCurrentProvider(state),
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    removeAccount: address => dispatch(removeAccount(address))
+    removeAccount: (address) => dispatch(removeAccount(address)),
   };
 };
 
-export default compose(withModalProps, connect(mapStateToProps, mapDispatchToProps))(ConfirmRemoveAccount);
+export default compose(
+  withModalProps,
+  connect(mapStateToProps, mapDispatchToProps),
+)(ConfirmRemoveAccount);

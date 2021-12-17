@@ -17,31 +17,64 @@ const Popover = ({
   showArrow,
   CustomBackground,
   popoverRef,
-  centerTitle
+  centerTitle,
 }) => {
   const t = useI18nContext();
-  return <div className="popover-container">
-      {CustomBackground ? <CustomBackground onClose={onClose} /> : <div className="popover-bg" onClick={onClose} />}
-      <section className={classnames('popover-wrap', className)} ref={popoverRef}>
+  return (
+    <div className="popover-container">
+      {CustomBackground ? (
+        <CustomBackground onClose={onClose} />
+      ) : (
+        <div className="popover-bg" onClick={onClose} />
+      )}
+      <section
+        className={classnames('popover-wrap', className)}
+        ref={popoverRef}
+      >
         {showArrow ? <div className="popover-arrow" /> : null}
         <header className="popover-header">
-          <div className={classnames('popover-header__title', centerTitle ? 'center' : '')}>
+          <div
+            className={classnames(
+              'popover-header__title',
+              centerTitle ? 'center' : '',
+            )}
+          >
             <h2 title={title}>
-              {onBack ? <button className="fas fa-chevron-left popover-header__button" title={t('back')} onClick={onBack} /> : null}
+              {onBack ? (
+                <button
+                  className="fas fa-chevron-left popover-header__button"
+                  title={t('back')}
+                  onClick={onBack}
+                />
+              ) : null}
               {title}
             </h2>
-            {onClose ? <button className="fas fa-times popover-header__button" title={t('close')} data-testid="popover-close" onClick={onClose} /> : null}
+            {onClose ? (
+              <button
+                className="fas fa-times popover-header__button"
+                title={t('close')}
+                data-testid="popover-close"
+                onClick={onClose}
+              />
+            ) : null}
           </div>
-          {subtitle ? <p className="popover-header__subtitle">{subtitle}</p> : null}
+          {subtitle ? (
+            <p className="popover-header__subtitle">{subtitle}</p>
+          ) : null}
         </header>
-        {children ? <div className={classnames('popover-content', contentClassName)}>
+        {children ? (
+          <div className={classnames('popover-content', contentClassName)}>
             {children}
-          </div> : null}
-        {footer ? <footer className={classnames('popover-footer', footerClassName)}>
+          </div>
+        ) : null}
+        {footer ? (
+          <footer className={classnames('popover-footer', footerClassName)}>
             {footer}
-          </footer> : null}
+          </footer>
+        ) : null}
       </section>
-    </div>;
+    </div>
+  );
 };
 
 Popover.propTypes = {
@@ -57,9 +90,9 @@ Popover.propTypes = {
   className: PropTypes.string,
   showArrow: PropTypes.bool,
   popoverRef: PropTypes.shape({
-    current: PropTypes.instanceOf(window.Element)
+    current: PropTypes.instanceOf(window.Element),
   }),
-  centerTitle: PropTypes.bool
+  centerTitle: PropTypes.bool,
 };
 export default class Item extends PureComponent {
   static propTypes = Popover.propTypes;
@@ -84,7 +117,8 @@ export default class Item extends PureComponent {
 
   render() {
     const children = <Popover {...this.props} />;
-    return this.rootNode ? ReactDOM.createPortal(children, this.instanceNode) : children;
+    return this.rootNode
+      ? ReactDOM.createPortal(children, this.instanceNode)
+      : children;
   }
-
 }

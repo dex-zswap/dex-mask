@@ -13,42 +13,59 @@ export default function RecipientGroup({
   items,
   onSelect,
   selectedAddress,
-  diameter
+  diameter,
 }) {
   if (!items || !items.length) {
     return null;
   }
 
-  return <div className="send__select-recipient-wrapper__group">
-      {label && <div className="send__select-recipient-wrapper__group-label">
+  return (
+    <div className="send__select-recipient-wrapper__group">
+      {label && (
+        <div className="send__select-recipient-wrapper__group-label">
           {label}
-        </div>}
-      {items.map(({
-      address,
-      name
-    }) => <div key={address} onClick={() => onSelect(address, name)} className={classnames({
-      'send__select-recipient-wrapper__group-item': !addressesEqual(address, selectedAddress),
-      'send__select-recipient-wrapper__group-item--selected': addressesEqual(address, selectedAddress)
-    })}>
+        </div>
+      )}
+      {items.map(({ address, name }) => (
+        <div
+          key={address}
+          onClick={() => onSelect(address, name)}
+          className={classnames({
+            'send__select-recipient-wrapper__group-item': !addressesEqual(
+              address,
+              selectedAddress,
+            ),
+            'send__select-recipient-wrapper__group-item--selected': addressesEqual(
+              address,
+              selectedAddress,
+            ),
+          })}
+        >
           <Identicon address={address} diameter={diameter || 28} />
           <div className="send__select-recipient-wrapper__group-item__content">
             <div className="send__select-recipient-wrapper__group-item__title">
               {name || ellipsify(address)}
             </div>
-            {name && <div className="send__select-recipient-wrapper__group-item__subtitle">
+            {name && (
+              <div className="send__select-recipient-wrapper__group-item__subtitle">
                 {ellipsify(address)}
-              </div>}
+              </div>
+            )}
           </div>
-        </div>)}
-    </div>;
+        </div>
+      ))}
+    </div>
+  );
 }
 RecipientGroup.propTypes = {
   label: PropTypes.string,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    address: PropTypes.string.isRequired,
-    name: PropTypes.string
-  })),
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      address: PropTypes.string.isRequired,
+      name: PropTypes.string,
+    }),
+  ),
   onSelect: PropTypes.func.isRequired,
   selectedAddress: PropTypes.string,
-  diameter: PropTypes.number
+  diameter: PropTypes.number,
 };

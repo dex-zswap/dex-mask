@@ -5,7 +5,12 @@ import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-dis
 import ConfirmTransactionBase from '@pages/confirm-transaction-base';
 import { I18nContext } from '@view/contexts/i18n';
 import { ETH, PRIMARY } from '@view/helpers/constants/common';
-import { addFiat, convertTokenToFiat, formatCurrency, roundExponential } from '@view/helpers/utils/confirm-tx.util';
+import {
+  addFiat,
+  convertTokenToFiat,
+  formatCurrency,
+  roundExponential,
+} from '@view/helpers/utils/confirm-tx.util';
 import { getWeiHexFromDecimalValue } from '@view/helpers/utils/conversions.util';
 export default function ConfirmTokenTransactionBase({
   toAddress,
@@ -19,7 +24,7 @@ export default function ConfirmTokenTransactionBase({
   conversionRate,
   currentCurrency,
   nativeCurrency,
-  onEdit
+  onEdit,
 }) {
   const t = useContext(I18nContext);
   const hexWeiValue = useMemo(() => {
@@ -27,11 +32,13 @@ export default function ConfirmTokenTransactionBase({
       return '0';
     }
 
-    const decimalEthValue = new BigNumber(tokenAmount).times(new BigNumber(contractExchangeRate)).toFixed();
+    const decimalEthValue = new BigNumber(tokenAmount)
+      .times(new BigNumber(contractExchangeRate))
+      .toFixed();
     return getWeiHexFromDecimalValue({
       value: decimalEthValue,
       fromCurrency: ETH,
-      fromDenomination: ETH
+      fromDenomination: ETH,
     });
   }, [tokenAmount, contractExchangeRate]);
   const secondaryTotalTextOverride = useMemo(() => {
@@ -43,15 +50,46 @@ export default function ConfirmTokenTransactionBase({
       value: tokenAmount,
       toCurrency: currentCurrency,
       conversionRate,
-      contractExchangeRate
+      contractExchangeRate,
     });
     const fiatTotal = addFiat(fiatTransactionAmount, fiatTransactionTotal);
     const roundedFiatTotal = roundExponential(fiatTotal);
     const currency = formatCurrency(roundedFiatTotal, currentCurrency);
-    return '$0.00' === currency ? '≈ $0' : '0.00' === currency ? '≈ 0' : '≈ ' + currency;
-  }, [currentCurrency, conversionRate, contractExchangeRate, fiatTransactionTotal, tokenAmount]);
+    return '$0.00' === currency
+      ? '≈ $0'
+      : '0.00' === currency
+      ? '≈ 0'
+      : '≈ ' + currency;
+  }, [
+    currentCurrency,
+    conversionRate,
+    contractExchangeRate,
+    fiatTransactionTotal,
+    tokenAmount,
+  ]);
   const tokensText = `${tokenAmount} ${tokenSymbol}`;
-  return <ConfirmTransactionBase toAddress={toAddress} onEdit={onEdit} identiconAddress={tokenAddress} title={tokensText} subtitleComponent={contractExchangeRate === undefined ? <span>{t('noConversionRateAvailable')}</span> : <UserPreferencedCurrencyDisplay value={hexWeiValue} type={PRIMARY} hideLabel />} primaryTotalTextOverride={`${tokensText} + ${ethTransactionTotal} ${nativeCurrency}`} primaryTotalTextOverrideMaxAmount={`${tokensText} + ${ethTransactionTotalMaxAmount} ${nativeCurrency}`} secondaryTotalTextOverride={secondaryTotalTextOverride} />;
+  return (
+    <ConfirmTransactionBase
+      toAddress={toAddress}
+      onEdit={onEdit}
+      identiconAddress={tokenAddress}
+      title={tokensText}
+      subtitleComponent={
+        contractExchangeRate === undefined ? (
+          <span>{t('noConversionRateAvailable')}</span>
+        ) : (
+          <UserPreferencedCurrencyDisplay
+            value={hexWeiValue}
+            type={PRIMARY}
+            hideLabel
+          />
+        )
+      }
+      primaryTotalTextOverride={`${tokensText} + ${ethTransactionTotal} ${nativeCurrency}`}
+      primaryTotalTextOverrideMaxAmount={`${tokensText} + ${ethTransactionTotalMaxAmount} ${nativeCurrency}`}
+      secondaryTotalTextOverride={secondaryTotalTextOverride}
+    />
+  );
 }
 ConfirmTokenTransactionBase.propTypes = {
   tokenAddress: PropTypes.string,
@@ -65,5 +103,5 @@ ConfirmTokenTransactionBase.propTypes = {
   currentCurrency: PropTypes.string,
   onEdit: PropTypes.func,
   nativeCurrency: PropTypes.string,
-  ethTransactionTotalMaxAmount: PropTypes.string
+  ethTransactionTotalMaxAmount: PropTypes.string,
 };

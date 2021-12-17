@@ -4,8 +4,24 @@ import { compose } from 'redux';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
-import { isBurnAddress, isValidHexAddress } from '@shared/modules/hexstring-utils';
-import { ABOUT_US_ROUTE, ADVANCED_ROUTE, ALERTS_ROUTE, CONTACT_ADD_ROUTE, CONTACT_EDIT_ROUTE, CONTACT_LIST_ROUTE, CONTACT_VIEW_ROUTE, GENERAL_ROUTE, NETWORKS_FORM_ROUTE, NETWORKS_ROUTE, SECURITY_ROUTE, SETTINGS_ROUTE } from '@view/helpers/constants/routes';
+import {
+  isBurnAddress,
+  isValidHexAddress,
+} from '@shared/modules/hexstring-utils';
+import {
+  ABOUT_US_ROUTE,
+  ADVANCED_ROUTE,
+  ALERTS_ROUTE,
+  CONTACT_ADD_ROUTE,
+  CONTACT_EDIT_ROUTE,
+  CONTACT_LIST_ROUTE,
+  CONTACT_VIEW_ROUTE,
+  GENERAL_ROUTE,
+  NETWORKS_FORM_ROUTE,
+  NETWORKS_ROUTE,
+  SECURITY_ROUTE,
+  SETTINGS_ROUTE,
+} from '@view/helpers/constants/routes';
 import { getAddressBookEntryName } from '@view/selectors';
 import Settings from './component';
 const ROUTES_TO_I18N_KEYS = {
@@ -19,16 +35,12 @@ const ROUTES_TO_I18N_KEYS = {
   [CONTACT_VIEW_ROUTE]: 'viewContact',
   [NETWORKS_ROUTE]: 'networks',
   [NETWORKS_FORM_ROUTE]: 'networks',
-  [SECURITY_ROUTE]: 'securityAndPrivacy'
+  [SECURITY_ROUTE]: 'securityAndPrivacy',
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const {
-    location
-  } = ownProps;
-  const {
-    pathname
-  } = location;
+  const { location } = ownProps;
+  const { pathname } = location;
   const pathNameTail = pathname.match(/[^/]+$/u)[0];
   const isAddressEntryPage = pathNameTail.includes('0x');
   const isAddContactPage = Boolean(pathname.match(CONTACT_ADD_ROUTE));
@@ -48,9 +60,15 @@ const mapStateToProps = (state, ownProps) => {
 
   let initialBreadCrumbRoute;
   let initialBreadCrumbKey;
-  const addressName = getAddressBookEntryName(state, !isBurnAddress(pathNameTail) && isValidHexAddress(pathNameTail, {
-    mixedCaseUseChecksum: true
-  }) ? pathNameTail : '');
+  const addressName = getAddressBookEntryName(
+    state,
+    !isBurnAddress(pathNameTail) &&
+      isValidHexAddress(pathNameTail, {
+        mixedCaseUseChecksum: true,
+      })
+      ? pathNameTail
+      : '',
+  );
   return {
     isAddressEntryPage,
     backRoute,
@@ -60,7 +78,7 @@ const mapStateToProps = (state, ownProps) => {
     addressName,
     initialBreadCrumbRoute,
     initialBreadCrumbKey,
-    mostRecentOverviewPage: getMostRecentOverviewPage(state)
+    mostRecentOverviewPage: getMostRecentOverviewPage(state),
   };
 };
 

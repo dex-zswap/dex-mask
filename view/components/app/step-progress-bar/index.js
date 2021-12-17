@@ -8,35 +8,41 @@ const stages = {
   SEED_PHRASE_VIDEO: 2,
   SEED_PHRASE_REVIEW: 3,
   SEED_PHRASE_CONFIRM: 4,
-  ONBOARDING_COMPLETE: 5
+  ONBOARDING_COMPLETE: 5,
 };
-export default function StepProgressBar({
-  stage = 'PASSWORD_CREATE'
-}) {
+export default function StepProgressBar({ stage = 'PASSWORD_CREATE' }) {
   const t = useI18nContext();
-  return <Box margin={4}>
+  return (
+    <Box margin={4}>
       <ul className="progressbar">
-        <li className={classnames({
-        active: stages[stage] >= 1,
-        complete: stages[stage] >= 1
-      })}>
+        <li
+          className={classnames({
+            active: stages[stage] >= 1,
+            complete: stages[stage] >= 1,
+          })}
+        >
           {t('createPassword')}
         </li>
-        <li className={classnames({
-        active: stages[stage] >= 2,
-        complete: stages[stage] >= 3
-      })}>
+        <li
+          className={classnames({
+            active: stages[stage] >= 2,
+            complete: stages[stage] >= 3,
+          })}
+        >
           {t('secureWallet')}
         </li>
-        <li className={classnames({
-        active: stages[stage] >= 4,
-        complete: stages[stage] >= 5
-      })}>
+        <li
+          className={classnames({
+            active: stages[stage] >= 4,
+            complete: stages[stage] >= 5,
+          })}
+        >
           {t('confirmSeedPhrase')}
         </li>
       </ul>
-    </Box>;
+    </Box>
+  );
 }
 StepProgressBar.propTypes = {
-  stage: PropTypes.string
+  stage: PropTypes.string,
 };

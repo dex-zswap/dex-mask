@@ -2,11 +2,15 @@ import { MINUTE, SECOND } from '@shared/constants/time';
 import getFetchWithTimeout from '@shared/modules/fetch-with-timeout';
 import { getStorageItem, setStorageItem } from './storage-helpers';
 
-const fetchWithCache = async (url, fetchOptions = {}, {
-  cacheRefreshTime = MINUTE * 6,
-  timeout = SECOND * 30
-} = {}) => {
-  if (fetchOptions.body || fetchOptions.method && fetchOptions.method !== 'GET') {
+const fetchWithCache = async (
+  url,
+  fetchOptions = {},
+  { cacheRefreshTime = MINUTE * 6, timeout = SECOND * 30 } = {},
+) => {
+  if (
+    fetchOptions.body ||
+    (fetchOptions.method && fetchOptions.method !== 'GET')
+  ) {
     throw new Error('fetchWithCache only supports GET requests');
   }
 
@@ -14,16 +18,16 @@ const fetchWithCache = async (url, fetchOptions = {}, {
     fetchOptions.headers = new window.Headers(fetchOptions.headers);
   }
 
-  if (fetchOptions.headers.has('Content-Type') && fetchOptions.headers.get('Content-Type') !== 'application/json') {
+  if (
+    fetchOptions.headers.has('Content-Type') &&
+    fetchOptions.headers.get('Content-Type') !== 'application/json'
+  ) {
     throw new Error('fetchWithCache only supports JSON responses');
   }
 
   const currentTime = Date.now();
   const cacheKey = `cachedFetch:${url}`;
-  const {
-    cachedResponse,
-    cachedTime
-  } = (await getStorageItem(cacheKey)) || {};
+  const { cachedResponse, cachedTime } = (await getStorageItem(cacheKey)) || {};
 
   if (cachedResponse && currentTime - cachedTime < cacheRefreshTime) {
     return cachedResponse;
@@ -36,17 +40,19 @@ const fetchWithCache = async (url, fetchOptions = {}, {
     body: null,
     method: 'GET',
     mode: 'cors',
-    ...fetchOptions
+    ...fetchOptions,
   });
 
   if (!response.ok) {
-    throw new Error(`Fetch failed with status '${response.status}': '${response.statusText}'`);
+    throw new Error(
+      `Fetch failed with status '${response.status}': '${response.statusText}'`,
+    );
   }
 
   const responseJson = await response.json();
   const cacheEntry = {
     cachedResponse: responseJson,
-    cachedTime: currentTime
+    cachedTime: currentTime,
   };
   await setStorageItem(cacheKey, cacheEntry);
   return responseJson;

@@ -6,10 +6,12 @@ import CrossChainFrom from './from';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 export default function CrossChain() {
   const t = useI18nContext();
-  return <div className="cross-chain-component__wrapper">
+  return (
+    <div className="cross-chain-component__wrapper">
       <CrossChainFrom />
       <CrossChainSplitor />
       <CrossChainDest />
       <CrossChainButton />
-    </div>;
+    </div>
+  );
 }

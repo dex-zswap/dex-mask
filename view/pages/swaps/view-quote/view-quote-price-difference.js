@@ -5,7 +5,10 @@ import ActionableMessage from '@c/ui/actionable-message';
 import Box from '@c/ui/box';
 import Tooltip from '@c/ui/tooltip';
 import { I18nContext } from '@view/contexts/i18n';
-import { DISPLAY, JUSTIFY_CONTENT } from '@view/helpers/constants/design-system';
+import {
+  DISPLAY,
+  JUSTIFY_CONTENT,
+} from '@view/helpers/constants/design-system';
 export default function ViewQuotePriceDifference(props) {
   const {
     usedQuote,
@@ -16,7 +19,7 @@ export default function ViewQuotePriceDifference(props) {
     priceSlippageFromSource,
     priceSlippageFromDestination,
     priceDifferencePercentage,
-    priceSlippageUnknownFiatValue
+    priceSlippageUnknownFiatValue,
   } = props;
   const t = useContext(I18nContext);
   let priceDifferenceTitle = '';
@@ -31,40 +34,66 @@ export default function ViewQuotePriceDifference(props) {
     priceDifferenceClass = 'high';
     priceDifferenceAcknowledgementText = t('tooltipApproveButton');
   } else {
-    priceDifferenceTitle = t('swapPriceDifferenceTitle', [priceDifferencePercentage]);
-    priceDifferenceMessage = t('swapPriceDifference', [sourceTokenValue, // Number of source token to swap
-    usedQuote.sourceTokenInfo.symbol, // Source token symbol
-    priceSlippageFromSource, // Source tokens total value
-    destinationTokenValue, // Number of destination tokens in return
-    usedQuote.destinationTokenInfo.symbol, // Destination token symbol,
-    priceSlippageFromDestination // Destination tokens total value
+    priceDifferenceTitle = t('swapPriceDifferenceTitle', [
+      priceDifferencePercentage,
+    ]);
+    priceDifferenceMessage = t('swapPriceDifference', [
+      sourceTokenValue, // Number of source token to swap
+      usedQuote.sourceTokenInfo.symbol, // Source token symbol
+      priceSlippageFromSource, // Source tokens total value
+      destinationTokenValue, // Number of destination tokens in return
+      usedQuote.destinationTokenInfo.symbol, // Destination token symbol,
+      priceSlippageFromDestination, // Destination tokens total value
     ]);
     priceDifferenceClass = usedQuote.priceSlippage.bucket;
     priceDifferenceAcknowledgementText = t('tooltipApproveButton');
   }
 
-  return <div className={classnames('view-quote__price-difference-warning-wrapper', priceDifferenceClass)}>
-      <ActionableMessage message={<div className="view-quote__price-difference-warning-contents">
+  return (
+    <div
+      className={classnames(
+        'view-quote__price-difference-warning-wrapper',
+        priceDifferenceClass,
+      )}
+    >
+      <ActionableMessage
+        message={
+          <div className="view-quote__price-difference-warning-contents">
             <div className="view-quote__price-difference-warning-contents-text">
-              <Box display={DISPLAY.FLEX} justifyContent={JUSTIFY_CONTENT.SPACE_BETWEEN} paddingBottom={2}>
+              <Box
+                display={DISPLAY.FLEX}
+                justifyContent={JUSTIFY_CONTENT.SPACE_BETWEEN}
+                paddingBottom={2}
+              >
                 <div className="view-quote__price-difference-warning-contents-title">
                   {priceDifferenceTitle}
                 </div>
-                <Tooltip position="bottom" theme="white" title={t('swapPriceImpactTooltip')}>
+                <Tooltip
+                  position="bottom"
+                  theme="white"
+                  title={t('swapPriceImpactTooltip')}
+                >
                   <i className="fa fa-info-circle" />
                 </Tooltip>
               </Box>
               {priceDifferenceMessage}
-              {!acknowledged && <div className="view-quote__price-difference-warning-contents-actions">
-                  <button onClick={() => {
-            onAcknowledgementClick();
-          }}>
+              {!acknowledged && (
+                <div className="view-quote__price-difference-warning-contents-actions">
+                  <button
+                    onClick={() => {
+                      onAcknowledgementClick();
+                    }}
+                  >
                     {priceDifferenceAcknowledgementText}
                   </button>
-                </div>}
+                </div>
+              )}
             </div>
-          </div>} />
-    </div>;
+          </div>
+        }
+      />
+    </div>
+  );
 }
 ViewQuotePriceDifference.propTypes = {
   usedQuote: PropTypes.object,
@@ -75,5 +104,5 @@ ViewQuotePriceDifference.propTypes = {
   priceSlippageFromSource: PropTypes.string,
   priceSlippageFromDestination: PropTypes.string,
   priceDifferencePercentage: PropTypes.number,
-  priceSlippageUnknownFiatValue: PropTypes.bool
+  priceSlippageUnknownFiatValue: PropTypes.bool,
 };

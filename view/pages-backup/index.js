@@ -12,7 +12,7 @@ class Page extends PureComponent {
 
   static getDerivedStateFromError(error) {
     return {
-      error
+      error,
     };
   }
 
@@ -21,25 +21,23 @@ class Page extends PureComponent {
   }
 
   render() {
-    const {
-      error,
-      errorId
-    } = this.state;
-    const {
-      store
-    } = this.props;
+    const { error, errorId } = this.state;
+    const { store } = this.props;
 
     if (error) {
-      return <Provider store={store}>
+      return (
+        <Provider store={store}>
           <I18nProvider>
             <LegacyI18nProvider>
               <ErrorPage error={error} errorId={errorId} />
             </LegacyI18nProvider>
           </I18nProvider>
-        </Provider>;
+        </Provider>
+      );
     }
 
-    return <Provider store={store}>
+    return (
+      <Provider store={store}>
         <HashRouter hashType="noslash">
           <I18nProvider>
             <LegacyI18nProvider>
@@ -50,12 +48,12 @@ class Page extends PureComponent {
             </LegacyI18nProvider>
           </I18nProvider>
         </HashRouter>
-      </Provider>;
+      </Provider>
+    );
   }
-
 }
 
 Page.propTypes = {
-  store: PropTypes.object
+  store: PropTypes.object,
 };
 export default Page;

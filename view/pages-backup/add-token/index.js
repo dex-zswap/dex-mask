@@ -1,19 +1,20 @@
 import { connect } from 'react-redux';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
-import { getIsMainnet, getRpcPrefsForCurrentProvider } from '@selectors/selectors';
+import {
+  getIsMainnet,
+  getRpcPrefsForCurrentProvider,
+} from '@selectors/selectors';
 import { clearPendingTokens, setPendingTokens } from '@view/store/actions';
 import AddToken from './component';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
     metamask: {
       identities,
       tokens,
       pendingTokens,
-      provider: {
-        chainId
-      }
-    }
+      provider: { chainId },
+    },
   } = state;
   return {
     identities,
@@ -22,14 +23,14 @@ const mapStateToProps = state => {
     pendingTokens,
     showSearchTab: getIsMainnet(state) || process.env.IN_TEST === 'true',
     chainId,
-    rpcPrefs: getRpcPrefsForCurrentProvider(state)
+    rpcPrefs: getRpcPrefsForCurrentProvider(state),
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setPendingTokens: tokens => dispatch(setPendingTokens(tokens)),
-    clearPendingTokens: () => dispatch(clearPendingTokens())
+    setPendingTokens: (tokens) => dispatch(setPendingTokens(tokens)),
+    clearPendingTokens: () => dispatch(clearPendingTokens()),
   };
 };
 

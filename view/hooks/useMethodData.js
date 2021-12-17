@@ -17,8 +17,13 @@ import { getKnownMethodData } from '@selectors/selectors';
 import { getContractMethodData as getContractMethodDataAction } from '@view/store/actions';
 export function useMethodData(data) {
   const dispatch = useDispatch();
-  const knownMethodData = useSelector(state => getKnownMethodData(state, data));
-  const getContractMethodData = useCallback(methodData => dispatch(getContractMethodDataAction(methodData)), [dispatch]);
+  const knownMethodData = useSelector((state) =>
+    getKnownMethodData(state, data),
+  );
+  const getContractMethodData = useCallback(
+    (methodData) => dispatch(getContractMethodDataAction(methodData)),
+    [dispatch],
+  );
   useEffect(() => {
     if (data) {
       getContractMethodData(data);

@@ -6,28 +6,43 @@ const ConnectedAccountsListOptions = ({
   children,
   onShowOptions,
   onHideOptions,
-  show
+  show,
 }) => {
   const [optionsButtonElement, setOptionsButtonElement] = useState(null);
-  return <>
-      <button className="fas fa-ellipsis-v connected-accounts-options__button" onClick={onShowOptions} ref={setOptionsButtonElement} />
-      {show ? <Menu anchorElement={optionsButtonElement} onHide={onHideOptions} className="connected-accounts-list-item__menu" popperOptions={{
-      modifiers: [{
-        name: 'preventOverflow',
-        options: {
-          altBoundary: true
-        }
-      }]
-    }}>
+  return (
+    <>
+      <button
+        className="fas fa-ellipsis-v connected-accounts-options__button"
+        onClick={onShowOptions}
+        ref={setOptionsButtonElement}
+      />
+      {show ? (
+        <Menu
+          anchorElement={optionsButtonElement}
+          onHide={onHideOptions}
+          className="connected-accounts-list-item__menu"
+          popperOptions={{
+            modifiers: [
+              {
+                name: 'preventOverflow',
+                options: {
+                  altBoundary: true,
+                },
+              },
+            ],
+          }}
+        >
           {children}
-        </Menu> : null}
-    </>;
+        </Menu>
+      ) : null}
+    </>
+  );
 };
 
 ConnectedAccountsListOptions.propTypes = {
   children: PropTypes.node.isRequired,
   onHideOptions: PropTypes.func.isRequired,
   onShowOptions: PropTypes.func.isRequired,
-  show: PropTypes.bool.isRequired
+  show: PropTypes.bool.isRequired,
 };
 export default ConnectedAccountsListOptions;

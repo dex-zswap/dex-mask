@@ -9,6 +9,6 @@ export const GAS_ESTIMATE_TYPES = {
   SLOW: 'SLOW',
   AVERAGE: 'AVERAGE',
   FAST: 'FAST',
-  FASTEST: 'FASTEST'
+  FASTEST: 'FASTEST',
 };
 export const ZERO_DECIMAL = new Decimal(0);

@@ -5,13 +5,15 @@ export default function Swap() {
   const t = useI18nContext();
   const toPage = useCallback(() => {
     global.platform.openTab({
-      url: 'http://103.43.11.66:9999/swap'
+      url: 'http://103.43.11.66:9999/swap',
     });
   }, []);
-  return <div className="trade-swap__wrapper">
+  return (
+    <div className="trade-swap__wrapper">
       <p className="trade-swap__text">{t('toSwap')}</p>
       <Button type="primary" onClick={toPage} rightArrow>
         {t('goOpen')}
       </Button>
-    </div>;
+    </div>
+  );
 }

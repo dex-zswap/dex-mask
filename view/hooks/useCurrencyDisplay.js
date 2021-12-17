@@ -31,16 +31,22 @@ import { useSelector } from 'react-redux';
 
 import { getConversionRate, getNativeCurrency } from '@reducer/dexmask/dexmask';
 import { conversionUtil } from '@shared/modules/conversion.utils';
-import { formatCurrency, getValueFromWeiHex } from '@view/helpers/utils/confirm-tx.util';
+import {
+  formatCurrency,
+  getValueFromWeiHex,
+} from '@view/helpers/utils/confirm-tx.util';
 import { getCurrentCurrency } from '@view/selectors';
-export function useCurrencyDisplay(inputValue, {
-  displayValue,
-  prefix = '',
-  numberOfDecimals,
-  denomination,
-  currency,
-  ...opts
-}) {
+export function useCurrencyDisplay(
+  inputValue,
+  {
+    displayValue,
+    prefix = '',
+    numberOfDecimals,
+    denomination,
+    currency,
+    ...opts
+  },
+) {
   const currentCurrency = useSelector(getCurrentCurrency);
   const nativeCurrency = useSelector(getNativeCurrency);
   const conversionRate = useSelector(getConversionRate);
@@ -50,36 +56,54 @@ export function useCurrencyDisplay(inputValue, {
       return displayValue;
     }
 
-    if (currency === nativeCurrency || !isUserPreferredCurrency && !nativeCurrency) {
+    if (
+      currency === nativeCurrency ||
+      (!isUserPreferredCurrency && !nativeCurrency)
+    ) {
       return conversionUtil(inputValue, {
         fromNumericBase: 'hex',
         toNumericBase: 'dec',
         fromDenomination: 'WEI',
         numberOfDecimals: numberOfDecimals || 2,
-        toDenomination: denomination
+        toDenomination: denomination,
       });
     } else if (isUserPreferredCurrency && conversionRate) {
-      return formatCurrency(getValueFromWeiHex({
-        value: inputValue,
-        fromCurrency: nativeCurrency,
-        toCurrency: currency,
-        conversionRate,
-        numberOfDecimals: numberOfDecimals || 2,
-        toDenomination: denomination
-      }), currency);
+      return formatCurrency(
+        getValueFromWeiHex({
+          value: inputValue,
+          fromCurrency: nativeCurrency,
+          toCurrency: currency,
+          conversionRate,
+          numberOfDecimals: numberOfDecimals || 2,
+          toDenomination: denomination,
+        }),
+        currency,
+      );
     }
 
     return '0';
-  }, [inputValue, nativeCurrency, conversionRate, displayValue, numberOfDecimals, denomination, currency, isUserPreferredCurrency]);
+  }, [
+    inputValue,
+    nativeCurrency,
+    conversionRate,
+    displayValue,
+    numberOfDecimals,
+    denomination,
+    currency,
+    isUserPreferredCurrency,
+  ]);
   let suffix;
 
   if (!opts.hideLabel) {
     suffix = opts.suffix || currency?.toUpperCase();
   }
 
-  return [`${prefix || ''}${value}${suffix ? ` ${suffix}` : ''}`, {
-    prefix,
-    value,
-    suffix
-  }];
+  return [
+    `${prefix || ''}${value}${suffix ? ` ${suffix}` : ''}`,
+    {
+      prefix,
+      value,
+      suffix,
+    },
+  ];
 }

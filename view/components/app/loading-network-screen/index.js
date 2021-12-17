@@ -10,10 +10,10 @@ import * as actions from '@view/store/actions';
 
 class LoadingNetworkScreen extends PureComponent {
   state = {
-    showErrorScreen: false
+    showErrorScreen: false,
   };
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     loadingMessage: PropTypes.string,
@@ -24,20 +24,20 @@ class LoadingNetworkScreen extends PureComponent {
     setProviderArgs: PropTypes.array,
     setProviderType: PropTypes.func,
     rollbackToPreviousProvider: PropTypes.func,
-    isNetworkLoading: PropTypes.bool
+    isNetworkLoading: PropTypes.bool,
   };
   componentDidMount = () => {
-    this.cancelCallTimeout = setTimeout(this.cancelCall, this.props.cancelTime || SECOND * 15);
+    this.cancelCallTimeout = setTimeout(
+      this.cancelCall,
+      this.props.cancelTime || SECOND * 15,
+    );
   };
   getConnectingLabel = function (loadingMessage) {
     if (loadingMessage) {
       return loadingMessage;
     }
 
-    const {
-      provider,
-      providerId
-    } = this.props;
+    const { provider, providerId } = this.props;
     const providerName = provider.type;
     let name;
 
@@ -61,59 +61,67 @@ class LoadingNetworkScreen extends PureComponent {
     const {
       showNetworkDropdown,
       setProviderArgs,
-      setProviderType
+      setProviderType,
     } = this.props;
-    return <div className="loading-overlay__error-screen">
+    return (
+      <div className="loading-overlay__error-screen">
         <span className="loading-overlay__emoji">&#128542;</span>
         <span className="loading-overlay__wrong-text">
           {this.context.t('somethingWentWrong')}
         </span>
         <div className="loading-overlay__error-buttons">
-          <Button type="default" onClick={() => {
-          window.clearTimeout(this.cancelCallTimeout);
-          showNetworkDropdown();
-        }}>
+          <Button
+            type="default"
+            onClick={() => {
+              window.clearTimeout(this.cancelCallTimeout);
+              showNetworkDropdown();
+            }}
+          >
             {this.context.t('switchNetworks')}
           </Button>
 
-          <Button type="primary" onClick={() => {
-          this.setState({
-            showErrorScreen: false
-          });
-          setProviderType(...setProviderArgs);
-          window.clearTimeout(this.cancelCallTimeout);
-          this.cancelCallTimeout = setTimeout(this.cancelCall, this.props.cancelTime || SECOND * 15);
-        }}>
+          <Button
+            type="primary"
+            onClick={() => {
+              this.setState({
+                showErrorScreen: false,
+              });
+              setProviderType(...setProviderArgs);
+              window.clearTimeout(this.cancelCallTimeout);
+              this.cancelCallTimeout = setTimeout(
+                this.cancelCall,
+                this.props.cancelTime || SECOND * 15,
+              );
+            }}
+          >
             {this.context.t('tryAgain')}
           </Button>
         </div>
-      </div>;
+      </div>
+    );
   };
   cancelCall = () => {
-    const {
-      isNetworkLoading
-    } = this.props;
+    const { isNetworkLoading } = this.props;
 
     if (isNetworkLoading) {
       this.setState({
-        showErrorScreen: true
+        showErrorScreen: true,
       });
     }
   };
-  componentDidUpdate = prevProps => {
-    const {
-      provider
-    } = this.props;
-    const {
-      provider: prevProvider
-    } = prevProps;
+  componentDidUpdate = (prevProps) => {
+    const { provider } = this.props;
+    const { provider: prevProvider } = prevProps;
 
     if (provider.type !== prevProvider.type) {
       window.clearTimeout(this.cancelCallTimeout);
       this.setState({
-        showErrorScreen: false
+        showErrorScreen: false,
       });
-      this.cancelCallTimeout = setTimeout(this.cancelCall, this.props.cancelTime || SECOND * 15);
+      this.cancelCallTimeout = setTimeout(
+        this.cancelCall,
+        this.props.cancelTime || SECOND * 15,
+      );
     }
   };
   componentWillUnmount = () => {
@@ -121,46 +129,55 @@ class LoadingNetworkScreen extends PureComponent {
   };
 
   render() {
-    const {
-      rollbackToPreviousProvider
-    } = this.props;
-    return <LoadingScreen header={<div className="page-container__header-close" onClick={rollbackToPreviousProvider} />} showLoadingSpinner={!this.state.showErrorScreen} loadingMessage={this.state.showErrorScreen ? this.renderErrorScreenContent() : this.getConnectingLabel(this.props.loadingMessage)} />;
+    const { rollbackToPreviousProvider } = this.props;
+    return (
+      <LoadingScreen
+        header={
+          <div
+            className="page-container__header-close"
+            onClick={rollbackToPreviousProvider}
+          />
+        }
+        showLoadingSpinner={!this.state.showErrorScreen}
+        loadingMessage={
+          this.state.showErrorScreen
+            ? this.renderErrorScreenContent()
+            : this.getConnectingLabel(this.props.loadingMessage)
+        }
+      />
+    );
   }
-
 }
 
-const mapStateToProps = state => {
-  const {
-    loadingMessage
-  } = state.appState;
-  const {
-    provider
-  } = state.metamask;
-  const {
-    rpcUrl,
-    chainId,
-    ticker,
-    nickname,
-    type
-  } = provider;
-  const setProviderArgs = type === NETWORK_TYPE_RPC ? [rpcUrl, chainId, ticker, nickname] : [provider.type];
+const mapStateToProps = (state) => {
+  const { loadingMessage } = state.appState;
+  const { provider } = state.metamask;
+  const { rpcUrl, chainId, ticker, nickname, type } = provider;
+  const setProviderArgs =
+    type === NETWORK_TYPE_RPC
+      ? [rpcUrl, chainId, ticker, nickname]
+      : [provider.type];
   return {
     isNetworkLoading: isNetworkLoading(state),
     loadingMessage,
     setProviderArgs,
     provider,
-    providerId: getNetworkIdentifier(state)
+    providerId: getNetworkIdentifier(state),
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setProviderType: type => {
+    setProviderType: (type) => {
       dispatch(actions.setProviderType(type));
     },
-    rollbackToPreviousProvider: () => dispatch(actions.rollbackToPreviousProvider()),
-    showNetworkDropdown: () => dispatch(actions.showNetworkDropdown())
+    rollbackToPreviousProvider: () =>
+      dispatch(actions.rollbackToPreviousProvider()),
+    showNetworkDropdown: () => dispatch(actions.showNetworkDropdown()),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadingNetworkScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LoadingNetworkScreen);

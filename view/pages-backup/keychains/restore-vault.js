@@ -5,21 +5,23 @@ import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
-import { createNewVaultAndRestore, initializeThreeBox, unMarkPasswordForgotten } from '@view/store/actions';
-const {
-  isValidMnemonic
-} = ethers.utils;
+import {
+  createNewVaultAndRestore,
+  initializeThreeBox,
+  unMarkPasswordForgotten,
+} from '@view/store/actions';
+const { isValidMnemonic } = ethers.utils;
 
 class RestoreVaultPage extends Component {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     createNewVaultAndRestore: PropTypes.func.isRequired,
     leaveImportSeedScreenState: PropTypes.func,
     history: PropTypes.object,
     isLoading: PropTypes.bool,
-    initializeThreeBox: PropTypes.func
+    initializeThreeBox: PropTypes.func,
   };
   state = {
     seedPhrase: '',
@@ -28,18 +30,20 @@ class RestoreVaultPage extends Component {
     confirmPassword: '',
     seedPhraseError: null,
     passwordError: null,
-    confirmPasswordError: null
+    confirmPasswordError: null,
   };
-  parseSeedPhrase = seedPhrase => (seedPhrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
+  parseSeedPhrase = (seedPhrase) =>
+    (seedPhrase || '').trim().toLowerCase().match(/\w+/gu)?.join(' ') || '';
 
   handleSeedPhraseChange(seedPhrase) {
-    const {
-      t
-    } = this.context;
+    const { t } = this.context;
     let seedPhraseError = null;
     const wordCount = this.parseSeedPhrase(seedPhrase).split(/\s/u).length;
 
-    if (seedPhrase && (wordCount % 3 !== 0 || wordCount < 12 || wordCount > 24)) {
+    if (
+      seedPhrase &&
+      (wordCount % 3 !== 0 || wordCount < 12 || wordCount > 24)
+    ) {
       seedPhraseError = t('seedPhraseReq');
     } else if (!isValidMnemonic(seedPhrase)) {
       seedPhraseError = t('invalidSeedPhrase');
@@ -47,14 +51,12 @@ class RestoreVaultPage extends Component {
 
     this.setState({
       seedPhrase,
-      seedPhraseError
+      seedPhraseError,
     });
   }
 
   handlePasswordChange(password) {
-    const {
-      confirmPassword
-    } = this.state;
+    const { confirmPassword } = this.state;
     let confirmPasswordError = null;
     let passwordError = null;
 
@@ -69,14 +71,12 @@ class RestoreVaultPage extends Component {
     this.setState({
       password,
       passwordError,
-      confirmPasswordError
+      confirmPasswordError,
     });
   }
 
   handleConfirmPasswordChange(confirmPassword) {
-    const {
-      password
-    } = this.state;
+    const { password } = this.state;
     let confirmPasswordError = null;
 
     if (password !== confirmPassword) {
@@ -85,44 +85,37 @@ class RestoreVaultPage extends Component {
 
     this.setState({
       confirmPassword,
-      confirmPasswordError
+      confirmPasswordError,
     });
   }
 
   onClick = () => {
-    const {
-      password,
-      seedPhrase
-    } = this.state;
+    const { password, seedPhrase } = this.state;
     const {
       // eslint-disable-next-line no-shadow
       createNewVaultAndRestore,
       leaveImportSeedScreenState,
       history,
       // eslint-disable-next-line no-shadow
-      initializeThreeBox
+      initializeThreeBox,
     } = this.props;
     leaveImportSeedScreenState();
-    createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(() => {
-      initializeThreeBox();
-      history.push(DEFAULT_ROUTE);
-    });
+    createNewVaultAndRestore(password, this.parseSeedPhrase(seedPhrase)).then(
+      () => {
+        initializeThreeBox();
+        history.push(DEFAULT_ROUTE);
+      },
+    );
   };
 
   hasError() {
-    const {
-      passwordError,
-      confirmPasswordError,
-      seedPhraseError
-    } = this.state;
+    const { passwordError, confirmPasswordError, seedPhraseError } = this.state;
     return passwordError || confirmPasswordError || seedPhraseError;
   }
 
   toggleShowSeedPhrase = () => {
-    this.setState(({
-      showSeedPhrase
-    }) => ({
-      showSeedPhrase: !showSeedPhrase
+    this.setState(({ showSeedPhrase }) => ({
+      showSeedPhrase: !showSeedPhrase,
     }));
   };
 
@@ -134,16 +127,18 @@ class RestoreVaultPage extends Component {
       confirmPassword,
       seedPhraseError,
       passwordError,
-      confirmPasswordError
+      confirmPasswordError,
     } = this.state;
-    const {
-      t
-    } = this.context;
-    const {
-      isLoading
-    } = this.props;
-    const disabled = !seedPhrase || !password || !confirmPassword || isLoading || this.hasError();
-    return <div className="first-view-main-wrapper">
+    const { t } = this.context;
+    const { isLoading } = this.props;
+    const disabled =
+      !seedPhrase ||
+      !password ||
+      !confirmPassword ||
+      isLoading ||
+      this.hasError();
+    return (
+      <div className="first-view-main-wrapper">
         <div className="first-view-main">
           <div className="import-account">
             <div className="import-account__title">
@@ -156,31 +151,68 @@ class RestoreVaultPage extends Component {
               <label className="import-account__input-label">
                 {this.context.t('walletSeedRestore')}
               </label>
-              <textarea className="import-account__secret-phrase" onChange={e => this.handleSeedPhraseChange(e.target.value)} value={seedPhrase} autoFocus placeholder={this.context.t('separateEachWord')} />
+              <textarea
+                className="import-account__secret-phrase"
+                onChange={(e) => this.handleSeedPhraseChange(e.target.value)}
+                value={seedPhrase}
+                autoFocus
+                placeholder={this.context.t('separateEachWord')}
+              />
               <span className="error">{seedPhraseError}</span>
             </div>
-            <TextField id="password" label={t('newPassword')} type="password" className="first-time-flow__input" value={this.state.password} onChange={event => this.handlePasswordChange(event.target.value)} error={passwordError} autoComplete="new-password" margin="normal" largeLabel />
-            <TextField id="confirm-password" label={t('confirmPassword')} type="password" className="first-time-flow__input" value={this.state.confirmPassword} onChange={event => this.handleConfirmPasswordChange(event.target.value)} error={confirmPasswordError} autoComplete="confirm-password" margin="normal" largeLabel />
-            <Button type="primary" className="first-time-flow__button restore-vault__button" onClick={() => !disabled && this.onClick()} disabled={disabled}>
+            <TextField
+              id="password"
+              label={t('newPassword')}
+              type="password"
+              className="first-time-flow__input"
+              value={this.state.password}
+              onChange={(event) =>
+                this.handlePasswordChange(event.target.value)
+              }
+              error={passwordError}
+              autoComplete="new-password"
+              margin="normal"
+              largeLabel
+            />
+            <TextField
+              id="confirm-password"
+              label={t('confirmPassword')}
+              type="password"
+              className="first-time-flow__input"
+              value={this.state.confirmPassword}
+              onChange={(event) =>
+                this.handleConfirmPasswordChange(event.target.value)
+              }
+              error={confirmPasswordError}
+              autoComplete="confirm-password"
+              margin="normal"
+              largeLabel
+            />
+            <Button
+              type="primary"
+              className="first-time-flow__button restore-vault__button"
+              onClick={() => !disabled && this.onClick()}
+              disabled={disabled}
+            >
               {this.context.t('restore')}
             </Button>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
-
 }
 
-export default connect(({
-  appState: {
-    isLoading
-  }
-}) => ({
-  isLoading
-}), dispatch => ({
-  leaveImportSeedScreenState: () => {
-    dispatch(unMarkPasswordForgotten());
-  },
-  createNewVaultAndRestore: (pw, seed) => dispatch(createNewVaultAndRestore(pw, seed)),
-  initializeThreeBox: () => dispatch(initializeThreeBox())
-}))(RestoreVaultPage);
+export default connect(
+  ({ appState: { isLoading } }) => ({
+    isLoading,
+  }),
+  (dispatch) => ({
+    leaveImportSeedScreenState: () => {
+      dispatch(unMarkPasswordForgotten());
+    },
+    createNewVaultAndRestore: (pw, seed) =>
+      dispatch(createNewVaultAndRestore(pw, seed)),
+    initializeThreeBox: () => dispatch(initializeThreeBox()),
+  }),
+)(RestoreVaultPage);

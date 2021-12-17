@@ -12,7 +12,7 @@ export async function getTokenBalance({
   wallet,
   isNativeAsset,
   chainId,
-  fixed
+  fixed,
 }) {
   const provider = CHAIN_ID_TO_RPC_URL_MAP[toBnString(chainId)];
   const web3Provider = new Web3.providers.HttpProvider(provider);
@@ -28,7 +28,10 @@ export async function getTokenBalance({
     const contract = ethInstance.contract(TOKEN_ABI).at(tokenAddress);
     const decimals = await contract.decimals();
     const result = await contract.balanceOf(wallet);
-    const num = await ethers.utils.formatEther(result[0].toString(), decimals[0].toString());
+    const num = await ethers.utils.formatEther(
+      result[0].toString(),
+      decimals[0].toString(),
+    );
     const demical = new Decimal(num);
     return ZERO_DECIMAL.eq(demical) ? '0' : demical.toFixed(fixed);
   }
@@ -38,7 +41,7 @@ export default function useTokenBalance({
   wallet,
   isNativeAsset,
   chainId,
-  fixed = 6
+  fixed = 6,
 }) {
   const [balance, setBalance] = useState('0');
   useEffect(() => {
@@ -48,8 +51,8 @@ export default function useTokenBalance({
       wallet,
       isNativeAsset,
       chainId,
-      fixed
-    }).then(res => {
+      fixed,
+    }).then((res) => {
       setBalance(res);
     });
   }, [tokenAddress, wallet, isNativeAsset, chainId, fixed]);

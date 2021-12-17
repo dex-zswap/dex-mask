@@ -1,9 +1,6 @@
 import React from 'react';
 
-const LongLetter = ({
-  text,
-  length
-}) => {
+const LongLetter = ({ text, length }) => {
   if (length >= text.length) {
     return text;
   }

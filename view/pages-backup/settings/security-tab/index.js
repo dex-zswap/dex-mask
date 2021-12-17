@@ -1,37 +1,42 @@
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { setFeatureFlag, setParticipateInMetaMetrics, setUsePhishDetect } from '@view/store/actions';
+import {
+  setFeatureFlag,
+  setParticipateInMetaMetrics,
+  setUsePhishDetect,
+} from '@view/store/actions';
 import SecurityTab from './component';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
-    appState: {
-      warning
-    },
-    metamask
+    appState: { warning },
+    metamask,
   } = state;
   const {
-    featureFlags: {
-      showIncomingTransactions
-    } = {},
+    featureFlags: { showIncomingTransactions } = {},
     participateInMetaMetrics,
-    usePhishDetect
+    usePhishDetect,
   } = metamask;
   return {
     warning,
     showIncomingTransactions,
     participateInMetaMetrics,
-    usePhishDetect
+    usePhishDetect,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    setParticipateInMetaMetrics: val => dispatch(setParticipateInMetaMetrics(val)),
-    setShowIncomingTransactionsFeatureFlag: shouldShow => dispatch(setFeatureFlag('showIncomingTransactions', shouldShow)),
-    setUsePhishDetect: val => dispatch(setUsePhishDetect(val))
+    setParticipateInMetaMetrics: (val) =>
+      dispatch(setParticipateInMetaMetrics(val)),
+    setShowIncomingTransactionsFeatureFlag: (shouldShow) =>
+      dispatch(setFeatureFlag('showIncomingTransactions', shouldShow)),
+    setUsePhishDetect: (val) => dispatch(setUsePhishDetect(val)),
   };
 };
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(SecurityTab);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(SecurityTab);

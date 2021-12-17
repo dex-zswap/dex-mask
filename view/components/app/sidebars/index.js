@@ -11,38 +11,40 @@ export default class Sidebar extends Component {
     transitionName: PropTypes.string,
     type: PropTypes.string,
     sidebarProps: PropTypes.object,
-    onOverlayClose: PropTypes.func
+    onOverlayClose: PropTypes.func,
   };
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   renderOverlay() {
-    const {
-      onOverlayClose
-    } = this.props;
-    return <div className="sidebar-overlay" onClick={() => {
-      onOverlayClose?.();
-      this.props.hideSidebar();
-    }} />;
+    const { onOverlayClose } = this.props;
+    return (
+      <div
+        className="sidebar-overlay"
+        onClick={() => {
+          onOverlayClose?.();
+          this.props.hideSidebar();
+        }}
+      />
+    );
   }
 
   renderSidebarContent() {
-    const {
-      type,
-      sidebarProps = {}
-    } = this.props;
-    const {
-      transaction = {},
-      onSubmit,
-      hideBasic
-    } = sidebarProps;
+    const { type, sidebarProps = {} } = this.props;
+    const { transaction = {}, onSubmit, hideBasic } = sidebarProps;
 
     switch (type) {
       case 'customize-gas':
-        return <div className="sidebar-left">
-            <CustomizeGas transaction={transaction} onSubmit={onSubmit} hideBasic={hideBasic} />
-          </div>;
+        return (
+          <div className="sidebar-left">
+            <CustomizeGas
+              transaction={transaction}
+              onSubmit={onSubmit}
+              hideBasic={hideBasic}
+            />
+          </div>
+        );
 
       default:
         return null;
@@ -56,18 +58,19 @@ export default class Sidebar extends Component {
   }
 
   render() {
-    const {
-      transitionName,
-      sidebarOpen,
-      sidebarShouldClose
-    } = this.props;
+    const { transitionName, sidebarOpen, sidebarShouldClose } = this.props;
     const showSidebar = sidebarOpen && !sidebarShouldClose;
-    return <div>
-        <ReactCSSTransitionGroup transitionName={transitionName} transitionEnterTimeout={MILLISECOND * 300} transitionLeaveTimeout={MILLISECOND * 200}>
+    return (
+      <div>
+        <ReactCSSTransitionGroup
+          transitionName={transitionName}
+          transitionEnterTimeout={MILLISECOND * 300}
+          transitionLeaveTimeout={MILLISECOND * 200}
+        >
           {showSidebar ? this.renderSidebarContent() : null}
         </ReactCSSTransitionGroup>
         {showSidebar ? this.renderOverlay() : null}
-      </div>;
+      </div>
+    );
   }
-
 }

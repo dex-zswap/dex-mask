@@ -10,7 +10,11 @@ import { useEqualityCheck } from './useEqualityCheck'; // Type imports
 
 export function useMetricEvent(config = {}, overrides = {}) {
   const metricsEvent = useContext(MetaMetricsContext);
-  const trackEvent = useCallback(() => metricsEvent(config, overrides), [config, metricsEvent, overrides]);
+  const trackEvent = useCallback(() => metricsEvent(config, overrides), [
+    config,
+    metricsEvent,
+    overrides,
+  ]);
   return trackEvent;
 }
 /**
@@ -26,5 +30,9 @@ export function useNewMetricEvent(payload, options) {
   const memoizedPayload = useEqualityCheck(payload);
   const memoizedOptions = useEqualityCheck(options);
   const metricsEvent = useContext(NewMetaMetricsContext);
-  return useCallback(() => metricsEvent(memoizedPayload, memoizedOptions), [metricsEvent, memoizedPayload, memoizedOptions]);
+  return useCallback(() => metricsEvent(memoizedPayload, memoizedOptions), [
+    metricsEvent,
+    memoizedPayload,
+    memoizedOptions,
+  ]);
 }

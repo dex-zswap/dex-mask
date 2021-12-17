@@ -3,17 +3,14 @@ import PropTypes from 'prop-types';
 import Modal from '@c/app/modal';
 export default class TransactionConfirmed extends PureComponent {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     onSubmit: PropTypes.func,
-    hideModal: PropTypes.func
+    hideModal: PropTypes.func,
   };
   handleSubmit = () => {
-    const {
-      hideModal,
-      onSubmit
-    } = this.props;
+    const { hideModal, onSubmit } = this.props;
     hideModal();
 
     if (onSubmit && typeof onSubmit === 'function') {
@@ -22,10 +19,9 @@ export default class TransactionConfirmed extends PureComponent {
   };
 
   render() {
-    const {
-      t
-    } = this.context;
-    return <Modal onSubmit={this.handleSubmit} submitText={t('ok')}>
+    const { t } = this.context;
+    return (
+      <Modal onSubmit={this.handleSubmit} submitText={t('ok')}>
         <div className="transaction-confirmed__content">
           <img src="images/check-icon.svg" alt="" />
           <div className="transaction-confirmed__title">
@@ -35,7 +31,7 @@ export default class TransactionConfirmed extends PureComponent {
             {t('initialTransactionConfirmed')}
           </div>
         </div>
-      </Modal>;
+      </Modal>
+    );
   }
-
 }

@@ -30,14 +30,13 @@ const modalContainerBaseStyle = {
   border: 'none',
   borderRadius: '8px',
   backgroundColor: 'rgba(20, 24, 39, 0.9)',
-  boxShadow: 'none'
+  boxShadow: 'none',
 };
-const modalContainerLaptopStyle = { ...modalContainerBaseStyle,
-  width: '344px'
+const modalContainerLaptopStyle = {
+  ...modalContainerBaseStyle,
+  width: '344px',
 };
-const modalContainerMobileStyle = { ...modalContainerBaseStyle,
-  width: '92vw'
-};
+const modalContainerMobileStyle = { ...modalContainerBaseStyle, width: '92vw' };
 const accountModalStyle = {
   mobileModalStyle: {
     width: '92vw',
@@ -48,7 +47,7 @@ const accountModalStyle = {
     transform: 'none',
     left: '0',
     right: '0',
-    margin: '0 auto'
+    margin: '0 auto',
   },
   laptopModalStyle: {
     width: '360px',
@@ -59,16 +58,16 @@ const accountModalStyle = {
     transform: 'none',
     left: '0',
     right: '0',
-    margin: '0 auto'
+    margin: '0 auto',
   },
   contentStyle: {
-    borderRadius: '4px'
-  }
+    borderRadius: '4px',
+  },
 };
 const MODALS = {
   DEPOSIT_ETHER: {
     contents: <DepositEtherModal />,
-    onHide: props => props.hideWarning(),
+    onHide: (props) => props.hideWarning(),
     mobileModalStyle: {
       width: '100%',
       height: '100%',
@@ -78,7 +77,7 @@ const MODALS = {
       margin: '0 auto',
       boxShadow: '0 0 7px 0 rgba(0,0,0,0.08)',
       top: '0',
-      display: 'flex'
+      display: 'flex',
     },
     laptopModalStyle: {
       width: 'initial',
@@ -91,12 +90,12 @@ const MODALS = {
       borderRadius: '7px',
       transform: 'none',
       height: 'calc(80% - 20px)',
-      overflowY: 'hidden'
+      overflowY: 'hidden',
     },
     contentStyle: {
       borderRadius: '7px',
-      height: '100%'
-    }
+      height: '100%',
+    },
   },
   ADD_TO_ADDRESSBOOK: {
     contents: <AddToAddressBookModal />,
@@ -108,7 +107,7 @@ const MODALS = {
       left: '0',
       right: '0',
       margin: '0 auto',
-      borderRadius: '10px'
+      borderRadius: '10px',
     },
     laptopModalStyle: {
       width: '92vw',
@@ -118,11 +117,11 @@ const MODALS = {
       left: '0',
       right: '0',
       margin: '0 auto',
-      borderRadius: '10px'
+      borderRadius: '10px',
     },
     contentStyle: {
-      borderRadius: '10px'
-    }
+      borderRadius: '10px',
+    },
   },
   NEW_ACCOUNT: {
     contents: <NewAccountModal />,
@@ -134,7 +133,7 @@ const MODALS = {
       left: '0',
       right: '0',
       margin: '0 auto',
-      borderRadius: '10px'
+      borderRadius: '10px',
     },
     laptopModalStyle: {
       width: '92vw',
@@ -144,74 +143,71 @@ const MODALS = {
       left: '0',
       right: '0',
       margin: '0 auto',
-      borderRadius: '10px'
+      borderRadius: '10px',
     },
     contentStyle: {
-      borderRadius: '10px'
-    }
+      borderRadius: '10px',
+    },
   },
   ACCOUNT_DETAILS: {
     contents: <AccountDetailsModal />,
-    ...accountModalStyle
+    ...accountModalStyle,
   },
   EXPORT_PRIVATE_KEY: {
     contents: <ExportPrivateKeyModal />,
-    ...accountModalStyle
+    ...accountModalStyle,
   },
   HIDE_TOKEN_CONFIRMATION: {
     contents: <HideTokenConfirmationModal />,
     mobileModalStyle: {
       width: '92vw',
-      top: getEnvironmentType() === ENVIRONMENT_TYPE_POPUP ? '52vh' : '36.5vh'
+      top: getEnvironmentType() === ENVIRONMENT_TYPE_POPUP ? '52vh' : '36.5vh',
     },
     laptopModalStyle: {
       width: '92vw',
-      top: 'calc(33% + 45px)'
-    }
+      top: 'calc(33% + 45px)',
+    },
   },
   METAMETRICS_OPT_IN_MODAL: {
     contents: <MetaMetricsOptInModal />,
-    mobileModalStyle: { ...modalContainerMobileStyle,
+    mobileModalStyle: {
+      ...modalContainerMobileStyle,
       width: '100%',
       height: '100%',
-      top: '0px'
+      top: '0px',
     },
-    laptopModalStyle: { ...modalContainerLaptopStyle,
-      top: '10%'
-    },
+    laptopModalStyle: { ...modalContainerLaptopStyle, top: '10%' },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   CONFIRM_RESET_ACCOUNT: {
     contents: <ConfirmResetAccount />,
-    mobileModalStyle: { ...modalContainerMobileStyle
-    },
-    laptopModalStyle: { ...modalContainerLaptopStyle
-    },
+    mobileModalStyle: { ...modalContainerMobileStyle },
+    laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   CONFIRM_REMOVE_ACCOUNT: {
     contents: <ConfirmRemoveAccount />,
-    mobileModalStyle: { ...modalContainerMobileStyle
-    },
-    laptopModalStyle: { ...modalContainerLaptopStyle
-    },
+    mobileModalStyle: { ...modalContainerMobileStyle },
+    laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   CONFIRM_DELETE_NETWORK: {
     contents: <ConfirmDeleteNetwork />,
-    mobileModalStyle: {// ...modalContainerMobileStyle,
+    mobileModalStyle: {
+      // ...modalContainerMobileStyle,
     },
-    laptopModalStyle: {// ...modalContainerLaptopStyle,
+    laptopModalStyle: {
+      // ...modalContainerLaptopStyle,
     },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   LEGACY_CUSTOMIZE_GAS: {
     contents: <ConfirmCustomizeGasModal />,
@@ -222,7 +218,7 @@ const MODALS = {
       transform: 'none',
       left: '0',
       right: '0',
-      margin: '0 auto'
+      margin: '0 auto',
     },
     laptopModalStyle: {
       width: 'auto',
@@ -231,15 +227,15 @@ const MODALS = {
       left: '0px',
       transform: 'none',
       margin: '0 auto',
-      position: 'relative'
+      position: 'relative',
     },
     contentStyle: {
-      borderRadius: '8px'
+      borderRadius: '8px',
     },
     customOnHideOpts: {
       action: resetCustomGasData,
-      args: []
-    }
+      args: [],
+    },
   },
   CUSTOMIZE_METASWAP_GAS: {
     contents: <SwapsGasCustomizationModal />,
@@ -250,7 +246,7 @@ const MODALS = {
       transform: 'none',
       left: '0',
       right: '0',
-      margin: '0 auto'
+      margin: '0 auto',
     },
     laptopModalStyle: {
       width: 'auto',
@@ -259,11 +255,11 @@ const MODALS = {
       left: '0px',
       transform: 'none',
       margin: '0 auto',
-      position: 'relative'
+      position: 'relative',
     },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   EDIT_APPROVAL_PERMISSION: {
     contents: <EditApprovalPermission />,
@@ -274,7 +270,7 @@ const MODALS = {
       transform: 'none',
       left: '0',
       right: '0',
-      margin: '0 auto'
+      margin: '0 auto',
     },
     laptopModalStyle: {
       width: 'auto',
@@ -283,83 +279,73 @@ const MODALS = {
       left: '0px',
       transform: 'none',
       margin: '0 auto',
-      position: 'relative'
+      position: 'relative',
     },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   TRANSACTION_CONFIRMED: {
     disableBackdropClick: true,
     contents: <TransactionConfirmed />,
-    mobileModalStyle: { ...modalContainerMobileStyle
-    },
-    laptopModalStyle: { ...modalContainerLaptopStyle
-    },
+    mobileModalStyle: { ...modalContainerMobileStyle },
+    laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   QR_SCANNER: {
     contents: <QRScanner />,
-    mobileModalStyle: { ...modalContainerMobileStyle
-    },
-    laptopModalStyle: { ...modalContainerLaptopStyle
-    },
+    mobileModalStyle: { ...modalContainerMobileStyle },
+    laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   CANCEL_TRANSACTION: {
     contents: <CancelTransaction />,
-    mobileModalStyle: { ...modalContainerMobileStyle
-    },
-    laptopModalStyle: { ...modalContainerLaptopStyle
-    },
+    mobileModalStyle: { ...modalContainerMobileStyle },
+    laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   REJECT_TRANSACTIONS: {
     contents: <RejectTransactions />,
-    mobileModalStyle: { ...modalContainerMobileStyle
-    },
-    laptopModalStyle: { ...modalContainerLaptopStyle
-    },
+    mobileModalStyle: { ...modalContainerMobileStyle },
+    laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   CUSTOMIZE_NONCE: {
     contents: <CustomizeNonceModal />,
-    mobileModalStyle: { ...modalContainerMobileStyle
-    },
-    laptopModalStyle: { ...modalContainerLaptopStyle
-    },
+    mobileModalStyle: { ...modalContainerMobileStyle },
+    laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px'
-    }
+      borderRadius: '8px',
+    },
   },
   DEFAULT: {
     contents: [],
     mobileModalStyle: {},
-    laptopModalStyle: {}
-  }
+    laptopModalStyle: {},
+  },
 };
 const BACKDROPSTYLE = {
-  backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
 };
 
 function mapStateToProps(state) {
   return {
     active: state.appState.modal.open,
-    modalState: state.appState.modal.modalState
+    modalState: state.appState.modal.modalState,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    hideModal: customOnHideOpts => {
+    hideModal: (customOnHideOpts) => {
       dispatch(actions.hideModal());
 
       if (customOnHideOpts && customOnHideOpts.action) {
@@ -368,7 +354,7 @@ function mapDispatchToProps(dispatch) {
     },
     hideWarning: () => {
       dispatch(actions.hideWarning());
-    }
+    },
   };
 }
 
@@ -377,7 +363,7 @@ class Modal extends Component {
     active: PropTypes.bool.isRequired,
     hideModal: PropTypes.func.isRequired,
     hideWarning: PropTypes.func.isRequired,
-    modalState: PropTypes.object.isRequired
+    modalState: PropTypes.object.isRequired,
   };
 
   hide() {
@@ -398,27 +384,34 @@ class Modal extends Component {
 
   render() {
     const modal = MODALS[this.props.modalState.name || 'DEFAULT'];
-    const {
-      contents: children,
-      disableBackdropClick = false
-    } = modal;
-    const modalStyle = modal[isMobileView() ? 'mobileModalStyle' : 'laptopModalStyle'];
+    const { contents: children, disableBackdropClick = false } = modal;
+    const modalStyle =
+      modal[isMobileView() ? 'mobileModalStyle' : 'laptopModalStyle'];
     const contentStyle = modal.contentStyle || {};
-    return <FadeModal keyboard={false} onHide={() => {
-      if (modal.onHide) {
-        modal.onHide({
-          hideWarning: this.props.hideWarning
-        });
-      }
+    return (
+      <FadeModal
+        keyboard={false}
+        onHide={() => {
+          if (modal.onHide) {
+            modal.onHide({
+              hideWarning: this.props.hideWarning,
+            });
+          }
 
-      this.props.hideModal(modal.customOnHideOpts);
-    }} ref={ref => {
-      this.modalRef = ref;
-    }} modalStyle={modalStyle} contentStyle={contentStyle} backdropStyle={BACKDROPSTYLE} closeOnClick={!disableBackdropClick}>
+          this.props.hideModal(modal.customOnHideOpts);
+        }}
+        ref={(ref) => {
+          this.modalRef = ref;
+        }}
+        modalStyle={modalStyle}
+        contentStyle={contentStyle}
+        backdropStyle={BACKDROPSTYLE}
+        closeOnClick={!disableBackdropClick}
+      >
         {children}
-      </FadeModal>;
+      </FadeModal>
+    );
   }
-
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Modal);

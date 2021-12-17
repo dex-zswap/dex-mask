@@ -7,10 +7,11 @@ export default function Trade() {
   const t = useI18nContext();
   const openSwap = useCallback(() => {
     global.platform.openTab({
-      url: 'http://103.43.11.66:9999'
+      url: 'http://103.43.11.66:9999',
     });
   }, []);
-  return <div className="trade-page dex-page-container base-width">
+  return (
+    <div className="trade-page dex-page-container base-width">
       <TopHeader />
       <BackBar title={t('swap')} />
       <div className="swap-background"></div>
@@ -19,5 +20,6 @@ export default function Trade() {
       <Button type="primary" onClick={openSwap} rightArrow>
         {t('toSwap')}
       </Button>
-    </div>;
+    </div>
+  );
 }

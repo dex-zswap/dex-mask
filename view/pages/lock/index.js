@@ -4,21 +4,22 @@ import { compose } from 'redux';
 import { lockDexmask } from '@view/store/actions';
 import Lock from './component';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const {
-    metamask: {
-      isUnlocked
-    }
+    metamask: { isUnlocked },
   } = state;
   return {
-    isUnlocked
+    isUnlocked,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    lockDexmask: () => dispatch(lockDexmask())
+    lockDexmask: () => dispatch(lockDexmask()),
   };
 };
 
-export default compose(withRouter, connect(mapStateToProps, mapDispatchToProps))(Lock);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(Lock);

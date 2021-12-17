@@ -6,110 +6,119 @@ import Steps from '@c/ui/steps';
 import { INITIALIZE_END_OF_FLOW_ROUTE } from '@view/helpers/constants/routes';
 export default class ConfirmSeedPhraseComponent extends PureComponent {
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
   static propTypes = {
     history: PropTypes.object,
-    seedPhrase: PropTypes.string
+    seedPhrase: PropTypes.string,
   };
   state = {
-    selectedPhrase: []
+    selectedPhrase: [],
   };
-  handleNext = async event => {
+  handleNext = async (event) => {
     event.preventDefault();
-    const {
-      history
-    } = this.props;
+    const { history } = this.props;
     history.push(INITIALIZE_END_OF_FLOW_ROUTE);
   };
 
   handleSelectPhrase(str) {
-    const {
-      selectedPhrase
-    } = this.state;
+    const { selectedPhrase } = this.state;
     let phrases = selectedPhrase;
 
     if (!selectedPhrase.includes(str)) {
       phrases.push(str);
     } else {
-      phrases = selectedPhrase.filter(s => s !== str);
+      phrases = selectedPhrase.filter((s) => s !== str);
     }
 
     this.setState({
-      selectedPhrase: phrases
+      selectedPhrase: phrases,
     });
   }
 
   renderPhrase = () => {
-    const {
-      selectedPhrase
-    } = this.state;
-    const {
-      seedPhrase: seedPhraseString
-    } = this.props;
+    const { selectedPhrase } = this.state;
+    const { seedPhrase: seedPhraseString } = this.props;
     const seedPhrase = seedPhraseString.split(' ').sort();
     let classes = [];
-    return <div className="confirm-seed-phrase__word-display">
+    return (
+      <div className="confirm-seed-phrase__word-display">
         <div className="confirm-seed-phrase__word-column">
           {seedPhrase.slice(0, 6).map((str, index) => {
-          classes = [];
+            classes = [];
 
-          if (selectedPhrase.includes(str)) {
-            classes.push('active');
-          }
+            if (selectedPhrase.includes(str)) {
+              classes.push('active');
+            }
 
-          return <div onClick={() => this.handleSelectPhrase(str)} className={classnames(['word-item', selectedPhrase.includes(str) ? 'active' : ''])} key={str}>
+            return (
+              <div
+                onClick={() => this.handleSelectPhrase(str)}
+                className={classnames([
+                  'word-item',
+                  selectedPhrase.includes(str) ? 'active' : '',
+                ])}
+                key={str}
+              >
                 <span className="word-text">{str}</span>
-              </div>;
-        })}
+              </div>
+            );
+          })}
         </div>
         <div className="confirm-seed-phrase__word-column">
           {seedPhrase.slice(6).map((str, index) => {
-          classes = [];
+            classes = [];
 
-          if (selectedPhrase.includes(str)) {
-            classes.push('active');
-          }
+            if (selectedPhrase.includes(str)) {
+              classes.push('active');
+            }
 
-          return <div onClick={() => this.handleSelectPhrase(str)} className={classnames(['word-item', selectedPhrase.includes(str) ? 'active' : ''])} key={str}>
+            return (
+              <div
+                onClick={() => this.handleSelectPhrase(str)}
+                className={classnames([
+                  'word-item',
+                  selectedPhrase.includes(str) ? 'active' : '',
+                ])}
+                key={str}
+              >
                 <span className="word-text">{str}</span>
-              </div>;
-        })}
+              </div>
+            );
+          })}
         </div>
-      </div>;
+      </div>
+    );
   };
 
   renderSelected() {
-    const {
-      selectedPhrase
-    } = this.state;
+    const { selectedPhrase } = this.state;
 
     if (selectedPhrase.length === 0) {
       return null;
     }
 
-    return <div className="confirm-seed-phrase__word-selected">
-        {selectedPhrase.map((str, index) => <div className="word-item" key={str}>
+    return (
+      <div className="confirm-seed-phrase__word-selected">
+        {selectedPhrase.map((str, index) => (
+          <div className="word-item" key={str}>
             {index + 1}: <span className="word-text">{str}</span>
-          </div>)}
-      </div>;
+          </div>
+        ))}
+      </div>
+    );
   }
 
   isDisabled() {
-    const {
-      selectedPhrase
-    } = this.state;
-    const {
-      seedPhrase
-    } = this.props;
+    const { selectedPhrase } = this.state;
+    const { seedPhrase } = this.props;
     return seedPhrase !== selectedPhrase.join(' ');
   }
 
   render() {
-    const {
-      t
-    } = this.context;
-    return <div>
+    const { t } = this.context;
+    return (
+      <div>
         <div className="first-time-flow__header">
           <div className="first-time-flow__account-password">
             <span className="dark-text">{t('createWallet')}</span>
@@ -122,8 +131,7 @@ export default class ConfirmSeedPhraseComponent extends PureComponent {
           {this.renderPhrase()}
           {this.renderSelected()}
           <div className="first-time-flow__account-password-btn">
-            {
-            /* <Button
+            {/* <Button
              type="primary"
              className="first-time-flow__button"
              onClick={this.handleNext}
@@ -131,14 +139,19 @@ export default class ConfirmSeedPhraseComponent extends PureComponent {
              rightArrow={true}
             >
              {t('next')}
-            </Button> */
-          }
-            <Button type="primary" className="first-time-flow__button" disabled={this.isDisabled()} onClick={this.handleNext} rightArrow={true}>
+            </Button> */}
+            <Button
+              type="primary"
+              className="first-time-flow__button"
+              disabled={this.isDisabled()}
+              onClick={this.handleNext}
+              rightArrow={true}
+            >
               {t('next')}
             </Button>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
-
 }

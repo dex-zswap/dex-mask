@@ -10,7 +10,7 @@ const Button = ({
   disabled,
   className,
   onClick,
-  as
+  as,
 }) => {
   let Tag = 'button';
 
@@ -18,11 +18,21 @@ const Button = ({
     Tag = as;
   }
 
-  return <Tag onClick={onClick} className={classnames('dex-button', `button-${type}`, className, disabled && 'button-disabled')}>
+  return (
+    <Tag
+      onClick={onClick}
+      className={classnames(
+        'dex-button',
+        `button-${type}`,
+        className,
+        disabled && 'button-disabled',
+      )}
+    >
       {leftArrow && <span className="button__left__arrow"></span>}
       {children}
       {rightArrow && <span className="button__right__arrow"></span>}
-    </Tag>;
+    </Tag>
+  );
 };
 
 export default Button;

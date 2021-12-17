@@ -3,24 +3,25 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
-import { CONTACT_ADD_ROUTE, CONTACT_EDIT_ROUTE, CONTACT_VIEW_ROUTE } from '@view/helpers/constants/routes';
+import {
+  CONTACT_ADD_ROUTE,
+  CONTACT_EDIT_ROUTE,
+  CONTACT_VIEW_ROUTE,
+} from '@view/helpers/constants/routes';
 import { getAddressBook } from '@view/selectors';
 import ContactListTab from './component';
 
 const mapStateToProps = (state, ownProps) => {
-  const {
-    location
-  } = ownProps;
-  const {
-    pathname
-  } = location;
+  const { location } = ownProps;
+  const { pathname } = location;
   const pathNameTail = pathname.match(/[^/]+$/u)[0];
   const pathNameTailIsAddress = pathNameTail.includes('0x');
   const viewingContact = Boolean(pathname.match(CONTACT_VIEW_ROUTE));
   const editingContact = Boolean(pathname.match(CONTACT_EDIT_ROUTE));
   const addingContact = Boolean(pathname.match(CONTACT_ADD_ROUTE));
   const envIsPopup = getEnvironmentType() === ENVIRONMENT_TYPE_POPUP;
-  const hideAddressBook = envIsPopup && (viewingContact || editingContact || addingContact);
+  const hideAddressBook =
+    envIsPopup && (viewingContact || editingContact || addingContact);
   return {
     viewingContact,
     editingContact,
@@ -29,7 +30,7 @@ const mapStateToProps = (state, ownProps) => {
     selectedAddress: pathNameTailIsAddress ? pathNameTail : '',
     hideAddressBook,
     envIsPopup,
-    showContactContent: !envIsPopup || hideAddressBook
+    showContactContent: !envIsPopup || hideAddressBook,
   };
 };
 

@@ -88,9 +88,7 @@ export default class PersonalMessageManager extends EventEmitter {
   addUnapprovedMessageAsync(msgParams, req) {
     return new Promise((resolve, reject) => {
       if (!msgParams.from) {
-        reject(
-          new Error('DexMask Message Signature: from field is required.'),
-        );
+        reject(new Error('DexMask Message Signature: from field is required.'));
         return;
       }
       const msgId = this.addUnapprovedMessage(msgParams, req);

@@ -6,6 +6,6 @@ export default connect(mapStateToProps)(SendRowErrorMessage);
 function mapStateToProps(state, ownProps) {
   return {
     errors: getSendErrors(state),
-    errorType: ownProps.errorType
+    errorType: ownProps.errorType,
   };
 }

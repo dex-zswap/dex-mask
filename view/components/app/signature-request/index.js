@@ -8,20 +8,18 @@ import SignatureRequest from './component';
 function mapStateToProps(state) {
   return {
     // not forwarded to component
-    allAccounts: accountsWithSendEtherInfoSelector(state)
+    allAccounts: accountsWithSendEtherInfoSelector(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    clearConfirmTransaction: () => dispatch(clearConfirmTransaction())
+    clearConfirmTransaction: () => dispatch(clearConfirmTransaction()),
   };
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
-  const {
-    allAccounts
-  } = stateProps;
+  const { allAccounts } = stateProps;
   const {
     signPersonalMessage,
     signTypedMessage,
@@ -29,13 +27,11 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     cancelTypedMessage,
     signMessage,
     cancelMessage,
-    txData
+    txData,
   } = ownProps;
   const {
     type,
-    msgParams: {
-      from
-    }
+    msgParams: { from },
   } = txData;
   const fromAccount = getAccountByAddress(allAccounts, from);
   let cancel;
@@ -52,13 +48,11 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     sign = signMessage;
   }
 
-  return { ...ownProps,
-    ...dispatchProps,
-    fromAccount,
-    txData,
-    cancel,
-    sign
-  };
+  return { ...ownProps, ...dispatchProps, fromAccount, txData, cancel, sign };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(SignatureRequest);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+  mergeProps,
+)(SignatureRequest);

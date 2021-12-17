@@ -12,14 +12,14 @@ export default class SignatureRequest extends PureComponent {
     fromAccount: PropTypes.shape({
       address: PropTypes.string.isRequired,
       balance: PropTypes.string,
-      name: PropTypes.string
+      name: PropTypes.string,
     }).isRequired,
     clearConfirmTransaction: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
-    sign: PropTypes.func.isRequired
+    sign: PropTypes.func.isRequired,
   };
   static contextTypes = {
-    t: PropTypes.func
+    t: PropTypes.func,
   };
 
   componentDidMount() {
@@ -28,50 +28,43 @@ export default class SignatureRequest extends PureComponent {
     }
   }
 
-  _beforeUnload = event => {
-    const {
-      clearConfirmTransaction,
-      cancel
-    } = this.props;
+  _beforeUnload = (event) => {
+    const { clearConfirmTransaction, cancel } = this.props;
     clearConfirmTransaction();
     cancel(event);
   };
 
   formatWallet(wallet) {
-    return `${wallet.slice(0, 8)}...${wallet.slice(wallet.length - 8, wallet.length)}`;
+    return `${wallet.slice(0, 8)}...${wallet.slice(
+      wallet.length - 8,
+      wallet.length,
+    )}`;
   }
 
   render() {
     const {
       fromAccount,
       txData: {
-        msgParams: {
-          data,
-          origin
-        }
+        msgParams: { data, origin },
       },
       cancel,
-      sign
+      sign,
     } = this.props;
-    const {
-      address: fromAddress
-    } = fromAccount;
-    const {
-      message,
-      domain = {}
-    } = JSON.parse(data);
+    const { address: fromAddress } = fromAccount;
+    const { message, domain = {} } = JSON.parse(data);
 
-    const onSign = event => {
+    const onSign = (event) => {
       window.removeEventListener('beforeunload', this._beforeUnload);
       sign(event);
     };
 
-    const onCancel = event => {
+    const onCancel = (event) => {
       window.removeEventListener('beforeunload', this._beforeUnload);
       cancel(event);
     };
 
-    return <div className="signature-request page-container">
+    return (
+      <div className="signature-request page-container">
         <Header fromAccount={fromAccount} />
         <div className="signature-request-content">
           <div className="signature-request-content__title">
@@ -94,7 +87,7 @@ export default class SignatureRequest extends PureComponent {
         </div>
         <Message data={message} />
         <Footer cancelAction={onCancel} signAction={onSign} />
-      </div>;
+      </div>
+    );
   }
-
 }

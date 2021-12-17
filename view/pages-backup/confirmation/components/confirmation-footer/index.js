@@ -6,9 +6,10 @@ export default function ConfirmationFooter({
   onCancel,
   approveText,
   cancelText,
-  alerts
+  alerts,
 }) {
-  return <div className="confirmation-footer">
+  return (
+    <div className="confirmation-footer">
       {alerts}
       <div className="confirmation-footer__actions">
         <Button onClick={onCancel}>{cancelText}</Button>
@@ -16,12 +17,13 @@ export default function ConfirmationFooter({
           {approveText}
         </Button>
       </div>
-    </div>;
+    </div>
+  );
 }
 ConfirmationFooter.propTypes = {
   alerts: PropTypes.node,
   onApprove: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   approveText: PropTypes.string.isRequired,
-  cancelText: PropTypes.string.isRequired
+  cancelText: PropTypes.string.isRequired,
 };

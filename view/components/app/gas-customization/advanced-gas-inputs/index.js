@@ -1,6 +1,10 @@
 import { connect } from 'react-redux';
 import { MIN_GAS_LIMIT_DEC } from '@pages/send/constants';
-import { decGWEIToHexWEI, decimalToHex, hexWEIToDecGWEI } from '@view/helpers/utils/conversions.util';
+import {
+  decGWEIToHexWEI,
+  decimalToHex,
+  hexWEIToDecGWEI,
+} from '@view/helpers/utils/conversions.util';
 import AdvancedGasInputs from './component';
 
 function convertGasPriceForInputs(gasPriceInHexWEI) {
@@ -21,16 +25,18 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     customGasLimit,
     updateCustomGasPrice,
     updateCustomGasLimit,
-    minimumGasLimit
+    minimumGasLimit,
   } = ownProps;
-  return { ...ownProps,
+  return {
+    ...ownProps,
     ...stateProps,
     ...dispatchProps,
     customGasPrice: convertGasPriceForInputs(customGasPrice),
     customGasLimit: convertGasLimitForInputs(customGasLimit),
     minimumGasLimit: convertMinimumGasLimitForInputs(minimumGasLimit),
-    updateCustomGasPrice: price => updateCustomGasPrice(decGWEIToHexWEI(price)),
-    updateCustomGasLimit: limit => updateCustomGasLimit(decimalToHex(limit))
+    updateCustomGasPrice: (price) =>
+      updateCustomGasPrice(decGWEIToHexWEI(price)),
+    updateCustomGasLimit: (limit) => updateCustomGasLimit(decimalToHex(limit)),
   };
 };
 

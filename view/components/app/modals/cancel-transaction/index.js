@@ -5,58 +5,55 @@ import { createCancelTransaction, showModal } from '@view/store/actions';
 import CancelTransaction from './component';
 
 const mapStateToProps = (state, ownProps) => {
-  const {
-    metamask
-  } = state;
+  const { metamask } = state;
   const {
     transactionId,
     originalGasPrice,
     newGasFee,
-    customGasSettings
+    customGasSettings,
   } = ownProps;
-  const {
-    currentNetworkTxList
-  } = metamask;
-  const transaction = currentNetworkTxList.find(({
-    id
-  }) => id === transactionId);
+  const { currentNetworkTxList } = metamask;
+  const transaction = currentNetworkTxList.find(
+    ({ id }) => id === transactionId,
+  );
   const transactionStatus = transaction ? transaction.status : '';
   return {
     transactionId,
     transactionStatus,
     originalGasPrice,
     customGasSettings,
-    newGasFee
+    newGasFee,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     createCancelTransaction: (txId, customGasSettings) => {
       return dispatch(createCancelTransaction(txId, customGasSettings));
     },
-    showTransactionConfirmedModal: () => dispatch(showModal({
-      name: 'TRANSACTION_CONFIRMED'
-    }))
+    showTransactionConfirmedModal: () =>
+      dispatch(
+        showModal({
+          name: 'TRANSACTION_CONFIRMED',
+        }),
+      ),
   };
 };
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  const {
-    transactionId,
-    customGasSettings,
-    ...restStateProps
-  } = stateProps; // eslint-disable-next-line no-shadow
+  const { transactionId, customGasSettings, ...restStateProps } = stateProps; // eslint-disable-next-line no-shadow
 
-  const {
-    createCancelTransaction,
-    ...restDispatchProps
-  } = dispatchProps;
-  return { ...restStateProps,
+  const { createCancelTransaction, ...restDispatchProps } = dispatchProps;
+  return {
+    ...restStateProps,
     ...restDispatchProps,
     ...ownProps,
-    createCancelTransaction: () => createCancelTransaction(transactionId, customGasSettings)
+    createCancelTransaction: () =>
+      createCancelTransaction(transactionId, customGasSettings),
   };
 };
 
-export default compose(withModalProps, connect(mapStateToProps, mapDispatchToProps, mergeProps))(CancelTransaction);
+export default compose(
+  withModalProps,
+  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+)(CancelTransaction);
