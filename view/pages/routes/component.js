@@ -1,8 +1,3 @@
-import React, { Component } from 'react';
-import { matchPath, Route, Switch } from 'react-router-dom';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import IdleTimer from 'react-idle-timer';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import Alerts from '@c/app/alerts';
 import NetworkDropdown from '@c/app/dropdowns/network-dropdown';
@@ -21,6 +16,7 @@ import CreateAccountPage from '@pages/create-account';
 import CrossChain from '@pages/cross-chain';
 import FirstTimeFlow from '@pages/first-time-flow';
 import Home from '@pages/home';
+import RestoreVaultPage from '@pages/keychains/restore-vault';
 import Lock from '@pages/lock';
 import PermissionsConnect from '@pages/permissions-connect';
 import ReciveToken from '@pages/recive-token';
@@ -46,6 +42,7 @@ import {
   LOCK_ROUTE,
   NEW_ACCOUNT_ROUTE,
   RECIVE_TOKEN_ROUTE,
+  RESTORE_VAULT_ROUTE,
   SEND_ROUTE,
   SETTINGS_ROUTE,
   SWAPS_ROUTE,
@@ -54,6 +51,11 @@ import {
 } from '@view/helpers/constants/routes';
 import Authenticated from '@view/helpers/higher-order-components/authenticated';
 import Initialized from '@view/helpers/higher-order-components/initialized';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import IdleTimer from 'react-idle-timer';
+import { matchPath, Route, Switch } from 'react-router-dom';
 export default class Routes extends Component {
   static propTypes = {
     currentCurrency: PropTypes.string,
@@ -112,6 +114,12 @@ export default class Routes extends Component {
         <Route path={LOCK_ROUTE} component={Lock} exact />
         <Route path={INITIALIZE_ROUTE} component={FirstTimeFlow} />
         <Initialized path={UNLOCK_ROUTE} component={UnlockPage} exact />
+
+        <Initialized
+          path={RESTORE_VAULT_ROUTE}
+          component={RestoreVaultPage}
+          exact
+        />
         <Authenticated path={SETTINGS_ROUTE} component={Settings} />
         <Authenticated
           path={`${CONFIRM_TRANSACTION_ROUTE}/:id?`}

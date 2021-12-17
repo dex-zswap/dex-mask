@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
-import { I18nContext } from '@view/contexts/i18n';
+import { useI18nContext } from '@view/hooks/useI18nContext';
+import React from 'react';
+
 export default function InfoTab() {
-  const t = useContext(I18nContext);
+  const t = useI18nContext();
+
   return (
     <div className="base-width">
       <div className="setting-item">

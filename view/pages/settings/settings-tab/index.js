@@ -1,10 +1,8 @@
-import React, { useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import locales from '@app/_locales/index.json';
 import Selector from '@c/ui/selector';
 import Switch from '@c/ui/switch';
-import { I18nContext } from '@view/contexts/i18n';
 import availableCurrencies from '@view/helpers/constants/available-conversions.json';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 import { getPreferences } from '@view/selectors';
 import {
   setCurrentCurrency,
@@ -12,6 +10,9 @@ import {
   setUseBlockie,
   updateCurrentLocale,
 } from '@view/store/actions';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 const sortedCurrencies = availableCurrencies.sort((a, b) => {
   return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
 });
@@ -28,7 +29,7 @@ const localeOptions = locales.map((locale) => {
   };
 });
 export default function SettingsTab() {
-  const t = useContext(I18nContext);
+  const t = useI18nContext();
   const { warning } = useSelector((state) => state.appState);
   const metamask = useSelector((state) => state.metamask);
   const { currentCurrency, useBlockie, currentLocale } = metamask;

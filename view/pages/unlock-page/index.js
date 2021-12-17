@@ -1,10 +1,3 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import PropTypes from 'prop-types';
-import getCaretCoordinates from 'textarea-caret';
-import { EventEmitter } from 'events';
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
 import TextField from '@c/ui/text-field';
@@ -19,6 +12,13 @@ import {
   showModal,
   tryUnlockDexmask,
 } from '@view/store/actions';
+import { EventEmitter } from 'events';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
+import getCaretCoordinates from 'textarea-caret';
 
 class UnlockPage extends Component {
   static contextTypes = {
@@ -49,6 +49,7 @@ class UnlockPage extends Component {
   }
 
   handleImport = () => {
+    console.log('RESTORE_VAULT_ROUTE', RESTORE_VAULT_ROUTE);
     this.props.history.push(RESTORE_VAULT_ROUTE);
   };
   handleSubmit = async (event) => {

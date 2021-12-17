@@ -1,208 +1,98 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import ExportTextContainer from '@c/ui/export-text-container';
+import TextField from '@c/ui/text-field';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 import { requestRevealSeedWords } from '@view/store/actions';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 const PASSWORD_PROMPT_SCREEN = 'PASSWORD_PROMPT_SCREEN';
 const REVEAL_SEED_SCREEN = 'REVEAL_SEED_SCREEN';
 
-class RevealSeedPage extends Component {
-  state = {
-    screen: PASSWORD_PROMPT_SCREEN,
-    password: '',
-    seedWords: null,
-    error: null,
-  };
+export default function RevealSeedPage() {
+  const t = useI18nContext();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const mostRecentOverviewPage = useSelector(getMostRecentOverviewPage);
 
-  componentDidMount() {
-    const passwordBox = document.getElementById('password-box');
+  const [screen, setScreen] = useState(PASSWORD_PROMPT_SCREEN);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [seedWords, setSeedWords] = useState();
 
-    if (passwordBox) {
-      passwordBox.focus();
-    }
-  }
-
-  handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    this.setState({
-      seedWords: null,
-      error: null,
-    });
-    this.props
-      .requestRevealSeedWords(this.state.password)
-      .then((seedWords) =>
-        this.setState({
-          seedWords,
-          screen: REVEAL_SEED_SCREEN,
-        }),
-      )
-      .catch((error) =>
-        this.setState({
-          error: error.message,
-        }),
-      );
-  }
+    setError('');
+    setSeedWords(null);
+    dispatch(requestRevealSeedWords(password))
+      .then((words) => {
+        setSeedWords(words);
+        setScreen(REVEAL_SEED_SCREEN);
+      })
+      .catch(({ message }) => {
+        setError(message);
+      });
+  };
 
-  renderWarning() {
-    return (
-      <div className="page-container__warning-container">
-        <img
-          className="page-container__warning-icon"
-          src="images/warning.svg"
-          alt=""
-        />
-        <div className="page-container__warning-message">
-          <div className="page-container__warning-title">
-            {this.context.t('revealSeedWordsWarningTitle')}
-          </div>
-          <div>{this.context.t('revealSeedWordsWarning')}</div>
+  return (
+    <div className="base-width">
+      <div className="setting-item">
+        <div className="setting-value">{t('revealSeedWordsDescription')}</div>
+      </div>
+      <div className="setting-item">
+        <div className="reveal-seed-warning-wrap">
+          <img width={36} src="images/settings/warning.png" />
+          <div>{t('revealSeedWordsWarningTitle')}</div>
+          <div>{t('revealSeedWordsWarning')}</div>
         </div>
       </div>
-    );
-  }
-
-  renderContent() {
-    return this.state.screen === PASSWORD_PROMPT_SCREEN
-      ? this.renderPasswordPromptContent()
-      : this.renderRevealSeedContent();
-  }
-
-  renderPasswordPromptContent() {
-    const { t } = this.context;
-    return (
-      <form onSubmit={(event) => this.handleSubmit(event)}>
-        <label className="input-label" htmlFor="password-box">
-          {t('enterPasswordContinue')}
-        </label>
-        <div className="input-group">
-          <input
-            type="password"
-            placeholder={t('password')}
-            id="password-box"
-            value={this.state.password}
-            onChange={(event) =>
-              this.setState({
-                password: event.target.value,
-              })
-            }
-            className={classnames('form-control', {
-              'form-control--error': this.state.error,
-            })}
-          />
+      <div className="setting-item">
+        <div className="setting-label">
+          {screen === PASSWORD_PROMPT_SCREEN
+            ? t('enterPasswordContinue')
+            : t('yourPrivateSeedPhrase')}
         </div>
-        {this.state.error && (
-          <div className="reveal-seed__error">{this.state.error}</div>
+        {screen === PASSWORD_PROMPT_SCREEN ? (
+          <>
+            <TextField
+              type="password"
+              placeholder={t('password')}
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+              autoFocus
+            />
+            <div className="reveal-seed-error-tip">{error}</div>
+          </>
+        ) : (
+          <ExportTextContainer text={seedWords} />
         )}
-      </form>
-    );
-  }
-
-  renderRevealSeedContent() {
-    const { t } = this.context;
-    return (
-      <div>
-        <label className="reveal-seed__label">
-          {t('yourPrivateSeedPhrase')}
-        </label>
-        <ExportTextContainer text={this.state.seedWords} />
       </div>
-    );
-  }
-
-  renderFooter() {
-    return this.state.screen === PASSWORD_PROMPT_SCREEN
-      ? this.renderPasswordPromptFooter()
-      : this.renderRevealSeedFooter();
-  }
-
-  renderPasswordPromptFooter() {
-    return (
-      <div className="page-container__footer">
-        <footer>
-          <Button
-            leftArrow
-            className="page-container__footer-button seed-btn"
-            onClick={() =>
-              this.props.history.push(this.props.mostRecentOverviewPage)
-            }
-          >
-            {this.context.t('cancel')}
-          </Button>
-          <Button
-            type="primary"
-            rightArrow
-            className="page-container__footer-button seed-btn"
-            onClick={(event) => this.handleSubmit(event)}
-            disabled={this.state.password === ''}
-          >
-            {this.context.t('next')}
-          </Button>
-        </footer>
-      </div>
-    );
-  }
-
-  renderRevealSeedFooter() {
-    return (
-      <div className="page-container__footer">
-        <Button
-          type="default"
-          large
-          className="page-container__footer-button"
-          onClick={() =>
-            this.props.history.push(this.props.mostRecentOverviewPage)
-          }
-        >
-          {this.context.t('close')}
-        </Button>
-      </div>
-    );
-  }
-
-  render() {
-    return (
-      <div className="page-container reveal-seed__wrapper">
-        <div className="page-container__header">
-          <div className="page-container__title">
-            {this.context.t('revealSeedWordsTitle')}
+      <div className="bottom-fixed-btn-group">
+        {screen === PASSWORD_PROMPT_SCREEN ? (
+          <div className="flex space-between">
+            <Button
+              className="half-button"
+              onClick={() => history.push(mostRecentOverviewPage)}
+            >
+              {t('cancel')}
+            </Button>
+            <Button
+              className="half-button"
+              type="primary"
+              onClick={(event) => handleSubmit(event)}
+              disabled={password === ''}
+            >
+              {t('next')}
+            </Button>
           </div>
-          <div className="page-container__subtitle">
-            {this.context.t('revealSeedWordsDescription')}
-          </div>
-        </div>
-        <div className="page-container__content">
-          {this.renderWarning()}
-          <div className="reveal-seed__content">{this.renderContent()}</div>
-        </div>
-        {this.renderFooter()}
+        ) : (
+          <Button onClick={() => history.push(mostRecentOverviewPage)}>
+            {t('close')}
+          </Button>
+        )}
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-RevealSeedPage.propTypes = {
-  requestRevealSeedWords: PropTypes.func,
-  history: PropTypes.object,
-  mostRecentOverviewPage: PropTypes.string.isRequired,
-};
-RevealSeedPage.contextTypes = {
-  t: PropTypes.func,
-};
-
-const mapStateToProps = (state) => {
-  return {
-    mostRecentOverviewPage: getMostRecentOverviewPage(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    requestRevealSeedWords: (password) =>
-      dispatch(requestRevealSeedWords(password)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RevealSeedPage);
