@@ -12,9 +12,9 @@ import {
   TOKEN_CATEGORY_HASH,
 } from '@view/helpers/constants/transactions';
 import {
-  formatDateWithYearContext,
   shortenAddress,
   stripHttpSchemes,
+  formatDate
 } from '@view/helpers/utils';
 import { camelCaseToCapitalize } from '@view/helpers/utils/common.util';
 import { getTokenAddressParam } from '@view/helpers/utils/token-util';
@@ -76,7 +76,7 @@ export function useTransactionDisplayData(transactionGroup) {
   const isSubmitted = displayedStatusKey === TRANSACTION_STATUSES.SUBMITTED;
   const primaryValue = primaryTransaction.txParams?.value;
   let prefix = '-';
-  const date = formatDateWithYearContext(initialTransaction.time);
+  const date = formatDate(initialTransaction.time);
   let subtitle;
   let subtitleContainsOrigin = false;
   let recipientAddress = to; // This value is used to determine whether we should look inside txParams.data
@@ -168,9 +168,9 @@ export function useTransactionDisplayData(transactionGroup) {
     if (isNegative) {
       prefix = '';
     } else if (isViewingReceivedTokenFromSwap) {
-      prefix = '+';
+      prefix = '+ ';
     } else {
-      prefix = '-';
+      prefix = '- ';
     }
   } else if (type === TRANSACTION_TYPES.SWAP_APPROVAL) {
     category = TRANSACTION_GROUP_CATEGORIES.APPROVAL;
@@ -207,11 +207,11 @@ export function useTransactionDisplayData(transactionGroup) {
     category = TRANSACTION_GROUP_CATEGORIES.SEND;
     title = t('sendSpecifiedTokens', [token?.symbol || t('token')]);
     recipientAddress = getTokenAddressParam(tokenData);
-    subtitle = t('toAddress', [shortenAddress(recipientAddress)]);
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)]);
   } else if (type === TRANSACTION_TYPES.SENT_ETHER) {
     category = TRANSACTION_GROUP_CATEGORIES.SEND;
     title = t('send');
-    subtitle = t('toAddress', [shortenAddress(recipientAddress)]);
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)]);
   } else {
     dispatch(
       captureSingleException(

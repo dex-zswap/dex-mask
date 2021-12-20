@@ -264,7 +264,7 @@ class ChainSwitcher extends Component {
       <>
         <div className="chain-switcher">
           {/* <div className="chain-switcher__wrapper">
-                   <div
+                  <div
           className="chain-switcher__modal-trigger"
           ref={(el) => (this.triggerEl = el)}
           onClick={() => this.toggleNetworkDrop()}

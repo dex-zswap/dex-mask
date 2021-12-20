@@ -46,7 +46,7 @@ import HomeNotification from '@c/app/home-notification';
 import MultipleNotifications from '@c/app/multiple-notifications';
 import SelectedAccount from '@c/app/selected-account';
 import { EthOverview } from '@c/app/wallet-overview';
-import { Tab, Tabs } from '@c/ui/tabs';
+import Tabs from '@c/ui/tabs';
 import TransactionList from '@c/app/transaction/list';
 import TopHeader from '@c/ui/top-header';
 import {
@@ -121,6 +121,7 @@ export default function HomePage() {
           <SelectedAccount />
           <EthOverview />
           <Tabs
+            actived="activity"
             tabs={[
               {
                 label: t('assets'),

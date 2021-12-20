@@ -14,7 +14,7 @@ import {
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
 import punycode from 'punycode/punycode'; // formatData :: ( date: <Unix Timestamp> ) -> String
 
-export function formatDate(date, format = "M/d/y 'at' T") {
+export function formatDate(date, format = "M LLL y 'at' T") {
   if (!date) {
     return '';
   }
@@ -222,7 +222,7 @@ export function shortenAddress(address = '', pre = 8, suffix = -8) {
     return address;
   }
 
-  return `${address.slice(0, pre)}***${address.slice(suffix)}`;
+  return `${address.slice(0, pre)}...${address.slice(suffix)}`;
 }
 export function getAccountByAddress(accounts = [], targetAddress) {
   return accounts.find(({ address }) => address === targetAddress);

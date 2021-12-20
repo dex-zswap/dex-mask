@@ -393,9 +393,9 @@ export default class Home extends PureComponent {
             name={t('assets')}
             >
             <AssetList
-              onClickAsset={(asset) =>
-                history.push(`${ASSET_ROUTE}/${asset}`)
-              }
+             onClickAsset={(asset) =>
+               history.push(`${ASSET_ROUTE}/${asset}`)
+             }
             />
             </Tab>
             <Tab
