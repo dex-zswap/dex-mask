@@ -29,7 +29,6 @@ export default class TokenSearch extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     searchQuery: '',
   };

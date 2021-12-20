@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { checkExistingAddresses } from '@view/helpers/utils';
 import TokenListPlaceholder from './token-list-placeholder';
-
 export default class TokenList extends Component {
   static contextTypes = {
     t: PropTypes.func,
@@ -16,44 +15,46 @@ export default class TokenList extends Component {
       onToggleToken,
       tokens = [],
     } = this.props;
-    return results.length === 0 ? <TokenListPlaceholder /> : (
+    return results.length === 0 ? (
+      <TokenListPlaceholder />
+    ) : (
       <div className="token-list">
         <div className="token-list__title">
           {this.context.t('searchResults')}
         </div>
         <div className="token-list__tokens-container">
           {results.slice(0, 6).map((_, i) => {
-              const { logo, symbol, name, address } = results[i] || {};
-              const tokenAlreadyAdded = checkExistingAddresses(address, tokens);
+            const { logo, symbol, name, address } = results[i] || {};
+            const tokenAlreadyAdded = checkExistingAddresses(address, tokens);
 
-              const onClick = () =>
-                !tokenAlreadyAdded && onToggleToken(results[i]);
+            const onClick = () =>
+              !tokenAlreadyAdded && onToggleToken(results[i]);
 
-              return (
-                Boolean(logo || symbol || name) && (
+            return (
+              Boolean(logo || symbol || name) && (
+                <div
+                  className={classnames('token-list__token', {
+                    'token-list__token--selected': selectedTokens[address],
+                    'token-list__token--disabled': tokenAlreadyAdded,
+                  })}
+                  onClick={onClick}
+                  onKeyPress={(event) => event.key === 'Enter' && onClick()}
+                  key={i}
+                  tabIndex="0"
+                >
                   <div
-                    className={classnames('token-list__token', {
-                      'token-list__token--selected': selectedTokens[address],
-                      'token-list__token--disabled': tokenAlreadyAdded,
-                    })}
-                    onClick={onClick}
-                    onKeyPress={(event) => event.key === 'Enter' && onClick()}
-                    key={i}
-                    tabIndex="0"
-                  >
-                    <div
-                      className="token-list__token-icon"
-                      style={{
-                        backgroundImage: logo && `url(images/contract/${logo})`,
-                      }}
-                    />
-                    <div className="token-list__token-data">
-                      <span className="token-list__token-name">{`${name} (${symbol})`}</span>
-                    </div>
+                    className="token-list__token-icon"
+                    style={{
+                      backgroundImage: logo && `url(images/contract/${logo})`,
+                    }}
+                  />
+                  <div className="token-list__token-data">
+                    <span className="token-list__token-name">{`${name} (${symbol})`}</span>
                   </div>
-                )
-              );
-            })}
+                </div>
+              )
+            );
+          })}
         </div>
       </div>
     );

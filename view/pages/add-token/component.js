@@ -22,11 +22,9 @@ const MIN_DECIMAL_VALUE = 0;
 const MAX_DECIMAL_VALUE = 36;
 
 class AddToken extends Component {
-
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     activeTab: 'search',
     customAddress: '',
@@ -141,7 +139,7 @@ class AddToken extends Component {
       selectedTokens,
     });
     history.push(CONFIRM_ADD_TOKEN_ROUTE);
-  }
+  };
 
   async attemptToAutoFillTokenParams(address) {
     const { symbol = '', decimals } = await this.tokenInfoGetter(address);
@@ -308,9 +306,11 @@ class AddToken extends Component {
           max={MAX_DECIMAL_VALUE}
         />
         {customDecimals === '' && (
-          <div className='custom-decimals-warning'>
-            <div className="title">{this.context.t('tokenDecimalFetchFailed')}</div>
-            <p className='description'>
+          <div className="custom-decimals-warning">
+            <div className="title">
+              {this.context.t('tokenDecimalFetchFailed')}
+            </div>
+            <p className="description">
               {this.context.t('verifyThisTokenDecimalOn', [
                 <a
                   key="add-token-verify-token-decimal"
@@ -371,14 +371,24 @@ class AddToken extends Component {
                 key: 'customToken',
               },
             ]}
-            onChange={(activeTab) => this.setState({ activeTab })}
+            onChange={(activeTab) =>
+              this.setState({
+                activeTab,
+              })
+            }
           >
             {this.renderSearchToken()}
             {this.renderCustomTokenForm()}
           </Tabs>
         </div>
-        <Button type="primary" onClick={this.handleNext} disabled={!this.hasSelected()}>
-          {this.context.t(this.state.activeTab === 'search' ? 'addTokens' : 'addCustomTokens')}
+        <Button
+          type="primary"
+          onClick={this.handleNext}
+          disabled={!this.hasSelected()}
+        >
+          {this.context.t(
+            this.state.activeTab === 'search' ? 'addTokens' : 'addCustomTokens',
+          )}
         </Button>
       </div>
     );

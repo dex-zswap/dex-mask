@@ -111,8 +111,7 @@ export default class Home extends PureComponent {
       history.push(CONFIRM_TRANSACTION_ROUTE);
     } else if (Object.keys(suggestedTokens).length > 0) {
       history.push(CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE);
-    } 
-    else if (pendingConfirmations.length > 0) {
+    } else if (pendingConfirmations.length > 0) {
       history.push(CONFIRMATION_V_NEXT_ROUTE);
     }
   }

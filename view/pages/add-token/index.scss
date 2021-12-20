@@ -1,4 +1,4 @@
-@import "token-list/index";
+@import 'token-list/index';
 
 .add-token-page {
   .add-token__custom-token-form {
@@ -7,7 +7,7 @@
       flex-flow: row nowrap;
       justify-content: space-between;
     }
-    
+
     .add-token__custom-symbol__label {
       flex: 0 0 auto;
       font-weight: bold;
@@ -15,7 +15,7 @@
       line-height: 14px;
       color: $white;
     }
-    
+
     .add-token__custom-symbol__edit {
       width: 12px;
       height: 12px;
@@ -44,7 +44,7 @@
       }
 
       .description {
-        font-size: 12px;
+        font-size: $size-12;
         color: $white;
         margin: 3px 0 0;
 

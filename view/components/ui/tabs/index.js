@@ -7,11 +7,14 @@ const Tabs = ({ tabs, actived, children, onChange }) => {
     const index = tabs.findIndex(({ key }) => key === current);
     return index > -1 ? children[index] : null;
   }, [children, current, tabs]);
-  const switchTab = useCallback((e, key) => {
-    e.stopPropagation();
-    setCurrent(key);
-    typeof onChange === 'function' && onChange(key);
-  }, [onChange]);
+  const switchTab = useCallback(
+    (e, key) => {
+      e.stopPropagation();
+      setCurrent(key);
+      typeof onChange === 'function' && onChange(key);
+    },
+    [onChange],
+  );
   return (
     <div className="dex-tabs">
       <div className="tabs-tab flex space-between items-center">

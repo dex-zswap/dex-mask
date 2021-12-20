@@ -193,8 +193,8 @@ export default function TransactionListItem({
             )}
             {/* {(speedUpButton || cancelButton) && (
             <div className="transaction-list-item__pending-actions">
-              {speedUpButton}
-              {cancelButton}
+             {speedUpButton}
+             {cancelButton}
             </div>
             )} */}
           </div>

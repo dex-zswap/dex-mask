@@ -19,10 +19,6 @@ export default class ConfirmAddToken extends Component {
     }
   }
 
-  getTokenName(name, symbol) {
-    return typeof name === 'undefined' ? symbol : `${name} (${symbol})`;
-  }
-
   render() {
     const {
       history,
@@ -31,6 +27,7 @@ export default class ConfirmAddToken extends Component {
       mostRecentOverviewPage,
       pendingTokens,
     } = this.props;
+
     return (
       <div className="confirm-add-token dex-page-container base-width space-between">
         <div className="confirm-add-token-top">
@@ -41,25 +38,32 @@ export default class ConfirmAddToken extends Component {
           </div>
           <div className="confirm-add-token__token-list">
             {Object.entries(pendingTokens).map(([address, token]) => {
-              const { name, symbol } = token;
+              const { name, symbol, logo } = token;
               return (
                 <div
-                  className="confirm-add-token__token-list-item"
+                  className="confirm-add-token__token-list-item flex space-between items-center"
                   key={address}
                 >
-                  <div className="confirm-add-token__token confirm-add-token__data">
-                    <TokenImage symbol={symbol} size={40} address={address} />
+                  <div className="confirm-add-token__token flex items-center confirm-add-token__data">
+                    {
+                      logo ?
+                      <div className='token-image-origin' style={{
+                        backgroundImage: `url('images/contract/${logo}')`
+                      }}></div>
+                      :
+                      <TokenImage symbol={symbol} size={32} address={address} />
+                    }
                     <div
                       style={{
                         marginLeft: '12px',
                       }}
                       className="confirm-add-token__name"
                     >
-                      {this.getTokenName(name, symbol)}
+                      {symbol}
                     </div>
                   </div>
                   <div className="confirm-add-token__balance">
-                    <TokenBalance token={token} />
+                    <TokenBalance token={token} hideSymbol />
                   </div>
                 </div>
               );

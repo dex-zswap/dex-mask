@@ -1,4 +1,4 @@
-@import "token-list-placeholder/index";
+@import 'token-list-placeholder/index';
 
 .token-list {
   .token-list__title {
@@ -6,14 +6,14 @@
     color: $white;
     margin: 10px 0;
   }
-  
+
   .token-list__tokens-container {
     display: flex;
     flex-direction: column;
     max-height: 250px;
     overflow-y: auto;
   }
-  
+
   .token-list__token {
     display: flex;
     flex-flow: row nowrap;
@@ -26,7 +26,7 @@
     position: relative;
     margin: 3px 0;
   }
-  
+
   .token-list__token--selected {
     border: 1px solid $primary-border;
   }
@@ -35,7 +35,7 @@
     opacity: 0.4;
     pointer-events: none;
   }
-  
+
   .token-list__token-icon {
     width: 32px;
     height: 32px;
@@ -47,14 +47,14 @@
     flex: 0 0 auto;
     background-color: $white;
   }
-  
+
   .token-list__token-data {
     display: flex;
     flex-direction: row;
     align-items: center;
     min-width: 0;
   }
-  
+
   .token-list__token-name {
     overflow: hidden;
     text-overflow: ellipsis;

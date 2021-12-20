@@ -1,4 +1,10 @@
-import React, { useMemo, useRef, useState, useCallback, useEffect } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEnvironmentType } from '@app/scripts/lib/util';
@@ -112,13 +118,11 @@ export default function HomePage() {
       dismissSeedBackUpReminder === false,
     [seedPhraseBackedUp, accountBalance, tokens, dismissSeedBackUpReminder],
   );
-  
   const mounted = useRef(false);
-  const [ state, setState ] = useState({
+  const [state, setState] = useState({
     closing: false,
-    redirecting: false
+    redirecting: false,
   });
-
   useEffect(() => {
     if (isNotification && totalUnapprovedCount === 0) {
       global.platform.closeCurrentWindow();
@@ -131,32 +135,39 @@ export default function HomePage() {
     } else if (pendingConfirmations.length > 0) {
       history.push(CONFIRMATION_V_NEXT_ROUTE);
     }
-  }, [history, suggestedTokens, isNotification, totalUnapprovedCount, firstPermissionsRequestId, unconfirmedTransactionsCount, pendingConfirmations]);
-
+  }, [
+    history,
+    suggestedTokens,
+    isNotification,
+    totalUnapprovedCount,
+    firstPermissionsRequestId,
+    unconfirmedTransactionsCount,
+    pendingConfirmations,
+  ]);
   useEffect(() => {
     if (!mounted.current) {
       setState((state) => {
         if (isNotification && totalUnapprovedCount === 0) {
-          return {
-            ...state,
-            closing: true,
-          };
+          return { ...state, closing: true };
         } else if (
           firstPermissionsRequestId ||
           unconfirmedTransactionsCount > 0 ||
           Object.keys(suggestedTokens).length > 0
         ) {
-          return {
-            ...state,
-            redirecting: true,
-          };
+          return { ...state, redirecting: true };
         }
 
         return state;
       });
     }
-  }, [firstPermissionsRequestId, isNotification, suggestedTokens, totalUnapprovedCount, unconfirmedTransactionsCount, mounted.current]);
-
+  }, [
+    firstPermissionsRequestId,
+    isNotification,
+    suggestedTokens,
+    totalUnapprovedCount,
+    unconfirmedTransactionsCount,
+    mounted.current,
+  ]);
   return (
     <div className="main-container dex-page-container">
       <div className="home__container base-width">
