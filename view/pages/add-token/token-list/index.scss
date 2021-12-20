@@ -1,68 +1,65 @@
-@import 'token-list-placeholder/index';
+@import "token-list-placeholder/index";
 
 .token-list {
-  &__title {
-    @include H7;
+  .token-list__title {
+    font-size: $size-12;
+    color: $white;
+    margin: 10px 0;
   }
-
-  &__tokens-container {
+  
+  .token-list__tokens-container {
     display: flex;
     flex-direction: column;
+    max-height: 250px;
+    overflow-y: auto;
   }
-
-  &__token {
-    transition: 200ms ease-in-out;
+  
+  .token-list__token {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
     padding: 8px;
-    margin-top: 8px;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-radius: $size-12;
     cursor: pointer;
     border: 1px solid transparent;
     position: relative;
-
-    &:hover,
-    &:focus {
-      border-color: rgba($malibu-blue, 0.5);
-    }
-
-    &--selected {
-      border-color: $malibu-blue !important;
-    }
-
-    &--disabled {
-      opacity: 0.4;
-      pointer-events: none;
-    }
+    margin: 3px 0;
+  }
+  
+  .token-list__token--selected {
+    border: 1px solid $primary-border;
   }
 
-  &__token-icon {
-    width: 48px;
-    height: 48px;
+  .token-list__token--disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+  
+  .token-list__token-icon {
+    width: 32px;
+    height: 32px;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
     border-radius: 50%;
-    background-color: $white;
-    box-shadow: 0 2px 4px 0 rgba($black, 0.24);
     margin-right: 12px;
     flex: 0 0 auto;
+    background-color: $white;
   }
-
-  &__token-data {
+  
+  .token-list__token-data {
     display: flex;
     flex-direction: row;
     align-items: center;
     min-width: 0;
   }
-
-  &__token-name {
-    /*rtl:ignore*/
-    direction: ltr;
+  
+  .token-list__token-name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    color: $white;
+    font-size: 14px;
   }
 }

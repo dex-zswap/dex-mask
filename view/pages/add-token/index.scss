@@ -1,61 +1,67 @@
-@import 'token-list/index';
+@import "token-list/index";
 
-.add-token {
-  $self: &;
-
-  &__custom-token-form {
-    padding: 8px 16px 16px;
-
-    input[type='number']::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      display: none;
-    }
-
-    input[type='number']:hover::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      display: none;
-    }
-    & #{$self}__decimal-warning {
-      margin-top: 5px;
-    }
-
-    .MuiFormControl-marginNormal {
-      margin-top: 10px;
-    }
-  }
-
-  &__search-token {
-    padding: 16px;
-  }
-
-  &__token-list {
-    margin-top: 16px;
-  }
-
-  &__custom-symbol {
-    &__label-wrapper {
+.add-token-page {
+  .add-token__custom-token-form {
+    .add-token__custom-symbol__label-wrapper {
       display: flex;
       flex-flow: row nowrap;
+      justify-content: space-between;
     }
-
-    &__label {
+    
+    .add-token__custom-symbol__label {
       flex: 0 0 auto;
+      font-weight: bold;
+      font-size: $size-12;
+      line-height: 14px;
+      color: $white;
+    }
+    
+    .add-token__custom-symbol__edit {
+      width: 12px;
+      height: 12px;
+      background: url('/images/button/pen.png') no-repeat center;
+      background-size: 100%;
+      cursor: pointer;
     }
 
-    &__edit {
-      flex: 1 1 auto;
-      text-align: right;
-      color: #7813c4;
-      padding-right: 4px;
-      cursor: pointer;
+    .dex-text-field {
+      margin: 0 0 15px;
+      &:last-of-type {
+        margin: 0;
+      }
+    }
+
+    .custom-decimals-warning {
+      background: $warning;
+      padding: $size-12;
+      border-radius: $size-12;
+
+      .title {
+        font-size: 14px;
+        font-weight: bold;
+        color: $white;
+        text-align: center;
+      }
+
+      .description {
+        font-size: 12px;
+        color: $white;
+        margin: 3px 0 0;
+
+        .add-token__link {
+          color: $white;
+          text-decoration: none;
+          font-weight: bold;
+        }
+      }
     }
   }
 
-  &__link {
-    @include H7;
-
-    display: inline;
-    color: #7813c4;
-    padding-left: 0;
+  .search-token-input {
+    padding: 0 0 0 40px;
+    background-image: url('/images/background/search-light.png');
+    background-position: 16px center;
+    background-size: 14px 14px;
+    background-repeat: no-repeat;
   }
 }

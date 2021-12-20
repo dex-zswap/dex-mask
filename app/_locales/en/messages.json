@@ -2853,5 +2853,8 @@
   },
   "zswap": {
     "message": "ZSWAP"
+  },
+  "addCustomTokens": {
+    "message": "Add Custom Tokens"
   }
 }

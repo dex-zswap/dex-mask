@@ -45,7 +45,12 @@ export default function Selector({
         <>
           <div className="options-mask" onClick={() => setShow(false)}></div>
           <div className="selector-menu">
-            <div className={classnames('select-menu-area', footer ? 'with-footer' : null)}>
+            <div
+              className={classnames(
+                'select-menu-area',
+                footer ? 'with-footer' : null,
+              )}
+            >
               {options.map(({ label, value }, index) => (
                 <div
                   className={classnames([

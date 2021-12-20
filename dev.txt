@@ -38,6 +38,7 @@ DEXMask Wallet will be continuously upgraded to introduce a new generation of us
 (RnkeBy) ZBT2: 0x8c7277b4b28e73dff7d09533a13f794b42d319be
 (DEX) ZBT2: 0xE9Cd25DB293C248cFcD8cb41A314aDD335c39264
 
+0xBcEfD686DF3309ab3787041f3b2067898be2E217
 
 
 需要通过配置文件控制钱包前端的部分交互内容

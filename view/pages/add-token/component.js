@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import { getTokenTrackerLink } from '@metamask/etherscan-link';
 import PropTypes from 'prop-types';
 import { addHexPrefix } from '@app/scripts/lib/util';
-import ActionableMessage from '@c/ui/actionable-message';
 import Button from '@c/ui/button';
-import PageContainer from '@c/ui/page-container';
-import { Tab, Tabs } from '@c/ui/tabs';
+import Tabs from '@c/ui/tabs';
+import TopHeader from '@c/ui/top-header';
+import BackBar from '@c/ui/back-bar';
 import TextField from '@c/ui/text-field';
-import Typography from '@c/ui/typography';
 import { CHAINID_EXPLORE_MAP } from '@shared/constants/network';
 import { isValidHexAddress } from '@shared/modules/hexstring-utils';
-import { FONT_WEIGHT, TYPOGRAPHY } from '@view/helpers/constants/design-system';
 import {
   CONFIRM_ADD_TOKEN_ROUTE,
   DEFAULT_ROUTE,
@@ -24,22 +22,13 @@ const MIN_DECIMAL_VALUE = 0;
 const MAX_DECIMAL_VALUE = 36;
 
 class AddToken extends Component {
+
   static contextTypes = {
     t: PropTypes.func,
   };
-  static propTypes = {
-    history: PropTypes.object,
-    setPendingTokens: PropTypes.func,
-    pendingTokens: PropTypes.object,
-    clearPendingTokens: PropTypes.func,
-    tokens: PropTypes.array,
-    identities: PropTypes.object,
-    showSearchTab: PropTypes.bool.isRequired,
-    mostRecentOverviewPage: PropTypes.string.isRequired,
-    chainId: PropTypes.string,
-    rpcPrefs: PropTypes.object,
-  };
+
   state = {
+    activeTab: 'search',
     customAddress: '',
     customSymbol: '',
     customDecimals: 0,
@@ -123,7 +112,7 @@ class AddToken extends Component {
     return customAddress || Object.keys(selectedTokens).length > 0;
   }
 
-  handleNext() {
+  handleNext = () => {
     if (this.hasError()) {
       return;
     }
@@ -281,9 +270,6 @@ class AddToken extends Component {
           value={customAddress}
           onChange={(e) => this.handleCustomAddressChange(e.target.value)}
           error={customAddressError}
-          fullWidth
-          autoFocus
-          margin="normal"
         />
         <TextField
           id="custom-symbol"
@@ -300,9 +286,7 @@ class AddToken extends Component {
                       forceEditSymbol: true,
                     })
                   }
-                >
-                  {this.context.t('edit')}
-                </div>
+                ></div>
               )}
             </div>
           }
@@ -310,8 +294,6 @@ class AddToken extends Component {
           value={customSymbol}
           onChange={(e) => this.handleCustomSymbolChange(e.target.value)}
           error={customSymbolError}
-          fullWidth
-          margin="normal"
           disabled={symbolAutoFilled && !forceEditSymbol}
         />
         <TextField
@@ -321,45 +303,27 @@ class AddToken extends Component {
           value={customDecimals}
           onChange={(e) => this.handleCustomDecimalsChange(e.target.value)}
           error={customDecimals ? customDecimalsError : null}
-          fullWidth
-          margin="normal"
           disabled={decimalAutoFilled}
           min={MIN_DECIMAL_VALUE}
           max={MAX_DECIMAL_VALUE}
         />
         {customDecimals === '' && (
-          <ActionableMessage
-            message={
-              <>
-                <Typography
-                  variant={TYPOGRAPHY.H7}
-                  fontWeight={FONT_WEIGHT.BOLD}
+          <div className='custom-decimals-warning'>
+            <div className="title">{this.context.t('tokenDecimalFetchFailed')}</div>
+            <p className='description'>
+              {this.context.t('verifyThisTokenDecimalOn', [
+                <a
+                  key="add-token-verify-token-decimal"
+                  className="add-token__link"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={blockExplorerTokenLink}
                 >
-                  {this.context.t('tokenDecimalFetchFailed')}
-                </Typography>
-                <Typography
-                  variant={TYPOGRAPHY.H7}
-                  fontWeight={FONT_WEIGHT.NORMAL}
-                >
-                  {this.context.t('verifyThisTokenDecimalOn', [
-                    <Button
-                      type="link"
-                      key="add-token-verify-token-decimal"
-                      className="add-token__link"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      href={blockExplorerTokenLink}
-                    >
-                      {blockExplorerLabel}
-                    </Button>,
-                  ])}
-                </Typography>
-              </>
-            }
-            type="warning"
-            withRightButton
-            className="add-token__decimal-warning"
-          />
+                  {blockExplorerLabel}
+                </a>,
+              ])}
+            </p>
+          </div>
         )}
       </div>
     );
@@ -388,40 +352,35 @@ class AddToken extends Component {
     );
   }
 
-  renderTabs() {
-    const { showSearchTab } = this.props;
-    const tabs = [];
-
-    if (showSearchTab) {
-      tabs.push(
-        <Tab name={this.context.t('search')} key="search-tab">
-          {this.renderSearchToken()}
-        </Tab>,
-      );
-    }
-
-    tabs.push(
-      <Tab name={this.context.t('customToken')} key="custom-tab">
-        {this.renderCustomTokenForm()}
-      </Tab>,
-    );
-    return <Tabs>{tabs}</Tabs>;
-  }
-
   render() {
     const { history, clearPendingTokens, mostRecentOverviewPage } = this.props;
     return (
-      <PageContainer
-        title={this.context.t('addTokens')}
-        submitButtonType="primary"
-        tabsComponent={this.renderTabs()}
-        onSubmit={() => this.handleNext()}
-        disabled={Boolean(this.hasError()) || !this.hasSelected()}
-        onCancel={() => {
-          clearPendingTokens();
-          history.replace(DEFAULT_ROUTE);
-        }}
-      />
+      <div className="add-token-page dex-page-container base-width space-between">
+        <div className="add-token-top">
+          <TopHeader />
+          <BackBar title={this.context.t('addTokens')} />
+          <Tabs
+            actived={this.state.activeTab}
+            tabs={[
+              {
+                label: this.context.t('search'),
+                key: 'search',
+              },
+              {
+                label: this.context.t('customToken'),
+                key: 'customToken',
+              },
+            ]}
+            onChange={(activeTab) => this.setState({ activeTab })}
+          >
+            {this.renderSearchToken()}
+            {this.renderCustomTokenForm()}
+          </Tabs>
+        </div>
+        <Button type="primary" onClick={this.handleNext} disabled={!this.hasSelected()}>
+          {this.context.t(this.state.activeTab === 'search' ? 'addTokens' : 'addCustomTokens')}
+        </Button>
+      </div>
     );
   }
 }

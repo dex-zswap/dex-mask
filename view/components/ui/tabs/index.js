@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import classnames from 'classnames';
 
-const Tabs = ({ tabs, actived, children }) => {
+const Tabs = ({ tabs, actived, children, onChange }) => {
   const [current, setCurrent] = useState(actived ?? tabs[0]?.key);
   const tabChildren = useMemo(() => {
     const index = tabs.findIndex(({ key }) => key === current);
@@ -10,7 +10,8 @@ const Tabs = ({ tabs, actived, children }) => {
   const switchTab = useCallback((e, key) => {
     e.stopPropagation();
     setCurrent(key);
-  }, []);
+    typeof onChange === 'function' && onChange(key);
+  }, [onChange]);
   return (
     <div className="dex-tabs">
       <div className="tabs-tab flex space-between items-center">

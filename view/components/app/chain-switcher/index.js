@@ -262,13 +262,18 @@ class ChainSwitcher extends Component {
     if (detail.isBulitIn) {
       this.props.setProviderType(value);
       return;
-    }
-    // rpcUrl, chainId, ticker, nickname
+    } // rpcUrl, chainId, ticker, nickname
+
     this.props.setRpcTarget.apply(null, detail.setPrcParams ?? []);
-  }
+  };
 
   render() {
-    const { showNetworkDropdown, provider, frequentRpcListDetail, addRpc } = this.props;
+    const {
+      showNetworkDropdown,
+      provider,
+      frequentRpcListDetail,
+      addRpc,
+    } = this.props;
     const { showMenu } = this.state;
     const networkOptions = this.defaultChains;
     return (
@@ -282,17 +287,14 @@ class ChainSwitcher extends Component {
             itemRender={SelectorOption}
             onSelect={this.switchNetWork}
             footer={
-              addRpc ?
-              (
-                <Button className='add-rpc-entry'>
+              addRpc ? (
+                <Button className="add-rpc-entry">
                   <Link to={NETWORKS_FORM_ROUTE}>
                     {this.context.t('addNetwork')}
                     <i className="add-icon"></i>
                   </Link>
                 </Button>
-              )
-              :
-              null
+              ) : null
             }
             small
           />

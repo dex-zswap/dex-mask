@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { checkExistingAddresses } from '@view/helpers/utils';
+import TokenListPlaceholder from './token-list-placeholder';
+
 export default class TokenList extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
-  static propTypes = {
-    tokens: PropTypes.array,
-    results: PropTypes.array,
-    selectedTokens: PropTypes.object,
-    onToggleToken: PropTypes.func,
   };
 
   render() {
@@ -20,15 +16,13 @@ export default class TokenList extends Component {
       onToggleToken,
       tokens = [],
     } = this.props;
-    return results.length === 0 ? null : (
+    return results.length === 0 ? <TokenListPlaceholder /> : (
       <div className="token-list">
         <div className="token-list__title">
           {this.context.t('searchResults')}
         </div>
         <div className="token-list__tokens-container">
-          {Array(6)
-            .fill(undefined)
-            .map((_, i) => {
+          {results.slice(0, 6).map((_, i) => {
               const { logo, symbol, name, address } = results[i] || {};
               const tokenAlreadyAdded = checkExistingAddresses(address, tokens);
 
