@@ -1,22 +1,19 @@
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@c/ui/button';
 import ExportTextContainer from '@c/ui/export-text-container';
 import TextField from '@c/ui/text-field';
 import { getMostRecentOverviewPage } from '@reducer/history/history';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { requestRevealSeedWords } from '@view/store/actions';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
 const PASSWORD_PROMPT_SCREEN = 'PASSWORD_PROMPT_SCREEN';
 const REVEAL_SEED_SCREEN = 'REVEAL_SEED_SCREEN';
-
 export default function RevealSeedPage() {
   const t = useI18nContext();
   const history = useHistory();
   const dispatch = useDispatch();
   const mostRecentOverviewPage = useSelector(getMostRecentOverviewPage);
-
   const [screen, setScreen] = useState(PASSWORD_PROMPT_SCREEN);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

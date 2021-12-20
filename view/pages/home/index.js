@@ -120,24 +120,20 @@ export default function HomePage() {
           <ChainSwitcher />
           <SelectedAccount />
           <EthOverview />
-          <Tabs 
-            tabs={
-              [
-                {
-                  label: t('assets'),
-                  key: 'assets'
-                },
-                {
-                  label: t('activity'),
-                  key: 'activity'
-                }
-              ]
-            }
+          <Tabs
+            tabs={[
+              {
+                label: t('assets'),
+                key: 'assets',
+              },
+              {
+                label: t('activity'),
+                key: 'activity',
+              },
+            ]}
           >
             <AssetList
-              onClickAsset={(asset) =>
-                history.push(`${ASSET_ROUTE}/${asset}`)
-              }
+              onClickAsset={(asset) => history.push(`${ASSET_ROUTE}/${asset}`)}
             />
             <TransactionList />
           </Tabs>

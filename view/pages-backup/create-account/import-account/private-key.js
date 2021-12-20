@@ -91,9 +91,9 @@ class PrivateKeyImportView extends Component {
           {/* <Button
           className="new-account-create-form__button"
           onClick={() => {
-           const { history, mostRecentOverviewPage } = this.props;
-           displayWarning(null);
-           history.push(mostRecentOverviewPage);
+          const { history, mostRecentOverviewPage } = this.props;
+          displayWarning(null);
+          history.push(mostRecentOverviewPage);
           }}
           >
           {this.context.t('cancel')}

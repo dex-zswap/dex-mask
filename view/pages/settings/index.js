@@ -1,3 +1,5 @@
+import React, { useMemo } from 'react';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import BackBar from '@c/ui/back-bar';
 import Logo from '@c/ui/logo';
@@ -15,8 +17,6 @@ import {
   SETTINGS_ROUTE,
 } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import React, { useMemo } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import AdvancedTab from './advanced-tab';
 import AlertsTab from './alerts-tab';
 import InfoTab from './info-tab';

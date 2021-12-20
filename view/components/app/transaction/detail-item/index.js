@@ -54,11 +54,11 @@ export default function TransactionDetailItem({
         <div className="transaction-detail-item__subtitle">{subTitle}</div>
         ) : (
         <Typography
-         variant={TYPOGRAPHY.H7}
-         className="transaction-detail-item__subtitle"
-         color={COLORS.UI4}
+        variant={TYPOGRAPHY.H7}
+        className="transaction-detail-item__subtitle"
+        color={COLORS.UI4}
         >
-         {subTitle}
+        {subTitle}
         </Typography>
         )} */}
 

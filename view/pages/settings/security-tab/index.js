@@ -1,12 +1,11 @@
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@c/ui/button';
 import Switch from '@c/ui/switch';
 import { REVEAL_SEED_ROUTE } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { setFeatureFlag, setUsePhishDetect } from '@view/store/actions';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-
 export default function SecurityTab() {
   const t = useI18nContext();
   const history = useHistory();

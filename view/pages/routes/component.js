@@ -1,3 +1,8 @@
+import React, { Component } from 'react';
+import { matchPath, Route, Switch } from 'react-router-dom';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import IdleTimer from 'react-idle-timer';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import Alerts from '@c/app/alerts';
 import NetworkDropdown from '@c/app/dropdowns/network-dropdown';
@@ -51,11 +56,6 @@ import {
 } from '@view/helpers/constants/routes';
 import Authenticated from '@view/helpers/higher-order-components/authenticated';
 import Initialized from '@view/helpers/higher-order-components/initialized';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import IdleTimer from 'react-idle-timer';
-import { matchPath, Route, Switch } from 'react-router-dom';
 export default class Routes extends Component {
   static propTypes = {
     currentCurrency: PropTypes.string,
