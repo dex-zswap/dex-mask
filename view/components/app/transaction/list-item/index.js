@@ -5,8 +5,8 @@ import EditGasPopover from '@c/app/edit-gas/popover';
 import TransactionIcon from '@c/app/transaction/icon';
 import TransactionListItemDetails from '@c/app/transaction/list-item-details';
 import TransactionStatus from '@c/app/transaction/status';
-import Button from '@c/ui/button';
-// import { TransitionListItem } from '@c/ui/list-item';
+import Button from '@c/ui/button'; // import { TransitionListItem } from '@c/ui/list-item';
+
 import Tooltip from '@c/ui/tooltip';
 import { EDIT_GAS_MODES } from '@shared/constants/gas';
 import {
@@ -19,7 +19,6 @@ import { useI18nContext } from '@view/hooks/useI18nContext';
 import { useRetryTransaction } from '@view/hooks/useRetryTransaction';
 import { useShouldShowSpeedUp } from '@view/hooks/useShouldShowSpeedUp';
 import { useTransactionDisplayData } from '@view/hooks/useTransactionDisplayData';
-
 export default function TransactionListItem({
   transactionGroup,
   isEarliestNonce = false,
@@ -76,7 +75,6 @@ export default function TransactionListItem({
         TRANSACTION_STATUSES.REJECTED,
       ].includes(displayedStatusKey),
   });
-
   const statusText = useMemo(() => {
     if (hasCancelled) {
       return 'canceled';
@@ -88,7 +86,6 @@ export default function TransactionListItem({
 
     return date;
   }, [hasCancelled, isPending, date, subtitle]);
-
   const statusClassName = useMemo(() => {
     if (hasCancelled) {
       return 'canceled';
@@ -100,7 +97,6 @@ export default function TransactionListItem({
 
     return 'confirmed';
   }, [hasCancelled, isPending]);
-
   const toggleShowDetails = useCallback(() => {
     if (isUnapproved) {
       history.push(`${CONFIRM_TRANSACTION_ROUTE}/${id}`);
@@ -170,44 +166,36 @@ export default function TransactionListItem({
     hasCancelled,
     cancelTransaction,
   ]);
-
   return (
     <>
       <div className="transaction-list-item__wrapper">
-        <div className={classnames('transaction-list-row-item', className)} onClick={toggleShowDetails}>
+        <div
+          className={classnames('transaction-list-row-item', className)}
+          onClick={toggleShowDetails}
+        >
           <div className="left-info-icon">
             <TransactionIcon category={category} status={displayedStatusKey} />
             <div className="call-method-status">
               <div className={classnames('method-name', statusClassName)}>
                 {title}
               </div>
-              <div className="status">
-                {statusText}
-              </div>
+              <div className="status">{statusText}</div>
             </div>
           </div>
           <div className="right-status">
-            {
-              !isSignatureReq &&
-              !isApproval && (
-                <>
-                  <h2
-                    title={primaryCurrency}
-                    className="primary-currency"
-                  >
-                    {primaryCurrency}
-                  </h2>
-                  <h3 className="secondary-currency">
-                    {secondaryCurrency}
-                  </h3>
-                </>
-              )
-            }
+            {!isSignatureReq && !isApproval && (
+              <>
+                <h2 title={primaryCurrency} className="primary-currency">
+                  {primaryCurrency}
+                </h2>
+                <h3 className="secondary-currency">{secondaryCurrency}</h3>
+              </>
+            )}
             {/* {(speedUpButton || cancelButton) && (
-              <div className="transaction-list-item__pending-actions">
-                {speedUpButton}
-                {cancelButton}
-              </div>
+             <div className="transaction-list-item__pending-actions">
+               {speedUpButton}
+               {cancelButton}
+             </div>
             )} */}
           </div>
         </div>

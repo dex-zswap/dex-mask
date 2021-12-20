@@ -28,21 +28,24 @@
 
           &.confirmed {
             &:after {
-              background: url('/images/transaction/status/success.png') no-repeat center;
+              background: url('/images/transaction/status/success.png')
+                no-repeat center;
               background-size: 100%;
             }
           }
 
           &.canceled {
             &:after {
-              background: url('/images/transaction/status/fail.png') no-repeat center;
+              background: url('/images/transaction/status/fail.png') no-repeat
+                center;
               background-size: 100%;
             }
           }
 
           &.pending {
             &:after {
-              background: url('/images/transaction/status/pending.png') no-repeat center;
+              background: url('/images/transaction/status/pending.png')
+                no-repeat center;
               background-size: 100%;
             }
           }
@@ -71,5 +74,5 @@
         text-align: right;
       }
     }
-  }  
+  }
 }

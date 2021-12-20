@@ -8,7 +8,6 @@ import {
 } from '@shared/constants/transaction';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 const QUEUED_PSEUDO_STATUS = 'queued';
-
 const pendingStatusHash = {
   [TRANSACTION_STATUSES.SUBMITTED]: TRANSACTION_GROUP_STATUSES.PENDING,
   [TRANSACTION_STATUSES.APPROVED]: TRANSACTION_GROUP_STATUSES.PENDING,

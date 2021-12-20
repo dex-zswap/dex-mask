@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useMemo } from 'react';
-
 import classnames from 'classnames';
 
 const Tabs = ({ tabs, actived, children }) => {
@@ -18,7 +17,10 @@ const Tabs = ({ tabs, actived, children }) => {
         {tabs.map((tab) => {
           return (
             <div
-              className={classnames('tab-item', current === tab.key && 'active')}
+              className={classnames(
+                'tab-item',
+                current === tab.key && 'active',
+              )}
               key={tab.key}
               onClick={(e) => switchTab(e, tab.key)}
             >

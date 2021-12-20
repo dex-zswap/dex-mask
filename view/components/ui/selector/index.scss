@@ -47,7 +47,7 @@
     top: calc(#{$size-48} + 10px);
     background: $popup-background;
     border-radius: $size-12;
-    max-height: 288px;
+    max-height: 308px;
     overflow: scroll;
     z-index: 999;
 
@@ -58,6 +58,11 @@
       align-items: center;
       font-size: 14px;
       color: #fff;
+
+      &.with-footer {
+        width: 200px;
+        overflow-y: auto;
+      }
     }
     .select-option-active-color {
       color: $pink;

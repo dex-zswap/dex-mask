@@ -14,7 +14,7 @@ import {
 import {
   shortenAddress,
   stripHttpSchemes,
-  formatDate
+  formatDate,
 } from '@view/helpers/utils';
 import { camelCaseToCapitalize } from '@view/helpers/utils/common.util';
 import { getTokenAddressParam } from '@view/helpers/utils/token-util';

@@ -117,11 +117,11 @@ export default function HomePage() {
       <div className="home__container base-width">
         <div className="home__main-view">
           <TopHeader />
-          <ChainSwitcher />
+          <ChainSwitcher addRpc />
           <SelectedAccount />
           <EthOverview />
           <Tabs
-            actived="activity"
+            actived="assets"
             tabs={[
               {
                 label: t('assets'),

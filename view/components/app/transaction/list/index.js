@@ -11,7 +11,6 @@ import { TRANSACTION_TYPES } from '@shared/constants/transaction';
 import { TOKEN_CATEGORY_HASH } from '@view/helpers/constants/transactions';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { getCurrentChainId } from '@view/selectors';
-
 const PAGE_INCREMENT = 10;
 
 const getTransactionGroupRecipientAddressFilter = (
