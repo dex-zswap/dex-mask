@@ -105,6 +105,7 @@ export default class Home extends PureComponent {
     } else if (!isNotification && swapsFetchParams) {
       history.push(BUILD_QUOTE_ROUTE);
     } else if (firstPermissionsRequestId) {
+      console.log('connect');
       history.push(`${CONNECT_ROUTE}/${firstPermissionsRequestId}`);
     } else if (unconfirmedTransactionsCount > 0) {
       history.push(CONFIRM_TRANSACTION_ROUTE);
@@ -165,15 +166,6 @@ export default class Home extends PureComponent {
       setupThreeBox();
     }
   }
-
-  onRecoveryPhraseReminderClose = () => {
-    const {
-      setRecoveryPhraseReminderHasBeenShown,
-      setRecoveryPhraseReminderLastShown,
-    } = this.props;
-    setRecoveryPhraseReminderHasBeenShown(true);
-    setRecoveryPhraseReminderLastShown(new Date().getTime());
-  };
 
   renderNotifications() {
     const { t } = this.context;
@@ -375,32 +367,6 @@ export default class Home extends PureComponent {
             <div className="home__balance-wrapper">
               <EthOverview />
             </div>
-            {/* <Tabs
-            defaultActiveTabName={defaultHomeActiveTabName}
-            onTabClick={onTabClick}
-            tabsClassName="home__tabs"
-            >
-            <Tab
-            activeClassName="home__tab--active"
-            className="home__tab"
-            data-testid="home__asset-tab"
-            name={t('assets')}
-            >
-            <AssetList
-              onClickAsset={(asset) =>
-                history.push(`${ASSET_ROUTE}/${asset}`)
-              }
-            />
-            </Tab>
-            <Tab
-            activeClassName="home__tab--active"
-            className="home__tab"
-            data-testid="home__activity-tab"
-            name={t('activity')}
-            >
-            <TransactionList />
-            </Tab>
-            </Tabs> */}
             <AssetList
               onClickAsset={(asset) => history.push(`${ASSET_ROUTE}/${asset}`)}
             />

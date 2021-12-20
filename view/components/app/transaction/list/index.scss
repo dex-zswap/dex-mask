@@ -1,50 +1,46 @@
 .transaction-list {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-
-  &__completed-transactions {
+  .transaction-list__completed-transactions {
     display: flex;
     flex-direction: column;
     flex: 1;
   }
 
-  &__header {
-    @include H6;
-
+  .transaction-list__header {
     flex: 0 0 auto;
-    color: $Grey-400;
-    border-bottom: 1px solid $Grey-100;
     padding: 8px 0 8px 20px;
-
-    @media screen and (max-width: $break-small) {
-      padding: 8px 0 8px 16px;
-    }
   }
 
-  &__transactions {
+  .transaction-list__transactions {
     flex: 1;
   }
 
-  &__pending-transactions {
+  .transaction-list__pending-transactions {
     margin-bottom: 16px;
   }
 
-  &__empty {
+  .transaction-list__empty {
     flex: 1;
     display: grid;
     grid-template-rows: auto;
     padding-top: 24px;
   }
 
-  &__empty-text {
+  .transaction-list__empty-text {
     grid-row-start: 2;
     display: flex;
     justify-content: center;
-    color: $silver;
+    font-size: 14px;
+    line-height: 1.4em;
+    color: $gray;
+    width: 200px;
+    text-align: center;
+    margin: 0 auto;
+    background: url('/images/background/search.png') no-repeat center;
+    background-size: 65px;
+    padding: 10px 0;
   }
 
-  &__view-more {
+  .transaction-list__view-more {
     margin: 16px auto;
     max-width: 200px;
   }

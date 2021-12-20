@@ -1,13 +1,12 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import EditGasPopover from '@c/app/edit-gas/popover';
 import TransactionIcon from '@c/app/transaction/icon';
 import TransactionListItemDetails from '@c/app/transaction/list-item-details';
 import TransactionStatus from '@c/app/transaction/status';
-import Button from '@c/ui/button';
-import { TransitionListItem } from '@c/ui/list-item';
+import Button from '@c/ui/button'; // import { TransitionListItem } from '@c/ui/list-item';
+
 import Tooltip from '@c/ui/tooltip';
 import { EDIT_GAS_MODES } from '@shared/constants/gas';
 import {
@@ -76,6 +75,28 @@ export default function TransactionListItem({
         TRANSACTION_STATUSES.REJECTED,
       ].includes(displayedStatusKey),
   });
+  const statusText = useMemo(() => {
+    if (hasCancelled) {
+      return 'canceled';
+    }
+
+    if (isPending) {
+      return `Pending · ${subtitle}`;
+    }
+
+    return date;
+  }, [hasCancelled, isPending, date, subtitle]);
+  const statusClassName = useMemo(() => {
+    if (hasCancelled) {
+      return 'canceled';
+    }
+
+    if (isPending) {
+      return 'pending';
+    }
+
+    return 'confirmed';
+  }, [hasCancelled, isPending]);
   const toggleShowDetails = useCallback(() => {
     if (isUnapproved) {
       history.push(`${CONFIRM_TRANSACTION_ROUTE}/${id}`);
@@ -124,7 +145,6 @@ export default function TransactionListItem({
     return (
       <Button
         type="primary"
-        rounded
         onClick={hasCancelled ? cancelTransaction : retryTransaction}
         style={
           hasCancelled
@@ -149,47 +169,36 @@ export default function TransactionListItem({
   return (
     <>
       <div className="transaction-list-item__wrapper">
-        <TransitionListItem
+        <div
+          className={classnames('transaction-list-row-item', className)}
           onClick={toggleShowDetails}
-          className={className}
-          title={title}
-          icon={
+        >
+          <div className="left-info-icon">
             <TransactionIcon category={category} status={displayedStatusKey} />
-          }
-          subtitle={
-            <h3>
-              <TransactionStatus
-                isPending={isPending}
-                isEarliestNonce={isEarliestNonce}
-                error={err}
-                date={date}
-                status={displayedStatusKey}
-              />
-            </h3>
-          }
-          rightContent={
-            !isSignatureReq &&
-            !isApproval && (
+            <div className="call-method-status">
+              <div className={classnames('method-name', statusClassName)}>
+                {title}
+              </div>
+              <div className="status">{statusText}</div>
+            </div>
+          </div>
+          <div className="right-status">
+            {!isSignatureReq && !isApproval && (
               <>
-                <h2
-                  title={primaryCurrency}
-                  className="transaction-list-item__primary-currency"
-                >
+                <h2 title={primaryCurrency} className="primary-currency">
                   {primaryCurrency}
                 </h2>
-                <h3 className="transaction-list-item__secondary-currency">
-                  {secondaryCurrency}
-                </h3>
+                <h3 className="secondary-currency">{secondaryCurrency}</h3>
               </>
-            )
-          }
-        ></TransitionListItem>
-        {(speedUpButton || cancelButton) && (
-          <div className="transaction-list-item__pending-actions">
-            {speedUpButton}
-            {cancelButton}
+            )}
+            {/* {(speedUpButton || cancelButton) && (
+            <div className="transaction-list-item__pending-actions">
+             {speedUpButton}
+             {cancelButton}
+            </div>
+            )} */}
           </div>
-        )}
+        </div>
       </div>
       {showDetails && (
         <TransactionListItemDetails
@@ -239,7 +248,3 @@ export default function TransactionListItem({
     </>
   );
 }
-TransactionListItem.propTypes = {
-  transactionGroup: PropTypes.object.isRequired,
-  isEarliestNonce: PropTypes.bool,
-};

@@ -40,14 +40,14 @@ export default class AccountImportSubview extends Component {
         <span>{this.context.t('importAccountMsg')}</span>
         <span
         style={{
-          cursor: 'pointer',
-          textDecoration: 'underline',
+        cursor: 'pointer',
+        textDecoration: 'underline',
         }}
         onClick={() => {
-          global.platform.openTab({
-            url:
-              'https://metamask.zendesk.com/hc/en-us/articles/360015289932',
-          });
+        global.platform.openTab({
+        url:
+          'https://metamask.zendesk.com/hc/en-us/articles/360015289932',
+        });
         }}
         >
         {this.context.t('here')}

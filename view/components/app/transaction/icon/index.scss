@@ -1,8 +1,35 @@
 .transaction-icon {
-  &__grey-circle {
-    height: 28px;
-    width: 28px;
-    border-radius: 14px;
-    background: $Grey-100;
+  width: 32px;
+  height: 32px;
+
+  &.send {
+    background: url('/images/transaction/type/send.png') no-repeat center;
+    background-size: 100%;
+  }
+
+  &.receive {
+    background: url('/images/transaction/type/receive.png') no-repeat center;
+    background-size: 100%;
+  }
+
+  &.interaction {
+    background: url('/images/transaction/type/interaction.png') no-repeat center;
+    background-size: 100%;
+  }
+
+  &.approval {
+    background: url('/images/transaction/type/approval.png') no-repeat center;
+    background-size: 100%;
+  }
+
+  &.signature-request {
+    background: url('/images/transaction/type/signature-request.png') no-repeat
+      center;
+    background-size: 100%;
+  }
+
+  &.swap {
+    background: url('/images/transaction/type/swap.png') no-repeat center;
+    background-size: 100%;
   }
 }

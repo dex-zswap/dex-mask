@@ -29,13 +29,6 @@ export default class TokenSearch extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-  static defaultProps = {
-    error: null,
-  };
-  static propTypes = {
-    onSearch: PropTypes.func,
-    error: PropTypes.string,
-  };
   state = {
     searchQuery: '',
   };
@@ -74,6 +67,7 @@ export default class TokenSearch extends Component {
     return (
       <TextField
         id="search-tokens"
+        className="search-token"
         placeholder={this.context.t('searchTokens')}
         type="text"
         value={searchQuery}

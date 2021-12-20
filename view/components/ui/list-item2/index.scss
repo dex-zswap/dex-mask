@@ -2,13 +2,6 @@
   width: 100%;
   min-height: 86px;
   margin: 0;
-  background: #fff;
-  padding: 24px 16px;
-
-  @include Paragraph;
-
-  border-top: 1px solid $mercury;
-  border-bottom: 1px solid $mercury;
   color: $Black-100;
   align-items: start;
   cursor: pointer;

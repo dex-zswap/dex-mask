@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import classnames from 'classnames';
@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import LongLetter from '@c/ui/long-letter';
 import { Menu, MenuItem } from '@c/ui/menu';
+import Button from '@c/ui/button';
 import Selector from '@c/ui/selector';
 import {
   BSC_MAINNET,
@@ -41,6 +42,7 @@ class ChainSwitcher extends Component {
     return {
       key: chainId,
       value: provider,
+      isBulitIn: true,
       render: (item) => <SelectorOption {...item} />,
       label,
     };
@@ -256,32 +258,48 @@ class ChainSwitcher extends Component {
     );
   }
 
+  switchNetWork = (value, detail) => {
+    if (detail.isBulitIn) {
+      this.props.setProviderType(value);
+      return;
+    } // rpcUrl, chainId, ticker, nickname
+
+    this.props.setRpcTarget.apply(null, detail.setPrcParams ?? []);
+  };
+
   render() {
-    const { showNetworkDropdown, provider, frequentRpcListDetail } = this.props;
+    const {
+      showNetworkDropdown,
+      provider,
+      frequentRpcListDetail,
+      addRpc,
+    } = this.props;
     const { showMenu } = this.state;
     const networkOptions = this.defaultChains;
     return (
       <>
         <div className="chain-switcher">
-          {/* <div className="chain-switcher__wrapper">
-                   <div
-          className="chain-switcher__modal-trigger"
-          ref={(el) => (this.triggerEl = el)}
-          onClick={() => this.toggleNetworkDrop()}
-          >
-          ...
-          </div>
-          </div> */}
           <Selector
             className="chain-switcher-selector"
             selectedValue={provider.type}
             options={networkOptions}
             labelRender={SelectorOption}
             itemRender={SelectorOption}
+            onSelect={this.switchNetWork}
+            footer={
+              addRpc ? (
+                <Button className="add-rpc-entry">
+                  <Link to={NETWORKS_FORM_ROUTE}>
+                    {this.context.t('addNetwork')}
+                    <i className="add-icon"></i>
+                  </Link>
+                </Button>
+              ) : null
+            }
             small
           />
         </div>
-        {showMenu && this.renderNetWorkMenu()}
+        {/* {showMenu && this.renderNetWorkMenu()} */}
       </>
     );
   }

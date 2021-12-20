@@ -1,4 +1,10 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+  useEffect,
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getEnvironmentType } from '@app/scripts/lib/util';
@@ -46,7 +52,7 @@ import HomeNotification from '@c/app/home-notification';
 import MultipleNotifications from '@c/app/multiple-notifications';
 import SelectedAccount from '@c/app/selected-account';
 import { EthOverview } from '@c/app/wallet-overview';
-import { Tab, Tabs } from '@c/ui/tabs';
+import Tabs from '@c/ui/tabs';
 import TransactionList from '@c/app/transaction/list';
 import TopHeader from '@c/ui/top-header';
 import {
@@ -112,15 +118,66 @@ export default function HomePage() {
       dismissSeedBackUpReminder === false,
     [seedPhraseBackedUp, accountBalance, tokens, dismissSeedBackUpReminder],
   );
+  const mounted = useRef(false);
+  const [state, setState] = useState({
+    closing: false,
+    redirecting: false,
+  });
+  useEffect(() => {
+    if (isNotification && totalUnapprovedCount === 0) {
+      global.platform.closeCurrentWindow();
+    } else if (firstPermissionsRequestId) {
+      history.push(`${CONNECT_ROUTE}/${firstPermissionsRequestId}`);
+    } else if (unconfirmedTransactionsCount > 0) {
+      history.push(CONFIRM_TRANSACTION_ROUTE);
+    } else if (Object.keys(suggestedTokens).length > 0) {
+      history.push(CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE);
+    } else if (pendingConfirmations.length > 0) {
+      history.push(CONFIRMATION_V_NEXT_ROUTE);
+    }
+  }, [
+    history,
+    suggestedTokens,
+    isNotification,
+    totalUnapprovedCount,
+    firstPermissionsRequestId,
+    unconfirmedTransactionsCount,
+    pendingConfirmations,
+  ]);
+  useEffect(() => {
+    if (!mounted.current) {
+      setState((state) => {
+        if (isNotification && totalUnapprovedCount === 0) {
+          return { ...state, closing: true };
+        } else if (
+          firstPermissionsRequestId ||
+          unconfirmedTransactionsCount > 0 ||
+          Object.keys(suggestedTokens).length > 0
+        ) {
+          return { ...state, redirecting: true };
+        }
+
+        return state;
+      });
+    }
+  }, [
+    firstPermissionsRequestId,
+    isNotification,
+    suggestedTokens,
+    totalUnapprovedCount,
+    unconfirmedTransactionsCount,
+    mounted.current,
+  ]);
   return (
     <div className="main-container dex-page-container">
       <div className="home__container base-width">
         <div className="home__main-view">
           <TopHeader />
-          <ChainSwitcher />
+          <ChainSwitcher addRpc />
           <SelectedAccount />
           <EthOverview />
           <Tabs
+            actived="assets"
             tabs={[
               {
                 label: t('assets'),

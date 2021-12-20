@@ -22,7 +22,7 @@
     transition: all 0.3s;
 
     &.bordered {
-      border: 0.5pt solid $primary-border;
+      border: 1px solid $primary-border;
     }
 
     &:focus {

@@ -1,72 +1,34 @@
 .confirm-add-token {
-  padding: 16px;
-
-  &__header {
-    @include H7;
-
-    display: flex;
+  .page-container__subtitle {
+    font-size: $size-14;
+    color: $gray;
+    padding: 0;
+    margin: 0 0 20px;
   }
 
-  &__token {
-    flex: 1;
-    min-width: 0;
-    color: #fff;
-  }
-
-  &__balance {
-    flex: 0 0 50%;
-    min-width: 0;
-    color: #fff;
-  }
-
-  &__token-list {
-    display: flex;
-    flex-flow: column nowrap;
-
-    .token-balance {
-      display: flex;
-      flex-flow: row nowrap;
-      align-items: flex-start;
-
-      &__amount {
-        @include H1;
-
-        color: $scorpion;
-        margin-right: 8px;
-      }
-
-      &__symbol {
-        @include H5;
-
-        color: $scorpion;
-      }
+  .confirm-add-token__token-list-item {
+    margin: 0 0 20px;
+    &:last-of-type {
+      margin: 0;
     }
   }
 
-  &__token-list-item {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    margin-top: 8px;
-    box-sizing: border-box;
-  }
+  .confirm-add-token__token {
+    .token-image-origin {
+      width: 32px;
+      height: 32px;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      background-color: $white;
+    }
 
-  &__data {
-    display: flex;
-    align-items: center;
-    padding: 8px 8px 8px 0;
-  }
-
-  &__name {
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #fff;
-  }
-
-  &__token-icon {
-    margin-right: 12px;
-    flex: 0 0 auto;
+    .confirm-add-token__name {
+      color: $white;
+      font-size: 14px;
+      font-weight: 500;
+    }
   }
 }

@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { ethers } from 'ethers';
 import Button from '@c/ui/button';
 import Logo from '@c/ui/logo';
 import TextField from '@c/ui/text-field';
@@ -8,18 +12,12 @@ import {
   initializeThreeBox,
   unMarkPasswordForgotten,
 } from '@view/store/actions';
-import { ethers } from 'ethers';
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 const { isValidMnemonic } = ethers.utils;
-
 export default function RestoreVaultPage() {
   const t = useI18nContext();
   const history = useHistory();
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.appState);
-
   const [seedPhrase, setSeedPhrase] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -39,6 +37,7 @@ export default function RestoreVaultPage() {
     } else if (!isValidMnemonic(phrase)) {
       phraseError = t('invalidSeedPhrase');
     }
+
     setSeedPhrase(phrase);
     setSeedPhraseError(phraseError);
   };
@@ -46,12 +45,15 @@ export default function RestoreVaultPage() {
   const handlePasswordChange = (pwd) => {
     let confirmPwdError = null;
     let pwdError = null;
+
     if (pwd && pwd.length < 8) {
       pwdError = t('passwordNotLongEnough');
     }
+
     if (confirmPassword && pwd !== confirmPassword) {
       confirmPwdError = t('passwordsDontMatch');
     }
+
     setPassword(pwd);
     setPasswordError(pwdError);
     setConfirmPasswordError(confirmPwdError);
@@ -59,9 +61,11 @@ export default function RestoreVaultPage() {
 
   const handleConfirmPasswordChange = (confirmPwd) => {
     let confirmPwdError = null;
+
     if (password !== confirmPwd) {
       confirmPwdError = t('passwordsDontMatch');
     }
+
     setConfirmPassword(confirmPwd);
     setConfirmPasswordError(confirmPwdError);
   };
@@ -82,7 +86,6 @@ export default function RestoreVaultPage() {
 
   const disabled =
     !seedPhrase || !password || !confirmPassword || isLoading || hasError();
-
   return (
     <div className="dex-page-container">
       <Logo plain isCenter />

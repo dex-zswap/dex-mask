@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import TransactionListItem from '@c/app/transaction/list-item';
 import Button from '@c/ui/button';
 import {
@@ -12,13 +11,7 @@ import { TRANSACTION_TYPES } from '@shared/constants/transaction';
 import { TOKEN_CATEGORY_HASH } from '@view/helpers/constants/transactions';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { getCurrentChainId } from '@view/selectors';
-const PAGE_INCREMENT = 10; // When we are on a token page, we only want to show transactions that involve that token.
-// In the case of token transfers or approvals, these will be transactions sent to the
-// token contract. In the case of swaps, these will be transactions sent to the swaps contract
-// and which have the token address in the transaction data.
-//
-// getTransactionGroupRecipientAddressFilter is used to determine whether a transaction matches
-// either of those criteria
+const PAGE_INCREMENT = 10;
 
 const getTransactionGroupRecipientAddressFilter = (
   recipientAddress,
@@ -162,11 +155,3 @@ export default function TransactionList({
     </div>
   );
 }
-TransactionList.propTypes = {
-  hideTokenTransactions: PropTypes.bool,
-  tokenAddress: PropTypes.string,
-};
-TransactionList.defaultProps = {
-  hideTokenTransactions: false,
-  tokenAddress: undefined,
-};

@@ -1,81 +1,78 @@
-.transaction-list-item {
-  background: #101422 !important;
-  margin: 0 !important;
-  width: auto !important;
-  border: none !important;
-  border-radius: 0;
+.transaction-list-item__wrapper {
+  background: $primary-background;
+  border-radius: $size-12;
+  height: 66px;
+  padding: 15px;
 
-  &__wrapper {
-    margin: 10px 10px 0;
-    background: #101422 !important;
-    border-radius: 4px;
-  }
+  .transaction-list-item {
+    @include flex(space-between);
 
-  &__primary-currency {
-    color: $Black-100;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    .left-info-icon {
+      @include flex(space-between);
 
-  &__secondary-currency {
-    @include H7;
+      .call-method-status {
+        margin: 0 0 0 $size-12;
 
-    margin-top: 4px;
-    color: $Grey-500;
-    text-align: right;
-  }
+        .method-name {
+          font-size: 14px;
+          color: $white;
+          font-weight: 500;
 
-  & &--unconfirmed {
-    color: $Grey-500;
-  }
+          &:after {
+            content: '';
+            display: inline-block;
+            margin: 0 0 0 8px;
+            width: 12px;
+            height: 12px;
+          }
 
-  &--unconfirmed &__primary-currency {
-    color: $Grey-500;
-  }
+          &.confirmed {
+            &:after {
+              background: url('/images/transaction/status/success.png')
+                no-repeat center;
+              background-size: 100%;
+            }
+          }
 
-  &__pending-actions {
-    padding: 0 16px 12px;
-    display: flex;
-    justify-content: flex-end;
+          &.canceled {
+            &:after {
+              background: url('/images/transaction/status/fail.png') no-repeat
+                center;
+              background-size: 100%;
+            }
+          }
 
-    .button {
-      @include H8;
+          &.pending {
+            &:after {
+              background: url('/images/transaction/status/pending.png')
+                no-repeat center;
+              background-size: 100%;
+            }
+          }
+        }
 
-      padding: 8px;
-      width: 75px;
-      white-space: nowrap;
+        .status {
+          font-size: 10px;
+          color: $gray;
+          margin: 5px 0 0;
+        }
+      }
     }
 
-    & > .button:first-child {
-      margin-right: 6px;
+    .right-status {
+      .primary-currency {
+        font-size: 14px;
+        color: $white;
+        font-weight: 500;
+        text-align: right;
+      }
+
+      .secondary-currency {
+        font-size: 10px;
+        color: $gray;
+        margin: 5px 0 0;
+        text-align: right;
+      }
     }
-
-    &:empty {
-      padding-top: 0;
-    }
-  }
-
-  .list-item__subheading > h3 {
-    overflow: visible;
-    display: flex;
-    white-space: nowrap;
-    text-overflow: initial;
-  }
-
-  .transaction-status::after {
-    content: '·';
-    margin: 0 4px;
-  }
-
-  &__origin,
-  &__address {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &__origin {
-    /*rtl:ignore*/
-    direction: rtl;
   }
 }

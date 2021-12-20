@@ -7,6 +7,7 @@ export default function Selector({
   labelRender,
   itemRender,
   className,
+  footer,
   small,
 }) {
   const [show, setShow] = useState(false);
@@ -44,21 +45,29 @@ export default function Selector({
         <>
           <div className="options-mask" onClick={() => setShow(false)}></div>
           <div className="selector-menu">
-            {options.map(({ label, value }, index) => (
-              <div
-                className={classnames([
-                  'select-option',
-                  selectedValue === value ? 'select-option-active-color' : '',
-                ])}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onChange(value);
-                }}
-                key={value}
-              >
-                {itemRender ? itemRender(options[index]) : label}
-              </div>
-            ))}
+            <div
+              className={classnames(
+                'select-menu-area',
+                footer ? 'with-footer' : null,
+              )}
+            >
+              {options.map(({ label, value }, index) => (
+                <div
+                  className={classnames([
+                    'select-option',
+                    selectedValue === value ? 'select-option-active-color' : '',
+                  ])}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange(value, options[index]);
+                  }}
+                  key={value}
+                >
+                  {itemRender ? itemRender(options[index]) : label}
+                </div>
+              ))}
+            </div>
+            {footer}
           </div>
         </>
       )}

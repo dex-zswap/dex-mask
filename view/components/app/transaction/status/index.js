@@ -8,17 +8,6 @@ import {
 } from '@shared/constants/transaction';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 const QUEUED_PSEUDO_STATUS = 'queued';
-/**
- * A note about status logic for this component:
- * Approved, Signed and Submitted statuses are all treated, effectively
- * as pending. Transactions are only approved or signed for less than a
- * second, usually, and ultimately should be rendered in the UI no
- * differently than a pending transaction.
- *
- * Confirmed transactions are not especially highlighted except that their
- * status label will be the date the transaction was finalized.
- */
-
 const pendingStatusHash = {
   [TRANSACTION_STATUSES.SUBMITTED]: TRANSACTION_GROUP_STATUSES.PENDING,
   [TRANSACTION_STATUSES.APPROVED]: TRANSACTION_GROUP_STATUSES.PENDING,
@@ -66,10 +55,3 @@ export default function TransactionStatus({
     </Tooltip>
   );
 }
-TransactionStatus.propTypes = {
-  status: PropTypes.string,
-  className: PropTypes.string,
-  date: PropTypes.string,
-  error: PropTypes.object,
-  isEarliestNonce: PropTypes.bool,
-};
