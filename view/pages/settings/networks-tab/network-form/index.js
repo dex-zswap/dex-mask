@@ -8,8 +8,10 @@ import {
 import { jsonRpcRequest } from '@shared/modules/rpc.utils';
 import { decimalToHex } from '@view/helpers/utils/conversions.util';
 import { useI18nContext } from '@view/hooks/useI18nContext';
+import { showModal } from '@view/store/actions';
 import log from 'loglevel';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import validUrl from 'valid-url';
 
 const getDisplayChainId = (chainId) => {
@@ -37,7 +39,6 @@ const isValidWhenAppended = (url) => {
 export default function NetworkForm(props) {
   const {
     editRpc,
-    showConfirmDeleteNetworkModal,
     viewOnly,
     onClear,
     setRpcTarget,
@@ -47,6 +48,7 @@ export default function NetworkForm(props) {
     networksToRender,
   } = props;
   const t = useI18nContext();
+  const dispatch = useDispatch();
 
   const [rpcUrl, setRpcUrl] = useState(props?.rpcUrl || '');
   const [chainId, setChainId] = useState(
@@ -70,7 +72,7 @@ export default function NetworkForm(props) {
       setErrors({});
       onClear(false);
     };
-  }, [onClear]);
+  }, []);
 
   const resetForm = useCallback(() => {
     setRpcUrl(props?.rpcUrl || '');
@@ -221,14 +223,17 @@ export default function NetworkForm(props) {
   ]);
 
   const onDelete = useCallback(() => {
-    showConfirmDeleteNetworkModal({
-      target: props?.rpcUrl,
-      onConfirm: () => {
-        resetForm();
-        onClear();
-      },
-    });
-  }, [showConfirmDeleteNetworkModal, props?.rpcUrl, onClear, resetForm]);
+    dispatch(
+      showModal({
+        name: 'CONFIRM_DELETE_NETWORK',
+        target: props?.rpcUrl,
+        onConfirm: () => {
+          resetForm();
+          onClear();
+        },
+      }),
+    );
+  }, [props?.rpcUrl, onClear, resetForm]);
 
   const stateIsUnchanged = useCallback(() => {
     const chainIdIsUnchanged =
@@ -392,8 +397,13 @@ export default function NetworkForm(props) {
 
   const renderWarning = useMemo(
     () => (
-      <div className="networks-tab__network-form-row--warning">
-        {t('onlyAddTrustedNetworks')}
+      <div className="networks-form-warning-wrap">
+        <img
+          style={{ margin: '0px 6px -1px 0' }}
+          width={12}
+          src="images/settings/info.png"
+        />
+        <span>{t('onlyAddTrustedNetworks')}</span>
       </div>
     ),
     [t],
@@ -444,7 +454,6 @@ export default function NetworkForm(props) {
       {viewOnly ? null : renderWarning}
       {renderFormTextField({
         fieldKey: 'networkName',
-        textFieldId: 'network-name',
         onChange: ({ target }) => {
           setNetworkName(target.value);
         },
@@ -453,7 +462,6 @@ export default function NetworkForm(props) {
       })}
       {renderFormTextField({
         fieldKey: 'rpcUrl',
-        textFieldId: 'rpc-url',
         onChange: ({ target }) => {
           validateUrlRpcUrl(target.value, 'rpcUrl');
           setRpcUrl(target.value);
@@ -462,7 +470,6 @@ export default function NetworkForm(props) {
       })}
       {renderFormTextField({
         fieldKey: 'chainId',
-        textFieldId: 'chainId',
         onChange: ({ target }) => {
           validateChainIdOnChange(target.value);
           setChainId(target.value);
@@ -472,7 +479,6 @@ export default function NetworkForm(props) {
       })}
       {renderFormTextField({
         fieldKey: 'symbol',
-        textFieldId: 'network-ticker',
         onChange: ({ target }) => {
           setTicker(target.value);
         },
@@ -481,10 +487,9 @@ export default function NetworkForm(props) {
       })}
       {renderFormTextField({
         fieldKey: 'blockExplorerUrl',
-        textFieldId: 'block-explorer-url',
         onChange: ({ target }) => {
           validateBlockExplorerURL(target.value, 'blockExplorerUrl');
-          setValidateBlockExplorerURL(target.value);
+          setBlockExplorerUrl(target.value);
         },
         value: blockExplorerUrl,
         optionalTextFieldKey: 'optionalBlockExplorerUrl',

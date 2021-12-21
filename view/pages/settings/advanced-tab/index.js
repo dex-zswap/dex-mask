@@ -45,12 +45,11 @@ export default function AdvancedTab({ lockTimeError }) {
     dismissSeedBackUpReminder,
   } = useSelector((state) => state.metamask);
   const { showFiatInTestnets, autoLockTimeLimit } = useSelector(getPreferences);
+
   let allowed = threeBoxSyncingAllowed;
-  let description = t('syncWithThreeBoxDescription');
 
   if (threeBoxDisabled) {
     allowed = false;
-    description = t('syncWithThreeBoxDisabled');
   }
 
   const handleIpfsGatewayChange = (url) => {

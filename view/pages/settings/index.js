@@ -1,8 +1,6 @@
-import { getEnvironmentType } from '@app/scripts/lib/util';
 import BackBar from '@c/ui/back-bar';
 import Logo from '@c/ui/logo';
 import RevealSeedConfirmation from '@pages/keychains/reveal-seed';
-import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
 import {
   ABOUT_US_ROUTE,
   ADVANCED_ROUTE,
@@ -33,27 +31,10 @@ const ROUTES_TO_I18N_KEYS = {
   [SECURITY_ROUTE]: 'securityAndPrivacy',
 };
 
-let backRoute = SETTINGS_ROUTE;
-
 const SettingsPage = () => {
   const t = useI18nContext();
   const history = useHistory();
   const { pathname } = useLocation();
-  const isNetworksFormPage = useMemo(
-    () => Boolean(pathname.match(NETWORKS_FORM_ROUTE)),
-    [pathname],
-  );
-  const isPopup = useMemo(
-    () => getEnvironmentType() === ENVIRONMENT_TYPE_POPUP,
-    [getEnvironmentType],
-  );
-  const pathnameI18nKey = useMemo(() => ROUTES_TO_I18N_KEYS[pathname], [
-    pathname,
-  ]);
-
-  if (isNetworksFormPage) {
-    backRoute = NETWORKS_ROUTE;
-  }
 
   const menu = useMemo(
     () => [
@@ -117,17 +98,9 @@ const SettingsPage = () => {
     if (subTitle[pathname]) {
       return subTitle[pathname];
     }
+    return t('settings');
+  }, [t, pathname]);
 
-    let titleText;
-
-    if (pathnameI18nKey && isPopup) {
-      titleText = t(pathnameI18nKey);
-    } else {
-      titleText = t('settings');
-    }
-
-    return titleText;
-  }, [t, pathname, isPopup, pathnameI18nKey]);
   return (
     <div className="dex-page-container">
       <Logo plain isCenter />
