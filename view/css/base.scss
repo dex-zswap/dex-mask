@@ -10,6 +10,11 @@ textarea {
   }
 }
 
+#app-content {
+  height: 100vh;
+  overflow-y: auto;
+}
+
 .base-width {
   width: 90vw !important;
   margin-left: auto;

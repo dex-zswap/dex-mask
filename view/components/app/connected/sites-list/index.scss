@@ -1,40 +1,35 @@
-.connected-sites-list {
-  &__content-rows {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.connected-sites-list__content-rows {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 20px;
 
-  &__content-row {
+  .connected-sites-list__content-row {
     display: flex;
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #2c3146;
-    padding: 16px 24px;
+    border-top: 1px solid $primary-background;
+    padding: 16px 10px;
   }
-
-  &__domain-info {
-    @include H7;
-
+  .connected-sites-list__domain-info {
     display: flex;
     flex-direction: row;
     align-items: center;
     min-width: 0;
   }
-
-  &__domain-name {
+  .connected-sites-list__domain-name {
     max-width: 215px;
     white-space: nowrap;
     overflow: hidden;
-    direction: rtl;
     text-overflow: ellipsis;
-    margin-left: 6px;
-    color: #fff;
+    margin-left: $size-12;
+    font-size: $size-12;
+    color: $white;
   }
-
-  &__trash {
+  .connected-sites-list__trash {
     cursor: pointer;
+    font-size: 14px;
   }
 }

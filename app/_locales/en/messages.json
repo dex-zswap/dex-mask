@@ -2504,7 +2504,7 @@
     "message": "Switch Networks"
   },
   "switchToThisAccount": {
-    "message": "Switch to this account"
+    "message": "Switch"
   },
   "switchingNetworksCancelsPendingConfirmations": {
     "message": "Switching networks will cancel all pending confirmations"

@@ -6,18 +6,6 @@ export default class ConnectedSitesList extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-  static propTypes = {
-    connectedDomains: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string,
-        icon: PropTypes.string,
-        origin: PropTypes.string,
-        host: PropTypes.string,
-      }),
-    ).isRequired,
-    onDisconnect: PropTypes.func.isRequired,
-    domainHostCount: PropTypes.objectOf(PropTypes.number).isRequired,
-  };
 
   render() {
     const { connectedDomains, onDisconnect } = this.props;
@@ -30,7 +18,7 @@ export default class ConnectedSitesList extends Component {
             className="connected-sites-list__content-row"
           >
             <div className="connected-sites-list__domain-info">
-              <SiteIcon icon={domain.icon} name={domain.name} size={32} />
+              <SiteIcon icon={domain.icon} name={domain.name} size={28} />
               <span
                 className="connected-sites-list__domain-name"
                 title={domain.extensionId || domain.origin}

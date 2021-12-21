@@ -29,7 +29,8 @@ export default function SelectedAccount() {
   const nativeCurrency = useSelector(getNativeCurrency);
   const [state, setState] = useState({
     copied: false,
-    accountOptionsMenuOpen: false
+    accountOptionsMenuOpen: false,
+    connectedSitesOpen: false
   });
   const copyTimeout = useRef(null);
   const dropTrigger = useRef(null);
@@ -85,6 +86,13 @@ export default function SelectedAccount() {
       }),
     );
   }, []);
+  const toggleConnectedSites = useCallback(() => {
+    setState((state) =>
+      Object.assign({}, state, {
+        connectedSitesOpen: !state.connectedSitesOpen,
+      }),
+    );
+  }, []);
   useEffect(() => {
     if (copyTimeout.current) {
       window.clearTimeout(copyTimeout.current);
@@ -97,6 +105,7 @@ export default function SelectedAccount() {
         <AccountOptionsMenu
           anchorElement={dropTrigger.current}
           onClose={toggleAccountDrop}
+          toggleConnectedSites={toggleConnectedSites}
         />
       )}
       {

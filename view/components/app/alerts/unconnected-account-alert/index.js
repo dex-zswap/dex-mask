@@ -49,7 +49,7 @@ const UnconnectedAccountAlert = () => {
         </div>
       ) : null}
       <div className="unconnected-account-alert__footer-row">
-        <div className="unconnected-account-alert__checkbox-wrapper">
+        <div className="unconnected-account-alert__checkbox-wrapper flex items-center">
           <Checkbox
             id="unconnectedAccount_dontShowThisAgain"
             checked={dontShowThisAgain}
@@ -61,24 +61,8 @@ const UnconnectedAccountAlert = () => {
             htmlFor="unconnectedAccount_dontShowThisAgain"
           >
             {t('dontShowThisAgain')}
-            <Tooltip
-              position="top"
-              title={t('alertDisableTooltip')}
-              wrapperClassName="unconnected-account-alert__checkbox-label-tooltip"
-            >
-              <i className="fa fa-info-circle" />
-            </Tooltip>
           </label>
         </div>
-        <Button
-          disabled={alertState === LOADING}
-          onClick={onClose}
-          type="primary"
-          rounded
-          className="unconnected-account-alert__dismiss-button"
-        >
-          {t('dismiss')}
-        </Button>
       </div>
     </>
   );

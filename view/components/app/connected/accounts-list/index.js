@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem } from '@c/ui/menu';
+import Button from '@c/ui/button';
 import ConnectedAccountsListItem from './item';
 import ConnectedAccountsListOptions from './options';
+
 export default class ConnectedAccountsList extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
@@ -48,12 +50,13 @@ export default class ConnectedAccountsList extends PureComponent {
         name={`${name} (…${address.substr(-4, 4)})`}
         status={t('statusNotConnected')}
         action={
-          <a
-            className="connected-accounts-list__account-status-link"
+          <Button
+            type="primary"
+            className="connected-accounts-list__account-status-button"
             onClick={() => connectAccount(accountToConnect.address)}
           >
             {t('connect')}
-          </a>
+          </Button>
         }
       />
     );
@@ -81,12 +84,13 @@ export default class ConnectedAccountsList extends PureComponent {
   renderListItemAction(address) {
     const { t } = this.context;
     return (
-      <a
-        className="connected-accounts-list__account-status-link"
+      <Button
+        type="primary"
+        className="connected-accounts-list__account-status-button"
         onClick={() => this.switchAccount(address)}
       >
         {t('switchToThisAccount')}
-      </a>
+      </Button>
     );
   }
 
@@ -97,27 +101,23 @@ export default class ConnectedAccountsList extends PureComponent {
       shouldRenderListOptions,
     } = this.props;
     const { t } = this.context;
+
     return (
       <>
         <main className="connected-accounts-list">
           {this.renderUnconnectedAccount()}
           {connectedAccounts.map(({ address, name }, index) => {
+            const action = address === selectedAddress ? null : this.renderListItemAction(address);
+            const options = (shouldRenderListOptions && action === null) ? this.renderListItemOptions(address) : null;
+
             return (
               <ConnectedAccountsListItem
                 key={address}
                 address={address}
                 name={`${name} (…${address.substr(-4, 4)})`}
                 status={index === 0 ? t('active') : null}
-                options={
-                  shouldRenderListOptions
-                    ? this.renderListItemOptions(address)
-                    : null
-                }
-                action={
-                  address === selectedAddress
-                    ? null
-                    : this.renderListItemAction(address)
-                }
+                options={options}
+                action={action}
               />
             );
           })}
