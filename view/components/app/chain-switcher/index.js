@@ -1,24 +1,20 @@
-import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import classnames from 'classnames';
-import { isEmpty } from 'lodash';
-import PropTypes from 'prop-types';
+import Button from '@c/ui/button';
 import LongLetter from '@c/ui/long-letter';
 import { Menu, MenuItem } from '@c/ui/menu';
-import Button from '@c/ui/button';
 import Selector from '@c/ui/selector';
 import {
-  BSC_MAINNET,
-  DEX_MAINNET,
-  MAINNET,
-  NETWORK_TYPE_RPC,
   DEFAULT_NETWORK_LIST,
+  NETWORK_TYPE_RPC,
 } from '@shared/constants/network';
 import { isPrefixedFormattedHexString } from '@shared/modules/network.utils';
 import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes';
 import * as actions from '@view/store/actions';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 
 const SelectorOption = (props) => {
   return (
@@ -269,9 +265,11 @@ class ChainSwitcher extends Component {
 
   render() {
     const {
+      history,
       showNetworkDropdown,
       provider,
       frequentRpcListDetail,
+      resetNetworksForm,
       addRpc,
     } = this.props;
     const { showMenu } = this.state;
@@ -288,11 +286,15 @@ class ChainSwitcher extends Component {
             onSelect={this.switchNetWork}
             footer={
               addRpc ? (
-                <Button className="add-rpc-entry">
-                  <Link to={NETWORKS_FORM_ROUTE}>
-                    {this.context.t('addNetwork')}
-                    <i className="add-icon"></i>
-                  </Link>
+                <Button
+                  className="add-rpc-entry"
+                  onClick={() => {
+                    resetNetworksForm();
+                    history.push(NETWORKS_FORM_ROUTE);
+                  }}
+                >
+                  {this.context.t('addNetwork')}
+                  <i className="add-icon"></i>
                 </Button>
               ) : null
             }
@@ -314,6 +316,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    resetNetworksForm: () => {
+      dispatch(actions.setSelectedSettingsRpcUrl(''));
+      dispatch(actions.setNetworksTabAddMode(true));
+    },
     showNetworkDropdown: () => dispatch(actions.showNetworkDropdown('menu')),
     setProviderType: (type) => {
       dispatch(actions.setProviderType(type));

@@ -1,15 +1,11 @@
 import Button from '@c/ui/button';
 import { NETWORK_TYPE_RPC } from '@shared/constants/network';
-import {
-  DEFAULT_ROUTE,
-  NETWORKS_FORM_ROUTE,
-} from '@view/helpers/constants/routes';
+import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import {
   editRpc,
   setNetworksTabAddMode,
   setSelectedSettingsRpcUrl,
-  showModal,
   updateAndSetCustomRpc,
 } from '@view/store/actions';
 import React, { useCallback, useEffect, useMemo } from 'react';
@@ -35,7 +31,6 @@ export default function NetworksTab() {
     (state) => state.metamask,
   );
 
-  const providerType = useMemo(() => provider.type, [provider]);
   const providerUrl = useMemo(() => provider.rpcUrl, [provider]);
 
   useEffect(() => {
@@ -52,17 +47,6 @@ export default function NetworksTab() {
       ),
     [],
   );
-
-  const showConfirmDeleteNetworkModal = useCallback(() => {
-    ({ target, onConfirm }) =>
-      dispatch(
-        showModal({
-          name: 'CONFIRM_DELETE_NETWORK',
-          target,
-          onConfirm,
-        }),
-      );
-  }, []);
 
   const showNetworkForm = useMemo(
     () => Boolean(pathname.match(NETWORKS_FORM_ROUTE)),
@@ -114,6 +98,7 @@ export default function NetworksTab() {
         } = network;
         return (
           <div
+            key={rpcUrl}
             className="setting-network-list-item"
             onClick={() => {
               dispatch(setNetworksTabAddMode(false));
@@ -170,12 +155,11 @@ export default function NetworksTab() {
         chainId={chainId}
         networksToRender={networksToRender}
         ticker={ticker}
-        onClear={() => {
+        onClear={(ifGoback = true) => {
           dispatch(setNetworksTabAddMode(false));
           dispatch(setSelectedSettingsRpcUrl(''));
-          history.push(DEFAULT_ROUTE);
+          ifGoback && history.go(-1);
         }}
-        showConfirmDeleteNetworkModal={showConfirmDeleteNetworkModal}
         viewOnly={viewOnly}
         isCurrentRpcTarget={providerUrl === rpcUrl}
         networksTabIsInAddMode={networksTabIsInAddMode}
