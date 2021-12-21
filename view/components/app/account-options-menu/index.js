@@ -20,7 +20,11 @@ import {
   getSelectedIdentity,
 } from '@view/selectors';
 import { showModal } from '@view/store/actions';
-export default function AccountOptionsMenu({ anchorElement, onClose, toggleConnectedSites }) {
+export default function AccountOptionsMenu({
+  anchorElement,
+  onClose,
+  toggleConnectedSites,
+}) {
   const t = useI18nContext();
   const dispatch = useDispatch();
   const history = useHistory();

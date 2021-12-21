@@ -27,11 +27,10 @@ function getValues(pendingApproval, t, actions) {
   return {
     content: [
       {
-        element: 'Typography',
+        element: 'div',
         key: 'title',
         children: t('switchEthereumChainConfirmationTitle'),
         props: {
-          variant: TYPOGRAPHY.H3,
           align: 'center',
           fontWeight: 'bold',
           boxProps: {
@@ -40,11 +39,10 @@ function getValues(pendingApproval, t, actions) {
         },
       },
       {
-        element: 'Typography',
+        element: 'div',
         key: 'description',
         children: t('switchEthereumChainConfirmationDescription'),
         props: {
-          variant: TYPOGRAPHY.H7,
           align: 'center',
           boxProps: {
             margin: [0, 0, 4],
@@ -52,7 +50,7 @@ function getValues(pendingApproval, t, actions) {
         },
       },
       {
-        element: 'Box',
+        element: 'div',
         key: 'status-box',
         props: {
           justifyContent: JUSTIFY_CONTENT.CENTER,

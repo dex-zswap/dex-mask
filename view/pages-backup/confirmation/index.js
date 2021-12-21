@@ -184,7 +184,7 @@ export default function ConfirmationPage() {
         </div>
       )}
       <div className="confirmation-page__content">
-        <Box justifyContent="center">
+        <div className="network-display">
           <NetworkDisplay
             colored={false}
             indicatorSize={SIZES.XS}
@@ -192,8 +192,8 @@ export default function ConfirmationPage() {
               color: COLORS.BLACK,
             }}
           />
-        </Box>
-        <Box justifyContent="center" padding={[1, 4, 4]}>
+        </div>
+        <div className="site-info">
           <Chip
             label={stripHttpsScheme(originMetadata.origin)}
             leftIcon={
@@ -204,7 +204,7 @@ export default function ConfirmationPage() {
               />
             }
           />
-        </Box>
+        </div>
         <MetaMaskTemplateRenderer sections={templatedValues.content} />
       </div>
       <ConfirmationFooter

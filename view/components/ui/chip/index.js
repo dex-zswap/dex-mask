@@ -7,6 +7,7 @@ import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system';
 export default function Chip({
   className,
   children,
+  provider,
   borderColor = COLORS.UI1,
   label,
   labelProps = {},
@@ -29,6 +30,7 @@ export default function Chip({
         'chip--with-left-icon': Boolean(leftIcon),
         'chip--with-right-icon': Boolean(rightIcon),
         [`chip--${borderColor}`]: true,
+        provider
       })}
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}

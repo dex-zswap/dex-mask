@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import Logo from '@c/ui/logo';
 import SiteIcon from '@c/ui/site-icon';
 import { I18nContext } from '@view/contexts/i18n';
@@ -45,12 +44,3 @@ export default function PermissionsRedirect({ domainMetadata }) {
     );
   }
 }
-PermissionsRedirect.propTypes = {
-  domainMetadata: PropTypes.shape({
-    extensionId: PropTypes.string,
-    icon: PropTypes.string,
-    host: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    origin: PropTypes.string.isRequired,
-  }),
-};

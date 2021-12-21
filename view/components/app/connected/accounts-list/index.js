@@ -4,7 +4,6 @@ import { MenuItem } from '@c/ui/menu';
 import Button from '@c/ui/button';
 import ConnectedAccountsListItem from './item';
 import ConnectedAccountsListOptions from './options';
-
 export default class ConnectedAccountsList extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
@@ -101,15 +100,19 @@ export default class ConnectedAccountsList extends PureComponent {
       shouldRenderListOptions,
     } = this.props;
     const { t } = this.context;
-
     return (
       <>
         <main className="connected-accounts-list">
           {this.renderUnconnectedAccount()}
           {connectedAccounts.map(({ address, name }, index) => {
-            const action = address === selectedAddress ? null : this.renderListItemAction(address);
-            const options = (shouldRenderListOptions && action === null) ? this.renderListItemOptions(address) : null;
-
+            const action =
+              address === selectedAddress
+                ? null
+                : this.renderListItemAction(address);
+            const options =
+              shouldRenderListOptions && action === null
+                ? this.renderListItemOptions(address)
+                : null;
             return (
               <ConnectedAccountsListItem
                 key={address}

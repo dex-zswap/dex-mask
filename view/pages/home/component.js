@@ -316,9 +316,9 @@ export default class Home extends PureComponent {
       <div className="main-container dex-page-container">
         {/* <Route path={CONNECTED_ROUTE} component={ConnectedSites} exact />
         <Route
-         path={CONNECTED_ACCOUNTS_ROUTE}
-         component={ConnectedAccounts}
-         exact
+        path={CONNECTED_ACCOUNTS_ROUTE}
+        component={ConnectedAccounts}
+        exact
         /> */}
         <div className="home__container base-width">
           {isPopup && !connectedStatusPopoverHasBeenShown

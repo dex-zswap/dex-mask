@@ -74,7 +74,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     domains,
     mostRecentOverviewPage,
     selectedAddress,
-    tabToConnect
+    tabToConnect,
   } = stateProps;
   const {
     disconnectAccount,
@@ -83,7 +83,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     requestAccountsPermissionWithId,
   } = dispatchProps;
   const { history, onClose } = ownProps;
-
   return {
     ...ownProps,
     ...stateProps,

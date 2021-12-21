@@ -10,30 +10,6 @@ import Identicon from '@c/ui/identicon';
 import Tooltip from '@c/ui/tooltip';
 import { PRIMARY } from '@view/helpers/constants/common';
 export default class ChooseAccount extends Component {
-  static propTypes = {
-    accounts: PropTypes.arrayOf(
-      PropTypes.shape({
-        address: PropTypes.string,
-        addressLabel: PropTypes.string,
-        lastConnectedDate: PropTypes.string,
-        balance: PropTypes.string,
-      }),
-    ).isRequired,
-    selectAccounts: PropTypes.func.isRequired,
-    selectNewAccountViaModal: PropTypes.func.isRequired,
-    nativeCurrency: PropTypes.string.isRequired,
-    addressLastConnectedMap: PropTypes.object,
-    cancelPermissionsRequest: PropTypes.func.isRequired,
-    permissionsRequestId: PropTypes.string.isRequired,
-    selectedAccountAddresses: PropTypes.object.isRequired,
-    targetDomainMetadata: PropTypes.shape({
-      extensionId: PropTypes.string,
-      icon: PropTypes.string,
-      host: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      origin: PropTypes.string.isRequired,
-    }),
-  };
   state = {
     selectedAccounts: this.props.selectedAccountAddresses,
   };
@@ -99,7 +75,7 @@ export default class ChooseAccount extends Component {
                   className="permissions-connect-choose-account__list-check-box"
                   checked={selectedAccounts.has(address)}
                 />
-                <Identicon diameter={34} address={address} />
+                <Identicon className="permissions-connect-choose-account__list-avatar" diameter={28} address={address} />
                 <div className="permissions-connect-choose-account__account__info">
                   <div className="permissions-connect-choose-account__account__label">
                     {addressLabel}
@@ -109,21 +85,12 @@ export default class ChooseAccount extends Component {
                     type={PRIMARY}
                     value={balance}
                     style={{
-                      color: '#6A737D',
+                      color: '#C6C6C6',
                     }}
                     suffix={nativeCurrency}
                   />
                 </div>
               </div>
-              {addressLastConnectedMap[address] ? (
-                <Tooltip
-                  title={`${this.context.t('lastConnected')} ${
-                    addressLastConnectedMap[address]
-                  }`}
-                >
-                  <i className="fa fa-info-circle" />
-                </Tooltip>
-              ) : null}
             </div>
           );
         })}
@@ -179,18 +146,12 @@ export default class ChooseAccount extends Component {
                 </div>
               }
             >
-              <i className="fa fa-info-circle" />
+              <div>
+                <img src="/images/settings/info.png" width={12} height={12} />
+              </div>
             </Tooltip>
           </div>
         ) : null}
-        {/* <div
-        className="permissions-connect-choose-account__text-blue"
-        onClick={() =>
-        selectNewAccountViaModal(this.handleAccountClick.bind(this))
-        }
-        >
-        {this.context.t('newAccount')}
-        </div> */}
       </div>
     );
   }
@@ -206,29 +167,32 @@ export default class ChooseAccount extends Component {
     const { selectedAccounts } = this.state;
     const { t } = this.context;
     return (
-      <div className="permissions-connect-choose-account">
-        <PermissionsConnectHeader
-          icon={targetDomainMetadata.icon}
-          iconName={targetDomainMetadata.name}
-          headerTitle={t('connectWithDEXMask')}
-          headerText={
-            accounts.length > 0
-              ? t('selectAccounts')
-              : t('connectAccountOrCreate')
-          }
-          siteOrigin={targetDomainMetadata.origin}
-        />
-        {this.renderAccountsListHeader()}
-        {this.renderAccountsList()}
+      <div className="permissions-connect-choose-account dex-page-container space-between base-width">
+        <div className="permissions-connect-choose-account__body-container">
+          <PermissionsConnectHeader
+            icon={targetDomainMetadata.icon}
+            iconName={targetDomainMetadata.name}
+            headerText={
+              accounts.length > 0
+                ? t('selectAccounts')
+                : t('connectAccountOrCreate')
+            }
+            siteOrigin={targetDomainMetadata.origin}
+          />
+          {this.renderAccountsListHeader()}
+          {this.renderAccountsList()}
+        </div>
         <div className="permissions-connect-choose-account__footer-container">
           <PermissionsConnectFooter />
           <div className="permissions-connect-choose-account__bottom-buttons">
             <Button
+              className="half-button"
               onClick={() => cancelPermissionsRequest(permissionsRequestId)}
             >
               {t('cancel')}
             </Button>
             <Button
+              className="half-button"
               onClick={() => selectAccounts(selectedAccounts)}
               type="primary"
               disabled={selectedAccounts.size === 0}

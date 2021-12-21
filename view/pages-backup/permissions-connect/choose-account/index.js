@@ -179,7 +179,9 @@ export default class ChooseAccount extends Component {
                 </div>
               }
             >
-              <i className="fa fa-info-circle" />
+              <div>
+                <img src="/images/settings/info.png" width={12} height={12} />
+              </div>
             </Tooltip>
           </div>
         ) : null}
@@ -210,7 +212,6 @@ export default class ChooseAccount extends Component {
         <PermissionsConnectHeader
           icon={targetDomainMetadata.icon}
           iconName={targetDomainMetadata.name}
-          headerTitle={t('connectWithDEXMask')}
           headerText={
             accounts.length > 0
               ? t('selectAccounts')

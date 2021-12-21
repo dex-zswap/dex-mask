@@ -3,22 +3,22 @@
     text-overflow: ellipsis;
     margin-right: 10px;
   }
-  
+
   .connected-sites__confirmation {
     flex-direction: column;
-  
+
     button:first-child {
       margin-right: 24px;
     }
   }
-  
+
   .connected-sites__footer-row {
     display: flex;
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-  
+
     + .connected-sites__footer-row {
       margin-top: 15px;
     }

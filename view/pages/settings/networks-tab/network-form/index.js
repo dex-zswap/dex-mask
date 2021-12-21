@@ -1,3 +1,7 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import log from 'loglevel';
+import validUrl from 'valid-url';
 import Button from '@c/ui/button';
 import TextField from '@c/ui/text-field';
 import Tooltip from '@c/ui/tooltip';
@@ -9,15 +13,12 @@ import { jsonRpcRequest } from '@shared/modules/rpc.utils';
 import { decimalToHex } from '@view/helpers/utils/conversions.util';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { showModal } from '@view/store/actions';
-import log from 'loglevel';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import validUrl from 'valid-url';
 
 const getDisplayChainId = (chainId) => {
   if (!chainId || typeof chainId !== 'string' || !chainId.startsWith('0x')) {
     return chainId;
   }
+
   return parseInt(chainId, 16).toString(10);
 };
 
@@ -49,7 +50,6 @@ export default function NetworkForm(props) {
   } = props;
   const t = useI18nContext();
   const dispatch = useDispatch();
-
   const [rpcUrl, setRpcUrl] = useState(props?.rpcUrl || '');
   const [chainId, setChainId] = useState(
     getDisplayChainId(props?.chainId || ''),
@@ -61,7 +61,6 @@ export default function NetworkForm(props) {
   );
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   useEffect(() => {
     return () => {
       setRpcUrl('');
@@ -73,7 +72,6 @@ export default function NetworkForm(props) {
       onClear(false);
     };
   }, []);
-
   const resetForm = useCallback(() => {
     setRpcUrl(props?.rpcUrl || '');
     setChainId(getDisplayChainId(props?.chainId || ''));
@@ -83,13 +81,13 @@ export default function NetworkForm(props) {
     setErrors({});
     setIsSubmitting(false);
   }, []);
-
   const setErrorTo = useCallback((errorKey, errorVal) => {
     setErrors((pre) => {
-      return { errors: { ...pre, [errorKey]: errorVal } };
+      return {
+        errors: { ...pre, [errorKey]: errorVal },
+      };
     });
   }, []);
-
   const setErrorEmpty = useCallback((errorKey) => {
     setErrors((pre) => {
       return {
@@ -103,22 +101,21 @@ export default function NetworkForm(props) {
       };
     });
   }, []);
-
   const hasError = useCallback(
     (errorKey, errorKeyVal) => errors[errorKey]?.key === errorKeyVal,
     [errors],
   );
-
   const hasErrors = useCallback(() => {
     return Object.keys(errors).some((key) => {
       const error = errors[key];
+
       if (key === 'chainId' && error.key === 'chainIdExistsErrorMsg') {
         return false;
       }
+
       return error.key && error.msg;
     });
   }, [errors]);
-
   const validateChainIdOnSubmit = useCallback(
     async (formChainId, parsedChainId, rpcUrl) => {
       let errorKey;
@@ -169,9 +166,9 @@ export default function NetworkForm(props) {
     },
     [t, setErrorTo, setErrorEmpty],
   );
-
   const onSubmit = useCallback(async () => {
     setIsSubmitting(true);
+
     try {
       const propsRpcUrl = props?.rpcUrl;
       const formChainId = chainId.trim().toLowerCase();
@@ -221,7 +218,6 @@ export default function NetworkForm(props) {
     networksTabIsInAddMode,
     validateChainIdOnSubmit,
   ]);
-
   const onDelete = useCallback(() => {
     dispatch(
       showModal({
@@ -234,7 +230,6 @@ export default function NetworkForm(props) {
       }),
     );
   }, [props?.rpcUrl, onClear, resetForm]);
-
   const stateIsUnchanged = useCallback(() => {
     const chainIdIsUnchanged =
       typeof props?.chainId === 'string' &&
@@ -259,7 +254,6 @@ export default function NetworkForm(props) {
     networkName,
     blockExplorerUrl,
   ]);
-
   const validateChainIdOnChange = useCallback(
     (chainIdArg = '') => {
       const trimedChainId = chainIdArg.trim();
@@ -319,12 +313,12 @@ export default function NetworkForm(props) {
     },
     [setErrorTo, networksToRender, t, rpcUrl],
   );
-
   const validateBlockExplorerURL = useCallback(
     (url, stateKey) => {
       if (!validUrl.isWebUri(url) && url !== '') {
         let errorKey;
         let errorMessage;
+
         if (isValidWhenAppended(url)) {
           errorKey = 'urlErrorMsg';
           errorMessage = t('urlErrorMsg');
@@ -332,6 +326,7 @@ export default function NetworkForm(props) {
           errorKey = 'invalidBlockExplorerURL';
           errorMessage = t('invalidBlockExplorerURL');
         }
+
         setErrorTo(stateKey, {
           key: errorKey,
           msg: errorMessage,
@@ -342,7 +337,6 @@ export default function NetworkForm(props) {
     },
     [t, isValidWhenAppended, setErrorTo, setErrorEmpty],
   );
-
   const validateUrlRpcUrl = useCallback(
     (url, stateKey) => {
       const isValidUrl = validUrl.isWebUri(url);
@@ -352,6 +346,7 @@ export default function NetworkForm(props) {
       if (!isValidUrl && url !== '') {
         let errorKey;
         let errorMessage;
+
         if (isValidWhenAppended(url)) {
           errorKey = 'urlErrorMsg';
           errorMessage = t('urlErrorMsg');
@@ -359,6 +354,7 @@ export default function NetworkForm(props) {
           errorKey = 'invalidRPC';
           errorMessage = t('invalidRPC');
         }
+
         setErrorTo(stateKey, {
           key: errorKey,
           msg: errorMessage,
@@ -373,6 +369,7 @@ export default function NetworkForm(props) {
       } else {
         setErrorEmpty(stateKey);
       }
+
       if (chainId && isValidUrl && chainIdFetchFailed) {
         const formChainId = chainId.trim().toLowerCase();
         const handlerdChanId = prefixChainId(formChainId);
@@ -389,17 +386,16 @@ export default function NetworkForm(props) {
       setErrorTo,
     ],
   );
-
   const deletable = !networksTabIsInAddMode && !isCurrentRpcTarget && !viewOnly;
-
   const isSubmitDisabled =
     hasErrors() || isSubmitting || stateIsUnchanged() || !rpcUrl || !chainId;
-
   const renderWarning = useMemo(
     () => (
       <div className="networks-form-warning-wrap">
         <img
-          style={{ margin: '0px 6px -1px 0' }}
+          style={{
+            margin: '0px 6px -1px 0',
+          }}
           width={12}
           src="images/settings/info.png"
         />
@@ -408,7 +404,6 @@ export default function NetworkForm(props) {
     ),
     [t],
   );
-
   const renderFormTextField = useCallback(
     ({
       fieldKey,
@@ -427,7 +422,9 @@ export default function NetworkForm(props) {
               <Tooltip position="top" title={tooltipText}>
                 <div>
                   <img
-                    style={{ margin: '1px 0 0 10px' }}
+                    style={{
+                      margin: '1px 0 0 10px',
+                    }}
                     width={12}
                     src="images/settings/info.png"
                   />
@@ -448,7 +445,6 @@ export default function NetworkForm(props) {
     },
     [t, errors],
   );
-
   return (
     <div className="base-width">
       {viewOnly ? null : renderWarning}
@@ -510,7 +506,11 @@ export default function NetworkForm(props) {
         </div>
       )}
       {deletable && (
-        <div style={{ marginTop: '15px' }}>
+        <div
+          style={{
+            marginTop: '15px',
+          }}
+        >
           <Button type="warning" onClick={onDelete}>
             {t('delete')}
           </Button>

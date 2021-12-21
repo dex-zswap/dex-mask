@@ -30,7 +30,7 @@ export default function SelectedAccount() {
   const [state, setState] = useState({
     copied: false,
     accountOptionsMenuOpen: false,
-    connectedSitesOpen: false
+    connectedSitesOpen: false,
   });
   const copyTimeout = useRef(null);
   const dropTrigger = useRef(null);
@@ -98,7 +98,6 @@ export default function SelectedAccount() {
       window.clearTimeout(copyTimeout.current);
     }
   }, [copyTimeout.current]);
-
   return (
     <>
       {state.accountOptionsMenuOpen && (
@@ -108,11 +107,9 @@ export default function SelectedAccount() {
           toggleConnectedSites={toggleConnectedSites}
         />
       )}
-      {
-        state.connectedSitesOpen && (
-          <ConnectedSites onClose={toggleConnectedSites} />
-        )
-      }
+      {state.connectedSitesOpen && (
+        <ConnectedSites onClose={toggleConnectedSites} />
+      )}
       <div className="selected-account base-width">
         <div className="account-address flex space-between items-center">
           <div className="account flex items-center">

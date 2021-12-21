@@ -19,11 +19,21 @@ export default class ConnectedAccountsListItem extends PureComponent {
           />
           <div className="connected-accounts-list__status flex space-between items-center">
             <div>
-              <p className={classnames('connected-accounts-list__account-name', action ? 'block' : '')}>
+              <p
+                className={classnames(
+                  'connected-accounts-list__account-name',
+                  action ? 'block' : '',
+                )}
+              >
                 <strong>{name}</strong>
               </p>
               {status ? (
-                <p className={classnames('connected-accounts-list__account-status', action ? 'block' : '')}>
+                <p
+                  className={classnames(
+                    'connected-accounts-list__account-status',
+                    action ? 'block' : '',
+                  )}
+                >
                   {status}
                 </p>
               ) : null}

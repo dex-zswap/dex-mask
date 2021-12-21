@@ -2,30 +2,9 @@ import React, { Component } from 'react';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import PermissionsConnectFooter from '@c/app/permission/connect-footer';
-import { PageContainerFooter } from '@c/ui/page-container';
+import Button from '@c/ui/button';
 import { PermissionPageContainerContent } from '.';
 export default class PermissionPageContainer extends Component {
-  static propTypes = {
-    approvePermissionsRequest: PropTypes.func.isRequired,
-    rejectPermissionsRequest: PropTypes.func.isRequired,
-    selectedIdentities: PropTypes.array,
-    allIdentitiesSelected: PropTypes.bool,
-    request: PropTypes.object,
-    requestMetadata: PropTypes.object,
-    targetDomainMetadata: PropTypes.shape({
-      extensionId: PropTypes.string,
-      icon: PropTypes.string,
-      host: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      origin: PropTypes.string.isRequired,
-    }),
-  };
-  static defaultProps = {
-    request: {},
-    requestMetadata: {},
-    selectedIdentities: [],
-    allIdentitiesSelected: false,
-  };
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -101,7 +80,7 @@ export default class PermissionPageContainer extends Component {
       allIdentitiesSelected,
     } = this.props;
     return (
-      <div className="page-container permission-approval-container">
+      <div className="permission-approval-container dex-page-container space-between base-width">
         <PermissionPageContainerContent
           requestMetadata={requestMetadata}
           domainMetadata={targetDomainMetadata}
@@ -112,15 +91,14 @@ export default class PermissionPageContainer extends Component {
         />
         <div className="permission-approval-container__footers">
           <PermissionsConnectFooter />
-          <PageContainerFooter
-            cancelButtonType="default"
-            onCancel={() => this.onCancel()}
-            cancelText={this.context.t('cancel')}
-            onSubmit={() => this.onSubmit()}
-            submitText={this.context.t('connect')}
-            submitButtonType="confirm"
-            buttonSizeLarge={false}
-          />
+          <div className='permission-approval-container__footers-buttons flex space-between'>
+            <Button className="half-button" onClick={() => this.onCancel()}>
+              {this.context.t('cancel')}
+            </Button>
+            <Button type="primary" className="half-button" onClick={() => this.onSubmit()}>
+              {this.context.t('connect')}
+            </Button>
+          </div>
         </div>
       </div>
     );

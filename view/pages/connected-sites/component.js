@@ -10,7 +10,6 @@ export default class ConnectedSites extends Component {
   static defaultProps = {
     tabToConnect: null,
   };
-
   state = {
     sitePendingDisconnect: null,
   };

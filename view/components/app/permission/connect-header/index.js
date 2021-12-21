@@ -1,20 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import SiteIcon from '@c/ui/site-icon';
 export default class PermissionsConnectHeader extends Component {
-  static propTypes = {
-    icon: PropTypes.string,
-    iconName: PropTypes.string.isRequired,
-    siteOrigin: PropTypes.string.isRequired,
-    headerTitle: PropTypes.node,
-    headerText: PropTypes.string,
-  };
-  static defaultProps = {
-    icon: null,
-    headerTitle: '',
-    headerText: '',
-  };
-
   renderHeaderIcon() {
     const { icon, iconName, siteOrigin } = this.props;
     return (
@@ -30,7 +16,9 @@ export default class PermissionsConnectHeader extends Component {
     return (
       <div className="permissions-connect-header">
         {this.renderHeaderIcon()}
-        <div className="permissions-connect-header__title">{headerTitle}</div>
+        {
+          headerTitle && <div className="permissions-connect-header__title">{headerTitle}</div>
+        }
         <div className="permissions-connect-header__subtitle">{headerText}</div>
       </div>
     );

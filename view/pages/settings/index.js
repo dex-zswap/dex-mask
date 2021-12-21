@@ -1,3 +1,5 @@
+import React, { useMemo } from 'react';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import BackBar from '@c/ui/back-bar';
 import Logo from '@c/ui/logo';
 import RevealSeedConfirmation from '@pages/keychains/reveal-seed';
@@ -13,8 +15,6 @@ import {
   SETTINGS_ROUTE,
 } from '@view/helpers/constants/routes';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-import React, { useMemo } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import AdvancedTab from './advanced-tab';
 import AlertsTab from './alerts-tab';
 import InfoTab from './info-tab';
@@ -35,7 +35,6 @@ const SettingsPage = () => {
   const t = useI18nContext();
   const history = useHistory();
   const { pathname } = useLocation();
-
   const menu = useMemo(
     () => [
       {
@@ -98,9 +97,9 @@ const SettingsPage = () => {
     if (subTitle[pathname]) {
       return subTitle[pathname];
     }
+
     return t('settings');
   }, [t, pathname]);
-
   return (
     <div className="dex-page-container">
       <Logo plain isCenter />

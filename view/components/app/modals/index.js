@@ -1,13 +1,14 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util'; // Modal Components
+
 import ConfirmCustomizeGasModal from '@c/app/gas-customization/gas-modal-page-container';
 import SwapsGasCustomizationModal from '@pages/swaps/swaps-gas-customization-modal';
 import { resetCustomData as resetCustomGasData } from '@reducer/gas/gas.duck';
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
 import isMobileView from '@view/helpers/utils/is-mobile-view';
 import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import AccountDetailsModal from './account-details-modal';
 import AddToAddressBookModal from './add-to-addressbook-modal';
 import CancelTransaction from './cancel-transaction';
@@ -25,7 +26,6 @@ import NewAccountModal from './new-account-modal';
 import QRScanner from './qr-scanner';
 import RejectTransactions from './reject-transactions';
 import TransactionConfirmed from './transaction-confirmed';
-
 const modalContainerBaseStyle = {
   border: 'none',
   borderRadius: '8px',

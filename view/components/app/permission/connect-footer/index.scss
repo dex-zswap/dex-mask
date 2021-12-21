@@ -4,17 +4,15 @@
   width: 100%;
   align-items: center;
 
-  &__text {
-    @include H7;
-
-    color: #6a737d;
+  .permissions-connect-footer__text {
+    color: $pink;
     display: flex;
+    font-size: 10px;
     margin-top: 10px;
-
-    &--link {
-      color: $primary-blue;
-      margin-left: 4px;
-      cursor: pointer;
-    }
+  }
+  
+  .permissions-connect-footer__text--link {
+    margin-left: 4px;
+    cursor: pointer;
   }
 }

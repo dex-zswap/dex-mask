@@ -1,3 +1,9 @@
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Button from '@c/ui/button';
 import LongLetter from '@c/ui/long-letter';
 import { Menu, MenuItem } from '@c/ui/menu';
@@ -9,12 +15,6 @@ import {
 import { isPrefixedFormattedHexString } from '@shared/modules/network.utils';
 import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes';
 import * as actions from '@view/store/actions';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { compose } from 'redux';
 
 const SelectorOption = (props) => {
   return (
@@ -34,7 +34,6 @@ class ChainSwitcher extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   defaultChains = DEFAULT_NETWORK_LIST.map(({ chainId, provider, label }) => {
     return {
       key: chainId,
@@ -44,22 +43,21 @@ class ChainSwitcher extends Component {
       label,
     };
   });
- 
+
   getNetWorkOptions() {
     const networkOptions = this.defaultChains;
-    const {
-      frequentRpcListDetail,
-    } = this.props;
-
-    return networkOptions.concat(frequentRpcListDetail.map((item) => {
-      return {
-        key: item.chainId,
-        value: item.chainId,
-        isBulitIn: false,
-        label: item.nickname,
-        setPrcParams: [item.rpcUrl, item.chainId, item.ticker, item.nickname]
-      };
-    }));
+    const { frequentRpcListDetail } = this.props;
+    return networkOptions.concat(
+      frequentRpcListDetail.map((item) => {
+        return {
+          key: item.chainId,
+          value: item.chainId,
+          isBulitIn: false,
+          label: item.nickname,
+          setPrcParams: [item.rpcUrl, item.chainId, item.ticker, item.nickname],
+        };
+      }),
+    );
   }
 
   switchNetWork = (value, detail) => {
@@ -79,9 +77,7 @@ class ChainSwitcher extends Component {
       resetNetworksForm,
       addRpc,
     } = this.props;
-
     const networkOptions = this.getNetWorkOptions();
-
     return (
       <>
         <div className="chain-switcher">

@@ -93,11 +93,10 @@ function getValues(pendingApproval, t, actions) {
   return {
     content: [
       {
-        element: 'Typography',
+        element: 'div',
         key: 'title',
         children: t('addEthereumChainConfirmationTitle'),
         props: {
-          variant: TYPOGRAPHY.H3,
           className: 'add-chain-confirm-title',
           align: 'center',
           fontWeight: 'bold',
@@ -107,7 +106,7 @@ function getValues(pendingApproval, t, actions) {
         },
       },
       {
-        element: 'Typography',
+        element: 'div',
         key: 'description',
         children: t('addEthereumChainConfirmationDescription'),
         props: {
@@ -120,7 +119,7 @@ function getValues(pendingApproval, t, actions) {
         },
       },
       {
-        element: 'Typography',
+        element: 'div',
         key: 'only-add-networks-you-trust',
         children: [
           {

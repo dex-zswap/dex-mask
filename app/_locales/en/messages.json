@@ -1942,7 +1942,7 @@
     "message": "Select a higher gas fee to accelerate the processing of your transaction.*"
   },
   "selectAccounts": {
-    "message": "Select account(s)"
+    "message": "Select account(s) that you would like to connect."
   },
   "selectAll": {
     "message": "Select all"

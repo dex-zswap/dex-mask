@@ -38,6 +38,7 @@ export default function NetworkDisplay({
     <Chip
       borderColor={outline ? COLORS.UI3 : COLORS.TRANSPARENT}
       onClick={onClick}
+      provider={currentNetwork.type}
       leftIcon={
         <LoadingIndicator
           alt={t('attemptingConnect')}
@@ -79,23 +80,3 @@ export default function NetworkDisplay({
     />
   );
 }
-NetworkDisplay.propTypes = {
-  colored: PropTypes.bool,
-  indicatorSize: PropTypes.oneOf(Object.values(SIZES)),
-  labelProps: Chip.propTypes.labelProps,
-  targetNetwork: PropTypes.shape({
-    type: PropTypes.oneOf([
-      ...Object.values(NETWORK_TYPE_TO_ID_MAP),
-      NETWORK_TYPE_RPC,
-    ]),
-    nickname: PropTypes.string,
-  }),
-  outline: PropTypes.bool,
-  disabled: PropTypes.bool,
-  iconClassName: PropTypes.string,
-  onClick: PropTypes.func,
-};
-NetworkDisplay.defaultProps = {
-  colored: true,
-  indicatorSize: SIZES.LG,
-};
