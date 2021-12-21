@@ -18,7 +18,8 @@
   }
 }
 
-.check-box__checked:before, .check-box__indeterminate:before {
+.check-box__checked:before,
+.check-box__indeterminate:before {
   content: '' !important;
   display: block;
   width: 18px;

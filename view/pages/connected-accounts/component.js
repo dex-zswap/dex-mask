@@ -25,7 +25,7 @@ export default class ConnectedAccounts extends PureComponent {
       selectedAddress,
       removePermittedAccount,
       setSelectedAddress,
-      onClose
+      onClose,
     } = this.props;
     const { t } = this.context;
     const connectedAccountsDescription =

@@ -8,7 +8,6 @@ export default class ConnectedAccountsPermissions extends PureComponent {
   static defaultProps = {
     permissions: [],
   };
-  
   state = {
     expanded: true,
   };
@@ -29,9 +28,7 @@ export default class ConnectedAccountsPermissions extends PureComponent {
 
     return (
       <div className="connected-accounts-permissions">
-        <p
-          className="connected-accounts-permissions__header"
-        >
+        <p className="connected-accounts-permissions__header">
           <p>{t('permissions')}</p>
         </p>
         <div className="connected-accounts-permissions__list-container">
@@ -48,7 +45,9 @@ export default class ConnectedAccountsPermissions extends PureComponent {
                   id={permissionName}
                   className="connected-accounts-permissions__checkbox"
                 />
-                <label className="description-label" htmlFor={permissionName}>{t(permissionName)}</label>
+                <label className="description-label" htmlFor={permissionName}>
+                  {t(permissionName)}
+                </label>
               </li>
             ))}
           </ul>

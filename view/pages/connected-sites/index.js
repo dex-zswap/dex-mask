@@ -75,6 +75,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     mostRecentOverviewPage,
     selectedAddress,
     tabToConnect,
+    onClose
   } = stateProps;
   const {
     disconnectAccount,
@@ -83,8 +84,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     requestAccountsPermissionWithId,
   } = dispatchProps;
   const { history } = ownProps;
-
-  const closePopover = () => history.push(mostRecentOverviewPage);
 
   return {
     ...ownProps,
@@ -95,14 +94,14 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       disconnectAccount(domainKey, selectedAddress);
 
       if (connectedDomains.length === 1) {
-        closePopover();
+        onClose();
       }
     },
     disconnectAllAccounts: (domainKey) => {
       disconnectAllAccounts(domainKey, domains[domainKey]);
 
       if (connectedDomains.length === 1) {
-        closePopover();
+        onClose();
       }
     },
     requestAccountsPermission: async () => {

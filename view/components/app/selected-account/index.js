@@ -21,6 +21,7 @@ import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
 import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
 import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
 import { getSelectedAccount, getSelectedIdentity } from '@view/selectors';
+import ConnectedSites from '@pages/connected-sites';
 export default function SelectedAccount() {
   const t = useContext(I18nContext);
   const selectedIdentity = useSelector(getSelectedIdentity);
@@ -28,7 +29,7 @@ export default function SelectedAccount() {
   const nativeCurrency = useSelector(getNativeCurrency);
   const [state, setState] = useState({
     copied: false,
-    accountOptionsMenuOpen: false,
+    accountOptionsMenuOpen: false
   });
   const copyTimeout = useRef(null);
   const dropTrigger = useRef(null);
@@ -89,6 +90,7 @@ export default function SelectedAccount() {
       window.clearTimeout(copyTimeout.current);
     }
   }, [copyTimeout.current]);
+
   return (
     <>
       {state.accountOptionsMenuOpen && (
@@ -97,6 +99,11 @@ export default function SelectedAccount() {
           onClose={toggleAccountDrop}
         />
       )}
+      {
+        state.connectedSitesOpen && (
+          <ConnectedSites onClose={toggleConnectedSites} />
+        )
+      }
       <div className="selected-account base-width">
         <div className="account-address flex space-between items-center">
           <div className="account flex items-center">

@@ -10,7 +10,6 @@ export default class ConnectedAccountsList extends PureComponent {
   static defaultProps = {
     accountToConnect: null,
   };
-
   state = {
     accountWithOptionsShown: null,
   };

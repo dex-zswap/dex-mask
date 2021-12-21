@@ -21,19 +21,17 @@ const CheckBox = ({ className, disabled, id, onClick, checked, title }) => {
     <input
       checked={checked === CHECKBOX_STATE.CHECKED}
       className={classnames('check-box', className, {
-        'check-box__checked':
-          checked === CHECKBOX_STATE.CHECKED,
-        'check-box__indeterminate':
-          checked === CHECKBOX_STATE.INDETERMINATE,
+        'check-box__checked': checked === CHECKBOX_STATE.CHECKED,
+        'check-box__indeterminate': checked === CHECKBOX_STATE.INDETERMINATE,
       })}
       disabled={disabled}
       id={id}
       onClick={
         onClick
           ? (event) => {
-            event.preventDefault();
-            onClick();
-          }
+              event.preventDefault();
+              onClick();
+            }
           : null
       }
       readOnly

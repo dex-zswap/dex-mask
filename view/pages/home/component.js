@@ -12,8 +12,6 @@ import Popover from '@c/ui/popover';
 import Tabs from '@c/ui/tabs';
 import TransactionList from '@c/app/transaction/list';
 import TopHeader from '@c/ui/top-header';
-import ConnectedAccounts from '@pages/connected-accounts';
-import ConnectedSites from '@pages/connected-sites';
 import {
   ASSET_ROUTE,
   AWAITING_SWAP_ROUTE,
@@ -39,7 +37,6 @@ export default class Home extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     mounted: false,
     canShowBlockageNotification: true,
@@ -319,9 +316,9 @@ export default class Home extends PureComponent {
       <div className="main-container dex-page-container">
         {/* <Route path={CONNECTED_ROUTE} component={ConnectedSites} exact />
         <Route
-          path={CONNECTED_ACCOUNTS_ROUTE}
-          component={ConnectedAccounts}
-          exact
+         path={CONNECTED_ACCOUNTS_ROUTE}
+         component={ConnectedAccounts}
+         exact
         /> */}
         <div className="home__container base-width">
           {isPopup && !connectedStatusPopoverHasBeenShown
@@ -346,7 +343,9 @@ export default class Home extends PureComponent {
               ]}
             >
               <AssetList
-                onClickAsset={(asset) => history.push(`${ASSET_ROUTE}/${asset}`)}
+                onClickAsset={(asset) =>
+                  history.push(`${ASSET_ROUTE}/${asset}`)
+                }
               />
               <TransactionList />
             </Tabs>

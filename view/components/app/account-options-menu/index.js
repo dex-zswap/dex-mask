@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -110,7 +110,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
       <MenuItem
         data-testid="account-options-menu__connected-sites"
         onClick={() => {
-          history.push(CONNECTED_ROUTE);
+          toggleConnectedSites();
           onClose();
         }}
         iconClassName="account-options-menu__connected-sites"
