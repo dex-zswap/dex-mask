@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { getPlatform } from '@app/scripts/lib/util';
 import Button from '@c/ui/button';
 import Switch from '@c/ui/switch';
 import TextField from '@c/ui/text-field';
 import { PLATFORM_FIREFOX } from '@shared/constants/app';
-import { I18nContext } from '@view/contexts/i18n';
 import { exportAsFile } from '@view/helpers/utils';
+import { useI18nContext } from '@view/hooks/useI18nContext';
 import { getPreferences } from '@view/selectors';
 import {
   displayWarning,
@@ -21,6 +19,8 @@ import {
   showModal,
   turnThreeBoxSyncingOnAndInitialize,
 } from '@view/store/actions';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 function addUrlProtocolPrefix(urlString) {
   if (!urlString.match(/(^http:\/\/)|(^https:\/\/)/u)) {
@@ -32,10 +32,9 @@ function addUrlProtocolPrefix(urlString) {
 
 let ipfsGatewayError = '';
 export default function AdvancedTab({ lockTimeError }) {
-  const t = useContext(I18nContext);
+  const t = useI18nContext();
   const dispatch = useDispatch();
   const { warning } = useSelector((state) => state.appState);
-  const metamask = useSelector((state) => state.metamask);
   const {
     featureFlags: { sendHexData, advancedInlineGas } = {},
     threeBoxSyncingAllowed,
@@ -44,7 +43,7 @@ export default function AdvancedTab({ lockTimeError }) {
     ipfsGateway,
     useLedgerLive,
     dismissSeedBackUpReminder,
-  } = metamask;
+  } = useSelector((state) => state.metamask);
   const { showFiatInTestnets, autoLockTimeLimit } = useSelector(getPreferences);
   let allowed = threeBoxSyncingAllowed;
   let description = t('syncWithThreeBoxDescription');

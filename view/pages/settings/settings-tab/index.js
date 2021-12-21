@@ -1,5 +1,3 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import locales from '@app/_locales/index.json';
 import Selector from '@c/ui/selector';
 import Switch from '@c/ui/switch';
@@ -12,6 +10,9 @@ import {
   setUseBlockie,
   updateCurrentLocale,
 } from '@view/store/actions';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 const sortedCurrencies = availableCurrencies.sort((a, b) => {
   return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase());
 });
@@ -27,13 +28,16 @@ const localeOptions = locales.map((locale) => {
     value: locale.code,
   };
 });
+
 export default function SettingsTab() {
   const t = useI18nContext();
   const { warning } = useSelector((state) => state.appState);
-  const metamask = useSelector((state) => state.metamask);
-  const { currentCurrency, useBlockie, currentLocale } = metamask;
+  const { currentCurrency, useBlockie, currentLocale } = useSelector(
+    (state) => state.metamask,
+  );
   const dispatch = useDispatch();
   const { hideZeroBalanceTokens } = useSelector(getPreferences);
+
   return (
     <div className="setting-tab-wrap base-width">
       {warning && <div className="settings-tab__error">{warning}</div>}

@@ -1,38 +1,78 @@
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { getEnvironmentType } from '@app/scripts/lib/util';
-import { ENVIRONMENT_TYPE_FULLSCREEN } from '@shared/constants/app';
+import Button from '@c/ui/button';
 import { NETWORK_TYPE_RPC } from '@shared/constants/network';
-import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes';
 import {
-  displayWarning,
+  DEFAULT_ROUTE,
+  NETWORKS_FORM_ROUTE,
+} from '@view/helpers/constants/routes';
+import { useI18nContext } from '@view/hooks/useI18nContext';
+import {
   editRpc,
   setNetworksTabAddMode,
   setSelectedSettingsRpcUrl,
   showModal,
   updateAndSetCustomRpc,
 } from '@view/store/actions';
-import NetworksTab from './component';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import { defaultNetworksData } from './constants';
+import NetworkForm from './network-form';
+
 const defaultNetworks = defaultNetworksData.map((network) => ({
   ...network,
   viewOnly: true,
 }));
 
-const mapStateToProps = (state, ownProps) => {
-  const {
-    location: { pathname },
-  } = ownProps;
-  const environmentType = getEnvironmentType();
-  const isFullScreen = environmentType === ENVIRONMENT_TYPE_FULLSCREEN;
-  const shouldRenderNetworkForm = Boolean(pathname.match(NETWORKS_FORM_ROUTE));
-  const { frequentRpcListDetail, provider } = state.metamask;
-  const { networksTabSelectedRpcUrl, networksTabIsInAddMode } = state.appState;
+export default function NetworksTab() {
+  const t = useI18nContext();
+  const history = useHistory();
+  const { pathname } = useLocation();
+  const dispatch = useDispatch();
+  const { networksTabSelectedRpcUrl, networksTabIsInAddMode } = useSelector(
+    (state) => state.appState,
+  );
+  const { frequentRpcListDetail, provider } = useSelector(
+    (state) => state.metamask,
+  );
+
+  const providerType = useMemo(() => provider.type, [provider]);
+  const providerUrl = useMemo(() => provider.rpcUrl, [provider]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setSelectedSettingsRpcUrl(''));
+      dispatch(setNetworksTabAddMode(false));
+    };
+  }, []);
+
+  const setRpcTarget = useCallback(
+    (newRpc, chainId, ticker, nickname, rpcPrefs) =>
+      dispatch(
+        updateAndSetCustomRpc(newRpc, chainId, ticker, nickname, rpcPrefs),
+      ),
+    [],
+  );
+
+  const showConfirmDeleteNetworkModal = useCallback(() => {
+    ({ target, onConfirm }) =>
+      dispatch(
+        showModal({
+          name: 'CONFIRM_DELETE_NETWORK',
+          target,
+          onConfirm,
+        }),
+      );
+  }, []);
+
+  const showNetworkForm = useMemo(
+    () => Boolean(pathname.match(NETWORKS_FORM_ROUTE)),
+    [pathname],
+  );
+
   const frequentRpcNetworkListDetails = frequentRpcListDetail.map((rpc) => {
     return {
       label: rpc.nickname,
-      iconColor: '#6A737D',
+      iconImg: 'rpc.png',
       providerType: NETWORK_TYPE_RPC,
       rpcUrl: rpc.rpcUrl,
       chainId: rpc.chainId,
@@ -50,7 +90,6 @@ const mapStateToProps = (state, ownProps) => {
     ) || {};
   const networkIsSelected = Boolean(selectedNetwork.rpcUrl);
   let networkDefaultedToProvider = false;
-
   if (!networkIsSelected && !networksTabIsInAddMode) {
     selectedNetwork =
       networksToRender.find((network) => {
@@ -63,49 +102,112 @@ const mapStateToProps = (state, ownProps) => {
     networkDefaultedToProvider = true;
   }
 
-  return {
-    selectedNetwork,
-    networksToRender,
-    networkIsSelected,
-    networksTabIsInAddMode,
-    providerType: provider.type,
-    providerUrl: provider.rpcUrl,
-    networkDefaultedToProvider,
-    isFullScreen,
-    shouldRenderNetworkForm,
-  };
-};
+  const renderNetworksList = useMemo(
+    () =>
+      networksToRender.map((network) => {
+        const {
+          label,
+          labelKey,
+          iconImg,
+          rpcUrl,
+          providerType: currentProviderType,
+        } = network;
+        return (
+          <div
+            className="setting-network-list-item"
+            onClick={() => {
+              dispatch(setNetworksTabAddMode(false));
+              dispatch(setSelectedSettingsRpcUrl(rpcUrl));
+              history.push(NETWORKS_FORM_ROUTE);
+            }}
+          >
+            <img width={12} src={`images/default-chains/${iconImg}`} />
+            <div className="setting-network-list-item-label">
+              {label || t(labelKey)}
+            </div>
+            <div>
+              {currentProviderType !== NETWORK_TYPE_RPC && (
+                <img
+                  className="setting-network-list-item-lock"
+                  width={10}
+                  src="images/settings/lock.png"
+                />
+              )}
+              <img width={6} src="images/settings/arrow_right.png" />
+            </div>
+          </div>
+        );
+      }),
+    [
+      setSelectedSettingsRpcUrl,
+      setNetworksTabAddMode,
+      history,
+      networksToRender,
+      t,
+    ],
+  );
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setSelectedSettingsRpcUrl: (newRpcUrl) =>
-      dispatch(setSelectedSettingsRpcUrl(newRpcUrl)),
-    setRpcTarget: (newRpc, chainId, ticker, nickname, rpcPrefs) => {
-      return dispatch(
-        updateAndSetCustomRpc(newRpc, chainId, ticker, nickname, rpcPrefs),
-      );
-    },
-    showConfirmDeleteNetworkModal: ({ target, onConfirm }) => {
-      return dispatch(
-        showModal({
-          name: 'CONFIRM_DELETE_NETWORK',
-          target,
-          onConfirm,
-        }),
-      );
-    },
-    displayWarning: (warning) => dispatch(displayWarning(warning)),
-    setNetworksTabAddMode: (isInAddMode) =>
-      dispatch(setNetworksTabAddMode(isInAddMode)),
-    editRpc: (oldRpc, newRpc, chainId, ticker, nickname, rpcPrefs) => {
-      return dispatch(
-        editRpc(oldRpc, newRpc, chainId, ticker, nickname, rpcPrefs),
-      );
-    },
-  };
-};
+  const renderNetworksForm = useMemo(() => {
+    const {
+      labelKey,
+      label,
+      rpcUrl,
+      chainId,
+      ticker,
+      viewOnly,
+      rpcPrefs,
+      blockExplorerUrl,
+    } = selectedNetwork;
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-)(NetworksTab);
+    return (
+      <NetworkForm
+        setRpcTarget={setRpcTarget}
+        editRpc={(oldRpc, newRpc, chainId, ticker, nickname, rpcPrefs) =>
+          dispatch(editRpc(oldRpc, newRpc, chainId, ticker, nickname, rpcPrefs))
+        }
+        networkName={label || (labelKey && t(labelKey)) || ''}
+        rpcUrl={rpcUrl}
+        chainId={chainId}
+        networksToRender={networksToRender}
+        ticker={ticker}
+        onClear={() => {
+          dispatch(setNetworksTabAddMode(false));
+          dispatch(setSelectedSettingsRpcUrl(''));
+          history.push(DEFAULT_ROUTE);
+        }}
+        showConfirmDeleteNetworkModal={showConfirmDeleteNetworkModal}
+        viewOnly={viewOnly}
+        isCurrentRpcTarget={providerUrl === rpcUrl}
+        networksTabIsInAddMode={networksTabIsInAddMode}
+        rpcPrefs={rpcPrefs}
+        blockExplorerUrl={blockExplorerUrl}
+      />
+    );
+  }, [selectedNetwork]);
+
+  return (
+    <div className="base-width">
+      {showNetworkForm ? (
+        renderNetworksForm
+      ) : (
+        <>
+          <div className="setting-item">
+            <div className="setting-label">{t('addNetwork')}</div>
+            <Button
+              type="primary"
+              onClick={(event) => {
+                event.preventDefault();
+                dispatch(setSelectedSettingsRpcUrl(''));
+                dispatch(setNetworksTabAddMode(true));
+                history.push(NETWORKS_FORM_ROUTE);
+              }}
+            >
+              {t('addNetwork')}
+            </Button>
+          </div>
+          {renderNetworksList}
+        </>
+      )}
+    </div>
+  );
+}

@@ -1,11 +1,11 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
 import Switch from '@c/ui/switch';
 import Tooltip from '@c/ui/tooltip';
 import { getAlertEnabledness } from '@reducer/dexmask/dexmask';
 import { ALERT_TYPES } from '@shared/constants/alerts';
 import { useI18nContext } from '@view/hooks/useI18nContext';
 import { setAlertEnabledness } from '@view/store/actions';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 const AlertSettingsEntry = ({ alertId, description, title }) => {
   const isEnabled = useSelector((state) => getAlertEnabledness(state)[alertId]);
@@ -14,13 +14,15 @@ const AlertSettingsEntry = ({ alertId, description, title }) => {
       <div className="setting-label">
         <span>{title}</span>
         <Tooltip position="top" title={description}>
-          <img
-            style={{
-              margin: '3px 0 0 10px',
-            }}
-            width="12px"
-            src="images/settings/info.png"
-          />
+          <div>
+            <img
+              style={{
+                margin: '3px 0 0 10px',
+              }}
+              width="12px"
+              src="images/settings/info.png"
+            />
+          </div>
         </Tooltip>
       </div>
       <Switch

@@ -179,3 +179,23 @@
     }
   }
 }
+
+.setting-network-list-item {
+  @include w-h(100%, 48px);
+  @include flex(space-between);
+  color: $gray;
+  border-radius: 12px;
+  padding: 0 20px;
+  background: $primary-background;
+  margin-top: 10px;
+  cursor: pointer;
+  .setting-network-list-item-label {
+    @include text-ellipsis;
+    flex: 1;
+    font-size: 12px;
+    margin: 0 10px;
+  }
+  .setting-network-list-item-lock {
+    margin-right: 14px;
+  }
+}

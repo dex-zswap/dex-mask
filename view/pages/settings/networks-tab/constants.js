@@ -1,4 +1,10 @@
 import {
+  BSC_CHAIN_ID,
+  BSC_MAINNET,
+  BSC_RPC_URL,
+  DEX_CHAIN_ID,
+  DEX_MAINNET,
+  DEX_RPC_URL,
   GOERLI,
   GOERLI_CHAIN_ID,
   GOERLI_RPC_URL,
@@ -14,17 +20,11 @@ import {
   ROPSTEN,
   ROPSTEN_CHAIN_ID,
   ROPSTEN_RPC_URL,
-  BSC_MAINNET,
-  BSC_CHAIN_ID,
-  BSC_RPC_URL,
-  DEX_MAINNET,
-  DEX_CHAIN_ID,
-  DEX_RPC_URL,
 } from '@shared/constants/network';
 const defaultNetworksData = [
   {
     labelKey: MAINNET,
-    iconColor: '#29B6AF',
+    iconImg: 'eth.png',
     providerType: MAINNET,
     rpcUrl: MAINNET_RPC_URL,
     chainId: MAINNET_CHAIN_ID,
@@ -33,7 +33,7 @@ const defaultNetworksData = [
   },
   {
     labelKey: BSC_MAINNET,
-    iconColor: '#69e71b',
+    iconImg: 'bsc.png',
     providerType: BSC_MAINNET,
     rpcUrl: BSC_RPC_URL,
     chainId: BSC_CHAIN_ID,
@@ -42,7 +42,7 @@ const defaultNetworksData = [
   },
   {
     labelKey: DEX_MAINNET,
-    iconColor: '#69e71b',
+    iconImg: 'dex.png',
     providerType: DEX_MAINNET,
     rpcUrl: DEX_RPC_URL,
     chainId: DEX_CHAIN_ID,
@@ -51,7 +51,7 @@ const defaultNetworksData = [
   },
   {
     labelKey: ROPSTEN,
-    iconColor: '#FF4A8D',
+    iconImg: 'eth.png',
     providerType: ROPSTEN,
     rpcUrl: ROPSTEN_RPC_URL,
     chainId: ROPSTEN_CHAIN_ID,
@@ -60,7 +60,7 @@ const defaultNetworksData = [
   },
   {
     labelKey: RINKEBY,
-    iconColor: '#F6C343',
+    iconImg: 'eth.png',
     providerType: RINKEBY,
     rpcUrl: RINKEBY_RPC_URL,
     chainId: RINKEBY_CHAIN_ID,
@@ -69,7 +69,7 @@ const defaultNetworksData = [
   },
   {
     labelKey: GOERLI,
-    iconColor: '#3099f2',
+    iconImg: 'eth.png',
     providerType: GOERLI,
     rpcUrl: GOERLI_RPC_URL,
     chainId: GOERLI_CHAIN_ID,
@@ -78,7 +78,7 @@ const defaultNetworksData = [
   },
   {
     labelKey: KOVAN,
-    iconColor: '#9064FF',
+    iconImg: 'eth.png',
     providerType: KOVAN,
     rpcUrl: KOVAN_RPC_URL,
     chainId: KOVAN_CHAIN_ID,
