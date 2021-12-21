@@ -21,28 +21,28 @@ const Popover = ({
 }) => {
   const t = useI18nContext();
   return (
-    <div className="popover-container">
+    <div className="dex-popover-container">
       {CustomBackground ? (
         <CustomBackground onClose={onClose} />
       ) : (
-        <div className="popover-bg" onClick={onClose} />
+        <div className="dex-popover-bg" onClick={onClose} />
       )}
       <section
-        className={classnames('popover-wrap', className)}
+        className={classnames('dex-popover-wrap', className)}
         ref={popoverRef}
       >
-        {showArrow ? <div className="popover-arrow" /> : null}
-        <header className="popover-header">
+        {showArrow ? <div className="dex-popover-arrow" /> : null}
+        <header className="dex-popover-header">
           <div
             className={classnames(
-              'popover-header__title',
+              'dex-popover-header__title',
               centerTitle ? 'center' : '',
             )}
           >
             <h2 title={title}>
               {onBack ? (
                 <button
-                  className="fas fa-chevron-left popover-header__button"
+                  className="fas fa-chevron-left dex-popover-header__button"
                   title={t('back')}
                   onClick={onBack}
                 />
@@ -51,24 +51,24 @@ const Popover = ({
             </h2>
             {onClose ? (
               <button
-                className="fas fa-times popover-header__button"
+                className="fas fa-times dex-popover-header__button"
                 title={t('close')}
-                data-testid="popover-close"
+                data-testid="dex-popover-close"
                 onClick={onClose}
               />
             ) : null}
           </div>
           {subtitle ? (
-            <p className="popover-header__subtitle">{subtitle}</p>
+            <p className="dex-popover-header__subtitle">{subtitle}</p>
           ) : null}
         </header>
         {children ? (
-          <div className={classnames('popover-content', contentClassName)}>
+          <div className={classnames('dex-popover-content', contentClassName)}>
             {children}
           </div>
         ) : null}
         {footer ? (
-          <footer className={classnames('popover-footer', footerClassName)}>
+          <footer className={classnames('dex-popover-footer', footerClassName)}>
             {footer}
           </footer>
         ) : null}
@@ -77,26 +77,9 @@ const Popover = ({
   );
 };
 
-Popover.propTypes = {
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string,
-  children: PropTypes.node,
-  footer: PropTypes.node,
-  footerClassName: PropTypes.string,
-  onBack: PropTypes.func,
-  onClose: PropTypes.func,
-  CustomBackground: PropTypes.func,
-  contentClassName: PropTypes.string,
-  className: PropTypes.string,
-  showArrow: PropTypes.bool,
-  popoverRef: PropTypes.shape({
-    current: PropTypes.instanceOf(window.Element),
-  }),
-  centerTitle: PropTypes.bool,
-};
 export default class Item extends PureComponent {
   static propTypes = Popover.propTypes;
-  rootNode = document.getElementById('popover-content');
+  rootNode = document.getElementById('dex-popover-content');
   instanceNode = document.createElement('div');
 
   componentDidMount() {

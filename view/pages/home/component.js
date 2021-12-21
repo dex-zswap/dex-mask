@@ -9,6 +9,9 @@ import SelectedAccount from '@c/app/selected-account';
 import { EthOverview } from '@c/app/wallet-overview';
 import Button from '@c/ui/button';
 import Popover from '@c/ui/popover';
+import Tabs from '@c/ui/tabs';
+import TransactionList from '@c/app/transaction/list';
+import TopHeader from '@c/ui/top-header';
 import ConnectedAccounts from '@pages/connected-accounts';
 import ConnectedSites from '@pages/connected-sites';
 import {
@@ -36,44 +39,7 @@ export default class Home extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
-  static propTypes = {
-    history: PropTypes.object,
-    forgottenPassword: PropTypes.bool,
-    suggestedTokens: PropTypes.object,
-    unconfirmedTransactionsCount: PropTypes.number,
-    shouldShowSeedPhraseReminder: PropTypes.bool.isRequired,
-    isPopup: PropTypes.bool,
-    isNotification: PropTypes.bool.isRequired,
-    threeBoxSynced: PropTypes.bool,
-    setupThreeBox: PropTypes.func,
-    turnThreeBoxSyncingOn: PropTypes.func,
-    showRestorePrompt: PropTypes.bool,
-    selectedAddress: PropTypes.string,
-    restoreFromThreeBox: PropTypes.func,
-    setShowRestorePromptToFalse: PropTypes.func,
-    threeBoxLastUpdated: PropTypes.number,
-    firstPermissionsRequestId: PropTypes.string,
-    totalUnapprovedCount: PropTypes.number.isRequired,
-    setConnectedStatusPopoverHasBeenShown: PropTypes.func,
-    connectedStatusPopoverHasBeenShown: PropTypes.bool,
-    defaultHomeActiveTabName: PropTypes.string,
-    onTabClick: PropTypes.func.isRequired,
-    haveSwapsQuotes: PropTypes.bool.isRequired,
-    showAwaitingSwapScreen: PropTypes.bool.isRequired,
-    swapsFetchParams: PropTypes.object,
-    shouldShowWeb3ShimUsageNotification: PropTypes.bool.isRequired,
-    setWeb3ShimUsageAlertDismissed: PropTypes.func.isRequired,
-    originOfCurrentTab: PropTypes.string,
-    disableWeb3ShimUsageAlert: PropTypes.func.isRequired,
-    pendingConfirmations: PropTypes.arrayOf(PropTypes.object).isRequired,
-    infuraBlocked: PropTypes.bool.isRequired,
-    showWhatsNewPopup: PropTypes.bool.isRequired,
-    hideWhatsNewPopup: PropTypes.func.isRequired,
-    notificationsToShow: PropTypes.bool.isRequired,
-    showRecoveryPhraseReminder: PropTypes.bool.isRequired,
-    setRecoveryPhraseReminderHasBeenShown: PropTypes.func.isRequired,
-    setRecoveryPhraseReminderLastShown: PropTypes.func.isRequired,
-  };
+
   state = {
     mounted: false,
     canShowBlockageNotification: true,
@@ -350,27 +316,40 @@ export default class Home extends PureComponent {
 
     const showWhatsNew = notificationsToShow && showWhatsNewPopup;
     return (
-      <div className="main-container">
-        <Route path={CONNECTED_ROUTE} component={ConnectedSites} exact />
+      <div className="main-container dex-page-container">
+        {/* <Route path={CONNECTED_ROUTE} component={ConnectedSites} exact />
         <Route
           path={CONNECTED_ACCOUNTS_ROUTE}
           component={ConnectedAccounts}
           exact
-        />
-        <div className="home__container">
+        /> */}
+        <div className="home__container base-width">
           {isPopup && !connectedStatusPopoverHasBeenShown
             ? this.renderPopover()
             : null}
           <div className="home__main-view">
-            <ChainSwitcher />
+            <TopHeader />
+            <ChainSwitcher addRpc />
             <SelectedAccount />
-            <div className="home__balance-wrapper">
-              <EthOverview />
-            </div>
-            <AssetList
-              onClickAsset={(asset) => history.push(`${ASSET_ROUTE}/${asset}`)}
-            />
-            {/* <TransactionList /> */}
+            <EthOverview />
+            <Tabs
+              actived="assets"
+              tabs={[
+                {
+                  label: t('assets'),
+                  key: 'assets',
+                },
+                {
+                  label: t('activity'),
+                  key: 'activity',
+                },
+              ]}
+            >
+              <AssetList
+                onClickAsset={(asset) => history.push(`${ASSET_ROUTE}/${asset}`)}
+              />
+              <TransactionList />
+            </Tabs>
           </div>
           {this.renderNotifications()}
         </div>

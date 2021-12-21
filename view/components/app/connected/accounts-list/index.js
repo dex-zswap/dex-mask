@@ -10,38 +10,7 @@ export default class ConnectedAccountsList extends PureComponent {
   static defaultProps = {
     accountToConnect: null,
   };
-  static propTypes = {
-    accountToConnect: PropTypes.shape({
-      address: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-    connectedAccounts: PropTypes.arrayOf(
-      PropTypes.shape({
-        address: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        lastActive: PropTypes.number,
-      }),
-    ).isRequired,
-    connectAccount: PropTypes.func.isRequired,
-    selectedAddress: PropTypes.string.isRequired,
-    removePermittedAccount: PropTypes.func,
-    setSelectedAddress: PropTypes.func.isRequired,
-    shouldRenderListOptions: (props, propName, componentName) => {
-      if (typeof props[propName] !== 'boolean') {
-        return new Error(
-          `Warning: Failed prop type: '${propName}' of component '${componentName}' must be a boolean. Received: ${typeof props[
-            propName
-          ]}`,
-        );
-      } else if (props[propName] && !props.removePermittedAccount) {
-        return new Error(
-          `Warning: Failed prop type: '${propName}' of component '${componentName}' requires prop 'removePermittedAccount'.`,
-        );
-      }
 
-      return undefined;
-    },
-  };
   state = {
     accountWithOptionsShown: null,
   };

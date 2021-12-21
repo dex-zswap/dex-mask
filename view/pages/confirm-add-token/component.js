@@ -27,7 +27,6 @@ export default class ConfirmAddToken extends Component {
       mostRecentOverviewPage,
       pendingTokens,
     } = this.props;
-
     return (
       <div className="confirm-add-token dex-page-container base-width space-between">
         <div className="confirm-add-token-top">
@@ -45,14 +44,16 @@ export default class ConfirmAddToken extends Component {
                   key={address}
                 >
                   <div className="confirm-add-token__token flex items-center confirm-add-token__data">
-                    {
-                      logo ?
-                      <div className='token-image-origin' style={{
-                        backgroundImage: `url('images/contract/${logo}')`
-                      }}></div>
-                      :
+                    {logo ? (
+                      <div
+                        className="token-image-origin"
+                        style={{
+                          backgroundImage: `url('images/contract/${logo}')`,
+                        }}
+                      ></div>
+                    ) : (
                       <TokenImage symbol={symbol} size={32} address={address} />
-                    }
+                    )}
                     <div
                       style={{
                         marginLeft: '12px',

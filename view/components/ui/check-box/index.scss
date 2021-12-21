@@ -1,8 +1,8 @@
 .check-box {
   -webkit-appearance: none;
   appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   font-size: 21px;
   line-height: 0.9;
   border-radius: 2px;
@@ -11,38 +11,24 @@
   &:before {
     content: '' !important;
     display: block;
-    width: 14px;
-    height: 14px;
-    border: 2px solid #fff;
-    border-radius: 4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: $primary-background;
   }
+}
 
-  &__checked {
-    &:before {
-      content: '' !important;
-      display: block;
-      width: 18px;
-      height: 18px;
-      background: url('/images/dex/checkbox/checked.png') no-repeat center;
-      background-size: 18px 18px;
-      border: none;
-    }
-  }
+.check-box__checked:before, .check-box__indeterminate:before {
+  content: '' !important;
+  display: block;
+  width: 18px;
+  height: 18px;
+  background-image: url('/images/icons/checked.png');
+  background-size: 10px 8px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
-  &__indeterminate {
-    &:before {
-      content: '' !important;
-      display: block;
-      width: 18px;
-      height: 18px;
-      background: url('/images/dex/checkbox/checked.png') no-repeat center;
-      background-size: 18px 18px;
-      border: none;
-    }
-  }
-
-  &:disabled {
-    color: $Grey-100;
-    cursor: not-allowed;
-  }
+.check-box:disabled {
+  cursor: not-allowed;
 }

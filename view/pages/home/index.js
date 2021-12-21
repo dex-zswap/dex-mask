@@ -1,12 +1,6 @@
-import React, {
-  useMemo,
-  useRef,
-  useState,
-  useCallback,
-  useEffect,
-} from 'react';
-import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import { hideWhatsNewPopup, setThreeBoxLastUpdated } from '@reducer/app';
 import { getWeb3ShimUsageAlertEnabledness } from '@reducer/dexmask/dexmask';
@@ -25,8 +19,10 @@ import {
   getFirstPermissionRequest,
   getInfuraBlocked,
   getIsMainnet,
-  getAppState,
   getOriginOfCurrentTab,
+  getShowRecoveryPhraseReminder,
+  getShowWhatsNewPopup,
+  getSortedNotificationsToShow,
   getTotalUnapprovedCount,
   getUnapprovedTemplatedConfirmations,
   getWeb3ShimUsageStateForOrigin,
@@ -44,36 +40,10 @@ import {
   setWeb3ShimUsageAlertDismissed,
   turnThreeBoxSyncingOn,
 } from '@view/store/actions';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { getDexMaskState } from '@reducer/dexmask/dexmask';
-import AssetList from '@c/app/asset-list';
-import ChainSwitcher from '@c/app/chain-switcher';
-import HomeNotification from '@c/app/home-notification';
-import MultipleNotifications from '@c/app/multiple-notifications';
-import SelectedAccount from '@c/app/selected-account';
-import { EthOverview } from '@c/app/wallet-overview';
-import Tabs from '@c/ui/tabs';
-import TransactionList from '@c/app/transaction/list';
-import TopHeader from '@c/ui/top-header';
-import {
-  ASSET_ROUTE,
-  AWAITING_SWAP_ROUTE,
-  BUILD_QUOTE_ROUTE,
-  CONFIRMATION_V_NEXT_ROUTE,
-  CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE,
-  CONFIRM_TRANSACTION_ROUTE,
-  CONNECTED_ACCOUNTS_ROUTE,
-  CONNECTED_ROUTE,
-  CONNECT_ROUTE,
-  INITIALIZE_BACKUP_SEED_PHRASE_ROUTE,
-  RESTORE_VAULT_ROUTE,
-  VIEW_QUOTE_ROUTE,
-} from '@view/helpers/constants/routes';
-import { formatDate } from '@view/helpers/utils';
-export default function HomePage() {
-  const t = useI18nContext();
-  const history = useHistory();
-  const { forgottenPassword, threeBoxLastUpdated } = useSelector(getAppState);
+import Home from './component';
+
+const mapStateToProps = (state) => {
+  const { metamask, appState } = state;
   const {
     suggestedTokens,
     seedPhraseBackedUp,
@@ -85,117 +55,90 @@ export default function HomePage() {
     defaultHomeActiveTabName,
     swapsState,
     dismissSeedBackUpReminder,
-  } = useSelector(getDexMaskState);
-  const accountBalance = useSelector(getCurrentEthBalance);
-  const totalUnapprovedCount = useSelector(getTotalUnapprovedCount);
-  const swapsEnabled = useSelector(getSwapsFeatureIsLive);
-  const pendingConfirmations = useSelector(getUnapprovedTemplatedConfirmations);
+  } = metamask;
+  const accountBalance = getCurrentEthBalance(state);
+  const { forgottenPassword, threeBoxLastUpdated } = appState;
+  const totalUnapprovedCount = getTotalUnapprovedCount(state);
+  const swapsEnabled = getSwapsFeatureIsLive(state);
+  const pendingConfirmations = getUnapprovedTemplatedConfirmations(state);
   const envType = getEnvironmentType();
   const isPopup = envType === ENVIRONMENT_TYPE_POPUP;
   const isNotification = envType === ENVIRONMENT_TYPE_NOTIFICATION;
-  const firstPermissionsRequest = useSelector(getFirstPermissionRequest);
+  const firstPermissionsRequest = getFirstPermissionRequest(state);
   const firstPermissionsRequestId =
     firstPermissionsRequest && firstPermissionsRequest.metadata
       ? firstPermissionsRequest.metadata.id
       : null;
-  const originOfCurrentTab = useSelector(getOriginOfCurrentTab);
+  const originOfCurrentTab = getOriginOfCurrentTab(state);
   const shouldShowWeb3ShimUsageNotification =
     isPopup &&
-    useSelector(getWeb3ShimUsageAlertEnabledness) &&
-    useSelector(activeTabHasPermissions) &&
-    useSelector((state) =>
-      getWeb3ShimUsageStateForOrigin(state, originOfCurrentTab),
-    ) === WEB3_SHIM_USAGE_ALERT_STATES.RECORDED;
-  const unconfirmedTransactionsCount = useSelector(
-    unconfirmedTransactionsCountSelector,
-  );
-  const isMainnet = useSelector(getIsMainnet);
-  const infuraBlocked = useSelector(getInfuraBlocked);
-  const shouldShowSeedPhraseReminder = useMemo(
-    () =>
+    getWeb3ShimUsageAlertEnabledness(state) &&
+    activeTabHasPermissions(state) &&
+    getWeb3ShimUsageStateForOrigin(state, originOfCurrentTab) ===
+      WEB3_SHIM_USAGE_ALERT_STATES.RECORDED;
+  return {
+    forgottenPassword,
+    suggestedTokens,
+    swapsEnabled,
+    isPopup,
+    isNotification,
+    threeBoxSynced,
+    showRestorePrompt,
+    selectedAddress,
+    threeBoxLastUpdated,
+    firstPermissionsRequestId,
+    totalUnapprovedCount,
+    connectedStatusPopoverHasBeenShown,
+    defaultHomeActiveTabName,
+    shouldShowWeb3ShimUsageNotification,
+    pendingConfirmations,
+    seedPhraseBackedUp,
+    originOfCurrentTab,
+    unconfirmedTransactionsCount: unconfirmedTransactionsCountSelector(state),
+    shouldShowSeedPhraseReminder:
       seedPhraseBackedUp === false &&
       (parseInt(accountBalance, 16) > 0 || tokens.length > 0) &&
       dismissSeedBackUpReminder === false,
-    [seedPhraseBackedUp, accountBalance, tokens, dismissSeedBackUpReminder],
-  );
-  const mounted = useRef(false);
-  const [state, setState] = useState({
-    closing: false,
-    redirecting: false,
-  });
-  useEffect(() => {
-    if (isNotification && totalUnapprovedCount === 0) {
-      global.platform.closeCurrentWindow();
-    } else if (firstPermissionsRequestId) {
-      history.push(`${CONNECT_ROUTE}/${firstPermissionsRequestId}`);
-    } else if (unconfirmedTransactionsCount > 0) {
-      history.push(CONFIRM_TRANSACTION_ROUTE);
-    } else if (Object.keys(suggestedTokens).length > 0) {
-      history.push(CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE);
-    } else if (pendingConfirmations.length > 0) {
-      history.push(CONFIRMATION_V_NEXT_ROUTE);
-    }
-  }, [
-    history,
-    suggestedTokens,
-    isNotification,
-    totalUnapprovedCount,
-    firstPermissionsRequestId,
-    unconfirmedTransactionsCount,
-    pendingConfirmations,
-  ]);
-  useEffect(() => {
-    if (!mounted.current) {
-      setState((state) => {
-        if (isNotification && totalUnapprovedCount === 0) {
-          return { ...state, closing: true };
-        } else if (
-          firstPermissionsRequestId ||
-          unconfirmedTransactionsCount > 0 ||
-          Object.keys(suggestedTokens).length > 0
-        ) {
-          return { ...state, redirecting: true };
-        }
+    haveSwapsQuotes: Boolean(Object.values(swapsState.quotes || {}).length),
+    swapsFetchParams: swapsState.fetchParams,
+    showAwaitingSwapScreen: swapsState.routeState === 'awaiting',
+    isMainnet: getIsMainnet(state),
+    infuraBlocked: getInfuraBlocked(state),
+    notificationsToShow: getSortedNotificationsToShow(state).length > 0,
+    showWhatsNewPopup: getShowWhatsNewPopup(state),
+    showRecoveryPhraseReminder: getShowRecoveryPhraseReminder(state),
+  };
+};
 
-        return state;
-      });
-    }
-  }, [
-    firstPermissionsRequestId,
-    isNotification,
-    suggestedTokens,
-    totalUnapprovedCount,
-    unconfirmedTransactionsCount,
-    mounted.current,
-  ]);
-  return (
-    <div className="main-container dex-page-container">
-      <div className="home__container base-width">
-        <div className="home__main-view">
-          <TopHeader />
-          <ChainSwitcher addRpc />
-          <SelectedAccount />
-          <EthOverview />
-          <Tabs
-            actived="assets"
-            tabs={[
-              {
-                label: t('assets'),
-                key: 'assets',
-              },
-              {
-                label: t('activity'),
-                key: 'activity',
-              },
-            ]}
-          >
-            <AssetList
-              onClickAsset={(asset) => history.push(`${ASSET_ROUTE}/${asset}`)}
-            />
-            <TransactionList />
-          </Tabs>
-        </div>
-      </div>
-    </div>
-  );
-}
+const mapDispatchToProps = (dispatch) => ({
+  turnThreeBoxSyncingOn: () => dispatch(turnThreeBoxSyncingOn()),
+  setupThreeBox: () => {
+    dispatch(getThreeBoxLastUpdated()).then((lastUpdated) => {
+      if (lastUpdated) {
+        dispatch(setThreeBoxLastUpdated(lastUpdated));
+      } else {
+        dispatch(setShowRestorePromptToFalse());
+        dispatch(turnThreeBoxSyncingOn());
+      }
+    });
+  },
+  restoreFromThreeBox: (address) => dispatch(restoreFromThreeBox(address)),
+  setShowRestorePromptToFalse: () => dispatch(setShowRestorePromptToFalse()),
+  setConnectedStatusPopoverHasBeenShown: () =>
+    dispatch(setConnectedStatusPopoverHasBeenShown()),
+  onTabClick: (name) => dispatch(setDefaultHomeActiveTabName(name)),
+  setWeb3ShimUsageAlertDismissed: (origin) =>
+    setWeb3ShimUsageAlertDismissed(origin),
+  disableWeb3ShimUsageAlert: () =>
+    setAlertEnabledness(ALERT_TYPES.web3ShimUsage, false),
+  hideWhatsNewPopup: () => dispatch(hideWhatsNewPopup()),
+  setRecoveryPhraseReminderHasBeenShown: () =>
+    dispatch(setRecoveryPhraseReminderHasBeenShown()),
+  setRecoveryPhraseReminderLastShown: (lastShown) =>
+    dispatch(setRecoveryPhraseReminderLastShown(lastShown)),
+});
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(Home);

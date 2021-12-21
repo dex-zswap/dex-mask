@@ -28,7 +28,7 @@ export default class ConnectedAccountsListItem extends PureComponent {
           <Identicon
             className="connected-accounts-list__identicon"
             address={address}
-            diameter={32}
+            diameter={28}
           />
           <div>
             <p className="connected-accounts-list__account-name">

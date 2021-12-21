@@ -11,19 +11,6 @@ export default class ConnectedAccounts extends PureComponent {
     accountToConnect: null,
     permissions: undefined,
   };
-  static propTypes = {
-    accountToConnect: PropTypes.object,
-    activeTabOrigin: PropTypes.string.isRequired,
-    connectAccount: PropTypes.func.isRequired,
-    connectedAccounts: PropTypes.array.isRequired,
-    mostRecentOverviewPage: PropTypes.string.isRequired,
-    permissions: PropTypes.array,
-    isActiveTabExtension: PropTypes.bool.isRequired,
-    selectedAddress: PropTypes.string.isRequired,
-    removePermittedAccount: PropTypes.func.isRequired,
-    setSelectedAddress: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-  };
 
   render() {
     const {
@@ -38,6 +25,7 @@ export default class ConnectedAccounts extends PureComponent {
       selectedAddress,
       removePermittedAccount,
       setSelectedAddress,
+      onClose
     } = this.props;
     const { t } = this.context;
     const connectedAccountsDescription =
@@ -56,7 +44,7 @@ export default class ConnectedAccounts extends PureComponent {
             ? connectedAccountsDescription
             : t('connectedAccountsEmptyDescription')
         }
-        onClose={() => history.push(mostRecentOverviewPage)}
+        onClose={onClose}
         footerClassName="connected-accounts__footer"
         footer={<ConnectedAccountsPermissions permissions={permissions} />}
       >
