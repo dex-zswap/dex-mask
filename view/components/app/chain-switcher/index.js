@@ -21,7 +21,7 @@ const SelectorOption = (props) => {
     <div
       className={classnames(
         'chain-option-item flex items-center',
-        props.value.toLowerCase(),
+        props.provider?.toLowerCase(),
       )}
     >
       <i className="option-item-chain"></i>
