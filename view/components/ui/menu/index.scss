@@ -24,19 +24,4 @@
   cursor: pointer;
   color: $white;
   font-size: $size-12;
-
-  &__icon {
-  }
-
-  .disconnect-icon {
-    &::before {
-      content: '';
-      background-image: url('/images/icons/disconnect.svg');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      padding: 8px;
-      display: flex;
-    }
-  }
 }

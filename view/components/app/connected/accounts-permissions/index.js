@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import CheckBox from '@c/ui/check-box';
 export default class ConnectedAccountsPermissions extends PureComponent {
@@ -9,15 +8,9 @@ export default class ConnectedAccountsPermissions extends PureComponent {
   static defaultProps = {
     permissions: [],
   };
-  static propTypes = {
-    permissions: PropTypes.arrayOf(
-      PropTypes.shape({
-        key: PropTypes.string.isRequired,
-      }),
-    ),
-  };
+  
   state = {
-    expanded: false,
+    expanded: true,
   };
   toggleExpanded = () => {
     this.setState((prevState) => ({
@@ -38,26 +31,11 @@ export default class ConnectedAccountsPermissions extends PureComponent {
       <div className="connected-accounts-permissions">
         <p
           className="connected-accounts-permissions__header"
-          onClick={this.toggleExpanded}
         >
-          <strong>{t('permissions')}</strong>
-          <button
-            className={classnames('fas', {
-              'fa-angle-down': !expanded,
-              'fa-angle-up': expanded,
-            })}
-            title={t('showPermissions')}
-          />
+          <p>{t('permissions')}</p>
         </p>
-        <div
-          className={classnames(
-            'connected-accounts-permissions__list-container',
-            {
-              'connected-accounts-permissions__list-container--expanded': expanded,
-            },
-          )}
-        >
-          <p>{t('authorizedPermissions')}:</p>
+        <div className="connected-accounts-permissions__list-container">
+          <p className="description">{t('authorizedPermissions')}:</p>
           <ul className="connected-accounts-permissions__list">
             {permissions.map(({ key: permissionName }) => (
               <li
@@ -70,7 +48,7 @@ export default class ConnectedAccountsPermissions extends PureComponent {
                   id={permissionName}
                   className="connected-accounts-permissions__checkbox"
                 />
-                <label htmlFor={permissionName}>{t(permissionName)}</label>
+                <label className="description-label" htmlFor={permissionName}>{t(permissionName)}</label>
               </li>
             ))}
           </ul>

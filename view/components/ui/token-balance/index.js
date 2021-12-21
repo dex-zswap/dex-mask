@@ -21,7 +21,7 @@ export default function TokenBalance({
       numberOfDecimals={numberOfDecimals}
       className={className}
       displayValue={string || ''}
-      suffix={hideSymbol ? null : (symbol || '')}
+      suffix={hideSymbol ? null : symbol || ''}
     />
   );
 }

@@ -1,10 +1,11 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import classnames from 'classnames';
 import extension from 'extensionizer';
 import { getEnvironmentType } from '@app/scripts/lib/util';
 import { getDexMaskState } from '@reducer/dexmask/dexmask';
+import ConnectedAccounts from '@pages/connected-accounts';
 import {
   getOriginOfCurrentTab,
   getSelectedAddress,
@@ -18,6 +19,7 @@ import Logo from '@c/ui/logo';
 export default function TopHeader({ fixed }) {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [ showConnectedAccounts, setShowConnectedAccounts ] = useState(false);
   const origin = useSelector(getOriginOfCurrentTab);
   const selectedAddress = useSelector(getSelectedAddress);
   const showStatus = useMemo(
@@ -30,6 +32,10 @@ export default function TopHeader({ fixed }) {
   const toggleMenu = useCallback(() => {
     dispatch(toggleAccountMenu());
   }, [dispatch, toggleAccountMenu]);
+
+  const toggleConnectedAccounts = useCallback(() => {
+    setShowConnectedAccounts((state) => !state);
+  }, []);
   return (
     <div className="top-header-component">
       <div
@@ -39,7 +45,7 @@ export default function TopHeader({ fixed }) {
         )}
       >
         <Logo plain />
-        {showStatus && <ConnectedStatusIndicator />}
+        {(showStatus || process.env.DEXMASK_DEBUG) && <ConnectedStatusIndicator onClick={toggleConnectedAccounts} />}
         <div
           className="account-menu-trigger flex items-center justify-center"
           onClick={toggleMenu}
@@ -48,6 +54,7 @@ export default function TopHeader({ fixed }) {
         </div>
       </div>
       {fixed && <div className="header-placeholder"></div>}
+      {showConnectedAccounts && <ConnectedAccounts onClose={toggleConnectedAccounts} />}
       <AccountMenu />
     </div>
   );
