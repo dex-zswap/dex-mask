@@ -123,15 +123,15 @@ export default class TransactionListItemDetails extends PureComponent {
     let count = 3;
 
     if (!showCancel) {
-      count --;
+      count--;
     }
 
     if (!showSpeedUp) {
-      count --;
+      count--;
     }
 
     if (!showRetry) {
-      count --;
+      count--;
     }
 
     return count;
@@ -165,37 +165,34 @@ export default class TransactionListItemDetails extends PureComponent {
     const providerType =
       NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
     const buttonsCount = this.getFunctionButtonsCount();
-    
     return (
       <Popover title={title} onClose={onClose}>
         <div className="transaction-list-item-details">
-          {
-            buttonsCount ? (
-              <div className="transaction-list-item-details__header-buttons functionial">
-                {showSpeedUp && (
+          {buttonsCount ? (
+            <div className="transaction-list-item-details__header-buttons functionial">
+              {showSpeedUp && (
+                <Button
+                  type="primary"
+                  onClick={this.handleRetry}
+                  className="transaction-list-item-details__header-button function"
+                >
+                  {t('speedUp')}
+                </Button>
+              )}
+              {this.renderCancel()}
+              {showRetry && (
+                <Tooltip title={t('retryTransaction')}>
                   <Button
-                    type="primary"
+                    type="transparent"
                     onClick={this.handleRetry}
                     className="transaction-list-item-details__header-button function"
                   >
-                    {t('speedUp')}
+                    <i className="fa fa-sync"></i>
                   </Button>
-                )}
-                {this.renderCancel()}
-                {showRetry && (
-                  <Tooltip title={t('retryTransaction')}>
-                    <Button
-                      type="transparent"
-                      onClick={this.handleRetry}
-                      className="transaction-list-item-details__header-button function"
-                    >
-                      <i className="fa fa-sync"></i>
-                    </Button>
-                  </Tooltip>
-                )}
-              </div>
-            ) : null
-          }
+                </Tooltip>
+              )}
+            </div>
+          ) : null}
           <div className="transaction-list-item-details__header">
             <div>{t('details')}</div>
             <div className="transaction-list-item-details__header-buttons">
@@ -224,8 +221,8 @@ export default class TransactionListItemDetails extends PureComponent {
                   blockExplorerUrl
                     ? t('viewOnCustomBlockExplorer', [blockExplorerUrl])
                     : isMainnet
-                      ? t('viewOnEtherscan')
-                      : t('viewinExplorer', [providerType])
+                    ? t('viewOnEtherscan')
+                    : t('viewinExplorer', [providerType])
                 }
               >
                 <Button
@@ -249,7 +246,7 @@ export default class TransactionListItemDetails extends PureComponent {
                 recipientNickname={recipientNickname}
                 senderName={senderNickname}
                 senderAddress={shortenAddress(senderAddress, 11, -6)}
-                onRecipientClick={() => { }}
+                onRecipientClick={() => {}}
                 addressOnly
               />
             </div>

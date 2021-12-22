@@ -26,7 +26,6 @@ function SenderAddress({
   const t = useI18nContext();
   const [addressCopied, setAddressCopied] = useState(false);
   let tooltipHtml = <p>{t('copiedExclamation')}</p>;
-
   return (
     <div
       className={classnames(
@@ -58,9 +57,7 @@ function SenderAddress({
       >
         <div className="sender-to-recipient__name">
           {addressOnly ? (
-            <span>
-              {checksummedSenderAddress}
-            </span>
+            <span>{checksummedSenderAddress}</span>
           ) : (
             <span>
               {`${t('from')}: ${senderName || checksummedSenderAddress}`}
@@ -86,7 +83,6 @@ function RecipientWithAddress({
 }) {
   const t = useI18nContext();
   const [addressCopied, setAddressCopied] = useState(false);
-
   return (
     <div
       className="sender-to-recipient__party sender-to-recipient__party--recipient sender-to-recipient__party--recipient-with-address"
@@ -116,7 +112,7 @@ function RecipientWithAddress({
         onHidden={() => setAddressCopied(false)}
       >
         <div className="sender-to-recipient__name">
-          <span>{addressOnly ?  '' : `${t('to')}: `}</span>
+          <span>{addressOnly ? '' : `${t('to')}: `}</span>
           {addressOnly
             ? recipientNickname || recipientEns || checksummedRecipientAddress
             : recipientNickname ||
@@ -147,7 +143,12 @@ export default function SenderToRecipient({
   const checksummedSenderAddress = toChecksumHexAddress(senderAddress);
   const checksummedRecipientAddress = toChecksumHexAddress(recipientAddress);
   return (
-    <div className={classnames('sender-to-recipient flex items-center', variantHash[variant])}>
+    <div
+      className={classnames(
+        'sender-to-recipient flex items-center',
+        variantHash[variant],
+      )}
+    >
       <SenderAddress
         checksummedSenderAddress={checksummedSenderAddress}
         addressOnly={addressOnly}
@@ -156,7 +157,7 @@ export default function SenderToRecipient({
         senderAddress={senderAddress}
         warnUserOnAccountMismatch={warnUserOnAccountMismatch}
       />
-      <div className='to-direction-wrapper'>
+      <div className="to-direction-wrapper">
         <div className="to-direction"></div>
       </div>
       {recipientAddress ? (

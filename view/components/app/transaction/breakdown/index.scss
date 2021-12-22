@@ -1,5 +1,4 @@
-@import "transaction-breakdown-row/index";
-
+@import 'transaction-breakdown-row/index';
 
 .transaction-breakdown {
   .transaction-breakdown__title {
@@ -8,11 +7,11 @@
     font-size: 14px;
     color: $white;
   }
-  
+
   .transaction-breakdown__row-title {
     text-transform: capitalize;
   }
-  
+
   .transaction-breakdown__value {
     display: flex;
     justify-content: flex-end;
@@ -21,7 +20,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
+
   .transaction-breakdown__value--eth-total {
     font-weight: 500;
   }

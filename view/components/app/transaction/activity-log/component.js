@@ -100,13 +100,16 @@ export default class TransactionActivityLog extends PureComponent {
             conversionRate,
             numberOfDecimals: 3,
           });
-    const formattedTimestamp = formatDate(timestamp, "y/LLL/d T ");
+    const formattedTimestamp = formatDate(timestamp, 'y/LLL/d T ');
     const activityText = this.context.t(eventKey, [
       ethValue,
       formattedTimestamp,
     ]);
     return (
-      <div key={index} className="transaction-activity-log__activity flex items-center">
+      <div
+        key={index}
+        className="transaction-activity-log__activity flex items-center"
+      >
         <TransactionActivityLogIcon
           className="transaction-activity-log__activity-icon"
           eventKey={eventKey}
@@ -117,8 +120,8 @@ export default class TransactionActivityLog extends PureComponent {
             title={activityText}
             onClick={() => this.handleActivityClick(activity)}
           >
-            <p className='node-time'>{formattedTimestamp}</p>
-            <p className='node-activity'>{activityText}</p>
+            <p className="node-time">{formattedTimestamp}</p>
+            <p className="node-activity">{activityText}</p>
           </div>
           {/* {this.renderInlineRetry(index)}
           {this.renderInlineCancel(index)} */}

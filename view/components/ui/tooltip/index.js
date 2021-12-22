@@ -18,6 +18,7 @@ const defaultProps = {
   theme: '',
   tag: 'div',
 };
+
 function Tooltip(props) {
   const {
     arrow,

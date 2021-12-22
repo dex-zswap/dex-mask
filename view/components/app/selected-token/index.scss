@@ -56,3 +56,42 @@
     }
   }
 }
+
+.selected-token-account-switcher-menu {
+  margin: 15px 5vw 0 !important;
+  padding: 0!important;
+  max-height: 200px;
+  overflow-y: auto;
+
+  .menu-item {
+    display: block;
+    width: 100%;
+    height: 51px;
+    padding: 0;
+
+    .account-list-option {
+      height: 51px;
+      padding: 0 20px;
+
+      .left-avatar {
+        .account-name {
+          margin: 0 0 0 8px;
+          font-size: 14px;
+
+          &.active {
+            color: $pink;
+          }
+        }
+      }
+
+      .account-address {
+        font-size: $size-12;
+        color: $gray;
+
+        &.active {
+          color: $pink;
+        }
+      }
+    }
+  }
+}
