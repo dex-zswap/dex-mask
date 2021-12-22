@@ -107,7 +107,7 @@ export default function SelectedNativeToken() {
               ref={(el) => (dropTrigger.current = el)}
             ></div>
           </div>
-          <Tooltip
+          {/* <Tooltip
             wrapperClassName="selected-account__tooltip-wrapper"
             position="top"
             title={state.copied ? t('copiedExclamation') : t('copyToClipboard')}
@@ -116,7 +116,7 @@ export default function SelectedNativeToken() {
               {shortenAddress(checksummedAddress)}
               <div className="copy-icon"></div>
             </div>
-          </Tooltip>
+          </Tooltip> */}
         </div>
         <div className="native-currency flex space-between items-center">
           <div className="native-currency-balance">

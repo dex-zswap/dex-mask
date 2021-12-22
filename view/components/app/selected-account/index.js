@@ -68,17 +68,8 @@ export default function SelectedAccount() {
         copied: true,
       }),
     );
-    copyTimeout.current = setTimeout(
-      () =>
-        setState((state) =>
-          Object.assign({}, state, {
-            copied: false,
-          }),
-        ),
-      SECOND * 3,
-    );
     copyToClipboard(checksummedAddress);
-  }, [checksummedAddress, copyToClipboard, copyTimeout.current, state.copied]);
+  }, [checksummedAddress, copyToClipboard]);
   const toggleAccountDrop = useCallback(() => {
     setState((state) =>
       Object.assign({}, state, {
@@ -98,6 +89,20 @@ export default function SelectedAccount() {
       window.clearTimeout(copyTimeout.current);
     }
   }, [copyTimeout.current]);
+  useEffect(() => {
+    if (state.copied) {
+      window.clearTimeout(copyTimeout.current);
+      copyTimeout.current = setTimeout(
+        () =>
+          setState((state) =>
+            Object.assign({}, state, {
+              copied: false,
+            }),
+          ),
+        SECOND * 3,
+      );
+    }
+  }, [state.copied, copyTimeout.current]);
   return (
     <>
       {state.accountOptionsMenuOpen && (

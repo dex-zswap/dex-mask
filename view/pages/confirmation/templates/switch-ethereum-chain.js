@@ -31,7 +31,7 @@ function getValues(pendingApproval, t, actions) {
         key: 'title',
         children: t('switchEthereumChainConfirmationTitle'),
         props: {
-          className: 'switch-network-title'
+          className: 'switch-network-title',
         },
       },
       {
@@ -39,14 +39,14 @@ function getValues(pendingApproval, t, actions) {
         key: 'description',
         children: t('switchEthereumChainConfirmationDescription'),
         props: {
-          className: 'switch-network-description'
+          className: 'switch-network-description',
         },
       },
       {
         element: 'div',
         key: 'status-box',
         props: {
-          className: 'target-chain-network'
+          className: 'target-chain-network',
         },
         children: {
           element: 'NetworkDisplay',

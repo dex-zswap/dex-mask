@@ -27,6 +27,3 @@ export default function AccountMismatchWarning({ address }) {
     </Tooltip>
   );
 }
-AccountMismatchWarning.propTypes = {
-  address: PropTypes.string.isRequired,
-};

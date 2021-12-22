@@ -34,7 +34,6 @@ export default function NetworkDisplay({
   const t = useI18nContext();
   const { nickname: networkNickname, type: networkType } =
     targetNetwork ?? currentNetwork;
-
   return (
     <Chip
       borderColor={outline ? COLORS.UI3 : COLORS.TRANSPARENT}
@@ -47,7 +46,11 @@ export default function NetworkDisplay({
           isLoading={networkIsLoading}
         >
           <ColorIndicator
-            color={networkType === NETWORK_TYPE_RPC ? COLORS.UI4 : networkType.toLowerCase()}
+            color={
+              networkType === NETWORK_TYPE_RPC
+                ? COLORS.UI4
+                : networkType.toLowerCase()
+            }
             size={indicatorSize}
             type={ColorIndicator.TYPES.FILLED}
           />

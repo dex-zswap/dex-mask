@@ -314,12 +314,6 @@ export default class Home extends PureComponent {
     const showWhatsNew = notificationsToShow && showWhatsNewPopup;
     return (
       <div className="main-container dex-page-container">
-        {/* <Route path={CONNECTED_ROUTE} component={ConnectedSites} exact />
-        <Route
-        path={CONNECTED_ACCOUNTS_ROUTE}
-        component={ConnectedAccounts}
-        exact
-        /> */}
         <div className="home__container base-width">
           {isPopup && !connectedStatusPopoverHasBeenShown
             ? this.renderPopover()

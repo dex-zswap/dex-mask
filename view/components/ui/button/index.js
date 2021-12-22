@@ -1,5 +1,5 @@
 import React from 'react';
-import classnames from 'classnames'; // Button.type default|primary|warning
+import classnames from 'classnames'; // Button.type default|primary|warning|transparent
 
 const Button = ({
   type = 'default',

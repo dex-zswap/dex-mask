@@ -1887,19 +1887,19 @@
     "message": "交易"
   },
   "transactionCancelAttempted": {
-    "message": "嘗試取消交易 $2，燃料費用：$1。"
+    "message": "嘗試取消交易，燃料費用：$1。"
   },
   "transactionCancelSuccess": {
-    "message": "取消交易成功 $2。"
+    "message": "取消交易成功。"
   },
   "transactionConfirmed": {
-    "message": "交易已確認 $2。"
+    "message": "交易已確認。"
   },
   "transactionCreated": {
-    "message": "交易已創建 $2，交易數額：$1。"
+    "message": "交易已創建，交易數額：$1。"
   },
   "transactionDropped": {
-    "message": "交易終止 $2。"
+    "message": "交易終止。"
   },
   "transactionError": {
     "message": "交易出錯。合約代碼執行異常。"
@@ -1914,13 +1914,13 @@
     "message": "交易費"
   },
   "transactionResubmitted": {
-    "message": "重新提交交易 $2，交易費升至：$1。"
+    "message": "重新提交交易，交易費升至：$1。"
   },
   "transactionSubmitted": {
-    "message": "交易已提交 $2，交易費：$1。"
+    "message": "交易已提交，交易費：$1。"
   },
   "transactionUpdated": {
-    "message": "交易更新時間 $2。"
+    "message": "交易更新時間。"
   },
   "transfer": {
     "message": "轉賬"

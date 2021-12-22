@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Tooltip as ReactTippy } from 'react-tippy';
 import merge from 'lodash/merge';
+import isEqual from 'lodash/isEqual';
 const defaultProps = {
   arrow: true,
   children: null,
@@ -17,7 +18,7 @@ const defaultProps = {
   theme: '',
   tag: 'div',
 };
-export default function Tooltip(props) {
+function Tooltip(props) {
   const {
     arrow,
     children,
@@ -62,10 +63,12 @@ export default function Tooltip(props) {
       title={title}
       trigger={trigger}
       theme={theme}
-      tabIndex={tabIndex || 0}
+      tabIndex={tabIndex || parseInt(Math.random() * 1000000)}
       tag={tag}
     >
       {children}
     </ReactTippy>,
   );
 }
+
+export default React.memo(Tooltip, isEqual);

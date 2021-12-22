@@ -1,52 +1,86 @@
 .transaction-list-item-details {
-  &__header {
-    color: #fff;
-    margin: 8px 16px;
+  .transaction-list-item-details__header {
+    color: $white;
+    margin: 8px 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-
-  &__body {
-    background: rgba(20, 24, 39, 0.9);
-    padding: 8px 16px;
+  
+  .transaction-list-item-details__body {
+    padding: 8px;
   }
-
-  &__header-buttons {
+  
+  .transaction-list-item-details__header-buttons {
     display: flex;
     flex-direction: row;
+
+    .transaction-list-item-details__header-button {
+      margin: 0 0 0 10px;
+
+      .dex-button {
+        height: 13px;
+      }
+
+      .copy {
+        width: 13px;
+        height: 13px;
+        background: url("/images/icons/copy.png") no-repeat center;
+        background-size: 100%;
+      }
+
+      .view {
+        width: 13px;
+        height: 13px;
+        background: url("/images/icons/view.png") no-repeat center;
+        background-size: 12px;
+      }
+    }
+
+    &.functionial {
+      justify-content: flex-end;
+      margin: 0 8px 15px;
+
+      .function {
+        font-size: 12px;
+        height: 20px;
+        font-size: 12px;
+        width: auto;
+        padding: 4px 6px;
+        font-weight: 400;
+      }
+    }
   }
-
-  & &__header-button {
-    @include H8;
-
-    &-tooltip-container {
+  
+  .transaction-list-item-details {
+    .transaction-list-item-details__header-button-tooltip-container {
       display: flex !important;
       height: 100%;
     }
-
-    &:not(:last-child) {
+  
+    .transaction-list-item-details__header-button:not(:last-child) {
       margin-right: 8px;
     }
   }
-
-  &__sender-to-recipient-container {
-    margin-bottom: 8px;
+  
+  .transaction-list-item-details__sender-to-recipient-container {
+    margin-bottom: 20px;
   }
-
-  &__cards-container {
+  
+  .transaction-list-item-details__cards-container {
     display: flex;
     flex-direction: column;
+    padding: 0 8px;
   }
-
-  &__transaction-breakdown {
+  
+  .transaction-list-item-details__transaction-breakdown {
     flex: 1;
     margin-right: 8px;
     min-width: 0;
     margin: 0 0 8px 0;
   }
-
-  &__transaction-activity-log {
+  
+  .transaction-list-item-details__transaction-activity-log {
     flex: 2;
     min-width: 0;
   }

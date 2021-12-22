@@ -1,26 +1,28 @@
-@import 'transaction-breakdown-row/index';
+@import "transaction-breakdown-row/index";
+
 
 .transaction-breakdown {
-  &__title {
-    border-bottom: 1px solid #10121d;
+  .transaction-breakdown__title {
     padding-bottom: 8px;
     text-transform: capitalize;
+    font-size: 14px;
+    color: $white;
   }
-
-  &__row-title {
+  
+  .transaction-breakdown__row-title {
     text-transform: capitalize;
   }
-
-  &__value {
+  
+  .transaction-breakdown__value {
     display: flex;
     justify-content: flex-end;
     text-align: end;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    &--eth-total {
-      font-weight: 500;
-    }
+  }
+  
+  .transaction-breakdown__value--eth-total {
+    font-weight: 500;
   }
 }

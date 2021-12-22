@@ -214,7 +214,7 @@ export default function ConfirmationPage() {
           Object.values(alertState[pendingConfirmation.id])
             .filter((alert) => alert.dismissed === false)
             .map((alert, idx, filtered) => (
-              <div className='warning'>
+              <div className="warning">
                 <DexMaskTemplateRenderer sections={alert.content} />
               </div>
             ))

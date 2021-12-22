@@ -32,7 +32,6 @@ export default function InfoTooltip({
         theme={wide ? 'tippy-tooltip-wideInfo' : 'tippy-tooltip-info'}
       >
         <img width="12px" src="images/dex/info.png" />
-        {/* <InfoTooltipIcon fillColor={iconFillColor} /> */}
       </Tooltip>
     </div>
   );
