@@ -51,10 +51,8 @@ export default class PermissionPageContainerContent extends PureComponent {
     return (
       <>
         {identity.label}
-        <span className='identity-address'>
-          (
-            ...{identity.address.slice(identity.address.length - 4)}
-          )
+        <span className="identity-address">
+          ( ...{identity.address.slice(identity.address.length - 4)})
         </span>
       </>
     );

@@ -34,11 +34,12 @@ export default function NetworkDisplay({
   const t = useI18nContext();
   const { nickname: networkNickname, type: networkType } =
     targetNetwork ?? currentNetwork;
+
   return (
     <Chip
       borderColor={outline ? COLORS.UI3 : COLORS.TRANSPARENT}
       onClick={onClick}
-      provider={currentNetwork.type}
+      provider={networkType}
       leftIcon={
         <LoadingIndicator
           alt={t('attemptingConnect')}
@@ -46,14 +47,9 @@ export default function NetworkDisplay({
           isLoading={networkIsLoading}
         >
           <ColorIndicator
-            color={networkType === NETWORK_TYPE_RPC ? COLORS.UI4 : networkType}
+            color={networkType === NETWORK_TYPE_RPC ? COLORS.UI4 : networkType.toLowerCase()}
             size={indicatorSize}
             type={ColorIndicator.TYPES.FILLED}
-            iconClassName={
-              networkType === NETWORK_TYPE_RPC && indicatorSize !== SIZES.XS
-                ? 'fa fa-question'
-                : undefined
-            }
           />
         </LoadingIndicator>
       }

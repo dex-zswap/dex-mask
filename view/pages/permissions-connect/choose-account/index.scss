@@ -16,7 +16,7 @@
   .permissions-connect-choose-account__text-blue {
     cursor: pointer;
   }
-  
+
   .permissions-connect-choose-account__accounts-list {
     flex: 2 1 0;
     max-height: max-content;
@@ -26,22 +26,23 @@
     margin-top: 8px;
     overflow-y: auto;
   }
-  
-  .permissions-connect-choose-account__accounts-list-header--one-item, .permissions-connect-choose-account__accounts-list-header--two-items {
+
+  .permissions-connect-choose-account__accounts-list-header--one-item,
+  .permissions-connect-choose-account__accounts-list-header--two-items {
     display: flex;
     flex: 0;
     margin-top: 36px;
     width: 100%;
   }
-  
+
   .permissions-connect-choose-account__accounts-list-header--one-item {
     justify-content: flex-end;
   }
-  
+
   .permissions-connect-choose-account__accounts-list-header--two-items {
     justify-content: space-between;
   }
-  
+
   .permissions-connect-choose-account__account-info-wrapper {
     display: flex;
     justify-content: flex-start;
@@ -59,12 +60,12 @@
     font-weight: bold;
     padding: 0 8px;
   }
-  
+
   .permissions-connect-choose-account__select-all {
     display: flex;
     align-items: center;
   }
-  
+
   .permissions-connect-choose-account__account {
     display: flex;
     align-items: center;
@@ -72,23 +73,23 @@
     border-bottom: 1px solid #2c3146;
     justify-content: space-between;
     cursor: pointer;
-  
+
     &:last-of-type {
       border-bottom: none;
     }
-  
+
     &:hover {
       background: $primary-gradient-hover;
     }
   }
-  
+
   .permissions-connect-choose-account__account__info {
     display: flex;
     flex-direction: column;
     margin-left: 16px;
     min-width: 0;
   }
-  
+
   .permissions-connect-choose-account__account__label {
     color: $white;
     text-overflow: ellipsis;
@@ -96,19 +97,19 @@
     white-space: nowrap;
     font-size: 14px;
   }
-  
+
   .permissions-connect-choose-account__account__balance {
     color: $gray;
     font-size: 10px;
     padding: 6px 0 0;
   }
-  
+
   .permissions-connect-choose-account__account__last-connected {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
   }
-  
+
   .permissions-connect-choose-account__footer-container {
     width: 100%;
     flex: 1;
@@ -116,7 +117,7 @@
     flex-direction: column;
     justify-content: flex-end;
   }
-  
+
   .permissions-connect-choose-account__bottom-buttons {
     display: flex;
     justify-content: space-between;

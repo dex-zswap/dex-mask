@@ -75,7 +75,11 @@ export default class ChooseAccount extends Component {
                   className="permissions-connect-choose-account__list-check-box"
                   checked={selectedAccounts.has(address)}
                 />
-                <Identicon className="permissions-connect-choose-account__list-avatar" diameter={28} address={address} />
+                <Identicon
+                  className="permissions-connect-choose-account__list-avatar"
+                  diameter={28}
+                  address={address}
+                />
                 <div className="permissions-connect-choose-account__account__info">
                   <div className="permissions-connect-choose-account__account__label">
                     {addressLabel}

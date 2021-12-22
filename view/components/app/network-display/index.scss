@@ -10,33 +10,33 @@
   .network-display--disabled {
     cursor: not-allowed;
   }
-  
+
   .network-display--colored {
     background-color: $white;
   }
-  
+
   .network-display {
     .chip__label {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-  
+
     .chip__left-icon {
       margin-left: 4px;
     }
-  
+
     .chip__right-icon {
       margin-right: 4px;
     }
   }
-  
+
   .network-display__icon {
     height: 8px;
     width: 12px;
     display: block;
   }
-  
+
   .network-display--clickable {
     cursor: pointer;
   }

@@ -16,9 +16,9 @@ export default class PermissionsConnectHeader extends Component {
     return (
       <div className="permissions-connect-header">
         {this.renderHeaderIcon()}
-        {
-          headerTitle && <div className="permissions-connect-header__title">{headerTitle}</div>
-        }
+        {headerTitle && (
+          <div className="permissions-connect-header__title">{headerTitle}</div>
+        )}
         <div className="permissions-connect-header__subtitle">{headerText}</div>
       </div>
     );

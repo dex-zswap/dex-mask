@@ -97,12 +97,7 @@ function getValues(pendingApproval, t, actions) {
         key: 'title',
         children: t('addEthereumChainConfirmationTitle'),
         props: {
-          className: 'add-chain-confirm-title',
-          align: 'center',
-          fontWeight: 'bold',
-          boxProps: {
-            margin: [0, 0, 4],
-          },
+          className: 'switch-network-title'
         },
       },
       {
@@ -110,12 +105,7 @@ function getValues(pendingApproval, t, actions) {
         key: 'description',
         children: t('addEthereumChainConfirmationDescription'),
         props: {
-          variant: TYPOGRAPHY.H7,
-          className: 'add-chain-confirm-description',
-          align: 'center',
-          boxProps: {
-            margin: [0, 0, 4],
-          },
+          className: 'switch-network-description'
         },
       },
       {
@@ -142,13 +132,6 @@ function getValues(pendingApproval, t, actions) {
             },
           },
         ],
-        props: {
-          variant: TYPOGRAPHY.H7,
-          align: 'center',
-          boxProps: {
-            margin: 0,
-          },
-        },
       },
       {
         element: 'TruncatedDefinitionList',

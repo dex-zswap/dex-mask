@@ -91,11 +91,15 @@ export default class PermissionPageContainer extends Component {
         />
         <div className="permission-approval-container__footers">
           <PermissionsConnectFooter />
-          <div className='permission-approval-container__footers-buttons flex space-between'>
+          <div className="permission-approval-container__footers-buttons flex space-between">
             <Button className="half-button" onClick={() => this.onCancel()}>
               {this.context.t('cancel')}
             </Button>
-            <Button type="primary" className="half-button" onClick={() => this.onSubmit()}>
+            <Button
+              type="primary"
+              className="half-button"
+              onClick={() => this.onSubmit()}
+            >
               {this.context.t('connect')}
             </Button>
           </div>

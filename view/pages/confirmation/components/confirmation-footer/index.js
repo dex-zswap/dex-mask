@@ -12,7 +12,9 @@ export default function ConfirmationFooter({
     <div className="confirmation-footer">
       {alerts}
       <div className="confirmation-footer__actions flex space-between">
-        <Button className="half-button" onClick={onCancel}>{cancelText}</Button>
+        <Button className="half-button" onClick={onCancel}>
+          {cancelText}
+        </Button>
         <Button className="half-button" type="primary" onClick={onApprove}>
           {approveText}
         </Button>

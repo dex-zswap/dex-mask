@@ -18,8 +18,7 @@ export default function PermissionsRedirect({ domainMetadata }) {
             <span className="permissions-redirect__check" />
             {renderBrokenLine()}
           </div>
-          {/* <SiteIcon icon="/images/logo/logo-fox.svg" size={64} /> */}
-          <Logo width="60px" height="83px" />
+          <Logo plain />
         </div>
       </div>
     </div>

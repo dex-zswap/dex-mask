@@ -195,6 +195,7 @@ export default function ConfirmationPage() {
         </Box>
         <Box justifyContent="center" padding={[1, 4, 4]}>
           <Chip
+            className="connect-origin-site"
             label={stripHttpsScheme(originMetadata.origin)}
             leftIcon={
               <SiteIcon
@@ -213,16 +214,9 @@ export default function ConfirmationPage() {
           Object.values(alertState[pendingConfirmation.id])
             .filter((alert) => alert.dismissed === false)
             .map((alert, idx, filtered) => (
-              <Callout
-                key={alert.id}
-                severity={alert.severity}
-                dismiss={() => dismissAlert(alert.id)}
-                isFirst={idx === 0}
-                isLast={idx === filtered.length - 1}
-                isMultiple={filtered.length > 1}
-              >
+              <div className='warning'>
                 <DexMaskTemplateRenderer sections={alert.content} />
-              </Callout>
+              </div>
             ))
         }
         onApprove={templatedValues.onApprove}

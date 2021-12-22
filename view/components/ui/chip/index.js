@@ -26,11 +26,10 @@ export default function Chip({
     <div
       onClick={onClick}
       onKeyPress={onKeyPress}
-      className={classnames(className, 'chip', {
+      className={classnames(className, provider?.toLowerCase(), 'chip', {
         'chip--with-left-icon': Boolean(leftIcon),
         'chip--with-right-icon': Boolean(rightIcon),
         [`chip--${borderColor}`]: true,
-        provider
       })}
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}
