@@ -1289,6 +1289,9 @@
   "maxPriorityFee": {
     "message": "Max priority fee"
   },
+  "maxUp": {
+    "message": "MAX"
+  },
   "memo": {
     "message": "memo"
   },
@@ -1987,6 +1990,9 @@
   "sendSpecifiedTokens": {
     "message": "Send $1",
     "description": "Symbol of the specified token"
+  },
+  "sendToken": {
+    "message": "Send Token"
   },
   "sendTokens": {
     "message": "Send Tokens"

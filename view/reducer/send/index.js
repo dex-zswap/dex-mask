@@ -1,14 +1,7 @@
 import contractMap from '@metamask/contract-metadata';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import BigNumber from 'bignumber.js';
-import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
-import abi from 'human-standard-token-abi';
-import { debounce } from 'lodash'; // typedefs
-
 /**
  * @typedef {import('@reduxjs/toolkit').PayloadAction} PayloadAction
  */
-
 import {
   CONTRACT_ADDRESS_ERROR,
   INSUFFICIENT_FUNDS_ERROR,
@@ -33,6 +26,7 @@ import {
 } from '@reducer/dexmask/dexmask';
 import { resetEnsResolution } from '@reducer/ens';
 import { setCustomGasLimit } from '@reducer/gas/gas.duck';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { GAS_ESTIMATE_TYPES, GAS_LIMITS } from '@shared/constants/gas';
 import { CHAIN_ID_TO_GAS_LIMIT_BUFFER_MAP } from '@shared/constants/network';
 import { TRANSACTION_ENVELOPE_TYPES } from '@shared/constants/transaction';
@@ -89,6 +83,11 @@ import {
   updateTokenType,
   updateTransaction,
 } from '@view/store/actions';
+import BigNumber from 'bignumber.js';
+import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util';
+import abi from 'human-standard-token-abi';
+import { debounce } from 'lodash'; // typedefs
+
 const name = 'send';
 /**
  * The Stages that the send slice can be in
@@ -574,6 +573,7 @@ export const initialState = {
     value: '0x0',
     // error to display for amount field
     error: null,
+    max: '0',
   },
   asset: {
     // type can be either NATIVE such as ETH or TOKEN for ERC20 tokens
@@ -644,36 +644,42 @@ const slice = createSlice({
       slice.caseReducers.validateSendState(state);
     },
 
+    setMaxSendAmount: (state) => {
+      let amount = '0x0';
+
+      if (state?.asset) {
+        if (state.asset.type === ASSET_TYPES.TOKEN) {
+          const decimals = state.asset.details?.decimals ?? 0;
+          const multiplier = Math.pow(10, Number(decimals));
+          amount = multiplyCurrencies(state?.asset?.balance, multiplier, {
+            toNumericBase: 'hex',
+            multiplicandBase: 16,
+            multiplierBase: 10,
+          });
+        } else {
+          amount = subtractCurrencies(
+            addHexPrefix(state.asset.balance),
+            addHexPrefix(state.gas.gasTotal),
+            {
+              toNumericBase: 'hex',
+              aBase: 16,
+              bBase: 16,
+            },
+          );
+        }
+      }
+
+      state.amount.max = amount;
+    },
+
     /**
      * computes the maximum amount of asset that can be sent and then calls
      * the updateSendAmount action above with the computed value, which will
      * revalidate the field and form and recomputes the draftTransaction
      */
     updateAmountToMax: (state) => {
-      let amount = '0x0';
-
-      if (state.asset.type === ASSET_TYPES.TOKEN) {
-        const decimals = state.asset.details?.decimals ?? 0;
-        const multiplier = Math.pow(10, Number(decimals));
-        amount = multiplyCurrencies(state.asset.balance, multiplier, {
-          toNumericBase: 'hex',
-          multiplicandBase: 16,
-          multiplierBase: 10,
-        });
-      } else {
-        amount = subtractCurrencies(
-          addHexPrefix(state.asset.balance),
-          addHexPrefix(state.gas.gasTotal),
-          {
-            toNumericBase: 'hex',
-            aBase: 16,
-            bBase: 16,
-          },
-        );
-      }
-
       slice.caseReducers.updateSendAmount(state, {
-        payload: amount,
+        payload: state.amount.max,
       }); // draftTransaction update happens in updateSendAmount
     },
 
@@ -1335,7 +1341,7 @@ export function updateGasPrice(gasPrice) {
 export function resetSendState() {
   return async (dispatch, getState) => {
     const state = getState();
-    dispatch(actions.resetSendState());
+    await dispatch(actions.resetSendState());
 
     if (state[name].gas.gasEstimatePollToken) {
       await disconnectGasFeeEstimatePoller(
@@ -1529,6 +1535,18 @@ export function updateSendHexData(hexData) {
     if (state.send.asset.type === ASSET_TYPES.NATIVE) {
       await dispatch(computeEstimatedGasLimit());
     }
+  };
+}
+export function setMaxSendAmount() {
+  return (dispatch) => {
+    dispatch(actions.setMaxSendAmount());
+  };
+}
+export function setSendAmountToMaxMode() {
+  return async (dispatch) => {
+    await dispatch(actions.updateAmountMode(AMOUNT_MODES.MAX));
+    await dispatch(actions.updateAmountToMax());
+    await dispatch(computeEstimatedGasLimit());
   };
 }
 /**
@@ -1757,6 +1775,9 @@ export function getIsAssetSendable(state) {
 
 export function getSendAmount(state) {
   return state[name].amount.value;
+}
+export function getMaxSendAmount(state) {
+  return state[name].amount.max;
 }
 export function getIsBalanceInsufficient(state) {
   return state[name].gas.error === INSUFFICIENT_FUNDS_ERROR;

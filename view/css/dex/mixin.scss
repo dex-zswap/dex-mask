@@ -34,10 +34,10 @@
 }
 
 @mixin modal-background {
+  @include w-h(100vw, 100vh);
   position: fixed;
   top: 0;
   left: 0;
-  @include w-h(100vw, 100vh);
   z-index: 1050;
   background: $modal-mask-background;
 }

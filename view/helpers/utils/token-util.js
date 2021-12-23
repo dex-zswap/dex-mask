@@ -1,10 +1,10 @@
 import contractMap from '@metamask/contract-metadata';
-import BigNumber from 'bignumber.js';
-import log from 'loglevel';
 import {
   conversionUtil,
   multiplyCurrencies,
 } from '@shared/modules/conversion.utils';
+import BigNumber from 'bignumber.js';
+import log from 'loglevel';
 import * as util from '.';
 import { formatCurrency } from './confirm-tx.util';
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
@@ -174,6 +174,7 @@ export function getTokenFiatAmount(
   tokenSymbol,
   formatted = true,
   hideCurrencySymbol = false,
+  numberOfDecimals = 2,
 ) {
   // If the conversionRate is 0 (i.e. unknown) or the contract exchange rate
   // is currently unknown, the fiat amount cannot be calculated so it is not
@@ -198,7 +199,7 @@ export function getTokenFiatAmount(
     fromNumericBase: 'dec',
     fromCurrency: tokenSymbol,
     toCurrency: currentCurrency.toUpperCase(),
-    numberOfDecimals: 2,
+    numberOfDecimals,
     conversionRate: currentTokenToFiatRate,
   });
   let result;

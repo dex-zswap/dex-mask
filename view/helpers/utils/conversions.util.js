@@ -1,11 +1,11 @@
-import { ethers } from 'ethers';
-import { ETH, GWEI, WEI } from '@view/helpers/constants/common';
 import { addHexPrefix } from '@app/scripts/lib/util';
 import {
-  conversionUtil,
   addCurrencies,
+  conversionUtil,
   subtractCurrencies,
 } from '@shared/modules/conversion.utils';
+import { ETH, GWEI, WEI } from '@view/helpers/constants/common';
+import { ethers } from 'ethers';
 import { formatCurrency } from './confirm-tx.util';
 export function bnToHex(inputBn) {
   return addHexPrefix(inputBn.toString(16));
@@ -204,4 +204,7 @@ export const toBnString = (value = '0') => {
 };
 export const toHexString = (amount, decimals = 18) => {
   return expandDecimals(amount, decimals).toHexString();
+};
+export const hexToString = (amount, decimals = 18) => {
+  return ethers.utils.formatUnits(String(amount), decimals);
 };

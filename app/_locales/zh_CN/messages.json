@@ -963,6 +963,9 @@
   "max": {
     "message": "最大"
   },
+  "maxUp": {
+    "message": "最大"
+  },
   "memo": {
     "message": "备忘"
   },
@@ -1431,6 +1434,9 @@
   "sendSpecifiedTokens": {
     "message": "发送 $1",
     "description": "Symbol of the specified token"
+  },
+  "sendToken": {
+    "message": "付款"
   },
   "sendTokens": {
     "message": "发送代币"
