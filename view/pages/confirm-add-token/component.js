@@ -27,6 +27,8 @@ export default class ConfirmAddToken extends Component {
       mostRecentOverviewPage,
       pendingTokens,
     } = this.props;
+    const { t } = this.context;
+
     return (
       <div className="confirm-add-token dex-page-container base-width space-between">
         <div className="confirm-add-token-top">
@@ -34,6 +36,14 @@ export default class ConfirmAddToken extends Component {
           <BackBar title={this.context.t('addTokens')} />
           <div className="page-container__subtitle">
             {this.context.t('likeToAddTokens')}
+          </div>
+          <div className="confirm-add-token__title flex space-between items-center">
+            <div className='label'>
+              {t('token')}
+            </div>
+            <div className='label'>
+              {t('balance')}
+            </div>
           </div>
           <div className="confirm-add-token__token-list">
             {Object.entries(pendingTokens).map(([address, token]) => {
@@ -90,7 +100,6 @@ export default class ConfirmAddToken extends Component {
                 const pendingTokenValues = Object.values(pendingTokens);
                 clearPendingTokens();
                 const firstTokenAddress = pendingTokenValues?.[0].address?.toLowerCase();
-
                 if (firstTokenAddress) {
                   history.push(`${ASSET_ROUTE}/${firstTokenAddress}`);
                 } else {

@@ -52,16 +52,13 @@ const CrossChainDest = () => {
     },
     [crossInfo],
   );
-  const accountChange = useCallback(
-    (account) => {
-      dispatch(
-        updateCrossChainState({
-          dest: account.address,
-        }),
-      );
-    },
-    [],
-  );
+  const accountChange = useCallback((account) => {
+    dispatch(
+      updateCrossChainState({
+        dest: account.address,
+      }),
+    );
+  }, []);
   useDeepEffect(() => {
     if (!loading && !error && res?.c === 200) {
       const supportChains = res?.d.map((chain) => ({

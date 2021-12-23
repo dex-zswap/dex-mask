@@ -68,18 +68,15 @@ const CrossChainFrom = () => {
     },
     [groups, nativeCurrency],
   );
-  const accountChange = useCallback(
-    (account) => {
-      dispatch(showAccountDetail(account.address));
-      dispatch(
-        updateCrossChainState({
-          from: account.address,
-          userInputValue: '',
-        }),
-      );
-    },
-    [],
-  );
+  const accountChange = useCallback((account) => {
+    dispatch(showAccountDetail(account.address));
+    dispatch(
+      updateCrossChainState({
+        from: account.address,
+        userInputValue: '',
+      }),
+    );
+  }, []);
   const outSideChains = useMemo(() => {
     return groups.filter(
       ({ chainId }) => toBnString(chainId) !== toBnString(crossInfo.destChain),

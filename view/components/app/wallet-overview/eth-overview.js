@@ -111,13 +111,7 @@ const EthOverview = ({ className }) => {
     }
 
     return buttons;
-  }, [
-    nativeCurrency,
-    supportCrossChain,
-    defaultTargetChain,
-    t,
-    history,
-  ]);
+  }, [nativeCurrency, supportCrossChain, defaultTargetChain, t, history]);
   return <WalletOverview buttons={overViewButtons} />;
 };
 

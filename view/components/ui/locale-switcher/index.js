@@ -18,12 +18,9 @@ export default function LocaleSwitcher({ className }) {
       })),
     [],
   );
-  const localeChanged = useCallback(
-    (code) => {
-      dispatch(updateCurrentLocale(code));
-    },
-    [],
-  );
+  const localeChanged = useCallback((code) => {
+    dispatch(updateCurrentLocale(code));
+  }, []);
   return (
     <div className={classnames(['locale-switcher-component', className])}>
       <div className="switcher-label">{t('language')}</div>

@@ -29,7 +29,6 @@ const AutoInitTokens = () => {
     () => userTokens.map(({ address }) => address.toLowerCase()),
     [userTokens],
   );
-
   useDeepEffect(() => {
     getIndexAssets({
       offset: 0,
@@ -54,8 +53,10 @@ const AutoInitTokens = () => {
               tokenAddesses.push(token.token_address);
             }
           });
+
           if (tokenAddesses.length) {
             const orderInfo = clone(memoizedTokenOrders);
+
             if (orderInfo[chainId]) {
               const existOrders = clone(
                 orderInfo[chainId]?.[userAddress] ?? [],
@@ -72,19 +73,16 @@ const AutoInitTokens = () => {
                 [userAddress]: tokenAddesses,
               };
             }
+
             if (!isEqual(orderInfo, memoizedTokenOrders)) {
               dispatch(setTokenDisplayOrders(orderInfo));
             }
+
             setPaddingTokens(tokenMap);
           }
         }
       });
-  }, [
-    chainId,
-    userAddress,
-    userTokenAddress,
-    memoizedTokenOrders
-  ]);
+  }, [chainId, userAddress, userTokenAddress, memoizedTokenOrders]);
   useDeepEffect(() => {
     dispatch(addTokens(paddingTokens));
   }, [paddingTokens]);

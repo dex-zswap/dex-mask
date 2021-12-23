@@ -66,11 +66,7 @@ const CrossChainSplitor = () => {
           setTimeout(() => dispatch(updateCrossChainState(newCrossInfo)), 1000);
         }
       });
-  }, [
-    reverseCross,
-    crossInfo,
-    fromChainProviderType
-  ]);
+  }, [reverseCross, crossInfo, fromChainProviderType]);
   useDeepEffect(() => {
     getAllSupportBridge({
       offset: 0,

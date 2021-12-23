@@ -112,13 +112,7 @@ const TokenOverview = ({ className, token }) => {
     }
 
     return buttons;
-  }, [
-    supportCrossChain,
-    defaultTargetChain,
-    t,
-    token,
-    history,
-  ]);
+  }, [supportCrossChain, defaultTargetChain, t, token, history]);
   return <WalletOverview buttons={overViewButtons} />;
 };
 

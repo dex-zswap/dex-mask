@@ -101,12 +101,7 @@ export function useTokenTracker(
 
       userTokens.current = tokenBalances;
     },
-    [
-      userTokens,
-      selectedAddress,
-      chainId,
-      memoizedTokenOrders,
-    ],
+    [userTokens, selectedAddress, chainId, memoizedTokenOrders],
   );
   const showError = useCallback((err) => {
     setError(err);

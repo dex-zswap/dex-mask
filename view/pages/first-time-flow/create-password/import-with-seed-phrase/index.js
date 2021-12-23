@@ -146,12 +146,7 @@ export default function ImportWithSeedPhrase({ onSubmit }) {
         });
       }
     },
-    [
-      state,
-      history,
-      isValid,
-      onSubmit,
-    ],
+    [state, history, isValid, onSubmit],
   );
   const handleCancel = useCallback(() => {
     history.goBack();
