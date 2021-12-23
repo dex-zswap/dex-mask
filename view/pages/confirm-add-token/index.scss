@@ -24,10 +24,10 @@
       &:last-of-type {
         margin: 0;
       }
-  
+
       .confirm-add-token__token {
         flex: 1;
-    
+
         .token-image-origin {
           width: 32px;
           height: 32px;
@@ -38,14 +38,14 @@
           flex: 0 0 auto;
           background-color: $white;
         }
-    
+
         .confirm-add-token__name {
           color: $white;
           font-size: 14px;
           font-weight: 500;
         }
       }
-    
+
       .confirm-add-token__balance {
         flex: 1;
       }

@@ -6,9 +6,7 @@ import TransactionList from '@c/app/transaction/list';
 import { TokenOverview } from '@c/app/wallet-overview';
 import BackBar from '@c/ui/back-bar';
 import { useI18nContext } from '@view/hooks/useI18nContext';
-
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
-
 export default function TokenAsset({ token }) {
   const t = useI18nContext();
   return (
