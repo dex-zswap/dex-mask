@@ -50,7 +50,7 @@ const CrossChainDest = () => {
         }),
       );
     },
-    [dispatch, updateCrossChainState, crossInfo],
+    [crossInfo],
   );
   const accountChange = useCallback(
     (account) => {
@@ -60,7 +60,7 @@ const CrossChainDest = () => {
         }),
       );
     },
-    [dispatch, updateCrossChainState],
+    [],
   );
   useDeepEffect(() => {
     if (!loading && !error && res?.c === 200) {
@@ -79,7 +79,7 @@ const CrossChainDest = () => {
         }),
       );
     }
-  }, [loading, error, res, dispatch, updateCrossChainState]);
+  }, [loading, error, res]);
   return (
     <div className="cross-chain-dest__component">
       <div className="top">

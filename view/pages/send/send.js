@@ -224,7 +224,7 @@ export default function SendTransactionScreen() {
       dispatch(resetSendState());
       window.removeEventListener('beforeunload', cleanup);
     };
-  }, [chainId, dispatch, cleanup]);
+  }, [chainId, cleanup]);
   useEffect(() => {
     if (location.search === '?scan=true') {
       dispatch(showQrScanner()); // Clear the queryString param after showing the modal

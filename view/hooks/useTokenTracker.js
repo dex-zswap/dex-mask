@@ -103,8 +103,6 @@ export function useTokenTracker(
     },
     [
       userTokens,
-      dispatch,
-      setTokenDisplayOrders,
       selectedAddress,
       chainId,
       memoizedTokenOrders,

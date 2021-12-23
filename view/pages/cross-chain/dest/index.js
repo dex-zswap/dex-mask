@@ -41,7 +41,7 @@ export default function CrossChainDestWrapper() {
         }),
       );
     }
-  }, [loading, error, res, dispatch, updateCrossChainState]);
+  }, [loading, error, res]);
   return (
     <div className="cross-chain-dest__wrapper">
       <div className="cross-chain-dest-type-selector">

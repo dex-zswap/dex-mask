@@ -66,7 +66,7 @@ const CrossChainFrom = () => {
         }),
       );
     },
-    [dispatch, updateCrossChainState, setProviderType, groups, nativeCurrency],
+    [groups, nativeCurrency],
   );
   const accountChange = useCallback(
     (account) => {
@@ -78,7 +78,7 @@ const CrossChainFrom = () => {
         }),
       );
     },
-    [dispatch, showAccountDetail, updateCrossChainState],
+    [],
   );
   const outSideChains = useMemo(() => {
     return groups.filter(
@@ -130,7 +130,7 @@ const CrossChainFrom = () => {
           }
         });
     },
-    [crossInfo, dispatch, updateCrossChainState],
+    [crossInfo],
   );
   useDeepEffect(() => {
     if (isNativeAsset) {
@@ -140,7 +140,7 @@ const CrossChainFrom = () => {
         }),
       );
     }
-  }, [nativeCurrency, dispatch, updateCrossChainState]);
+  }, [nativeCurrency]);
   return (
     <div className="cross-chain-from__wrapper">
       <div className="top">

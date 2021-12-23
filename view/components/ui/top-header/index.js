@@ -31,7 +31,7 @@ export default function TopHeader({ fixed }) {
   );
   const toggleMenu = useCallback(() => {
     dispatch(toggleAccountMenu());
-  }, [dispatch, toggleAccountMenu]);
+  }, []);
   const toggleConnectedAccounts = useCallback(() => {
     setShowConnectedAccounts((state) => !state);
   }, []);

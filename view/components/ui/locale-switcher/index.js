@@ -22,7 +22,7 @@ export default function LocaleSwitcher({ className }) {
     (code) => {
       dispatch(updateCurrentLocale(code));
     },
-    [dispatch, updateCurrentLocale],
+    [],
   );
   return (
     <div className={classnames(['locale-switcher-component', className])}>

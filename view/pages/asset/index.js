@@ -57,7 +57,7 @@ const Asset = () => {
     if (!isNative) {
       dispatch(setTokenDisplayOrders(tokenDisplayOrder));
     }
-  }, [isNative, dispatch, setTokenDisplayOrders, tokenDisplayOrder]);
+  }, [isNative, tokenDisplayOrder]);
   let content;
 
   if (token) {

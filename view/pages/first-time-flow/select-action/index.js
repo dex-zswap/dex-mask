@@ -21,11 +21,11 @@ export default function SelectAction() {
   const handleCreate = useCallback(() => {
     dispatch(setFirstTimeFlowType('create'));
     history.push(INITIALIZE_CREATE_PASSWORD_ROUTE);
-  }, [history, dispatch, setFirstTimeFlowType]);
+  }, [history]);
   const handleImport = useCallback(() => {
     dispatch(setFirstTimeFlowType('import'));
     history.push(INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE);
-  }, [history, dispatch, setFirstTimeFlowType]);
+  }, [history]);
   useDeepEffect(() => {
     if (isInitialized) {
       history.push(nextRoute);

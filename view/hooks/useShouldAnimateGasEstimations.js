@@ -35,7 +35,7 @@ export function useShouldAnimateGasEstimations() {
     ) {
       dispatch(toggleGasLoadingAnimation(true));
     }
-  }, [dispatch, isGasLoadingAnimationActive, showLoadingAnimation]);
+  }, [isGasLoadingAnimationActive, showLoadingAnimation]);
   useEffect(() => {
     if (
       isGasLoadingAnimationActive === true &&
@@ -45,5 +45,5 @@ export function useShouldAnimateGasEstimations() {
         dispatch(toggleGasLoadingAnimation(false));
       }, 2000);
     }
-  }, [dispatch, isGasLoadingAnimationActive, showLoadingAnimation]);
+  }, [isGasLoadingAnimationActive, showLoadingAnimation]);
 }

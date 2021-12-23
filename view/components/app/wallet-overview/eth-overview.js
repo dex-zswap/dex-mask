@@ -112,8 +112,6 @@ const EthOverview = ({ className }) => {
 
     return buttons;
   }, [
-    dispatch,
-    updateCrossChainState,
     nativeCurrency,
     supportCrossChain,
     defaultTargetChain,

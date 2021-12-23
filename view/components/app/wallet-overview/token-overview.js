@@ -113,8 +113,6 @@ const TokenOverview = ({ className, token }) => {
 
     return buttons;
   }, [
-    dispatch,
-    updateCrossChainState,
     supportCrossChain,
     defaultTargetChain,
     t,

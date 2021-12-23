@@ -150,9 +150,6 @@ export default function ImportWithSeedPhrase({ onSubmit }) {
       state,
       history,
       isValid,
-      dispatch,
-      setSeedPhraseBackedUp,
-      initializeThreeBox,
       onSubmit,
     ],
   );
