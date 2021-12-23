@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import Logo from '@c/ui/logo';
 import SiteIcon from '@c/ui/site-icon';
 import { I18nContext } from '@view/contexts/i18n';
@@ -19,8 +18,7 @@ export default function PermissionsRedirect({ domainMetadata }) {
             <span className="permissions-redirect__check" />
             {renderBrokenLine()}
           </div>
-          {/* <SiteIcon icon="/images/logo/logo-fox.svg" size={64} /> */}
-          <Logo width="60px" height="83px" />
+          <Logo plain />
         </div>
       </div>
     </div>
@@ -45,12 +43,3 @@ export default function PermissionsRedirect({ domainMetadata }) {
     );
   }
 }
-PermissionsRedirect.propTypes = {
-  domainMetadata: PropTypes.shape({
-    extensionId: PropTypes.string,
-    icon: PropTypes.string,
-    host: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    origin: PropTypes.string.isRequired,
-  }),
-};

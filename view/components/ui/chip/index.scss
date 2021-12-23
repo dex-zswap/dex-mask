@@ -4,7 +4,7 @@
   $self: &;
 
   border-radius: 100px;
-  border: 1px solid design-system.$ui-1;
+  border: 1px solid $primary-border;
   padding: 8px 16px;
   margin: 0 4px;
   display: flex;
@@ -58,6 +58,42 @@
     padding-right: 4px;
     #{$self}__label {
       margin-right: 8px;
+    }
+  }
+
+  .color-indicator {
+    width: 10px !important;
+    height: 10px !important;
+    background: transparent !important;
+    border: none;
+
+    .color-indicator__inner-circle {
+      display: block;
+      width: 10px;
+      height: 10px;
+      background: url('/images/default-chains/rpc.png') no-repeat center;
+      background-size: 100%;
+    }
+
+    &--color-mainnet {
+      .color-indicator__inner-circle {
+        background: url('/images/default-chains/eth.png') no-repeat center;
+        background-size: 100%;
+      }
+    }
+
+    &--color-bscmainnet {
+      .color-indicator__inner-circle {
+        background: url('/images/default-chains/bsc.png') no-repeat center;
+        background-size: 100%;
+      }
+    }
+
+    &--color-dexmainnet {
+      .color-indicator__inner-circle {
+        background: url('/images/default-chains/dex.png') no-repeat center;
+        background-size: 100%;
+      }
     }
   }
 }

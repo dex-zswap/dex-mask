@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { generatePath, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ethers } from 'ethers';
 import { getNativeCurrency } from '@reducer/dexmask/dexmask';
@@ -68,11 +68,7 @@ const EthOverview = ({ className }) => {
         iconClass: 'recive-icon',
         label: t('buy'),
         onClick: () =>
-          history.push(
-            generatePath(RECIVE_TOKEN_ROUTE, {
-              address: ethers.constants.AddressZero,
-            }),
-          ),
+          history.push(RECIVE_TOKEN_ROUTE),
       },
       {
         key: 'swap',
@@ -111,15 +107,7 @@ const EthOverview = ({ className }) => {
     }
 
     return buttons;
-  }, [
-    dispatch,
-    updateCrossChainState,
-    nativeCurrency,
-    supportCrossChain,
-    defaultTargetChain,
-    t,
-    history,
-  ]);
+  }, [nativeCurrency, supportCrossChain, defaultTargetChain, t, history]);
   return <WalletOverview buttons={overViewButtons} />;
 };
 

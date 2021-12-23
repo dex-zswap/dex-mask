@@ -17,22 +17,6 @@ export default class SignatureRequestOriginal extends Component {
   static contextTypes = {
     t: PropTypes.func.isRequired,
   };
-  static propTypes = {
-    fromAccount: PropTypes.shape({
-      address: PropTypes.string.isRequired,
-      balance: PropTypes.string,
-      name: PropTypes.string,
-    }).isRequired,
-    cancel: PropTypes.func.isRequired,
-    clearConfirmTransaction: PropTypes.func.isRequired,
-    conversionRate: PropTypes.number,
-    history: PropTypes.object.isRequired,
-    mostRecentOverviewPage: PropTypes.string.isRequired,
-    requesterAddress: PropTypes.string,
-    sign: PropTypes.func.isRequired,
-    txData: PropTypes.object.isRequired,
-    domainMetadata: PropTypes.object,
-  };
   state = {
     fromAccount: this.props.fromAccount,
   };

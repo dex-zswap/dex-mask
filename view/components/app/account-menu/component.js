@@ -33,14 +33,6 @@ export function AccountMenuItem(props) {
     </div>
   );
 }
-AccountMenuItem.propTypes = {
-  icon: PropTypes.node,
-  children: PropTypes.node,
-  text: PropTypes.node,
-  subText: PropTypes.node,
-  onClick: PropTypes.func,
-  className: PropTypes.string,
-};
 export default class AccountMenu extends Component {
   static contextTypes = {
     t: PropTypes.func,

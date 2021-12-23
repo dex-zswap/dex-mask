@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux';
 import copyToClipboard from 'copy-to-clipboard';
 import { ethers } from 'ethers';
 import { I18nContext } from '@view/contexts/i18n';
-import AccountOptionsMenu from '@c/app/account-options-menu';
 import TokenImage from '@c/ui/token-image';
 import Tooltip from '@c/ui/tooltip';
 import { SECOND } from '@shared/constants/time';
@@ -21,6 +20,7 @@ import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
 import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
 import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
 import { getSelectedAccount, getSelectedIdentity } from '@view/selectors';
+import AccountSwitcher from './account-switcher';
 export default function SelectedNativeToken() {
   const t = useContext(I18nContext);
   const selectedIdentity = useSelector(getSelectedIdentity);
@@ -28,10 +28,8 @@ export default function SelectedNativeToken() {
   const nativeCurrency = useSelector(getNativeCurrency);
   const [state, setState] = useState({
     copied: false,
-    accountOptionsMenuOpen: false,
   });
   const copyTimeout = useRef(null);
-  const dropTrigger = useRef(null);
   const { balance } = selectedAccount;
   const {
     currency: primaryCurrency,
@@ -77,13 +75,6 @@ export default function SelectedNativeToken() {
     );
     copyToClipboard(checksummedAddress);
   }, [checksummedAddress, copyToClipboard, copyTimeout.current, state.copied]);
-  const toggleAccountDrop = useCallback(() => {
-    setState((state) =>
-      Object.assign({}, state, {
-        accountOptionsMenuOpen: !state.accountOptionsMenuOpen,
-      }),
-    );
-  }, []);
   useEffect(() => {
     if (copyTimeout.current) {
       window.clearTimeout(copyTimeout.current);
@@ -91,22 +82,9 @@ export default function SelectedNativeToken() {
   }, [copyTimeout.current]);
   return (
     <>
-      {state.accountOptionsMenuOpen && (
-        <AccountOptionsMenu
-          anchorElement={dropTrigger.current}
-          onClose={toggleAccountDrop}
-        />
-      )}
       <div className="selected-token base-width">
         <div className="account-address flex space-between items-center">
-          <div className="account flex items-center">
-            {selectedIdentity.name}
-            <div
-              className="drop-trigger"
-              onClick={toggleAccountDrop}
-              ref={(el) => (dropTrigger.current = el)}
-            ></div>
-          </div>
+          <AccountSwitcher />
           <Tooltip
             wrapperClassName="selected-account__tooltip-wrapper"
             position="top"

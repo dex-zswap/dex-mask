@@ -1,38 +1,54 @@
 .editable-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
+  @include flex;
 
-  &__value {
+  .editable-label__value {
     max-width: 160px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #fff;
+    color: $white;
+    font-weight: bold;
   }
 
-  &__input {
-    @include H6;
-
+  .editable-label__input {
     width: 160px;
     text-align: center;
-    border: 1px solid $alto;
-
-    &--error {
-      border: 1px solid $monzo;
-    }
+    border: 1px solid $primary-border;
+    padding: 10px;
+    background: transparent;
+    color: $white;
+    border-radius: $size-12;
+    font-weight: bold;
+    outline: none;
   }
 
-  &__icon-button {
+  .editable-label__input--error {
+    border: 1px solid $warning;
+  }
+
+  .editable-label__icon-button {
     position: absolute;
     margin-left: 10px;
     left: 100%;
     background: unset;
+
+    &.pen {
+      width: 12px;
+      height: 12px;
+      background: url('/images/icons/pink-pen.png') no-repeat center;
+      background-size: 100%;
+    }
+
+    &.right {
+      width: 12px;
+      height: 8px;
+      background: url('/images/icons/pink-right.png') no-repeat center;
+      background-size: 100%;
+    }
   }
 
-  &__icon {
+  .editable-label__icon {
     cursor: pointer;
-    color: $dusty-gray;
   }
 }

@@ -169,8 +169,6 @@ export default function EditGasPopover({
   }, [
     transaction,
     mode,
-    dispatch,
-    closePopover,
     gasLimit,
     gasPrice,
     maxFeePerGas,

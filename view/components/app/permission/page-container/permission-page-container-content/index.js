@@ -4,23 +4,6 @@ import PermissionsConnectHeader from '@c/app/permission/connect-header';
 import CheckBox from '@c/ui/check-box';
 import Tooltip from '@c/ui/tooltip';
 export default class PermissionPageContainerContent extends PureComponent {
-  static propTypes = {
-    domainMetadata: PropTypes.shape({
-      extensionId: PropTypes.string,
-      icon: PropTypes.string,
-      host: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      origin: PropTypes.string.isRequired,
-    }),
-    selectedPermissions: PropTypes.object.isRequired,
-    onPermissionToggle: PropTypes.func.isRequired,
-    selectedIdentities: PropTypes.array,
-    allIdentitiesSelected: PropTypes.bool,
-  };
-  static defaultProps = {
-    selectedIdentities: [],
-    allIdentitiesSelected: false,
-  };
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -65,9 +48,14 @@ export default class PermissionPageContainerContent extends PureComponent {
   }
 
   getAccountDescriptor(identity) {
-    return `${identity.label} (...${identity.address.slice(
-      identity.address.length - 4,
-    )})`;
+    return (
+      <>
+        {identity.label}
+        <span className="identity-address">
+          ( ...{identity.address.slice(identity.address.length - 4)})
+        </span>
+      </>
+    );
   }
 
   renderAccountTooltip(textContent) {

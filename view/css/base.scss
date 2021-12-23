@@ -14,6 +14,11 @@ textarea {
   width: 100%;
 }
 
+#app-content {
+  height: 100vh;
+  overflow-y: auto;
+}
+
 .base-width {
   width: 90vw !important;
   margin-left: auto;
@@ -64,4 +69,19 @@ textarea {
 
 .space-between {
   justify-content: space-between;
+}
+
+.fa-times {
+  &:before {
+    content: '' !important;
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: url('/images/icons/close.png') no-repeat center;
+    background-size: 100%;
+  }
+}
+
+.fa {
+  font-weight: normal;
 }

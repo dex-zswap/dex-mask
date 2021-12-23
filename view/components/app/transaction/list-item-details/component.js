@@ -13,6 +13,7 @@ import Popover from '@c/ui/popover';
 import SenderToRecipient from '@c/ui/sender-to-recipient';
 import { FLAT_VARIANT } from '@c/ui/sender-to-recipient/constants';
 import Tooltip from '@c/ui/tooltip';
+import { shortenAddress } from '@view/helpers/utils';
 import {
   CHAINID_EXPLORE_MAP,
   MAINNET_CHAIN_ID,
@@ -26,28 +27,6 @@ export default class TransactionListItemDetails extends PureComponent {
   };
   static defaultProps = {
     recipientEns: null,
-  };
-  static propTypes = {
-    onCancel: PropTypes.func,
-    onRetry: PropTypes.func,
-    showCancel: PropTypes.bool,
-    showSpeedUp: PropTypes.bool,
-    showRetry: PropTypes.bool,
-    isEarliestNonce: PropTypes.bool,
-    cancelDisabled: PropTypes.bool,
-    primaryCurrency: PropTypes.string,
-    transactionGroup: PropTypes.object,
-    title: PropTypes.string.isRequired,
-    onClose: PropTypes.func.isRequired,
-    recipientEns: PropTypes.string,
-    recipientAddress: PropTypes.string,
-    rpcPrefs: PropTypes.object,
-    senderAddress: PropTypes.string.isRequired,
-    tryReverseResolveAddress: PropTypes.func.isRequired,
-    senderNickname: PropTypes.string.isRequired,
-    recipientNickname: PropTypes.string,
-    provider: PropTypes.object,
-    chainId: PropTypes.string,
   };
   state = {
     justCopied: false,
@@ -85,12 +64,12 @@ export default class TransactionListItemDetails extends PureComponent {
     const { transactionGroup } = this.props;
     const { primaryTransaction: transaction } = transactionGroup;
     const { hash } = transaction;
+    copyToClipboard(hash);
     this.setState(
       {
         justCopied: true,
       },
       () => {
-        copyToClipboard(hash);
         setTimeout(
           () =>
             this.setState({
@@ -122,9 +101,7 @@ export default class TransactionListItemDetails extends PureComponent {
       <Tooltip title={t('notEnoughGas')} position="bottom">
         <div>
           <Button
-            type="raised"
-            onClick={this.handleCancel}
-            className="transaction-list-item-details__header-button"
+            className="transaction-list-item-details__header-button function"
             disabled
           >
             {t('cancel')}
@@ -133,13 +110,31 @@ export default class TransactionListItemDetails extends PureComponent {
       </Tooltip>
     ) : (
       <Button
-        type="raised"
         onClick={this.handleCancel}
-        className="transaction-list-item-details__header-button"
+        className="transaction-list-item-details__header-button function"
       >
         {t('cancel')}
       </Button>
     );
+  }
+
+  getFunctionButtonsCount() {
+    const { showCancel, showSpeedUp, showRetry } = this.props;
+    let count = 3;
+
+    if (!showCancel) {
+      count--;
+    }
+
+    if (!showSpeedUp) {
+      count--;
+    }
+
+    if (!showRetry) {
+      count--;
+    }
+
+    return count;
   }
 
   render() {
@@ -169,38 +164,57 @@ export default class TransactionListItemDetails extends PureComponent {
     const isMainnet = chainId === MAINNET_CHAIN_ID;
     const providerType =
       NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
+    const buttonsCount = this.getFunctionButtonsCount();
     return (
       <Popover title={title} onClose={onClose}>
         <div className="transaction-list-item-details">
-          <div className="transaction-list-item-details__header">
-            <div>{t('details')}</div>
-            <div className="transaction-list-item-details__header-buttons">
+          {buttonsCount ? (
+            <div className="transaction-list-item-details__header-buttons functionial">
               {showSpeedUp && (
                 <Button
-                  type="raised"
+                  type="primary"
                   onClick={this.handleRetry}
-                  className="transaction-list-item-details__header-button"
+                  className="transaction-list-item-details__header-button function"
                 >
                   {t('speedUp')}
                 </Button>
               )}
               {this.renderCancel()}
+              {showRetry && (
+                <Tooltip title={t('retryTransaction')}>
+                  <Button
+                    type="transparent"
+                    onClick={this.handleRetry}
+                    className="transaction-list-item-details__header-button function"
+                  >
+                    <i className="fa fa-sync"></i>
+                  </Button>
+                </Tooltip>
+              )}
+            </div>
+          ) : null}
+          <div className="transaction-list-item-details__header">
+            <div>{t('details')}</div>
+            <div className="transaction-list-item-details__header-buttons">
               <Tooltip
                 wrapperClassName="transaction-list-item-details__header-button"
                 containerClassName="transaction-list-item-details__header-button-tooltip-container"
+                position="top"
                 title={
                   justCopied ? t('copiedTransactionId') : t('copyTransactionId')
                 }
               >
                 <Button
-                  type="raised"
+                  type="transparent"
                   onClick={this.handleCopyTxId}
                   disabled={!hash}
+                  as="div"
                 >
-                  <Copy size={10} color="#3098DC" />
+                  <div className="copy"></div>
                 </Button>
               </Tooltip>
               <Tooltip
+                position="top"
                 wrapperClassName="transaction-list-item-details__header-button"
                 containerClassName="transaction-list-item-details__header-button-tooltip-container"
                 title={
@@ -212,24 +226,13 @@ export default class TransactionListItemDetails extends PureComponent {
                 }
               >
                 <Button
-                  type="raised"
+                  type="transparent"
                   onClick={this.handleBlockExplorerClick}
                   disabled={!hash}
                 >
-                  <img src="./images/arrow-popout.svg" alt="" />
+                  <div className="view"></div>
                 </Button>
               </Tooltip>
-              {showRetry && (
-                <Tooltip title={t('retryTransaction')}>
-                  <Button
-                    type="raised"
-                    onClick={this.handleRetry}
-                    className="transaction-list-item-details__header-button"
-                  >
-                    <i className="fa fa-sync"></i>
-                  </Button>
-                </Tooltip>
-              )}
             </div>
           </div>
           <div className="transaction-list-item-details__body">
@@ -239,11 +242,12 @@ export default class TransactionListItemDetails extends PureComponent {
                 variant={FLAT_VARIANT}
                 addressOnly
                 recipientEns={recipientEns}
-                recipientAddress={recipientAddress}
+                recipientAddress={shortenAddress(recipientAddress, 11, -6)}
                 recipientNickname={recipientNickname}
                 senderName={senderNickname}
-                senderAddress={senderAddress}
+                senderAddress={shortenAddress(senderAddress, 11, -6)}
                 onRecipientClick={() => {}}
+                addressOnly
               />
             </div>
             <div className="transaction-list-item-details__cards-container">

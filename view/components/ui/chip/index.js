@@ -7,6 +7,7 @@ import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system';
 export default function Chip({
   className,
   children,
+  provider,
   borderColor = COLORS.UI1,
   label,
   labelProps = {},
@@ -25,7 +26,7 @@ export default function Chip({
     <div
       onClick={onClick}
       onKeyPress={onKeyPress}
-      className={classnames(className, 'chip', {
+      className={classnames(className, provider?.toLowerCase(), 'chip', {
         'chip--with-left-icon': Boolean(leftIcon),
         'chip--with-right-icon': Boolean(rightIcon),
         [`chip--${borderColor}`]: true,

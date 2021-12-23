@@ -140,7 +140,7 @@ const CrossChainButton = () => {
           userInputValue: '',
         }),
       );
-  }, [dispatch, updateCrossChainState]);
+  }, []);
   useEffect(() => {
     setMounted(false);
     setAllowed(false);

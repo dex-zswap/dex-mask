@@ -85,17 +85,6 @@ export const SectionShape = {
   element: PropTypes.oneOf(Object.keys(safeComponentList)).isRequired,
   key: PropTypes.string,
 };
-const ValidChildren = PropTypes.oneOfType([
-  PropTypes.string,
-  PropTypes.shape(SectionShape),
-  PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.shape(SectionShape), PropTypes.string]),
-  ),
-]);
-SectionShape.children = ValidChildren;
-DexMaskTemplateRenderer.propTypes = {
-  sections: ValidChildren,
-};
 export default memo(DexMaskTemplateRenderer, (prevProps, nextProps) => {
   return isEqual(prevProps.sections, nextProps.sections);
 });

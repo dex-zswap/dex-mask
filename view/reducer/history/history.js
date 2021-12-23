@@ -23,6 +23,5 @@ const { actions, reducer } = slice;
 export default reducer; // Selectors
 
 export const getMostRecentOverviewPage = (state) =>
-  state[name].mostRecentOverviewPage; // Actions / action-creators
-
+  state[name].mostRecentOverviewPage;
 export const { pageChanged } = actions;

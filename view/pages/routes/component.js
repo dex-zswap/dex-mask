@@ -57,33 +57,6 @@ import {
 import Authenticated from '@view/helpers/higher-order-components/authenticated';
 import Initialized from '@view/helpers/higher-order-components/initialized';
 export default class Routes extends Component {
-  static propTypes = {
-    currentCurrency: PropTypes.string,
-    setCurrentCurrencyToUSD: PropTypes.func,
-    isLoading: PropTypes.bool,
-    loadingMessage: PropTypes.string,
-    alertMessage: PropTypes.string,
-    textDirection: PropTypes.string,
-    isNetworkLoading: PropTypes.bool,
-    provider: PropTypes.object,
-    frequentRpcListDetail: PropTypes.array,
-    sidebar: PropTypes.object,
-    alertOpen: PropTypes.bool,
-    hideSidebar: PropTypes.func,
-    isUnlocked: PropTypes.bool,
-    setLastActiveTime: PropTypes.func,
-    history: PropTypes.object,
-    location: PropTypes.object,
-    lockDexmask: PropTypes.func,
-    submittedPendingTransactions: PropTypes.array,
-    isMouseUser: PropTypes.bool,
-    setMouseUserState: PropTypes.func,
-    providerId: PropTypes.string,
-    autoLockTimeLimit: PropTypes.number,
-    pageChanged: PropTypes.func.isRequired,
-    prepareToLeaveSwaps: PropTypes.func,
-    browserEnvironment: PropTypes.object,
-  };
   static contextTypes = {
     t: PropTypes.func,
   };

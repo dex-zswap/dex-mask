@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { produce } from 'immer';
 import { isEqual } from 'lodash';
-import MetaMaskTemplateRenderer from '@c/app/dexmask-template-renderer';
+import DexMaskTemplateRenderer from '@c/app/dexmask-template-renderer';
 import NetworkDisplay from '@c/app/network-display/network-display';
 import Box from '@c/ui/box';
 import Callout from '@c/ui/callout';
@@ -195,6 +195,7 @@ export default function ConfirmationPage() {
         </Box>
         <Box justifyContent="center" padding={[1, 4, 4]}>
           <Chip
+            className="connect-origin-site"
             label={stripHttpsScheme(originMetadata.origin)}
             leftIcon={
               <SiteIcon
@@ -205,7 +206,7 @@ export default function ConfirmationPage() {
             }
           />
         </Box>
-        <MetaMaskTemplateRenderer sections={templatedValues.content} />
+        <DexMaskTemplateRenderer sections={templatedValues.content} />
       </div>
       <ConfirmationFooter
         alerts={
@@ -213,16 +214,9 @@ export default function ConfirmationPage() {
           Object.values(alertState[pendingConfirmation.id])
             .filter((alert) => alert.dismissed === false)
             .map((alert, idx, filtered) => (
-              <Callout
-                key={alert.id}
-                severity={alert.severity}
-                dismiss={() => dismissAlert(alert.id)}
-                isFirst={idx === 0}
-                isLast={idx === filtered.length - 1}
-                isMultiple={filtered.length > 1}
-              >
-                <MetaMaskTemplateRenderer sections={alert.content} />
-              </Callout>
+              <div className="warning">
+                <DexMaskTemplateRenderer sections={alert.content} />
+              </div>
             ))
         }
         onApprove={templatedValues.onApprove}

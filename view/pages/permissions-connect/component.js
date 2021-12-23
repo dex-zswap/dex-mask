@@ -10,39 +10,6 @@ import ChooseAccount from './choose-account';
 import PermissionsRedirect from './redirect';
 const APPROVE_TIMEOUT = MILLISECOND * 1200;
 export default class PermissionConnect extends Component {
-  static propTypes = {
-    approvePermissionsRequest: PropTypes.func.isRequired,
-    rejectPermissionsRequest: PropTypes.func.isRequired,
-    getRequestAccountTabIds: PropTypes.func.isRequired,
-    getCurrentWindowTab: PropTypes.func.isRequired,
-    accounts: PropTypes.array.isRequired,
-    currentAddress: PropTypes.string.isRequired,
-    origin: PropTypes.string,
-    showNewAccountModal: PropTypes.func.isRequired,
-    newAccountNumber: PropTypes.number.isRequired,
-    nativeCurrency: PropTypes.string,
-    permissionsRequest: PropTypes.object,
-    addressLastConnectedMap: PropTypes.object.isRequired,
-    lastConnectedInfo: PropTypes.object.isRequired,
-    permissionsRequestId: PropTypes.string,
-    history: PropTypes.object.isRequired,
-    connectPath: PropTypes.string.isRequired,
-    confirmPermissionPath: PropTypes.string.isRequired,
-    page: PropTypes.string.isRequired,
-    targetDomainMetadata: PropTypes.shape({
-      extensionId: PropTypes.string,
-      icon: PropTypes.string,
-      host: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      origin: PropTypes.string.isRequired,
-    }),
-  };
-  static defaultProps = {
-    origin: '',
-    nativeCurrency: '',
-    permissionsRequest: undefined,
-    permissionsRequestId: '',
-  };
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -160,28 +127,6 @@ export default class PermissionConnect extends Component {
     history.push(connectPath);
   }
 
-  renderTopBar() {
-    const { redirecting } = this.state;
-    const { page } = this.props;
-    const { t } = this.context;
-    return redirecting ? null : (
-      <div className="permissions-connect__top-bar">
-        {page === '2' ? (
-          <div
-            className="permissions-connect__back"
-            onClick={() => this.goBack()}
-          >
-            <i className="fas fa-chevron-left" />
-            {t('back')}
-          </div>
-        ) : null}
-        <div className="permissions-connect__page-count">
-          {t('xOfY', [page, '2'])}
-        </div>
-      </div>
-    );
-  }
-
   render() {
     const {
       approvePermissionsRequest,
@@ -202,8 +147,7 @@ export default class PermissionConnect extends Component {
       targetDomainMetadata,
     } = this.state;
     return (
-      <div className="permissions-connect">
-        {this.renderTopBar()}
+      <div>
         {redirecting && permissionsApproved ? (
           <PermissionsRedirect domainMetadata={targetDomainMetadata} />
         ) : (

@@ -1,3 +1,6 @@
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '@c/ui/button';
 import { NETWORK_TYPE_RPC } from '@shared/constants/network';
 import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes';
@@ -8,17 +11,12 @@ import {
   setSelectedSettingsRpcUrl,
   updateAndSetCustomRpc,
 } from '@view/store/actions';
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
 import { defaultNetworksData } from './constants';
 import NetworkForm from './network-form';
-
 const defaultNetworks = defaultNetworksData.map((network) => ({
   ...network,
   viewOnly: true,
 }));
-
 export default function NetworksTab() {
   const t = useI18nContext();
   const history = useHistory();
@@ -30,16 +28,13 @@ export default function NetworksTab() {
   const { frequentRpcListDetail, provider } = useSelector(
     (state) => state.metamask,
   );
-
   const providerUrl = useMemo(() => provider.rpcUrl, [provider]);
-
   useEffect(() => {
     return () => {
       dispatch(setSelectedSettingsRpcUrl(''));
       dispatch(setNetworksTabAddMode(false));
     };
   }, []);
-
   const setRpcTarget = useCallback(
     (newRpc, chainId, ticker, nickname, rpcPrefs) =>
       dispatch(
@@ -47,12 +42,10 @@ export default function NetworksTab() {
       ),
     [],
   );
-
   const showNetworkForm = useMemo(
     () => Boolean(pathname.match(NETWORKS_FORM_ROUTE)),
     [pathname],
   );
-
   const frequentRpcNetworkListDetails = frequentRpcListDetail.map((rpc) => {
     return {
       label: rpc.nickname,
@@ -74,6 +67,7 @@ export default function NetworksTab() {
     ) || {};
   const networkIsSelected = Boolean(selectedNetwork.rpcUrl);
   let networkDefaultedToProvider = false;
+
   if (!networkIsSelected && !networksTabIsInAddMode) {
     selectedNetwork =
       networksToRender.find((network) => {
@@ -131,7 +125,6 @@ export default function NetworksTab() {
       t,
     ],
   );
-
   const renderNetworksForm = useMemo(() => {
     const {
       labelKey,
@@ -143,7 +136,6 @@ export default function NetworksTab() {
       rpcPrefs,
       blockExplorerUrl,
     } = selectedNetwork;
-
     return (
       <NetworkForm
         setRpcTarget={setRpcTarget}
@@ -168,7 +160,6 @@ export default function NetworksTab() {
       />
     );
   }, [selectedNetwork]);
-
   return (
     <div className="base-width">
       {showNetworkForm ? (

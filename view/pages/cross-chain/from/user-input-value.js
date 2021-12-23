@@ -73,7 +73,7 @@ export default function UserInputValue({ coinAddress, symbol, tokenBalance }) {
         }),
       );
     },
-    [dispatch, tokenBalance, updateCrossChainState],
+    [tokenBalance],
   );
   return (
     <div className="cross-chain-from__user-input">

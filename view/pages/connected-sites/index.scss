@@ -4,7 +4,7 @@
     margin-right: 10px;
   }
 
-  &__confirmation {
+  .connected-sites__confirmation {
     flex-direction: column;
 
     button:first-child {
@@ -12,22 +12,15 @@
     }
   }
 
-  &__footer-row {
+  .connected-sites__footer-row {
     display: flex;
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-  }
 
-  &__footer-row + &__footer-row {
-    margin-top: 15px;
-  }
-
-  a,
-  a:hover {
-    @include H6;
-    color: #651ab5;
-    cursor: pointer;
+    + .connected-sites__footer-row {
+      margin-top: 15px;
+    }
   }
 }

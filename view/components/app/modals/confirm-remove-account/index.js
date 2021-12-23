@@ -5,13 +5,16 @@ import {
   getCurrentChainId,
   getRpcPrefsForCurrentProvider,
 } from '@view/selectors';
+import { getDexMaskState } from '@reducer/dexmask/dexmask';
 import { removeAccount } from '@view/store/actions';
 import ConfirmRemoveAccount from './component';
 
 const mapStateToProps = (state) => {
+  const { provider } = getDexMaskState(state);
   return {
     chainId: getCurrentChainId(state),
     rpcPrefs: getRpcPrefsForCurrentProvider(state),
+    provider,
   };
 };
 

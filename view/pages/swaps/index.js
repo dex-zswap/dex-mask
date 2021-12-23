@@ -162,7 +162,6 @@ export default function Swap() {
     };
   }, [
     conversionError,
-    dispatch,
     destinationTokenAddedForSwap,
     destinationTokenInfo,
     fetchParams,
@@ -199,7 +198,6 @@ export default function Swap() {
       };
     }
   }, [
-    dispatch,
     chainId,
     isFeatureFlagLoaded,
     useNewSwapsApi,
@@ -245,7 +243,7 @@ export default function Swap() {
     }
 
     return () => window.removeEventListener('beforeunload', fn);
-  }, [dispatch, isLoadingQuotesRoute]);
+  }, [isLoadingQuotesRoute]);
   return (
     <div className="swaps">
       <div className="swaps__container">

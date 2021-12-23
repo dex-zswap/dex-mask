@@ -146,15 +146,7 @@ export default function ImportWithSeedPhrase({ onSubmit }) {
         });
       }
     },
-    [
-      state,
-      history,
-      isValid,
-      dispatch,
-      setSeedPhraseBackedUp,
-      initializeThreeBox,
-      onSubmit,
-    ],
+    [state, history, isValid, onSubmit],
   );
   const handleCancel = useCallback(() => {
     history.goBack();

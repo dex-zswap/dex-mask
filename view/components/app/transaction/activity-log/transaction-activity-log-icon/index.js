@@ -12,22 +12,19 @@ import {
   TRANSACTION_SUBMITTED_EVENT,
 } from '@c/app/transaction/activity-log/constants';
 const imageHash = {
-  [TRANSACTION_CREATED_EVENT]: '/images/icons/new.png',
-  [TRANSACTION_SUBMITTED_EVENT]: '/images/icons/submitted.png',
-  [TRANSACTION_RESUBMITTED_EVENT]: '/images/icons/retry.png',
-  [TRANSACTION_CONFIRMED_EVENT]: '/images/icons/confirm.png',
-  [TRANSACTION_DROPPED_EVENT]: '/images/icons/cancelled.png',
-  [TRANSACTION_ERRORED_EVENT]: '/images/icons/error.png',
-  [TRANSACTION_CANCEL_ATTEMPTED_EVENT]: '/images/icons/cancelled.png',
-  [TRANSACTION_CANCEL_SUCCESS_EVENT]: '/images/icons/cancelled.png',
+  [TRANSACTION_CREATED_EVENT]: '/images/transaction/list/created.png',
+  [TRANSACTION_SUBMITTED_EVENT]: '/images/transaction/list/submited.png',
+  [TRANSACTION_CONFIRMED_EVENT]: '/images/transaction/list/confirmed.png',
+  [TRANSACTION_RESUBMITTED_EVENT]: '/images/transaction/list/retry.png',
+  [TRANSACTION_DROPPED_EVENT]: '/images/transaction/list/cancelled.png',
+  [TRANSACTION_ERRORED_EVENT]: '/images/transaction/list/error.png',
+  [TRANSACTION_CANCEL_ATTEMPTED_EVENT]:
+    '/images/transaction/list/cancelled.png',
+  [TRANSACTION_CANCEL_SUCCESS_EVENT]: '/images/transaction/list/cancelled.png',
 };
 export default class TransactionActivityLogIcon extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
-  };
-  static propTypes = {
-    className: PropTypes.string,
-    eventKey: PropTypes.oneOf(Object.keys(imageHash)),
   };
 
   render() {
@@ -35,7 +32,7 @@ export default class TransactionActivityLogIcon extends PureComponent {
     const imagePath = imageHash[eventKey];
     return (
       <div className={classnames('transaction-activity-log-icon', className)}>
-        {imagePath && <img src={imagePath} height="12" width="12" alt="" />}
+        {imagePath && <img src={imagePath} height="24" width="24" alt="" />}
       </div>
     );
   }

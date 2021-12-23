@@ -29,7 +29,8 @@ export default function SelectedAccount() {
   const nativeCurrency = useSelector(getNativeCurrency);
   const [state, setState] = useState({
     copied: false,
-    accountOptionsMenuOpen: false
+    accountOptionsMenuOpen: false,
+    connectedSitesOpen: false,
   });
   const copyTimeout = useRef(null);
   const dropTrigger = useRef(null);
@@ -67,21 +68,19 @@ export default function SelectedAccount() {
         copied: true,
       }),
     );
-    copyTimeout.current = setTimeout(
-      () =>
-        setState((state) =>
-          Object.assign({}, state, {
-            copied: false,
-          }),
-        ),
-      SECOND * 3,
-    );
     copyToClipboard(checksummedAddress);
-  }, [checksummedAddress, copyToClipboard, copyTimeout.current, state.copied]);
+  }, [checksummedAddress, copyToClipboard]);
   const toggleAccountDrop = useCallback(() => {
     setState((state) =>
       Object.assign({}, state, {
         accountOptionsMenuOpen: !state.accountOptionsMenuOpen,
+      }),
+    );
+  }, []);
+  const toggleConnectedSites = useCallback(() => {
+    setState((state) =>
+      Object.assign({}, state, {
+        connectedSitesOpen: !state.connectedSitesOpen,
       }),
     );
   }, []);
@@ -90,20 +89,32 @@ export default function SelectedAccount() {
       window.clearTimeout(copyTimeout.current);
     }
   }, [copyTimeout.current]);
-
+  useEffect(() => {
+    if (state.copied) {
+      window.clearTimeout(copyTimeout.current);
+      copyTimeout.current = setTimeout(
+        () =>
+          setState((state) =>
+            Object.assign({}, state, {
+              copied: false,
+            }),
+          ),
+        SECOND * 3,
+      );
+    }
+  }, [state.copied, copyTimeout.current]);
   return (
     <>
       {state.accountOptionsMenuOpen && (
         <AccountOptionsMenu
           anchorElement={dropTrigger.current}
           onClose={toggleAccountDrop}
+          toggleConnectedSites={toggleConnectedSites}
         />
       )}
-      {
-        state.connectedSitesOpen && (
-          <ConnectedSites onClose={toggleConnectedSites} />
-        )
-      }
+      {state.connectedSitesOpen && (
+        <ConnectedSites onClose={toggleConnectedSites} />
+      )}
       <div className="selected-account base-width">
         <div className="account-address flex space-between items-center">
           <div className="account flex items-center">

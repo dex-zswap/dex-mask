@@ -5,7 +5,7 @@ import { getTokens } from '@reducer/dexmask/dexmask';
 import { getIndexAssets } from '@view/helpers/cross-chain-api';
 import { toBnString } from '@view/helpers/utils/conversions.util';
 import useDeepEffect from '@view/hooks/useDeepEffect';
-import { useMd5EqualityCheck } from '@view/hooks/useMd5EqualityCheck';
+import { useEqualityCheck } from '@view/hooks/useEqualityCheck';
 import {
   getCurrentChainId,
   getSelectedAddress,
@@ -24,72 +24,68 @@ const AutoInitTokens = () => {
   const tokenOrders = useSelector((state) =>
     getTokenDisplayOrders(state, false),
   );
-  const memoizedTokenOrders = useMd5EqualityCheck(tokenOrders);
+  const memoizedTokenOrders = useEqualityCheck(tokenOrders);
   const userTokenAddress = useMemo(
-    () => userTokens.map(({ address }) => address),
+    () => userTokens.map(({ address }) => address.toLowerCase()),
     [userTokens],
   );
   useDeepEffect(() => {
-    // getIndexAssets({
-    //   offset: 0,
-    //   limit: 1000,
-    // })
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     if (res.c === 200) {
-    //       const chain = toBnString(chainId);
-    //       const tokenMap = {};
-    //       const tokenAddesses = [];
-    //       res.d.forEach((token) => {
-    //         if (
-    //           !userTokenAddress.includes(token.token_address) &&
-    //           chain === token.meta_chain_id
-    //         ) {
-    //           tokenMap[token.token_address] = {
-    //             address: token.token_address,
-    //             decimals: token.decimals,
-    //             symbol: token.token,
-    //           };
-    //           tokenAddesses.push(token.token_address);
-    //         }
-    //       });
-    //       if (tokenAddesses.length) {
-    //         const orderInfo = clone(memoizedTokenOrders);
-    //         if (orderInfo[chainId]) {
-    //           const existOrders = clone(
-    //             orderInfo[chainId]?.[userAddress] ?? [],
-    //           );
-    //           orderInfo[chainId] = Object.assign(orderInfo[chainId], {
-    //             [userAddress]: tokenAddesses.concat(
-    //               existOrders.filter(
-    //                 (address) => !tokenAddesses.includes(address),
-    //               ),
-    //             ),
-    //           });
-    //         } else {
-    //           orderInfo[chainId] = {
-    //             [userAddress]: tokenAddesses,
-    //           };
-    //         }
-    //         if (!isEqual(orderInfo, memoizedTokenOrders)) {
-    //           dispatch(setTokenDisplayOrders(orderInfo));
-    //         }
-    //       }
-    //       setPaddingTokens(tokenMap);
-    //     }
-    //   });
-  }, [
-    chainId,
-    userAddress,
-    userTokens,
-    userTokenAddress,
-    memoizedTokenOrders,
-    dispatch,
-    setTokenDisplayOrders,
-  ]);
+    getIndexAssets({
+      offset: 0,
+      limit: 1000,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.c === 200) {
+          const chain = toBnString(chainId);
+          const tokenMap = {};
+          const tokenAddesses = [];
+          res.d.forEach((token) => {
+            if (
+              !userTokenAddress.includes(token.token_address.toLowerCase()) &&
+              chain === token.meta_chain_id
+            ) {
+              tokenMap[token.token_address] = {
+                address: token.token_address,
+                decimals: token.decimals,
+                symbol: token.token,
+              };
+              tokenAddesses.push(token.token_address);
+            }
+          });
+
+          if (tokenAddesses.length) {
+            const orderInfo = clone(memoizedTokenOrders);
+
+            if (orderInfo[chainId]) {
+              const existOrders = clone(
+                orderInfo[chainId]?.[userAddress] ?? [],
+              );
+              orderInfo[chainId] = Object.assign(orderInfo[chainId], {
+                [userAddress]: tokenAddesses.concat(
+                  existOrders.filter(
+                    (address) => !tokenAddesses.includes(address),
+                  ),
+                ),
+              });
+            } else {
+              orderInfo[chainId] = {
+                [userAddress]: tokenAddesses,
+              };
+            }
+
+            if (!isEqual(orderInfo, memoizedTokenOrders)) {
+              dispatch(setTokenDisplayOrders(orderInfo));
+            }
+
+            setPaddingTokens(tokenMap);
+          }
+        }
+      });
+  }, [chainId, userAddress, userTokenAddress, memoizedTokenOrders]);
   useDeepEffect(() => {
     dispatch(addTokens(paddingTokens));
-  }, [paddingTokens, dispatch, addTokens]);
+  }, [paddingTokens]);
   return (
     <div
       className={classnames(
@@ -101,4 +97,4 @@ const AutoInitTokens = () => {
   );
 };
 
-export default AutoInitTokens;
+export default React.memo(AutoInitTokens);

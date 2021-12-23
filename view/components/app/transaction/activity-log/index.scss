@@ -1,15 +1,15 @@
 .transaction-activity-log {
-  &__title {
+  .transaction-activity-log__title {
     border-bottom: 1px solid #10121d;
     padding-bottom: 8px;
     text-transform: capitalize;
   }
 
-  &__activities-container {
+  .transaction-activity-log__activities-container {
     padding-top: 8px;
   }
 
-  &__activity {
+  .transaction-activity-log__activity {
     display: flex;
     flex-direction: row;
     position: relative;
@@ -19,7 +19,7 @@
       content: '';
       position: absolute;
       left: 0;
-      top: 34px;
+      top: 36px;
       height: 100%;
       width: 13px;
       border-right: 1px dashed #4b5165;
@@ -39,44 +39,41 @@
     }
   }
 
-  &__activity-icon {
-    width: 28px;
-    height: 28px;
-    margin-right: 15px;
-    border-radius: 50%;
-    border: 1px solid #4b5165;
-    flex: 0 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #141827;
+  .transaction-activity-log__activity-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
     z-index: 1;
   }
 
-  &__activity-text {
-    @include H7;
-
-    color: #999;
+  .transaction-activity-log__activity-text {
     cursor: pointer;
+    font-size: 10px;
+
+    .node-time {
+      color: $gray;
+      padding: 0 0 6px;
+    }
+
+    .node-activity {
+      color: $white;
+    }
   }
 
-  &__value {
+  .transaction-activity-log__value {
     display: inline;
     font-weight: 500;
   }
 
-  &__entry-container {
+  .transaction-activity-log__entry-container {
     min-width: 0;
   }
 
-  &__action-link {
-    @include H7;
-
+  .transaction-activity-log__action-link {
     cursor: pointer;
-    color: $primary-blue;
   }
 
-  b {
+  .transaction-activity-log b {
     font-weight: 500;
   }
 }

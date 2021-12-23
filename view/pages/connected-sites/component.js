@@ -10,20 +10,6 @@ export default class ConnectedSites extends Component {
   static defaultProps = {
     tabToConnect: null,
   };
-  static propTypes = {
-    accountLabel: PropTypes.string.isRequired,
-    closePopover: PropTypes.func.isRequired,
-    connectedDomains: PropTypes.arrayOf(PropTypes.object).isRequired,
-    domainHostCount: PropTypes.objectOf(PropTypes.number).isRequired,
-    disconnectAllAccounts: PropTypes.func.isRequired,
-    disconnectAccount: PropTypes.func.isRequired,
-    getOpenMetamaskTabsIds: PropTypes.func.isRequired,
-    permittedAccountsByOrigin: PropTypes.objectOf(
-      PropTypes.arrayOf(PropTypes.string),
-    ).isRequired,
-    tabToConnect: PropTypes.object,
-    requestAccountsPermission: PropTypes.func.isRequired,
-  };
   state = {
     sitePendingDisconnect: null,
   };

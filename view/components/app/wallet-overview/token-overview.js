@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { generatePath, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ethers } from 'ethers';
 import CurrencyDisplay from '@c/ui/currency-display';
@@ -62,18 +62,21 @@ const TokenOverview = ({ className, token }) => {
         key: 'send',
         iconClass: 'send-icon',
         label: t('send'),
-        onClick: () => history.push(SEND_ROUTE),
+        onClick: () => dispatch(
+          updateSendAsset({
+            type: ASSET_TYPES.TOKEN,
+            details: token,
+          }),
+        ).then(() => {
+          history.push(SEND_ROUTE);
+        }),
       },
       {
         key: 'recive',
         iconClass: 'recive-icon',
         label: t('buy'),
         onClick: () =>
-          history.push(
-            generatePath(RECIVE_TOKEN_ROUTE, {
-              address: token.address,
-            }),
-          ),
+          history.push(RECIVE_TOKEN_ROUTE),
       },
       {
         key: 'swap',
@@ -112,15 +115,7 @@ const TokenOverview = ({ className, token }) => {
     }
 
     return buttons;
-  }, [
-    dispatch,
-    updateCrossChainState,
-    supportCrossChain,
-    defaultTargetChain,
-    t,
-    token,
-    history,
-  ]);
+  }, [supportCrossChain, defaultTargetChain, t, token, history]);
   return <WalletOverview buttons={overViewButtons} />;
 };
 

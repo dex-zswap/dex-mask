@@ -13,26 +13,6 @@ const getStyles = (diameter) => ({
 });
 
 export default class Identicon extends PureComponent {
-  static propTypes = {
-    addBorder: PropTypes.bool,
-    address: PropTypes.string,
-    className: PropTypes.string,
-    diameter: PropTypes.number,
-    image: PropTypes.string,
-    useBlockie: PropTypes.bool,
-    alt: PropTypes.string,
-    imageBorder: PropTypes.bool,
-  };
-  static defaultProps = {
-    addBorder: false,
-    address: undefined,
-    className: undefined,
-    diameter: 46,
-    image: undefined,
-    useBlockie: false,
-    alt: '',
-  };
-
   renderImage() {
     const { className, diameter, image, alt, imageBorder } = this.props;
     return (

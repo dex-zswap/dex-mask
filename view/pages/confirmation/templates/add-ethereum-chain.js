@@ -93,34 +93,23 @@ function getValues(pendingApproval, t, actions) {
   return {
     content: [
       {
-        element: 'Typography',
+        element: 'div',
         key: 'title',
         children: t('addEthereumChainConfirmationTitle'),
         props: {
-          variant: TYPOGRAPHY.H3,
-          className: 'add-chain-confirm-title',
-          align: 'center',
-          fontWeight: 'bold',
-          boxProps: {
-            margin: [0, 0, 4],
-          },
+          className: 'switch-network-title',
         },
       },
       {
-        element: 'Typography',
+        element: 'div',
         key: 'description',
         children: t('addEthereumChainConfirmationDescription'),
         props: {
-          variant: TYPOGRAPHY.H7,
-          className: 'add-chain-confirm-description',
-          align: 'center',
-          boxProps: {
-            margin: [0, 0, 4],
-          },
+          className: 'switch-network-description',
         },
       },
       {
-        element: 'Typography',
+        element: 'div',
         key: 'only-add-networks-you-trust',
         children: [
           {
@@ -143,13 +132,6 @@ function getValues(pendingApproval, t, actions) {
             },
           },
         ],
-        props: {
-          variant: TYPOGRAPHY.H7,
-          align: 'center',
-          boxProps: {
-            margin: 0,
-          },
-        },
       },
       {
         element: 'TruncatedDefinitionList',

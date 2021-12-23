@@ -1,61 +1,43 @@
 .confirm-remove-account {
-  &__description {
-    @include H6;
-
+  .confirm-remove-account__description {
     text-align: center;
+    font-size: $size-12;
+    color: $gray;
   }
 
-  &__account {
-    border: 1px solid #2c3146;
+  .confirm-remove-account__account {
+    border: 1px solid $primary-border;
     border-radius: 4px;
     padding: 10px;
     display: flex;
-    margin-top: 10px;
-    margin-bottom: 20px;
+    margin: 10px 0 20px;
     width: 100%;
-
-    &__identicon {
-      margin-right: 10px;
-    }
-
-    &__name,
-    &__address {
-      @include H6;
-
-      margin-right: 10px;
-    }
-
-    &__name {
-      width: 100px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    &__label {
-      @include H8;
-
-      display: block;
-      color: #9b9b9b;
-    }
-
-    &__link {
-      margin-top: 14px;
-
-      img {
-        width: 15px;
-        height: 15px;
-      }
-    }
-
-    @media screen and (max-width: 575px) {
-      &__name {
-        width: 90px;
-      }
-    }
   }
 
-  &__link {
-    color: #2f9ae0;
+  .confirm-remove-account__account__identicon,
+  .confirm-remove-account__account__name,
+  .confirm-remove-account__account__address {
+    margin: 0 $size-12 0 0;
+  }
+
+  .confirm-remove-account__account__label {
+    display: block;
+    color: $gray;
+    font-size: 10px;
+  }
+
+  .account_value {
+    font-size: $size-12;
+    padding: 6px 0 0;
+  }
+
+  .confirm-remove-account__account__link {
+    .view-in-explore {
+      display: block;
+      width: 13px;
+      height: 13px;
+      background: url('/images/icons/view-in-broswer.png') no-repeat center;
+      background-size: 100%;
+    }
   }
 }

@@ -50,18 +50,15 @@ const CrossChainDest = () => {
         }),
       );
     },
-    [dispatch, updateCrossChainState, crossInfo],
+    [crossInfo],
   );
-  const accountChange = useCallback(
-    (account) => {
-      dispatch(
-        updateCrossChainState({
-          dest: account.address,
-        }),
-      );
-    },
-    [dispatch, updateCrossChainState],
-  );
+  const accountChange = useCallback((account) => {
+    dispatch(
+      updateCrossChainState({
+        dest: account.address,
+      }),
+    );
+  }, []);
   useDeepEffect(() => {
     if (!loading && !error && res?.c === 200) {
       const supportChains = res?.d.map((chain) => ({
@@ -79,7 +76,7 @@ const CrossChainDest = () => {
         }),
       );
     }
-  }, [loading, error, res, dispatch, updateCrossChainState]);
+  }, [loading, error, res]);
   return (
     <div className="cross-chain-dest__component">
       <div className="top">

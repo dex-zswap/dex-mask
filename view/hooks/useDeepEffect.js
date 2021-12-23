@@ -8,9 +8,11 @@ export default function useDeepEffect(fn, deps = []) {
 
     if (isFirst.current || !isSame) {
       fn();
-    }
+      prevDeps.current = deps;
 
-    isFirst.current = false;
-    prevDeps.current = deps;
+      if (isFirst.current) {
+        isFirst.current = false;
+      }
+    }
   }, deps);
 }

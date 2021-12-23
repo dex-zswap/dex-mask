@@ -382,7 +382,7 @@
     "message": "复制地址到剪贴板"
   },
   "copyPrivateKey": {
-    "message": "这是您的私钥（点击复制）"
+    "message": "您的私钥"
   },
   "copyToClipboard": {
     "message": "复制到剪贴板"
@@ -1811,7 +1811,7 @@
     "message": "切换网络"
   },
   "switchToThisAccount": {
-    "message": "切换到该账户"
+    "message": "切换"
   },
   "symbol": {
     "message": "符号"
@@ -1896,19 +1896,19 @@
     "message": "交易"
   },
   "transactionCancelAttempted": {
-    "message": "尝试取消交易 $2，燃料费用：$1。"
+    "message": "尝试取消交易，燃料费用：$1。"
   },
   "transactionCancelSuccess": {
-    "message": "取消交易成功 $2。"
+    "message": "取消交易成功。"
   },
   "transactionConfirmed": {
-    "message": "交易已确认 $2。"
+    "message": "交易已确认。"
   },
   "transactionCreated": {
-    "message": "交易已创建 $2，交易数额：$1。"
+    "message": "交易已创建，交易数额：$1。"
   },
   "transactionDropped": {
-    "message": "交易终止 $2。"
+    "message": "交易终止。"
   },
   "transactionError": {
     "message": "交易出错。合约代码执行异常。"
@@ -1923,13 +1923,13 @@
     "message": "交易费"
   },
   "transactionResubmitted": {
-    "message": "重新提交交易 $2，交易费升至：$1。"
+    "message": "重新提交交易，交易费升至：$1。"
   },
   "transactionSubmitted": {
-    "message": "交易已提交 $2，交易费：$1。"
+    "message": "交易已提交，交易费：$1。"
   },
   "transactionUpdated": {
-    "message": "交易更新时间 $2。"
+    "message": "交易更新时间。"
   },
   "transfer": {
     "message": "转账"

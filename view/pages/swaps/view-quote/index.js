@@ -327,7 +327,6 @@ export default function ViewQuote() {
   }, [
     quotesLastFetched,
     dispatchedSafeRefetch,
-    dispatch,
     history,
     swapsQuoteRefreshTime,
   ]);

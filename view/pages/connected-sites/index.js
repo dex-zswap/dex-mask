@@ -75,7 +75,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     mostRecentOverviewPage,
     selectedAddress,
     tabToConnect,
-    onClose
   } = stateProps;
   const {
     disconnectAccount,
@@ -83,13 +82,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     // eslint-disable-next-line no-shadow
     requestAccountsPermissionWithId,
   } = dispatchProps;
-  const { history } = ownProps;
-
+  const { history, onClose } = ownProps;
   return {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
-    closePopover,
+    closePopover: onClose,
     disconnectAccount: (domainKey) => {
       disconnectAccount(domainKey, selectedAddress);
 

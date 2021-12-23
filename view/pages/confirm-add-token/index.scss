@@ -6,29 +6,49 @@
     margin: 0 0 20px;
   }
 
-  .confirm-add-token__token-list-item {
+  .confirm-add-token__title {
     margin: 0 0 20px;
-    &:last-of-type {
-      margin: 0;
+    .label {
+      color: $white;
+      font-size: $size-12;
+      font-weight: 500;
+      flex: 1;
     }
   }
 
-  .confirm-add-token__token {
-    .token-image-origin {
-      width: 32px;
-      height: 32px;
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position: center;
-      border-radius: 50%;
-      flex: 0 0 auto;
-      background-color: $white;
-    }
+  .confirm-add-token__token-list {
+    max-height: 200px;
+    overflow-y: auto;
+    .confirm-add-token__token-list-item {
+      margin: 0 0 20px;
+      &:last-of-type {
+        margin: 0;
+      }
 
-    .confirm-add-token__name {
-      color: $white;
-      font-size: 14px;
-      font-weight: 500;
+      .confirm-add-token__token {
+        flex: 1;
+
+        .token-image-origin {
+          width: 32px;
+          height: 32px;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+          border-radius: 50%;
+          flex: 0 0 auto;
+          background-color: $white;
+        }
+
+        .confirm-add-token__name {
+          color: $white;
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+
+      .confirm-add-token__balance {
+        flex: 1;
+      }
     }
   }
 }

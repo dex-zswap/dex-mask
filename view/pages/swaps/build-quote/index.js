@@ -249,7 +249,7 @@ export default function BuildQuote({
       dispatch(setSwapToToken(token));
       setVerificationClicked(false);
     },
-    [dispatch, destinationTokenAddedForSwap, toAddress],
+    [destinationTokenAddedForSwap, toAddress],
   );
   const hideDropdownItemIf = useCallback(
     (item) => item.address === fromTokenAddress,
@@ -283,7 +283,6 @@ export default function BuildQuote({
       );
     }
   }, [
-    dispatch,
     tokensWithBalancesFromToken,
     previousTokensWithBalancesFromToken,
     fromToken,
@@ -307,7 +306,7 @@ export default function BuildQuote({
         }),
       );
     }
-  }, [dispatch, fromToken, ethBalance, chainId]);
+  }, [fromToken, ethBalance, chainId]);
   useEffect(() => {
     if (prevFromTokenBalance !== fromTokenBalance) {
       onInputChange(inputValue, fromTokenBalance);

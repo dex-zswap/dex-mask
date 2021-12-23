@@ -7,55 +7,37 @@
   min-height: 25px;
   user-select: none;
 
-  &--disabled {
+  .network-display--disabled {
     cursor: not-allowed;
   }
 
-  &--colored {
-    background-color: lighten(rgb(125, 128, 130), 45%);
+  .network-display--colored {
+    background-color: $white;
   }
 
-  &--mainnet {
-    background-color: lighten($blue-lagoon, 68%);
+  .network-display {
+    .chip__label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chip__left-icon {
+      margin-left: 4px;
+    }
+
+    .chip__right-icon {
+      margin-right: 4px;
+    }
   }
 
-  &--ropsten {
-    background-color: lighten($crimson, 45%);
-  }
-
-  &--kovan {
-    background-color: lighten($purple, 65%);
-  }
-
-  &--rinkeby {
-    background-color: lighten($tulip-tree, 35%);
-  }
-
-  &--goerli {
-    background-color: lighten($dodger-blue, 35%);
-  }
-
-  & .chip__label {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  & .chip__left-icon {
-    margin-left: 4px;
-  }
-
-  & .chip__right-icon {
-    margin-right: 4px;
-  }
-
-  &__icon {
+  .network-display__icon {
     height: 8px;
     width: 12px;
     display: block;
   }
 
-  &--clickable {
+  .network-display--clickable {
     cursor: pointer;
   }
 }
