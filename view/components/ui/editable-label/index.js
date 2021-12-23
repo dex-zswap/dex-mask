@@ -55,8 +55,7 @@ class EditableLabel extends Component {
         className="editable-label__icon-button right"
         key={2}
         onClick={() => this.handleSubmit()}
-      >
-      </button>,
+      ></button>,
     ];
   }
 
@@ -73,8 +72,7 @@ class EditableLabel extends Component {
             isEditing: true,
           })
         }
-      >
-      </button>
+      ></button>,
     ];
   }
 

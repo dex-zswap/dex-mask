@@ -7,7 +7,7 @@
     padding: 4px;
     border: none;
   }
-  
+
   .export-private-key-modal__account-name {
     color: $white;
     font-size: 14px;
@@ -31,7 +31,7 @@
       background: url('/images/icons/copy.png') no-repeat center;
       background-size: 100%;
       margin: 0 0 0 6px;
-    } 
+    }
   }
 
   .export-private-key-modal__body-title {
@@ -53,7 +53,7 @@
     width: 100%;
     margin: 24px 0 5px;
   }
-  
+
   .export-private-key-modal__buttons {
     width: 100%;
 
@@ -67,7 +67,7 @@
     letter-spacing: -0.5px;
     color: $warning;
   }
-  
+
   .export-private-key-modal__button--cancel {
     margin-right: 15px;
   }

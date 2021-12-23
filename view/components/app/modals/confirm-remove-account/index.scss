@@ -4,7 +4,7 @@
     font-size: $size-12;
     color: $gray;
   }
-  
+
   .confirm-remove-account__account {
     border: 1px solid $primary-border;
     border-radius: 4px;
@@ -13,11 +13,13 @@
     margin: 10px 0 20px;
     width: 100%;
   }
-  
-  .confirm-remove-account__account__identicon, .confirm-remove-account__account__name, .confirm-remove-account__account__address {
+
+  .confirm-remove-account__account__identicon,
+  .confirm-remove-account__account__name,
+  .confirm-remove-account__account__address {
     margin: 0 $size-12 0 0;
   }
-  
+
   .confirm-remove-account__account__label {
     display: block;
     color: $gray;
@@ -28,7 +30,7 @@
     font-size: $size-12;
     padding: 6px 0 0;
   }
-  
+
   .confirm-remove-account__account__link {
     .view-in-explore {
       display: block;

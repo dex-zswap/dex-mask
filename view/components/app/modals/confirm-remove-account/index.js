@@ -11,11 +11,10 @@ import ConfirmRemoveAccount from './component';
 
 const mapStateToProps = (state) => {
   const { provider } = getDexMaskState(state);
-
   return {
     chainId: getCurrentChainId(state),
     rpcPrefs: getRpcPrefsForCurrentProvider(state),
-    provider
+    provider,
   };
 };
 

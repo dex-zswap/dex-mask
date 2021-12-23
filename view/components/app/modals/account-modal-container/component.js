@@ -2,7 +2,6 @@ import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import Identicon from '@c/ui/identicon';
-
 export default function AccountModalContainer(props) {
   const {
     className,

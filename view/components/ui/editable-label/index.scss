@@ -10,7 +10,7 @@
     color: $white;
     font-weight: bold;
   }
-  
+
   .editable-label__input {
     width: 160px;
     text-align: center;
@@ -26,7 +26,7 @@
   .editable-label__input--error {
     border: 1px solid $warning;
   }
-  
+
   .editable-label__icon-button {
     position: absolute;
     margin-left: 10px;
@@ -47,7 +47,7 @@
       background-size: 100%;
     }
   }
-  
+
   .editable-label__icon {
     cursor: pointer;
   }

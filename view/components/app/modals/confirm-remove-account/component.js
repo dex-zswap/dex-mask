@@ -6,7 +6,11 @@ import {
 import PropTypes from 'prop-types';
 import Modal from '@c/app/modal';
 import Identicon from '@c/ui/identicon';
-import { CHAINID_EXPLORE_MAP, NETWORK_TO_NAME_MAP, MAINNET_CHAIN_ID } from '@shared/constants/network';
+import {
+  CHAINID_EXPLORE_MAP,
+  NETWORK_TO_NAME_MAP,
+  MAINNET_CHAIN_ID,
+} from '@shared/constants/network';
 import { addressSummary } from '@view/helpers/utils';
 export default class ConfirmRemoveAccount extends Component {
   static contextTypes = {
@@ -24,12 +28,12 @@ export default class ConfirmRemoveAccount extends Component {
   renderSelectedAccount() {
     const { t } = this.context;
     const { identity, rpcPrefs, chainId, provider } = this.props;
-    const providerType = NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
+    const providerType =
+      NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
     const isMainnet = chainId === MAINNET_CHAIN_ID;
-
     return (
       <div className="confirm-remove-account__account">
-        <div className='flex space-between items-center'>
+        <div className="flex space-between items-center">
           <div className="confirm-remove-account__account__identicon">
             <Identicon diameter={28} address={identity.address} />
           </div>
@@ -70,9 +74,12 @@ export default class ConfirmRemoveAccount extends Component {
               }}
               target="_blank"
               rel="noopener noreferrer"
-              title={isMainnet ? t('etherscanView') : t('viewinExplorer', [providerType])}
-            >
-            </a>
+              title={
+                isMainnet
+                  ? t('etherscanView')
+                  : t('viewinExplorer', [providerType])
+              }
+            ></a>
           </div>
         </div>
       </div>

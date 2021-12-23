@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import copyToClipboard from 'copy-to-clipboard';
 import { stripHexPrefix } from 'ethereumjs-util';
+import log from 'loglevel';
+import PropTypes from 'prop-types';
 import ToolTip from '@c/ui/tooltip';
 import TextField from '@c/ui/text-field';
 import { SECOND } from '@shared/constants/time';
-import log from 'loglevel';
-import PropTypes from 'prop-types';
 import AccountModalContainer from '@c/app/modals/account-modal-container';
 import Button from '@c/ui/button';
 import ReadOnlyInput from '@c/ui/readonly-input';
@@ -14,43 +14,35 @@ export default class ExportPrivateKeyModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
-
   state = {
     password: '',
     privateKey: null,
     showWarning: true,
-    copied: false
+    copied: false,
   };
-
   copyTimeOut = null;
-
   copyAddress = () => {
     const {
       props: {
-        selectedIdentity: {
-          address
-        }
-      }
+        selectedIdentity: { address },
+      },
     } = this;
     window.clearTimeout(this.copyTimeOut);
     copyToClipboard(address);
-    this.setState((state) => {
-      return {
-        ...state,
-        copied: !state.copied
-      };
-    }, () => {
-      this.copyTimeOut = setTimeout(() => {
-        window.clearTimeout(this.copyTimeOut);
-        this.setState((state) => {
-          return {
-            ...state,
-            copied: !state.copied
-          };
-        });
-      }, SECOND * 3);
-    });
-  }
+    this.setState(
+      (state) => {
+        return { ...state, copied: !state.copied };
+      },
+      () => {
+        this.copyTimeOut = setTimeout(() => {
+          window.clearTimeout(this.copyTimeOut);
+          this.setState((state) => {
+            return { ...state, copied: !state.copied };
+          });
+        }, SECOND * 3);
+      },
+    );
+  };
 
   componentWillUnmount() {
     this.props.clearAccountDetails();
@@ -70,9 +62,7 @@ export default class ExportPrivateKeyModal extends Component {
   };
 
   renderPasswordInput(privateKey) {
-    const {
-      warning
-    } = this.props;
+    const { warning } = this.props;
     const { showWarning } = this.state;
     const plainKey = privateKey && stripHexPrefix(privateKey);
 
@@ -82,7 +72,7 @@ export default class ExportPrivateKeyModal extends Component {
           label={this.context.t('typePassword')}
           placeholder={this.context.t('enterPassword')}
           type="password"
-          error={(showWarning && warning) ? warning : null}
+          error={showWarning && warning ? warning : null}
           onChange={(event) =>
             this.setState({
               password: event.target.value,
@@ -94,13 +84,11 @@ export default class ExportPrivateKeyModal extends Component {
 
     return (
       <div className="private-key-display">
-        <div className='header flex space-between items-center'>
+        <div className="header flex space-between items-center">
           {this.context.t('copyPrivateKey')}
-          <i className='copy-icon'></i>
+          <i className="copy-icon"></i>
         </div>
-        <div className='private-key'>
-          {plainKey}
-        </div>
+        <div className="private-key">{plainKey}</div>
       </div>
     );
   }
@@ -160,7 +148,9 @@ export default class ExportPrivateKeyModal extends Component {
         <span className="export-private-key-modal__account-name">{name}</span>
         <ToolTip
           position="top"
-          title={this.state.copied ? t('copiedExclamation') : t('copyToClipboard')}
+          title={
+            this.state.copied ? t('copiedExclamation') : t('copyToClipboard')
+          }
         >
           <div className="account-detail-address" onClick={this.copyAddress}>
             {address}
