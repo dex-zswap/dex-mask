@@ -382,7 +382,7 @@
     "message": "复制地址到剪贴板"
   },
   "copyPrivateKey": {
-    "message": "这是您的私钥（点击复制）"
+    "message": "您的私钥"
   },
   "copyToClipboard": {
     "message": "复制到剪贴板"

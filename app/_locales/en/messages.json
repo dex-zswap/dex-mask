@@ -481,7 +481,7 @@
     "message": "Copy address to clipboard"
   },
   "copyPrivateKey": {
-    "message": "This is your private key (click to copy)"
+    "message": "Your Private Key"
   },
   "copyToClipboard": {
     "message": "Copy to clipboard"
@@ -2692,7 +2692,7 @@
     "message": "Try again"
   },
   "typePassword": {
-    "message": "Type your DEXMask password"
+    "message": "Enter your DEXMask password"
   },
   "unapproved": {
     "message": "Unapproved"

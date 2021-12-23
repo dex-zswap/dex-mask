@@ -52,11 +52,10 @@ class EditableLabel extends Component {
         autoFocus
       />,
       <button
-        className="editable-label__icon-button"
+        className="editable-label__icon-button right"
         key={2}
         onClick={() => this.handleSubmit()}
       >
-        <i className="fa fa-check editable-label__icon" />
       </button>,
     ];
   }
@@ -68,15 +67,14 @@ class EditableLabel extends Component {
       </div>,
       <button
         key={2}
-        className="editable-label__icon-button"
+        className="editable-label__icon-button pen"
         onClick={() =>
           this.setState({
             isEditing: true,
           })
         }
       >
-        <i className="fas fa-pencil-alt editable-label__icon" />
-      </button>,
+      </button>
     ];
   }
 

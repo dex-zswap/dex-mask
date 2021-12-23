@@ -1,98 +1,46 @@
 .export-private-key-modal {
-  color: #fff;
+  color: $white;
+
   .readonly-input__input {
     background: transparent;
-    color: #fff;
+    color: $white;
     padding: 4px;
     border: none;
   }
-
-  &__body-title {
-    @include H4;
-
-    color: #fff;
-    margin-top: 16px;
-    margin-bottom: 16px;
+  
+  .export-private-key-modal__account-name {
+    color: $white;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 28px;
   }
 
-  &__divider {
-    width: 100%;
-    height: 1px;
-    margin: 19px 0 8px 0;
+  .account-detail-address {
+    font-size: $size-12;
+    color: $white;
+    width: 195px;
+    word-wrap: break-word;
+    margin: 10px auto 24px;
+    text-align: center;
+    cursor: pointer;
+    &:after {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background: url('/images/icons/copy.png') no-repeat center;
+      background-size: 100%;
+      margin: 0 0 0 6px;
+    } 
   }
 
-  &__account-name {
-    @include H4;
-    color: #fff;
-
-    margin-top: 9px;
+  .export-private-key-modal__body-title {
+    color: $white;
+    font-size: 20px;
+    font-weight: bold;
   }
 
-  &__password {
-    color: #fff;
-    width: 100%;
-    padding: 0 25px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  &__password-label,
-  &__password--error {
-    @include H6;
-    width: 100%;
-    color: #fff;
-  }
-
-  &__password--error {
-    color: $crimson;
-    margin-bottom: 0;
-  }
-
-  &__password-input {
-    @include Paragraph;
-    width: 100%;
-    color: #fff;
-    padding: 10px 0 13px 17px;
-    height: 44px;
-    background-color: rgba(36, 36, 36, 0.55);
-    border: 1px solid rgba(36, 36, 36, 0.55);
-    margin-top: 15px;
-    padding: 0 20px;
-    transition: all 0.1s;
-
-    &:focus {
-      border: 1px solid #5c22c5;
-      box-shadow: 0 0 15px #4118a1;
-    }
-  }
-
-  &__password::-webkit-input-placeholder {
-    color: $dusty-gray;
-  }
-
-  &__password--warning {
-    @include H7;
-
-    width: 100%;
-    border-radius: 8px;
-    font-weight: 500;
-    color: $crimson;
-    padding: 9px 25px;
-    margin-top: 18px;
-  }
-
-  &__password-display-wrapper {
-    height: 80px;
-    width: 100%;
-    border: 1px solid $silver;
-    border-radius: 2px;
-    margin-top: 8px;
-  }
-
-  &__password-display-textarea {
-    @include Paragraph;
-
-    color: $crimson;
+  .export-private-key-modal__password-display-textarea {
     border: none;
     height: 75px;
     width: 100%;
@@ -101,30 +49,54 @@
     padding: 9px 13px 8px;
   }
 
-  &__buttons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  .export-private-key-modal__password {
     width: 100%;
-    padding: 0 25px;
+    margin: 24px 0 5px;
+  }
+  
+  .export-private-key-modal__buttons {
+    width: 100%;
+
+    .dex-button {
+      margin: 10px 0 0;
+    }
   }
 
-  &__button {
-    margin-top: 17px;
-    width: 141px;
-    min-width: initial;
+  .export-private-key-modal__password--warning {
+    font-size: 10px;
+    letter-spacing: -0.5px;
+    color: $warning;
   }
-
-  &__button--cancel {
+  
+  .export-private-key-modal__button--cancel {
     margin-right: 15px;
   }
 
-  & .ellip-address-wrapper {
-    display: flex;
-    justify-content: center;
-    border: 1px solid $alto;
-    padding: 5px 10px;
-    margin-top: 7px;
-    width: 206px;
+  .private-key-display {
+    .header {
+      font-size: $size-12;
+      color: $white;
+      font-weight: bold;
+
+      .copy-icon {
+        display: block;
+        width: 12px;
+        height: 12px;
+        background: url('/images/icons/copy.png') no-repeat center;
+        background-size: 100%;
+      }
+    }
+
+    .private-key {
+      padding: 18px 15px;
+      border-radius: $size-12;
+      border: 1px solid $primary-border;
+      background: $primary-background;
+      word-wrap: break-word;
+      word-break: break-all;
+      font-size: $size-12;
+      color: $gray;
+      margin: 15px 0 10px;
+    }
   }
 }

@@ -1,18 +1,22 @@
-// Account Modal Container
 .account-modal {
-  &__container {
+  .account-modal__container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     position: relative;
-    padding: 5px 0 31px 0;
-    border-radius: 15px;
-    background: rgba(#141827, 0.9);
+    padding: 35px 24px 40px;
+    @include modal;
+    @include modal-size;
   }
-
-  &__back {
-    color: $dusty-gray;
+  .account-modal-avatar-container {
+    width: 64px;
+    height: 64px;
+    background: url('/images/background/avatar-border.png') no-repeat center;
+    background-size: 100%;
+    @include flex;
+  }
+  .account-modal__back {
     position: absolute;
     top: 13px;
     left: 17px;
@@ -20,32 +24,24 @@
     display: flex;
     align-items: center;
   }
-
-  &__back-text {
-    @include H6;
-
+  .account-modal__back-text {
     padding-left: 3px;
   }
-
-  &__close {
+  .account-modal__close {
     font-size: 25px;
     background-color: transparent;
-    color: $dusty-gray;
     position: absolute;
     cursor: pointer;
     top: 0;
     right: 12px;
-
-    &::after {
-      content: '\00D7';
-    }
   }
-
-  & .qr-code {
+  .account-modal__close::after {
+    content: '\00D7';
+  }
+  .account-modal .qr-code {
     margin: 15px 0 0;
   }
-
-  & .identicon {
+  .account-modal .identicon {
     position: relative;
     left: 0;
     right: 0;

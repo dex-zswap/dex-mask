@@ -9,7 +9,7 @@ const MenuItem = ({
   iconClassName,
   onClick,
   subtitle,
-  wrapChildAsDiv
+  wrapChildAsDiv,
 }) => (
   <button
     className={classnames('menu-item', className)}
@@ -19,12 +19,11 @@ const MenuItem = ({
     {iconClassName ? (
       <i className={classnames('menu-item__icon', iconClassName)} />
     ) : null}
-    {
-      wrapChildAsDiv ?
-      <div className='menu-item-children-wrapper'>{children}</div>
-      :
+    {wrapChildAsDiv ? (
+      <div className="menu-item-children-wrapper">{children}</div>
+    ) : (
       <span>{children}</span>
-    }
+    )}
     {subtitle}
   </button>
 );

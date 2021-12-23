@@ -5,16 +5,10 @@ import {
 } from '@metamask/etherscan-link';
 import PropTypes from 'prop-types';
 import Modal from '@c/app/modal';
-import { CHAINID_EXPLORE_MAP } from '@shared/constants/network';
+import Identicon from '@c/ui/identicon';
+import { CHAINID_EXPLORE_MAP, NETWORK_TO_NAME_MAP, MAINNET_CHAIN_ID } from '@shared/constants/network';
 import { addressSummary } from '@view/helpers/utils';
 export default class ConfirmRemoveAccount extends Component {
-  static propTypes = {
-    hideModal: PropTypes.func.isRequired,
-    removeAccount: PropTypes.func.isRequired,
-    identity: PropTypes.object.isRequired,
-    chainId: PropTypes.string.isRequired,
-    rpcPrefs: PropTypes.object.isRequired,
-  };
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -29,53 +23,57 @@ export default class ConfirmRemoveAccount extends Component {
 
   renderSelectedAccount() {
     const { t } = this.context;
-    const { identity, rpcPrefs, chainId } = this.props;
+    const { identity, rpcPrefs, chainId, provider } = this.props;
+    const providerType = NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
+    const isMainnet = chainId === MAINNET_CHAIN_ID;
+
     return (
       <div className="confirm-remove-account__account">
-        <div className="confirm-remove-account__account__identicon">
-          <img width="32px" src="images/dex/account-menu/account-avatar.png" />
-        </div>
-        <div className="confirm-remove-account__account__name">
-          <span className="confirm-remove-account__account__label">
-            {t('name')}
-          </span>
-          <span className="account_value">{identity.name}</span>
-        </div>
-        <div className="confirm-remove-account__account__address">
-          <span className="confirm-remove-account__account__label">
-            {t('publicAddress')}
-          </span>
-          <span className="account_value">
-            {addressSummary(identity.address, 4, 4)}
-          </span>
-        </div>
-        <div className="confirm-remove-account__account__link">
-          <a
-            className=""
-            onClick={() => {
-              let accountLink = getAccountLink(
-                identity.address,
-                chainId,
-                rpcPrefs,
-              );
-
-              if (!accountLink && CHAINID_EXPLORE_MAP[chainId]) {
-                accountLink = createCustomAccountLink(
-                  address,
-                  CHAINID_EXPLORE_MAP[chainId],
+        <div className='flex space-between items-center'>
+          <div className="confirm-remove-account__account__identicon">
+            <Identicon diameter={28} address={identity.address} />
+          </div>
+          <div className="confirm-remove-account__account__name">
+            <span className="confirm-remove-account__account__label">
+              {t('name')}
+            </span>
+            <span className="account_value">{identity.name}</span>
+          </div>
+          <div className="confirm-remove-account__account__address">
+            <span className="confirm-remove-account__account__label">
+              {t('publicAddress')}
+            </span>
+            <span className="account_value">
+              {addressSummary(identity.address, 6, 6)}
+            </span>
+          </div>
+          <div className="confirm-remove-account__account__link">
+            <a
+              className="view-in-explore"
+              onClick={() => {
+                let accountLink = getAccountLink(
+                  identity.address,
+                  chainId,
+                  rpcPrefs,
                 );
-              }
 
-              global.platform.openTab({
-                url: accountLink,
-              });
-            }}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={t('etherscanView')}
-          >
-            <img src="images/popout.svg" alt={t('etherscanView')} />
-          </a>
+                if (!accountLink && CHAINID_EXPLORE_MAP[chainId]) {
+                  accountLink = createCustomAccountLink(
+                    identity.address,
+                    CHAINID_EXPLORE_MAP[chainId],
+                  );
+                }
+
+                global.platform.openTab({
+                  url: accountLink,
+                });
+              }}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={isMainnet ? t('etherscanView') : t('viewinExplorer', [providerType])}
+            >
+            </a>
+          </div>
         </div>
       </div>
     );
@@ -85,13 +83,14 @@ export default class ConfirmRemoveAccount extends Component {
     const { t } = this.context;
     return (
       <Modal
+        contentClass="confirm-remove-account"
         headerText={`${t('removeAccount')}?`}
         onClose={this.handleCancel}
         onSubmit={this.handleRemove}
         onCancel={this.handleCancel}
         submitText={t('remove')}
         cancelText={t('nevermind')}
-        submitType="secondary"
+        submitType="warning"
       >
         <div>
           {this.renderSelectedAccount()}

@@ -20,16 +20,14 @@ import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
 import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
 import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
 import { getSelectedAccount, getSelectedIdentity } from '@view/selectors';
-
 import AccountSwitcher from './account-switcher';
-
 export default function SelectedNativeToken() {
   const t = useContext(I18nContext);
   const selectedIdentity = useSelector(getSelectedIdentity);
   const selectedAccount = useSelector(getSelectedAccount);
   const nativeCurrency = useSelector(getNativeCurrency);
   const [state, setState] = useState({
-    copied: false
+    copied: false,
   });
   const copyTimeout = useRef(null);
   const { balance } = selectedAccount;
@@ -88,14 +86,14 @@ export default function SelectedNativeToken() {
         <div className="account-address flex space-between items-center">
           <AccountSwitcher />
           <Tooltip
-           wrapperClassName="selected-account__tooltip-wrapper"
-           position="top"
-           title={state.copied ? t('copiedExclamation') : t('copyToClipboard')}
+            wrapperClassName="selected-account__tooltip-wrapper"
+            position="top"
+            title={state.copied ? t('copiedExclamation') : t('copyToClipboard')}
           >
-           <div className="address flex items-center" onClick={copyAddress}>
-             {shortenAddress(checksummedAddress)}
-             <div className="copy-icon"></div>
-           </div>
+            <div className="address flex items-center" onClick={copyAddress}>
+              {shortenAddress(checksummedAddress)}
+              <div className="copy-icon"></div>
+            </div>
           </Tooltip>
         </div>
         <div className="native-currency flex space-between items-center">

@@ -22,15 +22,13 @@ import {
   getSelectedAccount,
   getSelectedIdentity,
 } from '@view/selectors';
-
 import AccountSwitcher from './account-switcher';
-
 export default function SelectedToken({ token }) {
   const t = useContext(I18nContext);
   const selectedIdentity = useSelector(getSelectedIdentity);
   const selectedAccount = useSelector(getSelectedAccount);
   const [state, setState] = useState({
-    copied: false
+    copied: false,
   });
   const tokens = useSelector(getTokens);
   const shouldHideZeroBalanceTokens = useSelector(

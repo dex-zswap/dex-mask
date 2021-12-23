@@ -18,7 +18,8 @@ const imageHash = {
   [TRANSACTION_RESUBMITTED_EVENT]: '/images/transaction/list/retry.png',
   [TRANSACTION_DROPPED_EVENT]: '/images/transaction/list/cancelled.png',
   [TRANSACTION_ERRORED_EVENT]: '/images/transaction/list/error.png',
-  [TRANSACTION_CANCEL_ATTEMPTED_EVENT]: '/images/transaction/list/cancelled.png',
+  [TRANSACTION_CANCEL_ATTEMPTED_EVENT]:
+    '/images/transaction/list/cancelled.png',
   [TRANSACTION_CANCEL_SUCCESS_EVENT]: '/images/transaction/list/cancelled.png',
 };
 export default class TransactionActivityLogIcon extends PureComponent {
