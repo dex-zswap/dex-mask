@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { getEnvironmentType } from '@app/scripts/lib/util'; // Modal Components
-
 import ConfirmCustomizeGasModal from '@c/app/gas-customization/gas-modal-page-container';
 import SwapsGasCustomizationModal from '@pages/swaps/swaps-gas-customization-modal';
 import { resetCustomData as resetCustomGasData } from '@reducer/gas/gas.duck';
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
 import isMobileView from '@view/helpers/utils/is-mobile-view';
 import * as actions from '@view/store/actions';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import AccountDetailsModal from './account-details-modal';
 import AddToAddressBookModal from './add-to-addressbook-modal';
 import CancelTransaction from './cancel-transaction';
@@ -26,23 +25,24 @@ import NewAccountModal from './new-account-modal';
 import QRScanner from './qr-scanner';
 import RejectTransactions from './reject-transactions';
 import TransactionConfirmed from './transaction-confirmed';
+
 const modalContainerBaseStyle = {
   border: 'none',
   borderRadius: '8px',
-  backgroundColor: 'rgba(20, 24, 39, 0.9)',
+  backgroundColor: 'rgba(#1b1a2c, 0.95)',
   boxShadow: 'none',
 };
 const modalContainerLaptopStyle = {
   ...modalContainerBaseStyle,
   width: '344px',
 };
-const modalContainerMobileStyle = { ...modalContainerBaseStyle, width: '92vw' };
+const modalContainerMobileStyle = { ...modalContainerBaseStyle, width: '90vw' };
 const accountModalStyle = {
   mobileModalStyle: {
-    width: '92vw',
+    width: '90vw',
     // top: isPopupOrNotification() === 'popup' ? '52vh' : '36.5vh',
-    boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
-    borderRadius: '4px',
+    boxShadow: 'none',
+    borderRadius: '12px',
     top: '10%',
     transform: 'none',
     left: '0',
@@ -52,8 +52,8 @@ const accountModalStyle = {
   laptopModalStyle: {
     width: '360px',
     // top: 'calc(33% + 45px)',
-    boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
-    borderRadius: '4px',
+    boxShadow: 'none',
+    borderRadius: '12px',
     top: '10%',
     transform: 'none',
     left: '0',
@@ -61,7 +61,7 @@ const accountModalStyle = {
     margin: '0 auto',
   },
   contentStyle: {
-    borderRadius: '4px',
+    borderRadius: '12px',
   },
 };
 const MODALS = {
@@ -75,7 +75,7 @@ const MODALS = {
       left: '0',
       right: '0',
       margin: '0 auto',
-      boxShadow: '0 0 7px 0 rgba(0,0,0,0.08)',
+      boxShadow: 'none',
       top: '0',
       display: 'flex',
     },
@@ -86,67 +86,67 @@ const MODALS = {
       left: '0',
       right: '0',
       margin: '0 auto',
-      boxShadow: '0 0 6px 0 rgba(0,0,0,0.3)',
-      borderRadius: '7px',
+      boxShadow: 'none',
+      borderRadius: '12px',
       transform: 'none',
       height: 'calc(80% - 20px)',
       overflowY: 'hidden',
     },
     contentStyle: {
-      borderRadius: '7px',
+      borderRadius: '12px',
       height: '100%',
     },
   },
   ADD_TO_ADDRESSBOOK: {
     contents: <AddToAddressBookModal />,
     mobileModalStyle: {
-      width: '92vw',
+      width: '90vw',
       top: '10%',
-      boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
+      boxShadow: 'none',
       transform: 'none',
       left: '0',
       right: '0',
       margin: '0 auto',
-      borderRadius: '10px',
+      borderRadius: '12px',
     },
     laptopModalStyle: {
-      width: '92vw',
+      width: '90vw',
       top: '10%',
-      boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
+      boxShadow: 'none',
       transform: 'none',
       left: '0',
       right: '0',
       margin: '0 auto',
-      borderRadius: '10px',
+      borderRadius: '12px',
     },
     contentStyle: {
-      borderRadius: '10px',
+      borderRadius: '12px',
     },
   },
   NEW_ACCOUNT: {
     contents: <NewAccountModal />,
     mobileModalStyle: {
-      width: '92vw',
+      width: '90vw',
       top: '10%',
-      boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
+      boxShadow: 'none',
       transform: 'none',
       left: '0',
       right: '0',
       margin: '0 auto',
-      borderRadius: '10px',
+      borderRadius: '12px',
     },
     laptopModalStyle: {
-      width: '92vw',
+      width: '90vw',
       top: '10%',
-      boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
+      boxShadow: 'none',
       transform: 'none',
       left: '0',
       right: '0',
       margin: '0 auto',
-      borderRadius: '10px',
+      borderRadius: '12px',
     },
     contentStyle: {
-      borderRadius: '10px',
+      borderRadius: '12px',
     },
   },
   ACCOUNT_DETAILS: {
@@ -160,11 +160,11 @@ const MODALS = {
   HIDE_TOKEN_CONFIRMATION: {
     contents: <HideTokenConfirmationModal />,
     mobileModalStyle: {
-      width: '92vw',
+      width: '90vw',
       top: getEnvironmentType() === ENVIRONMENT_TYPE_POPUP ? '52vh' : '36.5vh',
     },
     laptopModalStyle: {
-      width: '92vw',
+      width: '90vw',
       top: 'calc(33% + 45px)',
     },
   },
@@ -178,7 +178,7 @@ const MODALS = {
     },
     laptopModalStyle: { ...modalContainerLaptopStyle, top: '10%' },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   CONFIRM_RESET_ACCOUNT: {
@@ -186,7 +186,7 @@ const MODALS = {
     mobileModalStyle: { ...modalContainerMobileStyle },
     laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   CONFIRM_REMOVE_ACCOUNT: {
@@ -194,7 +194,7 @@ const MODALS = {
     mobileModalStyle: { ...modalContainerMobileStyle },
     laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   CONFIRM_DELETE_NETWORK: {
@@ -206,13 +206,13 @@ const MODALS = {
       // ...modalContainerLaptopStyle,
     },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   LEGACY_CUSTOMIZE_GAS: {
     contents: <ConfirmCustomizeGasModal />,
     mobileModalStyle: {
-      width: '92vw',
+      width: '90vw',
       height: '90vh',
       top: '0',
       transform: 'none',
@@ -230,7 +230,7 @@ const MODALS = {
       position: 'relative',
     },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
     customOnHideOpts: {
       action: resetCustomGasData,
@@ -240,7 +240,7 @@ const MODALS = {
   CUSTOMIZE_METASWAP_GAS: {
     contents: <SwapsGasCustomizationModal />,
     mobileModalStyle: {
-      width: '92vw',
+      width: '90vw',
       height: '90vh',
       top: '0',
       transform: 'none',
@@ -258,7 +258,7 @@ const MODALS = {
       position: 'relative',
     },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   EDIT_APPROVAL_PERMISSION: {
@@ -282,7 +282,7 @@ const MODALS = {
       position: 'relative',
     },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   TRANSACTION_CONFIRMED: {
@@ -291,7 +291,7 @@ const MODALS = {
     mobileModalStyle: { ...modalContainerMobileStyle },
     laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   QR_SCANNER: {
@@ -299,7 +299,7 @@ const MODALS = {
     mobileModalStyle: { ...modalContainerMobileStyle },
     laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   CANCEL_TRANSACTION: {
@@ -307,7 +307,7 @@ const MODALS = {
     mobileModalStyle: { ...modalContainerMobileStyle },
     laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   REJECT_TRANSACTIONS: {
@@ -315,7 +315,7 @@ const MODALS = {
     mobileModalStyle: { ...modalContainerMobileStyle },
     laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   CUSTOMIZE_NONCE: {
@@ -323,7 +323,7 @@ const MODALS = {
     mobileModalStyle: { ...modalContainerMobileStyle },
     laptopModalStyle: { ...modalContainerLaptopStyle },
     contentStyle: {
-      borderRadius: '8px',
+      borderRadius: '12px',
     },
   },
   DEFAULT: {
