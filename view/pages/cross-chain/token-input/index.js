@@ -1,7 +1,9 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { ethers } from 'ethers'
+import BigNumber from 'bignumber.js'
 import SendTokenInput from '@c/app/send-token-input'
+import SendAddressInput from '@c/app/send-address-input'
 import { getTokens } from '@reducer/dexmask/dexmask'
 import useDeepEffect from '@view/hooks/useDeepEffect'
 import {
@@ -19,6 +21,9 @@ export default function CrossChainTokenInput() {
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
   const tokens = useSelector(getTokens)
+
+  const isNative = useMemo(() => crossChainState.coinAddress === ethers.constants.AddressZero, [crossChainState.coinAddress])
+
   const chainId = useMemo(() => toBnString(crossChainState.fromChain), [
     crossChainState.fromChain,
   ])
@@ -26,13 +31,19 @@ export default function CrossChainTokenInput() {
     () => tokens.map(({ address }) => address.toLowerCase()),
     [tokens],
   )
-  const tokenChanged = useCallback(({ address: coinAddress }) => {
+  const tokenChanged = useCallback(({ address: coinAddress, string }) => {
     dispatch(
       updateCrossChainState({
         coinAddress,
+        maxSendAmount: new BigNumber(string).toString()
       }),
     )
   }, [])
+
+  const updateCrossState = useCallback((state) => {
+    updateCrossChainState(state)
+  }, [])
+
   useDeepEffect(() => {
     const tokenList = []
     let includesNativeCurrencyToken = false
@@ -69,12 +80,24 @@ export default function CrossChainTokenInput() {
         }))
       })
   }, [chainId, tokenAddresses, tokens])
+
   return (
     <div>
       <SendTokenInput
         {...state}
         tokenAddress={crossChainState.coinAddress}
+        maxSendAmount={isNative ? crossChainState.nativeMaxSendAmount : crossChainState.maxSendAmount}
         changeToken={tokenChanged}
+        changeAmount={(userInputValue) => {
+          updateCrossState({
+            userInputValue
+          })
+        }}
+      />
+      <SendAddressInput
+        userInput={crossChainState.dest}
+        onChange={(dest) => updateCrossState({ dest })}
+        onReset={() => updateCrossState({ dest: '' })}
       />
     </div>
   )
