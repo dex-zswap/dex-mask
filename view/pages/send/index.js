@@ -111,10 +111,6 @@ export default function SendTransactionScreen() {
 
   const changeToken = useCallback(
     ({ address, symbol, isNativeCurrency, decimals = 18 }) => {
-      console.log({
-        type: isNativeCurrency ? ASSET_TYPES.NATIVE : ASSET_TYPES.TOKEN,
-        details: isNativeCurrency ? null : { address, symbol, decimals },
-      });
       dispatch(
         updateSendAsset({
           type: isNativeCurrency ? ASSET_TYPES.NATIVE : ASSET_TYPES.TOKEN,

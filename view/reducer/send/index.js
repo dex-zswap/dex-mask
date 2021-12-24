@@ -645,7 +645,7 @@ const slice = createSlice({
     },
 
     setMaxSendAmount: (state) => {
-      let amount = '0x0';
+      let amount = '0';
 
       if (state?.asset) {
         if (state.asset.type === ASSET_TYPES.TOKEN) {
@@ -667,8 +667,11 @@ const slice = createSlice({
             },
           );
         }
-      }
 
+        if (parseFloat(amount) < 0) {
+          amount = '0';
+        }
+      }
       state.amount.max = amount;
     },
 

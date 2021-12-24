@@ -18,6 +18,7 @@ const reactOrders = [
   'react-router-dom',
   'react-redux',
   'redux',
+  '@reduxjs/toolkit'
 ];
 
 const jsConfigOrders = Object.keys(jsConfig.compilerOptions.paths).sort();
