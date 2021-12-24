@@ -1707,10 +1707,7 @@
     "message": "Recents"
   },
   "recipientAddressPlaceholder": {
-    "message": "Search, public address (0x) or $1"
-  },
-  "recipientAddressPlaceholder2": {
-    "message": "Search, public address (0x)"
+    "message": "Search, public address (0x) or DNS"
   },
   "reciveToken": {
     "message": "Recive Token"

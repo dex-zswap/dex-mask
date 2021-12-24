@@ -1,61 +1,53 @@
-import { connect } from 'react-redux'
-import { addHexPrefix } from '@app/scripts/lib/util'
-import { getSendToAccounts } from '@reducer/dexmask/dexmask'
-import { getMostRecentOverviewPage } from '@reducer/history/history'
+import Button from '@c/ui/button';
 import {
-  getGasPrice,
   getSendAmount,
-  getSendErrors,
-  getSendTo,
   isSendFormInvalid,
   resetSendState,
   signTransaction,
-} from '@reducer/send'
-import { addToAddressBook } from '@view/store/actions'
-import SendFooter from './component'
-export default connect(mapStateToProps, mapDispatchToProps)(SendFooter)
+} from '@reducer/send';
+import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes';
+import { useI18nContext } from '@view/hooks/useI18nContext';
+import BigNumber from 'bignumber.js';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-function addressIsNew(toAccounts, newAddress) {
-  const newAddressNormalized = newAddress.toLowerCase()
-  const foundMatching = toAccounts.some(
-    ({ address }) => address.toLowerCase() === newAddressNormalized,
-  )
-  return !foundMatching
-}
+export default function SendFooter({}) {
+  const t = useI18nContext();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const disabled = useSelector(isSendFormInvalid);
+  const amount = useSelector(getSendAmount);
 
-function mapStateToProps(state) {
-  // const gasButtonInfo = getRenderableEstimateDataForSmallButtonsFromGWEI(state);
-  const gasPrice = getGasPrice(state) // const activeButtonIndex = getDefaultActiveButtonIndex(
-  //   gasButtonInfo,
-  //   gasPrice,
-  // );
-  // const gasEstimateType =
-  //   activeButtonIndex >= 0
-  //     ? gasButtonInfo[activeButtonIndex].gasEstimateType
-  //     : 'custom';
+  const onCancel = useCallback(() => {
+    dispatch(resetSendState());
+    history.go(-1);
+  }, [history]);
 
-  return {
-    amount: getSendAmount(state),
-    disabled: isSendFormInvalid(state),
-    to: getSendTo(state),
-    toAccounts: getSendToAccounts(state),
-    sendErrors: getSendErrors(state),
-    // gasEstimateType,
-    mostRecentOverviewPage: getMostRecentOverviewPage(state),
-  }
-}
+  const onSubmit = useCallback((event) => {
+    event.preventDefault();
+    const promise = dispatch(signTransaction());
+    Promise.resolve(promise).then(() => {
+      history.push(CONFIRM_TRANSACTION_ROUTE);
+    });
+    history.push(CONFIRM_TRANSACTION_ROUTE);
+  }, []);
 
-function mapDispatchToProps(dispatch) {
-  return {
-    resetSendState: () => dispatch(resetSendState()),
-    sign: () => dispatch(signTransaction()),
-    addToAddressBookIfNew: (newAddress, toAccounts, nickname = '') => {
-      const hexPrefixedAddress = addHexPrefix(newAddress)
-
-      if (addressIsNew(toAccounts, hexPrefixedAddress)) {
-        // TODO: nickname, i.e. addToAddressBook(recipient, nickname)
-        dispatch(addToAddressBook(hexPrefixedAddress, nickname))
-      }
-    },
-  }
+  return (
+    <div className="base-width flex space-between">
+      <Button className="half-button" onClick={onCancel}>
+        {t('cancel')}
+      </Button>
+      <Button
+        className="half-button"
+        type="primary"
+        onClick={onSubmit}
+        disabled={
+          disabled || !amount || new BigNumber(amount).eq(new BigNumber(0))
+        }
+      >
+        {t('next')}
+      </Button>
+    </div>
+  );
 }

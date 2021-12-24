@@ -1,11 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import SendTokenInput from '@c/app/send-token-input'
-import BackBar from '@c/ui/back-bar'
-import TopHeader from '@c/ui/top-header'
+import SendAddressInput from '@c/app/send-address-input';
+import SendTokenInput from '@c/app/send-token-input';
+import BackBar from '@c/ui/back-bar';
+import TopHeader from '@c/ui/top-header';
 import {
   ASSET_TYPES,
   getIsUsingMyAccountForRecipientSearch,
@@ -24,62 +20,36 @@ import {
 import {
   expandDecimals,
   hexToString,
-} from '@view/helpers/utils/conversions.util'
-import { useI18nContext } from '@view/hooks/useI18nContext'
-import { getDexMaskAccounts, getSelectedAddress } from '@view/selectors'
-import { showQrScanner } from '@view/store/actions'
-import EnsInput from './send-content/add-recipient/ens-input'
-import SendFooter from './send-footer'
+} from '@view/helpers/utils/conversions.util';
+import { useI18nContext } from '@view/hooks/useI18nContext';
+import { getSelectedAddress } from '@view/selectors';
+import { showQrScanner } from '@view/store/actions';
+import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import SendFooter from './send-footer';
+
 export default function SendTransactionScreen() {
-  const t = useI18nContext()
-  const dispatch = useDispatch()
-  const history = useHistory()
-  const accounts = useSelector(getDexMaskAccounts)
+  const t = useI18nContext();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const selectedAddress = useSelector(getSelectedAddress);
   const isUsingMyAccountsForRecipientSearch = useSelector(
     getIsUsingMyAccountForRecipientSearch,
-  )
-  const recipient = useSelector(getRecipient)
-  const userInput = useSelector(getRecipientUserInput)
-  const location = useLocation()
-  const selectedAddress = useSelector(getSelectedAddress)
-  const [checked, setChecked] = useState(false)
-  const [toAccountAddress, setToAccountAddress] = useState('')
-  const changeToAccountAddressData = useCallback((address) => {
-    dispatch(updateRecipientUserInput(address))
-    dispatch(
-      updateRecipient({
-        address,
-        nickname: '',
-      }),
-    )
-  }, [])
-  const changeToAccountAddress = useCallback(
-    (address) => {
-      setToAccountAddress(address)
-      changeToAccountAddressData(address || selectedAddress)
-    },
-    [changeToAccountAddressData],
-  )
+  );
+  const recipient = useSelector(getRecipient);
+  const userInput = useSelector(getRecipientUserInput);
+  const location = useLocation();
+  const [sendToAccountAddress, setSendToAccountAddress] = useState(
+    selectedAddress,
+  );
+
   useEffect(() => {
-    dispatch(initializeSendState())
-  }, [])
-  useEffect(() => {
-    if (checked) {
-      changeToAccountAddressData()
-    }
-  }, [checked, changeToAccountAddressData])
-  const onAmountChange = useCallback((val) => {
-    // dispatch(
-    //   updateSendHexData(
-    //     ethers.BigNumber.from(expandDecimals(val)).toHexString(),
-    //   ),
-    // );
-    dispatch(
-      updateSendAmount(
-        ethers.BigNumber.from(expandDecimals(val || 0)).toHexString(),
-      ),
-    )
-  }, [])
+    dispatch(initializeSendState());
+  }, []);
+
   const cleanup = useCallback(() => {
     dispatch(resetSendState())
   }, [])
@@ -120,48 +90,69 @@ export default function SendTransactionScreen() {
       updateSendAmount(
         ethers.BigNumber.from(expandDecimals(val || 0)).toHexString(),
       ),
-    )
-  }, [])
+    );
+  }, []);
+
+  const changeSendToAccountAddress = useCallback((address) => {
+    setSendToAccountAddress(address);
+    dispatch(updateRecipientUserInput(address));
+    dispatch(updateRecipient({ address, nickname: '' }));
+  }, []);
+
+  const toggleCheck = useCallback(
+    (checked) => {
+      if (checked) {
+        changeSendToAccountAddress(selectedAddress);
+      } else {
+        changeSendToAccountAddress('');
+      }
+    },
+    [changeSendToAccountAddress, selectedAddress],
+  );
+
   return (
-    <div className='dex-page-container'>
-      <TopHeader />
-      <BackBar
-        title={t('sendToken')}
-        backCb={() => dispatch(resetSendState())}
-      />
-      <SendTokenInput
-        tokenAddress={sendAssetAddress}
-        maxSendAmount={maxSendAmount}
-        changeToken={changeToken}
-        changeAmount={changeAmount}
-      />
-      <EnsInput
-        userInput={userInput}
-        className='send__to-row'
-        onChange={(address) => dispatch(updateRecipientUserInput(address))}
-        onValidAddressTyped={(address) =>
-          dispatch(
+    <div className="dex-page-container flex space-between">
+      <div>
+        <TopHeader />
+        <BackBar
+          title={t('sendToken')}
+          backCb={() => dispatch(resetSendState())}
+        />
+        <SendTokenInput
+          tokenAddress={sendAssetAddress}
+          maxSendAmount={maxSendAmount}
+          changeToken={changeToken}
+          changeAmount={changeAmount}
+        />
+        <SendAddressInput
+          accountAddress={sendToAccountAddress}
+          changeAccount={({ address }) => {
+            changeSendToAccountAddress(address);
+          }}
+          userInput={userInput}
+          onChange={(address) => dispatch(updateRecipientUserInput(address))}
+          onValidAddressTyped={(address) =>
+            dispatch(
+              updateRecipient({
+                address,
+                nickname: '',
+              }),
+            )
+          }
+          internalSearch={isUsingMyAccountsForRecipientSearch}
+          selectedAddress={recipient.address}
+          selectedName={recipient.nickname}
+          onPaste={(text) =>
             updateRecipient({
-              address,
+              address: text,
               nickname: '',
-            }),
-          )
-        }
-        internalSearch={isUsingMyAccountsForRecipientSearch}
-        selectedAddress={recipient.address}
-        selectedName={recipient.nickname}
-        onPaste={(text) =>
-          updateRecipient({
-            address: text,
-            nickname: '',
-          })
-        }
-        onReset={() => dispatch(resetRecipientInput())}
-        scanQrCode={() => {
-          dispatch(showQrScanner())
-        }}
-      />
-      <SendFooter key='send-footer' history={history} />
+            })
+          }
+          onReset={() => dispatch(resetRecipientInput())}
+          toggleCheck={toggleCheck}
+        />
+      </div>
+      <SendFooter history={history} />
     </div>
   )
 }

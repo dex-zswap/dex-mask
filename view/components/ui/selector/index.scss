@@ -87,6 +87,6 @@
       position: relative;
       z-index: 99;
     }
-    box-shadow: 0 0 10px $pink;
+    @include input-focus;
   }
 }
