@@ -1,5 +1,5 @@
-import React from 'react';
 import classnames from 'classnames'; // Button.type default|primary|warning|transparent
+import React from 'react';
 
 const Button = ({
   type = 'default',
@@ -7,7 +7,7 @@ const Button = ({
   children,
   rightArrow,
   leftArrow,
-  disabled,
+  disabled = false,
   className,
   onClick,
   as,
@@ -27,6 +27,7 @@ const Button = ({
         className,
         disabled && 'button-disabled',
       )}
+      disabled={disabled}
     >
       {leftArrow && <span className="button__left__arrow"></span>}
       {children}

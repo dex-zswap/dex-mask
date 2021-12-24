@@ -1254,10 +1254,7 @@
     "message": "最近记录"
   },
   "recipientAddressPlaceholder": {
-    "message": "查找、公用地址 (0x) 或 $1"
-  },
-  "recipientAddressPlaceholder2": {
-    "message": "查找、公用地址 (0x)"
+    "message": "查找、公用地址 (0x) 或 DNS"
   },
   "reject": {
     "message": "拒绝"
