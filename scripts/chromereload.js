@@ -31,7 +31,6 @@
 // };
 
 window.LiveReloadOptions = { host: 'localhost' }
-
 ;(function e(t, n, r) {
   function s(o, u) {
     if (!n[o]) {
@@ -68,7 +67,6 @@ window.LiveReloadOptions = { host: 'localhost' }
       function (require, module, exports) {
         ;(function () {
           var Connector, PROTOCOL_6, PROTOCOL_7, Parser, Version, _ref
-
           ;(_ref = require('./protocol')),
             (Parser = _ref.Parser),
             (PROTOCOL_6 = _ref.PROTOCOL_6),

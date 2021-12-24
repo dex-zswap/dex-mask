@@ -1,14 +1,14 @@
-import Identicon from '@c/ui/identicon';
-import { ellipsify } from '@pages/send/utils';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Identicon from '@c/ui/identicon'
+import { ellipsify } from '@pages/send/utils'
 import {
   isBurnAddress,
   isValidHexAddress,
-} from '@shared/modules/hexstring-utils';
-import { isValidDomainName } from '@view/helpers/utils';
-import { toBnString } from '@view/helpers/utils/conversions.util';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+} from '@shared/modules/hexstring-utils'
+import { isValidDomainName } from '@view/helpers/utils'
+import { toBnString } from '@view/helpers/utils/conversions.util'
 export default class EnsInput extends Component {
   static contextTypes = {
     t: PropTypes.func,
@@ -131,9 +131,9 @@ export default class EnsInput extends Component {
           ) : (
             <>
               <input
-                className="ens-input__wrapper__input"
-                type="text"
-                dir="auto"
+                className='ens-input__wrapper__input'
+                type='text'
+                dir='auto'
                 placeholder={t('recipientAddressPlaceholder')}
                 onChange={this.onChange}
                 onPaste={this.onPaste}

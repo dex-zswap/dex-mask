@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import React from 'react'
-import classnames from 'classnames' // Button.type default|primary|warning|transparent
-=======
 import classnames from 'classnames'; // Button.type default|primary|warning|transparent
 import React from 'react';
->>>>>>> 6f848f0de64bc29fe937d85d990914e88be7e7dc
 
 const Button = ({
   type = 'default',

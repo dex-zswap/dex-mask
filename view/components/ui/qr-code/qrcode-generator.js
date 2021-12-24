@@ -2246,7 +2246,6 @@ var qrcode = (function () {
     return toUTF8Array(s)
   }
 })()
-
 ;(function (factory) {
   if (typeof define === 'function' && define.amd) {
     define([], factory)

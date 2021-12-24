@@ -1,10 +1,9 @@
-import SendTokenInput from '@c/app/send-token-input';
-import EnsInput from '@pages/send/send-content/add-recipient/ens-input';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { showQrScanner } from '@view/store/actions';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import SendTokenInput from '@c/app/send-token-input'
+import EnsInput from '@pages/send/send-content/add-recipient/ens-input'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import { showQrScanner } from '@view/store/actions'
 export default function SendAddressInput({
   accountAddress,
   changeAccount,
@@ -18,12 +17,11 @@ export default function SendAddressInput({
   onReset,
   toggleCheck,
 }) {
-  const t = useI18nContext();
-  const dispatch = useDispatch();
-  const [isInWalletTrans, setIsInWalletTrans] = useState(false);
-
+  const t = useI18nContext()
+  const dispatch = useDispatch()
+  const [isInWalletTrans, setIsInWalletTrans] = useState(false)
   return (
-    <div className="base-width">
+    <div className='base-width'>
       {isInWalletTrans ? (
         <SendTokenInput
           accountAddress={accountAddress}
@@ -41,22 +39,22 @@ export default function SendAddressInput({
           onPaste={onPaste}
           onReset={onReset}
           scanQrCode={() => {
-            dispatch(showQrScanner());
+            dispatch(showQrScanner())
           }}
         />
       )}
       <div
-        className="in-wallet-wrap"
+        className='in-wallet-wrap'
         onClick={() => {
-          toggleCheck && toggleCheck(!isInWalletTrans);
-          setIsInWalletTrans((pre) => !pre);
+          toggleCheck && toggleCheck(!isInWalletTrans)
+          setIsInWalletTrans((pre) => !pre)
         }}
       >
         <div className={isInWalletTrans ? 'checked' : ''}>
-          {isInWalletTrans && <img width={8} src="images/icons/checked.png" />}
+          {isInWalletTrans && <img width={8} src='images/icons/checked.png' />}
         </div>
         <div>{t('dex_trans')}</div>
       </div>
     </div>
-  );
+  )
 }

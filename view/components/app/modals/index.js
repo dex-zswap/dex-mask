@@ -1,42 +1,39 @@
-import { getEnvironmentType } from '@app/scripts/lib/util'; // Modal Components
-import ConfirmCustomizeGasModal from '@c/app/gas-customization/gas-modal-page-container';
-import SwapsGasCustomizationModal from '@pages/swaps/swaps-gas-customization-modal';
-import { resetCustomData as resetCustomGasData } from '@reducer/gas/gas.duck';
-import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
-import isMobileView from '@view/helpers/utils/is-mobile-view';
-import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import AccountDetailsModal from './account-details-modal';
-import AddToAddressBookModal from './add-to-addressbook-modal';
-import CancelTransaction from './cancel-transaction';
-import ConfirmDeleteNetwork from './confirm-delete-network';
-import ConfirmRemoveAccount from './confirm-remove-account';
-import ConfirmResetAccount from './confirm-reset-account';
-import CustomizeNonceModal from './customize-nonce';
-import DepositEtherModal from './deposit-ether-modal';
-import EditApprovalPermission from './edit-approval-permission';
-import ExportPrivateKeyModal from './export-private-key-modal';
-import FadeModal from './fade-modal';
-import HideTokenConfirmationModal from './hide-token-confirmation-modal';
-import MetaMetricsOptInModal from './metametrics-opt-in-modal';
-import NewAccountModal from './new-account-modal';
-import QRScanner from './qr-scanner';
-import RejectTransactions from './reject-transactions';
-import TransactionConfirmed from './transaction-confirmed';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { getEnvironmentType } from '@app/scripts/lib/util' // Modal Components
 
+import ConfirmCustomizeGasModal from '@c/app/gas-customization/gas-modal-page-container'
+import SwapsGasCustomizationModal from '@pages/swaps/swaps-gas-customization-modal'
+import { resetCustomData as resetCustomGasData } from '@reducer/gas/gas.duck'
+import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app'
+import isMobileView from '@view/helpers/utils/is-mobile-view'
+import * as actions from '@view/store/actions'
+import AccountDetailsModal from './account-details-modal'
+import AddToAddressBookModal from './add-to-addressbook-modal'
+import CancelTransaction from './cancel-transaction'
+import ConfirmDeleteNetwork from './confirm-delete-network'
+import ConfirmRemoveAccount from './confirm-remove-account'
+import ConfirmResetAccount from './confirm-reset-account'
+import CustomizeNonceModal from './customize-nonce'
+import DepositEtherModal from './deposit-ether-modal'
+import EditApprovalPermission from './edit-approval-permission'
+import ExportPrivateKeyModal from './export-private-key-modal'
+import FadeModal from './fade-modal'
+import HideTokenConfirmationModal from './hide-token-confirmation-modal'
+import MetaMetricsOptInModal from './metametrics-opt-in-modal'
+import NewAccountModal from './new-account-modal'
+import QRScanner from './qr-scanner'
+import RejectTransactions from './reject-transactions'
+import TransactionConfirmed from './transaction-confirmed'
 const modalContainerBaseStyle = {
   border: 'none',
   borderRadius: '8px',
   backgroundColor: 'rgba(#1b1a2c, 0.95)',
   boxShadow: 'none',
-};
-const modalContainerLaptopStyle = {
-  ...modalContainerBaseStyle,
-  width: '90vw',
-};
-const modalContainerMobileStyle = { ...modalContainerBaseStyle, width: '90vw' };
+}
+const modalContainerLaptopStyle = { ...modalContainerBaseStyle, width: '90vw' }
+const modalContainerMobileStyle = { ...modalContainerBaseStyle, width: '90vw' }
 const accountModalStyle = {
   mobileModalStyle: {
     width: '90vw',
