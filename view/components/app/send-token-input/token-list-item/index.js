@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
-import TokenImage from '@c/ui/token-image';
-import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount';
- 
+import React, { useMemo } from 'react'
+import TokenImage from '@c/ui/token-image'
+import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount'
 export default function tokenListItem({
   address,
   symbol,
@@ -10,19 +9,34 @@ export default function tokenListItem({
   nativeCurrencyDisplayAmount,
   nativeCurrencyDisplayAmountUnit,
   active,
-  onClick
+  onClick,
 }) {
-  const tokenDisplayStr = useTokenFiatAmount(address, balance, symbol, {
-    showFiat: true
-  }, false, null);
-  const tokenDisplayValue = useMemo(() => tokenDisplayStr?.split(' ')[0], [tokenDisplayStr]);
-  const tokenDisplayUnit = useMemo(() => tokenDisplayStr?.split(' ')[1], [tokenDisplayStr]);
-  return <div className={`token-list-wrap ${active ? 'active' : ''}`} onClick={onClick}>
-      <div className="token-wrap">
+  const tokenDisplayStr = useTokenFiatAmount(
+    address,
+    balance,
+    symbol,
+    {
+      showFiat: true,
+    },
+    false,
+    null,
+  )
+  const tokenDisplayValue = useMemo(() => tokenDisplayStr?.split(' ')[0], [
+    tokenDisplayStr,
+  ])
+  const tokenDisplayUnit = useMemo(() => tokenDisplayStr?.split(' ')[1], [
+    tokenDisplayStr,
+  ])
+  return (
+    <div
+      className={`token-list-wrap ${active ? 'active' : ''}`}
+      onClick={onClick}
+    >
+      <div className='token-wrap'>
         <TokenImage address={address} symbol={symbol} size={24} />
-        <div className="token-symbol">{symbol}</div>
+        <div className='token-symbol'>{symbol}</div>
       </div>
-      <div className="balance-wrap">
+      <div className='balance-wrap'>
         <div>
           <div>{balance}</div>
           <div>{symbol}</div>
@@ -32,9 +46,12 @@ export default function tokenListItem({
             {isNativeCurrency ? nativeCurrencyDisplayAmount : tokenDisplayValue}
           </div>
           <div>
-            {isNativeCurrency ? nativeCurrencyDisplayAmountUnit : tokenDisplayUnit}
+            {isNativeCurrency
+              ? nativeCurrencyDisplayAmountUnit
+              : tokenDisplayUnit}
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  )
 }

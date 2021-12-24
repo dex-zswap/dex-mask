@@ -1,17 +1,17 @@
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { clearConfirmTransaction } from '@reducer/confirm-transaction/confirm-transaction.duck';
-import { getMostRecentOverviewPage } from '@reducer/history/history';
-import { MESSAGE_TYPE } from '@shared/constants/app';
-import { getAccountByAddress } from '@view/helpers/utils';
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { clearConfirmTransaction } from '@reducer/confirm-transaction/confirm-transaction.duck'
+import { getMostRecentOverviewPage } from '@reducer/history/history'
+import { MESSAGE_TYPE } from '@shared/constants/app'
+import { getAccountByAddress } from '@view/helpers/utils'
 import {
   accountsWithSendEtherInfoSelector,
   conversionRateSelector,
   getDomainMetadata,
-} from '@view/selectors';
-import { goHome } from '@view/store/actions';
-import SignatureRequestOriginal from './component';
+} from '@view/selectors'
+import { goHome } from '@view/store/actions'
+import SignatureRequestOriginal from './component'
 
 function mapStateToProps(state) {
   return {
@@ -22,14 +22,14 @@ function mapStateToProps(state) {
     // not passed to component
     allAccounts: accountsWithSendEtherInfoSelector(state),
     domainMetadata: getDomainMetadata(state),
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     goHome: () => dispatch(goHome()),
     clearConfirmTransaction: () => dispatch(clearConfirmTransaction()),
-  };
+  }
 }
 
 function mergeProps(stateProps, dispatchProps, ownProps) {
@@ -41,25 +41,25 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     signMessage,
     cancelMessage,
     txData,
-  } = ownProps;
-  const { allAccounts, ...otherStateProps } = stateProps;
+  } = ownProps
+  const { allAccounts, ...otherStateProps } = stateProps
   const {
     type,
     msgParams: { from },
-  } = txData;
-  const fromAccount = getAccountByAddress(allAccounts, from);
-  let cancel;
-  let sign;
+  } = txData
+  const fromAccount = getAccountByAddress(allAccounts, from)
+  let cancel
+  let sign
 
   if (type === MESSAGE_TYPE.PERSONAL_SIGN) {
-    cancel = cancelPersonalMessage;
-    sign = signPersonalMessage;
+    cancel = cancelPersonalMessage
+    sign = signPersonalMessage
   } else if (type === MESSAGE_TYPE.ETH_SIGN_TYPED_DATA) {
-    cancel = cancelTypedMessage;
-    sign = signTypedMessage;
+    cancel = cancelTypedMessage
+    sign = signTypedMessage
   } else if (type === MESSAGE_TYPE.ETH_SIGN) {
-    cancel = cancelMessage;
-    sign = signMessage;
+    cancel = cancelMessage
+    sign = signMessage
   }
 
   return {
@@ -70,10 +70,10 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
     txData,
     cancel,
     sign,
-  };
+  }
 }
 
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps, mergeProps),
-)(SignatureRequestOriginal);
+)(SignatureRequestOriginal)

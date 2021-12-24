@@ -1,10 +1,10 @@
-import React from 'react';
-import classnames from 'classnames';
+import React from 'react'
+import classnames from 'classnames'
 
 const WalletOverview = ({ buttons, className }) => {
   return (
     <div className={classnames('wallet-overview', className)}>
-      <div className="wallet-overview-buttons">
+      <div className='wallet-overview-buttons'>
         {buttons.map((btn) => {
           return (
             <div
@@ -15,13 +15,13 @@ const WalletOverview = ({ buttons, className }) => {
               <div
                 className={classnames('overview-btn-icon', btn.iconClass)}
               ></div>
-              <p className="overview-btn-label">{btn.label}</p>
+              <p className='overview-btn-label'>{btn.label}</p>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default WalletOverview;
+export default WalletOverview

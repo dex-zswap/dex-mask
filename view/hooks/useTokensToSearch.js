@@ -1,20 +1,20 @@
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import contractMap from '@metamask/contract-metadata';
-import BigNumber from 'bignumber.js';
-import { isEqual, shuffle, uniqBy } from 'lodash';
-import { getConversionRate } from '@reducer/dexmask/dexmask';
-import { getSwapsTokens } from '@reducer/swaps/swaps';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
-import { isSwapsDefaultTokenSymbol } from '@shared/modules/swaps.utils';
-import { getTokenFiatAmount } from '@view/helpers/utils/token-util';
+import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
+import contractMap from '@metamask/contract-metadata'
+import BigNumber from 'bignumber.js'
+import { isEqual, shuffle, uniqBy } from 'lodash'
+import { getConversionRate } from '@reducer/dexmask/dexmask'
+import { getSwapsTokens } from '@reducer/swaps/swaps'
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
+import { isSwapsDefaultTokenSymbol } from '@shared/modules/swaps.utils'
+import { getTokenFiatAmount } from '@view/helpers/utils/token-util'
 import {
   getCurrentChainId,
   getCurrentCurrency,
   getSwapsDefaultToken,
   getTokenExchangeRates,
-} from '@view/selectors';
-import { useEqualityCheck } from './useEqualityCheck';
+} from '@view/selectors'
+import { useEqualityCheck } from './useEqualityCheck'
 const tokenList = shuffle(
   Object.entries(contractMap)
     .map(([address, tokenData]) => ({
@@ -22,7 +22,7 @@ const tokenList = shuffle(
       address: address.toLowerCase(),
     }))
     .filter((tokenData) => Boolean(tokenData.erc20)),
-);
+)
 export function getRenderableTokenData(
   token,
   contractExchangeRates,
@@ -30,7 +30,7 @@ export function getRenderableTokenData(
   currentCurrency,
   chainId,
 ) {
-  const { symbol, name, address, iconUrl, string, balance, decimals } = token;
+  const { symbol, name, address, iconUrl, string, balance, decimals } = token
   const formattedFiat =
     getTokenFiatAmount(
       isSwapsDefaultTokenSymbol(symbol, chainId)
@@ -41,7 +41,7 @@ export function getRenderableTokenData(
       string,
       symbol,
       true,
-    ) || '';
+    ) || ''
   const rawFiat =
     getTokenFiatAmount(
       isSwapsDefaultTokenSymbol(symbol, chainId)
@@ -52,11 +52,11 @@ export function getRenderableTokenData(
       string,
       symbol,
       false,
-    ) || '';
+    ) || ''
   const usedIconUrl =
     iconUrl ||
     (contractMap[toChecksumHexAddress(address)] &&
-      `images/contract/${contractMap[toChecksumHexAddress(address)].logo}`);
+      `images/contract/${contractMap[toChecksumHexAddress(address)].logo}`)
   return {
     ...token,
     primaryLabel: symbol,
@@ -70,25 +70,25 @@ export function getRenderableTokenData(
     decimals,
     name: name || contractMap[toChecksumHexAddress(address)]?.name,
     rawFiat,
-  };
+  }
 }
 export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
-  const chainId = useSelector(getCurrentChainId);
-  const tokenConversionRates = useSelector(getTokenExchangeRates, isEqual);
-  const conversionRate = useSelector(getConversionRate);
-  const currentCurrency = useSelector(getCurrentCurrency);
-  const defaultSwapsToken = useSelector(getSwapsDefaultToken);
-  const memoizedTopTokens = useEqualityCheck(topTokens);
-  const memoizedUsersToken = useEqualityCheck(usersTokens);
+  const chainId = useSelector(getCurrentChainId)
+  const tokenConversionRates = useSelector(getTokenExchangeRates, isEqual)
+  const conversionRate = useSelector(getConversionRate)
+  const currentCurrency = useSelector(getCurrentCurrency)
+  const defaultSwapsToken = useSelector(getSwapsDefaultToken)
+  const memoizedTopTokens = useEqualityCheck(topTokens)
+  const memoizedUsersToken = useEqualityCheck(usersTokens)
   const defaultToken = getRenderableTokenData(
     defaultSwapsToken,
     tokenConversionRates,
     conversionRate,
     currentCurrency,
     chainId,
-  );
-  const memoizedDefaultToken = useEqualityCheck(defaultToken);
-  const swapsTokens = useSelector(getSwapsTokens) || [];
+  )
+  const memoizedDefaultToken = useEqualityCheck(defaultToken)
+  const swapsTokens = useSelector(getSwapsTokens) || []
   const tokensToSearch = swapsTokens.length
     ? swapsTokens
     : [
@@ -96,22 +96,22 @@ export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
         ...tokenList.filter(
           (token) => token.symbol !== memoizedDefaultToken.symbol,
         ),
-      ];
-  const memoizedTokensToSearch = useEqualityCheck(tokensToSearch);
+      ]
+  const memoizedTokensToSearch = useEqualityCheck(tokensToSearch)
   return useMemo(() => {
     const usersTokensAddressMap = memoizedUsersToken.reduce(
       (acc, token) => ({ ...acc, [token.address]: token }),
       {},
-    );
+    )
     const tokensToSearchBuckets = {
       owned: [],
       top: [],
       others: [],
-    };
+    }
     const memoizedSwapsAndUserTokensWithoutDuplicities = uniqBy(
       [...memoizedTokensToSearch, ...memoizedUsersToken],
       'address',
-    );
+    )
     memoizedSwapsAndUserTokensWithoutDuplicities.forEach((token) => {
       const renderableDataToken = getRenderableTokenData(
         { ...usersTokensAddressMap[token.address], ...token },
@@ -119,32 +119,32 @@ export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
         conversionRate,
         currentCurrency,
         chainId,
-      );
+      )
 
       if (
         isSwapsDefaultTokenSymbol(renderableDataToken.symbol, chainId) ||
         usersTokensAddressMap[token.address]
       ) {
-        tokensToSearchBuckets.owned.push(renderableDataToken);
+        tokensToSearchBuckets.owned.push(renderableDataToken)
       } else if (memoizedTopTokens[token.address]) {
         tokensToSearchBuckets.top[
           memoizedTopTokens[token.address].index
-        ] = renderableDataToken;
+        ] = renderableDataToken
       } else {
-        tokensToSearchBuckets.others.push(renderableDataToken);
+        tokensToSearchBuckets.others.push(renderableDataToken)
       }
-    });
+    })
     tokensToSearchBuckets.owned = tokensToSearchBuckets.owned.sort(
       ({ rawFiat }, { rawFiat: secondRawFiat }) => {
-        return new BigNumber(rawFiat || 0).gt(secondRawFiat || 0) ? -1 : 1;
+        return new BigNumber(rawFiat || 0).gt(secondRawFiat || 0) ? -1 : 1
       },
-    );
-    tokensToSearchBuckets.top = tokensToSearchBuckets.top.filter(Boolean);
+    )
+    tokensToSearchBuckets.top = tokensToSearchBuckets.top.filter(Boolean)
     return [
       ...tokensToSearchBuckets.owned,
       ...tokensToSearchBuckets.top,
       ...tokensToSearchBuckets.others,
-    ];
+    ]
   }, [
     memoizedTokensToSearch,
     memoizedUsersToken,
@@ -153,5 +153,5 @@ export function useTokensToSearch({ usersTokens = [], topTokens = {} }) {
     currentCurrency,
     memoizedTopTokens,
     chainId,
-  ]);
+  ])
 }

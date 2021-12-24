@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import copyToClipboard from 'copy-to-clipboard';
-import PropTypes from 'prop-types';
-import { getEnvironmentType } from '@app/scripts/lib/util';
-import AccountListItem from '@c/app/account-list-item';
-import Button from '@c/ui/button';
-import Copy from '@c/ui/icon/copy-icon.component';
-import Identicon from '@c/ui/identicon';
-import Tooltip from '@c/ui/tooltip';
-import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app';
-import { SECOND } from '@shared/constants/time';
-import { conversionUtil } from '@shared/modules/conversion.utils';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import copyToClipboard from 'copy-to-clipboard'
+import PropTypes from 'prop-types'
+import { getEnvironmentType } from '@app/scripts/lib/util'
+import AccountListItem from '@c/app/account-list-item'
+import Button from '@c/ui/button'
+import Copy from '@c/ui/icon/copy-icon.component'
+import Identicon from '@c/ui/identicon'
+import Tooltip from '@c/ui/tooltip'
+import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app'
+import { SECOND } from '@shared/constants/time'
+import { conversionUtil } from '@shared/modules/conversion.utils'
 export default class ConfirmDecryptMessage extends Component {
   static contextTypes = {
     t: PropTypes.func.isRequired,
-  };
+  }
   static propTypes = {
     fromAccount: PropTypes.shape({
       address: PropTypes.string.isRequired,
@@ -31,128 +31,124 @@ export default class ConfirmDecryptMessage extends Component {
     requesterAddress: PropTypes.string,
     txData: PropTypes.object,
     domainMetadata: PropTypes.object,
-  };
+  }
   state = {
     fromAccount: this.props.fromAccount,
     copyToClipboardPressed: false,
     hasCopied: false,
-  };
+  }
   componentDidMount = () => {
     if (
       getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_NOTIFICATION
     ) {
-      window.addEventListener('beforeunload', this._beforeUnload);
+      window.addEventListener('beforeunload', this._beforeUnload)
     }
-  };
+  }
   componentWillUnmount = () => {
-    this._removeBeforeUnload();
-  };
+    this._removeBeforeUnload()
+  }
   _beforeUnload = async (event) => {
-    const {
-      clearConfirmTransaction,
-      cancelDecryptMessage,
-      txData,
-    } = this.props;
-    await cancelDecryptMessage(txData, event);
-    clearConfirmTransaction();
-  };
+    const { clearConfirmTransaction, cancelDecryptMessage, txData } = this.props
+    await cancelDecryptMessage(txData, event)
+    clearConfirmTransaction()
+  }
   _removeBeforeUnload = () => {
     if (
       getEnvironmentType(window.location.href) === ENVIRONMENT_TYPE_NOTIFICATION
     ) {
-      window.removeEventListener('beforeunload', this._beforeUnload);
+      window.removeEventListener('beforeunload', this._beforeUnload)
     }
-  };
+  }
   copyMessage = () => {
-    copyToClipboard(this.state.rawMessage);
+    copyToClipboard(this.state.rawMessage)
     this.setState({
       hasCopied: true,
-    });
+    })
     setTimeout(
       () =>
         this.setState({
           hasCopied: false,
         }),
       SECOND * 3,
-    );
-  };
+    )
+  }
   renderHeader = () => {
     return (
-      <div className="request-decrypt-message__header">
-        <div className="request-decrypt-message__header-background" />
+      <div className='request-decrypt-message__header'>
+        <div className='request-decrypt-message__header-background' />
 
-        <div className="request-decrypt-message__header__text">
+        <div className='request-decrypt-message__header__text'>
           {this.context.t('decryptRequest')}
         </div>
 
-        <div className="request-decrypt-message__header__tip-container">
-          <div className="request-decrypt-message__header__tip" />
+        <div className='request-decrypt-message__header__tip-container'>
+          <div className='request-decrypt-message__header__tip' />
         </div>
       </div>
-    );
-  };
+    )
+  }
   renderAccount = () => {
-    const { fromAccount } = this.state;
-    const { t } = this.context;
+    const { fromAccount } = this.state
+    const { t } = this.context
     return (
-      <div className="request-decrypt-message__account">
-        <div className="request-decrypt-message__account-text">
+      <div className='request-decrypt-message__account'>
+        <div className='request-decrypt-message__account-text'>
           {`${t('account')}:`}
         </div>
 
-        <div className="request-decrypt-message__account-item">
+        <div className='request-decrypt-message__account-item'>
           <AccountListItem account={fromAccount} />
         </div>
       </div>
-    );
-  };
+    )
+  }
   renderBalance = () => {
-    const { conversionRate } = this.props;
+    const { conversionRate } = this.props
     const {
       fromAccount: { balance },
-    } = this.state;
-    const { t } = this.context;
+    } = this.state
+    const { t } = this.context
     const balanceInEther = conversionUtil(balance, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
       fromDenomination: 'WEI',
       numberOfDecimals: 6,
       conversionRate,
-    });
+    })
     return (
-      <div className="request-decrypt-message__balance">
-        <div className="request-decrypt-message__balance-text">
+      <div className='request-decrypt-message__balance'>
+        <div className='request-decrypt-message__balance-text'>
           {`${t('balance')}:`}
         </div>
-        <div className="request-decrypt-message__balance-value">
+        <div className='request-decrypt-message__balance-value'>
           {`${balanceInEther} ETH`}
         </div>
       </div>
-    );
-  };
+    )
+  }
   renderRequestIcon = () => {
-    const { requesterAddress } = this.props;
+    const { requesterAddress } = this.props
     return (
-      <div className="request-decrypt-message__request-icon">
+      <div className='request-decrypt-message__request-icon'>
         <Identicon diameter={40} address={requesterAddress} />
       </div>
-    );
-  };
+    )
+  }
   renderAccountInfo = () => {
     return (
-      <div className="request-decrypt-message__account-info">
+      <div className='request-decrypt-message__account-info'>
         {this.renderAccount()}
         {this.renderRequestIcon()}
         {this.renderBalance()}
       </div>
-    );
-  };
+    )
+  }
   renderBody = () => {
-    const { decryptMessageInline, domainMetadata, txData } = this.props;
-    const { t } = this.context;
-    const originMetadata = domainMetadata[txData.msgParams.origin];
-    const name = originMetadata?.hostname || txData.msgParams.origin;
-    const notice = t('decryptMessageNotice', [txData.msgParams.origin]);
+    const { decryptMessageInline, domainMetadata, txData } = this.props
+    const { t } = this.context
+    const originMetadata = domainMetadata[txData.msgParams.origin]
+    const name = originMetadata?.hostname || txData.msgParams.origin
+    const notice = t('decryptMessageNotice', [txData.msgParams.origin])
     const {
       hasCopied,
       hasDecrypted,
@@ -160,28 +156,28 @@ export default class ConfirmDecryptMessage extends Component {
       rawMessage,
       errorMessage,
       copyToClipboardPressed,
-    } = this.state;
+    } = this.state
     return (
-      <div className="request-decrypt-message__body">
+      <div className='request-decrypt-message__body'>
         {this.renderAccountInfo()}
-        <div className="request-decrypt-message__visual">
+        <div className='request-decrypt-message__visual'>
           <section>
             {originMetadata?.icon ? (
               <img
-                className="request-decrypt-message__visual-identicon"
+                className='request-decrypt-message__visual-identicon'
                 src={originMetadata.icon}
-                alt=""
+                alt=''
               />
             ) : (
-              <i className="request-decrypt-message__visual-identicon--default">
+              <i className='request-decrypt-message__visual-identicon--default'>
                 {name.charAt(0).toUpperCase()}
               </i>
             )}
-            <div className="request-decrypt-message__notice">{notice}</div>
+            <div className='request-decrypt-message__notice'>{notice}</div>
           </section>
         </div>
-        <div className="request-decrypt-message__message">
-          <div className="request-decrypt-message__message-text">
+        <div className='request-decrypt-message__message'>
+          <div className='request-decrypt-message__message-text'>
             {!hasDecrypted && !hasError ? txData.msgParams.data : rawMessage}
             {hasError ? errorMessage : ''}
           </div>
@@ -206,18 +202,18 @@ export default class ConfirmDecryptMessage extends Component {
                     errorMessage: this.context.t('decryptInlineError', [
                       result.error,
                     ]),
-                  });
+                  })
                 } else {
                   this.setState({
                     hasDecrypted: true,
                     rawMessage: result.rawData,
-                  });
+                  })
                 }
-              });
+              })
             }}
           >
-            <img src="images/lock.svg" alt="" />
-            <div className="request-decrypt-message__message-lock-text">
+            <img src='images/lock.svg' alt='' />
+            <div className='request-decrypt-message__message-lock-text'>
               {t('decryptMetamask')}
             </div>
           </div>
@@ -241,26 +237,26 @@ export default class ConfirmDecryptMessage extends Component {
             }
           >
             <Tooltip
-              position="bottom"
+              position='bottom'
               title={hasCopied ? t('copiedExclamation') : t('copyToClipboard')}
-              wrapperClassName="request-decrypt-message__message-copy-tooltip"
+              wrapperClassName='request-decrypt-message__message-copy-tooltip'
               style={{
                 display: 'flex',
                 alignItems: 'center',
               }}
             >
-              <div className="request-decrypt-message__message-copy-text">
+              <div className='request-decrypt-message__message-copy-text'>
                 {t('decryptCopy')}
               </div>
-              <Copy size={17} color="#3098DC" />
+              <Copy size={17} color='#3098DC' />
             </Tooltip>
           </div>
         ) : (
           <div></div>
         )}
       </div>
-    );
-  };
+    )
+  }
   renderFooter = () => {
     const {
       cancelDecryptMessage,
@@ -269,48 +265,48 @@ export default class ConfirmDecryptMessage extends Component {
       history,
       mostRecentOverviewPage,
       txData,
-    } = this.props;
-    const { t } = this.context;
+    } = this.props
+    const { t } = this.context
     return (
-      <div className="request-decrypt-message__footer">
+      <div className='request-decrypt-message__footer'>
         <Button
-          type="default"
+          type='default'
           large
-          className="request-decrypt-message__footer__cancel-button"
+          className='request-decrypt-message__footer__cancel-button'
           onClick={async (event) => {
-            this._removeBeforeUnload();
+            this._removeBeforeUnload()
 
-            await cancelDecryptMessage(txData, event);
-            clearConfirmTransaction();
-            history.push(mostRecentOverviewPage);
+            await cancelDecryptMessage(txData, event)
+            clearConfirmTransaction()
+            history.push(mostRecentOverviewPage)
           }}
         >
           {t('cancel')}
         </Button>
         <Button
-          type="secondary"
+          type='secondary'
           large
-          className="request-decrypt-message__footer__sign-button"
+          className='request-decrypt-message__footer__sign-button'
           onClick={async (event) => {
-            this._removeBeforeUnload();
+            this._removeBeforeUnload()
 
-            await decryptMessage(txData, event);
-            clearConfirmTransaction();
-            history.push(mostRecentOverviewPage);
+            await decryptMessage(txData, event)
+            clearConfirmTransaction()
+            history.push(mostRecentOverviewPage)
           }}
         >
           {t('decrypt')}
         </Button>
       </div>
-    );
-  };
+    )
+  }
   render = () => {
     return (
-      <div className="request-decrypt-message__container">
+      <div className='request-decrypt-message__container'>
         {this.renderHeader()}
         {this.renderBody()}
         {this.renderFooter()}
       </div>
-    );
-  };
+    )
+  }
 }

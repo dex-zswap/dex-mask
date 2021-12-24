@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import { usePopper } from 'react-popper';
+import React, { useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import { usePopper } from 'react-popper'
 
 const Menu = ({
   anchorElement,
@@ -11,18 +11,18 @@ const Menu = ({
   onHide,
   popperOptions,
 }) => {
-  const [popperElement, setPopperElement] = useState(null);
+  const [popperElement, setPopperElement] = useState(null)
   const popoverContainerElement = useRef(
     document.getElementById('popover-content'),
-  );
+  )
   const { attributes, styles } = usePopper(
     anchorElement,
     popperElement,
     popperOptions,
-  );
+  )
   return createPortal(
     <>
-      <div className="menu__background" onClick={onHide} />
+      <div className='menu__background' onClick={onHide} />
       <div
         className={classnames('menu__container', className)}
         ref={setPopperElement}
@@ -33,8 +33,8 @@ const Menu = ({
       </div>
     </>,
     popoverContainerElement.current,
-  );
-};
+  )
+}
 
 Menu.propTypes = {
   anchorElement: PropTypes.instanceOf(window.Element),
@@ -42,10 +42,10 @@ Menu.propTypes = {
   className: PropTypes.string,
   onHide: PropTypes.func.isRequired,
   popperOptions: PropTypes.object,
-};
+}
 Menu.defaultProps = {
   anchorElement: undefined,
   className: undefined,
   popperOptions: undefined,
-};
-export default Menu;
+}
+export default Menu

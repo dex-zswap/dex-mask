@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
-import BigNumber from 'bignumber.js';
-import classnames from 'classnames';
-import log from 'loglevel';
-import PropTypes from 'prop-types';
-import Modal from '@c/app/modal';
-import TextField from '@c/ui/text-field';
-import { calcTokenAmount } from '@view/helpers/utils/token-util';
-const MAX_UNSIGNED_256_INT = new BigNumber(2).pow(256).minus(1).toString(10);
+import React, { PureComponent } from 'react'
+import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
+import log from 'loglevel'
+import PropTypes from 'prop-types'
+import Modal from '@c/app/modal'
+import TextField from '@c/ui/text-field'
+import { calcTokenAmount } from '@view/helpers/utils/token-util'
+const MAX_UNSIGNED_256_INT = new BigNumber(2).pow(256).minus(1).toString(10)
 export default class EditApprovalPermission extends PureComponent {
   static propTypes = {
     decimals: PropTypes.number,
@@ -19,18 +19,18 @@ export default class EditApprovalPermission extends PureComponent {
     setCustomAmount: PropTypes.func,
     origin: PropTypes.string.isRequired,
     requiredMinimum: PropTypes.instanceOf(BigNumber),
-  };
+  }
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   state = {
     // This is used as a TextField value, which should be a string.
     customSpendLimit: this.props.customTokenAmount || '',
     selectedOptionIsUnlimited: !this.props.customTokenAmount,
-  };
+  }
 
   renderModalContent(error) {
-    const { t } = this.context;
+    const { t } = this.context
     const {
       hideModal,
       selectedIdentity,
@@ -39,48 +39,48 @@ export default class EditApprovalPermission extends PureComponent {
       tokenBalance,
       customTokenAmount,
       origin,
-    } = this.props;
-    const { name, address } = selectedIdentity || {};
-    const { selectedOptionIsUnlimited } = this.state;
+    } = this.props
+    const { name, address } = selectedIdentity || {}
+    const { selectedOptionIsUnlimited } = this.state
     return (
-      <div className="edit-approval-permission">
-        <div className="edit-approval-permission__header">
-          <div className="edit-approval-permission__title">
+      <div className='edit-approval-permission'>
+        <div className='edit-approval-permission__header'>
+          <div className='edit-approval-permission__title'>
             {t('editPermission')}
           </div>
           <div
-            className="edit-approval-permission__header__close"
+            className='edit-approval-permission__header__close'
             onClick={() => hideModal()}
           />
         </div>
-        <div className="edit-approval-permission__account-info">
-          <div className="edit-approval-permission__account-info__account">
+        <div className='edit-approval-permission__account-info'>
+          <div className='edit-approval-permission__account-info__account'>
             <img
-              width="32px"
-              src="images/dex/account-menu/account-avatar.png"
+              width='32px'
+              src='images/dex/account-menu/account-avatar.png'
             />
             {/* <Identicon address={address} diameter={32} /> */}
-            <div className="edit-approval-permission__name-and-balance-container">
-              <div className="edit-approval-permission__account-info__name">
+            <div className='edit-approval-permission__name-and-balance-container'>
+              <div className='edit-approval-permission__account-info__name'>
                 {name}
               </div>
               <div>{t('balance')}</div>
             </div>
           </div>
-          <div className="edit-approval-permission__account-info__balance">
+          <div className='edit-approval-permission__account-info__balance'>
             {`${Number(tokenBalance).toPrecision(9)} ${tokenSymbol}`}
           </div>
         </div>
-        <div className="edit-approval-permission__edit-section">
-          <div className="edit-approval-permission__edit-section__title">
+        <div className='edit-approval-permission__edit-section'>
+          <div className='edit-approval-permission__edit-section__title'>
             {t('spendLimitPermission')}
           </div>
-          <div className="edit-approval-permission__edit-section__description">
+          <div className='edit-approval-permission__edit-section__description'>
             {t('allowWithdrawAndSpend', [origin])}
           </div>
-          <div className="edit-approval-permission__edit-section__option">
+          <div className='edit-approval-permission__edit-section__option'>
             <div
-              className="edit-approval-permission__edit-section__radio-button"
+              className='edit-approval-permission__edit-section__radio-button'
               onClick={() =>
                 this.setState({
                   selectedOptionIsUnlimited: true,
@@ -93,12 +93,12 @@ export default class EditApprovalPermission extends PureComponent {
                   'edit-approval-permission__edit-section__radio-button-outline--selected': selectedOptionIsUnlimited,
                 })}
               />
-              <div className="edit-approval-permission__edit-section__radio-button-fill" />
+              <div className='edit-approval-permission__edit-section__radio-button-fill' />
               {selectedOptionIsUnlimited && (
-                <div className="edit-approval-permission__edit-section__radio-button-dot" />
+                <div className='edit-approval-permission__edit-section__radio-button-dot' />
               )}
             </div>
-            <div className="edit-approval-permission__edit-section__option-text">
+            <div className='edit-approval-permission__edit-section__option-text'>
               <div
                 className={classnames({
                   'edit-approval-permission__edit-section__option-label': !selectedOptionIsUnlimited,
@@ -111,17 +111,17 @@ export default class EditApprovalPermission extends PureComponent {
                   ? t('proposedApprovalLimit')
                   : t('unlimited')}
               </div>
-              <div className="edit-approval-permission__edit-section__option-description">
+              <div className='edit-approval-permission__edit-section__option-description'>
                 {t('spendLimitRequestedBy', [origin])}
               </div>
-              <div className="edit-approval-permission__edit-section__option-value">
+              <div className='edit-approval-permission__edit-section__option-value'>
                 {`${Number(tokenAmount)} ${tokenSymbol}`}
               </div>
             </div>
           </div>
-          <div className="edit-approval-permission__edit-section__option">
+          <div className='edit-approval-permission__edit-section__option'>
             <div
-              className="edit-approval-permission__edit-section__radio-button"
+              className='edit-approval-permission__edit-section__radio-button'
               onClick={() =>
                 this.setState({
                   selectedOptionIsUnlimited: false,
@@ -134,12 +134,12 @@ export default class EditApprovalPermission extends PureComponent {
                   'edit-approval-permission__edit-section__radio-button-outline--selected': !selectedOptionIsUnlimited,
                 })}
               />
-              <div className="edit-approval-permission__edit-section__radio-button-fill" />
+              <div className='edit-approval-permission__edit-section__radio-button-fill' />
               {!selectedOptionIsUnlimited && (
-                <div className="edit-approval-permission__edit-section__radio-button-dot" />
+                <div className='edit-approval-permission__edit-section__radio-button-dot' />
               )}
             </div>
-            <div className="edit-approval-permission__edit-section__option-text">
+            <div className='edit-approval-permission__edit-section__option-text'>
               <div
                 className={classnames({
                   'edit-approval-permission__edit-section__option-label': selectedOptionIsUnlimited,
@@ -148,28 +148,28 @@ export default class EditApprovalPermission extends PureComponent {
               >
                 {t('customSpendLimit')}
               </div>
-              <div className="edit-approval-permission__edit-section__option-description">
+              <div className='edit-approval-permission__edit-section__option-description'>
                 {t('enterMaxSpendLimit')}
               </div>
-              <div className="edit-approval-permission__edit-section__option-input">
+              <div className='edit-approval-permission__edit-section__option-input'>
                 <TextField
-                  type="number"
+                  type='number'
                   placeholder={`${Number(
                     customTokenAmount || tokenAmount,
                   )} ${tokenSymbol}`}
                   onChange={(event) => {
                     this.setState({
                       customSpendLimit: event.target.value,
-                    });
+                    })
 
                     if (selectedOptionIsUnlimited) {
                       this.setState({
                         selectedOptionIsUnlimited: false,
-                      });
+                      })
                     }
                   }}
                   fullWidth
-                  margin="dense"
+                  margin='dense'
                   value={this.state.customSpendLimit}
                   error={error}
                 />
@@ -178,70 +178,70 @@ export default class EditApprovalPermission extends PureComponent {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   validateSpendLimit() {
-    const { t } = this.context;
-    const { decimals, requiredMinimum } = this.props;
-    const { selectedOptionIsUnlimited, customSpendLimit } = this.state;
+    const { t } = this.context
+    const { decimals, requiredMinimum } = this.props
+    const { selectedOptionIsUnlimited, customSpendLimit } = this.state
 
     if (selectedOptionIsUnlimited || !customSpendLimit) {
-      return undefined;
+      return undefined
     }
 
-    let customSpendLimitNumber;
+    let customSpendLimitNumber
 
     try {
-      customSpendLimitNumber = new BigNumber(customSpendLimit);
+      customSpendLimitNumber = new BigNumber(customSpendLimit)
     } catch (error) {
-      log.debug(`Error converting '${customSpendLimit}' to BigNumber:`, error);
-      return t('spendLimitInvalid');
+      log.debug(`Error converting '${customSpendLimit}' to BigNumber:`, error)
+      return t('spendLimitInvalid')
     }
 
     if (customSpendLimitNumber.isNegative()) {
-      return t('spendLimitInvalid');
+      return t('spendLimitInvalid')
     }
 
-    const maxTokenAmount = calcTokenAmount(MAX_UNSIGNED_256_INT, decimals);
+    const maxTokenAmount = calcTokenAmount(MAX_UNSIGNED_256_INT, decimals)
 
     if (customSpendLimitNumber.greaterThan(maxTokenAmount)) {
-      return t('spendLimitTooLarge');
+      return t('spendLimitTooLarge')
     }
 
     if (
       requiredMinimum !== undefined &&
       customSpendLimitNumber.lessThan(requiredMinimum)
     ) {
-      return t('spendLimitInsufficient');
+      return t('spendLimitInsufficient')
     }
 
-    return undefined;
+    return undefined
   }
 
   render() {
-    const { t } = this.context;
-    const { setCustomAmount, hideModal, customTokenAmount } = this.props;
-    const { selectedOptionIsUnlimited, customSpendLimit } = this.state;
-    const error = this.validateSpendLimit();
+    const { t } = this.context
+    const { setCustomAmount, hideModal, customTokenAmount } = this.props
+    const { selectedOptionIsUnlimited, customSpendLimit } = this.state
+    const error = this.validateSpendLimit()
     const disabled = Boolean(
       (customSpendLimit === customTokenAmount && !selectedOptionIsUnlimited) ||
         error,
-    );
+    )
     return (
       <Modal
         onSubmit={() => {
-          setCustomAmount(selectedOptionIsUnlimited ? '' : customSpendLimit);
-          hideModal();
+          setCustomAmount(selectedOptionIsUnlimited ? '' : customSpendLimit)
+          hideModal()
         }}
         submitText={t('save')}
-        submitType="primary"
-        contentClass="edit-approval-permission-modal-content"
-        containerClass="edit-approval-permission-modal-container"
+        submitType='primary'
+        contentClass='edit-approval-permission-modal-content'
+        containerClass='edit-approval-permission-modal-container'
         submitDisabled={disabled}
       >
         {this.renderModalContent(error)}
       </Modal>
-    );
+    )
   }
 }

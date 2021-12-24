@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import MenuDroppo from '@c/app/menu-droppo';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import MenuDroppo from '@c/app/menu-droppo'
 export class Dropdown extends Component {
   render() {
     const {
@@ -11,14 +11,14 @@ export class Dropdown extends Component {
       innerStyle,
       children,
       useCssTransition,
-    } = this.props;
+    } = this.props
     const innerStyleDefaults = {
       borderRadius: '4px',
       padding: '8px 16px',
       background: 'rgba(0, 0, 0, 0.8)',
       boxShadow: 'rgba(0, 0, 0, 0.15) 0px 2px 2px 2px',
       ...innerStyle,
-    };
+    }
     return (
       <MenuDroppo
         containerClassName={containerClassName}
@@ -41,12 +41,12 @@ export class Dropdown extends Component {
         </style>
         {children}
       </MenuDroppo>
-    );
+    )
   }
 }
 Dropdown.defaultProps = {
   useCssTransition: false,
-};
+}
 Dropdown.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   children: PropTypes.node,
@@ -55,21 +55,21 @@ Dropdown.propTypes = {
   innerStyle: PropTypes.object,
   useCssTransition: PropTypes.bool,
   containerClassName: PropTypes.string,
-};
+}
 export class DropdownMenuItem extends Component {
   render() {
-    const { onClick, closeMenu, children, style } = this.props;
+    const { onClick, closeMenu, children, style } = this.props
     return (
       <li
-        className="dropdown-menu-item"
+        className='dropdown-menu-item'
         onClick={() => {
-          onClick();
-          closeMenu();
+          onClick()
+          closeMenu()
         }}
         onKeyPress={(event) => {
           if (event.key === 'Enter') {
-            onClick();
-            closeMenu();
+            onClick()
+            closeMenu()
           }
         }}
         style={{
@@ -84,11 +84,11 @@ export class DropdownMenuItem extends Component {
           color: 'white',
           ...style,
         }}
-        tabIndex="0"
+        tabIndex='0'
       >
         {children}
       </li>
-    );
+    )
   }
 }
 DropdownMenuItem.propTypes = {
@@ -96,4 +96,4 @@ DropdownMenuItem.propTypes = {
   onClick: PropTypes.func.isRequired,
   children: PropTypes.node,
   style: PropTypes.object,
-};
+}

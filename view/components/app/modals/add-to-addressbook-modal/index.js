@@ -1,9 +1,9 @@
-import { connect } from 'react-redux';
-import * as actions from '@view/store/actions';
-import AddToAddressBookModal from './component';
+import { connect } from 'react-redux'
+import * as actions from '@view/store/actions'
+import AddToAddressBookModal from './component'
 
 function mapStateToProps(state) {
-  return { ...(state.appState.modal.modalState.props || {}) };
+  return { ...(state.appState.modal.modalState.props || {}) }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -11,10 +11,10 @@ function mapDispatchToProps(dispatch) {
     hideModal: () => dispatch(actions.hideModal()),
     addToAddressBook: (recipient, nickname) =>
       dispatch(actions.addToAddressBook(recipient, nickname)),
-  };
+  }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(AddToAddressBookModal);
+)(AddToAddressBookModal)

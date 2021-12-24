@@ -1,11 +1,11 @@
-import MetaMaskInpageProvider from './MetaMaskInpageProvider';
-import createExternalExtensionProvider from './extension-provider/createExternalExtensionProvider';
-import BaseProvider from './BaseProvider';
+import MetaMaskInpageProvider from './MetaMaskInpageProvider'
+import createExternalExtensionProvider from './extension-provider/createExternalExtensionProvider'
+import BaseProvider from './BaseProvider'
 import {
   initializeProvider,
   setGlobalProvider,
-} from './initializeInpageProvider';
-import shimWeb3 from './shimWeb3';
+} from './initializeInpageProvider'
+import shimWeb3 from './shimWeb3'
 
 export {
   initializeProvider,
@@ -14,4 +14,4 @@ export {
   setGlobalProvider,
   shimWeb3,
   createExternalExtensionProvider,
-};
+}

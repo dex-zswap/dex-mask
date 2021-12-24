@@ -1,8 +1,8 @@
-import React, { PureComponent } from 'react';
-import ReactDOM from 'react-dom';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+import React, { PureComponent } from 'react'
+import ReactDOM from 'react-dom'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 
 const Popover = ({
   title,
@@ -19,20 +19,20 @@ const Popover = ({
   popoverRef,
   centerTitle,
 }) => {
-  const t = useI18nContext();
+  const t = useI18nContext()
   return (
-    <div className="dex-popover-container">
+    <div className='dex-popover-container'>
       {CustomBackground ? (
         <CustomBackground onClose={onClose} />
       ) : (
-        <div className="dex-popover-bg" onClick={onClose} />
+        <div className='dex-popover-bg' onClick={onClose} />
       )}
       <section
         className={classnames('dex-popover-wrap', className)}
         ref={popoverRef}
       >
-        {showArrow ? <div className="dex-popover-arrow" /> : null}
-        <header className="dex-popover-header">
+        {showArrow ? <div className='dex-popover-arrow' /> : null}
+        <header className='dex-popover-header'>
           <div
             className={classnames(
               'dex-popover-header__title',
@@ -42,7 +42,7 @@ const Popover = ({
             <h2 title={title}>
               {onBack ? (
                 <button
-                  className="fas fa-chevron-left dex-popover-header__button"
+                  className='fas fa-chevron-left dex-popover-header__button'
                   title={t('back')}
                   onClick={onBack}
                 />
@@ -51,15 +51,15 @@ const Popover = ({
             </h2>
             {onClose ? (
               <button
-                className="fas fa-times dex-popover-header__button"
+                className='fas fa-times dex-popover-header__button'
                 title={t('close')}
-                data-testid="dex-popover-close"
+                data-testid='dex-popover-close'
                 onClick={onClose}
               />
             ) : null}
           </div>
           {subtitle ? (
-            <p className="dex-popover-header__subtitle">{subtitle}</p>
+            <p className='dex-popover-header__subtitle'>{subtitle}</p>
           ) : null}
         </header>
         {children ? (
@@ -74,34 +74,34 @@ const Popover = ({
         ) : null}
       </section>
     </div>
-  );
-};
+  )
+}
 
 export default class Item extends PureComponent {
-  static propTypes = Popover.propTypes;
-  rootNode = document.getElementById('dex-popover-content');
-  instanceNode = document.createElement('div');
+  static propTypes = Popover.propTypes
+  rootNode = document.getElementById('dex-popover-content')
+  instanceNode = document.createElement('div')
 
   componentDidMount() {
     if (!this.rootNode) {
-      return;
+      return
     }
 
-    this.rootNode.appendChild(this.instanceNode);
+    this.rootNode.appendChild(this.instanceNode)
   }
 
   componentWillUnmount() {
     if (!this.rootNode) {
-      return;
+      return
     }
 
-    this.rootNode.removeChild(this.instanceNode);
+    this.rootNode.removeChild(this.instanceNode)
   }
 
   render() {
-    const children = <Popover {...this.props} />;
+    const children = <Popover {...this.props} />
     return this.rootNode
       ? ReactDOM.createPortal(children, this.instanceNode)
-      : children;
+      : children
   }
 }

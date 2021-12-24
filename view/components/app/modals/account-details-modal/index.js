@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import {
   getCurrentChainId,
   getRpcPrefsForCurrentProvider,
   getSelectedIdentity,
-} from '@view/selectors';
-import { setAccountLabel, showModal } from '@view/store/actions';
-import AccountDetailsModal from './component';
+} from '@view/selectors'
+import { setAccountLabel, showModal } from '@view/store/actions'
+import AccountDetailsModal from './component'
 
 const mapStateToProps = (state) => {
   return {
@@ -14,8 +14,8 @@ const mapStateToProps = (state) => {
     keyrings: state.metamask.keyrings,
     provider: state.metamask.provider,
     rpcPrefs: getRpcPrefsForCurrentProvider(state),
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -27,10 +27,7 @@ const mapDispatchToProps = (dispatch) => {
       ),
     setAccountLabel: (address, label) =>
       dispatch(setAccountLabel(address, label)),
-  };
-};
+  }
+}
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AccountDetailsModal);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountDetailsModal)

@@ -1,11 +1,11 @@
-import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Identicon from '@c/ui/identicon';
-import { ellipsify } from '@pages/send/utils';
+import React from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Identicon from '@c/ui/identicon'
+import { ellipsify } from '@pages/send/utils'
 
 function addressesEqual(address1, address2) {
-  return String(address1).toLowerCase() === String(address2).toLowerCase();
+  return String(address1).toLowerCase() === String(address2).toLowerCase()
 }
 
 export default function RecipientGroup({
@@ -16,13 +16,13 @@ export default function RecipientGroup({
   diameter,
 }) {
   if (!items || !items.length) {
-    return null;
+    return null
   }
 
   return (
-    <div className="send__select-recipient-wrapper__group">
+    <div className='send__select-recipient-wrapper__group'>
       {label && (
-        <div className="send__select-recipient-wrapper__group-label">
+        <div className='send__select-recipient-wrapper__group-label'>
           {label}
         </div>
       )}
@@ -42,12 +42,12 @@ export default function RecipientGroup({
           })}
         >
           <Identicon address={address} diameter={diameter || 28} />
-          <div className="send__select-recipient-wrapper__group-item__content">
-            <div className="send__select-recipient-wrapper__group-item__title">
+          <div className='send__select-recipient-wrapper__group-item__content'>
+            <div className='send__select-recipient-wrapper__group-item__title'>
               {name || ellipsify(address)}
             </div>
             {name && (
-              <div className="send__select-recipient-wrapper__group-item__subtitle">
+              <div className='send__select-recipient-wrapper__group-item__subtitle'>
                 {ellipsify(address)}
               </div>
             )}
@@ -55,7 +55,7 @@ export default function RecipientGroup({
         </div>
       ))}
     </div>
-  );
+  )
 }
 RecipientGroup.propTypes = {
   label: PropTypes.string,
@@ -68,4 +68,4 @@ RecipientGroup.propTypes = {
   onSelect: PropTypes.func.isRequired,
   selectedAddress: PropTypes.string,
   diameter: PropTypes.number,
-};
+}

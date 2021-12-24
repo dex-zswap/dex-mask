@@ -1,10 +1,10 @@
-import EventEmitter from 'events';
-import { ObservableStore } from '@metamask/obs-store';
-import { ethErrors } from 'eth-rpc-errors';
-import log from 'loglevel';
-import { MESSAGE_TYPE } from '@shared/constants/app';
-import { DEXMASK_CONTROLLER_EVENTS } from '@app/scripts/dexmask-controller';
-import createId from '@shared/modules/random-id';
+import EventEmitter from 'events'
+import { ObservableStore } from '@metamask/obs-store'
+import { ethErrors } from 'eth-rpc-errors'
+import log from 'loglevel'
+import { MESSAGE_TYPE } from '@shared/constants/app'
+import { DEXMASK_CONTROLLER_EVENTS } from '@app/scripts/dexmask-controller'
+import createId from '@shared/modules/random-id'
 
 /**
  * Represents, and contains data about, an 'eth_getEncryptionPublicKey' type request. These are created when
@@ -35,12 +35,12 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   constructor() {
-    super();
+    super()
     this.memStore = new ObservableStore({
       unapprovedEncryptionPublicKeyMsgs: {},
       unapprovedEncryptionPublicKeyMsgCount: 0,
-    });
-    this.messages = [];
+    })
+    this.messages = []
   }
 
   /**
@@ -50,7 +50,7 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   get unapprovedEncryptionPublicKeyMsgCount() {
-    return Object.keys(this.getUnapprovedMsgs()).length;
+    return Object.keys(this.getUnapprovedMsgs()).length
   }
 
   /**
@@ -64,9 +64,9 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
     return this.messages
       .filter((msg) => msg.status === 'unapproved')
       .reduce((result, msg) => {
-        result[msg.id] = msg;
-        return result;
-      }, {});
+        result[msg.id] = msg
+        return result
+      }, {})
   }
 
   /**
@@ -82,22 +82,22 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
   addUnapprovedMessageAsync(address, req) {
     return new Promise((resolve, reject) => {
       if (!address) {
-        reject(new Error('DexMask Message: address field is required.'));
-        return;
+        reject(new Error('DexMask Message: address field is required.'))
+        return
       }
-      const msgId = this.addUnapprovedMessage(address, req);
+      const msgId = this.addUnapprovedMessage(address, req)
       this.once(`${msgId}:finished`, (data) => {
         switch (data.status) {
           case 'received':
-            resolve(data.rawData);
-            return;
+            resolve(data.rawData)
+            return
           case 'rejected':
             reject(
               ethErrors.provider.userRejectedRequest(
                 'DexMask EncryptionPublicKey: User denied message EncryptionPublicKey.',
               ),
-            );
-            return;
+            )
+            return
           default:
             reject(
               new Error(
@@ -105,10 +105,10 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
                   address,
                 )}`,
               ),
-            );
+            )
         }
-      });
-    });
+      })
+    })
   }
 
   /**
@@ -122,27 +122,27 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   addUnapprovedMessage(address, req) {
-    log.debug(`EncryptionPublicKeyManager addUnapprovedMessage: address`);
+    log.debug(`EncryptionPublicKeyManager addUnapprovedMessage: address`)
     // create txData obj with parameters and meta data
-    const time = new Date().getTime();
-    const msgId = createId();
+    const time = new Date().getTime()
+    const msgId = createId()
     const msgData = {
       id: msgId,
       msgParams: address,
       time,
       status: 'unapproved',
       type: MESSAGE_TYPE.ETH_GET_ENCRYPTION_PUBLIC_KEY,
-    };
-
-    if (req) {
-      msgData.origin = req.origin;
     }
 
-    this.addMsg(msgData);
+    if (req) {
+      msgData.origin = req.origin
+    }
+
+    this.addMsg(msgData)
 
     // signal update
-    this.emit('update');
-    return msgId;
+    this.emit('update')
+    return msgId
   }
 
   /**
@@ -153,8 +153,8 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   addMsg(msg) {
-    this.messages.push(msg);
-    this._saveMsgList();
+    this.messages.push(msg)
+    this._saveMsgList()
   }
 
   /**
@@ -166,7 +166,7 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   getMsg(msgId) {
-    return this.messages.find((msg) => msg.id === msgId);
+    return this.messages.find((msg) => msg.id === msgId)
   }
 
   /**
@@ -179,8 +179,8 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   approveMessage(msgParams) {
-    this.setMsgStatusApproved(msgParams.metamaskId);
-    return this.prepMsgForEncryptionPublicKey(msgParams);
+    this.setMsgStatusApproved(msgParams.metamaskId)
+    return this.prepMsgForEncryptionPublicKey(msgParams)
   }
 
   /**
@@ -190,7 +190,7 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   setMsgStatusApproved(msgId) {
-    this._setMsgStatus(msgId, 'approved');
+    this._setMsgStatus(msgId, 'approved')
   }
 
   /**
@@ -202,10 +202,10 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   setMsgStatusReceived(msgId, rawData) {
-    const msg = this.getMsg(msgId);
-    msg.rawData = rawData;
-    this._updateMsg(msg);
-    this._setMsgStatus(msgId, 'received');
+    const msg = this.getMsg(msgId)
+    msg.rawData = rawData
+    this._updateMsg(msg)
+    this._setMsgStatus(msgId, 'received')
   }
 
   /**
@@ -216,8 +216,8 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   prepMsgForEncryptionPublicKey(msgParams) {
-    delete msgParams.metamaskId;
-    return Promise.resolve(msgParams);
+    delete msgParams.metamaskId
+    return Promise.resolve(msgParams)
   }
 
   /**
@@ -227,7 +227,7 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   rejectMsg(msgId) {
-    this._setMsgStatus(msgId, 'rejected');
+    this._setMsgStatus(msgId, 'rejected')
   }
 
   /**
@@ -237,18 +237,18 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   errorMessage(msgId, error) {
-    const msg = this.getMsg(msgId);
-    msg.error = error;
-    this._updateMsg(msg);
-    this._setMsgStatus(msgId, 'errored');
+    const msg = this.getMsg(msgId)
+    msg.error = error
+    this._updateMsg(msg)
+    this._setMsgStatus(msgId, 'errored')
   }
 
   /**
    * Clears all unapproved messages from memory.
    */
   clearUnapproved() {
-    this.messages = this.messages.filter((msg) => msg.status !== 'unapproved');
-    this._saveMsgList();
+    this.messages = this.messages.filter((msg) => msg.status !== 'unapproved')
+    this._saveMsgList()
   }
 
   /**
@@ -265,17 +265,17 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   _setMsgStatus(msgId, status) {
-    const msg = this.getMsg(msgId);
+    const msg = this.getMsg(msgId)
     if (!msg) {
       throw new Error(
         `EncryptionPublicKeyManager - Message not found for id: "${msgId}".`,
-      );
+      )
     }
-    msg.status = status;
-    this._updateMsg(msg);
-    this.emit(`${msgId}:${status}`, msg);
+    msg.status = status
+    this._updateMsg(msg)
+    this.emit(`${msgId}:${status}`, msg)
     if (status === 'rejected' || status === 'received') {
-      this.emit(`${msgId}:finished`, msg);
+      this.emit(`${msgId}:finished`, msg)
     }
   }
 
@@ -289,11 +289,11 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   _updateMsg(msg) {
-    const index = this.messages.findIndex((message) => message.id === msg.id);
+    const index = this.messages.findIndex((message) => message.id === msg.id)
     if (index !== -1) {
-      this.messages[index] = msg;
+      this.messages[index] = msg
     }
-    this._saveMsgList();
+    this._saveMsgList()
   }
 
   /**
@@ -304,14 +304,14 @@ export default class EncryptionPublicKeyManager extends EventEmitter {
    *
    */
   _saveMsgList() {
-    const unapprovedEncryptionPublicKeyMsgs = this.getUnapprovedMsgs();
+    const unapprovedEncryptionPublicKeyMsgs = this.getUnapprovedMsgs()
     const unapprovedEncryptionPublicKeyMsgCount = Object.keys(
       unapprovedEncryptionPublicKeyMsgs,
-    ).length;
+    ).length
     this.memStore.updateState({
       unapprovedEncryptionPublicKeyMsgs,
       unapprovedEncryptionPublicKeyMsgCount,
-    });
-    this.emit(DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE);
+    })
+    this.emit(DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE)
   }
 }

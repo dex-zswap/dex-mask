@@ -1,16 +1,16 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import ConnectedAccountsList from '@c/app/connected/accounts-list';
-import ConnectedAccountsPermissions from '@c/app/connected/accounts-permissions';
-import Popover from '@c/ui/popover';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import ConnectedAccountsList from '@c/app/connected/accounts-list'
+import ConnectedAccountsPermissions from '@c/app/connected/accounts-permissions'
+import Popover from '@c/ui/popover'
 export default class ConnectedAccounts extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
-  };
+  }
   static defaultProps = {
     accountToConnect: null,
     permissions: undefined,
-  };
+  }
 
   render() {
     const {
@@ -26,12 +26,12 @@ export default class ConnectedAccounts extends PureComponent {
       removePermittedAccount,
       setSelectedAddress,
       onClose,
-    } = this.props;
-    const { t } = this.context;
+    } = this.props
+    const { t } = this.context
     const connectedAccountsDescription =
       connectedAccounts.length > 1
         ? t('connectedAccountsDescriptionPlural', [connectedAccounts.length])
-        : t('connectedAccountsDescriptionSingular');
+        : t('connectedAccountsDescriptionSingular')
     return (
       <Popover
         title={
@@ -45,7 +45,7 @@ export default class ConnectedAccounts extends PureComponent {
             : t('connectedAccountsEmptyDescription')
         }
         onClose={onClose}
-        footerClassName="connected-accounts__footer"
+        footerClassName='connected-accounts__footer'
         footer={<ConnectedAccountsPermissions permissions={permissions} />}
       >
         <ConnectedAccountsList
@@ -58,6 +58,6 @@ export default class ConnectedAccounts extends PureComponent {
           shouldRenderListOptions
         />
       </Popover>
-    );
+    )
   }
 }

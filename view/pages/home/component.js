@@ -1,17 +1,17 @@
-import React, { PureComponent } from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import AssetList from '@c/app/asset-list';
-import ChainSwitcher from '@c/app/chain-switcher';
-import HomeNotification from '@c/app/home-notification';
-import MultipleNotifications from '@c/app/multiple-notifications';
-import SelectedAccount from '@c/app/selected-account';
-import { EthOverview } from '@c/app/wallet-overview';
-import Button from '@c/ui/button';
-import Popover from '@c/ui/popover';
-import Tabs from '@c/ui/tabs';
-import TransactionList from '@c/app/transaction/list';
-import TopHeader from '@c/ui/top-header';
+import React, { PureComponent } from 'react'
+import { Redirect, Route } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import AssetList from '@c/app/asset-list'
+import ChainSwitcher from '@c/app/chain-switcher'
+import HomeNotification from '@c/app/home-notification'
+import MultipleNotifications from '@c/app/multiple-notifications'
+import SelectedAccount from '@c/app/selected-account'
+import { EthOverview } from '@c/app/wallet-overview'
+import Button from '@c/ui/button'
+import Popover from '@c/ui/popover'
+import Tabs from '@c/ui/tabs'
+import TransactionList from '@c/app/transaction/list'
+import TopHeader from '@c/ui/top-header'
 import {
   ASSET_ROUTE,
   AWAITING_SWAP_ROUTE,
@@ -25,22 +25,22 @@ import {
   INITIALIZE_BACKUP_SEED_PHRASE_ROUTE,
   RESTORE_VAULT_ROUTE,
   VIEW_QUOTE_ROUTE,
-} from '@view/helpers/constants/routes';
-import { formatDate } from '@view/helpers/utils';
+} from '@view/helpers/constants/routes'
+import { formatDate } from '@view/helpers/utils'
 const LEARN_MORE_URL =
-  'https://metamask.zendesk.com/hc/en-us/articles/360045129011-Intro-to-MetaMask-v8-extension';
+  'https://metamask.zendesk.com/hc/en-us/articles/360045129011-Intro-to-MetaMask-v8-extension'
 const LEGACY_WEB3_URL =
-  'https://metamask.zendesk.com/hc/en-us/articles/360053147012';
+  'https://metamask.zendesk.com/hc/en-us/articles/360053147012'
 const INFURA_BLOCKAGE_URL =
-  'https://metamask.zendesk.com/hc/en-us/articles/360059386712';
+  'https://metamask.zendesk.com/hc/en-us/articles/360059386712'
 export default class Home extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   state = {
     mounted: false,
     canShowBlockageNotification: true,
-  };
+  }
 
   componentDidMount() {
     const {
@@ -54,28 +54,28 @@ export default class Home extends PureComponent {
       showAwaitingSwapScreen,
       swapsFetchParams,
       pendingConfirmations,
-    } = this.props;
+    } = this.props
     this.setState({
       mounted: true,
-    });
+    })
 
     if (isNotification && totalUnapprovedCount === 0) {
-      global.platform.closeCurrentWindow();
+      global.platform.closeCurrentWindow()
     } else if (!isNotification && showAwaitingSwapScreen) {
-      history.push(AWAITING_SWAP_ROUTE);
+      history.push(AWAITING_SWAP_ROUTE)
     } else if (!isNotification && haveSwapsQuotes) {
-      history.push(VIEW_QUOTE_ROUTE);
+      history.push(VIEW_QUOTE_ROUTE)
     } else if (!isNotification && swapsFetchParams) {
-      history.push(BUILD_QUOTE_ROUTE);
+      history.push(BUILD_QUOTE_ROUTE)
     } else if (firstPermissionsRequestId) {
-      console.log('connect');
-      history.push(`${CONNECT_ROUTE}/${firstPermissionsRequestId}`);
+      console.log('connect')
+      history.push(`${CONNECT_ROUTE}/${firstPermissionsRequestId}`)
     } else if (unconfirmedTransactionsCount > 0) {
-      history.push(CONFIRM_TRANSACTION_ROUTE);
+      history.push(CONFIRM_TRANSACTION_ROUTE)
     } else if (Object.keys(suggestedTokens).length > 0) {
-      history.push(CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE);
+      history.push(CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE)
     } else if (pendingConfirmations.length > 0) {
-      history.push(CONFIRMATION_V_NEXT_ROUTE);
+      history.push(CONFIRMATION_V_NEXT_ROUTE)
     }
   }
 
@@ -96,7 +96,7 @@ export default class Home extends PureComponent {
       if (isNotification && totalUnapprovedCount === 0) {
         return {
           closing: true,
-        };
+        }
       } else if (
         firstPermissionsRequestId ||
         unconfirmedTransactionsCount > 0 ||
@@ -106,11 +106,11 @@ export default class Home extends PureComponent {
       ) {
         return {
           redirecting: true,
-        };
+        }
       }
     }
 
-    return null;
+    return null
   }
 
   componentDidUpdate(_, prevState) {
@@ -119,19 +119,19 @@ export default class Home extends PureComponent {
       showRestorePrompt,
       threeBoxLastUpdated,
       threeBoxSynced,
-    } = this.props;
+    } = this.props
 
     if (!prevState.closing && this.state.closing) {
-      global.platform.closeCurrentWindow();
+      global.platform.closeCurrentWindow()
     }
 
     if (threeBoxSynced && showRestorePrompt && threeBoxLastUpdated === null) {
-      setupThreeBox();
+      setupThreeBox()
     }
   }
 
   renderNotifications() {
-    const { t } = this.context;
+    const { t } = this.context
     const {
       history,
       shouldShowSeedPhraseReminder,
@@ -147,15 +147,15 @@ export default class Home extends PureComponent {
       originOfCurrentTab,
       disableWeb3ShimUsageAlert,
       infuraBlocked,
-    } = this.props;
+    } = this.props
     return (
       <MultipleNotifications>
         {shouldShowWeb3ShimUsageNotification ? (
           <HomeNotification
             descriptionText={t('web3ShimUsageNotification', [
               <span
-                key="web3ShimUsageNotificationLink"
-                className="home-notification__text-link"
+                key='web3ShimUsageNotificationLink'
+                className='home-notification__text-link'
                 onClick={() =>
                   global.platform.openTab({
                     url: LEGACY_WEB3_URL,
@@ -167,15 +167,15 @@ export default class Home extends PureComponent {
             ])}
             ignoreText={t('dismiss')}
             onIgnore={(disable) => {
-              setWeb3ShimUsageAlertDismissed(originOfCurrentTab);
+              setWeb3ShimUsageAlertDismissed(originOfCurrentTab)
 
               if (disable) {
-                disableWeb3ShimUsageAlert();
+                disableWeb3ShimUsageAlert()
               }
             }}
             checkboxText={t('dontShowThisAgain')}
             checkboxTooltipText={t('canToggleInSettings')}
-            key="home-web3ShimUsageNotification"
+            key='home-web3ShimUsageNotification'
           />
         ) : null}
         {shouldShowSeedPhraseReminder ? (
@@ -186,13 +186,13 @@ export default class Home extends PureComponent {
               if (isPopup) {
                 global.platform.openExtensionInBrowser(
                   INITIALIZE_BACKUP_SEED_PHRASE_ROUTE,
-                );
+                )
               } else {
-                history.push(INITIALIZE_BACKUP_SEED_PHRASE_ROUTE);
+                history.push(INITIALIZE_BACKUP_SEED_PHRASE_ROUTE)
               }
             }}
             infoText={t('backupApprovalInfo')}
-            key="home-backupApprovalNotice"
+            key='home-backupApprovalNotice'
           />
         ) : null}
         {threeBoxLastUpdated && showRestorePrompt ? (
@@ -205,21 +205,21 @@ export default class Home extends PureComponent {
             infoText={t('dataBackupFoundInfo')}
             onAccept={() => {
               restoreFromThreeBox(selectedAddress).then(() => {
-                turnThreeBoxSyncingOn();
-              });
+                turnThreeBoxSyncingOn()
+              })
             }}
             onIgnore={() => {
-              setShowRestorePromptToFalse();
+              setShowRestorePromptToFalse()
             }}
-            key="home-privacyModeDefault"
+            key='home-privacyModeDefault'
           />
         ) : null}
         {infuraBlocked && this.state.canShowBlockageNotification ? (
           <HomeNotification
             descriptionText={t('infuraBlockedNotification', [
               <span
-                key="infuraBlockedNotificationLink"
-                className="home-notification__text-link"
+                key='infuraBlockedNotificationLink'
+                className='home-notification__text-link'
                 onClick={() =>
                   global.platform.openTab({
                     url: INFURA_BLOCKAGE_URL,
@@ -233,41 +233,41 @@ export default class Home extends PureComponent {
             onIgnore={() => {
               this.setState({
                 canShowBlockageNotification: false,
-              });
+              })
             }}
-            key="home-infuraBlockedNotification"
+            key='home-infuraBlockedNotification'
           />
         ) : null}
       </MultipleNotifications>
-    );
+    )
   }
 
   renderPopover = () => {
-    const { setConnectedStatusPopoverHasBeenShown } = this.props;
-    const { t } = this.context;
+    const { setConnectedStatusPopoverHasBeenShown } = this.props
+    const { t } = this.context
     return (
       <Popover
         title={t('whatsThis')}
         onClose={setConnectedStatusPopoverHasBeenShown}
-        className="home__connected-status-popover"
+        className='home__connected-status-popover'
         showArrow
         CustomBackground={({ onClose }) => {
           return (
             <div
-              className="home__connected-status-popover-bg-container"
+              className='home__connected-status-popover-bg-container'
               onClick={onClose}
             >
-              <div className="home__connected-status-popover-bg" />
+              <div className='home__connected-status-popover-bg' />
             </div>
-          );
+          )
         }}
         footer={
           <>
-            <a href={LEARN_MORE_URL} target="_blank" rel="noopener noreferrer">
+            <a href={LEARN_MORE_URL} target='_blank' rel='noopener noreferrer'>
               {t('learnMore')}
             </a>
             <Button
-              type="primary"
+              type='primary'
               onClick={setConnectedStatusPopoverHasBeenShown}
             >
               {t('dismiss')}
@@ -275,17 +275,17 @@ export default class Home extends PureComponent {
           </>
         }
       >
-        <main className="home__connect-status-text">
+        <main className='home__connect-status-text'>
           <div>{t('metaMaskConnectStatusParagraphOne')}</div>
           <div>{t('metaMaskConnectStatusParagraphTwo')}</div>
           <div>{t('metaMaskConnectStatusParagraphThree')}</div>
         </main>
       </Popover>
-    );
-  };
+    )
+  }
 
   render() {
-    const { t } = this.context;
+    const { t } = this.context
     const {
       defaultHomeActiveTabName,
       onTabClick,
@@ -297,7 +297,7 @@ export default class Home extends PureComponent {
       showWhatsNewPopup,
       hideWhatsNewPopup,
       showRecoveryPhraseReminder,
-    } = this.props;
+    } = this.props
 
     if (forgottenPassword) {
       return (
@@ -306,25 +306,25 @@ export default class Home extends PureComponent {
             pathname: RESTORE_VAULT_ROUTE,
           }}
         />
-      );
+      )
     } else if (this.state.closing || this.state.redirecting) {
-      return null;
+      return null
     }
 
-    const showWhatsNew = notificationsToShow && showWhatsNewPopup;
+    const showWhatsNew = notificationsToShow && showWhatsNewPopup
     return (
-      <div className="main-container dex-page-container">
-        <div className="home__container base-width">
+      <div className='main-container dex-page-container'>
+        <div className='home__container base-width'>
           {isPopup && !connectedStatusPopoverHasBeenShown
             ? this.renderPopover()
             : null}
-          <div className="home__main-view">
+          <div className='home__main-view'>
             <TopHeader />
             <ChainSwitcher addRpc />
             <SelectedAccount />
             <EthOverview />
             <Tabs
-              actived="assets"
+              actived='assets'
               tabs={[
                 {
                   label: t('assets'),
@@ -347,6 +347,6 @@ export default class Home extends PureComponent {
           {this.renderNotifications()}
         </div>
       </div>
-    );
+    )
   }
 }

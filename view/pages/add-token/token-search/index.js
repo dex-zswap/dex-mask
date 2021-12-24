@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import contractMap from '@metamask/contract-metadata';
-import Fuse from 'fuse.js';
-import PropTypes from 'prop-types';
-import TextField from '@c/ui/text-field';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import React, { Component } from 'react'
+import contractMap from '@metamask/contract-metadata'
+import Fuse from 'fuse.js'
+import PropTypes from 'prop-types'
+import TextField from '@c/ui/text-field'
+import InputAdornment from '@material-ui/core/InputAdornment'
 const contractList = Object.entries(contractMap)
   .map(([address, tokenData]) => ({ ...tokenData, address }))
-  .filter((tokenData) => Boolean(tokenData.erc20));
+  .filter((tokenData) => Boolean(tokenData.erc20))
 const fuse = new Fuse(contractList, {
   shouldSort: true,
   threshold: 0.45,
@@ -24,60 +24,60 @@ const fuse = new Fuse(contractList, {
       weight: 0.5,
     },
   ],
-});
+})
 export default class TokenSearch extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   state = {
     searchQuery: '',
-  };
+  }
 
   handleSearch(searchQuery) {
     this.setState({
       searchQuery,
-    });
-    const fuseSearchResult = fuse.search(searchQuery);
+    })
+    const fuseSearchResult = fuse.search(searchQuery)
     const addressSearchResult = contractList.filter((token) => {
-      return token.address.toLowerCase() === searchQuery.toLowerCase();
-    });
-    const results = [...addressSearchResult, ...fuseSearchResult];
+      return token.address.toLowerCase() === searchQuery.toLowerCase()
+    })
+    const results = [...addressSearchResult, ...fuseSearchResult]
     this.props.onSearch({
       searchQuery,
       results,
-    });
+    })
   }
 
   renderAdornment() {
     return (
       <InputAdornment
-        position="start"
+        position='start'
         style={{
           marginRight: '12px',
         }}
       >
-        <img src="images/search.svg" width="17" height="17" alt="" />
+        <img src='images/search.svg' width='17' height='17' alt='' />
       </InputAdornment>
-    );
+    )
   }
 
   render() {
-    const { error } = this.props;
-    const { searchQuery } = this.state;
+    const { error } = this.props
+    const { searchQuery } = this.state
     return (
       <TextField
-        id="search-tokens"
-        className="search-token"
+        id='search-tokens'
+        className='search-token'
         placeholder={this.context.t('searchTokens')}
-        type="text"
+        type='text'
         value={searchQuery}
         onChange={(e) => this.handleSearch(e.target.value)}
         error={error}
         fullWidth
         autoFocus
-        autoComplete="off"
+        autoComplete='off'
         startAdornment={this.renderAdornment()}
       />
-    );
+    )
   }
 }

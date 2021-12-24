@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import FormField from '@c/ui/form-field';
-import { getIsGasEstimatesLoading } from '@reducer/dexmask/dexmask';
-import { GAS_ESTIMATE_TYPES } from '@shared/constants/gas';
-import { I18nContext } from '@view/contexts/i18n';
-import { getGasFormErrorText } from '@view/helpers/constants/gas';
-import { checkNetworkAndAccountSupports1559 } from '@view/selectors';
+import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
+import FormField from '@c/ui/form-field'
+import { getIsGasEstimatesLoading } from '@reducer/dexmask/dexmask'
+import { GAS_ESTIMATE_TYPES } from '@shared/constants/gas'
+import { I18nContext } from '@view/contexts/i18n'
+import { getGasFormErrorText } from '@view/helpers/constants/gas'
+import { checkNetworkAndAccountSupports1559 } from '@view/selectors'
 export default function AdvancedGasControls({
   gasEstimateType,
   maxPriorityFee,
@@ -23,18 +23,18 @@ export default function AdvancedGasControls({
   gasErrors,
   minimumGasLimit,
 }) {
-  const t = useContext(I18nContext);
+  const t = useContext(I18nContext)
   const networkAndAccountSupport1559 = useSelector(
     checkNetworkAndAccountSupports1559,
-  );
-  const isGasEstimatesLoading = useSelector(getIsGasEstimatesLoading);
+  )
+  const isGasEstimatesLoading = useSelector(getIsGasEstimatesLoading)
   const showFeeMarketFields =
     networkAndAccountSupport1559 &&
     (gasEstimateType === GAS_ESTIMATE_TYPES.FEE_MARKET ||
       gasEstimateType === GAS_ESTIMATE_TYPES.ETH_GASPRICE ||
-      isGasEstimatesLoading);
+      isGasEstimatesLoading)
   return (
-    <div className="advanced-gas-controls">
+    <div className='advanced-gas-controls'>
       <FormField
         titleText={t('gasLimit')}
         error={
@@ -45,8 +45,8 @@ export default function AdvancedGasControls({
             : null
         }
         onChange={(value) => {
-          onManualChange?.();
-          setGasLimit(value);
+          onManualChange?.()
+          setGasLimit(value)
         }}
         tooltipText={t('editGasLimitTooltip')}
         value={gasLimit}
@@ -58,11 +58,11 @@ export default function AdvancedGasControls({
         <>
           <FormField
             titleText={t('maxPriorityFee')}
-            titleUnit="(GWEI)"
+            titleUnit='(GWEI)'
             tooltipText={t('editGasMaxPriorityFeeTooltip')}
             onChange={(value) => {
-              onManualChange?.();
-              setMaxPriorityFee(value);
+              onManualChange?.()
+              setMaxPriorityFee(value)
             }}
             value={maxPriorityFee}
             detailText={maxPriorityFeeFiat}
@@ -75,11 +75,11 @@ export default function AdvancedGasControls({
           />
           <FormField
             titleText={t('maxFee')}
-            titleUnit="(GWEI)"
+            titleUnit='(GWEI)'
             tooltipText={t('editGasMaxFeeTooltip')}
             onChange={(value) => {
-              onManualChange?.();
-              setMaxFee(value);
+              onManualChange?.()
+              setMaxFee(value)
             }}
             value={maxFee}
             numeric
@@ -95,10 +95,10 @@ export default function AdvancedGasControls({
         <>
           <FormField
             titleText={t('advancedGasPriceTitle')}
-            titleUnit="(GWEI)"
+            titleUnit='(GWEI)'
             onChange={(value) => {
-              onManualChange?.();
-              setGasPrice(value);
+              onManualChange?.()
+              setGasPrice(value)
             }}
             tooltipText={t('editGasPriceTooltip')}
             value={gasPrice}
@@ -112,7 +112,7 @@ export default function AdvancedGasControls({
         </>
       )}
     </div>
-  );
+  )
 }
 AdvancedGasControls.propTypes = {
   gasEstimateType: PropTypes.oneOf(Object.values(GAS_ESTIMATE_TYPES)),
@@ -129,4 +129,4 @@ AdvancedGasControls.propTypes = {
   maxFeeFiat: PropTypes.string,
   gasErrors: PropTypes.object,
   minimumGasLimit: PropTypes.number,
-};
+}

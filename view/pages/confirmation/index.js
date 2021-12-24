@@ -4,25 +4,25 @@ import React, {
   useMemo,
   useReducer,
   useState,
-} from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { produce } from 'immer';
-import { isEqual } from 'lodash';
-import DexMaskTemplateRenderer from '@c/app/dexmask-template-renderer';
-import NetworkDisplay from '@c/app/network-display/network-display';
-import Box from '@c/ui/box';
-import Callout from '@c/ui/callout';
-import Chip from '@c/ui/chip';
-import SiteIcon from '@c/ui/site-icon';
-import { COLORS, SIZES } from '@view/helpers/constants/design-system';
-import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
-import { stripHttpsScheme } from '@view/helpers/utils';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { useOriginMetadata } from '@view/hooks/useOriginMetadata';
-import { getUnapprovedTemplatedConfirmations } from '@view/selectors';
-import ConfirmationFooter from './components/confirmation-footer';
-import { getTemplateAlerts, getTemplateValues } from './templates';
+} from 'react'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { produce } from 'immer'
+import { isEqual } from 'lodash'
+import DexMaskTemplateRenderer from '@c/app/dexmask-template-renderer'
+import NetworkDisplay from '@c/app/network-display/network-display'
+import Box from '@c/ui/box'
+import Callout from '@c/ui/callout'
+import Chip from '@c/ui/chip'
+import SiteIcon from '@c/ui/site-icon'
+import { COLORS, SIZES } from '@view/helpers/constants/design-system'
+import { DEFAULT_ROUTE } from '@view/helpers/constants/routes'
+import { stripHttpsScheme } from '@view/helpers/utils'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import { useOriginMetadata } from '@view/hooks/useOriginMetadata'
+import { getUnapprovedTemplatedConfirmations } from '@view/selectors'
+import ConfirmationFooter from './components/confirmation-footer'
+import { getTemplateAlerts, getTemplateValues } from './templates'
 /**
  * a very simple reducer using produce from Immer to keep state manipulation
  * immutable and painless. This state is not stored in redux state because it
@@ -37,27 +37,27 @@ const alertStateReducer = produce((state, action) => {
   switch (action.type) {
     case 'dismiss':
       if (state?.[action.confirmationId]?.[action.alertId]) {
-        state[action.confirmationId][action.alertId].dismissed = true;
+        state[action.confirmationId][action.alertId].dismissed = true
       }
 
-      break;
+      break
 
     case 'set':
       if (!state[action.confirmationId]) {
-        state[action.confirmationId] = {};
+        state[action.confirmationId] = {}
       }
 
       action.alerts.forEach((alert) => {
-        state[action.confirmationId][alert.id] = { ...alert, dismissed: false };
-      });
-      break;
+        state[action.confirmationId][alert.id] = { ...alert, dismissed: false }
+      })
+      break
 
     default:
       throw new Error(
         'You must provide a type when dispatching an action for alertState',
-      );
+      )
   }
-});
+})
 /**
  * Encapsulates the state and effects needed to manage alert state for the
  * confirmation page in a custom hook. This hook is not likely to be used
@@ -70,7 +70,7 @@ const alertStateReducer = produce((state, action) => {
  */
 
 function useAlertState(pendingConfirmation) {
-  const [alertState, dispatch] = useReducer(alertStateReducer, {});
+  const [alertState, dispatch] = useReducer(alertStateReducer, {})
   /**
    * Computation of the current alert state happens every time the current
    * pendingConfirmation changes. The async function getTemplateAlerts is
@@ -81,7 +81,7 @@ function useAlertState(pendingConfirmation) {
    */
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
 
     if (pendingConfirmation) {
       getTemplateAlerts(pendingConfirmation).then((alerts) => {
@@ -90,70 +90,70 @@ function useAlertState(pendingConfirmation) {
             type: 'set',
             confirmationId: pendingConfirmation.id,
             alerts,
-          });
+          })
         }
-      });
+      })
     }
 
     return () => {
-      isMounted = false;
-    };
-  }, [pendingConfirmation]);
+      isMounted = false
+    }
+  }, [pendingConfirmation])
   const dismissAlert = useCallback(
     (alertId) => {
       dispatch({
         type: 'dismiss',
         confirmationId: pendingConfirmation.id,
         alertId,
-      });
+      })
     },
     [pendingConfirmation],
-  );
-  return [alertState, dismissAlert];
+  )
+  return [alertState, dismissAlert]
 }
 
 export default function ConfirmationPage() {
-  const t = useI18nContext();
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const t = useI18nContext()
+  const dispatch = useDispatch()
+  const history = useHistory()
   const pendingConfirmations = useSelector(
     getUnapprovedTemplatedConfirmations,
     isEqual,
-  );
+  )
   const [currentPendingConfirmation, setCurrentPendingConfirmation] = useState(
     0,
-  );
-  const pendingConfirmation = pendingConfirmations[currentPendingConfirmation];
-  const originMetadata = useOriginMetadata(pendingConfirmation?.origin);
-  const [alertState, dismissAlert] = useAlertState(pendingConfirmation); // Generating templatedValues is potentially expensive, and if done on every render
+  )
+  const pendingConfirmation = pendingConfirmations[currentPendingConfirmation]
+  const originMetadata = useOriginMetadata(pendingConfirmation?.origin)
+  const [alertState, dismissAlert] = useAlertState(pendingConfirmation) // Generating templatedValues is potentially expensive, and if done on every render
   // will result in a new object. Avoiding calling this generation unnecessarily will
   // improve performance and prevent unnecessary draws.
 
   const templatedValues = useMemo(() => {
     return pendingConfirmation
       ? getTemplateValues(pendingConfirmation, t, dispatch)
-      : {};
-  }, [pendingConfirmation, t, dispatch]);
+      : {}
+  }, [pendingConfirmation, t, dispatch])
   useEffect(() => {
     // If the number of pending confirmations reduces to zero when the user
     // return them to the default route. Otherwise, if the number of pending
     // confirmations reduces to a number that is less than the currently
     // viewed index, reset the index.
     if (pendingConfirmations.length === 0) {
-      history.push(DEFAULT_ROUTE);
+      history.push(DEFAULT_ROUTE)
     } else if (pendingConfirmations.length <= currentPendingConfirmation) {
-      setCurrentPendingConfirmation(pendingConfirmations.length - 1);
+      setCurrentPendingConfirmation(pendingConfirmations.length - 1)
     }
-  }, [pendingConfirmations, history, currentPendingConfirmation]);
+  }, [pendingConfirmations, history, currentPendingConfirmation])
 
   if (!pendingConfirmation) {
-    return null;
+    return null
   }
 
   return (
-    <div className="confirmation-page">
+    <div className='confirmation-page'>
       {pendingConfirmations.length > 1 && (
-        <div className="confirmation-page__navigation">
+        <div className='confirmation-page__navigation'>
           <p>
             {t('xOfYPending', [
               currentPendingConfirmation + 1,
@@ -162,16 +162,16 @@ export default function ConfirmationPage() {
           </p>
           {currentPendingConfirmation > 0 && (
             <button
-              className="confirmation-page__navigation-button"
+              className='confirmation-page__navigation-button'
               onClick={() =>
                 setCurrentPendingConfirmation(currentPendingConfirmation - 1)
               }
             >
-              <i className="fas fa-chevron-left"></i>
+              <i className='fas fa-chevron-left'></i>
             </button>
           )}
           <button
-            className="confirmation-page__navigation-button"
+            className='confirmation-page__navigation-button'
             disabled={
               currentPendingConfirmation + 1 === pendingConfirmations.length
             }
@@ -179,12 +179,12 @@ export default function ConfirmationPage() {
               setCurrentPendingConfirmation(currentPendingConfirmation + 1)
             }
           >
-            <i className="fas fa-chevron-right"></i>
+            <i className='fas fa-chevron-right'></i>
           </button>
         </div>
       )}
-      <div className="confirmation-page__content">
-        <Box justifyContent="center">
+      <div className='confirmation-page__content'>
+        <Box justifyContent='center'>
           <NetworkDisplay
             colored={false}
             indicatorSize={SIZES.XS}
@@ -193,9 +193,9 @@ export default function ConfirmationPage() {
             }}
           />
         </Box>
-        <Box justifyContent="center" padding={[1, 4, 4]}>
+        <Box justifyContent='center' padding={[1, 4, 4]}>
           <Chip
-            className="connect-origin-site"
+            className='connect-origin-site'
             label={stripHttpsScheme(originMetadata.origin)}
             leftIcon={
               <SiteIcon
@@ -214,7 +214,7 @@ export default function ConfirmationPage() {
           Object.values(alertState[pendingConfirmation.id])
             .filter((alert) => alert.dismissed === false)
             .map((alert, idx, filtered) => (
-              <div className="warning">
+              <div className='warning'>
                 <DexMaskTemplateRenderer sections={alert.content} />
               </div>
             ))
@@ -225,5 +225,5 @@ export default function ConfirmationPage() {
         cancelText={templatedValues.cancelText}
       />
     </div>
-  );
+  )
 }

@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Identicon from '@c/ui/identicon';
-import { ellipsify } from '@pages/send/utils';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Identicon from '@c/ui/identicon'
+import { ellipsify } from '@pages/send/utils'
 import {
   isBurnAddress,
   isValidHexAddress,
-} from '@shared/modules/hexstring-utils';
-import { isValidDomainName } from '@view/helpers/utils';
-import { toBnString } from '@view/helpers/utils/conversions.util';
+} from '@shared/modules/hexstring-utils'
+import { isValidDomainName } from '@view/helpers/utils'
+import { toBnString } from '@view/helpers/utils/conversions.util'
 export default class EnsInput extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   static propTypes = {
     chainId: PropTypes.string,
     className: PropTypes.string,
@@ -28,15 +28,15 @@ export default class EnsInput extends Component {
     lookupEnsName: PropTypes.func.isRequired,
     initializeEnsSlice: PropTypes.func.isRequired,
     resetEnsResolution: PropTypes.func.isRequired,
-  };
+  }
 
   componentDidMount() {
-    this.props.initializeEnsSlice();
+    this.props.initializeEnsSlice()
   }
 
   onPaste = (event) => {
     event.clipboardData.items[0].getAsString((text) => {
-      const input = text.trim();
+      const input = text.trim()
 
       if (
         !isBurnAddress(input) &&
@@ -44,10 +44,10 @@ export default class EnsInput extends Component {
           mixedCaseUseChecksum: true,
         })
       ) {
-        this.props.onPaste(input);
+        this.props.onPaste(input)
       }
-    });
-  };
+    })
+  }
   onChange = ({ target: { value } }) => {
     const {
       onValidAddressTyped,
@@ -55,19 +55,19 @@ export default class EnsInput extends Component {
       onChange,
       lookupEnsName,
       resetEnsResolution,
-    } = this.props;
-    const input = value.trim();
-    onChange(input);
+    } = this.props
+    const input = value.trim()
+    onChange(input)
 
     if (internalSearch) {
-      return null;
+      return null
     } // Empty ENS state if input is empty
     // maybe scan ENS
 
     if (isValidDomainName(input)) {
-      lookupEnsName(input);
+      lookupEnsName(input)
     } else {
-      resetEnsResolution();
+      resetEnsResolution()
 
       if (
         onValidAddressTyped &&
@@ -76,24 +76,24 @@ export default class EnsInput extends Component {
           mixedCaseUseChecksum: true,
         })
       ) {
-        onValidAddressTyped(input);
+        onValidAddressTyped(input)
       }
     }
 
-    return null;
-  };
+    return null
+  }
 
   render() {
-    const { t } = this.context;
+    const { t } = this.context
     const {
       chainId,
       className,
       selectedAddress,
       selectedName,
       userInput,
-    } = this.props;
-    const bnStrChainId = toBnString(chainId);
-    const hasSelectedAddress = Boolean(selectedAddress);
+    } = this.props
+    const bnStrChainId = toBnString(chainId)
+    const hasSelectedAddress = Boolean(selectedAddress)
     return (
       <div className={classnames('ens-input', className)}>
         <div
@@ -110,35 +110,35 @@ export default class EnsInput extends Component {
           />
           {hasSelectedAddress ? (
             <>
-              <div className="ens-input__wrapper__input ens-input__wrapper__input--selected">
+              <div className='ens-input__wrapper__input ens-input__wrapper__input--selected'>
                 <Identicon address={selectedAddress} diameter={28} />
                 <div>
-                  <div className="ens-input__selected-input__title">
+                  <div className='ens-input__selected-input__title'>
                     {selectedName || ellipsify(selectedAddress, 14, 6)}
                   </div>
                   {selectedName && (
-                    <div className="ens-input__selected-input__subtitle">
+                    <div className='ens-input__selected-input__subtitle'>
                       {ellipsify(selectedAddress, 14, 6)}
                     </div>
                   )}
                 </div>
               </div>
               <div
-                className="ens-input__wrapper__action-icon ens-input__wrapper__action-icon--erase"
+                className='ens-input__wrapper__action-icon ens-input__wrapper__action-icon--erase'
                 onClick={this.props.onReset}
               />
             </>
           ) : (
             <>
               <input
-                className="ens-input__wrapper__input"
-                type="text"
-                dir="auto"
+                className='ens-input__wrapper__input'
+                type='text'
+                dir='auto'
                 placeholder={t('recipientAddressPlaceholder2')}
                 onChange={this.onChange}
                 onPaste={this.onPaste}
                 value={selectedAddress || userInput}
-                data-testid="ens-input"
+                data-testid='ens-input'
               />
               <button
                 className={classnames('ens-input__wrapper__action-icon', {
@@ -147,9 +147,9 @@ export default class EnsInput extends Component {
                 })}
                 onClick={() => {
                   if (userInput) {
-                    this.props.onReset();
+                    this.props.onReset()
                   } else {
-                    this.props.scanQrCode();
+                    this.props.scanQrCode()
                   }
                 }}
               />
@@ -157,6 +157,6 @@ export default class EnsInput extends Component {
           )}
         </div>
       </div>
-    );
+    )
   }
 }

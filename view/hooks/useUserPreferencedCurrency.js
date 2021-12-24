@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
 /**
  * Defines the shape of the options parameter for useUserPreferencedCurrency
  * @typedef {Object} UseUserPreferencedCurrencyOptions
@@ -27,19 +27,19 @@ import { useSelector } from 'react-redux';
  * @return {UserPreferredCurrency}
  */
 
-import { getNativeCurrency } from '@reducer/dexmask/dexmask';
-import { ETH, PRIMARY, SECONDARY } from '@view/helpers/constants/common';
+import { getNativeCurrency } from '@reducer/dexmask/dexmask'
+import { ETH, PRIMARY, SECONDARY } from '@view/helpers/constants/common'
 import {
   getCurrentCurrency,
   getPreferences,
   getShouldShowFiat,
-} from '@view/selectors';
+} from '@view/selectors'
 export function useUserPreferencedCurrency(type, opts = {}) {
-  const nativeCurrency = useSelector(getNativeCurrency);
-  const { useNativeCurrencyAsPrimaryCurrency } = useSelector(getPreferences);
-  const showFiat = useSelector(getShouldShowFiat);
-  const currentCurrency = useSelector(getCurrentCurrency);
-  let currency, numberOfDecimals;
+  const nativeCurrency = useSelector(getNativeCurrency)
+  const { useNativeCurrencyAsPrimaryCurrency } = useSelector(getPreferences)
+  const showFiat = useSelector(getShouldShowFiat)
+  const currentCurrency = useSelector(getCurrentCurrency)
+  let currency, numberOfDecimals
 
   if (
     !showFiat ||
@@ -47,24 +47,24 @@ export function useUserPreferencedCurrency(type, opts = {}) {
     (type === SECONDARY && !useNativeCurrencyAsPrimaryCurrency)
   ) {
     // Display ETH
-    currency = nativeCurrency || ETH;
-    numberOfDecimals = opts.numberOfDecimals || opts.ethNumberOfDecimals || 6;
+    currency = nativeCurrency || ETH
+    numberOfDecimals = opts.numberOfDecimals || opts.ethNumberOfDecimals || 6
   } else if (
     (type === SECONDARY && useNativeCurrencyAsPrimaryCurrency) ||
     (type === PRIMARY && !useNativeCurrencyAsPrimaryCurrency)
   ) {
     // Display Fiat
-    currency = currentCurrency;
-    numberOfDecimals = opts.numberOfDecimals || opts.fiatNumberOfDecimals || 2;
+    currency = currentCurrency
+    numberOfDecimals = opts.numberOfDecimals || opts.fiatNumberOfDecimals || 2
   }
 
   if (!currency) {
-    currency = nativeCurrency;
-    numberOfDecimals = opts.numberOfDecimals || opts.fiatNumberOfDecimals || 4;
+    currency = nativeCurrency
+    numberOfDecimals = opts.numberOfDecimals || opts.fiatNumberOfDecimals || 4
   }
 
   return {
     currency,
     numberOfDecimals,
-  };
+  }
 }

@@ -7,7 +7,7 @@ try {
     mathTaming: 'unsafe',
     dateTaming: 'unsafe',
     overrideTaming: 'severe',
-  });
+  })
 } catch (error) {
-  console.error('Lockdown failed:', error);
+  console.error('Lockdown failed:', error)
 }

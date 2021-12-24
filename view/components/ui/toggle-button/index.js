@@ -1,7 +1,7 @@
-import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import ReactToggleButton from 'react-toggle-button';
+import React from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import ReactToggleButton from 'react-toggle-button'
 const trackStyle = {
   width: '40px',
   height: '24px',
@@ -11,8 +11,8 @@ const trackStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-};
-const offTrackStyle = { ...trackStyle, border: '2px solid #8E8E8E' };
+}
+const offTrackStyle = { ...trackStyle, border: '2px solid #8E8E8E' }
 const thumbStyle = {
   width: '18px',
   height: '18px',
@@ -21,7 +21,7 @@ const thumbStyle = {
   alignSelf: 'center',
   borderRadius: '50%',
   position: 'relative',
-};
+}
 const colors = {
   activeThumb: {
     base: '#651AB5',
@@ -38,11 +38,11 @@ const colors = {
     base: '#101422',
     hover: '#101422',
   },
-};
+}
 
 const ToggleButton = (props) => {
-  const { value, onToggle, offLabel, onLabel, disabled, className } = props;
-  const modifier = value ? 'on' : 'off';
+  const { value, onToggle, offLabel, onLabel, disabled, className } = props
+  const modifier = value ? 'on' : 'off'
   return (
     <div
       className={classnames(
@@ -57,20 +57,20 @@ const ToggleButton = (props) => {
       <ReactToggleButton
         value={value}
         onToggle={disabled ? undefined : onToggle}
-        activeLabel=""
-        inactiveLabel=""
+        activeLabel=''
+        inactiveLabel=''
         trackStyle={value ? trackStyle : offTrackStyle}
         thumbStyle={thumbStyle}
         thumbAnimateRange={[3, 18]}
         colors={colors}
       />
-      <div className="toggle-button__status">
-        <span className="toggle-button__label-off">{offLabel}</span>
-        <span className="toggle-button__label-on">{onLabel}</span>
+      <div className='toggle-button__status'>
+        <span className='toggle-button__label-off'>{offLabel}</span>
+        <span className='toggle-button__label-on'>{onLabel}</span>
       </div>
     </div>
-  );
-};
+  )
+}
 
 ToggleButton.propTypes = {
   value: PropTypes.bool,
@@ -78,5 +78,5 @@ ToggleButton.propTypes = {
   offLabel: PropTypes.string,
   onLabel: PropTypes.string,
   disabled: PropTypes.bool,
-};
-export default ToggleButton;
+}
+export default ToggleButton

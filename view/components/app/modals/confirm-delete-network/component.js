@@ -1,38 +1,38 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import Modal, { ModalContent } from '@c/app/modal';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import Modal, { ModalContent } from '@c/app/modal'
 export default class ConfirmDeleteNetwork extends PureComponent {
   static propTypes = {
     hideModal: PropTypes.func.isRequired,
     delRpcTarget: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     target: PropTypes.string.isRequired,
-  };
+  }
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   handleDelete = () => {
     this.props.delRpcTarget(this.props.target).then(() => {
-      this.props.onConfirm();
-      this.props.hideModal();
-    });
-  };
+      this.props.onConfirm()
+      this.props.hideModal()
+    })
+  }
 
   render() {
-    const { t } = this.context;
+    const { t } = this.context
     return (
       <>
         <div
-          className="confirm-delete-network__mask"
+          className='confirm-delete-network__mask'
           onClick={this.props.onConfirm}
         ></div>
         <Modal
-          containerClass="confirm-delete-network__modal"
+          containerClass='confirm-delete-network__modal'
           onSubmit={this.handleDelete}
           onCancel={() => this.props.hideModal()}
           submitText={t('delete')}
           cancelText={t('cancel')}
-          submitType="primary"
+          submitType='primary'
         >
           <ModalContent
             title={t('deleteNetwork')}
@@ -40,6 +40,6 @@ export default class ConfirmDeleteNetwork extends PureComponent {
           />
         </Modal>
       </>
-    );
+    )
   }
 }

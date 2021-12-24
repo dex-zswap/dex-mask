@@ -1,64 +1,64 @@
-const DEFAULT_ROUTE = '/';
-const UNLOCK_ROUTE = '/unlock';
-const LOCK_ROUTE = '/lock';
-const ASSET_ROUTE = '/asset';
-const SETTINGS_ROUTE = '/settings';
-const GENERAL_ROUTE = '/settings/general';
-const ADVANCED_ROUTE = '/settings/advanced';
-const SECURITY_ROUTE = '/settings/security';
-const REVEAL_SEED_ROUTE = '/settings/security/seed';
-const RESTORE_VAULT_ROUTE = '/restore-vault';
-const ABOUT_US_ROUTE = '/settings/about-us';
-const ALERTS_ROUTE = '/settings/alerts';
-const NETWORKS_ROUTE = '/settings/networks';
-const NETWORKS_FORM_ROUTE = '/settings/networks/form';
-const ADD_TOKEN_ROUTE = '/add-token';
-const CONFIRM_ADD_TOKEN_ROUTE = '/confirm-add-token';
-const CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE = '/confirm-add-suggested-token';
-const NEW_ACCOUNT_ROUTE = '/new-account';
-const IMPORT_ACCOUNT_ROUTE = '/new-account/import';
-const CONNECT_HARDWARE_ROUTE = '/new-account/connect';
-const SEND_ROUTE = '/send';
-const CONNECT_ROUTE = '/connect';
-const CONNECT_CONFIRM_PERMISSIONS_ROUTE = '/confirm-permissions';
-const CONNECTED_ROUTE = '/connected';
-const CONNECTED_ACCOUNTS_ROUTE = '/connected/accounts';
-const SWAPS_ROUTE = '/swaps';
-const BUILD_QUOTE_ROUTE = '/swaps/build-quote';
-const VIEW_QUOTE_ROUTE = '/swaps/view-quote';
-const LOADING_QUOTES_ROUTE = '/swaps/loading-quotes';
-const AWAITING_SIGNATURES_ROUTE = '/swaps/awaiting-signatures';
-const AWAITING_SWAP_ROUTE = '/swaps/awaiting-swap';
-const SWAPS_ERROR_ROUTE = '/swaps/swaps-error';
-const SWAPS_MAINTENANCE_ROUTE = '/swaps/maintenance';
-const INITIALIZE_ROUTE = '/initialize';
-const INITIALIZE_WELCOME_ROUTE = '/initialize/welcome';
-const INITIALIZE_UNLOCK_ROUTE = '/initialize/unlock';
-const INITIALIZE_CREATE_PASSWORD_ROUTE = '/initialize/create-password';
+const DEFAULT_ROUTE = '/'
+const UNLOCK_ROUTE = '/unlock'
+const LOCK_ROUTE = '/lock'
+const ASSET_ROUTE = '/asset'
+const SETTINGS_ROUTE = '/settings'
+const GENERAL_ROUTE = '/settings/general'
+const ADVANCED_ROUTE = '/settings/advanced'
+const SECURITY_ROUTE = '/settings/security'
+const REVEAL_SEED_ROUTE = '/settings/security/seed'
+const RESTORE_VAULT_ROUTE = '/restore-vault'
+const ABOUT_US_ROUTE = '/settings/about-us'
+const ALERTS_ROUTE = '/settings/alerts'
+const NETWORKS_ROUTE = '/settings/networks'
+const NETWORKS_FORM_ROUTE = '/settings/networks/form'
+const ADD_TOKEN_ROUTE = '/add-token'
+const CONFIRM_ADD_TOKEN_ROUTE = '/confirm-add-token'
+const CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE = '/confirm-add-suggested-token'
+const NEW_ACCOUNT_ROUTE = '/new-account'
+const IMPORT_ACCOUNT_ROUTE = '/new-account/import'
+const CONNECT_HARDWARE_ROUTE = '/new-account/connect'
+const SEND_ROUTE = '/send'
+const CONNECT_ROUTE = '/connect'
+const CONNECT_CONFIRM_PERMISSIONS_ROUTE = '/confirm-permissions'
+const CONNECTED_ROUTE = '/connected'
+const CONNECTED_ACCOUNTS_ROUTE = '/connected/accounts'
+const SWAPS_ROUTE = '/swaps'
+const BUILD_QUOTE_ROUTE = '/swaps/build-quote'
+const VIEW_QUOTE_ROUTE = '/swaps/view-quote'
+const LOADING_QUOTES_ROUTE = '/swaps/loading-quotes'
+const AWAITING_SIGNATURES_ROUTE = '/swaps/awaiting-signatures'
+const AWAITING_SWAP_ROUTE = '/swaps/awaiting-swap'
+const SWAPS_ERROR_ROUTE = '/swaps/swaps-error'
+const SWAPS_MAINTENANCE_ROUTE = '/swaps/maintenance'
+const INITIALIZE_ROUTE = '/initialize'
+const INITIALIZE_WELCOME_ROUTE = '/initialize/welcome'
+const INITIALIZE_UNLOCK_ROUTE = '/initialize/unlock'
+const INITIALIZE_CREATE_PASSWORD_ROUTE = '/initialize/create-password'
 const INITIALIZE_IMPORT_WITH_SEED_PHRASE_ROUTE =
-  '/initialize/create-password/import-with-seed-phrase';
-const INITIALIZE_SELECT_ACTION_ROUTE = '/initialize/select-action';
-const INITIALIZE_SEED_PHRASE_ROUTE = '/initialize/seed-phrase';
-const INITIALIZE_BACKUP_SEED_PHRASE_ROUTE = '/initialize/backup-seed-phrase';
-const INITIALIZE_SEED_PHRASE_INTRO_ROUTE = '/initialize/seed-phrase-intro';
-const INITIALIZE_END_OF_FLOW_ROUTE = '/initialize/end-of-flow';
-const INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE = '/initialize/seed-phrase/confirm';
-const CONFIRM_TRANSACTION_ROUTE = '/confirm-transaction';
-const CONFIRM_SEND_ETHER_PATH = '/send-ether';
-const CONFIRM_SEND_TOKEN_PATH = '/send-token';
-const CONFIRM_DEPLOY_CONTRACT_PATH = '/deploy-contract';
-const CONFIRM_APPROVE_PATH = '/approve';
-const CONFIRM_TRANSFER_FROM_PATH = '/transfer-from';
-const CONFIRM_TOKEN_METHOD_PATH = '/token-method';
-const SIGNATURE_REQUEST_PATH = '/signature-request';
-const DECRYPT_MESSAGE_REQUEST_PATH = '/decrypt-message-request';
-const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH = '/encryption-public-key-request';
-const CONFIRMATION_V_NEXT_ROUTE = '/confirmation';
-const RECIVE_TOKEN_ROUTE = '/recive-token/:address';
-const TRADE_ROUTE = '/trade';
-const ZSWAP_ROUTE = '/trade/zswap';
-const LIQUIDITY_ROUTE = '/trade/liquidity';
-const CROSSCHAIN_ROUTE = '/cross-chain'; // Used to pull a convenient name for analytics tracking events. The key must
+  '/initialize/create-password/import-with-seed-phrase'
+const INITIALIZE_SELECT_ACTION_ROUTE = '/initialize/select-action'
+const INITIALIZE_SEED_PHRASE_ROUTE = '/initialize/seed-phrase'
+const INITIALIZE_BACKUP_SEED_PHRASE_ROUTE = '/initialize/backup-seed-phrase'
+const INITIALIZE_SEED_PHRASE_INTRO_ROUTE = '/initialize/seed-phrase-intro'
+const INITIALIZE_END_OF_FLOW_ROUTE = '/initialize/end-of-flow'
+const INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE = '/initialize/seed-phrase/confirm'
+const CONFIRM_TRANSACTION_ROUTE = '/confirm-transaction'
+const CONFIRM_SEND_ETHER_PATH = '/send-ether'
+const CONFIRM_SEND_TOKEN_PATH = '/send-token'
+const CONFIRM_DEPLOY_CONTRACT_PATH = '/deploy-contract'
+const CONFIRM_APPROVE_PATH = '/approve'
+const CONFIRM_TRANSFER_FROM_PATH = '/transfer-from'
+const CONFIRM_TOKEN_METHOD_PATH = '/token-method'
+const SIGNATURE_REQUEST_PATH = '/signature-request'
+const DECRYPT_MESSAGE_REQUEST_PATH = '/decrypt-message-request'
+const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH = '/encryption-public-key-request'
+const CONFIRMATION_V_NEXT_ROUTE = '/confirmation'
+const RECIVE_TOKEN_ROUTE = '/recive-token/:address'
+const TRADE_ROUTE = '/trade'
+const ZSWAP_ROUTE = '/trade/zswap'
+const LIQUIDITY_ROUTE = '/trade/liquidity'
+const CROSSCHAIN_ROUTE = '/cross-chain' // Used to pull a convenient name for analytics tracking events. The key must
 // be react-router ready path, and can include params such as :id for popup windows
 
 const PATH_NAME_MAP = {
@@ -127,7 +127,7 @@ const PATH_NAME_MAP = {
   [ZSWAP_ROUTE]: 'Zswap',
   [LIQUIDITY_ROUTE]: 'Liquidity',
   [CROSSCHAIN_ROUTE]: 'CrossChain',
-};
+}
 export {
   DEFAULT_ROUTE,
   ALERTS_ROUTE,
@@ -190,4 +190,4 @@ export {
   ZSWAP_ROUTE,
   LIQUIDITY_ROUTE,
   CROSSCHAIN_ROUTE,
-};
+}

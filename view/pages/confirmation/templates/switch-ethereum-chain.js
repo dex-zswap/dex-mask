@@ -1,10 +1,10 @@
-import { ethErrors } from 'eth-rpc-errors';
-import { NETWORK_TYPE_RPC } from '@shared/constants/network';
+import { ethErrors } from 'eth-rpc-errors'
+import { NETWORK_TYPE_RPC } from '@shared/constants/network'
 import {
   JUSTIFY_CONTENT,
   SEVERITIES,
   TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
+} from '@view/helpers/constants/design-system'
 const PENDING_TX_DROP_NOTICE = {
   id: 'PENDING_TX_DROP_NOTICE',
   severity: SEVERITIES.WARNING,
@@ -17,10 +17,10 @@ const PENDING_TX_DROP_NOTICE = {
       },
     },
   },
-};
+}
 
 async function getAlerts() {
-  return [PENDING_TX_DROP_NOTICE];
+  return [PENDING_TX_DROP_NOTICE]
 }
 
 function getValues(pendingApproval, t, actions) {
@@ -74,11 +74,11 @@ function getValues(pendingApproval, t, actions) {
         pendingApproval.id,
         ethErrors.provider.userRejectedRequest(),
       ),
-  };
+  }
 }
 
 const switchEthereumChain = {
   getAlerts,
   getValues,
-};
-export default switchEthereumChain;
+}
+export default switchEthereumChain

@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 export default class IconWithFallback extends PureComponent {
   static propTypes = {
     icon: PropTypes.string,
@@ -8,23 +8,23 @@ export default class IconWithFallback extends PureComponent {
     size: PropTypes.number,
     className: PropTypes.string,
     fallbackClassName: PropTypes.string,
-  };
+  }
   static defaultProps = {
     name: '',
     icon: null,
-  };
+  }
   state = {
     iconError: false,
-  };
+  }
 
   render() {
-    const { icon, name, size, className, fallbackClassName } = this.props;
+    const { icon, name, size, className, fallbackClassName } = this.props
     const style = size
       ? {
           height: `${size}px`,
           width: `${size}px`,
         }
-      : {};
+      : {}
     return !this.state.iconError && icon ? (
       <img
         onError={() =>
@@ -35,7 +35,7 @@ export default class IconWithFallback extends PureComponent {
         src={icon}
         style={style}
         className={className}
-        alt=""
+        alt=''
       />
     ) : (
       <i
@@ -46,6 +46,6 @@ export default class IconWithFallback extends PureComponent {
       >
         {name.length ? name.charAt(0).toUpperCase() : ''}
       </i>
-    );
+    )
   }
 }

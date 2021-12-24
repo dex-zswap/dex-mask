@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Button from '@c/ui/button';
-import { NETWORK_TO_NAME_MAP } from '@shared/constants/network';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Button from '@c/ui/button'
+import { NETWORK_TO_NAME_MAP } from '@shared/constants/network'
 export default class DepositEtherModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   static propTypes = {
     chainId: PropTypes.string.isRequired,
     isTestnet: PropTypes.bool.isRequired,
@@ -17,12 +17,12 @@ export default class DepositEtherModal extends Component {
     hideWarning: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
     showAccountDetailModal: PropTypes.func.isRequired,
-  };
+  }
   goToAccountDetailsModal = () => {
-    this.props.hideWarning();
-    this.props.hideModal();
-    this.props.showAccountDetailModal();
-  };
+    this.props.hideWarning()
+    this.props.hideModal()
+    this.props.showAccountDetailModal()
+  }
 
   renderRow({
     logo,
@@ -38,37 +38,37 @@ export default class DepositEtherModal extends Component {
     showBackButton,
   }) {
     if (hide) {
-      return null;
+      return null
     }
 
     return (
       <div className={className || 'deposit-ether-modal__buy-row'}>
         {onBackClick && showBackButton && (
           <div
-            className="deposit-ether-modal__buy-row__back"
+            className='deposit-ether-modal__buy-row__back'
             onClick={onBackClick}
           >
-            <i className="fa fa-arrow-left cursor-pointer" />
+            <i className='fa fa-arrow-left cursor-pointer' />
           </div>
         )}
-        <div className="deposit-ether-modal__buy-row__logo-container">
+        <div className='deposit-ether-modal__buy-row__logo-container'>
           {logo}
         </div>
-        <div className="deposit-ether-modal__buy-row__description">
+        <div className='deposit-ether-modal__buy-row__description'>
           {!hideTitle && (
-            <div className="deposit-ether-modal__buy-row__description__title">
+            <div className='deposit-ether-modal__buy-row__description__title'>
               {title}
             </div>
           )}
-          <div className="deposit-ether-modal__buy-row__description__text">
+          <div className='deposit-ether-modal__buy-row__description__text'>
             {text}
           </div>
         </div>
         {!hideButton && (
-          <div className="deposit-ether-modal__buy-row__button">
+          <div className='deposit-ether-modal__buy-row__button'>
             <Button
-              type="secondary"
-              className="deposit-ether-modal__deposit-button"
+              type='secondary'
+              className='deposit-ether-modal__deposit-button'
               large
               onClick={onButtonClick}
             >
@@ -77,7 +77,7 @@ export default class DepositEtherModal extends Component {
           </div>
         )}
       </div>
-    );
+    )
   }
 
   render() {
@@ -89,31 +89,31 @@ export default class DepositEtherModal extends Component {
       toFaucet,
       isTestnet,
       isMainnet,
-    } = this.props;
-    const networkName = NETWORK_TO_NAME_MAP[chainId];
+    } = this.props
+    const networkName = NETWORK_TO_NAME_MAP[chainId]
     return (
-      <div className="page-container page-container--full-width page-container--full-height">
-        <div className="page-container__header">
-          <div className="page-container__title">
+      <div className='page-container page-container--full-width page-container--full-height'>
+        <div className='page-container__header'>
+          <div className='page-container__title'>
             {this.context.t('depositEther')}
           </div>
-          <div className="page-container__subtitle">
+          <div className='page-container__subtitle'>
             {this.context.t('needEtherInWallet')}
           </div>
           <div
-            className="page-container__header-close"
+            className='page-container__header-close'
             onClick={() => {
-              this.props.hideWarning();
-              this.props.hideModal();
+              this.props.hideWarning()
+              this.props.hideModal()
             }}
           />
         </div>
-        <div className="page-container__content">
-          <div className="deposit-ether-modal__buy-rows">
+        <div className='page-container__content'>
+          <div className='deposit-ether-modal__buy-rows'>
             {this.renderRow({
               logo: (
                 <div
-                  className="deposit-ether-modal__logo"
+                  className='deposit-ether-modal__logo'
                   style={{
                     backgroundImage: "url('./images/wyre.svg')",
                     height: '40px',
@@ -124,14 +124,14 @@ export default class DepositEtherModal extends Component {
               text: this.context.t('buyWithWyreDescription'),
               buttonLabel: this.context.t('continueToWyre'),
               onButtonClick: () => {
-                toWyre(address);
+                toWyre(address)
               },
               hide: !isMainnet,
             })}
             {this.renderRow({
               logo: (
                 <div
-                  className="deposit-ether-modal__logo"
+                  className='deposit-ether-modal__logo'
                   style={{
                     backgroundImage: "url('./images/transak.svg')",
                     height: '60px',
@@ -142,16 +142,16 @@ export default class DepositEtherModal extends Component {
               text: this.context.t('buyWithTransakDescription'),
               buttonLabel: this.context.t('continueToTransak'),
               onButtonClick: () => {
-                toTransak(address);
+                toTransak(address)
               },
               hide: !isMainnet,
             })}
             {this.renderRow({
               logo: (
                 <img
-                  alt=""
-                  className="deposit-ether-modal__logo"
-                  src="./images/deposit-eth.svg"
+                  alt=''
+                  className='deposit-ether-modal__logo'
+                  src='./images/deposit-eth.svg'
                   style={{
                     height: '75px',
                     width: '75px',
@@ -165,7 +165,7 @@ export default class DepositEtherModal extends Component {
             })}
             {networkName &&
               this.renderRow({
-                logo: <i className="fa fa-tint fa-2x" />,
+                logo: <i className='fa fa-tint fa-2x' />,
                 title: this.context.t('testFaucet'),
                 text: this.context.t('getEtherFromFaucet', [networkName]),
                 buttonLabel: this.context.t('getEther'),
@@ -175,6 +175,6 @@ export default class DepositEtherModal extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

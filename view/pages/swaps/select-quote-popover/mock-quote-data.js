@@ -89,5 +89,5 @@ const quoteDataRows = [
     sourceTokenSymbol: 'ETH',
     sourceTokenValue: '250000000000000000',
   },
-];
-export default quoteDataRows;
+]
+export default quoteDataRows

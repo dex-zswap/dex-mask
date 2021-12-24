@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
-import networkMap from 'ethereum-ens-network-map';
-import { isHexString } from 'ethereumjs-util';
-import ENS from 'ethjs-ens';
-import log from 'loglevel';
-import { isConfusing } from 'unicode-confusables'; // Local Constants
+import { createSlice } from '@reduxjs/toolkit'
+import networkMap from 'ethereum-ens-network-map'
+import { isHexString } from 'ethereumjs-util'
+import ENS from 'ethjs-ens'
+import log from 'loglevel'
+import { isConfusing } from 'unicode-confusables' // Local Constants
 
 import {
   CONFUSING_ENS_ERROR,
@@ -13,40 +13,40 @@ import {
   ENS_NO_ADDRESS_FOR_NAME,
   ENS_REGISTRATION_ERROR,
   ENS_UNKNOWN_ERROR,
-} from '@pages/send/constants';
+} from '@pages/send/constants'
 import {
   CHAIN_ID_TO_NETWORK_ID_MAP,
   MAINNET_NETWORK_ID,
-} from '@shared/constants/network';
+} from '@shared/constants/network'
 import {
   BURN_ADDRESS,
   isBurnAddress,
   isValidHexAddress,
-} from '@shared/modules/hexstring-utils';
-import { isValidDomainName } from '@view/helpers/utils';
-import { getCurrentChainId } from '@view/selectors';
-import { CHAIN_CHANGED } from '@view/store/actionConstants';
-const ZERO_X_ERROR_ADDRESS = '0x';
+} from '@shared/modules/hexstring-utils'
+import { isValidDomainName } from '@view/helpers/utils'
+import { getCurrentChainId } from '@view/selectors'
+import { CHAIN_CHANGED } from '@view/store/actionConstants'
+const ZERO_X_ERROR_ADDRESS = '0x'
 const initialState = {
   stage: 'UNINITIALIZED',
   resolution: null,
   error: null,
   warning: null,
   network: null,
-};
-export const ensInitialState = initialState;
-const name = 'ENS';
-let ens = null;
+}
+export const ensInitialState = initialState
+const name = 'ENS'
+let ens = null
 const slice = createSlice({
   name,
   initialState,
   reducers: {
     ensLookup: (state, action) => {
       // first clear out the previous state
-      state.resolution = null;
-      state.error = null;
-      state.warning = null;
-      const { address, ensName, error, network } = action.payload;
+      state.resolution = null
+      state.error = null
+      state.warning = null
+      const { address, ensName, error, network } = action.payload
 
       if (error) {
         if (
@@ -56,100 +56,100 @@ const slice = createSlice({
           state.error =
             network === MAINNET_NETWORK_ID
               ? ENS_NO_ADDRESS_FOR_NAME
-              : ENS_NOT_FOUND_ON_NETWORK;
+              : ENS_NOT_FOUND_ON_NETWORK
         } else if (error.message === 'Illegal Character for ENS.') {
-          state.error = ENS_ILLEGAL_CHARACTER;
+          state.error = ENS_ILLEGAL_CHARACTER
         } else {
-          log.error(error);
-          state.error = ENS_UNKNOWN_ERROR;
+          log.error(error)
+          state.error = ENS_UNKNOWN_ERROR
         }
       } else if (address) {
         if (address === BURN_ADDRESS) {
-          state.error = ENS_NO_ADDRESS_FOR_NAME;
+          state.error = ENS_NO_ADDRESS_FOR_NAME
         } else if (address === ZERO_X_ERROR_ADDRESS) {
-          state.error = ENS_REGISTRATION_ERROR;
+          state.error = ENS_REGISTRATION_ERROR
         } else {
-          state.resolution = address;
+          state.resolution = address
         }
 
         if (isValidDomainName(address) && isConfusing(address)) {
-          state.warning = CONFUSING_ENS_ERROR;
+          state.warning = CONFUSING_ENS_ERROR
         }
       }
     },
     enableEnsLookup: (state, action) => {
-      state.stage = 'INITIALIZED';
-      state.error = null;
-      state.resolution = null;
-      state.warning = null;
-      state.network = action.payload;
+      state.stage = 'INITIALIZED'
+      state.error = null
+      state.resolution = null
+      state.warning = null
+      state.network = action.payload
     },
     disableEnsLookup: (state) => {
-      state.stage = 'NO_NETWORK_SUPPORT';
-      state.error = null;
-      state.warning = null;
-      state.resolution = null;
-      state.network = null;
+      state.stage = 'NO_NETWORK_SUPPORT'
+      state.error = null
+      state.warning = null
+      state.resolution = null
+      state.network = null
     },
     ensNotSupported: (state) => {
-      state.resolution = null;
-      state.warning = null;
-      state.error = ENS_NOT_SUPPORTED_ON_NETWORK;
+      state.resolution = null
+      state.warning = null
+      state.error = ENS_NOT_SUPPORTED_ON_NETWORK
     },
     resetEnsResolution: (state) => {
-      state.resolution = null;
-      state.warning = null;
-      state.error = null;
+      state.resolution = null
+      state.warning = null
+      state.error = null
     },
   },
   extraReducers: (builder) => {
     builder.addCase(CHAIN_CHANGED, (state, action) => {
       if (action.payload !== state.currentChainId) {
-        state.stage = 'UNINITIALIZED';
-        ens = null;
+        state.stage = 'UNINITIALIZED'
+        ens = null
       }
-    });
+    })
   },
-});
-const { reducer, actions } = slice;
-export default reducer;
+})
+const { reducer, actions } = slice
+export default reducer
 const {
   disableEnsLookup,
   ensLookup,
   enableEnsLookup,
   ensNotSupported,
   resetEnsResolution,
-} = actions;
-export { resetEnsResolution };
+} = actions
+export { resetEnsResolution }
 export function initializeEnsSlice() {
   return (dispatch, getState) => {
-    const state = getState();
-    const chainId = getCurrentChainId(state);
-    const network = CHAIN_ID_TO_NETWORK_ID_MAP[chainId];
-    const networkIsSupported = Boolean(networkMap[network]);
+    const state = getState()
+    const chainId = getCurrentChainId(state)
+    const network = CHAIN_ID_TO_NETWORK_ID_MAP[chainId]
+    const networkIsSupported = Boolean(networkMap[network])
 
     if (networkIsSupported) {
       ens = new ENS({
         provider: global.ethereumProvider,
         network,
-      });
-      dispatch(enableEnsLookup(network));
+      })
+      dispatch(enableEnsLookup(network))
     } else {
-      ens = null;
-      dispatch(disableEnsLookup());
+      ens = null
+      dispatch(disableEnsLookup())
     }
-  };
+  }
 }
 export function lookupEnsName(ensName) {
   return async (dispatch, getState) => {
-    const trimmedEnsName = ensName.trim();
-    let state = getState();
+    const trimmedEnsName = ensName.trim()
+    let state = getState()
 
     if (state[name].stage === 'UNINITIALIZED') {
-      await dispatch(initializeEnsSlice());
+      await dispatch(initializeEnsSlice())
     }
 
-    state = getState();
+    state = getState()
 
     if (
       state[name].stage === 'NO_NETWORK_SUPPORT' &&
@@ -161,20 +161,20 @@ export function lookupEnsName(ensName) {
       ) &&
       !isHexString(trimmedEnsName)
     ) {
-      await dispatch(ensNotSupported());
+      await dispatch(ensNotSupported())
     } else {
-      log.info(`ENS attempting to resolve name: ${trimmedEnsName}`);
-      let address;
-      let error;
+      log.info(`ENS attempting to resolve name: ${trimmedEnsName}`)
+      let address
+      let error
 
       try {
-        address = await ens.lookup(trimmedEnsName);
+        address = await ens.lookup(trimmedEnsName)
       } catch (err) {
-        error = err;
+        error = err
       }
 
-      const chainId = getCurrentChainId(state);
-      const network = CHAIN_ID_TO_NETWORK_ID_MAP[chainId];
+      const chainId = getCurrentChainId(state)
+      const network = CHAIN_ID_TO_NETWORK_ID_MAP[chainId]
       await dispatch(
         ensLookup({
           ensName: trimmedEnsName,
@@ -183,16 +183,16 @@ export function lookupEnsName(ensName) {
           chainId,
           network,
         }),
-      );
+      )
     }
-  };
+  }
 }
 export function getEnsResolution(state) {
-  return state[name].resolution;
+  return state[name].resolution
 }
 export function getEnsError(state) {
-  return state[name].error;
+  return state[name].error
 }
 export function getEnsWarning(state) {
-  return state[name].warning;
+  return state[name].warning
 }

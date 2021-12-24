@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import BigNumber from 'bignumber.js';
-import { isEqual } from 'lodash';
-import PropTypes from 'prop-types';
-import PageContainerFooter from '@c/ui/page-container/page-container-footer';
-import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes';
+import React, { Component } from 'react'
+import BigNumber from 'bignumber.js'
+import { isEqual } from 'lodash'
+import PropTypes from 'prop-types'
+import PageContainerFooter from '@c/ui/page-container/page-container-footer'
+import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes'
 export default class SendFooter extends Component {
   static propTypes = {
     amount: PropTypes.any,
@@ -17,52 +17,52 @@ export default class SendFooter extends Component {
     sendErrors: PropTypes.object,
     gasEstimateType: PropTypes.string,
     mostRecentOverviewPage: PropTypes.string.isRequired,
-  };
+  }
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   onCancel() {
-    const { resetSendState, history, mostRecentOverviewPage } = this.props;
-    resetSendState();
-    history.push(mostRecentOverviewPage);
+    const { resetSendState, history, mostRecentOverviewPage } = this.props
+    resetSendState()
+    history.push(mostRecentOverviewPage)
   }
 
   async onSubmit(event) {
-    event.preventDefault();
+    event.preventDefault()
     const {
       addToAddressBookIfNew,
       sign,
       to,
       toAccounts,
       history, // gasEstimateType,
-    } = this.props; // TODO: add nickname functionality
+    } = this.props // TODO: add nickname functionality
     // await addToAddressBookIfNew(to, toAccounts);
 
-    const promise = sign();
+    const promise = sign()
     Promise.resolve(promise).then(() => {
-      history.push(CONFIRM_TRANSACTION_ROUTE);
-    });
+      history.push(CONFIRM_TRANSACTION_ROUTE)
+    })
   }
 
   componentDidUpdate(prevProps) {
-    const { sendErrors } = this.props;
+    const { sendErrors } = this.props
 
     if (
       Object.keys(sendErrors).length > 0 &&
       isEqual(sendErrors, prevProps.sendErrors) === false
     ) {
-      const errorField = Object.keys(sendErrors).find((key) => sendErrors[key]);
-      const errorMessage = sendErrors[errorField];
+      const errorField = Object.keys(sendErrors).find((key) => sendErrors[key])
+      const errorMessage = sendErrors[errorField]
     }
   }
 
   render() {
-    const { amount } = this.props;
+    const { amount } = this.props
     return (
       <PageContainerFooter
-        submitButtonType="primary"
-        submitText="Trans"
+        submitButtonType='primary'
+        submitText='Trans'
         hideCancel={true}
         onSubmit={(e) => this.onSubmit(e)}
         disabled={
@@ -72,6 +72,6 @@ export default class SendFooter extends Component {
         }
         rightArrow
       />
-    );
+    )
   }
 }

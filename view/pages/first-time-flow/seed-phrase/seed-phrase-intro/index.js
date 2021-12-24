@@ -1,9 +1,9 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom'; // Components
+import React from 'react'
+import { useHistory } from 'react-router-dom' // Components
 
-import Box from '@c/ui/box';
-import Button from '@c/ui/button';
-import Typography from '@c/ui/typography';
+import Box from '@c/ui/box'
+import Button from '@c/ui/button'
+import Typography from '@c/ui/typography'
 import {
   BLOCK_SIZES,
   BORDER_STYLE,
@@ -11,22 +11,22 @@ import {
   FONT_WEIGHT,
   SIZES,
   TYPOGRAPHY,
-} from '@view/helpers/constants/design-system'; // Routes
+} from '@view/helpers/constants/design-system' // Routes
 
-import { INITIALIZE_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+import { INITIALIZE_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 export default function SeedPhraseIntro() {
-  const t = useI18nContext();
-  const history = useHistory();
+  const t = useI18nContext()
+  const history = useHistory()
 
   const handleNextStep = () => {
-    history.push(INITIALIZE_SEED_PHRASE_ROUTE);
-  };
+    history.push(INITIALIZE_SEED_PHRASE_ROUTE)
+  }
 
   return (
-    <div className="seed-phrase-intro">
-      <div className="seed-phrase-intro__sections">
-        <div className="seed-phrase-intro__left">
+    <div className='seed-phrase-intro'>
+      <div className='seed-phrase-intro__sections'>
+        <div className='seed-phrase-intro__left'>
           <Typography
             color={COLORS.BLACK}
             variant={TYPOGRAPHY.H1}
@@ -43,32 +43,32 @@ export default function SeedPhraseIntro() {
               marginBottom: 4,
             }}
             variant={TYPOGRAPHY.Paragraph}
-            className="seed-phrase-intro__copy"
+            className='seed-phrase-intro__copy'
           >
             {t('seedPhraseIntroTitleCopy')}
           </Typography>
           <Box marginBottom={4}>
             <video controls>
               <source
-                type="video/webm"
-                src="./images/videos/recovery-onboarding/video.webm"
+                type='video/webm'
+                src='./images/videos/recovery-onboarding/video.webm'
               />
               <track
                 default
-                srcLang="en"
-                label="English"
-                kind="subtitles"
-                src="./images/videos/recovery-onboarding/subtitles-en.vtt"
+                srcLang='en'
+                label='English'
+                kind='subtitles'
+                src='./images/videos/recovery-onboarding/subtitles-en.vtt'
               />
             </video>
           </Box>
           <Box width={BLOCK_SIZES.ONE_THIRD}>
-            <Button type="primary" onClick={handleNextStep}>
+            <Button type='primary' onClick={handleNextStep}>
               {t('next')}
             </Button>
           </Box>
         </div>
-        <div className="seed-phrase-intro__right">
+        <div className='seed-phrase-intro__right'>
           <Box
             padding={4}
             borderWidth={1}
@@ -78,7 +78,7 @@ export default function SeedPhraseIntro() {
           >
             <Box marginBottom={4}>
               <Typography
-                tag="span"
+                tag='span'
                 color={COLORS.BLACK}
                 fontWeight={FONT_WEIGHT.BOLD}
                 boxProps={{
@@ -91,7 +91,7 @@ export default function SeedPhraseIntro() {
             </Box>
             <Box marginBottom={4}>
               <Typography
-                tag="span"
+                tag='span'
                 color={COLORS.BLACK}
                 fontWeight={FONT_WEIGHT.BOLD}
                 boxProps={{
@@ -100,7 +100,7 @@ export default function SeedPhraseIntro() {
               >
                 {t('seedPhraseIntroSidebarTitleTwo')}
               </Typography>
-              <ul className="seed-phrase-intro__sidebar_list">
+              <ul className='seed-phrase-intro__sidebar_list'>
                 <li>{t('seedPhraseIntroSidebarBulletOne')}</li>
                 <li>{t('seedPhraseIntroSidebarBulletTwo')}</li>
                 <li>{t('seedPhraseIntroSidebarBulletThree')}</li>
@@ -109,7 +109,7 @@ export default function SeedPhraseIntro() {
             </Box>
             <Box marginBottom={4}>
               <Typography
-                tag="span"
+                tag='span'
                 color={COLORS.BLACK}
                 fontWeight={FONT_WEIGHT.BOLD}
                 boxProps={{
@@ -127,5 +127,5 @@ export default function SeedPhraseIntro() {
         </div>
       </div>
     </div>
-  );
+  )
 }

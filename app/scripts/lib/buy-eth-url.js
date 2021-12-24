@@ -1,18 +1,18 @@
-import log from 'loglevel';
+import log from 'loglevel'
 
-import { METASWAP_CHAINID_API_HOST_MAP } from '@shared/constants/swaps';
+import { METASWAP_CHAINID_API_HOST_MAP } from '@shared/constants/swaps'
 import {
   GOERLI_CHAIN_ID,
   KOVAN_CHAIN_ID,
   MAINNET_CHAIN_ID,
   RINKEBY_CHAIN_ID,
   ROPSTEN_CHAIN_ID,
-} from '@shared/constants/network';
-import { SECOND } from '@shared/constants/time';
-import getFetchWithTimeout from '@shared/modules/fetch-with-timeout';
-import { TRANSAK_API_KEY } from '@app/scripts/constants/on-ramp';
+} from '@shared/constants/network'
+import { SECOND } from '@shared/constants/time'
+import getFetchWithTimeout from '@shared/modules/fetch-with-timeout'
+import { TRANSAK_API_KEY } from '@app/scripts/constants/on-ramp'
 
-const fetchWithTimeout = getFetchWithTimeout(SECOND * 30);
+const fetchWithTimeout = getFetchWithTimeout(SECOND * 30)
 
 /**
  * Create a Wyre purchase URL.
@@ -20,8 +20,8 @@ const fetchWithTimeout = getFetchWithTimeout(SECOND * 30);
  * @returns String
  */
 const createWyrePurchaseUrl = async (address) => {
-  const fiatOnRampUrlApi = `${METASWAP_CHAINID_API_HOST_MAP[MAINNET_CHAIN_ID]}/fiatOnRampUrl?serviceName=wyre&destinationAddress=${address}`;
-  const wyrePurchaseUrlFallback = `https://pay.sendwyre.com/purchase?dest=ethereum:${address}&destCurrency=ETH&accountId=AC-7AG3W4XH4N2&paymentMethod=debit-card`;
+  const fiatOnRampUrlApi = `${METASWAP_CHAINID_API_HOST_MAP[MAINNET_CHAIN_ID]}/fiatOnRampUrl?serviceName=wyre&destinationAddress=${address}`
+  const wyrePurchaseUrlFallback = `https://pay.sendwyre.com/purchase?dest=ethereum:${address}&destCurrency=ETH&accountId=AC-7AG3W4XH4N2&paymentMethod=debit-card`
   try {
     const response = await fetchWithTimeout(fiatOnRampUrlApi, {
       method: 'GET',
@@ -29,17 +29,17 @@ const createWyrePurchaseUrl = async (address) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-    });
-    const parsedResponse = await response.json();
+    })
+    const parsedResponse = await response.json()
     if (response.ok && parsedResponse.url) {
-      return parsedResponse.url;
+      return parsedResponse.url
     }
-    log.warn('Failed to create a Wyre purchase URL', parsedResponse);
+    log.warn('Failed to create a Wyre purchase URL', parsedResponse)
   } catch (err) {
-    log.warn('Failed to create a Wyre purchase URL', err);
+    log.warn('Failed to create a Wyre purchase URL', err)
   }
-  return wyrePurchaseUrlFallback; // In case the API call would fail, we return a fallback URL for Wyre's Checkout.
-};
+  return wyrePurchaseUrlFallback // In case the API call would fail, we return a fallback URL for Wyre's Checkout.
+}
 
 /**
  * Create a Transak Checkout URL.
@@ -53,9 +53,9 @@ const createTransakUrl = (address) => {
     hostURL: 'https://metamask.io',
     defaultCryptoCurrency: 'ETH',
     walletAddress: address,
-  });
-  return `https://global.transak.com/?${queryParams}`;
-};
+  })
+  return `https://global.transak.com/?${queryParams}`
+}
 
 /**
  * Gives the caller a url at which the user can acquire eth, depending on the network they are in
@@ -71,44 +71,42 @@ export default async function getBuyEthUrl({ chainId, address, service }) {
   // default service by network if not specified
   if (!service) {
     // eslint-disable-next-line no-param-reassign
-    service = getDefaultServiceForChain(chainId);
+    service = getDefaultServiceForChain(chainId)
   }
 
   switch (service) {
     case 'wyre':
-      return await createWyrePurchaseUrl(address);
+      return await createWyrePurchaseUrl(address)
     case 'transak':
-      return createTransakUrl(address);
+      return createTransakUrl(address)
     case 'metamask-faucet':
-      return 'https://faucet.metamask.io/';
+      return 'https://faucet.metamask.io/'
     case 'rinkeby-faucet':
-      return 'https://www.rinkeby.io/';
+      return 'https://www.rinkeby.io/'
     case 'kovan-faucet':
-      return 'https://github.com/kovan-testnet/faucet';
+      return 'https://github.com/kovan-testnet/faucet'
     case 'goerli-faucet':
-      return 'https://goerli-faucet.slock.it/';
+      return 'https://goerli-faucet.slock.it/'
     default:
-      throw new Error(
-        `Unknown cryptocurrency exchange or faucet: "${service}"`,
-      );
+      throw new Error(`Unknown cryptocurrency exchange or faucet: "${service}"`)
   }
 }
 
 function getDefaultServiceForChain(chainId) {
   switch (chainId) {
     case MAINNET_CHAIN_ID:
-      return 'wyre';
+      return 'wyre'
     case ROPSTEN_CHAIN_ID:
-      return 'metamask-faucet';
+      return 'metamask-faucet'
     case RINKEBY_CHAIN_ID:
-      return 'rinkeby-faucet';
+      return 'rinkeby-faucet'
     case KOVAN_CHAIN_ID:
-      return 'kovan-faucet';
+      return 'kovan-faucet'
     case GOERLI_CHAIN_ID:
-      return 'goerli-faucet';
+      return 'goerli-faucet'
     default:
       throw new Error(
         `No default cryptocurrency exchange or faucet for chainId: "${chainId}"`,
-      );
+      )
   }
 }

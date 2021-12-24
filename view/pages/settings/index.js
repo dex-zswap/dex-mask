@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import BackBar from '@c/ui/back-bar';
-import Logo from '@c/ui/logo';
-import RevealSeedConfirmation from '@pages/keychains/reveal-seed';
+import React, { useMemo } from 'react'
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
+import BackBar from '@c/ui/back-bar'
+import Logo from '@c/ui/logo'
+import RevealSeedConfirmation from '@pages/keychains/reveal-seed'
 import {
   ABOUT_US_ROUTE,
   ADVANCED_ROUTE,
@@ -13,14 +13,14 @@ import {
   REVEAL_SEED_ROUTE,
   SECURITY_ROUTE,
   SETTINGS_ROUTE,
-} from '@view/helpers/constants/routes';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import AdvancedTab from './advanced-tab';
-import AlertsTab from './alerts-tab';
-import InfoTab from './info-tab';
-import NetworksTab from './networks-tab';
-import SecurityTab from './security-tab';
-import SettingsTab from './settings-tab';
+} from '@view/helpers/constants/routes'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import AdvancedTab from './advanced-tab'
+import AlertsTab from './alerts-tab'
+import InfoTab from './info-tab'
+import NetworksTab from './networks-tab'
+import SecurityTab from './security-tab'
+import SettingsTab from './settings-tab'
 const ROUTES_TO_I18N_KEYS = {
   [ABOUT_US_ROUTE]: 'about',
   [ADVANCED_ROUTE]: 'advanced',
@@ -29,12 +29,12 @@ const ROUTES_TO_I18N_KEYS = {
   [NETWORKS_ROUTE]: 'networks',
   [NETWORKS_FORM_ROUTE]: 'networks',
   [SECURITY_ROUTE]: 'securityAndPrivacy',
-};
+}
 
 const SettingsPage = () => {
-  const t = useI18nContext();
-  const history = useHistory();
-  const { pathname } = useLocation();
+  const t = useI18nContext()
+  const history = useHistory()
+  const { pathname } = useLocation()
   const menu = useMemo(
     () => [
       {
@@ -81,7 +81,7 @@ const SettingsPage = () => {
       },
     ],
     [t],
-  );
+  )
   const getTitleText = useMemo(() => {
     const subTitle = {
       [GENERAL_ROUTE]: t('general'),
@@ -92,20 +92,20 @@ const SettingsPage = () => {
       [NETWORKS_ROUTE]: t('networks'),
       [ABOUT_US_ROUTE]: t('about'),
       [NETWORKS_FORM_ROUTE]: t('addRPCNetwork'),
-    };
-
-    if (subTitle[pathname]) {
-      return subTitle[pathname];
     }
 
-    return t('settings');
-  }, [t, pathname]);
+    if (subTitle[pathname]) {
+      return subTitle[pathname]
+    }
+
+    return t('settings')
+  }, [t, pathname])
   return (
-    <div className="dex-page-container">
+    <div className='dex-page-container'>
       <Logo plain isCenter />
       <BackBar title={getTitleText} />
       {pathname === SETTINGS_ROUTE && (
-        <div className="setting-content-wrap base-width">
+        <div className='setting-content-wrap base-width'>
           {menu.map(({ title, subTitle, icon, iconWidth, url }) => (
             <div key={icon} onClick={() => history.push(url)}>
               <div>
@@ -116,9 +116,9 @@ const SettingsPage = () => {
                 <div>{subTitle}</div>
               </div>
               <img
-                className="setting-arrow-right"
+                className='setting-arrow-right'
                 width={8}
-                src="images/icons/arrow-down.png"
+                src='images/icons/arrow-down.png'
               />
             </div>
           ))}
@@ -141,7 +141,7 @@ const SettingsPage = () => {
         </Switch>
       }
     </div>
-  );
-};
+  )
+}
 
-export default React.memo(SettingsPage);
+export default React.memo(SettingsPage)

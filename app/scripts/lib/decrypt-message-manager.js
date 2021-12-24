@@ -1,14 +1,14 @@
-import EventEmitter from 'events';
-import { ObservableStore } from '@metamask/obs-store';
-import { bufferToHex, stripHexPrefix } from 'ethereumjs-util';
-import { ethErrors } from 'eth-rpc-errors';
-import log from 'loglevel';
-import { MESSAGE_TYPE } from '@shared/constants/app';
-import { DEXMASK_CONTROLLER_EVENTS } from '@app/scripts/dexmask-controller';
-import createId from '@shared/modules/random-id';
-import { addHexPrefix } from './util';
+import EventEmitter from 'events'
+import { ObservableStore } from '@metamask/obs-store'
+import { bufferToHex, stripHexPrefix } from 'ethereumjs-util'
+import { ethErrors } from 'eth-rpc-errors'
+import log from 'loglevel'
+import { MESSAGE_TYPE } from '@shared/constants/app'
+import { DEXMASK_CONTROLLER_EVENTS } from '@app/scripts/dexmask-controller'
+import createId from '@shared/modules/random-id'
+import { addHexPrefix } from './util'
 
-const hexRe = /^[0-9A-Fa-f]+$/gu;
+const hexRe = /^[0-9A-Fa-f]+$/gu
 
 /**
  * Represents, and contains data about, an 'eth_decrypt' type decryption request. These are created when a
@@ -39,12 +39,12 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   constructor() {
-    super();
+    super()
     this.memStore = new ObservableStore({
       unapprovedDecryptMsgs: {},
       unapprovedDecryptMsgCount: 0,
-    });
-    this.messages = [];
+    })
+    this.messages = []
   }
 
   /**
@@ -54,7 +54,7 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   get unapprovedDecryptMsgCount() {
-    return Object.keys(this.getUnapprovedMsgs()).length;
+    return Object.keys(this.getUnapprovedMsgs()).length
   }
 
   /**
@@ -68,9 +68,9 @@ export default class DecryptMessageManager extends EventEmitter {
     return this.messages
       .filter((msg) => msg.status === 'unapproved')
       .reduce((result, msg) => {
-        result[msg.id] = msg;
-        return result;
-      }, {});
+        result[msg.id] = msg
+        return result
+      }, {})
   }
 
   /**
@@ -86,25 +86,25 @@ export default class DecryptMessageManager extends EventEmitter {
   addUnapprovedMessageAsync(msgParams, req) {
     return new Promise((resolve, reject) => {
       if (!msgParams.from) {
-        reject(new Error('DexMask Decryption: from field is required.'));
-        return;
+        reject(new Error('DexMask Decryption: from field is required.'))
+        return
       }
-      const msgId = this.addUnapprovedMessage(msgParams, req);
+      const msgId = this.addUnapprovedMessage(msgParams, req)
       this.once(`${msgId}:finished`, (data) => {
         switch (data.status) {
           case 'decrypted':
-            resolve(data.rawData);
-            return;
+            resolve(data.rawData)
+            return
           case 'rejected':
             reject(
               ethErrors.provider.userRejectedRequest(
                 'DexMask Decryption: User denied message decryption.',
               ),
-            );
-            return;
+            )
+            return
           case 'errored':
-            reject(new Error('This message cannot be decrypted'));
-            return;
+            reject(new Error('This message cannot be decrypted'))
+            return
           default:
             reject(
               new Error(
@@ -112,10 +112,10 @@ export default class DecryptMessageManager extends EventEmitter {
                   msgParams,
                 )}`,
               ),
-            );
+            )
         }
-      });
-    });
+      })
+    })
   }
 
   /**
@@ -133,27 +133,27 @@ export default class DecryptMessageManager extends EventEmitter {
       `DecryptMessageManager addUnapprovedMessage: ${JSON.stringify(
         msgParams,
       )}`,
-    );
+    )
     // add origin from request
     if (req) {
-      msgParams.origin = req.origin;
+      msgParams.origin = req.origin
     }
-    msgParams.data = this.normalizeMsgData(msgParams.data);
+    msgParams.data = this.normalizeMsgData(msgParams.data)
     // create txData obj with parameters and meta data
-    const time = new Date().getTime();
-    const msgId = createId();
+    const time = new Date().getTime()
+    const msgId = createId()
     const msgData = {
       id: msgId,
       msgParams,
       time,
       status: 'unapproved',
       type: MESSAGE_TYPE.ETH_DECRYPT,
-    };
-    this.addMsg(msgData);
+    }
+    this.addMsg(msgData)
 
     // signal update
-    this.emit('update');
-    return msgId;
+    this.emit('update')
+    return msgId
   }
 
   /**
@@ -164,8 +164,8 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   addMsg(msg) {
-    this.messages.push(msg);
-    this._saveMsgList();
+    this.messages.push(msg)
+    this._saveMsgList()
   }
 
   /**
@@ -177,7 +177,7 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   getMsg(msgId) {
-    return this.messages.find((msg) => msg.id === msgId);
+    return this.messages.find((msg) => msg.id === msgId)
   }
 
   /**
@@ -190,8 +190,8 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   approveMessage(msgParams) {
-    this.setMsgStatusApproved(msgParams.metamaskId);
-    return this.prepMsgForDecryption(msgParams);
+    this.setMsgStatusApproved(msgParams.metamaskId)
+    return this.prepMsgForDecryption(msgParams)
   }
 
   /**
@@ -201,7 +201,7 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   setMsgStatusApproved(msgId) {
-    this._setMsgStatus(msgId, 'approved');
+    this._setMsgStatus(msgId, 'approved')
   }
 
   /**
@@ -213,10 +213,10 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   setMsgStatusDecrypted(msgId, rawData) {
-    const msg = this.getMsg(msgId);
-    msg.rawData = rawData;
-    this._updateMsg(msg);
-    this._setMsgStatus(msgId, 'decrypted');
+    const msg = this.getMsg(msgId)
+    msg.rawData = rawData
+    this._updateMsg(msg)
+    this._setMsgStatus(msgId, 'decrypted')
   }
 
   /**
@@ -227,8 +227,8 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   prepMsgForDecryption(msgParams) {
-    delete msgParams.metamaskId;
-    return Promise.resolve(msgParams);
+    delete msgParams.metamaskId
+    return Promise.resolve(msgParams)
   }
 
   /**
@@ -238,7 +238,7 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   rejectMsg(msgId) {
-    this._setMsgStatus(msgId, 'rejected');
+    this._setMsgStatus(msgId, 'rejected')
   }
 
   /**
@@ -248,18 +248,18 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   errorMessage(msgId, error) {
-    const msg = this.getMsg(msgId);
-    msg.error = error;
-    this._updateMsg(msg);
-    this._setMsgStatus(msgId, 'errored');
+    const msg = this.getMsg(msgId)
+    msg.error = error
+    this._updateMsg(msg)
+    this._setMsgStatus(msgId, 'errored')
   }
 
   /**
    * Clears all unapproved messages from memory.
    */
   clearUnapproved() {
-    this.messages = this.messages.filter((msg) => msg.status !== 'unapproved');
-    this._saveMsgList();
+    this.messages = this.messages.filter((msg) => msg.status !== 'unapproved')
+    this._saveMsgList()
   }
 
   /**
@@ -276,21 +276,21 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   _setMsgStatus(msgId, status) {
-    const msg = this.getMsg(msgId);
+    const msg = this.getMsg(msgId)
     if (!msg) {
       throw new Error(
         `DecryptMessageManager - Message not found for id: "${msgId}".`,
-      );
+      )
     }
-    msg.status = status;
-    this._updateMsg(msg);
-    this.emit(`${msgId}:${status}`, msg);
+    msg.status = status
+    this._updateMsg(msg)
+    this.emit(`${msgId}:${status}`, msg)
     if (
       status === 'rejected' ||
       status === 'decrypted' ||
       status === 'errored'
     ) {
-      this.emit(`${msgId}:finished`, msg);
+      this.emit(`${msgId}:finished`, msg)
     }
   }
 
@@ -304,11 +304,11 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   _updateMsg(msg) {
-    const index = this.messages.findIndex((message) => message.id === msg.id);
+    const index = this.messages.findIndex((message) => message.id === msg.id)
     if (index !== -1) {
-      this.messages[index] = msg;
+      this.messages[index] = msg
     }
-    this._saveMsgList();
+    this._saveMsgList()
   }
 
   /**
@@ -319,13 +319,13 @@ export default class DecryptMessageManager extends EventEmitter {
    *
    */
   _saveMsgList() {
-    const unapprovedDecryptMsgs = this.getUnapprovedMsgs();
-    const unapprovedDecryptMsgCount = Object.keys(unapprovedDecryptMsgs).length;
+    const unapprovedDecryptMsgs = this.getUnapprovedMsgs()
+    const unapprovedDecryptMsgCount = Object.keys(unapprovedDecryptMsgs).length
     this.memStore.updateState({
       unapprovedDecryptMsgs,
       unapprovedDecryptMsgCount,
-    });
-    this.emit(DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE);
+    })
+    this.emit(DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE)
   }
 
   /**
@@ -337,14 +337,14 @@ export default class DecryptMessageManager extends EventEmitter {
    */
   normalizeMsgData(data) {
     try {
-      const stripped = stripHexPrefix(data);
+      const stripped = stripHexPrefix(data)
       if (stripped.match(hexRe)) {
-        return addHexPrefix(stripped);
+        return addHexPrefix(stripped)
       }
     } catch (e) {
-      log.debug(`Message was not hex encoded, interpreting as utf8.`);
+      log.debug(`Message was not hex encoded, interpreting as utf8.`)
     }
 
-    return bufferToHex(Buffer.from(data, 'utf8'));
+    return bufferToHex(Buffer.from(data, 'utf8'))
   }
 }

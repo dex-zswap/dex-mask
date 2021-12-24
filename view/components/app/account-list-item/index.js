@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import AccountMismatchWarning from '@c/ui/account-mismatch-warning';
-import Identicon from '@c/ui/identicon';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
+import React from 'react'
+import PropTypes from 'prop-types'
+import AccountMismatchWarning from '@c/ui/account-mismatch-warning'
+import Identicon from '@c/ui/identicon'
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
 export default function AccountListItem({
   account,
   className,
@@ -10,7 +10,7 @@ export default function AccountListItem({
   handleClick,
   icon = null,
 }) {
-  const { name, address, balance } = account || {};
+  const { name, address, balance } = account || {}
   return (
     <div
       className={`account-list-item ${className}`}
@@ -22,27 +22,27 @@ export default function AccountListItem({
         })
       }
     >
-      <div className="account-list-item__top-row">
+      <div className='account-list-item__top-row'>
         <Identicon
           address={address}
-          className="account-list-item__identicon"
+          className='account-list-item__identicon'
           diameter={18}
         />
 
-        <div className="account-list-item__account-name">{name || address}</div>
+        <div className='account-list-item__account-name'>{name || address}</div>
 
-        {icon && <div className="account-list-item__icon">{icon}</div>}
+        {icon && <div className='account-list-item__icon'>{icon}</div>}
 
         <AccountMismatchWarning address={address} />
       </div>
 
       {displayAddress && name && (
-        <div className="account-list-item__account-address">
+        <div className='account-list-item__account-address'>
           {toChecksumHexAddress(address)}
         </div>
       )}
     </div>
-  );
+  )
 }
 AccountListItem.propTypes = {
   account: PropTypes.object,
@@ -50,4 +50,4 @@ AccountListItem.propTypes = {
   displayAddress: PropTypes.bool,
   handleClick: PropTypes.func,
   icon: PropTypes.node,
-};
+}

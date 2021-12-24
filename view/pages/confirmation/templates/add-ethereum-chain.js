@@ -1,6 +1,6 @@
-import { ethErrors } from 'eth-rpc-errors';
-import { SEVERITIES, TYPOGRAPHY } from '@view/helpers/constants/design-system';
-import fetchWithCache from '@view/helpers/utils/fetch-with-cache';
+import { ethErrors } from 'eth-rpc-errors'
+import { SEVERITIES, TYPOGRAPHY } from '@view/helpers/constants/design-system'
+import fetchWithCache from '@view/helpers/utils/fetch-with-cache'
 const UNRECOGNIZED_CHAIN = {
   id: 'UNRECOGNIZED_CHAIN',
   severity: SEVERITIES.WARNING,
@@ -25,7 +25,7 @@ const UNRECOGNIZED_CHAIN = {
       },
     },
   },
-};
+}
 const INVALID_CHAIN = {
   id: 'INVALID_CHAIN',
   severity: SEVERITIES.DANGER,
@@ -50,18 +50,18 @@ const INVALID_CHAIN = {
       },
     },
   },
-};
+}
 
 async function getAlerts(pendingApproval) {
-  const alerts = [];
+  const alerts = []
   const safeChainsList = await fetchWithCache(
     'https://chainid.network/chains.json',
-  );
+  )
   const matchedChain = safeChainsList.find(
     (chain) =>
       chain.chainId === parseInt(pendingApproval.requestData.chainId, 16),
-  );
-  let validated = Boolean(matchedChain);
+  )
+  let validated = Boolean(matchedChain)
 
   if (matchedChain) {
     if (
@@ -70,23 +70,23 @@ async function getAlerts(pendingApproval) {
         pendingApproval.requestData.chainName.toLowerCase() ||
       matchedChain.nativeCurrency?.symbol !== pendingApproval.requestData.ticker
     ) {
-      validated = false;
+      validated = false
     }
 
-    const { origin } = new URL(pendingApproval.requestData.rpcUrl);
+    const { origin } = new URL(pendingApproval.requestData.rpcUrl)
 
     if (!matchedChain.rpc.map((rpc) => new URL(rpc).origin).includes(origin)) {
-      validated = false;
+      validated = false
     }
   }
 
   if (!matchedChain) {
-    alerts.push(UNRECOGNIZED_CHAIN);
+    alerts.push(UNRECOGNIZED_CHAIN)
   } else if (!validated) {
-    alerts.push(INVALID_CHAIN);
+    alerts.push(INVALID_CHAIN)
   }
 
-  return alerts;
+  return alerts
 }
 
 function getValues(pendingApproval, t, actions) {
@@ -176,11 +176,11 @@ function getValues(pendingApproval, t, actions) {
         pendingApproval.id,
         ethErrors.provider.userRejectedRequest(),
       ),
-  };
+  }
 }
 
 const addEthereumChain = {
   getAlerts,
   getValues,
-};
-export default addEthereumChain;
+}
+export default addEthereumChain

@@ -1,8 +1,8 @@
-import BigNumber from 'bignumber.js';
-import * as ethUtil from 'ethereumjs-util';
-import abi from 'human-standard-token-abi';
-import { DateTime } from 'luxon';
-import { addHexPrefix } from '@app/scripts/lib/util';
+import BigNumber from 'bignumber.js'
+import * as ethUtil from 'ethereumjs-util'
+import abi from 'human-standard-token-abi'
+import { DateTime } from 'luxon'
+import { addHexPrefix } from '@app/scripts/lib/util'
 import {
   GOERLI_CHAIN_ID,
   KOVAN_CHAIN_ID,
@@ -10,16 +10,16 @@ import {
   MAINNET_CHAIN_ID,
   RINKEBY_CHAIN_ID,
   ROPSTEN_CHAIN_ID,
-} from '@shared/constants/network';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
-import punycode from 'punycode/punycode'; // formatData :: ( date: <Unix Timestamp> ) -> String
+} from '@shared/constants/network'
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
+import punycode from 'punycode/punycode' // formatData :: ( date: <Unix Timestamp> ) -> String
 
 export function formatDate(date, format = "M LLL y 'at' T") {
   if (!date) {
-    return '';
+    return ''
   }
 
-  return DateTime.fromMillis(date).toFormat(format);
+  return DateTime.fromMillis(date).toFormat(format)
 }
 export function formatDateWithYearContext(
   date,
@@ -27,14 +27,14 @@ export function formatDateWithYearContext(
   fallback = 'MMM d, y',
 ) {
   if (!date) {
-    return '';
+    return ''
   }
 
-  const dateTime = DateTime.fromMillis(date);
-  const now = DateTime.local();
+  const dateTime = DateTime.fromMillis(date)
+  const now = DateTime.local()
   return dateTime.toFormat(
     now.year === dateTime.year ? formatThisYear : fallback,
-  );
+  )
 }
 /**
  * Determines if the provided chainId is a default MetaMask chain
@@ -51,19 +51,19 @@ export function isDefaultMetaMaskChain(chainId) {
     chainId === GOERLI_CHAIN_ID ||
     chainId === LOCALHOST_CHAIN_ID
   ) {
-    return true;
+    return true
   }
 
-  return false;
+  return false
 }
 export function valuesFor(obj) {
   if (!obj) {
-    return [];
+    return []
   }
 
   return Object.keys(obj).map(function (key) {
-    return obj[key];
-  });
+    return obj[key]
+  })
 }
 export function addressSummary(
   address,
@@ -72,20 +72,20 @@ export function addressSummary(
   includeHex = true,
 ) {
   if (!address) {
-    return '';
+    return ''
   }
 
-  let checked = toChecksumHexAddress(address);
+  let checked = toChecksumHexAddress(address)
 
   if (!includeHex) {
-    checked = ethUtil.stripHexPrefix(checked);
+    checked = ethUtil.stripHexPrefix(checked)
   }
 
   return checked
     ? `${checked.slice(0, firstSegLength)}...${checked.slice(
         checked.length - lastSegLength,
       )}`
-    : '...';
+    : '...'
 }
 export function isValidDomainName(address) {
   const match = punycode
@@ -95,42 +95,42 @@ export function isValidDomainName(address) {
     // A chunk has minimum length of 1, but minimum tld is set to 2 for now (no 1-character tlds exist yet)
     .match(
       /^(?:[a-z0-9](?:[-a-z0-9]*[a-z0-9])?\.)+[a-z0-9][-a-z0-9]*[a-z0-9]$/u,
-    );
-  return match !== null;
+    )
+  return match !== null
 }
 export function isOriginContractAddress(to, sendTokenAddress) {
   if (!to || !sendTokenAddress) {
-    return false;
+    return false
   }
 
-  return to.toLowerCase() === sendTokenAddress.toLowerCase();
+  return to.toLowerCase() === sendTokenAddress.toLowerCase()
 } // Takes wei Hex, returns wei BN, even if input is null
 
 export function numericBalance(balance) {
   if (!balance) {
-    return new ethUtil.BN(0, 16);
+    return new ethUtil.BN(0, 16)
   }
 
-  const stripped = ethUtil.stripHexPrefix(balance);
-  return new ethUtil.BN(stripped, 16);
+  const stripped = ethUtil.stripHexPrefix(balance)
+  return new ethUtil.BN(stripped, 16)
 } // Takes  hex, returns [beforeDecimal, afterDecimal]
 
 export function parseBalance(balance) {
-  let afterDecimal;
-  const wei = numericBalance(balance);
-  const weiString = wei.toString();
-  const trailingZeros = /0+$/u;
+  let afterDecimal
+  const wei = numericBalance(balance)
+  const weiString = wei.toString()
+  const trailingZeros = /0+$/u
   const beforeDecimal =
-    weiString.length > 18 ? weiString.slice(0, weiString.length - 18) : '0';
+    weiString.length > 18 ? weiString.slice(0, weiString.length - 18) : '0'
   afterDecimal = `000000000000000000${wei}`
     .slice(-18)
-    .replace(trailingZeros, '');
+    .replace(trailingZeros, '')
 
   if (afterDecimal === '') {
-    afterDecimal = '0';
+    afterDecimal = '0'
   }
 
-  return [beforeDecimal, afterDecimal];
+  return [beforeDecimal, afterDecimal]
 } // Takes wei hex, returns an object with three properties.
 // Its "formatted" property is what we generally use to render values.
 
@@ -140,69 +140,69 @@ export function formatBalance(
   needsParse = true,
   ticker = 'ETH',
 ) {
-  const parsed = needsParse ? parseBalance(balance) : balance.split('.');
-  const beforeDecimal = parsed[0];
-  let afterDecimal = parsed[1];
-  let formatted = 'None';
+  const parsed = needsParse ? parseBalance(balance) : balance.split('.')
+  const beforeDecimal = parsed[0]
+  let afterDecimal = parsed[1]
+  let formatted = 'None'
 
   if (decimalsToKeep === undefined) {
     if (beforeDecimal === '0') {
       if (afterDecimal !== '0') {
-        const sigFigs = afterDecimal.match(/^0*(.{2})/u); // default: grabs 2 most significant digits
+        const sigFigs = afterDecimal.match(/^0*(.{2})/u) // default: grabs 2 most significant digits
 
         if (sigFigs) {
-          afterDecimal = sigFigs[0];
+          afterDecimal = sigFigs[0]
         }
 
-        formatted = `0.${afterDecimal} ${ticker}`;
+        formatted = `0.${afterDecimal} ${ticker}`
       }
     } else {
-      formatted = `${beforeDecimal}.${afterDecimal.slice(0, 3)} ${ticker}`;
+      formatted = `${beforeDecimal}.${afterDecimal.slice(0, 3)} ${ticker}`
     }
   } else {
-    afterDecimal += Array(decimalsToKeep).join('0');
+    afterDecimal += Array(decimalsToKeep).join('0')
     formatted = `${beforeDecimal}.${afterDecimal.slice(
       0,
       decimalsToKeep,
-    )} ${ticker}`;
+    )} ${ticker}`
   }
 
-  return formatted;
+  return formatted
 }
 export function getContractAtAddress(tokenAddress) {
-  return global.eth.contract(abi).at(tokenAddress);
+  return global.eth.contract(abi).at(tokenAddress)
 }
 export function getRandomFileName() {
-  let fileName = '';
+  let fileName = ''
   const charBank = [
     ...'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-  ];
-  const fileNameLength = Math.floor(Math.random() * 7 + 6);
+  ]
+  const fileNameLength = Math.floor(Math.random() * 7 + 6)
 
   for (let i = 0; i < fileNameLength; i++) {
-    fileName += charBank[Math.floor(Math.random() * charBank.length)];
+    fileName += charBank[Math.floor(Math.random() * charBank.length)]
   }
 
-  return fileName;
+  return fileName
 }
 export function exportAsFile(filename, data, type = 'text/csv') {
   // eslint-disable-next-line no-param-reassign
-  filename = filename || getRandomFileName(); // source: https://stackoverflow.com/a/33542499 by Ludovic Feltz
+  filename = filename || getRandomFileName() // source: https://stackoverflow.com/a/33542499 by Ludovic Feltz
 
   const blob = new window.Blob([data], {
     type,
-  });
+  })
 
   if (window.navigator.msSaveOrOpenBlob) {
-    window.navigator.msSaveBlob(blob, filename);
+    window.navigator.msSaveBlob(blob, filename)
   } else {
-    const elem = window.document.createElement('a');
-    elem.target = '_blank';
-    elem.href = window.URL.createObjectURL(blob);
-    elem.download = filename;
-    document.body.appendChild(elem);
-    elem.click();
-    document.body.removeChild(elem);
+    const elem = window.document.createElement('a')
+    elem.target = '_blank'
+    elem.href = window.URL.createObjectURL(blob)
+    elem.download = filename
+    document.body.appendChild(elem)
+    elem.click()
+    document.body.removeChild(elem)
   }
 }
 /**
@@ -219,13 +219,13 @@ export function exportAsFile(filename, data, type = 'text/csv') {
 
 export function shortenAddress(address = '', pre = 8, suffix = -8) {
   if (address.length < 11) {
-    return address;
+    return address
   }
 
-  return `${address.slice(0, pre)}...${address.slice(suffix)}`;
+  return `${address.slice(0, pre)}...${address.slice(suffix)}`
 }
 export function getAccountByAddress(accounts = [], targetAddress) {
-  return accounts.find(({ address }) => address === targetAddress);
+  return accounts.find(({ address }) => address === targetAddress)
 }
 /**
  * Strips the following schemes from URL strings:
@@ -237,7 +237,7 @@ export function getAccountByAddress(accounts = [], targetAddress) {
  */
 
 export function stripHttpSchemes(urlString) {
-  return urlString.replace(/^https?:\/\//u, '');
+  return urlString.replace(/^https?:\/\//u, '')
 }
 /**
  * Strips the following schemes from URL strings:
@@ -248,7 +248,7 @@ export function stripHttpSchemes(urlString) {
  */
 
 export function stripHttpsScheme(urlString) {
-  return urlString.replace(/^https:\/\//u, '');
+  return urlString.replace(/^https:\/\//u, '')
 }
 /**
  * Checks whether a URL-like value (object or string) is an extension URL.
@@ -258,21 +258,21 @@ export function stripHttpsScheme(urlString) {
  */
 
 export function isExtensionUrl(urlLike) {
-  const EXT_PROTOCOLS = ['chrome-extension:', 'moz-extension:'];
+  const EXT_PROTOCOLS = ['chrome-extension:', 'moz-extension:']
 
   if (typeof urlLike === 'string') {
     for (const protocol of EXT_PROTOCOLS) {
       if (urlLike.startsWith(protocol)) {
-        return true;
+        return true
       }
     }
   }
 
   if (urlLike?.protocol) {
-    return EXT_PROTOCOLS.includes(urlLike.protocol);
+    return EXT_PROTOCOLS.includes(urlLike.protocol)
   }
 
-  return false;
+  return false
 }
 /**
  * Checks whether an address is in a passed list of objects with address properties. The check is performed on the
@@ -285,14 +285,14 @@ export function isExtensionUrl(urlLike) {
 
 export function checkExistingAddresses(address, list = []) {
   if (!address) {
-    return false;
+    return false
   }
 
   const matchesAddress = (obj) => {
-    return obj.address.toLowerCase() === address.toLowerCase();
-  };
+    return obj.address.toLowerCase() === address.toLowerCase()
+  }
 
-  return list.some(matchesAddress);
+  return list.some(matchesAddress)
 }
 /**
  * Given a number and specified precision, returns that number in base 10 with a maximum of precision
@@ -307,7 +307,7 @@ export function checkExistingAddresses(address, list = []) {
 export function toPrecisionWithoutTrailingZeros(n, precision) {
   return new BigNumber(n)
     .toPrecision(precision)
-    .replace(/(\.[0-9]*[1-9])0*|(\.0*)/u, '$1');
+    .replace(/(\.[0-9]*[1-9])0*|(\.0*)/u, '$1')
 }
 /**
  * Given and object where all values are strings, returns the same object with all values
@@ -316,8 +316,8 @@ export function toPrecisionWithoutTrailingZeros(n, precision) {
 
 export function addHexPrefixToObjectValues(obj) {
   return Object.keys(obj).reduce((newObj, key) => {
-    return { ...newObj, [key]: addHexPrefix(obj[key]) };
-  }, {});
+    return { ...newObj, [key]: addHexPrefix(obj[key]) }
+  }, {})
 }
 /**
  * Given the standard set of information about a transaction, returns a transaction properly formatted for
@@ -347,40 +347,40 @@ export function constructTxParams({
     value: '0',
     gas,
     gasPrice,
-  };
-
-  if (!sendToken) {
-    txParams.value = amount;
-    txParams.to = to;
   }
 
-  return addHexPrefixToObjectValues(txParams);
+  if (!sendToken) {
+    txParams.value = amount
+    txParams.to = to
+  }
+
+  return addHexPrefixToObjectValues(txParams)
 }
 export function bnGreaterThan(a, b) {
   if (a === null || a === undefined || b === null || b === undefined) {
-    return null;
+    return null
   }
 
-  return new BigNumber(a, 10).gt(b, 10);
+  return new BigNumber(a, 10).gt(b, 10)
 }
 export function bnLessThan(a, b) {
   if (a === null || a === undefined || b === null || b === undefined) {
-    return null;
+    return null
   }
 
-  return new BigNumber(a, 10).lt(b, 10);
+  return new BigNumber(a, 10).lt(b, 10)
 }
 export function bnGreaterThanEqualTo(a, b) {
   if (a === null || a === undefined || b === null || b === undefined) {
-    return null;
+    return null
   }
 
-  return new BigNumber(a, 10).gte(b, 10);
+  return new BigNumber(a, 10).gte(b, 10)
 }
 export function bnLessThanEqualTo(a, b) {
   if (a === null || a === undefined || b === null || b === undefined) {
-    return null;
+    return null
   }
 
-  return new BigNumber(a, 10).lte(b, 10);
+  return new BigNumber(a, 10).lte(b, 10)
 }

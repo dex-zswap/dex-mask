@@ -1,44 +1,42 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import classnames from 'classnames';
-import { findKey } from 'lodash';
+import React from 'react'
+import { useSelector } from 'react-redux'
+import classnames from 'classnames'
+import { findKey } from 'lodash'
 import {
   STATUS_CONNECTED,
   STATUS_CONNECTED_TO_ANOTHER_ACCOUNT,
   STATUS_NOT_CONNECTED,
-} from '@view/helpers/constants/connected-sites';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+} from '@view/helpers/constants/connected-sites'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import {
   getAddressConnectedDomainMap,
   getOriginOfCurrentTab,
   getSelectedAddress,
-} from '@view/selectors';
+} from '@view/selectors'
 export default function ConnectedStatusIndicator({ onClick }) {
-  const t = useI18nContext();
-  const selectedAddress = useSelector(getSelectedAddress);
-  const addressConnectedDomainMap = useSelector(getAddressConnectedDomainMap);
-  const originOfCurrentTab = useSelector(getOriginOfCurrentTab);
-  const selectedAddressDomainMap = addressConnectedDomainMap[selectedAddress];
+  const t = useI18nContext()
+  const selectedAddress = useSelector(getSelectedAddress)
+  const addressConnectedDomainMap = useSelector(getAddressConnectedDomainMap)
+  const originOfCurrentTab = useSelector(getOriginOfCurrentTab)
+  const selectedAddressDomainMap = addressConnectedDomainMap[selectedAddress]
   const currentTabIsConnectedToSelectedAddress = Boolean(
     selectedAddressDomainMap && selectedAddressDomainMap[originOfCurrentTab],
-  );
-  let status;
+  )
+  let status
 
   if (currentTabIsConnectedToSelectedAddress) {
-    status = STATUS_CONNECTED;
+    status = STATUS_CONNECTED
   } else if (findKey(addressConnectedDomainMap, originOfCurrentTab)) {
-    status = STATUS_CONNECTED_TO_ANOTHER_ACCOUNT;
+    status = STATUS_CONNECTED_TO_ANOTHER_ACCOUNT
   } else {
-    status = STATUS_NOT_CONNECTED;
+    status = STATUS_NOT_CONNECTED
   }
 
   const text =
-    status === STATUS_CONNECTED
-      ? t('statusConnected')
-      : t('statusNotConnected');
+    status === STATUS_CONNECTED ? t('statusConnected') : t('statusNotConnected')
   return (
     <button
-      className="connected-status-indicator flex items-center"
+      className='connected-status-indicator flex items-center'
       onClick={onClick}
     >
       <i
@@ -47,7 +45,7 @@ export default function ConnectedStatusIndicator({ onClick }) {
           status === STATUS_CONNECTED ? 'connected' : 'not-connected',
         )}
       ></i>
-      <div className="connected-status-indicator__text">{text}</div>
+      <div className='connected-status-indicator__text'>{text}</div>
     </button>
-  );
+  )
 }

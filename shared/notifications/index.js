@@ -30,10 +30,10 @@ export const UI_NOTIFICATIONS = {
     id: 6,
     date: '2021-05-26',
   },
-};
+}
 
 export const getTranslatedUINoficiations = (t, locale) => {
-  const formattedLocale = locale.replace('_', '-');
+  const formattedLocale = locale.replace('_', '-')
   return {
     1: {
       ...UI_NOTIFICATIONS[1],
@@ -82,5 +82,5 @@ export const getTranslatedUINoficiations = (t, locale) => {
         new Date(UI_NOTIFICATIONS[6].date),
       ),
     },
-  };
-};
+  }
+}

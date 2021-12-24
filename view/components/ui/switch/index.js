@@ -1,5 +1,5 @@
-import React from 'react';
-import classnames from 'classnames';
+import React from 'react'
+import classnames from 'classnames'
 
 const Switch = ({ value, onChange, disabled }) => {
   return (
@@ -10,11 +10,11 @@ const Switch = ({ value, onChange, disabled }) => {
         disabled ? 'disabled-switch' : '',
       ])}
       onClick={() => {
-        if (disabled) return;
-        onChange();
+        if (disabled) return
+        onChange()
       }}
     ></div>
-  );
-};
+  )
+}
 
-export default Switch;
+export default Switch

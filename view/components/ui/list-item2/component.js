@@ -1,6 +1,6 @@
-import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import React from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 export default function TransitionListItem({
   title,
   subtitle,
@@ -18,44 +18,44 @@ export default function TransitionListItem({
     'transition-list__row-item',
     className,
     subtitle || children ? '' : 'list-item--single-content-row',
-  );
+  )
   return (
     <div
       className={primaryClassName}
       onClick={onClick}
       data-testid={dataTestId}
-      role="button"
+      role='button'
       tabIndex={0}
       onKeyPress={(event) => {
         if (event.key === 'Enter') {
-          onClick();
+          onClick()
         }
       }}
     >
-      <div className="left-status">
-        <div className="left-status__icon-wrapper">
-          {icon && <div className="list-item__icon">{icon}</div>}
-          <div className="headings">
-            <div className="title">
+      <div className='left-status'>
+        <div className='left-status__icon-wrapper'>
+          {icon && <div className='list-item__icon'>{icon}</div>}
+          <div className='headings'>
+            <div className='title'>
               {React.isValidElement(title) ? (
                 title
               ) : (
-                <h2 className="list-item__title">{title}</h2>
+                <h2 className='list-item__title'>{title}</h2>
               )}
             </div>
             {subtitle && (
-              <div className="list-item__subheading">{subtitle}</div>
+              <div className='list-item__subheading'>{subtitle}</div>
             )}
           </div>
         </div>
       </div>
-      {children && <div className="list-item__actions">{children}</div>}
-      {midContent && <div className="list-item__mid-content">{midContent}</div>}
+      {children && <div className='list-item__actions'>{children}</div>}
+      {midContent && <div className='list-item__mid-content'>{midContent}</div>}
       {rightContent && (
-        <div className="list-item__right-content">{rightContent}</div>
+        <div className='list-item__right-content'>{rightContent}</div>
       )}
     </div>
-  );
+  )
 }
 TransitionListItem.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
@@ -68,4 +68,4 @@ TransitionListItem.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes.func,
   'data-testid': PropTypes.string,
-};
+}

@@ -1,69 +1,69 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { MenuItem } from '@c/ui/menu';
-import Button from '@c/ui/button';
-import ConnectedAccountsListItem from './item';
-import ConnectedAccountsListOptions from './options';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { MenuItem } from '@c/ui/menu'
+import Button from '@c/ui/button'
+import ConnectedAccountsListItem from './item'
+import ConnectedAccountsListOptions from './options'
 export default class ConnectedAccountsList extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
-  };
+  }
   static defaultProps = {
     accountToConnect: null,
-  };
+  }
   state = {
     accountWithOptionsShown: null,
-  };
+  }
   disconnectAccount = () => {
-    this.hideAccountOptions();
-    this.props.removePermittedAccount(this.state.accountWithOptionsShown);
-  };
+    this.hideAccountOptions()
+    this.props.removePermittedAccount(this.state.accountWithOptionsShown)
+  }
   switchAccount = (address) => {
-    this.hideAccountOptions();
-    this.props.setSelectedAddress(address);
-  };
+    this.hideAccountOptions()
+    this.props.setSelectedAddress(address)
+  }
   hideAccountOptions = () => {
     this.setState({
       accountWithOptionsShown: null,
-    });
-  };
+    })
+  }
   showAccountOptions = (address) => {
     this.setState({
       accountWithOptionsShown: address,
-    });
-  };
+    })
+  }
 
   renderUnconnectedAccount() {
-    const { accountToConnect, connectAccount } = this.props;
-    const { t } = this.context;
+    const { accountToConnect, connectAccount } = this.props
+    const { t } = this.context
 
     if (!accountToConnect) {
-      return null;
+      return null
     }
 
-    const { address, name } = accountToConnect;
+    const { address, name } = accountToConnect
     return (
       <ConnectedAccountsListItem
-        className="connected-accounts-list__row--highlight"
+        className='connected-accounts-list__row--highlight'
         address={address}
         name={`${name} (…${address.substr(-4, 4)})`}
         status={t('statusNotConnected')}
         action={
           <Button
-            type="primary"
-            className="connected-accounts-list__account-status-button"
+            type='primary'
+            className='connected-accounts-list__account-status-button'
             onClick={() => connectAccount(accountToConnect.address)}
           >
             {t('connect')}
           </Button>
         }
       />
-    );
+    )
   }
 
   renderListItemOptions(address) {
-    const { accountWithOptionsShown } = this.state;
-    const { t } = this.context;
+    const { accountWithOptionsShown } = this.state
+    const { t } = this.context
     return (
       <ConnectedAccountsListOptions
         onHideOptions={this.hideAccountOptions}
@@ -71,26 +71,26 @@ export default class ConnectedAccountsList extends PureComponent {
         show={accountWithOptionsShown === address}
       >
         <MenuItem
-          iconClassName="disconnect-icon"
+          iconClassName='disconnect-icon'
           onClick={this.disconnectAccount}
         >
           {t('disconnectThisAccount')}
         </MenuItem>
       </ConnectedAccountsListOptions>
-    );
+    )
   }
 
   renderListItemAction(address) {
-    const { t } = this.context;
+    const { t } = this.context
     return (
       <Button
-        type="primary"
-        className="connected-accounts-list__account-status-button"
+        type='primary'
+        className='connected-accounts-list__account-status-button'
         onClick={() => this.switchAccount(address)}
       >
         {t('switchToThisAccount')}
       </Button>
-    );
+    )
   }
 
   render() {
@@ -98,21 +98,21 @@ export default class ConnectedAccountsList extends PureComponent {
       connectedAccounts,
       selectedAddress,
       shouldRenderListOptions,
-    } = this.props;
-    const { t } = this.context;
+    } = this.props
+    const { t } = this.context
     return (
       <>
-        <main className="connected-accounts-list">
+        <main className='connected-accounts-list'>
           {this.renderUnconnectedAccount()}
           {connectedAccounts.map(({ address, name }, index) => {
             const action =
               address === selectedAddress
                 ? null
-                : this.renderListItemAction(address);
+                : this.renderListItemAction(address)
             const options =
               shouldRenderListOptions && action === null
                 ? this.renderListItemOptions(address)
-                : null;
+                : null
             return (
               <ConnectedAccountsListItem
                 key={address}
@@ -122,10 +122,10 @@ export default class ConnectedAccountsList extends PureComponent {
                 options={options}
                 action={action}
               />
-            );
+            )
           })}
         </main>
       </>
-    );
+    )
   }
 }

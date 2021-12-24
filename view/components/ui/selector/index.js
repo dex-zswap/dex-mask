@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import classnames from 'classnames';
+import React, { useCallback, useMemo, useState } from 'react'
+import classnames from 'classnames'
 export default function Selector({
   options,
   onSelect,
@@ -10,23 +10,23 @@ export default function Selector({
   footer,
   small,
 }) {
-  const [show, setShow] = useState(false);
-  const toggleShow = useCallback(() => setShow((show) => !show), []);
+  const [show, setShow] = useState(false)
+  const toggleShow = useCallback(() => setShow((show) => !show), [])
   const onChange = useCallback(
     (value, detail) => {
-      toggleShow();
-      onSelect(value, detail);
+      toggleShow()
+      onSelect(value, detail)
     },
     [onSelect],
-  );
+  )
   const selectedItem = useMemo(
     () => options.find(({ value }) => value === selectedValue),
     [options, selectedValue],
-  );
+  )
   const selectedLabel = useMemo(
     () => options.find(({ value }) => value === selectedValue)?.label || '',
     [options, selectedValue],
-  );
+  )
   return (
     <div
       className={classnames([
@@ -36,15 +36,15 @@ export default function Selector({
         className,
       ])}
     >
-      <div className="current-label" onClick={toggleShow}>
+      <div className='current-label' onClick={toggleShow}>
         {labelRender && selectedItem
           ? labelRender(selectedItem)
           : selectedLabel}
       </div>
       {show && (
         <>
-          <div className="options-mask" onClick={() => setShow(false)}></div>
-          <div className="selector-menu">
+          <div className='options-mask' onClick={() => setShow(false)}></div>
+          <div className='selector-menu'>
             <div
               className={classnames(
                 'select-menu-area',
@@ -58,8 +58,8 @@ export default function Selector({
                     selectedValue === value ? 'select-option-active-color' : '',
                   ])}
                   onClick={(e) => {
-                    e.stopPropagation();
-                    onChange(value, options[index]);
+                    e.stopPropagation()
+                    onChange(value, options[index])
                   }}
                   key={value}
                 >
@@ -72,5 +72,5 @@ export default function Selector({
         </>
       )}
     </div>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { ObservableStore } from '@metamask/obs-store';
+import { ObservableStore } from '@metamask/obs-store'
 
 /**
  * @typedef {import('@metamask/controllers').ControllerMessenger} ControllerMessenger
@@ -16,7 +16,7 @@ export default class ComposableObservableStore extends ObservableStore {
    * package.
    * @type {Record<string, Object>}
    */
-  config = {};
+  config = {}
 
   /**
    * Create a new store
@@ -29,10 +29,10 @@ export default class ComposableObservableStore extends ObservableStore {
    * @param {Object} [options.state] - The initial store state
    */
   constructor({ config, controllerMessenger, state }) {
-    super(state);
-    this.controllerMessenger = controllerMessenger;
+    super(state)
+    this.controllerMessenger = controllerMessenger
     if (config) {
-      this.updateStructure(config);
+      this.updateStructure(config)
     }
   }
 
@@ -45,24 +45,24 @@ export default class ComposableObservableStore extends ObservableStore {
    *   controllers in the `@metamask/controllers` package.
    */
   updateStructure(config) {
-    this.config = config;
-    this.removeAllListeners();
+    this.config = config
+    this.removeAllListeners()
     for (const key of Object.keys(config)) {
       if (!config[key]) {
-        throw new Error(`Undefined '${key}'`);
+        throw new Error(`Undefined '${key}'`)
       }
-      const store = config[key];
+      const store = config[key]
       if (store.subscribe) {
         config[key].subscribe((state) => {
-          this.updateState({ [key]: state });
-        });
+          this.updateState({ [key]: state })
+        })
       } else {
         this.controllerMessenger.subscribe(
           `${store.name}:stateChange`,
           (state) => {
-            this.updateState({ [key]: state });
+            this.updateState({ [key]: state })
           },
-        );
+        )
       }
     }
   }
@@ -75,16 +75,16 @@ export default class ComposableObservableStore extends ObservableStore {
    */
   getFlatState() {
     if (!this.config) {
-      return {};
+      return {}
     }
-    let flatState = {};
+    let flatState = {}
     for (const key of Object.keys(this.config)) {
-      const controller = this.config[key];
+      const controller = this.config[key]
       const state = controller.getState
         ? controller.getState()
-        : controller.state;
-      flatState = { ...flatState, ...state };
+        : controller.state
+      flatState = { ...flatState, ...state }
     }
-    return flatState;
+    return flatState
   }
 }

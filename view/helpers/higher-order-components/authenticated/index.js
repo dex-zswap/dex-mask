@@ -1,14 +1,14 @@
-import { connect } from 'react-redux';
-import Authenticated from './component';
+import { connect } from 'react-redux'
+import Authenticated from './component'
 
 const mapStateToProps = (state) => {
   const {
     metamask: { isUnlocked, completedOnboarding },
-  } = state;
+  } = state
   return {
     isUnlocked,
     completedOnboarding,
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps)(Authenticated);
+export default connect(mapStateToProps)(Authenticated)

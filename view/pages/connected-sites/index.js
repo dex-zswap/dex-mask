@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
-import { getMostRecentOverviewPage } from '@reducer/history/history';
-import { CONNECT_ROUTE } from '@view/helpers/constants/routes';
+import { connect } from 'react-redux'
+import { getMostRecentOverviewPage } from '@reducer/history/history'
+import { CONNECT_ROUTE } from '@view/helpers/constants/routes'
 import {
   getConnectedDomainsForSelectedAddress,
   getCurrentAccountWithSendEtherInfo,
@@ -9,30 +9,30 @@ import {
   getPermissionsMetadataHostCounts,
   getPermittedAccountsByOrigin,
   getSelectedAddress,
-} from '@view/selectors';
+} from '@view/selectors'
 import {
   getOpenMetamaskTabsIds,
   removePermissionsFor,
   removePermittedAccount,
   requestAccountsPermissionWithId,
-} from '@view/store/actions';
-import ConnectedSites from './component';
+} from '@view/store/actions'
+import ConnectedSites from './component'
 
 const mapStateToProps = (state) => {
-  const { openMetaMaskTabs } = state.appState;
-  const { id } = state.activeTab;
-  const connectedDomains = getConnectedDomainsForSelectedAddress(state);
-  const originOfCurrentTab = getOriginOfCurrentTab(state);
-  const permittedAccountsByOrigin = getPermittedAccountsByOrigin(state);
-  const selectedAddress = getSelectedAddress(state);
+  const { openMetaMaskTabs } = state.appState
+  const { id } = state.activeTab
+  const connectedDomains = getConnectedDomainsForSelectedAddress(state)
+  const originOfCurrentTab = getOriginOfCurrentTab(state)
+  const permittedAccountsByOrigin = getPermittedAccountsByOrigin(state)
+  const selectedAddress = getSelectedAddress(state)
   const currentTabHasNoAccounts = !permittedAccountsByOrigin[originOfCurrentTab]
-    ?.length;
-  let tabToConnect;
+    ?.length
+  let tabToConnect
 
   if (originOfCurrentTab && currentTabHasNoAccounts && !openMetaMaskTabs[id]) {
     tabToConnect = {
       origin: originOfCurrentTab,
-    };
+    }
   }
 
   return {
@@ -44,29 +44,29 @@ const mapStateToProps = (state) => {
     permittedAccountsByOrigin,
     selectedAddress,
     tabToConnect,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getOpenMetamaskTabsIds: () => dispatch(getOpenMetamaskTabsIds()),
     disconnectAccount: (domainKey, address) => {
-      dispatch(removePermittedAccount(domainKey, address));
+      dispatch(removePermittedAccount(domainKey, address))
     },
     disconnectAllAccounts: (domainKey, domain) => {
       const permissionMethodNames = domain.permissions.map(
         ({ parentCapability }) => parentCapability,
-      );
+      )
       dispatch(
         removePermissionsFor({
           [domainKey]: permissionMethodNames,
         }),
-      );
+      )
     },
     requestAccountsPermissionWithId: (origin) =>
       dispatch(requestAccountsPermissionWithId(origin)),
-  };
-};
+  }
+}
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   const {
@@ -75,42 +75,42 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     mostRecentOverviewPage,
     selectedAddress,
     tabToConnect,
-  } = stateProps;
+  } = stateProps
   const {
     disconnectAccount,
     disconnectAllAccounts,
     // eslint-disable-next-line no-shadow
     requestAccountsPermissionWithId,
-  } = dispatchProps;
-  const { history, onClose } = ownProps;
+  } = dispatchProps
+  const { history, onClose } = ownProps
   return {
     ...ownProps,
     ...stateProps,
     ...dispatchProps,
     closePopover: onClose,
     disconnectAccount: (domainKey) => {
-      disconnectAccount(domainKey, selectedAddress);
+      disconnectAccount(domainKey, selectedAddress)
 
       if (connectedDomains.length === 1) {
-        onClose();
+        onClose()
       }
     },
     disconnectAllAccounts: (domainKey) => {
-      disconnectAllAccounts(domainKey, domains[domainKey]);
+      disconnectAllAccounts(domainKey, domains[domainKey])
 
       if (connectedDomains.length === 1) {
-        onClose();
+        onClose()
       }
     },
     requestAccountsPermission: async () => {
-      const id = await requestAccountsPermissionWithId(tabToConnect.origin);
-      history.push(`${CONNECT_ROUTE}/${id}`);
+      const id = await requestAccountsPermissionWithId(tabToConnect.origin)
+      history.push(`${CONNECT_ROUTE}/${id}`)
     },
-  };
-};
+  }
+}
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
   mergeProps,
-)(ConnectedSites);
+)(ConnectedSites)

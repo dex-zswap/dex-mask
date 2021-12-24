@@ -20,23 +20,23 @@ async function retry(
   { retries, delay = 0, rejectionMessage = 'Retry limit reached' },
   functionToRetry,
 ) {
-  let attempts = 0;
+  let attempts = 0
   while (attempts <= retries) {
     if (attempts > 0 && delay > 0) {
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      await new Promise((resolve) => setTimeout(resolve, delay))
     }
 
     try {
-      await functionToRetry();
-      return;
+      await functionToRetry()
+      return
     } catch (error) {
-      console.error(error);
+      console.error(error)
     } finally {
-      attempts += 1;
+      attempts += 1
     }
   }
 
-  throw new Error(rejectionMessage);
+  throw new Error(rejectionMessage)
 }
 
-module.exports = { retry };
+module.exports = { retry }

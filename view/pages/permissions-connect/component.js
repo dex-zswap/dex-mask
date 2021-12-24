@@ -1,40 +1,40 @@
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { getEnvironmentType } from '@app/scripts/lib/util';
-import PermissionPageContainer from '@c/app/permission/page-container';
-import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app';
-import { MILLISECOND } from '@shared/constants/time';
-import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
-import ChooseAccount from './choose-account';
-import PermissionsRedirect from './redirect';
-const APPROVE_TIMEOUT = MILLISECOND * 1200;
+import React, { Component } from 'react'
+import { Route, Switch } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { getEnvironmentType } from '@app/scripts/lib/util'
+import PermissionPageContainer from '@c/app/permission/page-container'
+import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app'
+import { MILLISECOND } from '@shared/constants/time'
+import { DEFAULT_ROUTE } from '@view/helpers/constants/routes'
+import ChooseAccount from './choose-account'
+import PermissionsRedirect from './redirect'
+const APPROVE_TIMEOUT = MILLISECOND * 1200
 export default class PermissionConnect extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   state = {
     redirecting: false,
     selectedAccountAddresses: new Set([this.props.currentAddress]),
     permissionsApproved: null,
     origin: this.props.origin,
     targetDomainMetadata: this.props.targetDomainMetadata || {},
-  };
+  }
   beforeUnload = () => {
-    const { permissionsRequestId, rejectPermissionsRequest } = this.props;
-    const { permissionsApproved } = this.state;
+    const { permissionsRequestId, rejectPermissionsRequest } = this.props
+    const { permissionsApproved } = this.state
 
     if (permissionsApproved === null && permissionsRequestId) {
-      rejectPermissionsRequest(permissionsRequestId);
+      rejectPermissionsRequest(permissionsRequestId)
     }
-  };
+  }
   removeBeforeUnload = () => {
-    const environmentType = getEnvironmentType();
+    const environmentType = getEnvironmentType()
 
     if (environmentType === ENVIRONMENT_TYPE_NOTIFICATION) {
-      window.removeEventListener('beforeunload', this.beforeUnload);
+      window.removeEventListener('beforeunload', this.beforeUnload)
     }
-  };
+  }
 
   componentDidMount() {
     const {
@@ -42,25 +42,25 @@ export default class PermissionConnect extends Component {
       getRequestAccountTabIds,
       permissionsRequest,
       history,
-    } = this.props;
-    getCurrentWindowTab();
-    getRequestAccountTabIds();
+    } = this.props
+    getCurrentWindowTab()
+    getRequestAccountTabIds()
 
     if (!permissionsRequest) {
-      history.push(DEFAULT_ROUTE);
-      return;
+      history.push(DEFAULT_ROUTE)
+      return
     }
 
-    const environmentType = getEnvironmentType();
+    const environmentType = getEnvironmentType()
 
     if (environmentType === ENVIRONMENT_TYPE_NOTIFICATION) {
-      window.addEventListener('beforeunload', this.beforeUnload);
+      window.addEventListener('beforeunload', this.beforeUnload)
     }
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { permissionsRequest, targetDomainMetadata } = props;
-    const { targetDomainMetadata: savedMetadata } = state;
+    const { permissionsRequest, targetDomainMetadata } = props
+    const { targetDomainMetadata: savedMetadata } = state
 
     if (
       permissionsRequest &&
@@ -68,24 +68,24 @@ export default class PermissionConnect extends Component {
     ) {
       return {
         targetDomainMetadata,
-      };
+      }
     }
 
-    return null;
+    return null
   }
 
   componentDidUpdate(prevProps) {
-    const { permissionsRequest, lastConnectedInfo } = this.props;
-    const { redirecting, origin } = this.state;
+    const { permissionsRequest, lastConnectedInfo } = this.props
+    const { redirecting, origin } = this.state
 
     if (!permissionsRequest && prevProps.permissionsRequest && !redirecting) {
       const accountsLastApprovedTime =
-        lastConnectedInfo[origin]?.lastApproved || 0;
+        lastConnectedInfo[origin]?.lastApproved || 0
       const initialAccountsLastApprovedTime =
-        prevProps.lastConnectedInfo[origin]?.lastApproved || 0;
+        prevProps.lastConnectedInfo[origin]?.lastApproved || 0
       const approved =
-        accountsLastApprovedTime > initialAccountsLastApprovedTime;
-      this.redirect(approved);
+        accountsLastApprovedTime > initialAccountsLastApprovedTime
+      this.redirect(approved)
     }
   }
 
@@ -95,36 +95,36 @@ export default class PermissionConnect extends Component {
         selectedAccountAddresses: addresses,
       },
       () => this.props.history.push(this.props.confirmPermissionPath),
-    );
-  };
+    )
+  }
 
   redirect(approved) {
-    const { history } = this.props;
+    const { history } = this.props
     this.setState({
       redirecting: true,
       permissionsApproved: approved,
-    });
-    this.removeBeforeUnload();
+    })
+    this.removeBeforeUnload()
 
     if (approved) {
-      setTimeout(() => history.push(DEFAULT_ROUTE), APPROVE_TIMEOUT);
+      setTimeout(() => history.push(DEFAULT_ROUTE), APPROVE_TIMEOUT)
     } else {
-      history.push(DEFAULT_ROUTE);
+      history.push(DEFAULT_ROUTE)
     }
   }
 
   cancelPermissionsRequest = async (requestId) => {
-    const { rejectPermissionsRequest } = this.props;
+    const { rejectPermissionsRequest } = this.props
 
     if (requestId) {
-      await rejectPermissionsRequest(requestId);
-      this.redirect(false);
+      await rejectPermissionsRequest(requestId)
+      this.redirect(false)
     }
-  };
+  }
 
   goBack() {
-    const { history, connectPath } = this.props;
-    history.push(connectPath);
+    const { history, connectPath } = this.props
+    history.push(connectPath)
   }
 
   render() {
@@ -139,13 +139,13 @@ export default class PermissionConnect extends Component {
       permissionsRequestId,
       connectPath,
       confirmPermissionPath,
-    } = this.props;
+    } = this.props
     const {
       selectedAccountAddresses,
       permissionsApproved,
       redirecting,
       targetDomainMetadata,
-    } = this.state;
+    } = this.state
     return (
       <div>
         {redirecting && permissionsApproved ? (
@@ -165,7 +165,7 @@ export default class PermissionConnect extends Component {
                       onCreateNewAccount: (address) =>
                         handleAccountClick(address),
                       newAccountNumber,
-                    });
+                    })
                   }}
                   addressLastConnectedMap={addressLastConnectedMap}
                   cancelPermissionsRequest={(requestId) =>
@@ -184,8 +184,8 @@ export default class PermissionConnect extends Component {
                 <PermissionPageContainer
                   request={permissionsRequest || {}}
                   approvePermissionsRequest={(...args) => {
-                    approvePermissionsRequest(...args);
-                    this.redirect(true);
+                    approvePermissionsRequest(...args)
+                    this.redirect(true)
                   }}
                   rejectPermissionsRequest={(requestId) =>
                     this.cancelPermissionsRequest(requestId)
@@ -200,6 +200,6 @@ export default class PermissionConnect extends Component {
           </Switch>
         )}
       </div>
-    );
+    )
   }
 }

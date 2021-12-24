@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import React, { Component } from 'react'
+import { Switch, Route } from 'react-router-dom'
 import {
   NEW_ACCOUNT_ROUTE,
   IMPORT_ACCOUNT_ROUTE,
   CONNECT_HARDWARE_ROUTE,
-} from '@view/helpers/constants/routes';
-import NewAccountCreateForm from './container';
-import NewAccountImportForm from './import-account';
-import ConnectHardwareForm from './connect-hardware';
+} from '@view/helpers/constants/routes'
+import NewAccountCreateForm from './container'
+import NewAccountImportForm from './import-account'
+import ConnectHardwareForm from './connect-hardware'
 export default class CreateAccountPage extends Component {
   render() {
     return (
-      <div className="new-account">
-        <div className="new-account__form">
+      <div className='new-account'>
+        <div className='new-account__form'>
           <Switch>
             <Route
               exact
@@ -32,6 +32,6 @@ export default class CreateAccountPage extends Component {
           </Switch>
         </div>
       </div>
-    );
+    )
   }
 }

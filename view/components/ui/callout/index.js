@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import InfoIconInverted from '@c/ui/icon/info-icon-inverted.component';
-import { MILLISECOND } from '@shared/constants/time';
-import { SEVERITIES } from '@view/helpers/constants/design-system';
+import React, { useEffect, useState } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import InfoIconInverted from '@c/ui/icon/info-icon-inverted.component'
+import { MILLISECOND } from '@shared/constants/time'
+import { SEVERITIES } from '@view/helpers/constants/design-system'
 export default function Callout({
   severity,
   children,
@@ -12,14 +12,14 @@ export default function Callout({
   isLast,
   isMultiple,
 }) {
-  const [removed, setRemoved] = useState(false);
+  const [removed, setRemoved] = useState(false)
   const calloutClassName = classnames('callout', `callout--${severity}`, {
     'callout--dismissed': removed === true,
     'callout--multiple': isMultiple === true,
     'callout--dismissible': Boolean(dismiss),
     'callout--first': isFirst === true || isMultiple !== true,
     'callout--last': isLast === true || isMultiple !== true,
-  }); // Clicking the close button will set removed state, which will trigger this
+  }) // Clicking the close button will set removed state, which will trigger this
   // effect to refire due to changing dependencies. When that happens, after a
   // half of a second we fire the dismiss method from the parent. The
   // consuming component is responsible for modifying state and then removing
@@ -28,31 +28,31 @@ export default function Callout({
   useEffect(() => {
     if (removed) {
       setTimeout(() => {
-        dismiss();
-      }, MILLISECOND * 500);
+        dismiss()
+      }, MILLISECOND * 500)
     }
-  }, [removed, dismiss]);
+  }, [removed, dismiss])
   return (
     <div className={calloutClassName}>
       <InfoIconInverted severity={severity} />
-      <div className="callout__content">{children}</div>
+      <div className='callout__content'>{children}</div>
       {dismiss && (
         <i
           onClick={() => {
-            setRemoved(true);
+            setRemoved(true)
           }}
           onKeyUp={(event) => {
             if (event.key === 'Enter') {
-              setRemoved(true);
+              setRemoved(true)
             }
           }}
-          role="button"
+          role='button'
           tabIndex={0}
-          className="fas fa-times callout__close-button"
+          className='fas fa-times callout__close-button'
         />
       )}
     </div>
-  );
+  )
 }
 Callout.propTypes = {
   severity: PropTypes.oneOf(Object.values(SEVERITIES)).isRequired,
@@ -61,4 +61,4 @@ Callout.propTypes = {
   isFirst: PropTypes.bool,
   isLast: PropTypes.bool,
   isMultiple: PropTypes.bool,
-};
+}

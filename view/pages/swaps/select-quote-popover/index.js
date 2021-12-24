@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-import Button from '@c/ui/button';
-import Popover from '@c/ui/popover';
-import { I18nContext } from '@view/contexts/i18n';
-import QuoteDetails from './quote-details';
-import { QUOTE_DATA_ROWS_PROPTYPES_SHAPE } from './select-quote-popover-constants';
-import SortList from './sort-list';
+import React, { useCallback, useContext, useState } from 'react'
+import PropTypes from 'prop-types'
+import Button from '@c/ui/button'
+import Popover from '@c/ui/popover'
+import { I18nContext } from '@view/contexts/i18n'
+import QuoteDetails from './quote-details'
+import { QUOTE_DATA_ROWS_PROPTYPES_SHAPE } from './select-quote-popover-constants'
+import SortList from './sort-list'
 
 const SelectQuotePopover = ({
   quoteDataRows = [],
@@ -15,59 +15,59 @@ const SelectQuotePopover = ({
   initialAggId,
   onQuoteDetailsIsOpened,
 }) => {
-  const t = useContext(I18nContext);
-  const [sortDirection, setSortDirection] = useState(1);
-  const [sortColumn, setSortColumn] = useState(null);
-  const [selectedAggId, setSelectedAggId] = useState(initialAggId);
-  const [contentView, setContentView] = useState('sortList');
-  const [viewingAgg, setViewingAgg] = useState(null);
+  const t = useContext(I18nContext)
+  const [sortDirection, setSortDirection] = useState(1)
+  const [sortColumn, setSortColumn] = useState(null)
+  const [selectedAggId, setSelectedAggId] = useState(initialAggId)
+  const [contentView, setContentView] = useState('sortList')
+  const [viewingAgg, setViewingAgg] = useState(null)
   const onSubmitClick = useCallback(() => {
-    onSubmit(selectedAggId);
-    onClose();
-  }, [selectedAggId, onClose, onSubmit]);
+    onSubmit(selectedAggId)
+    onClose()
+  }, [selectedAggId, onClose, onSubmit])
   const closeQuoteDetails = useCallback(() => {
-    setViewingAgg(null);
-    setContentView('sortList');
-  }, []);
+    setViewingAgg(null)
+    setContentView('sortList')
+  }, [])
   const onRowClick = useCallback((aggId) => setSelectedAggId(aggId), [
     setSelectedAggId,
-  ]);
+  ])
   const onCaretClick = useCallback(
     (aggId) => {
-      const agg = quoteDataRows.find((quote) => quote.aggId === aggId);
-      setContentView('quoteDetails');
-      onQuoteDetailsIsOpened();
-      setViewingAgg(agg);
+      const agg = quoteDataRows.find((quote) => quote.aggId === aggId)
+      setContentView('quoteDetails')
+      onQuoteDetailsIsOpened()
+      setViewingAgg(agg)
     },
     [quoteDataRows, onQuoteDetailsIsOpened],
-  );
+  )
   const CustomBackground = useCallback(
     () => (
-      <div className="select-quote-popover__popover-bg" onClick={onClose} />
+      <div className='select-quote-popover__popover-bg' onClick={onClose} />
     ),
     [onClose],
-  );
+  )
   const footer = (
     <>
       <Button
-        type="default"
-        className="page-container__footer-button select-quote-popover__button"
+        type='default'
+        className='page-container__footer-button select-quote-popover__button'
         onClick={onClose}
       >
         {t('close')}
       </Button>
 
       <Button
-        type="confirm"
-        className="page-container__footer-button select-quote-popover__button"
+        type='confirm'
+        className='page-container__footer-button select-quote-popover__button'
         onClick={onSubmitClick}
       >
         {t('swapSelect')}
       </Button>
     </>
-  );
+  )
   return (
-    <div className="select-quote-popover">
+    <div className='select-quote-popover'>
       <Popover
         title={
           contentView === 'quoteDetails'
@@ -81,8 +81,8 @@ const SelectQuotePopover = ({
         }
         onClose={onClose}
         CustomBackground={CustomBackground}
-        className="select-quote-popover__popover-wrap"
-        footerClassName="swaps__footer"
+        className='select-quote-popover__popover-wrap'
+        footerClassName='swaps__footer'
         footer={contentView === 'quoteDetails' ? null : footer}
         onBack={contentView === 'quoteDetails' ? closeQuoteDetails : null}
       >
@@ -104,8 +104,8 @@ const SelectQuotePopover = ({
         )}
       </Popover>
     </div>
-  );
-};
+  )
+}
 
 SelectQuotePopover.propTypes = {
   onClose: PropTypes.func,
@@ -115,5 +115,5 @@ SelectQuotePopover.propTypes = {
   quoteDataRows: PropTypes.arrayOf(QUOTE_DATA_ROWS_PROPTYPES_SHAPE),
   initialAggId: PropTypes.string,
   onQuoteDetailsIsOpened: PropTypes.func,
-};
-export default SelectQuotePopover;
+}
+export default SelectQuotePopover

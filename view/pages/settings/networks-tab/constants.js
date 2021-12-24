@@ -20,7 +20,7 @@ import {
   ROPSTEN,
   ROPSTEN_CHAIN_ID,
   ROPSTEN_RPC_URL,
-} from '@shared/constants/network';
+} from '@shared/constants/network'
 const defaultNetworksData = [
   {
     labelKey: MAINNET,
@@ -85,5 +85,5 @@ const defaultNetworksData = [
     ticker: 'ETH',
     blockExplorerUrl: 'https://kovan.etherscan.io',
   },
-];
-export { defaultNetworksData };
+]
+export { defaultNetworksData }

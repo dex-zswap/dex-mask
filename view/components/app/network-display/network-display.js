@@ -1,21 +1,21 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Chip from '@c/ui/chip';
-import ColorIndicator from '@c/ui/color-indicator';
-import LoadingIndicator from '@c/ui/loading-indicator';
+import React from 'react'
+import { useSelector } from 'react-redux'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Chip from '@c/ui/chip'
+import ColorIndicator from '@c/ui/color-indicator'
+import LoadingIndicator from '@c/ui/loading-indicator'
 import {
   NETWORK_TYPE_RPC,
   NETWORK_TYPE_TO_ID_MAP,
-} from '@shared/constants/network';
+} from '@shared/constants/network'
 import {
   COLORS,
   SIZES,
   TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { isNetworkLoading } from '@view/selectors';
+} from '@view/helpers/constants/design-system'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import { isNetworkLoading } from '@view/selectors'
 export default function NetworkDisplay({
   colored,
   outline,
@@ -26,14 +26,14 @@ export default function NetworkDisplay({
   targetNetwork,
   onClick,
 }) {
-  const networkIsLoading = useSelector(isNetworkLoading);
+  const networkIsLoading = useSelector(isNetworkLoading)
   const currentNetwork = useSelector((state) => ({
     nickname: state.metamask.provider.nickname,
     type: state.metamask.provider.type,
-  }));
-  const t = useI18nContext();
+  }))
+  const t = useI18nContext()
   const { nickname: networkNickname, type: networkType } =
-    targetNetwork ?? currentNetwork;
+    targetNetwork ?? currentNetwork
   return (
     <Chip
       borderColor={outline ? COLORS.UI3 : COLORS.TRANSPARENT}
@@ -77,5 +77,5 @@ export default function NetworkDisplay({
         ...labelProps,
       }}
     />
-  );
+  )
 }

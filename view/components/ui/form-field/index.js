@@ -1,17 +1,17 @@
-import React from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import Box from '@c/ui/box';
-import InfoTooltip from '@c/ui/info-tooltip';
-import NumericInput from '@c/ui/numeric-input';
-import Typography from '@c/ui/typography';
+import React from 'react'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
+import Box from '@c/ui/box'
+import InfoTooltip from '@c/ui/info-tooltip'
+import NumericInput from '@c/ui/numeric-input'
+import Typography from '@c/ui/typography'
 import {
   COLORS,
   DISPLAY,
   FONT_WEIGHT,
   TEXT_ALIGN,
   TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
+} from '@view/helpers/constants/design-system'
 export default function FormField({
   titleText,
   titleUnit,
@@ -34,8 +34,8 @@ export default function FormField({
       })}
     >
       <label>
-        <div className="form-field__heading">
-          <div className="form-field__heading-title">
+        <div className='form-field__heading'>
+          <div className='form-field__heading-title'>
             {titleText && (
               <Typography
                 tag={TYPOGRAPHY.H6}
@@ -61,12 +61,12 @@ export default function FormField({
               </Typography>
             )}
             {tooltipText && (
-              <InfoTooltip position="top" contentText={tooltipText} />
+              <InfoTooltip position='top' contentText={tooltipText} />
             )}
           </div>
           {titleDetail && (
             <Box
-              className="form-field__heading-detail"
+              className='form-field__heading-detail'
               textAlign={TEXT_ALIGN.END}
               marginBottom={3}
               marginRight={2}
@@ -101,14 +101,14 @@ export default function FormField({
           <Typography
             color={COLORS.ERROR1}
             variant={TYPOGRAPHY.H7}
-            className="form-field__error"
+            className='form-field__error'
           >
             {error}
           </Typography>
         )}
       </label>
     </div>
-  );
+  )
 }
 FormField.propTypes = {
   titleText: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
@@ -124,7 +124,7 @@ FormField.propTypes = {
   password: PropTypes.bool,
   allowDecimals: PropTypes.bool,
   disabled: PropTypes.bool,
-};
+}
 FormField.defaultProps = {
   titleText: '',
   titleUnit: '',
@@ -139,4 +139,4 @@ FormField.defaultProps = {
   password: false,
   allowDecimals: true,
   disabled: false,
-};
+}

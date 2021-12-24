@@ -1,15 +1,15 @@
-import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import InfoTooltip from '@c/ui/info-tooltip';
-import InfoTooltipIcon from '@c/ui/info-tooltip/info-tooltip-icon';
-const CLASSNAME_WARNING = 'actionable-message--warning';
-const CLASSNAME_DANGER = 'actionable-message--danger';
-const CLASSNAME_WITH_RIGHT_BUTTON = 'actionable-message--with-right-button';
+import React from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import InfoTooltip from '@c/ui/info-tooltip'
+import InfoTooltipIcon from '@c/ui/info-tooltip/info-tooltip-icon'
+const CLASSNAME_WARNING = 'actionable-message--warning'
+const CLASSNAME_DANGER = 'actionable-message--danger'
+const CLASSNAME_WITH_RIGHT_BUTTON = 'actionable-message--with-right-button'
 const typeHash = {
   warning: CLASSNAME_WARNING,
   danger: CLASSNAME_DANGER,
-};
+}
 export default function ActionableMessage({
   message = '',
   primaryAction = null,
@@ -29,20 +29,20 @@ export default function ActionableMessage({
     {
       'actionable-message--with-icon': useIcon,
     },
-  );
+  )
   return (
     <div className={actionableMessageClassName}>
       {useIcon && <InfoTooltipIcon fillColor={iconFillColor} />}
       {infoTooltipText && (
         <InfoTooltip
-          position="left"
+          position='left'
           contentText={infoTooltipText}
-          wrapperClassName="actionable-message__info-tooltip-wrapper"
+          wrapperClassName='actionable-message__info-tooltip-wrapper'
         />
       )}
-      <div className="actionable-message__message">{message}</div>
+      <div className='actionable-message__message'>{message}</div>
       {(primaryAction || secondaryAction) && (
-        <div className="actionable-message__actions">
+        <div className='actionable-message__actions'>
           {primaryAction && (
             <button
               className={classnames(
@@ -68,7 +68,7 @@ export default function ActionableMessage({
         </div>
       )}
     </div>
-  );
+  )
 }
 ActionableMessage.propTypes = {
   message: PropTypes.node.isRequired,
@@ -86,4 +86,4 @@ ActionableMessage.propTypes = {
   infoTooltipText: PropTypes.string,
   useIcon: PropTypes.bool,
   iconFillColor: PropTypes.string,
-};
+}

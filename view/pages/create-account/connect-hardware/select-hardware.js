@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Button from '@c/ui/button';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Button from '@c/ui/button'
 export default class SelectHardware extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   static propTypes = {
     connectToHardwareWallet: PropTypes.func.isRequired,
     browserSupported: PropTypes.bool.isRequired,
     useLedgerLive: PropTypes.bool.isRequired,
-  };
+  }
   state = {
     selectedDevice: null,
-  };
+  }
   connect = () => {
     if (this.state.selectedDevice) {
-      this.props.connectToHardwareWallet(this.state.selectedDevice);
+      this.props.connectToHardwareWallet(this.state.selectedDevice)
     }
 
-    return null;
-  };
+    return null
+  }
 
   renderConnectToTrezorButton() {
     return (
@@ -35,12 +35,12 @@ export default class SelectHardware extends Component {
         }
       >
         <img
-          className="hw-connect__btn__img"
-          src="images/trezor-logo.svg"
-          alt="Trezor"
+          className='hw-connect__btn__img'
+          src='images/trezor-logo.svg'
+          alt='Trezor'
         />
       </button>
-    );
+    )
   }
 
   renderConnectToLedgerButton() {
@@ -56,52 +56,52 @@ export default class SelectHardware extends Component {
         }
       >
         <img
-          className="hw-connect__btn__img"
-          src="images/ledger-logo.svg"
-          alt="Ledger"
+          className='hw-connect__btn__img'
+          src='images/ledger-logo.svg'
+          alt='Ledger'
         />
       </button>
-    );
+    )
   }
 
   renderButtons() {
     return (
       <>
-        <div className="hw-connect__btn-wrapper">
+        <div className='hw-connect__btn-wrapper'>
           {this.renderConnectToLedgerButton()}
           {this.renderConnectToTrezorButton()}
         </div>
       </>
-    );
+    )
   }
 
   renderContinueButton() {
     return (
       <Button
-        type="primary"
+        type='primary'
         large
-        className="hw-connect__connect-btn"
+        className='hw-connect__connect-btn'
         onClick={this.connect}
         disabled={!this.state.selectedDevice}
       >
         {this.context.t('continue')}
       </Button>
-    );
+    )
   }
 
   renderUnsupportedBrowser() {
     return (
-      <div className="new-external-account-form unsupported-browser">
-        <div className="hw-connect">
-          <h3 className="hw-connect__title">
+      <div className='new-external-account-form unsupported-browser'>
+        <div className='hw-connect'>
+          <h3 className='hw-connect__title'>
             {this.context.t('browserNotSupported')}
           </h3>
-          <p className="hw-connect__msg">
+          <p className='hw-connect__msg'>
             {this.context.t('chromeRequiredForHardwareWallets')}
           </p>
         </div>
         <Button
-          type="primary"
+          type='primary'
           large
           onClick={() =>
             global.platform.openTab({
@@ -112,53 +112,53 @@ export default class SelectHardware extends Component {
           {this.context.t('downloadGoogleChrome')}
         </Button>
       </div>
-    );
+    )
   }
 
   renderHeader() {
     return (
-      <div className="hw-connect__header">
-        <h3 className="hw-connect__header__title">
+      <div className='hw-connect__header'>
+        <h3 className='hw-connect__header__title'>
           {this.context.t('hardwareWallets')}
         </h3>
-        <p className="hw-connect__header__msg">
+        <p className='hw-connect__header__msg'>
           {this.context.t('hardwareWalletsMsg')}
         </p>
       </div>
-    );
+    )
   }
 
   renderTutorialsteps() {
     switch (this.state.selectedDevice) {
       case 'ledger':
-        return this.renderLedgerTutorialSteps();
+        return this.renderLedgerTutorialSteps()
 
       case 'trezor':
-        return this.renderTrezorTutorialSteps();
+        return this.renderTrezorTutorialSteps()
 
       default:
-        return '';
+        return ''
     }
   }
 
   renderLedgerTutorialSteps() {
-    const steps = [];
+    const steps = []
 
     if (this.props.useLedgerLive) {
       steps.push({
         title: this.context.t('step1LedgerWallet'),
         message: this.context.t('step1LedgerWalletMsg', [
           <a
-            className="hw-connect__msg-link"
-            href="https://www.ledger.com/ledger-live"
-            rel="noopener noreferrer"
-            target="_blank"
-            key="ledger-live-app-link"
+            className='hw-connect__msg-link'
+            href='https://www.ledger.com/ledger-live'
+            rel='noopener noreferrer'
+            target='_blank'
+            key='ledger-live-app-link'
           >
             {this.context.t('ledgerLiveApp')}
           </a>,
         ]),
-      });
+      })
     }
 
     steps.push({
@@ -170,34 +170,34 @@ export default class SelectHardware extends Component {
       title: this.context.t('step2LedgerWallet'),
       message: this.context.t('step2LedgerWalletMsg', [
         <a
-          className="hw-connect__msg-link"
-          href="https://metamask.zendesk.com/hc/en-us/articles/360020394612-How-to-connect-a-Trezor-or-Ledger-Hardware-Wallet"
-          rel="noopener noreferrer"
-          target="_blank"
-          key="ledger-support-link"
+          className='hw-connect__msg-link'
+          href='https://metamask.zendesk.com/hc/en-us/articles/360020394612-How-to-connect-a-Trezor-or-Ledger-Hardware-Wallet'
+          rel='noopener noreferrer'
+          target='_blank'
+          key='ledger-support-link'
         >
           {this.context.t('hardwareWalletSupportLinkConversion')}
         </a>,
       ]),
-    });
+    })
     return (
-      <div className="hw-tutorial">
+      <div className='hw-tutorial'>
         {steps.map((step, index) => (
-          <div className="hw-connect" key={index}>
-            <h3 className="hw-connect__title">{step.title}</h3>
-            <p className="hw-connect__msg">{step.message}</p>
+          <div className='hw-connect' key={index}>
+            <h3 className='hw-connect__title'>{step.title}</h3>
+            <p className='hw-connect__msg'>{step.message}</p>
             {step.asset && (
               <img
-                className="hw-connect__step-asset"
+                className='hw-connect__step-asset'
                 src={`images/${step.asset}.svg`}
                 {...step.dimensions}
-                alt=""
+                alt=''
               />
             )}
           </div>
         ))}
       </div>
-    );
+    )
   }
 
   renderTrezorTutorialSteps() {
@@ -211,53 +211,53 @@ export default class SelectHardware extends Component {
         title: this.context.t('step1TrezorWallet'),
         message: this.context.t('step1TrezorWalletMsg', [
           <a
-            className="hw-connect__msg-link"
-            href="https://metamask.zendesk.com/hc/en-us/articles/360020394612-How-to-connect-a-Trezor-or-Ledger-Hardware-Wallet"
-            rel="noopener noreferrer"
-            target="_blank"
-            key="trezor-support-link"
+            className='hw-connect__msg-link'
+            href='https://metamask.zendesk.com/hc/en-us/articles/360020394612-How-to-connect-a-Trezor-or-Ledger-Hardware-Wallet'
+            rel='noopener noreferrer'
+            target='_blank'
+            key='trezor-support-link'
           >
             {this.context.t('hardwareWalletSupportLinkConversion')}
           </a>,
         ]),
       },
-    ];
+    ]
     return (
-      <div className="hw-tutorial">
+      <div className='hw-tutorial'>
         {steps.map((step, index) => (
-          <div className="hw-connect" key={index}>
-            <h3 className="hw-connect__title">{step.title}</h3>
-            <p className="hw-connect__msg">{step.message}</p>
+          <div className='hw-connect' key={index}>
+            <h3 className='hw-connect__title'>{step.title}</h3>
+            <p className='hw-connect__msg'>{step.message}</p>
             {step.asset && (
               <img
-                className="hw-connect__step-asset"
+                className='hw-connect__step-asset'
                 src={`images/${step.asset}.svg`}
                 {...step.dimensions}
-                alt=""
+                alt=''
               />
             )}
           </div>
         ))}
       </div>
-    );
+    )
   }
 
   renderConnectScreen() {
     return (
-      <div className="new-external-account-form">
+      <div className='new-external-account-form'>
         {this.renderHeader()}
         {this.renderButtons()}
         {this.state.selectedDevice && this.renderTutorialsteps()}
         {this.renderContinueButton()}
       </div>
-    );
+    )
   }
 
   render() {
     if (this.props.browserSupported) {
-      return this.renderConnectScreen();
+      return this.renderConnectScreen()
     }
 
-    return this.renderUnsupportedBrowser();
+    return this.renderUnsupportedBrowser()
   }
 }

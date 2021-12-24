@@ -1,22 +1,22 @@
-import EventEmitter from 'events';
-import pump from 'pump';
-import { ObservableStore } from '@metamask/obs-store';
-import { storeAsStream } from '@metamask/obs-store/dist/asStream';
-import { JsonRpcEngine } from 'json-rpc-engine';
-import { debounce } from 'lodash';
-import createEngineStream from 'json-rpc-middleware-stream/engineStream';
-import createFilterMiddleware from 'eth-json-rpc-filters';
-import createSubscriptionManager from 'eth-json-rpc-filters/subscriptionManager';
-import providerAsMiddleware from 'eth-json-rpc-middleware/providerAsMiddleware';
-import KeyringController from 'eth-keyring-controller';
-import { Mutex } from 'await-semaphore';
-import { stripHexPrefix } from 'ethereumjs-util';
-import log from 'loglevel';
-import TrezorKeyring from 'eth-trezor-keyring';
-import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
-import EthQuery from 'eth-query';
-import nanoid from 'nanoid';
-import contractMap from '@metamask/contract-metadata';
+import EventEmitter from 'events'
+import pump from 'pump'
+import { ObservableStore } from '@metamask/obs-store'
+import { storeAsStream } from '@metamask/obs-store/dist/asStream'
+import { JsonRpcEngine } from 'json-rpc-engine'
+import { debounce } from 'lodash'
+import createEngineStream from 'json-rpc-middleware-stream/engineStream'
+import createFilterMiddleware from 'eth-json-rpc-filters'
+import createSubscriptionManager from 'eth-json-rpc-filters/subscriptionManager'
+import providerAsMiddleware from 'eth-json-rpc-middleware/providerAsMiddleware'
+import KeyringController from 'eth-keyring-controller'
+import { Mutex } from 'await-semaphore'
+import { stripHexPrefix } from 'ethereumjs-util'
+import log from 'loglevel'
+import TrezorKeyring from 'eth-trezor-keyring'
+import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring'
+import EthQuery from 'eth-query'
+import nanoid from 'nanoid'
+import contractMap from '@metamask/contract-metadata'
 import {
   AddressBookController,
   ApprovalController,
@@ -26,57 +26,57 @@ import {
   NotificationController,
   GasFeeController,
   TokenListController,
-} from '@metamask/controllers';
-import { TRANSACTION_STATUSES } from '@shared/constants/transaction';
-import { MAINNET_CHAIN_ID } from '@shared/constants/network';
-import { KEYRING_TYPES } from '@shared/constants/hardware-wallets';
-import { UI_NOTIFICATIONS } from '@shared/notifications';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
-import { MILLISECOND } from '@shared/constants/time';
-import { POLLING_TOKEN_ENVIRONMENT_TYPES } from '@shared/constants/app';
+} from '@metamask/controllers'
+import { TRANSACTION_STATUSES } from '@shared/constants/transaction'
+import { MAINNET_CHAIN_ID } from '@shared/constants/network'
+import { KEYRING_TYPES } from '@shared/constants/hardware-wallets'
+import { UI_NOTIFICATIONS } from '@shared/notifications'
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
+import { MILLISECOND } from '@shared/constants/time'
+import { POLLING_TOKEN_ENVIRONMENT_TYPES } from '@shared/constants/app'
 
-import { hexToDecimal } from '@view/helpers/utils/conversions.util';
-import ComposableObservableStore from './lib/ComposableObservableStore';
-import AccountTracker from './lib/account-tracker';
-import createLoggerMiddleware from './lib/createLoggerMiddleware';
-import createMethodMiddleware from './lib/rpc-method-middleware';
-import createOriginMiddleware from './lib/createOriginMiddleware';
-import createTabIdMiddleware from './lib/createTabIdMiddleware';
-import createOnboardingMiddleware from './lib/createOnboardingMiddleware';
-import { setupMultiplex } from './lib/stream-utils';
-import EnsController from './controllers/ens';
-import NetworkController, { NETWORK_EVENTS } from './controllers/network';
-import PreferencesController from './controllers/preferences';
-import AppStateController from './controllers/app-state';
-import CachedBalancesController from './controllers/cached-balances';
-import AlertController from './controllers/alert';
-import OnboardingController from './controllers/onboarding';
-import ThreeBoxController from './controllers/threebox';
-import IncomingTransactionsController from './controllers/incoming-transactions';
-import MessageManager from './lib/message-manager';
-import DecryptMessageManager from './lib/decrypt-message-manager';
-import EncryptionPublicKeyManager from './lib/encryption-public-key-manager';
-import PersonalMessageManager from './lib/personal-message-manager';
-import TypedMessageManager from './lib/typed-message-manager';
-import TransactionController from './controllers/transactions';
-import TokenRatesController from './controllers/token-rates';
-import DetectTokensController from './controllers/detect-tokens';
-import SwapsController from './controllers/swaps';
-import { PermissionsController } from './controllers/permissions';
-import { NOTIFICATION_NAMES } from './controllers/permissions/enums';
-import getRestrictedMethods from './controllers/permissions/restrictedMethods';
-import nodeify from './lib/nodeify';
-import accountImporter from './account-import-strategies';
-import seedPhraseVerifier from './lib/seed-phrase-verifier';
-import MetaMetricsController from './controllers/metametrics';
-import { segment } from './lib/segment';
-import createMetaRPCHandler from './lib/createMetaRPCHandler';
+import { hexToDecimal } from '@view/helpers/utils/conversions.util'
+import ComposableObservableStore from './lib/ComposableObservableStore'
+import AccountTracker from './lib/account-tracker'
+import createLoggerMiddleware from './lib/createLoggerMiddleware'
+import createMethodMiddleware from './lib/rpc-method-middleware'
+import createOriginMiddleware from './lib/createOriginMiddleware'
+import createTabIdMiddleware from './lib/createTabIdMiddleware'
+import createOnboardingMiddleware from './lib/createOnboardingMiddleware'
+import { setupMultiplex } from './lib/stream-utils'
+import EnsController from './controllers/ens'
+import NetworkController, { NETWORK_EVENTS } from './controllers/network'
+import PreferencesController from './controllers/preferences'
+import AppStateController from './controllers/app-state'
+import CachedBalancesController from './controllers/cached-balances'
+import AlertController from './controllers/alert'
+import OnboardingController from './controllers/onboarding'
+import ThreeBoxController from './controllers/threebox'
+import IncomingTransactionsController from './controllers/incoming-transactions'
+import MessageManager from './lib/message-manager'
+import DecryptMessageManager from './lib/decrypt-message-manager'
+import EncryptionPublicKeyManager from './lib/encryption-public-key-manager'
+import PersonalMessageManager from './lib/personal-message-manager'
+import TypedMessageManager from './lib/typed-message-manager'
+import TransactionController from './controllers/transactions'
+import TokenRatesController from './controllers/token-rates'
+import DetectTokensController from './controllers/detect-tokens'
+import SwapsController from './controllers/swaps'
+import { PermissionsController } from './controllers/permissions'
+import { NOTIFICATION_NAMES } from './controllers/permissions/enums'
+import getRestrictedMethods from './controllers/permissions/restrictedMethods'
+import nodeify from './lib/nodeify'
+import accountImporter from './account-import-strategies'
+import seedPhraseVerifier from './lib/seed-phrase-verifier'
+import MetaMetricsController from './controllers/metametrics'
+import { segment } from './lib/segment'
+import createMetaRPCHandler from './lib/createMetaRPCHandler'
 
 export const DEXMASK_CONTROLLER_EVENTS = {
   // Fired after state changes that impact the extension badge (unapproved msg count)
   // The process of updating the badge happens in app/scripts/background.js.
   UPDATE_BADGE: 'updateBadge',
-};
+}
 
 export default class DexmaskController extends EventEmitter {
   /**
@@ -84,63 +84,63 @@ export default class DexmaskController extends EventEmitter {
    * @param {Object} opts
    */
   constructor(opts) {
-    super();
+    super()
 
-    this.defaultMaxListeners = 20;
+    this.defaultMaxListeners = 20
 
     this.sendUpdate = debounce(
       this.privateSendUpdate.bind(this),
       MILLISECOND * 200,
-    );
-    this.opts = opts;
-    this.extension = opts.extension;
-    this.platform = opts.platform;
-    const initState = opts.initState || {};
-    const version = this.platform.getVersion();
-    this.recordFirstTimeInfo(initState);
+    )
+    this.opts = opts
+    this.extension = opts.extension
+    this.platform = opts.platform
+    const initState = opts.initState || {}
+    const version = this.platform.getVersion()
+    this.recordFirstTimeInfo(initState)
 
     // this keeps track of how many "controllerStream" connections are open
     // the only thing that uses controller connections are open metamask UI instances
-    this.activeControllerConnections = 0;
+    this.activeControllerConnections = 0
 
-    this.getRequestAccountTabIds = opts.getRequestAccountTabIds;
-    this.getOpenMetamaskTabsIds = opts.getOpenMetamaskTabsIds;
+    this.getRequestAccountTabIds = opts.getRequestAccountTabIds
+    this.getOpenMetamaskTabsIds = opts.getOpenMetamaskTabsIds
 
-    const controllerMessenger = new ControllerMessenger();
+    const controllerMessenger = new ControllerMessenger()
 
     // observable state store
     this.store = new ComposableObservableStore({
       state: initState,
       controllerMessenger,
-    });
+    })
 
     // external connections by origin
     // Do not modify directly. Use the associated methods.
-    this.connections = {};
+    this.connections = {}
 
     // lock to ensure only one vault created at once
-    this.createVaultMutex = new Mutex();
+    this.createVaultMutex = new Mutex()
 
     this.extension.runtime.onInstalled.addListener((details) => {
       if (details.reason === 'update' && version === '8.1.0') {
-        this.platform.openExtensionInBrowser();
+        this.platform.openExtensionInBrowser()
       }
-    });
+    })
 
     // next, we will initialize the controllers
     // controller initialization order matters
 
     this.approvalController = new ApprovalController({
       showApprovalRequest: opts.showUserConfirmation,
-    });
+    })
 
-    this.networkController = new NetworkController(initState.NetworkController);
-    this.networkController.setInfuraProjectId(opts.infuraProjectId);
+    this.networkController = new NetworkController(initState.NetworkController)
+    this.networkController.setInfuraProjectId(opts.infuraProjectId)
 
     // now we can initialize the RPC provider, which other controllers require
-    this.initializeProvider();
-    this.provider = this.networkController.getProviderAndBlockTracker().provider;
-    this.blockTracker = this.networkController.getProviderAndBlockTracker().blockTracker;
+    this.initializeProvider()
+    this.provider = this.networkController.getProviderAndBlockTracker().provider
+    this.blockTracker = this.networkController.getProviderAndBlockTracker().blockTracker
 
     this.preferencesController = new PreferencesController({
       initState: initState.PreferencesController,
@@ -149,7 +149,7 @@ export default class DexmaskController extends EventEmitter {
       network: this.networkController,
       provider: this.provider,
       migrateAddressBookState: this.migrateAddressBookState.bind(this),
-    });
+    })
 
     this.metaMetricsController = new MetaMetricsController({
       segment,
@@ -167,11 +167,11 @@ export default class DexmaskController extends EventEmitter {
       version: this.platform.getVersion(),
       environment: process.env.DEXMASK_ENVIRONMENT,
       initState: initState.MetaMetricsController,
-    });
+    })
 
     const gasFeeMessenger = controllerMessenger.getRestricted({
       name: 'GasFeeController',
-    });
+    })
 
     this.gasFeeController = new GasFeeController({
       interval: 10000,
@@ -191,15 +191,15 @@ export default class DexmaskController extends EventEmitter {
       legacyAPIEndpoint: `https://gas-api.metaswap.codefi.network/networks/<chain_id>/gasPrices`,
       EIP1559APIEndpoint: `https://gas-api.metaswap.codefi.network/networks/<chain_id>/suggestedGasFees`,
       getCurrentNetworkLegacyGasAPICompatibility: () => {
-        const chainId = this.networkController.getCurrentChainId();
-        return process.env.IN_TEST || chainId === MAINNET_CHAIN_ID;
+        const chainId = this.networkController.getCurrentChainId()
+        return process.env.IN_TEST || chainId === MAINNET_CHAIN_ID
       },
       getChainId: () => {
         return process.env.IN_TEST
           ? MAINNET_CHAIN_ID
-          : this.networkController.getCurrentChainId();
+          : this.networkController.getCurrentChainId()
       },
-    });
+    })
 
     this.appStateController = new AppStateController({
       addUnlockListener: this.on.bind(this, 'unlock'),
@@ -208,20 +208,20 @@ export default class DexmaskController extends EventEmitter {
       onInactiveTimeout: () => this.setLocked(),
       showUnlockRequest: opts.showUserConfirmation,
       preferencesStore: this.preferencesController.store,
-    });
+    })
 
     const currencyRateMessenger = controllerMessenger.getRestricted({
       name: 'CurrencyRateController',
-    });
+    })
     this.currencyRateController = new CurrencyRateController({
       includeUSDRate: true,
       messenger: currencyRateMessenger,
       state: initState.CurrencyController,
-    });
+    })
 
     const tokenListMessenger = controllerMessenger.getRestricted({
       name: 'TokenListController',
-    });
+    })
     this.tokenListController = new TokenListController({
       chainId: hexToDecimal(this.networkController.getCurrentChainId()),
       useStaticTokenList: this.preferencesController.store.getState()
@@ -234,31 +234,31 @@ export default class DexmaskController extends EventEmitter {
               ...networkState.provider,
               chainId: hexToDecimal(networkState.provider.chainId),
             },
-          };
-          return cb(modifiedNetworkState);
+          }
+          return cb(modifiedNetworkState)
         }),
       onPreferencesStateChange: this.preferencesController.store.subscribe.bind(
         this.preferencesController.store,
       ),
       messenger: tokenListMessenger,
       state: initState.tokenListController,
-    });
+    })
 
-    this.phishingController = new PhishingController();
+    this.phishingController = new PhishingController()
 
     this.notificationController = new NotificationController(
       { allNotifications: UI_NOTIFICATIONS },
       initState.NotificationController,
-    );
+    )
 
     // token exchange rate tracker
     this.tokenRatesController = new TokenRatesController({
       preferences: this.preferencesController.store,
       getNativeCurrency: () => {
-        const { ticker } = this.networkController.getProviderConfig();
-        return ticker ?? 'ETH';
+        const { ticker } = this.networkController.getProviderConfig()
+        return ticker ?? 'ETH'
       },
-    });
+    })
 
     this.ensController = new EnsController({
       provider: this.provider,
@@ -269,7 +269,7 @@ export default class DexmaskController extends EventEmitter {
         this.networkController,
         NETWORK_EVENTS.NETWORK_DID_CHANGE,
       ),
-    });
+    })
 
     this.incomingTransactionsController = new IncomingTransactionsController({
       blockTracker: this.blockTracker,
@@ -282,7 +282,7 @@ export default class DexmaskController extends EventEmitter {
       ),
       preferencesController: this.preferencesController,
       initState: initState.IncomingTransactionsController,
-    });
+    })
 
     // account tracker watches balances, nonces, and any code at their address
     this.accountTracker = new AccountTracker({
@@ -291,24 +291,24 @@ export default class DexmaskController extends EventEmitter {
       getCurrentChainId: this.networkController.getCurrentChainId.bind(
         this.networkController,
       ),
-    });
+    })
 
     // start and stop polling for balances based on activeControllerConnections
     this.on('controllerConnectionChanged', (activeControllerConnections) => {
       if (activeControllerConnections > 0) {
-        this.accountTracker.start();
-        this.incomingTransactionsController.start();
-        this.tokenRatesController.start();
-        this.currencyRateController.start();
-        this.tokenListController.start();
+        this.accountTracker.start()
+        this.incomingTransactionsController.start()
+        this.tokenRatesController.start()
+        this.currencyRateController.start()
+        this.tokenListController.start()
       } else {
-        this.accountTracker.stop();
-        this.incomingTransactionsController.stop();
-        this.tokenRatesController.stop();
-        this.currencyRateController.stop();
-        this.tokenListController.stop();
+        this.accountTracker.stop()
+        this.incomingTransactionsController.stop()
+        this.tokenRatesController.stop()
+        this.currencyRateController.stop()
+        this.tokenListController.stop()
       }
-    });
+    })
 
     this.cachedBalancesController = new CachedBalancesController({
       accountTracker: this.accountTracker,
@@ -316,24 +316,24 @@ export default class DexmaskController extends EventEmitter {
         this.networkController,
       ),
       initState: initState.CachedBalancesController,
-    });
+    })
 
     this.onboardingController = new OnboardingController({
       initState: initState.OnboardingController,
       preferencesController: this.preferencesController,
-    });
+    })
 
-    const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring];
+    const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring]
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
       encryptor: opts.encryptor || undefined,
-    });
+    })
     this.keyringController.memStore.subscribe((state) =>
       this._onKeyringControllerUpdate(state),
-    );
-    this.keyringController.on('unlock', () => this.emit('unlock'));
-    this.keyringController.on('lock', () => this._onLock());
+    )
+    this.keyringController.on('unlock', () => this.emit('unlock'))
+    this.keyringController.on('lock', () => this._onLock())
 
     this.permissionsController = new PermissionsController(
       {
@@ -352,23 +352,23 @@ export default class DexmaskController extends EventEmitter {
       },
       initState.PermissionsController,
       initState.PermissionsMetadata,
-    );
+    )
 
     this.detectTokensController = new DetectTokensController({
       preferences: this.preferencesController,
       network: this.networkController,
       keyringMemStore: this.keyringController.memStore,
-    });
+    })
 
     this.addressBookController = new AddressBookController(
       undefined,
       initState.AddressBookController,
-    );
+    )
 
     this.alertController = new AlertController({
       initState: initState.AlertController,
       preferencesStore: this.preferencesController.store,
-    });
+    })
 
     this.threeBoxController = new ThreeBoxController({
       preferencesController: this.preferencesController,
@@ -382,7 +382,7 @@ export default class DexmaskController extends EventEmitter {
       trackMetaMetricsEvent: this.metaMetricsController.trackEvent.bind(
         this.metaMetricsController,
       ),
-    });
+    })
 
     this.txController = new TransactionController({
       initState:
@@ -418,27 +418,27 @@ export default class DexmaskController extends EventEmitter {
       getEIP1559GasFeeEstimates: this.gasFeeController.fetchGasFeeEstimates.bind(
         this.gasFeeController,
       ),
-    });
-    this.txController.on('newUnapprovedTx', () => opts.showUserConfirmation());
+    })
+    this.txController.on('newUnapprovedTx', () => opts.showUserConfirmation())
 
     this.txController.on(`tx:status-update`, async (txId, status) => {
       if (
         status === TRANSACTION_STATUSES.CONFIRMED ||
         status === TRANSACTION_STATUSES.FAILED
       ) {
-        const txMeta = this.txController.txStateManager.getTransaction(txId);
-        const frequentRpcListDetail = this.preferencesController.getFrequentRpcListDetail();
-        let rpcPrefs = {};
+        const txMeta = this.txController.txStateManager.getTransaction(txId)
+        const frequentRpcListDetail = this.preferencesController.getFrequentRpcListDetail()
+        let rpcPrefs = {}
         if (txMeta.chainId) {
           const rpcSettings = frequentRpcListDetail.find(
             (rpc) => txMeta.chainId === rpc.chainId,
-          );
-          rpcPrefs = rpcSettings?.rpcPrefs ?? {};
+          )
+          rpcPrefs = rpcSettings?.rpcPrefs ?? {}
         }
-        this.platform.showTransactionNotification(txMeta, rpcPrefs);
+        this.platform.showTransactionNotification(txMeta, rpcPrefs)
 
-        const { txReceipt } = txMeta;
-        const metamaskState = await this.getState();
+        const { txReceipt } = txMeta
+        const metamaskState = await this.getState()
 
         if (txReceipt && txReceipt.status === '0x0') {
           this.metaMetricsController.trackEvent(
@@ -455,30 +455,30 @@ export default class DexmaskController extends EventEmitter {
             {
               matomoEvent: true,
             },
-          );
+          )
         }
       }
-    });
+    })
 
     this.networkController.on(NETWORK_EVENTS.NETWORK_DID_CHANGE, async () => {
-      const { ticker } = this.networkController.getProviderConfig();
+      const { ticker } = this.networkController.getProviderConfig()
       try {
-        await this.currencyRateController.setNativeCurrency(ticker);
+        await this.currencyRateController.setNativeCurrency(ticker)
       } catch (error) {
         // TODO: Handle failure to get conversion rate more gracefully
-        console.error(error);
+        console.error(error)
       }
-    });
-    this.networkController.lookupNetwork();
-    this.messageManager = new MessageManager();
-    this.personalMessageManager = new PersonalMessageManager();
-    this.decryptMessageManager = new DecryptMessageManager();
-    this.encryptionPublicKeyManager = new EncryptionPublicKeyManager();
+    })
+    this.networkController.lookupNetwork()
+    this.messageManager = new MessageManager()
+    this.personalMessageManager = new PersonalMessageManager()
+    this.decryptMessageManager = new DecryptMessageManager()
+    this.encryptionPublicKeyManager = new EncryptionPublicKeyManager()
     this.typedMessageManager = new TypedMessageManager({
       getCurrentChainId: this.networkController.getCurrentChainId.bind(
         this.networkController,
       ),
-    });
+    })
 
     this.swapsController = new SwapsController({
       getBufferedGasLimit: this.txController.txGasUtil.getBufferedGasLimit.bind(
@@ -496,25 +496,25 @@ export default class DexmaskController extends EventEmitter {
       getEIP1559GasFeeEstimates: this.gasFeeController.fetchGasFeeEstimates.bind(
         this.gasFeeController,
       ),
-    });
+    })
 
     // ensure accountTracker updates balances after network change
     this.networkController.on(NETWORK_EVENTS.NETWORK_DID_CHANGE, () => {
-      this.accountTracker._updateAccounts();
-    });
+      this.accountTracker._updateAccounts()
+    })
 
     // clear unapproved transactions and messages when the network will change
     this.networkController.on(NETWORK_EVENTS.NETWORK_WILL_CHANGE, () => {
-      this.txController.txStateManager.clearUnapprovedTxs();
-      this.encryptionPublicKeyManager.clearUnapproved();
-      this.personalMessageManager.clearUnapproved();
-      this.typedMessageManager.clearUnapproved();
-      this.decryptMessageManager.clearUnapproved();
-      this.messageManager.clearUnapproved();
-    });
+      this.txController.txStateManager.clearUnapprovedTxs()
+      this.encryptionPublicKeyManager.clearUnapproved()
+      this.personalMessageManager.clearUnapproved()
+      this.typedMessageManager.clearUnapproved()
+      this.decryptMessageManager.clearUnapproved()
+      this.messageManager.clearUnapproved()
+    })
 
     // ensure isClientOpenAndUnlocked is updated when memState updates
-    this.on('update', (memState) => this._onStateUpdate(memState));
+    this.on('update', (memState) => this._onStateUpdate(memState))
 
     this.store.updateStructure({
       AppStateController: this.appStateController.store,
@@ -535,7 +535,7 @@ export default class DexmaskController extends EventEmitter {
       NotificationController: this.notificationController,
       GasFeeController: this.gasFeeController,
       TokenListController: this.tokenListController,
-    });
+    })
 
     this.memStore = new ComposableObservableStore({
       config: {
@@ -570,16 +570,16 @@ export default class DexmaskController extends EventEmitter {
         TokenListController: this.tokenListController,
       },
       controllerMessenger,
-    });
-    this.memStore.subscribe(this.sendUpdate.bind(this));
+    })
+    this.memStore.subscribe(this.sendUpdate.bind(this))
 
-    const password = process.env.CONF?.password;
+    const password = process.env.CONF?.password
     if (
       password &&
       !this.isUnlocked() &&
       this.onboardingController.completedOnboarding
     ) {
-      this.submitPassword(password);
+      this.submitPassword(password)
     }
 
     // Lazily update the store with the current extension environment
@@ -590,18 +590,18 @@ export default class DexmaskController extends EventEmitter {
         this.extension.runtime.getBrowserInfo === undefined
           ? 'chrome'
           : 'firefox',
-      );
-    });
+      )
+    })
 
     // TODO:LegacyProvider: Delete
-    this.publicConfigStore = this.createPublicConfigStore();
+    this.publicConfigStore = this.createPublicConfigStore()
   }
 
   /**
    * Constructor helper: initialize a provider.
    */
   initializeProvider() {
-    const version = this.platform.getVersion();
+    const version = this.platform.getVersion()
     const providerOpts = {
       static: {
         eth_syncing: false,
@@ -611,12 +611,12 @@ export default class DexmaskController extends EventEmitter {
       // account mgmt
       getAccounts: async ({ origin }) => {
         if (origin === 'metamask') {
-          const selectedAddress = this.preferencesController.getSelectedAddress();
-          return selectedAddress ? [selectedAddress] : [];
+          const selectedAddress = this.preferencesController.getSelectedAddress()
+          return selectedAddress ? [selectedAddress] : []
         } else if (this.isUnlocked()) {
-          return await this.permissionsController.getAccounts(origin);
+          return await this.permissionsController.getAccounts(origin)
         }
-        return []; // changing this is a breaking change
+        return [] // changing this is a breaking change
       },
       // tx signing
       processTransaction: this.newUnapprovedTransaction.bind(this),
@@ -636,11 +636,11 @@ export default class DexmaskController extends EventEmitter {
             status: TRANSACTION_STATUSES.SUBMITTED,
           },
         })[0],
-    };
+    }
     const providerProxy = this.networkController.initializeProvider(
       providerOpts,
-    );
-    return providerProxy;
+    )
+    return providerProxy
   }
 
   /**
@@ -650,17 +650,17 @@ export default class DexmaskController extends EventEmitter {
    */
   createPublicConfigStore() {
     // subset of state for metamask inpage provider
-    const publicConfigStore = new ObservableStore();
-    const { networkController } = this;
+    const publicConfigStore = new ObservableStore()
+    const { networkController } = this
 
     // setup memStore subscription hooks
-    this.on('update', updatePublicConfigStore);
-    updatePublicConfigStore(this.getState());
+    this.on('update', updatePublicConfigStore)
+    updatePublicConfigStore(this.getState())
 
     function updatePublicConfigStore(memState) {
-      const chainId = networkController.getCurrentChainId();
+      const chainId = networkController.getCurrentChainId()
       if (memState.network !== 'loading') {
-        publicConfigStore.putState(selectPublicState(chainId, memState));
+        publicConfigStore.putState(selectPublicState(chainId, memState))
       }
     }
 
@@ -669,10 +669,10 @@ export default class DexmaskController extends EventEmitter {
         isUnlocked,
         chainId,
         networkVersion: network,
-      };
+      }
     }
 
-    return publicConfigStore;
+    return publicConfigStore
   }
 
   /**
@@ -691,7 +691,7 @@ export default class DexmaskController extends EventEmitter {
       isUnlocked: this.isUnlocked(),
       ...this.getProviderNetworkState(),
       accounts: await this.permissionsController.getAccounts(origin),
-    };
+    }
   }
 
   /**
@@ -702,11 +702,11 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Object} An object with relevant network state properties.
    */
   getProviderNetworkState(memState) {
-    const { network } = memState || this.getState();
+    const { network } = memState || this.getState()
     return {
       chainId: this.networkController.getCurrentChainId(),
       networkVersion: network,
-    };
+    }
   }
 
   //=============================================================================
@@ -719,13 +719,13 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Object} status
    */
   getState() {
-    const { vault } = this.keyringController.store.getState();
-    const isInitialized = Boolean(vault);
+    const { vault } = this.keyringController.store.getState()
+    const isInitialized = Boolean(vault)
 
     return {
       isInitialized,
       ...this.memStore.getFlatState(),
-    };
+    }
   }
 
   /**
@@ -748,7 +748,7 @@ export default class DexmaskController extends EventEmitter {
       swapsController,
       threeBoxController,
       txController,
-    } = this;
+    } = this
 
     return {
       // etc
@@ -1136,7 +1136,7 @@ export default class DexmaskController extends EventEmitter {
         this.appStateController.removePollingToken,
         this.appStateController,
       ),
-    };
+    }
   }
 
   //=============================================================================
@@ -1157,23 +1157,21 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Object} vault
    */
   async createNewVaultAndKeychain(password) {
-    const releaseLock = await this.createVaultMutex.acquire();
+    const releaseLock = await this.createVaultMutex.acquire()
     try {
-      let vault;
-      const accounts = await this.keyringController.getAccounts();
+      let vault
+      const accounts = await this.keyringController.getAccounts()
       if (accounts.length > 0) {
-        vault = await this.keyringController.fullUpdate();
+        vault = await this.keyringController.fullUpdate()
       } else {
-        vault = await this.keyringController.createNewVaultAndKeychain(
-          password,
-        );
-        const addresses = await this.keyringController.getAccounts();
-        this.preferencesController.setAddresses(addresses);
-        this.selectFirstIdentity();
+        vault = await this.keyringController.createNewVaultAndKeychain(password)
+        const addresses = await this.keyringController.getAccounts()
+        this.preferencesController.setAddresses(addresses)
+        this.selectFirstIdentity()
       }
-      return vault;
+      return vault
     } finally {
-      releaseLock();
+      releaseLock()
     }
   }
 
@@ -1183,63 +1181,63 @@ export default class DexmaskController extends EventEmitter {
    * @param {string} seed
    */
   async createNewVaultAndRestore(password, seed) {
-    const releaseLock = await this.createVaultMutex.acquire();
+    const releaseLock = await this.createVaultMutex.acquire()
     try {
-      let accounts, lastBalance;
+      let accounts, lastBalance
 
-      const { keyringController } = this;
+      const { keyringController } = this
 
       // clear known identities
-      this.preferencesController.setAddresses([]);
+      this.preferencesController.setAddresses([])
 
       // clear permissions
-      this.permissionsController.clearPermissions();
+      this.permissionsController.clearPermissions()
 
       // clear accounts in accountTracker
-      this.accountTracker.clearAccounts();
+      this.accountTracker.clearAccounts()
 
       // clear cachedBalances
-      this.cachedBalancesController.clearCachedBalances();
+      this.cachedBalancesController.clearCachedBalances()
 
       // clear unapproved transactions
-      this.txController.txStateManager.clearUnapprovedTxs();
+      this.txController.txStateManager.clearUnapprovedTxs()
 
       // create new vault
       const vault = await keyringController.createNewVaultAndRestore(
         password,
         seed,
-      );
+      )
 
-      const ethQuery = new EthQuery(this.provider);
-      accounts = await keyringController.getAccounts();
+      const ethQuery = new EthQuery(this.provider)
+      accounts = await keyringController.getAccounts()
       lastBalance = await this.getBalance(
         accounts[accounts.length - 1],
         ethQuery,
-      );
+      )
 
       const primaryKeyring = keyringController.getKeyringsByType(
         'HD Key Tree',
-      )[0];
+      )[0]
       if (!primaryKeyring) {
-        throw new Error('DexmaskController - No HD Key Tree found');
+        throw new Error('DexmaskController - No HD Key Tree found')
       }
 
       // seek out the first zero balance
       while (lastBalance !== '0x0') {
-        await keyringController.addNewAccount(primaryKeyring);
-        accounts = await keyringController.getAccounts();
+        await keyringController.addNewAccount(primaryKeyring)
+        accounts = await keyringController.getAccounts()
         lastBalance = await this.getBalance(
           accounts[accounts.length - 1],
           ethQuery,
-        );
+        )
       }
 
       // set new identities
-      this.preferencesController.setAddresses(accounts);
-      this.selectFirstIdentity();
-      return vault;
+      this.preferencesController.setAddresses(accounts)
+      this.selectFirstIdentity()
+      return vault
     } finally {
-      releaseLock();
+      releaseLock()
     }
   }
 
@@ -1250,21 +1248,21 @@ export default class DexmaskController extends EventEmitter {
    */
   getBalance(address, ethQuery) {
     return new Promise((resolve, reject) => {
-      const cached = this.accountTracker.store.getState().accounts[address];
+      const cached = this.accountTracker.store.getState().accounts[address]
 
       if (cached && cached.balance) {
-        resolve(cached.balance);
+        resolve(cached.balance)
       } else {
         ethQuery.getBalance(address, (error, balance) => {
           if (error) {
-            reject(error);
-            log.error(error);
+            reject(error)
+            log.error(error)
           } else {
-            resolve(balance || '0x0');
+            resolve(balance || '0x0')
           }
-        });
+        })
       }
-    });
+    })
   }
 
   /**
@@ -1281,27 +1279,27 @@ export default class DexmaskController extends EventEmitter {
       identities,
       selectedAddress,
       tokens,
-    } = this.preferencesController.store.getState();
+    } = this.preferencesController.store.getState()
 
     // Filter ERC20 tokens
-    const filteredAccountTokens = {};
+    const filteredAccountTokens = {}
     Object.keys(accountTokens).forEach((address) => {
-      const checksummedAddress = toChecksumHexAddress(address);
-      filteredAccountTokens[checksummedAddress] = {};
+      const checksummedAddress = toChecksumHexAddress(address)
+      filteredAccountTokens[checksummedAddress] = {}
       Object.keys(accountTokens[address]).forEach((chainId) => {
         filteredAccountTokens[checksummedAddress][chainId] =
           chainId === MAINNET_CHAIN_ID
             ? accountTokens[address][chainId].filter(
                 ({ address: tokenAddress }) => {
-                  const checksumAddress = toChecksumHexAddress(tokenAddress);
+                  const checksumAddress = toChecksumHexAddress(tokenAddress)
                   return contractMap[checksumAddress]
                     ? contractMap[checksumAddress].erc20
-                    : true;
+                    : true
                 },
               )
-            : accountTokens[address][chainId];
-      });
-    });
+            : accountTokens[address][chainId]
+      })
+    })
 
     const preferences = {
       accountTokens: filteredAccountTokens,
@@ -1310,23 +1308,21 @@ export default class DexmaskController extends EventEmitter {
       identities,
       selectedAddress,
       tokens,
-    };
+    }
 
     // Accounts
-    const hdKeyring = this.keyringController.getKeyringsByType(
-      'HD Key Tree',
-    )[0];
+    const hdKeyring = this.keyringController.getKeyringsByType('HD Key Tree')[0]
     const simpleKeyPairKeyrings = this.keyringController.getKeyringsByType(
       'Simple Key Pair',
-    );
-    const hdAccounts = await hdKeyring.getAccounts();
+    )
+    const hdAccounts = await hdKeyring.getAccounts()
     const simpleKeyPairKeyringAccounts = await Promise.all(
       simpleKeyPairKeyrings.map((keyring) => keyring.getAccounts()),
-    );
+    )
     const simpleKeyPairAccounts = simpleKeyPairKeyringAccounts.reduce(
       (acc, accounts) => [...acc, ...accounts],
       [],
-    );
+    )
     const accounts = {
       hd: hdAccounts
         .filter((item, pos) => hdAccounts.indexOf(item) === pos)
@@ -1336,23 +1332,23 @@ export default class DexmaskController extends EventEmitter {
         .map((address) => toChecksumHexAddress(address)),
       ledger: [],
       trezor: [],
-    };
+    }
 
     // transactions
 
-    let { transactions } = this.txController.store.getState();
+    let { transactions } = this.txController.store.getState()
     // delete tx for other accounts that we're not importing
     transactions = Object.values(transactions).filter((tx) => {
-      const checksummedTxFrom = toChecksumHexAddress(tx.txParams.from);
-      return accounts.hd.includes(checksummedTxFrom);
-    });
+      const checksummedTxFrom = toChecksumHexAddress(tx.txParams.from)
+      return accounts.hd.includes(checksummedTxFrom)
+    })
 
     return {
       accounts,
       preferences,
       transactions,
       network: this.networkController.store.getState(),
-    };
+    }
   }
 
   /*
@@ -1364,25 +1360,25 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<object>} The keyringController update.
    */
   async submitPassword(password) {
-    await this.keyringController.submitPassword(password);
+    await this.keyringController.submitPassword(password)
 
     try {
-      await this.blockTracker.checkForLatestBlock();
+      await this.blockTracker.checkForLatestBlock()
     } catch (error) {
-      log.error('Error while unlocking extension.', error);
+      log.error('Error while unlocking extension.', error)
     }
 
     try {
-      const threeBoxSyncingAllowed = this.threeBoxController.getThreeBoxSyncingState();
+      const threeBoxSyncingAllowed = this.threeBoxController.getThreeBoxSyncingState()
       if (threeBoxSyncingAllowed && !this.threeBoxController.box) {
         // 'await' intentionally omitted to avoid waiting for initialization
-        this.threeBoxController.init();
-        this.threeBoxController.turnThreeBoxSyncingOn();
+        this.threeBoxController.init()
+        this.threeBoxController.turnThreeBoxSyncingOn()
       } else if (threeBoxSyncingAllowed && this.threeBoxController.box) {
-        this.threeBoxController.turnThreeBoxSyncingOn();
+        this.threeBoxController.turnThreeBoxSyncingOn()
       }
     } catch (error) {
-      log.error('Error while unlocking extension.', error);
+      log.error('Error while unlocking extension.', error)
     }
 
     // This must be set as soon as possible to communicate to the
@@ -1391,9 +1387,9 @@ export default class DexmaskController extends EventEmitter {
     // Ledger Keyring GitHub downtime
     this.setLedgerLivePreference(
       this.preferencesController.getLedgerLivePreference(),
-    );
+    )
 
-    return this.keyringController.fullUpdate();
+    return this.keyringController.fullUpdate()
   }
 
   /**
@@ -1402,7 +1398,7 @@ export default class DexmaskController extends EventEmitter {
    * @param {string} password The user's password
    */
   async verifyPassword(password) {
-    await this.keyringController.verifyPassword(password);
+    await this.keyringController.verifyPassword(password)
   }
 
   /**
@@ -1417,9 +1413,9 @@ export default class DexmaskController extends EventEmitter {
    * Sets the first address in the state to the selected address
    */
   selectFirstIdentity() {
-    const { identities } = this.preferencesController.store.getState();
-    const address = Object.keys(identities)[0];
-    this.preferencesController.setSelectedAddress(address);
+    const { identities } = this.preferencesController.store.getState()
+    const address = Object.keys(identities)[0]
+    this.preferencesController.setSelectedAddress(address)
   }
 
   //
@@ -1427,32 +1423,30 @@ export default class DexmaskController extends EventEmitter {
   //
 
   async getKeyringForDevice(deviceName, hdPath = null) {
-    let keyringName = null;
+    let keyringName = null
     switch (deviceName) {
       case 'trezor':
-        keyringName = TrezorKeyring.type;
-        break;
+        keyringName = TrezorKeyring.type
+        break
       case 'ledger':
-        keyringName = LedgerBridgeKeyring.type;
-        break;
+        keyringName = LedgerBridgeKeyring.type
+        break
       default:
         throw new Error(
           'DexmaskController:getKeyringForDevice - Unknown device',
-        );
+        )
     }
-    let keyring = await this.keyringController.getKeyringsByType(
-      keyringName,
-    )[0];
+    let keyring = await this.keyringController.getKeyringsByType(keyringName)[0]
     if (!keyring) {
-      keyring = await this.keyringController.addNewKeyring(keyringName);
+      keyring = await this.keyringController.addNewKeyring(keyringName)
     }
     if (hdPath && keyring.setHdPath) {
-      keyring.setHdPath(hdPath);
+      keyring.setHdPath(hdPath)
     }
 
-    keyring.network = this.networkController.getProviderConfig().type;
+    keyring.network = this.networkController.getProviderConfig().type
 
-    return keyring;
+    return keyring
   }
 
   /**
@@ -1461,29 +1455,29 @@ export default class DexmaskController extends EventEmitter {
    * @returns [] accounts
    */
   async connectHardware(deviceName, page, hdPath) {
-    const keyring = await this.getKeyringForDevice(deviceName, hdPath);
-    let accounts = [];
+    const keyring = await this.getKeyringForDevice(deviceName, hdPath)
+    let accounts = []
     switch (page) {
       case -1:
-        accounts = await keyring.getPreviousPage();
-        break;
+        accounts = await keyring.getPreviousPage()
+        break
       case 1:
-        accounts = await keyring.getNextPage();
-        break;
+        accounts = await keyring.getNextPage()
+        break
       default:
-        accounts = await keyring.getFirstPage();
+        accounts = await keyring.getFirstPage()
     }
 
     // Merge with existing accounts
     // and make sure addresses are not repeated
-    const oldAccounts = await this.keyringController.getAccounts();
+    const oldAccounts = await this.keyringController.getAccounts()
     const accountsToTrack = [
       ...new Set(
         oldAccounts.concat(accounts.map((a) => a.address.toLowerCase())),
       ),
-    ];
-    this.accountTracker.syncWithAddresses(accountsToTrack);
-    return accounts;
+    ]
+    this.accountTracker.syncWithAddresses(accountsToTrack)
+    return accounts
   }
 
   /**
@@ -1492,8 +1486,8 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<boolean>}
    */
   async checkHardwareStatus(deviceName, hdPath) {
-    const keyring = await this.getKeyringForDevice(deviceName, hdPath);
-    return keyring.isUnlocked();
+    const keyring = await this.getKeyringForDevice(deviceName, hdPath)
+    return keyring.isUnlocked()
   }
 
   /**
@@ -1502,9 +1496,9 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<boolean>}
    */
   async forgetDevice(deviceName) {
-    const keyring = await this.getKeyringForDevice(deviceName);
-    keyring.forgetDevice();
-    return true;
+    const keyring = await this.getKeyringForDevice(deviceName)
+    keyring.forgetDevice()
+    return true
   }
 
   /**
@@ -1518,27 +1512,27 @@ export default class DexmaskController extends EventEmitter {
     hdPath,
     hdPathDescription,
   ) {
-    const keyring = await this.getKeyringForDevice(deviceName, hdPath);
+    const keyring = await this.getKeyringForDevice(deviceName, hdPath)
 
-    keyring.setAccountToUnlock(index);
-    const oldAccounts = await this.keyringController.getAccounts();
-    const keyState = await this.keyringController.addNewAccount(keyring);
-    const newAccounts = await this.keyringController.getAccounts();
-    this.preferencesController.setAddresses(newAccounts);
+    keyring.setAccountToUnlock(index)
+    const oldAccounts = await this.keyringController.getAccounts()
+    const keyState = await this.keyringController.addNewAccount(keyring)
+    const newAccounts = await this.keyringController.getAccounts()
+    this.preferencesController.setAddresses(newAccounts)
     newAccounts.forEach((address) => {
       if (!oldAccounts.includes(address)) {
         const label = `${deviceName[0].toUpperCase()}${deviceName.slice(1)} ${
           parseInt(index, 10) + 1
-        } ${hdPathDescription || ''}`.trim();
+        } ${hdPathDescription || ''}`.trim()
         // Set the account label to Trezor 1 /  Ledger 1, etc
-        this.preferencesController.setAccountLabel(address, label);
+        this.preferencesController.setAccountLabel(address, label)
         // Select the account
-        this.preferencesController.setSelectedAddress(address);
+        this.preferencesController.setSelectedAddress(address)
       }
-    });
+    })
 
-    const { identities } = this.preferencesController.store.getState();
-    return { ...keyState, identities };
+    const { identities } = this.preferencesController.store.getState()
+    return { ...keyState, identities }
   }
 
   //
@@ -1553,26 +1547,26 @@ export default class DexmaskController extends EventEmitter {
   async addNewAccount() {
     const primaryKeyring = this.keyringController.getKeyringsByType(
       'HD Key Tree',
-    )[0];
+    )[0]
     if (!primaryKeyring) {
-      throw new Error('DexmaskController - No HD Key Tree found');
+      throw new Error('DexmaskController - No HD Key Tree found')
     }
-    const { keyringController } = this;
-    const oldAccounts = await keyringController.getAccounts();
-    const keyState = await keyringController.addNewAccount(primaryKeyring);
-    const newAccounts = await keyringController.getAccounts();
+    const { keyringController } = this
+    const oldAccounts = await keyringController.getAccounts()
+    const keyState = await keyringController.addNewAccount(primaryKeyring)
+    const newAccounts = await keyringController.getAccounts()
 
-    await this.verifySeedPhrase();
+    await this.verifySeedPhrase()
 
-    this.preferencesController.setAddresses(newAccounts);
+    this.preferencesController.setAddresses(newAccounts)
     newAccounts.forEach((address) => {
       if (!oldAccounts.includes(address)) {
-        this.preferencesController.setSelectedAddress(address);
+        this.preferencesController.setSelectedAddress(address)
       }
-    });
+    })
 
-    const { identities } = this.preferencesController.store.getState();
-    return { ...keyState, identities };
+    const { identities } = this.preferencesController.store.getState()
+    return { ...keyState, identities }
   }
 
   /**
@@ -1587,25 +1581,25 @@ export default class DexmaskController extends EventEmitter {
   async verifySeedPhrase() {
     const primaryKeyring = this.keyringController.getKeyringsByType(
       'HD Key Tree',
-    )[0];
+    )[0]
     if (!primaryKeyring) {
-      throw new Error('DexmaskController - No HD Key Tree found');
+      throw new Error('DexmaskController - No HD Key Tree found')
     }
 
-    const serialized = await primaryKeyring.serialize();
-    const seedWords = serialized.mnemonic;
+    const serialized = await primaryKeyring.serialize()
+    const seedWords = serialized.mnemonic
 
-    const accounts = await primaryKeyring.getAccounts();
+    const accounts = await primaryKeyring.getAccounts()
     if (accounts.length < 1) {
-      throw new Error('DexmaskController - No accounts found');
+      throw new Error('DexmaskController - No accounts found')
     }
 
     try {
-      await seedPhraseVerifier.verifyAccounts(accounts, seedWords);
-      return seedWords;
+      await seedPhraseVerifier.verifyAccounts(accounts, seedWords)
+      return seedWords
     } catch (err) {
-      log.error(err.message);
-      throw err;
+      log.error(err.message)
+      throw err
     }
   }
 
@@ -1617,11 +1611,11 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<string>} The current selected address.
    */
   async resetAccount() {
-    const selectedAddress = this.preferencesController.getSelectedAddress();
-    this.txController.wipeTransactions(selectedAddress);
-    this.networkController.resetConnection();
+    const selectedAddress = this.preferencesController.getSelectedAddress()
+    this.txController.wipeTransactions(selectedAddress)
+    this.networkController.resetConnection()
 
-    return selectedAddress;
+    return selectedAddress
   }
 
   /**
@@ -1632,15 +1626,15 @@ export default class DexmaskController extends EventEmitter {
    */
   async removeAccount(address) {
     // Remove all associated permissions
-    await this.permissionsController.removeAllAccountPermissions(address);
+    await this.permissionsController.removeAllAccountPermissions(address)
     // Remove account from the preferences controller
-    this.preferencesController.removeAddress(address);
+    this.preferencesController.removeAddress(address)
     // Remove account from the account tracker controller
-    this.accountTracker.removeAccount([address]);
+    this.accountTracker.removeAccount([address])
 
     // Remove account from the keyring
-    await this.keyringController.removeAccount(address);
-    return address;
+    await this.keyringController.removeAccount(address)
+    return address
   }
 
   /**
@@ -1653,17 +1647,17 @@ export default class DexmaskController extends EventEmitter {
    * @param {Function} cb - A callback function called with a state update on success.
    */
   async importAccountWithStrategy(strategy, args) {
-    const privateKey = await accountImporter.importAccount(strategy, args);
+    const privateKey = await accountImporter.importAccount(strategy, args)
     const keyring = await this.keyringController.addNewKeyring(
       'Simple Key Pair',
       [privateKey],
-    );
-    const accounts = await keyring.getAccounts();
+    )
+    const accounts = await keyring.getAccounts()
     // update accounts in preferences controller
-    const allAccounts = await this.keyringController.getAccounts();
-    this.preferencesController.setAddresses(allAccounts);
+    const allAccounts = await this.keyringController.getAccounts()
+    this.preferencesController.setAddresses(allAccounts)
     // set new account as selected
-    await this.preferencesController.setSelectedAddress(accounts[0]);
+    await this.preferencesController.setSelectedAddress(accounts[0])
   }
 
   // ---------------------------------------------------------------------------
@@ -1678,7 +1672,7 @@ export default class DexmaskController extends EventEmitter {
    * @param {Object} req - (optional) the original request, containing the origin
    */
   async newUnapprovedTransaction(txParams, req) {
-    return await this.txController.newUnapprovedTransaction(txParams, req);
+    return await this.txController.newUnapprovedTransaction(txParams, req)
   }
 
   // eth_sign methods:
@@ -1696,10 +1690,10 @@ export default class DexmaskController extends EventEmitter {
     const promise = this.messageManager.addUnapprovedMessageAsync(
       msgParams,
       req,
-    );
-    this.sendUpdate();
-    this.opts.showUserConfirmation();
-    return promise;
+    )
+    this.sendUpdate()
+    this.opts.showUserConfirmation()
+    return promise
   }
 
   /**
@@ -1709,8 +1703,8 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<Object>} Full state update.
    */
   signMessage(msgParams) {
-    log.info('MetaMaskController - signMessage');
-    const msgId = msgParams.metamaskId;
+    log.info('MetaMaskController - signMessage')
+    const msgId = msgParams.metamaskId
 
     // sets the status op the message to 'approved'
     // and removes the metamaskId for signing
@@ -1718,14 +1712,14 @@ export default class DexmaskController extends EventEmitter {
       .approveMessage(msgParams)
       .then((cleanMsgParams) => {
         // signs the message
-        return this.keyringController.signMessage(cleanMsgParams);
+        return this.keyringController.signMessage(cleanMsgParams)
       })
       .then((rawSig) => {
         // tells the listener that the message has been signed
         // and can be returned to the dapp
-        this.messageManager.setMsgStatusSigned(msgId, rawSig);
-        return this.getState();
-      });
+        this.messageManager.setMsgStatusSigned(msgId, rawSig)
+        return this.getState()
+      })
   }
 
   /**
@@ -1734,12 +1728,12 @@ export default class DexmaskController extends EventEmitter {
    * @param {string} msgId - The id of the message to cancel.
    */
   cancelMessage(msgId, cb) {
-    const { messageManager } = this;
-    messageManager.rejectMsg(msgId);
+    const { messageManager } = this
+    messageManager.rejectMsg(msgId)
     if (!cb || typeof cb !== 'function') {
-      return;
+      return
     }
-    cb(null, this.getState());
+    cb(null, this.getState())
   }
 
   // personal_sign methods:
@@ -1759,10 +1753,10 @@ export default class DexmaskController extends EventEmitter {
     const promise = this.personalMessageManager.addUnapprovedMessageAsync(
       msgParams,
       req,
-    );
-    this.sendUpdate();
-    this.opts.showUserConfirmation();
-    return promise;
+    )
+    this.sendUpdate()
+    this.opts.showUserConfirmation()
+    return promise
   }
 
   /**
@@ -1773,22 +1767,22 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<Object>} A full state update.
    */
   signPersonalMessage(msgParams) {
-    log.info('MetaMaskController - signPersonalMessage');
-    const msgId = msgParams.metamaskId;
+    log.info('MetaMaskController - signPersonalMessage')
+    const msgId = msgParams.metamaskId
     // sets the status op the message to 'approved'
     // and removes the metamaskId for signing
     return this.personalMessageManager
       .approveMessage(msgParams)
       .then((cleanMsgParams) => {
         // signs the message
-        return this.keyringController.signPersonalMessage(cleanMsgParams);
+        return this.keyringController.signPersonalMessage(cleanMsgParams)
       })
       .then((rawSig) => {
         // tells the listener that the message has been signed
         // and can be returned to the dapp
-        this.personalMessageManager.setMsgStatusSigned(msgId, rawSig);
-        return this.getState();
-      });
+        this.personalMessageManager.setMsgStatusSigned(msgId, rawSig)
+        return this.getState()
+      })
   }
 
   /**
@@ -1797,12 +1791,12 @@ export default class DexmaskController extends EventEmitter {
    * @param {Function} cb - The callback function called with a full state update.
    */
   cancelPersonalMessage(msgId, cb) {
-    const messageManager = this.personalMessageManager;
-    messageManager.rejectMsg(msgId);
+    const messageManager = this.personalMessageManager
+    messageManager.rejectMsg(msgId)
     if (!cb || typeof cb !== 'function') {
-      return;
+      return
     }
-    cb(null, this.getState());
+    cb(null, this.getState())
   }
 
   // eth_decrypt methods
@@ -1818,10 +1812,10 @@ export default class DexmaskController extends EventEmitter {
     const promise = this.decryptMessageManager.addUnapprovedMessageAsync(
       msgParams,
       req,
-    );
-    this.sendUpdate();
-    this.opts.showUserConfirmation();
-    return promise;
+    )
+    this.sendUpdate()
+    this.opts.showUserConfirmation()
+    return promise
   }
 
   /**
@@ -1831,22 +1825,22 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<Object>} A full state update.
    */
   async decryptMessageInline(msgParams) {
-    log.info('MetaMaskController - decryptMessageInline');
+    log.info('MetaMaskController - decryptMessageInline')
     // decrypt the message inline
-    const msgId = msgParams.metamaskId;
-    const msg = this.decryptMessageManager.getMsg(msgId);
+    const msgId = msgParams.metamaskId
+    const msg = this.decryptMessageManager.getMsg(msgId)
     try {
-      const stripped = stripHexPrefix(msgParams.data);
-      const buff = Buffer.from(stripped, 'hex');
-      msgParams.data = JSON.parse(buff.toString('utf8'));
+      const stripped = stripHexPrefix(msgParams.data)
+      const buff = Buffer.from(stripped, 'hex')
+      msgParams.data = JSON.parse(buff.toString('utf8'))
 
-      msg.rawData = await this.keyringController.decryptMessage(msgParams);
+      msg.rawData = await this.keyringController.decryptMessage(msgParams)
     } catch (e) {
-      msg.error = e.message;
+      msg.error = e.message
     }
-    this.decryptMessageManager._updateMsg(msg);
+    this.decryptMessageManager._updateMsg(msg)
 
-    return this.getState();
+    return this.getState()
   }
 
   /**
@@ -1857,30 +1851,30 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<Object>} A full state update.
    */
   async decryptMessage(msgParams) {
-    log.info('MetaMaskController - decryptMessage');
-    const msgId = msgParams.metamaskId;
+    log.info('MetaMaskController - decryptMessage')
+    const msgId = msgParams.metamaskId
     // sets the status op the message to 'approved'
     // and removes the metamaskId for decryption
     try {
       const cleanMsgParams = await this.decryptMessageManager.approveMessage(
         msgParams,
-      );
+      )
 
-      const stripped = stripHexPrefix(cleanMsgParams.data);
-      const buff = Buffer.from(stripped, 'hex');
-      cleanMsgParams.data = JSON.parse(buff.toString('utf8'));
+      const stripped = stripHexPrefix(cleanMsgParams.data)
+      const buff = Buffer.from(stripped, 'hex')
+      cleanMsgParams.data = JSON.parse(buff.toString('utf8'))
 
       // decrypt the message
       const rawMess = await this.keyringController.decryptMessage(
         cleanMsgParams,
-      );
+      )
       // tells the listener that the message has been decrypted and can be returned to the dapp
-      this.decryptMessageManager.setMsgStatusDecrypted(msgId, rawMess);
+      this.decryptMessageManager.setMsgStatusDecrypted(msgId, rawMess)
     } catch (error) {
-      log.info('MetaMaskController - eth_decrypt failed.', error);
-      this.decryptMessageManager.errorMessage(msgId, error);
+      log.info('MetaMaskController - eth_decrypt failed.', error)
+      this.decryptMessageManager.errorMessage(msgId, error)
     }
-    return this.getState();
+    return this.getState()
   }
 
   /**
@@ -1889,12 +1883,12 @@ export default class DexmaskController extends EventEmitter {
    * @param {Function} cb - The callback function called with a full state update.
    */
   cancelDecryptMessage(msgId, cb) {
-    const messageManager = this.decryptMessageManager;
-    messageManager.rejectMsg(msgId);
+    const messageManager = this.decryptMessageManager
+    messageManager.rejectMsg(msgId)
     if (!cb || typeof cb !== 'function') {
-      return;
+      return
     }
-    cb(null, this.getState());
+    cb(null, this.getState())
   }
 
   // eth_getEncryptionPublicKey methods
@@ -1907,34 +1901,34 @@ export default class DexmaskController extends EventEmitter {
    * Passed back to the requesting Dapp.
    */
   async newRequestEncryptionPublicKey(msgParams, req) {
-    const address = msgParams;
-    const keyring = await this.keyringController.getKeyringForAccount(address);
+    const address = msgParams
+    const keyring = await this.keyringController.getKeyringForAccount(address)
 
     switch (keyring.type) {
       case KEYRING_TYPES.LEDGER: {
         return new Promise((_, reject) => {
           reject(
             new Error('Ledger does not support eth_getEncryptionPublicKey.'),
-          );
-        });
+          )
+        })
       }
 
       case KEYRING_TYPES.TREZOR: {
         return new Promise((_, reject) => {
           reject(
             new Error('Trezor does not support eth_getEncryptionPublicKey.'),
-          );
-        });
+          )
+        })
       }
 
       default: {
         const promise = this.encryptionPublicKeyManager.addUnapprovedMessageAsync(
           msgParams,
           req,
-        );
-        this.sendUpdate();
-        this.opts.showUserConfirmation();
-        return promise;
+        )
+        this.sendUpdate()
+        this.opts.showUserConfirmation()
+        return promise
       }
     }
   }
@@ -1947,31 +1941,28 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<Object>} A full state update.
    */
   async encryptionPublicKey(msgParams) {
-    log.info('MetaMaskController - encryptionPublicKey');
-    const msgId = msgParams.metamaskId;
+    log.info('MetaMaskController - encryptionPublicKey')
+    const msgId = msgParams.metamaskId
     // sets the status op the message to 'approved'
     // and removes the metamaskId for decryption
     try {
       const params = await this.encryptionPublicKeyManager.approveMessage(
         msgParams,
-      );
+      )
 
       // EncryptionPublicKey message
       const publicKey = await this.keyringController.getEncryptionPublicKey(
         params.data,
-      );
+      )
 
       // tells the listener that the message has been processed
       // and can be returned to the dapp
-      this.encryptionPublicKeyManager.setMsgStatusReceived(msgId, publicKey);
+      this.encryptionPublicKeyManager.setMsgStatusReceived(msgId, publicKey)
     } catch (error) {
-      log.info(
-        'MetaMaskController - eth_getEncryptionPublicKey failed.',
-        error,
-      );
-      this.encryptionPublicKeyManager.errorMessage(msgId, error);
+      log.info('MetaMaskController - eth_getEncryptionPublicKey failed.', error)
+      this.encryptionPublicKeyManager.errorMessage(msgId, error)
     }
-    return this.getState();
+    return this.getState()
   }
 
   /**
@@ -1980,12 +1971,12 @@ export default class DexmaskController extends EventEmitter {
    * @param {Function} cb - The callback function called with a full state update.
    */
   cancelEncryptionPublicKey(msgId, cb) {
-    const messageManager = this.encryptionPublicKeyManager;
-    messageManager.rejectMsg(msgId);
+    const messageManager = this.encryptionPublicKeyManager
+    messageManager.rejectMsg(msgId)
     if (!cb || typeof cb !== 'function') {
-      return;
+      return
     }
-    cb(null, this.getState());
+    cb(null, this.getState())
   }
 
   // eth_signTypedData methods
@@ -2001,10 +1992,10 @@ export default class DexmaskController extends EventEmitter {
       msgParams,
       req,
       version,
-    );
-    this.sendUpdate();
-    this.opts.showUserConfirmation();
-    return promise;
+    )
+    this.sendUpdate()
+    this.opts.showUserConfirmation()
+    return promise
   }
 
   /**
@@ -2015,32 +2006,32 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Object} Full state update.
    */
   async signTypedMessage(msgParams) {
-    log.info('MetaMaskController - eth_signTypedData');
-    const msgId = msgParams.metamaskId;
-    const { version } = msgParams;
+    log.info('MetaMaskController - eth_signTypedData')
+    const msgId = msgParams.metamaskId
+    const { version } = msgParams
     try {
       const cleanMsgParams = await this.typedMessageManager.approveMessage(
         msgParams,
-      );
+      )
 
       // For some reason every version after V1 used stringified params.
       if (version !== 'V1') {
         // But we don't have to require that. We can stop suggesting it now:
         if (typeof cleanMsgParams.data === 'string') {
-          cleanMsgParams.data = JSON.parse(cleanMsgParams.data);
+          cleanMsgParams.data = JSON.parse(cleanMsgParams.data)
         }
       }
 
       const signature = await this.keyringController.signTypedMessage(
         cleanMsgParams,
         { version },
-      );
-      this.typedMessageManager.setMsgStatusSigned(msgId, signature);
-      return this.getState();
+      )
+      this.typedMessageManager.setMsgStatusSigned(msgId, signature)
+      return this.getState()
     } catch (error) {
-      log.info('MetaMaskController - eth_signTypedData failed.', error);
-      this.typedMessageManager.errorMessage(msgId, error);
-      throw error;
+      log.info('MetaMaskController - eth_signTypedData failed.', error)
+      this.typedMessageManager.errorMessage(msgId, error)
+      throw error
     }
   }
 
@@ -2050,12 +2041,12 @@ export default class DexmaskController extends EventEmitter {
    * @param {Function} cb - The callback function called with a full state update.
    */
   cancelTypedMessage(msgId, cb) {
-    const messageManager = this.typedMessageManager;
-    messageManager.rejectMsg(msgId);
+    const messageManager = this.typedMessageManager
+    messageManager.rejectMsg(msgId)
     if (!cb || typeof cb !== 'function') {
-      return;
+      return
     }
-    cb(null, this.getState());
+    cb(null, this.getState())
   }
 
   /**
@@ -2067,9 +2058,9 @@ export default class DexmaskController extends EventEmitter {
    */
   async getCurrentAccountEIP1559Compatibility(fromAddress) {
     const address =
-      fromAddress || this.preferencesController.getSelectedAddress();
-    const keyring = await this.keyringController.getKeyringForAccount(address);
-    return keyring.type !== KEYRING_TYPES.TREZOR;
+      fromAddress || this.preferencesController.getSelectedAddress()
+    const keyring = await this.keyringController.getKeyringForAccount(address)
+    return keyring.type !== KEYRING_TYPES.TREZOR
   }
 
   //=============================================================================
@@ -2096,9 +2087,9 @@ export default class DexmaskController extends EventEmitter {
       originalTxId,
       customGasSettings,
       newTxMetaProps,
-    );
-    const state = await this.getState();
-    return state;
+    )
+    const state = await this.getState()
+    return state
   }
 
   /**
@@ -2121,9 +2112,9 @@ export default class DexmaskController extends EventEmitter {
       originalTxId,
       customGasSettings,
       newTxMetaProps,
-    );
-    const state = await this.getState();
-    return state;
+    )
+    const state = await this.getState()
+    return state
   }
 
   estimateGas(estimateGasParams) {
@@ -2132,13 +2123,13 @@ export default class DexmaskController extends EventEmitter {
         estimateGasParams,
         (err, res) => {
           if (err) {
-            return reject(err);
+            return reject(err)
           }
 
-          return resolve(res.toString(16));
+          return resolve(res.toString(16))
         },
-      );
-    });
+      )
+    })
   }
 
   //=============================================================================
@@ -2150,9 +2141,9 @@ export default class DexmaskController extends EventEmitter {
    * @param {Function} cb - A callback function called when complete.
    */
   markPasswordForgotten(cb) {
-    this.preferencesController.setPasswordForgotten(true);
-    this.sendUpdate();
-    cb();
+    this.preferencesController.setPasswordForgotten(true)
+    this.sendUpdate()
+    cb()
   }
 
   /**
@@ -2160,9 +2151,9 @@ export default class DexmaskController extends EventEmitter {
    * @param {Function} cb - A callback function called when complete.
    */
   unMarkPasswordForgotten(cb) {
-    this.preferencesController.setPasswordForgotten(false);
-    this.sendUpdate();
-    cb();
+    this.preferencesController.setPasswordForgotten(false)
+    this.sendUpdate()
+    cb()
   }
 
   //=============================================================================
@@ -2182,24 +2173,24 @@ export default class DexmaskController extends EventEmitter {
    * @param {MessageSender} sender - The sender of the messages on this stream
    */
   setupUntrustedCommunication(connectionStream, sender) {
-    const { usePhishDetect } = this.preferencesController.store.getState();
-    const { hostname } = new URL(sender.url);
+    const { usePhishDetect } = this.preferencesController.store.getState()
+    const { hostname } = new URL(sender.url)
     // Check if new connection is blocked if phishing detection is on
     if (usePhishDetect && this.phishingController.test(hostname)) {
-      log.debug('DexMask - sending phishing warning for', hostname);
-      this.sendPhishingWarning(connectionStream, hostname);
-      return;
+      log.debug('DexMask - sending phishing warning for', hostname)
+      this.sendPhishingWarning(connectionStream, hostname)
+      return
     }
 
     // setup multiplexing
-    const mux = setupMultiplex(connectionStream);
+    const mux = setupMultiplex(connectionStream)
 
     // messages between inpage and background
-    this.setupProviderConnection(mux.createStream('dexmask-provider'), sender);
+    this.setupProviderConnection(mux.createStream('dexmask-provider'), sender)
 
     // TODO:LegacyProvider: Delete
     // legacy streams
-    this.setupPublicConfig(mux.createStream('publicConfig'));
+    this.setupPublicConfig(mux.createStream('publicConfig'))
   }
 
   /**
@@ -2213,10 +2204,10 @@ export default class DexmaskController extends EventEmitter {
    */
   setupTrustedCommunication(connectionStream, sender) {
     // setup multiplexing
-    const mux = setupMultiplex(connectionStream);
+    const mux = setupMultiplex(connectionStream)
     // connect features
-    this.setupControllerConnection(mux.createStream('controller'));
-    this.setupProviderConnection(mux.createStream('provider'), sender, true);
+    this.setupControllerConnection(mux.createStream('controller'))
+    this.setupProviderConnection(mux.createStream('provider'), sender, true)
   }
 
   /**
@@ -2229,9 +2220,9 @@ export default class DexmaskController extends EventEmitter {
    * @param {string} hostname - The hostname that triggered the suspicion.
    */
   sendPhishingWarning(connectionStream, hostname) {
-    const mux = setupMultiplex(connectionStream);
-    const phishingStream = mux.createStream('phishing');
-    phishingStream.write({ hostname });
+    const mux = setupMultiplex(connectionStream)
+    const phishingStream = mux.createStream('phishing')
+    phishingStream.write({ hostname })
   }
 
   /**
@@ -2239,34 +2230,31 @@ export default class DexmaskController extends EventEmitter {
    * @param {*} outStream - The stream to provide our API over.
    */
   setupControllerConnection(outStream) {
-    const api = this.getApi();
+    const api = this.getApi()
 
     // report new active controller connection
-    this.activeControllerConnections += 1;
-    this.emit('controllerConnectionChanged', this.activeControllerConnections);
+    this.activeControllerConnections += 1
+    this.emit('controllerConnectionChanged', this.activeControllerConnections)
 
     // set up postStream transport
-    outStream.on('data', createMetaRPCHandler(api, outStream));
+    outStream.on('data', createMetaRPCHandler(api, outStream))
     const handleUpdate = (update) => {
       if (outStream._writableState.ended) {
-        return;
+        return
       }
       // send notification to client-side
       outStream.write({
         jsonrpc: '2.0',
         method: 'sendUpdate',
         params: [update],
-      });
-    };
-    this.on('update', handleUpdate);
+      })
+    }
+    this.on('update', handleUpdate)
     outStream.on('end', () => {
-      this.activeControllerConnections -= 1;
-      this.emit(
-        'controllerConnectionChanged',
-        this.activeControllerConnections,
-      );
-      this.removeListener('update', handleUpdate);
-    });
+      this.activeControllerConnections -= 1
+      this.emit('controllerConnectionChanged', this.activeControllerConnections)
+      this.removeListener('update', handleUpdate)
+    })
   }
 
   /**
@@ -2276,14 +2264,14 @@ export default class DexmaskController extends EventEmitter {
    * @param {boolean} isInternal - True if this is a connection with an internal process
    */
   setupProviderConnection(outStream, sender, isInternal) {
-    const origin = isInternal ? 'metamask' : new URL(sender.url).origin;
-    let extensionId;
+    const origin = isInternal ? 'metamask' : new URL(sender.url).origin
+    let extensionId
     if (sender.id !== this.extension.runtime.id) {
-      extensionId = sender.id;
+      extensionId = sender.id
     }
-    let tabId;
+    let tabId
     if (sender.tab && sender.tab.id) {
-      tabId = sender.tab.id;
+      tabId = sender.tab.id
     }
 
     const engine = this.setupProviderEngine({
@@ -2292,25 +2280,25 @@ export default class DexmaskController extends EventEmitter {
       extensionId,
       tabId,
       isInternal,
-    });
+    })
 
     // setup connection
-    const providerStream = createEngineStream({ engine });
+    const providerStream = createEngineStream({ engine })
 
-    const connectionId = this.addConnection(origin, { engine });
+    const connectionId = this.addConnection(origin, { engine })
 
     pump(outStream, providerStream, outStream, (err) => {
       // handle any middleware cleanup
       engine._middleware.forEach((mid) => {
         if (mid.destroy && typeof mid.destroy === 'function') {
-          mid.destroy();
+          mid.destroy()
         }
-      });
-      connectionId && this.removeConnection(origin, connectionId);
+      })
+      connectionId && this.removeConnection(origin, connectionId)
       if (err) {
-        log.error(err);
+        log.error(err)
       }
-    });
+    })
   }
 
   /**
@@ -2330,35 +2318,35 @@ export default class DexmaskController extends EventEmitter {
     isInternal = false,
   }) {
     // setup json rpc engine stack
-    const engine = new JsonRpcEngine();
-    const { provider, blockTracker } = this;
+    const engine = new JsonRpcEngine()
+    const { provider, blockTracker } = this
 
     // create filter polyfill middleware
-    const filterMiddleware = createFilterMiddleware({ provider, blockTracker });
+    const filterMiddleware = createFilterMiddleware({ provider, blockTracker })
 
     // create subscription polyfill middleware
     const subscriptionManager = createSubscriptionManager({
       provider,
       blockTracker,
-    });
+    })
     subscriptionManager.events.on('notification', (message) =>
       engine.emit('notification', message),
-    );
+    )
 
     // append origin to each request
-    engine.push(createOriginMiddleware({ origin }));
+    engine.push(createOriginMiddleware({ origin }))
     // append tabId to each request if it exists
     if (tabId) {
-      engine.push(createTabIdMiddleware({ tabId }));
+      engine.push(createTabIdMiddleware({ tabId }))
     }
     // logging
-    engine.push(createLoggerMiddleware({ origin }));
+    engine.push(createLoggerMiddleware({ origin }))
     engine.push(
       createOnboardingMiddleware({
         location,
         registerOnboarding: this.onboardingController.registerOnboarding,
       }),
-    );
+    )
     engine.push(
       createMethodMiddleware({
         origin,
@@ -2383,12 +2371,7 @@ export default class DexmaskController extends EventEmitter {
           this.approvalController,
         ),
         updateRpcTarget: ({ rpcUrl, chainId, ticker, nickname }) => {
-          this.networkController.setRpcTarget(
-            rpcUrl,
-            chainId,
-            ticker,
-            nickname,
-          );
+          this.networkController.setRpcTarget(rpcUrl, chainId, ticker, nickname)
         },
         setProviderType: this.networkController.setProviderType.bind(
           this.networkController,
@@ -2408,22 +2391,22 @@ export default class DexmaskController extends EventEmitter {
             {
               blockExplorerUrl,
             },
-          );
+          )
         },
       }),
-    );
+    )
     // filter and subscription polyfills
-    engine.push(filterMiddleware);
-    engine.push(subscriptionManager.middleware);
+    engine.push(filterMiddleware)
+    engine.push(subscriptionManager.middleware)
     if (!isInternal) {
       // permissions
       engine.push(
         this.permissionsController.createMiddleware({ origin, extensionId }),
-      );
+      )
     }
     // forward to metamask primary provider
-    engine.push(providerAsMiddleware(provider));
-    return engine;
+    engine.push(providerAsMiddleware(provider))
+    return engine
   }
 
   /**
@@ -2438,14 +2421,14 @@ export default class DexmaskController extends EventEmitter {
    * @param {*} outStream - The stream to provide public config over.
    */
   setupPublicConfig(outStream) {
-    const configStream = storeAsStream(this.publicConfigStore);
+    const configStream = storeAsStream(this.publicConfigStore)
 
     pump(configStream, outStream, (err) => {
-      configStream.destroy();
+      configStream.destroy()
       if (err) {
-        log.error(err);
+        log.error(err)
       }
-    });
+    })
   }
 
   /**
@@ -2460,19 +2443,19 @@ export default class DexmaskController extends EventEmitter {
    */
   addConnection(origin, { engine }) {
     if (origin === 'metamask') {
-      return null;
+      return null
     }
 
     if (!this.connections[origin]) {
-      this.connections[origin] = {};
+      this.connections[origin] = {}
     }
 
-    const id = nanoid();
+    const id = nanoid()
     this.connections[origin][id] = {
       engine,
-    };
+    }
 
-    return id;
+    return id
   }
 
   /**
@@ -2483,15 +2466,15 @@ export default class DexmaskController extends EventEmitter {
    * @param {string} id - The connection's id, as returned from addConnection.
    */
   removeConnection(origin, id) {
-    const connections = this.connections[origin];
+    const connections = this.connections[origin]
     if (!connections) {
-      return;
+      return
     }
 
-    delete connections[id];
+    delete connections[id]
 
     if (Object.keys(connections).length === 0) {
-      delete this.connections[origin];
+      delete this.connections[origin]
     }
   }
 
@@ -2508,14 +2491,14 @@ export default class DexmaskController extends EventEmitter {
    * @param {any} payload - The event payload.
    */
   notifyConnections(origin, payload) {
-    const connections = this.connections[origin];
+    const connections = this.connections[origin]
 
     if (connections) {
       Object.values(connections).forEach((conn) => {
         if (conn.engine) {
-          conn.engine.emit('notification', payload);
+          conn.engine.emit('notification', payload)
         }
-      });
+      })
     }
   }
 
@@ -2536,15 +2519,15 @@ export default class DexmaskController extends EventEmitter {
     const getPayload =
       typeof payload === 'function'
         ? (origin) => payload(origin)
-        : () => payload;
+        : () => payload
 
     Object.values(this.connections).forEach((origin) => {
       Object.values(origin).forEach((conn) => {
         if (conn.engine) {
-          conn.engine.emit('notification', getPayload(origin));
+          conn.engine.emit('notification', getPayload(origin))
         }
-      });
-    });
+      })
+    })
   }
 
   // handlers
@@ -2556,19 +2539,19 @@ export default class DexmaskController extends EventEmitter {
    * @private
    */
   async _onKeyringControllerUpdate(state) {
-    const { keyrings } = state;
+    const { keyrings } = state
     const addresses = keyrings.reduce(
       (acc, { accounts }) => acc.concat(accounts),
       [],
-    );
+    )
 
     if (!addresses.length) {
-      return;
+      return
     }
 
     // Ensure preferences + identities controller know about all addresses
-    this.preferencesController.syncAddresses(addresses);
-    this.accountTracker.syncWithAddresses(addresses);
+    this.preferencesController.syncAddresses(addresses)
+    this.accountTracker.syncWithAddresses(addresses)
   }
 
   /**
@@ -2583,9 +2566,9 @@ export default class DexmaskController extends EventEmitter {
           isUnlocked: true,
           accounts: this.permissionsController.getAccounts(origin),
         },
-      };
-    });
-    this.emit('unlock');
+      }
+    })
+    this.emit('unlock')
   }
 
   /**
@@ -2598,8 +2581,8 @@ export default class DexmaskController extends EventEmitter {
       params: {
         isUnlocked: false,
       },
-    });
-    this.emit('lock');
+    })
+    this.emit('lock')
   }
 
   /**
@@ -2609,11 +2592,11 @@ export default class DexmaskController extends EventEmitter {
    *   - The external providers handle diffing the state
    */
   _onStateUpdate(newState) {
-    this.isClientOpenAndUnlocked = newState.isUnlocked && this._isClientOpen;
+    this.isClientOpenAndUnlocked = newState.isUnlocked && this._isClientOpen
     this.notifyAllConnections({
       method: NOTIFICATION_NAMES.chainChanged,
       params: this.getProviderNetworkState(newState),
-    });
+    })
   }
 
   // misc
@@ -2623,14 +2606,14 @@ export default class DexmaskController extends EventEmitter {
    * @private
    */
   privateSendUpdate() {
-    this.emit('update', this.getState());
+    this.emit('update', this.getState())
   }
 
   /**
    * @returns {boolean} Whether the extension is unlocked.
    */
   isUnlocked() {
-    return this.keyringController.memStore.getState().isUnlocked;
+    return this.keyringController.memStore.getState().isUnlocked
   }
 
   //=============================================================================
@@ -2646,11 +2629,11 @@ export default class DexmaskController extends EventEmitter {
     const {
       nonceDetails,
       releaseLock,
-    } = await this.txController.nonceTracker.getNonceLock(address);
-    const pendingNonce = nonceDetails.params.highestSuggested;
+    } = await this.txController.nonceTracker.getNonceLock(address)
+    const pendingNonce = nonceDetails.params.highestSuggested
 
-    releaseLock();
-    return pendingNonce;
+    releaseLock()
+    return pendingNonce
   }
 
   /**
@@ -2659,11 +2642,9 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Promise<number>}
    */
   async getNextNonce(address) {
-    const nonceLock = await this.txController.nonceTracker.getNonceLock(
-      address,
-    );
-    nonceLock.releaseLock();
-    return nonceLock.nextNonce;
+    const nonceLock = await this.txController.nonceTracker.getNonceLock(address)
+    nonceLock.releaseLock()
+    return nonceLock.nextNonce
   }
 
   /**
@@ -2683,22 +2664,22 @@ export default class DexmaskController extends EventEmitter {
    * @param {boolean} [duplicate] - Whether to duplicate the addresses on both chainIds (default: false)
    */
   async migrateAddressBookState(oldChainId, newChainId, duplicate = false) {
-    const { addressBook } = this.addressBookController.state;
+    const { addressBook } = this.addressBookController.state
 
     if (!addressBook[oldChainId]) {
-      return;
+      return
     }
 
     for (const address of Object.keys(addressBook[oldChainId])) {
-      const entry = addressBook[oldChainId][address];
+      const entry = addressBook[oldChainId][address]
       this.addressBookController.set(
         address,
         entry.name,
         newChainId,
         entry.memo,
-      );
+      )
       if (!duplicate) {
-        this.addressBookController.delete(oldChainId, address);
+        this.addressBookController.delete(oldChainId, address)
       }
     }
   }
@@ -2732,15 +2713,15 @@ export default class DexmaskController extends EventEmitter {
       ticker,
       nickname,
       rpcPrefs,
-    );
+    )
     await this.preferencesController.updateRpc({
       rpcUrl,
       chainId,
       ticker,
       nickname,
       rpcPrefs,
-    });
-    return rpcUrl;
+    })
+    return rpcUrl
   }
 
   /**
@@ -2758,10 +2739,10 @@ export default class DexmaskController extends EventEmitter {
     nickname = '',
     rpcPrefs = {},
   ) {
-    const frequentRpcListDetail = this.preferencesController.getFrequentRpcListDetail();
+    const frequentRpcListDetail = this.preferencesController.getFrequentRpcListDetail()
     const rpcSettings = frequentRpcListDetail.find(
       (rpc) => rpcUrl === rpc.rpcUrl,
-    );
+    )
 
     if (rpcSettings) {
       this.networkController.setRpcTarget(
@@ -2770,7 +2751,7 @@ export default class DexmaskController extends EventEmitter {
         rpcSettings.ticker,
         rpcSettings.nickname,
         rpcPrefs,
-      );
+      )
     } else {
       this.networkController.setRpcTarget(
         rpcUrl,
@@ -2778,16 +2759,16 @@ export default class DexmaskController extends EventEmitter {
         ticker,
         nickname,
         rpcPrefs,
-      );
+      )
       await this.preferencesController.addToFrequentRpcList(
         rpcUrl,
         chainId,
         ticker,
         nickname,
         rpcPrefs,
-      );
+      )
     }
-    return rpcUrl;
+    return rpcUrl
   }
 
   /**
@@ -2795,7 +2776,7 @@ export default class DexmaskController extends EventEmitter {
    * @param {string} rpcUrl - A RPC URL to delete.
    */
   async delCustomRpc(rpcUrl) {
-    await this.preferencesController.removeFromFrequentRpcList(rpcUrl);
+    await this.preferencesController.removeFromFrequentRpcList(rpcUrl)
   }
 
   /**
@@ -2806,19 +2787,19 @@ export default class DexmaskController extends EventEmitter {
    * @returns {Object} rpcInfo found in the frequentRpcList
    */
   findCustomRpcBy(rpcInfo) {
-    const frequentRpcListDetail = this.preferencesController.getFrequentRpcListDetail();
+    const frequentRpcListDetail = this.preferencesController.getFrequentRpcListDetail()
     for (const existingRpcInfo of frequentRpcListDetail) {
       for (const key of Object.keys(rpcInfo)) {
         if (existingRpcInfo[key] === rpcInfo[key]) {
-          return existingRpcInfo;
+          return existingRpcInfo
         }
       }
     }
-    return null;
+    return null
   }
 
   async initializeThreeBox() {
-    await this.threeBoxController.init();
+    await this.threeBoxController.init()
   }
 
   /**
@@ -2828,13 +2809,13 @@ export default class DexmaskController extends EventEmitter {
    */
   setUseBlockie(val, cb) {
     try {
-      this.preferencesController.setUseBlockie(val);
-      cb(null);
-      return;
+      this.preferencesController.setUseBlockie(val)
+      cb(null)
+      return
     } catch (err) {
-      cb(err);
+      cb(err)
       // eslint-disable-next-line no-useless-return
-      return;
+      return
     }
   }
 
@@ -2845,13 +2826,13 @@ export default class DexmaskController extends EventEmitter {
    */
   setUseNonceField(val, cb) {
     try {
-      this.preferencesController.setUseNonceField(val);
-      cb(null);
-      return;
+      this.preferencesController.setUseNonceField(val)
+      cb(null)
+      return
     } catch (err) {
-      cb(err);
+      cb(err)
       // eslint-disable-next-line no-useless-return
-      return;
+      return
     }
   }
 
@@ -2862,13 +2843,13 @@ export default class DexmaskController extends EventEmitter {
    */
   setUsePhishDetect(val, cb) {
     try {
-      this.preferencesController.setUsePhishDetect(val);
-      cb(null);
-      return;
+      this.preferencesController.setUsePhishDetect(val)
+      cb(null)
+      return
     } catch (err) {
-      cb(err);
+      cb(err)
       // eslint-disable-next-line no-useless-return
-      return;
+      return
     }
   }
 
@@ -2879,13 +2860,13 @@ export default class DexmaskController extends EventEmitter {
    */
   setIpfsGateway(val, cb) {
     try {
-      this.preferencesController.setIpfsGateway(val);
-      cb(null);
-      return;
+      this.preferencesController.setIpfsGateway(val)
+      cb(null)
+      return
     } catch (err) {
-      cb(err);
+      cb(err)
       // eslint-disable-next-line no-useless-return
-      return;
+      return
     }
   }
 
@@ -2894,20 +2875,20 @@ export default class DexmaskController extends EventEmitter {
    * @param {bool} bool - the value representing if the users wants to use Ledger Live
    */
   async setLedgerLivePreference(bool) {
-    const currentValue = this.preferencesController.getLedgerLivePreference();
-    this.preferencesController.setLedgerLivePreference(bool);
+    const currentValue = this.preferencesController.getLedgerLivePreference()
+    this.preferencesController.setLedgerLivePreference(bool)
 
-    const keyring = await this.getKeyringForDevice('ledger');
+    const keyring = await this.getKeyringForDevice('ledger')
     if (keyring?.updateTransportMethod) {
       return keyring.updateTransportMethod(bool).catch((e) => {
         // If there was an error updating the transport, we should
         // fall back to the original value
-        this.preferencesController.setLedgerLivePreference(currentValue);
-        throw e;
-      });
+        this.preferencesController.setLedgerLivePreference(currentValue)
+        throw e
+      })
     }
 
-    return undefined;
+    return undefined
   }
 
   /**
@@ -2919,13 +2900,13 @@ export default class DexmaskController extends EventEmitter {
     try {
       const metaMetricsId = this.metaMetricsController.setParticipateInMetaMetrics(
         bool,
-      );
-      cb(null, metaMetricsId);
-      return;
+      )
+      cb(null, metaMetricsId)
+      return
     } catch (err) {
-      cb(err);
+      cb(err)
       // eslint-disable-next-line no-useless-return
-      return;
+      return
     }
   }
 
@@ -2936,13 +2917,13 @@ export default class DexmaskController extends EventEmitter {
    */
   setFirstTimeFlowType(type, cb) {
     try {
-      this.preferencesController.setFirstTimeFlowType(type);
-      cb(null);
-      return;
+      this.preferencesController.setFirstTimeFlowType(type)
+      cb(null)
+      return
     } catch (err) {
-      cb(err);
+      cb(err)
       // eslint-disable-next-line no-useless-return
-      return;
+      return
     }
   }
 
@@ -2953,13 +2934,13 @@ export default class DexmaskController extends EventEmitter {
    */
   setCurrentLocale(key, cb) {
     try {
-      const direction = this.preferencesController.setCurrentLocale(key);
-      cb(null, direction);
-      return;
+      const direction = this.preferencesController.setCurrentLocale(key)
+      cb(null, direction)
+      return
     } catch (err) {
-      cb(err);
+      cb(err)
       // eslint-disable-next-line no-useless-return
-      return;
+      return
     }
   }
 
@@ -2970,11 +2951,11 @@ export default class DexmaskController extends EventEmitter {
    */
   recordFirstTimeInfo(initState) {
     if (!('firstTimeInfo' in initState)) {
-      const version = this.platform.getVersion();
+      const version = this.platform.getVersion()
       initState.firstTimeInfo = {
         version,
         date: Date.now(),
-      };
+      }
     }
   }
 
@@ -2985,8 +2966,8 @@ export default class DexmaskController extends EventEmitter {
    * @param {boolean} open
    */
   set isClientOpen(open) {
-    this._isClientOpen = open;
-    this.detectTokensController.isOpen = open;
+    this._isClientOpen = open
+    this.detectTokensController.isOpen = open
   }
   /* eslint-enable accessor-pairs */
 
@@ -2996,10 +2977,10 @@ export default class DexmaskController extends EventEmitter {
    */
   onClientClosed() {
     try {
-      this.gasFeeController.stopPolling();
-      this.appStateController.clearPollingTokens();
+      this.gasFeeController.stopPolling()
+      this.appStateController.clearPollingTokens()
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
 
@@ -3009,17 +2990,17 @@ export default class DexmaskController extends EventEmitter {
    */
   onEnvironmentTypeClosed(environmentType) {
     const appStatePollingTokenType =
-      POLLING_TOKEN_ENVIRONMENT_TYPES[environmentType];
+      POLLING_TOKEN_ENVIRONMENT_TYPES[environmentType]
     const pollingTokensToDisconnect = this.appStateController.store.getState()[
       appStatePollingTokenType
-    ];
+    ]
     pollingTokensToDisconnect.forEach((pollingToken) => {
-      this.gasFeeController.disconnectPoller(pollingToken);
+      this.gasFeeController.disconnectPoller(pollingToken)
       this.appStateController.removePollingToken(
         pollingToken,
         appStatePollingTokenType,
-      );
-    });
+      )
+    })
   }
 
   /**
@@ -3027,13 +3008,13 @@ export default class DexmaskController extends EventEmitter {
    * @param {string} hostname - the domain to safelist
    */
   safelistPhishingDomain(hostname) {
-    return this.phishingController.bypass(hostname);
+    return this.phishingController.bypass(hostname)
   }
 
   /**
    * Locks MetaMask
    */
   setLocked() {
-    return this.keyringController.setLocked();
+    return this.keyringController.setLocked()
   }
 }

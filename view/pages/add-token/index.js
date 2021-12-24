@@ -1,11 +1,11 @@
-import { connect } from 'react-redux';
-import { getMostRecentOverviewPage } from '@reducer/history/history';
+import { connect } from 'react-redux'
+import { getMostRecentOverviewPage } from '@reducer/history/history'
 import {
   getIsMainnet,
   getRpcPrefsForCurrentProvider,
-} from '@selectors/selectors';
-import { clearPendingTokens, setPendingTokens } from '@view/store/actions';
-import AddToken from './component';
+} from '@selectors/selectors'
+import { clearPendingTokens, setPendingTokens } from '@view/store/actions'
+import AddToken from './component'
 
 const mapStateToProps = (state) => {
   const {
@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
       pendingTokens,
       provider: { chainId },
     },
-  } = state;
+  } = state
   return {
     identities,
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
@@ -24,14 +24,14 @@ const mapStateToProps = (state) => {
     showSearchTab: getIsMainnet(state) || process.env.IN_TEST === 'true',
     chainId,
     rpcPrefs: getRpcPrefsForCurrentProvider(state),
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setPendingTokens: (tokens) => dispatch(setPendingTokens(tokens)),
     clearPendingTokens: () => dispatch(clearPendingTokens()),
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddToken);
+export default connect(mapStateToProps, mapDispatchToProps)(AddToken)

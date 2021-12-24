@@ -1,35 +1,35 @@
-import React, { memo } from 'react';
-import { isEqual } from 'lodash';
-import PropTypes from 'prop-types';
-import { safeComponentList } from './safe-component-list';
+import React, { memo } from 'react'
+import { isEqual } from 'lodash'
+import PropTypes from 'prop-types'
+import { safeComponentList } from './safe-component-list'
 
 function getElement(section) {
-  const { element } = section;
-  const Element = safeComponentList[element];
+  const { element } = section
+  const Element = safeComponentList[element]
 
   if (!Element) {
     throw new Error(
       `${element} is not in the safe component list for MetaMask template renderer`,
-    );
+    )
   }
 
-  return Element;
+  return Element
 }
 
 const DexMaskTemplateRenderer = ({ sections }) => {
   if (!sections) {
     // If sections is null eject early by returning null
-    return null;
+    return null
   } else if (typeof sections === 'string') {
     // React can render strings directly, so return the string
-    return sections;
+    return sections
   } else if (
     sections &&
     typeof sections === 'object' &&
     !Array.isArray(sections)
   ) {
     // If dealing with a single entry, then render a single object without key
-    const Element = getElement(sections);
+    const Element = getElement(sections)
     return (
       <Element {...sections.props}>
         {typeof sections.children === 'object' ? (
@@ -38,7 +38,7 @@ const DexMaskTemplateRenderer = ({ sections }) => {
           sections?.children
         )}
       </Element>
-    );
+    )
   } // The last case is dealing with an array of objects
 
   return (
@@ -46,7 +46,7 @@ const DexMaskTemplateRenderer = ({ sections }) => {
       {sections.reduce((allChildren, child) => {
         if (typeof child === 'string') {
           // React can render strings directly, so push them into the accumulator
-          allChildren.push(child);
+          allChildren.push(child)
         } else {
           // If the entry in array is not a string, then it must be a Section.
           // Sections are handled by the main function, but must
@@ -54,7 +54,7 @@ const DexMaskTemplateRenderer = ({ sections }) => {
           if (!child.key) {
             throw new Error(
               'When using array syntax in MetaMask Template Language, you must specify a key for each child of the array',
-            );
+            )
           }
 
           if (typeof child?.children === 'object') {
@@ -62,29 +62,29 @@ const DexMaskTemplateRenderer = ({ sections }) => {
             // object, and in that case use recursion to render.
             allChildren.push(
               <DexMaskTemplateRenderer sections={child} key={child.key} />,
-            );
+            )
           } else {
             // Otherwise render the element.
-            const Element = getElement(child);
+            const Element = getElement(child)
             allChildren.push(
               <Element key={child.key} {...child.props}>
                 {child?.children}
               </Element>,
-            );
+            )
           }
         }
 
-        return allChildren;
+        return allChildren
       }, [])}
     </>
-  );
-};
+  )
+}
 
 export const SectionShape = {
   props: PropTypes.object,
   element: PropTypes.oneOf(Object.keys(safeComponentList)).isRequired,
   key: PropTypes.string,
-};
+}
 export default memo(DexMaskTemplateRenderer, (prevProps, nextProps) => {
-  return isEqual(prevProps.sections, nextProps.sections);
-});
+  return isEqual(prevProps.sections, nextProps.sections)
+})

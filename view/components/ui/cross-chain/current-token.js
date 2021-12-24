@@ -1,12 +1,12 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import classnames from 'classnames';
-import { ethers } from 'ethers';
-import { Menu, MenuItem } from '@c/ui/menu';
-import TokenImage from '@c/ui/token-image';
-import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask';
-import { CHAIN_ID_NAME_LETTER_MAP } from './constants';
-const chainIdKeys = Object.keys(CHAIN_ID_NAME_LETTER_MAP);
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import classnames from 'classnames'
+import { ethers } from 'ethers'
+import { Menu, MenuItem } from '@c/ui/menu'
+import TokenImage from '@c/ui/token-image'
+import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask'
+import { CHAIN_ID_NAME_LETTER_MAP } from './constants'
+const chainIdKeys = Object.keys(CHAIN_ID_NAME_LETTER_MAP)
 
 const CurrentCoin = ({
   coinAddress,
@@ -18,54 +18,54 @@ const CurrentCoin = ({
   selectable = false,
   onChange = (token) => {},
 }) => {
-  const nativeCurrency = useSelector(getNativeCurrency);
-  const tokens = useSelector(getTokens);
-  const [tokenMenu, setTokenMenu] = useState(false);
-  const anchorElement = useRef(null);
+  const nativeCurrency = useSelector(getNativeCurrency)
+  const tokens = useSelector(getTokens)
+  const [tokenMenu, setTokenMenu] = useState(false)
+  const anchorElement = useRef(null)
   const toggleTokenMenu = useCallback(() => setTokenMenu(!tokenMenu), [
     tokenMenu,
-  ]);
+  ])
   const selectToken = useCallback(
     (token) => {
-      onChange(token);
-      toggleTokenMenu();
+      onChange(token)
+      toggleTokenMenu()
     },
     [onChange, toggleTokenMenu],
-  );
+  )
   const currencyName = useMemo(() => {
     if (useOut) {
-      return coinSymbol;
+      return coinSymbol
     }
 
     if (coinAddress === ethers.constants.AddressZero || !coinAddress) {
-      return nativeCurrency;
+      return nativeCurrency
     }
 
     const token = tokens.find(
       ({ address }) => address.toLowerCase() === coinAddress.toLowerCase(),
-    );
+    )
 
     if (token) {
-      return token.symbol;
+      return token.symbol
     }
 
     if (coinSymbol) {
-      return coinSymbol;
+      return coinSymbol
     }
 
-    return 'UNKOWN';
-  }, [tokens, nativeCurrency, coinSymbol, coinAddress, useOut]);
+    return 'UNKOWN'
+  }, [tokens, nativeCurrency, coinSymbol, coinAddress, useOut])
   const allTokens = useMemo(() => {
     return [
       {
         address: ethers.constants.AddressZero,
         symbol: nativeCurrency,
       },
-    ].concat(tokens);
-  }, [nativeCurrency, tokens]);
+    ].concat(tokens)
+  }, [nativeCurrency, tokens])
   return (
-    <div className="cross-chain__current-token">
-      <div className="cross-chain__current-token-image">
+    <div className='cross-chain__current-token'>
+      <div className='cross-chain__current-token-image'>
         <TokenImage
           symbol={coinSymbol ?? currencyName}
           address={coinAddress}
@@ -74,19 +74,19 @@ const CurrentCoin = ({
           showLetter
         />
       </div>
-      <div className="cross-chain__current-token-name">
-        <div className="cross-chain__current-token-name-text">
+      <div className='cross-chain__current-token-name'>
+        <div className='cross-chain__current-token-name-text'>
           {currencyName}
           {selectable && (
             <>
               <div
-                className="cross-chain__token-switcher-trigger"
+                className='cross-chain__token-switcher-trigger'
                 ref={(el) => (anchorElement.current = el)}
                 onClick={toggleTokenMenu}
               ></div>
               {tokenMenu && (
                 <Menu
-                  className="cross-chain__token-menu"
+                  className='cross-chain__token-menu'
                   anchorElement={anchorElement.current}
                   onHide={toggleTokenMenu}
                 >
@@ -105,7 +105,7 @@ const CurrentCoin = ({
                         size={26}
                         chainId={currentChainId}
                       />
-                      <div className="token-name">{token.symbol}</div>
+                      <div className='token-name'>{token.symbol}</div>
                     </MenuItem>
                   ))}
                 </Menu>
@@ -116,7 +116,7 @@ const CurrentCoin = ({
         {children}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CurrentCoin;
+export default CurrentCoin

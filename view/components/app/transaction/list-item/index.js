@@ -1,53 +1,53 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import classnames from 'classnames';
-import EditGasPopover from '@c/app/edit-gas/popover';
-import TransactionIcon from '@c/app/transaction/icon';
-import TransactionListItemDetails from '@c/app/transaction/list-item-details';
-import TransactionStatus from '@c/app/transaction/status';
-import Button from '@c/ui/button'; // import { TransitionListItem } from '@c/ui/list-item';
+import React, { useCallback, useMemo, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import classnames from 'classnames'
+import EditGasPopover from '@c/app/edit-gas/popover'
+import TransactionIcon from '@c/app/transaction/icon'
+import TransactionListItemDetails from '@c/app/transaction/list-item-details'
+import TransactionStatus from '@c/app/transaction/status'
+import Button from '@c/ui/button' // import { TransitionListItem } from '@c/ui/list-item';
 
-import Tooltip from '@c/ui/tooltip';
-import { EDIT_GAS_MODES } from '@shared/constants/gas';
+import Tooltip from '@c/ui/tooltip'
+import { EDIT_GAS_MODES } from '@shared/constants/gas'
 import {
   TRANSACTION_GROUP_CATEGORIES,
   TRANSACTION_STATUSES,
-} from '@shared/constants/transaction';
-import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes';
-import { useCancelTransaction } from '@view/hooks/useCancelTransaction';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { useRetryTransaction } from '@view/hooks/useRetryTransaction';
-import { useShouldShowSpeedUp } from '@view/hooks/useShouldShowSpeedUp';
-import { useTransactionDisplayData } from '@view/hooks/useTransactionDisplayData';
+} from '@shared/constants/transaction'
+import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes'
+import { useCancelTransaction } from '@view/hooks/useCancelTransaction'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import { useRetryTransaction } from '@view/hooks/useRetryTransaction'
+import { useShouldShowSpeedUp } from '@view/hooks/useShouldShowSpeedUp'
+import { useTransactionDisplayData } from '@view/hooks/useTransactionDisplayData'
 export default function TransactionListItem({
   transactionGroup,
   isEarliestNonce = false,
 }) {
-  const t = useI18nContext();
-  const history = useHistory();
-  const { hasCancelled } = transactionGroup;
-  const [showDetails, setShowDetails] = useState(false);
+  const t = useI18nContext()
+  const history = useHistory()
+  const { hasCancelled } = transactionGroup
+  const [showDetails, setShowDetails] = useState(false)
   const {
     initialTransaction: { id },
     primaryTransaction: { err, status },
-  } = transactionGroup;
+  } = transactionGroup
   const {
     hasEnoughCancelGas,
     cancelTransaction,
     showCancelEditGasPopover,
     closeCancelEditGasPopover,
     customCancelGasSettings,
-  } = useCancelTransaction(transactionGroup);
+  } = useCancelTransaction(transactionGroup)
   const {
     retryTransaction,
     showRetryEditGasPopover,
     closeRetryEditGasPopover,
     customRetryGasSettings,
-  } = useRetryTransaction(transactionGroup);
+  } = useRetryTransaction(transactionGroup)
   const shouldShowSpeedUp = useShouldShowSpeedUp(
     transactionGroup,
     isEarliestNonce,
-  );
+  )
   const {
     title,
     subtitle,
@@ -60,12 +60,12 @@ export default function TransactionListItem({
     displayedStatusKey,
     isPending,
     senderAddress,
-  } = useTransactionDisplayData(transactionGroup);
+  } = useTransactionDisplayData(transactionGroup)
   const isSignatureReq =
-    category === TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST;
-  const isApproval = category === TRANSACTION_GROUP_CATEGORIES.APPROVAL;
-  const isUnapproved = status === TRANSACTION_STATUSES.UNAPPROVED;
-  const isSwap = category === TRANSACTION_GROUP_CATEGORIES.SWAP;
+    category === TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST
+  const isApproval = category === TRANSACTION_GROUP_CATEGORIES.APPROVAL
+  const isUnapproved = status === TRANSACTION_STATUSES.UNAPPROVED
+  const isSwap = category === TRANSACTION_GROUP_CATEGORIES.SWAP
   const className = classnames('transaction-list-item', {
     'transaction-list-item--unconfirmed':
       isPending ||
@@ -74,61 +74,61 @@ export default function TransactionListItem({
         TRANSACTION_STATUSES.DROPPED,
         TRANSACTION_STATUSES.REJECTED,
       ].includes(displayedStatusKey),
-  });
+  })
   const statusText = useMemo(() => {
     if (hasCancelled) {
-      return 'canceled';
+      return 'canceled'
     }
 
     if (isPending) {
-      return `Pending · ${subtitle}`;
+      return `Pending · ${subtitle}`
     }
 
-    return date;
-  }, [hasCancelled, isPending, date, subtitle]);
+    return date
+  }, [hasCancelled, isPending, date, subtitle])
   const statusClassName = useMemo(() => {
     if (hasCancelled) {
-      return 'canceled';
+      return 'canceled'
     }
 
     if (isPending) {
-      return 'pending';
+      return 'pending'
     }
 
-    return 'confirmed';
-  }, [hasCancelled, isPending]);
+    return 'confirmed'
+  }, [hasCancelled, isPending])
   const toggleShowDetails = useCallback(() => {
     if (isUnapproved) {
-      history.push(`${CONFIRM_TRANSACTION_ROUTE}/${id}`);
-      return;
+      history.push(`${CONFIRM_TRANSACTION_ROUTE}/${id}`)
+      return
     }
 
-    setShowDetails((prev) => !prev);
-  }, [isUnapproved, history, id]);
+    setShowDetails((prev) => !prev)
+  }, [isUnapproved, history, id])
   const cancelButton = useMemo(() => {
     const btn = (
       <Button
         onClick={cancelTransaction}
-        type="ghost"
+        type='ghost'
         rounded
-        className="transaction-list-item__header-button"
+        className='transaction-list-item__header-button'
         disabled={!hasEnoughCancelGas}
       >
         {t('cancel')}
       </Button>
-    );
+    )
 
     if (hasCancelled || !isPending || isUnapproved) {
-      return null;
+      return null
     }
 
     return hasEnoughCancelGas ? (
       btn
     ) : (
-      <Tooltip title={t('notEnoughGas')} position="bottom">
+      <Tooltip title={t('notEnoughGas')} position='bottom'>
         <div>{btn}</div>
       </Tooltip>
-    );
+    )
   }, [
     isPending,
     t,
@@ -136,15 +136,15 @@ export default function TransactionListItem({
     hasEnoughCancelGas,
     cancelTransaction,
     hasCancelled,
-  ]);
+  ])
   const speedUpButton = useMemo(() => {
     if (!shouldShowSpeedUp || !isPending || isUnapproved) {
-      return null;
+      return null
     }
 
     return (
       <Button
-        type="primary"
+        type='primary'
         onClick={hasCancelled ? cancelTransaction : retryTransaction}
         style={
           hasCancelled
@@ -156,7 +156,7 @@ export default function TransactionListItem({
       >
         {hasCancelled ? t('speedUpCancellation') : t('speedUp')}
       </Button>
-    );
+    )
   }, [
     shouldShowSpeedUp,
     isUnapproved,
@@ -165,30 +165,30 @@ export default function TransactionListItem({
     retryTransaction,
     hasCancelled,
     cancelTransaction,
-  ]);
+  ])
   return (
     <>
-      <div className="transaction-list-item__wrapper">
+      <div className='transaction-list-item__wrapper'>
         <div
           className={classnames('transaction-list-row-item', className)}
           onClick={toggleShowDetails}
         >
-          <div className="left-info-icon">
+          <div className='left-info-icon'>
             <TransactionIcon category={category} status={displayedStatusKey} />
-            <div className="call-method-status">
+            <div className='call-method-status'>
               <div className={classnames('method-name', statusClassName)}>
                 {title}
               </div>
-              <div className="status">{statusText}</div>
+              <div className='status'>{statusText}</div>
             </div>
           </div>
-          <div className="right-status">
+          <div className='right-status'>
             {!isSignatureReq && !isApproval && (
               <>
-                <h2 title={primaryCurrency} className="primary-currency">
+                <h2 title={primaryCurrency} className='primary-currency'>
                   {primaryCurrency}
                 </h2>
-                <h3 className="secondary-currency">{secondaryCurrency}</h3>
+                <h3 className='secondary-currency'>{secondaryCurrency}</h3>
               </>
             )}
             {/* {(speedUpButton || cancelButton) && (
@@ -246,5 +246,5 @@ export default function TransactionListItem({
         />
       )}
     </>
-  );
+  )
 }

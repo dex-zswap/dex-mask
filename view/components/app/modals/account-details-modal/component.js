@@ -1,55 +1,55 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   createCustomAccountLink,
   getAccountLink,
-} from '@metamask/etherscan-link';
-import copyToClipboard from 'copy-to-clipboard';
-import PropTypes from 'prop-types';
-import AccountModalContainer from '@c/app/modals/account-modal-container';
-import Button from '@c/ui/button';
-import EditableLabel from '@c/ui/editable-label';
-import QrView from '@c/ui/qr-code';
-import ToolTip from '@c/ui/tooltip';
-import { SECOND } from '@shared/constants/time';
+} from '@metamask/etherscan-link'
+import copyToClipboard from 'copy-to-clipboard'
+import PropTypes from 'prop-types'
+import AccountModalContainer from '@c/app/modals/account-modal-container'
+import Button from '@c/ui/button'
+import EditableLabel from '@c/ui/editable-label'
+import QrView from '@c/ui/qr-code'
+import ToolTip from '@c/ui/tooltip'
+import { SECOND } from '@shared/constants/time'
 import {
   CHAINID_EXPLORE_MAP,
   MAINNET_CHAIN_ID,
   NETWORK_TO_NAME_MAP,
-} from '@shared/constants/network';
+} from '@shared/constants/network'
 export default class AccountDetailsModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
-  copyTimeOut = null;
+  }
+  copyTimeOut = null
   state = {
     copied: false,
-  };
+  }
   copyAddress = () => {
     const {
       props: {
         selectedIdentity: { address },
       },
-    } = this;
-    window.clearTimeout(this.copyTimeOut);
-    copyToClipboard(address);
+    } = this
+    window.clearTimeout(this.copyTimeOut)
+    copyToClipboard(address)
     this.setState(
       (state) => {
         return {
           copied: !state.copied,
-        };
+        }
       },
       () => {
         this.copyTimeOut = setTimeout(() => {
-          window.clearTimeout(this.copyTimeOut);
+          window.clearTimeout(this.copyTimeOut)
           this.setState(({ copied }) => {
             return {
               copied: !copied,
-            };
-          });
-        }, SECOND * 3);
+            }
+          })
+        }, SECOND * 3)
       },
-    );
-  };
+    )
+  }
 
   render() {
     const {
@@ -60,66 +60,66 @@ export default class AccountDetailsModal extends Component {
       keyrings,
       rpcPrefs,
       provider,
-    } = this.props;
-    const { t } = this.context;
-    const { name, address } = selectedIdentity;
-    const isMainnet = chainId === MAINNET_CHAIN_ID;
+    } = this.props
+    const { t } = this.context
+    const { name, address } = selectedIdentity
+    const isMainnet = chainId === MAINNET_CHAIN_ID
     const providerType =
-      NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
+      NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase()
     const keyring = keyrings.find((kr) => {
-      return kr.accounts.includes(address);
-    });
-    let exportPrivateKeyFeatureEnabled = true; // This feature is disabled for hardware wallets
+      return kr.accounts.includes(address)
+    })
+    let exportPrivateKeyFeatureEnabled = true // This feature is disabled for hardware wallets
 
     if (keyring?.type?.search('Hardware') !== -1) {
-      exportPrivateKeyFeatureEnabled = false;
+      exportPrivateKeyFeatureEnabled = false
     }
 
     return (
-      <AccountModalContainer className="account-details-modal">
+      <AccountModalContainer className='account-details-modal'>
         <QrView
           hiddenAddress={true}
           cellWidth={4}
-          darkColor="#fff"
-          lightColor="transparent"
+          darkColor='#fff'
+          lightColor='transparent'
           Qr={{
             data: address,
           }}
         />
 
         <EditableLabel
-          className="account-details-modal__name"
+          className='account-details-modal__name'
           defaultValue={name}
           onSubmit={(label) => setAccountLabel(address, label)}
         />
 
         <ToolTip
-          position="top"
+          position='top'
           title={
             this.state.copied ? t('copiedExclamation') : t('copyToClipboard')
           }
         >
-          <div className="account-detail-address" onClick={this.copyAddress}>
+          <div className='account-detail-address' onClick={this.copyAddress}>
             {address}
           </div>
         </ToolTip>
 
         <Button
-          type="primary"
-          className="account-details-modal__button"
+          type='primary'
+          className='account-details-modal__button'
           onClick={() => {
-            let accountLink = getAccountLink(address, chainId, rpcPrefs);
+            let accountLink = getAccountLink(address, chainId, rpcPrefs)
 
             if (!accountLink && CHAINID_EXPLORE_MAP[chainId]) {
               accountLink = createCustomAccountLink(
                 address,
                 CHAINID_EXPLORE_MAP[chainId],
-              );
+              )
             }
 
             global.platform.openTab({
               url: accountLink,
-            });
+            })
           }}
         >
           {isMainnet ? (
@@ -137,14 +137,14 @@ export default class AccountDetailsModal extends Component {
 
         {exportPrivateKeyFeatureEnabled ? (
           <Button
-            type="primary"
-            className="account-details-modal__button"
+            type='primary'
+            className='account-details-modal__button'
             onClick={() => showExportPrivateKeyModal()}
           >
             {this.context.t('exportPrivateKey')}
           </Button>
         ) : null}
       </AccountModalContainer>
-    );
+    )
   }
 }

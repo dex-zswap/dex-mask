@@ -1,4 +1,4 @@
-import { SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '@shared/constants/swaps';
+import { SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '@shared/constants/swaps'
 
 /**
  * Checks whether the provided address is strictly equal to the address for
@@ -10,10 +10,10 @@ import { SWAPS_CHAINID_DEFAULT_TOKEN_MAP } from '@shared/constants/swaps';
  */
 export function isSwapsDefaultTokenAddress(address, chainId) {
   if (!address || !chainId) {
-    return false;
+    return false
   }
 
-  return address === SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId]?.address;
+  return address === SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId]?.address
 }
 
 /**
@@ -26,8 +26,8 @@ export function isSwapsDefaultTokenAddress(address, chainId) {
  */
 export function isSwapsDefaultTokenSymbol(symbol, chainId) {
   if (!symbol || !chainId) {
-    return false;
+    return false
   }
 
-  return symbol === SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId]?.symbol;
+  return symbol === SWAPS_CHAINID_DEFAULT_TOKEN_MAP[chainId]?.symbol
 }

@@ -1,34 +1,34 @@
-import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import BigNumber from 'bignumber.js';
-import classnames from 'classnames';
-import copyToClipboard from 'copy-to-clipboard';
-import { zeroAddress } from 'ethereumjs-util';
-import PropTypes from 'prop-types';
-import AccountMismatchWarning from '@c/ui/account-mismatch-warning';
-import Identicon from '@c/ui/identicon';
+import React, { useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
+import copyToClipboard from 'copy-to-clipboard'
+import { zeroAddress } from 'ethereumjs-util'
+import PropTypes from 'prop-types'
+import AccountMismatchWarning from '@c/ui/account-mismatch-warning'
+import Identicon from '@c/ui/identicon'
 import {
   CARDS_VARIANT,
   DEFAULT_VARIANT,
   FLAT_VARIANT,
-} from '@c/ui/sender-to-recipient/constants';
-import TokenImage from '@c/ui/token-image';
-import Tooltip from '@c/ui/tooltip';
-import { getNativeCurrency } from '@reducer/dexmask/dexmask';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
-import { SECONDARY } from '@view/helpers/constants/common';
-import { getPrice } from '@view/helpers/cross-chain-api';
-import { shortenAddress } from '@view/helpers/utils';
-import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
-import { useFetch } from '@view/hooks/useFetch';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount';
-import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
+} from '@c/ui/sender-to-recipient/constants'
+import TokenImage from '@c/ui/token-image'
+import Tooltip from '@c/ui/tooltip'
+import { getNativeCurrency } from '@reducer/dexmask/dexmask'
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
+import { SECONDARY } from '@view/helpers/constants/common'
+import { getPrice } from '@view/helpers/cross-chain-api'
+import { shortenAddress } from '@view/helpers/utils'
+import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay'
+import { useFetch } from '@view/hooks/useFetch'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount'
+import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency'
 const variantHash = {
   [DEFAULT_VARIANT]: 'sender-to-recipient--default',
   [CARDS_VARIANT]: 'sender-to-recipient--cards',
   [FLAT_VARIANT]: 'sender-to-recipient--flat',
-};
+}
 
 function SenderAddress({
   addressOnly,
@@ -38,9 +38,9 @@ function SenderAddress({
   senderAddress,
   warnUserOnAccountMismatch,
 }) {
-  const t = useI18nContext();
-  const [addressCopied, setAddressCopied] = useState(false);
-  let tooltipHtml = <p>{t('copiedExclamation')}</p>;
+  const t = useI18nContext()
+  const [addressCopied, setAddressCopied] = useState(false)
+  let tooltipHtml = <p>{t('copiedExclamation')}</p>
 
   if (!addressCopied) {
     tooltipHtml = addressOnly ? (
@@ -51,7 +51,7 @@ function SenderAddress({
         <br />
         {t('copyAddress')}
       </p>
-    );
+    )
   }
 
   return (
@@ -60,16 +60,16 @@ function SenderAddress({
         'sender-to-recipient__party sender-to-recipient__party--sender',
       )}
       onClick={() => {
-        setAddressCopied(true);
-        copyToClipboard(checksummedSenderAddress);
+        setAddressCopied(true)
+        copyToClipboard(checksummedSenderAddress)
 
         if (onSenderClick) {
-          onSenderClick();
+          onSenderClick()
         }
       }}
     >
       {!addressOnly && (
-        <div className="sender-to-recipient__sender-icon">
+        <div className='sender-to-recipient__sender-icon'>
           <Identicon
             address={toChecksumHexAddress(senderAddress)}
             diameter={24}
@@ -77,13 +77,13 @@ function SenderAddress({
         </div>
       )}
       <Tooltip
-        position="bottom"
+        position='bottom'
         html={tooltipHtml}
-        wrapperClassName="sender-to-recipient__tooltip-wrapper"
-        containerClassName="sender-to-recipient__tooltip-container"
+        wrapperClassName='sender-to-recipient__tooltip-wrapper'
+        containerClassName='sender-to-recipient__tooltip-container'
         onHidden={() => setAddressCopied(false)}
       >
-        <div className="sender-to-recipient__name">
+        <div className='sender-to-recipient__name'>
           {addressOnly ? (
             <span>
               {`${t('from')}: ${senderName || checksummedSenderAddress}`}
@@ -97,7 +97,7 @@ function SenderAddress({
         <AccountMismatchWarning address={senderAddress} />
       )}
     </div>
-  );
+  )
 }
 
 SenderAddress.propTypes = {
@@ -107,7 +107,7 @@ SenderAddress.propTypes = {
   senderAddress: PropTypes.string,
   onSenderClick: PropTypes.func,
   warnUserOnAccountMismatch: PropTypes.bool,
-};
+}
 
 function RecipientWithAddress({
   checksummedRecipientAddress,
@@ -118,13 +118,13 @@ function RecipientWithAddress({
   recipientEns,
   recipientName,
 }) {
-  const t = useI18nContext();
-  const [addressCopied, setAddressCopied] = useState(false);
-  let tooltipHtml = <p>{t('copiedExclamation')}</p>;
+  const t = useI18nContext()
+  const [addressCopied, setAddressCopied] = useState(false)
+  let tooltipHtml = <p>{t('copiedExclamation')}</p>
 
   if (!addressCopied) {
     if (addressOnly && !recipientNickname && !recipientEns) {
-      tooltipHtml = <p>{t('copyAddress')}</p>;
+      tooltipHtml = <p>{t('copyAddress')}</p>
     } else {
       tooltipHtml = (
         <p>
@@ -132,24 +132,24 @@ function RecipientWithAddress({
           <br />
           {t('copyAddress')}
         </p>
-      );
+      )
     }
   }
 
   return (
     <div
-      className="sender-to-recipient__party sender-to-recipient__party--recipient sender-to-recipient__party--recipient-with-address"
+      className='sender-to-recipient__party sender-to-recipient__party--recipient sender-to-recipient__party--recipient-with-address'
       onClick={() => {
-        setAddressCopied(true);
-        copyToClipboard(checksummedRecipientAddress);
+        setAddressCopied(true)
+        copyToClipboard(checksummedRecipientAddress)
 
         if (onRecipientClick) {
-          onRecipientClick();
+          onRecipientClick()
         }
       }}
     >
       {!addressOnly && (
-        <div className="sender-to-recipient__sender-icon">
+        <div className='sender-to-recipient__sender-icon'>
           <Identicon
             address={checksummedRecipientAddress}
             diameter={24}
@@ -158,14 +158,14 @@ function RecipientWithAddress({
         </div>
       )}
       <Tooltip
-        position="bottom"
+        position='bottom'
         html={tooltipHtml}
         offset={-10}
-        wrapperClassName="sender-to-recipient__tooltip-wrapper"
-        containerClassName="sender-to-recipient__tooltip-container"
+        wrapperClassName='sender-to-recipient__tooltip-wrapper'
+        containerClassName='sender-to-recipient__tooltip-container'
         onHidden={() => setAddressCopied(false)}
       >
-        <div className="sender-to-recipient__name">
+        <div className='sender-to-recipient__name'>
           <span>{addressOnly ? `${t('to')}: ` : ''}</span>
           {addressOnly
             ? recipientNickname || recipientEns || checksummedRecipientAddress
@@ -176,7 +176,7 @@ function RecipientWithAddress({
         </div>
       </Tooltip>
     </div>
-  );
+  )
 }
 
 RecipientWithAddress.propTypes = {
@@ -187,25 +187,25 @@ RecipientWithAddress.propTypes = {
   addressOnly: PropTypes.bool,
   assetImage: PropTypes.string,
   onRecipientClick: PropTypes.func,
-};
+}
 
 function Arrow({ variant }) {
   return variant === DEFAULT_VARIANT ? (
-    <div className="sender-to-recipient__arrow-container">
-      <div className="sender-to-recipient__arrow-circle">
-        <img height="10" width="10" src="./images/arrow-right.svg" alt="" />
+    <div className='sender-to-recipient__arrow-container'>
+      <div className='sender-to-recipient__arrow-circle'>
+        <img height='10' width='10' src='./images/arrow-right.svg' alt='' />
       </div>
     </div>
   ) : (
-    <div className="sender-to-recipient__arrow-container">
-      <img height="20" src="./images/caret-right.svg" alt="" />
+    <div className='sender-to-recipient__arrow-container'>
+      <img height='20' src='./images/caret-right.svg' alt='' />
     </div>
-  );
+  )
 }
 
 Arrow.propTypes = {
   variant: PropTypes.oneOf([DEFAULT_VARIANT, CARDS_VARIANT, FLAT_VARIANT]),
-};
+}
 export default function ConfirmPageContainerHeaderContent({
   tokenData,
   title,
@@ -223,38 +223,38 @@ export default function ConfirmPageContainerHeaderContent({
   variant,
   warnUserOnAccountMismatch,
 }) {
-  const nativeCurrency = useSelector(getNativeCurrency);
-  const t = useI18nContext();
-  const checksummedSenderAddress = toChecksumHexAddress(senderAddress);
-  const checksummedRecipientAddress = toChecksumHexAddress(recipientAddress);
+  const nativeCurrency = useSelector(getNativeCurrency)
+  const t = useI18nContext()
+  const checksummedSenderAddress = toChecksumHexAddress(senderAddress)
+  const checksummedRecipientAddress = toChecksumHexAddress(recipientAddress)
   const address = useMemo(() => tokenData?.address || zeroAddress(), [
     tokenData?.address,
-  ]);
-  const isNativeCurrency = useMemo(() => address === zeroAddress(), [address]);
+  ])
+  const isNativeCurrency = useMemo(() => address === zeroAddress(), [address])
   const amount = useMemo(
     () => titleComponent?.props?.value || title.split(' ')[0],
     [titleComponent, title],
-  );
+  )
   const symbol = useMemo(() => tokenData?.symbol || nativeCurrency, [
     tokenData?.symbol,
     nativeCurrency,
-  ]);
+  ])
   const {
     currency: secondaryCurrency,
     numberOfDecimals: secondaryNumberOfDecimals,
   } = useUserPreferencedCurrency(SECONDARY, {
     ethNumberOfDecimals: 4,
-  });
+  })
   const [
     secondaryCurrencyDisplay,
     secondaryCurrencyProperties,
   ] = useCurrencyDisplay(amount, {
     numberOfDecimals: secondaryNumberOfDecimals,
     currency: secondaryCurrency,
-  });
+  })
   const tokenUsdValue = useTokenFiatAmount(address, amount, symbol, {
     showFiat: true,
-  });
+  })
   const { res, error, loading } = useFetch(
     () =>
       getPrice({
@@ -262,20 +262,20 @@ export default function ConfirmPageContainerHeaderContent({
         symbol,
       }),
     [address, symbol],
-  );
+  )
   const usdPrice = useMemo(() => {
     if (error || loading) {
-      return 0;
+      return 0
     }
 
     return new BigNumber(
       new BigNumber(res?.d?.price || 0).times(new BigNumber(amount)).toFixed(3),
-    ).toFixed();
-  }, [res, error, loading, amount]);
+    ).toFixed()
+  }, [res, error, loading, amount])
   return (
-    <div className="confirm-page-container-header-content-wrap">
+    <div className='confirm-page-container-header-content-wrap'>
       <div>
-        <div className="confirm-page-container-header-content-wrap_sender">
+        <div className='confirm-page-container-header-content-wrap_sender'>
           <TokenImage address={address} symbol={symbol} size={40} showLetter />
           {/* <img
           style={{ borderRadius: '50%' }}
@@ -284,13 +284,13 @@ export default function ConfirmPageContainerHeaderContent({
           src={assetImage || nativeCurrencyImage}
           /> */}
           <div
-            className="confirm-page-container-header-content-wrap_sender_title-wrap"
+            className='confirm-page-container-header-content-wrap_sender_title-wrap'
             style={{
               marginLeft: '6px',
             }}
           >
             <div
-              className="confirm-page-container-header-content-wrap_sender_title"
+              className='confirm-page-container-header-content-wrap_sender_title'
               title={title ? title.split(' ')[1] : nativeCurrency}
             >
               {title ? title.split(' ')[1] : nativeCurrency}
@@ -298,19 +298,19 @@ export default function ConfirmPageContainerHeaderContent({
             <div title={senderName}>{senderName}</div>
           </div>
         </div>
-        <div className="confirm-page-container-header-content-wrap_arrow">
-          <img src="images/dex/arrow_right.png" />
+        <div className='confirm-page-container-header-content-wrap_arrow'>
+          <img src='images/dex/arrow_right.png' />
         </div>
         <div
           title={checksummedRecipientAddress}
-          className="confirm-page-container-header-content-wrap_recipient"
+          className='confirm-page-container-header-content-wrap_recipient'
         >
           {shortenAddress(checksummedRecipientAddress, 4, -3)}
         </div>
       </div>
       <div>
-        <div className="confirm-header-value-wrap">
-          <div className="confirm-header-value">
+        <div className='confirm-header-value-wrap'>
+          <div className='confirm-header-value'>
             {titleComponent || title.split(' ')[0]}
           </div>
           <span>{titleComponent ? nativeCurrency : title.split(' ')[1]}</span>
@@ -320,7 +320,7 @@ export default function ConfirmPageContainerHeaderContent({
         </div>
       </div>
     </div>
-  );
+  )
   return (
     <div className={classnames('sender-to-recipient', variantHash[variant])}>
       <SenderAddress
@@ -343,18 +343,18 @@ export default function ConfirmPageContainerHeaderContent({
           recipientName={recipientName}
         />
       ) : (
-        <div className="sender-to-recipient__party sender-to-recipient__party--recipient">
-          {!addressOnly && <i className="fa fa-file-text-o" />}
-          <div className="sender-to-recipient__name">{t('newContract')}</div>
+        <div className='sender-to-recipient__party sender-to-recipient__party--recipient'>
+          {!addressOnly && <i className='fa fa-file-text-o' />}
+          <div className='sender-to-recipient__name'>{t('newContract')}</div>
         </div>
       )}
     </div>
-  );
+  )
 }
 ConfirmPageContainerHeaderContent.defaultProps = {
   variant: DEFAULT_VARIANT,
   warnUserOnAccountMismatch: true,
-};
+}
 ConfirmPageContainerHeaderContent.propTypes = {
   senderName: PropTypes.string,
   senderAddress: PropTypes.string,
@@ -368,4 +368,4 @@ ConfirmPageContainerHeaderContent.propTypes = {
   onRecipientClick: PropTypes.func,
   onSenderClick: PropTypes.func,
   warnUserOnAccountMismatch: PropTypes.bool,
-};
+}

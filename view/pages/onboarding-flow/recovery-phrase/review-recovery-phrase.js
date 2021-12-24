@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import ProgressBar from '@c/app/step-progress-bar';
-import Box from '@c/ui/box';
-import Button from '@c/ui/button';
-import Copy from '@c/ui/icon/copy-icon.component';
-import Typography from '@c/ui/typography';
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import ProgressBar from '@c/app/step-progress-bar'
+import Box from '@c/ui/box'
+import Button from '@c/ui/button'
+import Copy from '@c/ui/icon/copy-icon.component'
+import Typography from '@c/ui/typography'
 import {
   FONT_WEIGHT,
   JUSTIFY_CONTENT,
   TEXT_ALIGN,
   TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
-import { INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes';
-import { useCopyToClipboard } from '@view/hooks/useCopyToClipboard';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import RecoveryPhraseChips from './recovery-phrase-chips';
+} from '@view/helpers/constants/design-system'
+import { INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE } from '@view/helpers/constants/routes'
+import { useCopyToClipboard } from '@view/hooks/useCopyToClipboard'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import RecoveryPhraseChips from './recovery-phrase-chips'
 export default function RecoveryPhrase({ seedPhrase }) {
-  const history = useHistory();
-  const t = useI18nContext();
-  const [copied, handleCopy] = useCopyToClipboard();
-  const [seedPhraseRevealed, setSeedPhraseRevealed] = useState(false);
+  const history = useHistory()
+  const t = useI18nContext()
+  const [copied, handleCopy] = useCopyToClipboard()
+  const [seedPhraseRevealed, setSeedPhraseRevealed] = useState(false)
   return (
     <div>
-      <ProgressBar stage="SEED_PHRASE_REVIEW" />
+      <ProgressBar stage='SEED_PHRASE_REVIEW' />
       <Box
         justifyContent={JUSTIFY_CONTENT.CENTER}
         textAlign={TEXT_ALIGN.CENTER}
@@ -46,7 +46,7 @@ export default function RecoveryPhrase({ seedPhrase }) {
         justifyContent={JUSTIFY_CONTENT.SPACE_EVENLY}
         textAlign={TEXT_ALIGN.LEFT}
         marginBottom={4}
-        className="recovery-phrase__tips"
+        className='recovery-phrase__tips'
       >
         <Typography variant={TYPOGRAPHY.H4} fontWeight={FONT_WEIGHT.BOLD}>
           {t('tips')}:
@@ -78,24 +78,24 @@ export default function RecoveryPhrase({ seedPhrase }) {
         seedPhrase={seedPhrase.split(' ')}
         seedPhraseRevealed={seedPhraseRevealed}
       />
-      <div className="recovery-phrase__footer">
+      <div className='recovery-phrase__footer'>
         {seedPhraseRevealed ? (
-          <div className="recovery-phrase__footer--copy">
+          <div className='recovery-phrase__footer--copy'>
             <Button
               onClick={() => {
-                handleCopy(seedPhrase);
+                handleCopy(seedPhrase)
               }}
-              icon={copied ? null : <Copy size={20} color="#3098DC" />}
-              className="recovery-phrase__footer--copy--button"
+              icon={copied ? null : <Copy size={20} color='#3098DC' />}
+              className='recovery-phrase__footer--copy--button'
             >
               {copied ? t('copiedExclamation') : t('copyToClipboard')}
             </Button>
             <Button
               rounded
-              type="primary"
-              className="recovery-phrase__footer--button"
+              type='primary'
+              className='recovery-phrase__footer--button'
               onClick={() => {
-                history.push(INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE);
+                history.push(INITIALIZE_CONFIRM_SEED_PHRASE_ROUTE)
               }}
             >
               {t('next')}
@@ -104,10 +104,10 @@ export default function RecoveryPhrase({ seedPhrase }) {
         ) : (
           <Button
             rounded
-            type="primary"
-            className="recovery-phrase__footer--button"
+            type='primary'
+            className='recovery-phrase__footer--button'
             onClick={() => {
-              setSeedPhraseRevealed(true);
+              setSeedPhraseRevealed(true)
             }}
           >
             {t('revealSeedWords')}
@@ -115,8 +115,8 @@ export default function RecoveryPhrase({ seedPhrase }) {
         )}
       </div>
     </div>
-  );
+  )
 }
 RecoveryPhrase.propTypes = {
   seedPhrase: PropTypes.string,
-};
+}

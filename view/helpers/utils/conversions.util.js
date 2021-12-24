@@ -1,26 +1,26 @@
-import { addHexPrefix } from '@app/scripts/lib/util';
+import { ethers } from 'ethers'
+import { addHexPrefix } from '@app/scripts/lib/util'
 import {
   addCurrencies,
   conversionUtil,
   subtractCurrencies,
-} from '@shared/modules/conversion.utils';
-import { ETH, GWEI, WEI } from '@view/helpers/constants/common';
-import { ethers } from 'ethers';
-import { formatCurrency } from './confirm-tx.util';
+} from '@shared/modules/conversion.utils'
+import { ETH, GWEI, WEI } from '@view/helpers/constants/common'
+import { formatCurrency } from './confirm-tx.util'
 export function bnToHex(inputBn) {
-  return addHexPrefix(inputBn.toString(16));
+  return addHexPrefix(inputBn.toString(16))
 }
 export function hexToDecimal(hexValue) {
   return conversionUtil(hexValue, {
     fromNumericBase: 'hex',
     toNumericBase: 'dec',
-  });
+  })
 }
 export function decimalToHex(decimal) {
   return conversionUtil(decimal, {
     fromNumericBase: 'dec',
     toNumericBase: 'hex',
-  });
+  })
 }
 export function getEthConversionFromWeiHex({
   value,
@@ -28,8 +28,8 @@ export function getEthConversionFromWeiHex({
   conversionRate,
   numberOfDecimals = 6,
 }) {
-  const denominations = [fromCurrency, GWEI, WEI];
-  let nonZeroDenomination;
+  const denominations = [fromCurrency, GWEI, WEI]
+  let nonZeroDenomination
 
   for (let i = 0; i < denominations.length; i++) {
     const convertedValue = getValueFromWeiHex({
@@ -39,15 +39,15 @@ export function getEthConversionFromWeiHex({
       toCurrency: fromCurrency,
       numberOfDecimals,
       toDenomination: denominations[i],
-    });
+    })
 
     if (convertedValue !== '0' || i === denominations.length - 1) {
-      nonZeroDenomination = `${convertedValue} ${denominations[i]}`;
-      break;
+      nonZeroDenomination = `${convertedValue} ${denominations[i]}`
+      break
     }
   }
 
-  return nonZeroDenomination;
+  return nonZeroDenomination
 }
 export function getValueFromWeiHex({
   value,
@@ -66,7 +66,7 @@ export function getValueFromWeiHex({
     fromDenomination: WEI,
     toDenomination,
     conversionRate,
-  });
+  })
 }
 export function getWeiHexFromDecimalValue({
   value,
@@ -84,7 +84,7 @@ export function getWeiHexFromDecimalValue({
     invertConversionRate,
     fromDenomination,
     toDenomination: WEI,
-  });
+  })
 }
 export function addHexWEIsToDec(aHexWEI, bHexWEI) {
   return addCurrencies(aHexWEI, bHexWEI, {
@@ -92,7 +92,7 @@ export function addHexWEIsToDec(aHexWEI, bHexWEI) {
     bBase: 16,
     fromDenomination: 'WEI',
     numberOfDecimals: 6,
-  });
+  })
 }
 export function subtractHexWEIsToDec(aHexWEI, bHexWEI) {
   return subtractCurrencies(aHexWEI, bHexWEI, {
@@ -100,7 +100,7 @@ export function subtractHexWEIsToDec(aHexWEI, bHexWEI) {
     bBase: 16,
     fromDenomination: 'WEI',
     numberOfDecimals: 6,
-  });
+  })
 }
 export function decEthToConvertedCurrency(
   ethTotal,
@@ -114,7 +114,7 @@ export function decEthToConvertedCurrency(
     toCurrency: convertedCurrency,
     numberOfDecimals: 2,
     conversionRate,
-  });
+  })
 }
 export function decGWEIToHexWEI(decGWEI) {
   return conversionUtil(decGWEI, {
@@ -122,7 +122,7 @@ export function decGWEIToHexWEI(decGWEI) {
     toNumericBase: 'hex',
     fromDenomination: 'GWEI',
     toDenomination: 'WEI',
-  });
+  })
 }
 export function hexWEIToDecGWEI(decGWEI) {
   return conversionUtil(decGWEI, {
@@ -130,7 +130,7 @@ export function hexWEIToDecGWEI(decGWEI) {
     toNumericBase: 'dec',
     fromDenomination: 'WEI',
     toDenomination: 'GWEI',
-  });
+  })
 }
 export function decETHToDecWEI(decEth) {
   return conversionUtil(decEth, {
@@ -138,7 +138,7 @@ export function decETHToDecWEI(decEth) {
     toNumericBase: 'dec',
     fromDenomination: 'ETH',
     toDenomination: 'WEI',
-  });
+  })
 }
 export function hexWEIToDecETH(hexWEI) {
   return conversionUtil(hexWEI, {
@@ -146,7 +146,7 @@ export function hexWEIToDecETH(hexWEI) {
     toNumericBase: 'dec',
     fromDenomination: 'WEI',
     toDenomination: 'ETH',
-  });
+  })
 }
 export function addHexes(aHexWEI, bHexWEI) {
   return addCurrencies(aHexWEI, bHexWEI, {
@@ -154,7 +154,7 @@ export function addHexes(aHexWEI, bHexWEI) {
     bBase: 16,
     toNumericBase: 'hex',
     numberOfDecimals: 6,
-  });
+  })
 }
 export function subtractHexes(aHexWEI, bHexWEI) {
   return subtractCurrencies(aHexWEI, bHexWEI, {
@@ -162,17 +162,17 @@ export function subtractHexes(aHexWEI, bHexWEI) {
     bBase: 16,
     toNumericBase: 'hex',
     numberOfDecimals: 6,
-  });
+  })
 }
 export function sumHexWEIs(hexWEIs) {
-  return hexWEIs.filter(Boolean).reduce(addHexes);
+  return hexWEIs.filter(Boolean).reduce(addHexes)
 }
 export function sumHexWEIsToUnformattedFiat(
   hexWEIs,
   convertedCurrency,
   conversionRate,
 ) {
-  const hexWEIsSum = sumHexWEIs(hexWEIs);
+  const hexWEIsSum = sumHexWEIs(hexWEIs)
   const convertedTotal = decEthToConvertedCurrency(
     getValueFromWeiHex({
       value: hexWEIsSum,
@@ -181,8 +181,8 @@ export function sumHexWEIsToUnformattedFiat(
     }),
     convertedCurrency,
     conversionRate,
-  );
-  return convertedTotal;
+  )
+  return convertedTotal
 }
 export function sumHexWEIsToRenderableFiat(
   hexWEIs,
@@ -193,18 +193,18 @@ export function sumHexWEIsToRenderableFiat(
     hexWEIs,
     convertedCurrency,
     conversionRate,
-  );
-  return formatCurrency(convertedTotal, convertedCurrency);
+  )
+  return formatCurrency(convertedTotal, convertedCurrency)
 }
 export const expandDecimals = (amount, decimals = 18) => {
-  return ethers.utils.parseUnits(String(amount), decimals);
-};
+  return ethers.utils.parseUnits(String(amount), decimals)
+}
 export const toBnString = (value = '0') => {
-  return ethers.BigNumber.from(value).toString();
-};
+  return ethers.BigNumber.from(value).toString()
+}
 export const toHexString = (amount, decimals = 18) => {
-  return expandDecimals(amount, decimals).toHexString();
-};
+  return expandDecimals(amount, decimals).toHexString()
+}
 export const hexToString = (amount, decimals = 18) => {
-  return ethers.utils.formatUnits(String(amount), decimals);
-};
+  return ethers.utils.formatUnits(String(amount), decimals)
+}

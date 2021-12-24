@@ -1,30 +1,30 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import classnames from 'classnames';
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import classnames from 'classnames'
 import {
   getSendMaxModeState,
   isSendFormInvalid,
   toggleSendMaxMode,
-} from '@reducer/send';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+} from '@reducer/send'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 export default function AmountMaxButton() {
-  const isDraftTransactionInvalid = useSelector(isSendFormInvalid);
-  const maxModeOn = useSelector(getSendMaxModeState);
-  const dispatch = useDispatch();
-  const t = useI18nContext();
+  const isDraftTransactionInvalid = useSelector(isSendFormInvalid)
+  const maxModeOn = useSelector(getSendMaxModeState)
+  const dispatch = useDispatch()
+  const t = useI18nContext()
 
   const onMaxClick = () => {
-    dispatch(toggleSendMaxMode());
-  };
+    dispatch(toggleSendMaxMode())
+  }
 
-  const disabled = isDraftTransactionInvalid;
+  const disabled = isDraftTransactionInvalid
   return (
     <button
-      className="send-v2__amount-max"
+      className='send-v2__amount-max'
       disabled={disabled}
       onClick={onMaxClick}
     >
-      <input type="checkbox" checked={maxModeOn} readOnly />
+      <input type='checkbox' checked={maxModeOn} readOnly />
       <div
         className={classnames('send-v2__amount-max__button', {
           'send-v2__amount-max__button__disabled': disabled,
@@ -33,5 +33,5 @@ export default function AmountMaxButton() {
         {t('max')}
       </div>
     </button>
-  );
+  )
 }

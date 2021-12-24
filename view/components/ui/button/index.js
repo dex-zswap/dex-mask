@@ -1,5 +1,5 @@
-import React from 'react';
-import classnames from 'classnames'; // Button.type default|primary|warning|transparent
+import React from 'react'
+import classnames from 'classnames' // Button.type default|primary|warning|transparent
 
 const Button = ({
   type = 'default',
@@ -12,10 +12,10 @@ const Button = ({
   onClick,
   as,
 }) => {
-  let Tag = 'button';
+  let Tag = 'button'
 
   if (as) {
-    Tag = as;
+    Tag = as
   }
 
   return (
@@ -28,11 +28,11 @@ const Button = ({
         disabled && 'button-disabled',
       )}
     >
-      {leftArrow && <span className="button__left__arrow"></span>}
+      {leftArrow && <span className='button__left__arrow'></span>}
       {children}
-      {rightArrow && <span className="button__right__arrow"></span>}
+      {rightArrow && <span className='button__right__arrow'></span>}
     </Tag>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button

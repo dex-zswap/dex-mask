@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Button from '@c/ui/button';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Button from '@c/ui/button'
 export default class PageContainerFooter extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -17,10 +17,10 @@ export default class PageContainerFooter extends Component {
     footerClassName: PropTypes.string,
     footerButtonClassName: PropTypes.string,
     rightArrow: PropTypes.bool,
-  };
+  }
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   render() {
     const {
@@ -37,7 +37,7 @@ export default class PageContainerFooter extends Component {
       footerClassName,
       footerButtonClassName,
       rightArrow = false,
-    } = this.props;
+    } = this.props
     return (
       <div className={classnames('page-container__footer', footerClassName)}>
         <footer>
@@ -50,7 +50,7 @@ export default class PageContainerFooter extends Component {
                 footerButtonClassName,
               )}
               onClick={(e) => onCancel(e)}
-              data-testid="page-container-footer-cancel"
+              data-testid='page-container-footer-cancel'
             >
               {cancelText || this.context.t('cancel')}
             </Button>
@@ -66,16 +66,16 @@ export default class PageContainerFooter extends Component {
             )}
             disabled={disabled}
             onClick={(e) => onSubmit(e)}
-            data-testid="page-container-footer-next"
+            data-testid='page-container-footer-next'
           >
             {submitText || this.context.t('next')}
           </Button>
         </footer>
 
         {children && (
-          <div className="page-container__footer-secondary">{children}</div>
+          <div className='page-container__footer-secondary'>{children}</div>
         )}
       </div>
-    );
+    )
   }
 }

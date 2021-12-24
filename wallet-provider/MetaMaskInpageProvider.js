@@ -1,8 +1,8 @@
-import { ethErrors } from 'eth-rpc-errors';
-import sendSiteMetadata from './siteMetadata';
-import messages from './messages';
-import { EMITTED_NOTIFICATIONS, getRpcPromiseCallback, NOOP } from './utils';
-import BaseProvider from './BaseProvider';
+import { ethErrors } from 'eth-rpc-errors'
+import sendSiteMetadata from './siteMetadata'
+import messages from './messages'
+import { EMITTED_NOTIFICATIONS, getRpcPromiseCallback, NOOP } from './utils'
+import BaseProvider from './BaseProvider'
 export default class MetaMaskInpageProvider extends BaseProvider {
   /**
    * @param connectionStream - A Node.js duplex stream
@@ -24,7 +24,7 @@ export default class MetaMaskInpageProvider extends BaseProvider {
       shouldSendMetadata = true,
     } = {},
   ) {
-    super(connectionStream, { jsonRpcStreamName, logger, maxEventListeners });
+    super(connectionStream, { jsonRpcStreamName, logger, maxEventListeners })
     this._sentWarnings = {
       // methods
       enable: false,
@@ -37,39 +37,39 @@ export default class MetaMaskInpageProvider extends BaseProvider {
         networkChanged: false,
         notification: false,
       },
-    };
-    this.networkVersion = null;
-    this.isDexMask = true;
-    this._sendSync = this._sendSync.bind(this);
-    this.enable = this.enable.bind(this);
-    this.send = this.send.bind(this);
-    this.sendAsync = this.sendAsync.bind(this);
-    this._warnOfDeprecation = this._warnOfDeprecation.bind(this);
-    this._metamask = this._getExperimentalApi();
+    }
+    this.networkVersion = null
+    this.isDexMask = true
+    this._sendSync = this._sendSync.bind(this)
+    this.enable = this.enable.bind(this)
+    this.send = this.send.bind(this)
+    this.sendAsync = this.sendAsync.bind(this)
+    this._warnOfDeprecation = this._warnOfDeprecation.bind(this)
+    this._metamask = this._getExperimentalApi()
     // handle JSON-RPC notifications
     this._jsonRpcConnection.events.on('notification', (payload) => {
-      const { method } = payload;
+      const { method } = payload
       if (EMITTED_NOTIFICATIONS.includes(method)) {
         // deprecated
         // emitted here because that was the original order
-        this.emit('data', payload);
+        this.emit('data', payload)
         // deprecated
-        this.emit('notification', payload.params.result);
+        this.emit('notification', payload.params.result)
       }
-    });
+    })
     // send website metadata
     if (shouldSendMetadata) {
       if (document.readyState === 'complete') {
-        sendSiteMetadata(this._rpcEngine, this._log);
+        sendSiteMetadata(this._rpcEngine, this._log)
       } else {
         const domContentLoadedHandler = () => {
-          sendSiteMetadata(this._rpcEngine, this._log);
+          sendSiteMetadata(this._rpcEngine, this._log)
           window.removeEventListener(
             'DOMContentLoaded',
             domContentLoadedHandler,
-          );
-        };
-        window.addEventListener('DOMContentLoaded', domContentLoadedHandler);
+          )
+        }
+        window.addEventListener('DOMContentLoaded', domContentLoadedHandler)
       }
     }
   }
@@ -83,7 +83,7 @@ export default class MetaMaskInpageProvider extends BaseProvider {
    * @param cb - The callback function.
    */
   sendAsync(payload, callback) {
-    this._rpcRequest(payload, callback);
+    this._rpcRequest(payload, callback)
   }
   /**
    * We override the following event methods so that we can warn consumers
@@ -91,24 +91,24 @@ export default class MetaMaskInpageProvider extends BaseProvider {
    *   addListener, on, once, prependListener, prependOnceListener
    */
   addListener(eventName, listener) {
-    this._warnOfDeprecation(eventName);
-    return super.addListener(eventName, listener);
+    this._warnOfDeprecation(eventName)
+    return super.addListener(eventName, listener)
   }
   on(eventName, listener) {
-    this._warnOfDeprecation(eventName);
-    return super.on(eventName, listener);
+    this._warnOfDeprecation(eventName)
+    return super.on(eventName, listener)
   }
   once(eventName, listener) {
-    this._warnOfDeprecation(eventName);
-    return super.once(eventName, listener);
+    this._warnOfDeprecation(eventName)
+    return super.once(eventName, listener)
   }
   prependListener(eventName, listener) {
-    this._warnOfDeprecation(eventName);
-    return super.prependListener(eventName, listener);
+    this._warnOfDeprecation(eventName)
+    return super.prependListener(eventName, listener)
   }
   prependOnceListener(eventName, listener) {
-    this._warnOfDeprecation(eventName);
-    return super.prependOnceListener(eventName, listener);
+    this._warnOfDeprecation(eventName)
+    return super.prependOnceListener(eventName, listener)
   }
   //====================
   // Private Methods
@@ -125,23 +125,23 @@ export default class MetaMaskInpageProvider extends BaseProvider {
    * @emits MetaMaskInpageProvider#disconnect
    */
   _handleDisconnect(isRecoverable, errorMessage) {
-    super._handleDisconnect(isRecoverable, errorMessage);
+    super._handleDisconnect(isRecoverable, errorMessage)
     if (this.networkVersion && !isRecoverable) {
-      this.networkVersion = null;
+      this.networkVersion = null
     }
   }
   /**
    * Warns of deprecation for the given event, if applicable.
    */
   _warnOfDeprecation(eventName) {
-    var _a;
+    var _a
     if (
       ((_a = this._sentWarnings) === null || _a === void 0
         ? void 0
         : _a.events[eventName]) === false
     ) {
-      this._log.warn(messages.warnings.events[eventName]);
-      this._sentWarnings.events[eventName] = true;
+      this._log.warn(messages.warnings.events[eventName])
+      this._sentWarnings.events[eventName] = true
     }
   }
   //====================
@@ -155,24 +155,24 @@ export default class MetaMaskInpageProvider extends BaseProvider {
    */
   enable() {
     if (!this._sentWarnings.enable) {
-      this._log.warn(messages.warnings.enableDeprecation);
-      this._sentWarnings.enable = true;
+      this._log.warn(messages.warnings.enableDeprecation)
+      this._sentWarnings.enable = true
     }
     return new Promise((resolve, reject) => {
       try {
         this._rpcRequest(
           { method: 'eth_requestAccounts', params: [] },
           getRpcPromiseCallback(resolve, reject),
-        );
+        )
       } catch (error) {
-        reject(error);
+        reject(error)
       }
-    });
+    })
   }
   send(methodOrPayload, callbackOrArgs) {
     if (!this._sentWarnings.send) {
-      this._log.warn(messages.warnings.sendDeprecation);
-      this._sentWarnings.send = true;
+      this._log.warn(messages.warnings.sendDeprecation)
+      this._sentWarnings.send = true
     }
     if (
       typeof methodOrPayload === 'string' &&
@@ -183,19 +183,19 @@ export default class MetaMaskInpageProvider extends BaseProvider {
           this._rpcRequest(
             { method: methodOrPayload, params: callbackOrArgs },
             getRpcPromiseCallback(resolve, reject, false),
-          );
+          )
         } catch (error) {
-          reject(error);
+          reject(error)
         }
-      });
+      })
     } else if (
       methodOrPayload &&
       typeof methodOrPayload === 'object' &&
       typeof callbackOrArgs === 'function'
     ) {
-      return this._rpcRequest(methodOrPayload, callbackOrArgs);
+      return this._rpcRequest(methodOrPayload, callbackOrArgs)
     }
-    return this._sendSync(methodOrPayload);
+    return this._sendSync(methodOrPayload)
   }
   /**
    * Internal backwards compatibility method, used in send.
@@ -203,29 +203,29 @@ export default class MetaMaskInpageProvider extends BaseProvider {
    * @deprecated
    */
   _sendSync(payload) {
-    let result;
+    let result
     switch (payload.method) {
       case 'eth_accounts':
-        result = this.selectedAddress ? [this.selectedAddress] : [];
-        break;
+        result = this.selectedAddress ? [this.selectedAddress] : []
+        break
       case 'eth_coinbase':
-        result = this.selectedAddress || null;
-        break;
+        result = this.selectedAddress || null
+        break
       case 'eth_uninstallFilter':
-        this._rpcRequest(payload, NOOP);
-        result = true;
-        break;
+        this._rpcRequest(payload, NOOP)
+        result = true
+        break
       case 'net_version':
-        result = this.networkVersion || null;
-        break;
+        result = this.networkVersion || null
+        break
       default:
-        throw new Error(messages.errors.unsupportedSync(payload.method));
+        throw new Error(messages.errors.unsupportedSync(payload.method))
     }
     return {
       id: payload.id,
       jsonrpc: payload.jsonrpc,
       result,
-    };
+    }
   }
   /**
    * Constructor helper.
@@ -243,10 +243,10 @@ export default class MetaMaskInpageProvider extends BaseProvider {
         isUnlocked: async () => {
           if (!this._state.initialized) {
             await new Promise((resolve) => {
-              this.on('_initialized', () => resolve());
-            });
+              this.on('_initialized', () => resolve())
+            })
           }
-          return this._state.isUnlocked;
+          return this._state.isUnlocked
         },
         /**
          * Make a batch RPC request.
@@ -257,23 +257,23 @@ export default class MetaMaskInpageProvider extends BaseProvider {
               message:
                 'Batch requests must be made with an array of request objects.',
               data: requests,
-            });
+            })
           }
           return new Promise((resolve, reject) => {
-            this._rpcRequest(requests, getRpcPromiseCallback(resolve, reject));
-          });
+            this._rpcRequest(requests, getRpcPromiseCallback(resolve, reject))
+          })
         },
       },
       {
         get: (obj, prop, ...args) => {
           if (!this._sentWarnings.experimentalMethods) {
-            this._log.warn(messages.warnings.experimentalMethods);
-            this._sentWarnings.experimentalMethods = true;
+            this._log.warn(messages.warnings.experimentalMethods)
+            this._sentWarnings.experimentalMethods = true
           }
-          return Reflect.get(obj, prop, ...args);
+          return Reflect.get(obj, prop, ...args)
         },
       },
-    );
+    )
   }
   /**
    * Upon receipt of a new chainId and networkVersion, emits corresponding
@@ -288,15 +288,15 @@ export default class MetaMaskInpageProvider extends BaseProvider {
    * @param networkInfo.networkVersion - The latest network ID.
    */
   _handleChainChanged({ chainId, networkVersion } = {}) {
-    super._handleChainChanged({ chainId, networkVersion });
+    super._handleChainChanged({ chainId, networkVersion })
     if (
       networkVersion &&
       networkVersion !== 'loading' &&
       networkVersion !== this.networkVersion
     ) {
-      this.networkVersion = networkVersion;
+      this.networkVersion = networkVersion
       if (this._state.initialized) {
-        this.emit('networkChanged', this.networkVersion);
+        this.emit('networkChanged', this.networkVersion)
       }
     }
   }

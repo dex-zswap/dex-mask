@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
-import PropTypes from 'prop-types';
-import ItemList from './item-list';
-import ListItemSearch from './list-item-search';
+import React, { useState, useRef } from 'react'
+import PropTypes from 'prop-types'
+import ItemList from './item-list'
+import ListItemSearch from './list-item-search'
 export default function SearchableItemList({
   className,
   defaultToAll,
@@ -19,9 +19,9 @@ export default function SearchableItemList({
   listContainerClassName,
   shouldSearchForImports,
 }) {
-  const itemListRef = useRef();
-  const [results, setResults] = useState(defaultToAll ? itemsToSearch : []);
-  const [searchQuery, setSearchQuery] = useState('');
+  const itemListRef = useRef()
+  const [results, setResults] = useState(defaultToAll ? itemsToSearch : [])
+  const [searchQuery, setSearchQuery] = useState('')
   return (
     <div className={className}>
       <ListItemSearch
@@ -31,8 +31,8 @@ export default function SearchableItemList({
           searchQuery: newSearchQuery = '',
           results: newResults = [],
         }) => {
-          setSearchQuery(newSearchQuery);
-          setResults(newResults);
+          setSearchQuery(newSearchQuery)
+          setResults(newResults)
         }}
         error={itemSelectorError}
         searchPlaceholderText={searchPlaceholderText}
@@ -53,7 +53,7 @@ export default function SearchableItemList({
         listContainerClassName={listContainerClassName}
       />
     </div>
-  );
+  )
 }
 SearchableItemList.propTypes = {
   itemSelectorError: PropTypes.string,
@@ -76,4 +76,4 @@ SearchableItemList.propTypes = {
   hideItemIf: PropTypes.func,
   listContainerClassName: PropTypes.string,
   shouldSearchForImports: PropTypes.bool,
-};
+}

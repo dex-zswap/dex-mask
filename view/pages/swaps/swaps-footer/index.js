@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import PageContainerFooter from '@c/ui/page-container/page-container-footer';
-import { I18nContext } from '@view/contexts/i18n';
+import React, { useContext } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import PageContainerFooter from '@c/ui/page-container/page-container-footer'
+import { I18nContext } from '@view/contexts/i18n'
 export default function SwapsFooter({
   onCancel,
   hideCancel,
@@ -13,9 +13,9 @@ export default function SwapsFooter({
   showTopBorder,
   className = '',
 }) {
-  const t = useContext(I18nContext);
+  const t = useContext(I18nContext)
   return (
-    <div className="swaps-footer">
+    <div className='swaps-footer'>
       <div
         className={classnames('swaps-footer__buttons', className, {
           'swaps-footer__buttons--border': showTopBorder,
@@ -27,7 +27,7 @@ export default function SwapsFooter({
           cancelText={t('back')}
           onSubmit={onSubmit}
           submitText={submitText}
-          submitButtonType="confirm"
+          submitButtonType='confirm'
           footerClassName={classnames(
             'swaps-footer__custom-page-container-footer-class',
             className,
@@ -43,7 +43,7 @@ export default function SwapsFooter({
       </div>
       {showTermsOfService && (
         <div
-          className="swaps-footer__bottom-text"
+          className='swaps-footer__bottom-text'
           onClick={() =>
             global.platform.openTab({
               url: 'https://metamask.io/terms.html',
@@ -54,7 +54,7 @@ export default function SwapsFooter({
         </div>
       )}
     </div>
-  );
+  )
 }
 SwapsFooter.propTypes = {
   onCancel: PropTypes.func,
@@ -65,4 +65,4 @@ SwapsFooter.propTypes = {
   showTermsOfService: PropTypes.bool,
   showTopBorder: PropTypes.bool,
   className: PropTypes.string,
-};
+}

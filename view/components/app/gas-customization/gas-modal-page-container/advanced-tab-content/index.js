@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import AdvancedGasInputs from '@c/app/gas-customization/advanced-gas-inputs';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import AdvancedGasInputs from '@c/app/gas-customization/advanced-gas-inputs'
 export default class AdvancedTabContent extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   static propTypes = {
     updateCustomGasPrice: PropTypes.func,
     updateCustomGasLimit: PropTypes.func,
@@ -17,21 +17,21 @@ export default class AdvancedTabContent extends Component {
     customGasLimitMessage: PropTypes.string,
     minimumGasLimit: PropTypes.number,
     customPriceIsExcessive: PropTypes.bool.isRequired,
-  };
+  }
 
   renderDataSummary(transactionFee) {
     return (
-      <div className="advanced-tab__transaction-data-summary">
-        <div className="advanced-tab__transaction-data-summary__titles">
+      <div className='advanced-tab__transaction-data-summary'>
+        <div className='advanced-tab__transaction-data-summary__titles'>
           <span>{this.context.t('newTransactionFee')}</span>
         </div>
-        <div className="advanced-tab__transaction-data-summary__container">
-          <div className="advanced-tab__transaction-data-summary__fee">
+        <div className='advanced-tab__transaction-data-summary__container'>
+          <div className='advanced-tab__transaction-data-summary__fee'>
             {transactionFee}
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   render() {
@@ -47,12 +47,12 @@ export default class AdvancedTabContent extends Component {
       customGasLimitMessage,
       minimumGasLimit,
       customPriceIsExcessive,
-    } = this.props;
+    } = this.props
     return (
-      <div className="advanced-tab">
+      <div className='advanced-tab'>
         {this.renderDataSummary(transactionFee)}
-        <div className="advanced-tab__fee-chart">
-          <div className="advanced-tab__gas-inputs">
+        <div className='advanced-tab__fee-chart'>
+          <div className='advanced-tab__gas-inputs'>
             <AdvancedGasInputs
               updateCustomGasPrice={updateCustomGasPrice}
               updateCustomGasLimit={updateCustomGasLimit}
@@ -68,6 +68,6 @@ export default class AdvancedTabContent extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

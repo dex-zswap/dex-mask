@@ -1,36 +1,36 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { getTokens } from '@reducer/dexmask/dexmask';
-import { getKnownMethodData } from '@selectors/selectors';
+import { useDispatch, useSelector } from 'react-redux'
+import { getTokens } from '@reducer/dexmask/dexmask'
+import { getKnownMethodData } from '@selectors/selectors'
 import {
   TRANSACTION_GROUP_CATEGORIES,
   TRANSACTION_STATUSES,
   TRANSACTION_TYPES,
-} from '@shared/constants/transaction';
-import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
+} from '@shared/constants/transaction'
+import { PRIMARY, SECONDARY } from '@view/helpers/constants/common'
 import {
   PENDING_STATUS_HASH,
   TOKEN_CATEGORY_HASH,
-} from '@view/helpers/constants/transactions';
+} from '@view/helpers/constants/transactions'
 import {
   shortenAddress,
   stripHttpSchemes,
   formatDate,
-} from '@view/helpers/utils';
-import { camelCaseToCapitalize } from '@view/helpers/utils/common.util';
-import { getTokenAddressParam } from '@view/helpers/utils/token-util';
+} from '@view/helpers/utils'
+import { camelCaseToCapitalize } from '@view/helpers/utils/common.util'
+import { getTokenAddressParam } from '@view/helpers/utils/token-util'
 import {
   getStatusKey,
   getTransactionTypeTitle,
-} from '@view/helpers/utils/transactions.util';
-import { captureSingleException } from '@view/store/actions';
-import { useCurrencyDisplay } from './useCurrencyDisplay';
-import { useCurrentAsset } from './useCurrentAsset';
-import { useI18nContext } from './useI18nContext';
-import { useSwappedTokenValue } from './useSwappedTokenValue';
-import { useTokenData } from './useTokenData';
-import { useTokenDisplayValue } from './useTokenDisplayValue';
-import { useTokenFiatAmount } from './useTokenFiatAmount';
-import { useUserPreferencedCurrency } from './useUserPreferencedCurrency';
+} from '@view/helpers/utils/transactions.util'
+import { captureSingleException } from '@view/store/actions'
+import { useCurrencyDisplay } from './useCurrencyDisplay'
+import { useCurrentAsset } from './useCurrentAsset'
+import { useI18nContext } from './useI18nContext'
+import { useSwappedTokenValue } from './useSwappedTokenValue'
+import { useTokenData } from './useTokenData'
+import { useTokenDisplayValue } from './useTokenDisplayValue'
+import { useTokenFiatAmount } from './useTokenFiatAmount'
+import { useUserPreferencedCurrency } from './useUserPreferencedCurrency'
 /**
  * @typedef {Object} TransactionDisplayData
  * @property {string} title                  - primary description of the transaction
@@ -58,31 +58,31 @@ import { useUserPreferencedCurrency } from './useUserPreferencedCurrency';
 export function useTransactionDisplayData(transactionGroup) {
   // To determine which primary currency to display for swaps transactions we need to be aware
   // of which asset, if any, we are viewing at present
-  const dispatch = useDispatch();
-  const currentAsset = useCurrentAsset();
-  const knownTokens = useSelector(getTokens);
-  const t = useI18nContext();
-  const { initialTransaction, primaryTransaction } = transactionGroup; // initialTransaction contains the data we need to derive the primary purpose of this transaction group
+  const dispatch = useDispatch()
+  const currentAsset = useCurrentAsset()
+  const knownTokens = useSelector(getTokens)
+  const t = useI18nContext()
+  const { initialTransaction, primaryTransaction } = transactionGroup // initialTransaction contains the data we need to derive the primary purpose of this transaction group
 
-  const { type } = initialTransaction;
-  const { from: senderAddress, to } = initialTransaction.txParams || {}; // for smart contract interactions, methodData can be used to derive the name of the action being taken
+  const { type } = initialTransaction
+  const { from: senderAddress, to } = initialTransaction.txParams || {} // for smart contract interactions, methodData can be used to derive the name of the action being taken
 
   const methodData =
     useSelector((state) =>
       getKnownMethodData(state, initialTransaction?.txParams?.data),
-    ) || {};
-  const displayedStatusKey = getStatusKey(primaryTransaction);
-  const isPending = displayedStatusKey in PENDING_STATUS_HASH;
-  const isSubmitted = displayedStatusKey === TRANSACTION_STATUSES.SUBMITTED;
-  const primaryValue = primaryTransaction.txParams?.value;
-  let prefix = '-';
-  const date = formatDate(initialTransaction.time);
-  let subtitle;
-  let subtitleContainsOrigin = false;
-  let recipientAddress = to; // This value is used to determine whether we should look inside txParams.data
+    ) || {}
+  const displayedStatusKey = getStatusKey(primaryTransaction)
+  const isPending = displayedStatusKey in PENDING_STATUS_HASH
+  const isSubmitted = displayedStatusKey === TRANSACTION_STATUSES.SUBMITTED
+  const primaryValue = primaryTransaction.txParams?.value
+  let prefix = '-'
+  const date = formatDate(initialTransaction.time)
+  let subtitle
+  let subtitleContainsOrigin = false
+  let recipientAddress = to // This value is used to determine whether we should look inside txParams.data
   // to pull out and render token related information
 
-  const isTokenCategory = TOKEN_CATEGORY_HASH[type]; // these values are always instantiated because they are either
+  const isTokenCategory = TOKEN_CATEGORY_HASH[type] // these values are always instantiated because they are either
   // used by or returned from hooks. Hooks must be called at the top level,
   // so as an additional safeguard against inappropriately associating token
   // transfers, we pass an additional argument to these hooks that will be
@@ -91,43 +91,43 @@ export function useTransactionDisplayData(transactionGroup) {
 
   const token =
     isTokenCategory &&
-    knownTokens.find(({ address }) => address === recipientAddress);
+    knownTokens.find(({ address }) => address === recipientAddress)
   const tokenData = useTokenData(
     initialTransaction?.txParams?.data,
     isTokenCategory,
-  );
+  )
   const tokenDisplayValue = useTokenDisplayValue(
     initialTransaction?.txParams?.data,
     token,
     isTokenCategory,
-  );
+  )
   const tokenFiatAmount = useTokenFiatAmount(
     token?.address,
     tokenDisplayValue,
     token?.symbol,
-  );
+  )
   const origin = stripHttpSchemes(
     initialTransaction.origin || initialTransaction.msgParams?.origin || '',
-  ); // used to append to the primary display value. initialized to either token.symbol or undefined
+  ) // used to append to the primary display value. initialized to either token.symbol or undefined
   // but can later be modified if dealing with a swap
 
-  let primarySuffix = isTokenCategory ? token?.symbol : undefined; // used to display the primary value of tx. initialized to either tokenDisplayValue or undefined
+  let primarySuffix = isTokenCategory ? token?.symbol : undefined // used to display the primary value of tx. initialized to either tokenDisplayValue or undefined
   // but can later be modified if dealing with a swap
 
-  let primaryDisplayValue = isTokenCategory ? tokenDisplayValue : undefined; // used to display fiat amount of tx. initialized to either tokenFiatAmount or undefined
+  let primaryDisplayValue = isTokenCategory ? tokenDisplayValue : undefined // used to display fiat amount of tx. initialized to either tokenFiatAmount or undefined
   // but can later be modified if dealing with a swap
 
-  let secondaryDisplayValue = isTokenCategory ? tokenFiatAmount : undefined; // The transaction group category that will be used for rendering the icon in the activity list
+  let secondaryDisplayValue = isTokenCategory ? tokenFiatAmount : undefined // The transaction group category that will be used for rendering the icon in the activity list
 
-  let category; // The primary title of the Tx that will be displayed in the activity list
+  let category // The primary title of the Tx that will be displayed in the activity list
 
-  let title;
+  let title
   const {
     swapTokenValue,
     isNegative,
     swapTokenFiatAmount,
     isViewingReceivedTokenFromSwap,
-  } = useSwappedTokenValue(transactionGroup, currentAsset); // There are seven types of transaction entries that are currently differentiated in the design
+  } = useSwappedTokenValue(transactionGroup, currentAsset) // There are seven types of transaction entries that are currently differentiated in the design
   // 1. Signature request
   // 2. Send (sendEth sendTokens)
   // 3. Deposit
@@ -144,96 +144,96 @@ export function useTransactionDisplayData(transactionGroup) {
     TRANSACTION_TYPES.SIGN_TYPED_DATA,
     TRANSACTION_TYPES.ETH_DECRYPT,
     TRANSACTION_TYPES.ETH_GET_ENCRYPTION_PUBLIC_KEY,
-  ];
+  ]
 
   if (signatureTypes.includes(type)) {
-    category = TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST;
-    title = t('signatureRequest');
-    subtitle = origin;
-    subtitleContainsOrigin = true;
+    category = TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST
+    title = t('signatureRequest')
+    subtitle = origin
+    subtitleContainsOrigin = true
   } else if (type === TRANSACTION_TYPES.SWAP) {
-    category = TRANSACTION_GROUP_CATEGORIES.SWAP;
+    category = TRANSACTION_GROUP_CATEGORIES.SWAP
     title = t('swapTokenToToken', [
       initialTransaction.sourceTokenSymbol,
       initialTransaction.destinationTokenSymbol,
-    ]);
-    subtitle = origin;
-    subtitleContainsOrigin = true;
+    ])
+    subtitle = origin
+    subtitleContainsOrigin = true
     primarySuffix = isViewingReceivedTokenFromSwap
       ? currentAsset.symbol
-      : initialTransaction.sourceTokenSymbol;
-    primaryDisplayValue = swapTokenValue;
-    secondaryDisplayValue = swapTokenFiatAmount;
+      : initialTransaction.sourceTokenSymbol
+    primaryDisplayValue = swapTokenValue
+    secondaryDisplayValue = swapTokenFiatAmount
 
     if (isNegative) {
-      prefix = '';
+      prefix = ''
     } else if (isViewingReceivedTokenFromSwap) {
-      prefix = '+ ';
+      prefix = '+ '
     } else {
-      prefix = '- ';
+      prefix = '- '
     }
   } else if (type === TRANSACTION_TYPES.SWAP_APPROVAL) {
-    category = TRANSACTION_GROUP_CATEGORIES.APPROVAL;
-    title = t('swapApproval', [primaryTransaction.sourceTokenSymbol]);
-    subtitle = origin;
-    subtitleContainsOrigin = true;
-    primarySuffix = primaryTransaction.sourceTokenSymbol;
+    category = TRANSACTION_GROUP_CATEGORIES.APPROVAL
+    title = t('swapApproval', [primaryTransaction.sourceTokenSymbol])
+    subtitle = origin
+    subtitleContainsOrigin = true
+    primarySuffix = primaryTransaction.sourceTokenSymbol
   } else if (type === TRANSACTION_TYPES.TOKEN_METHOD_APPROVE) {
-    category = TRANSACTION_GROUP_CATEGORIES.APPROVAL;
-    prefix = '';
-    title = t('approveSpendLimit', [token?.symbol || t('token')]);
-    subtitle = origin;
-    subtitleContainsOrigin = true;
+    category = TRANSACTION_GROUP_CATEGORIES.APPROVAL
+    prefix = ''
+    title = t('approveSpendLimit', [token?.symbol || t('token')])
+    subtitle = origin
+    subtitleContainsOrigin = true
   } else if (
     type === TRANSACTION_TYPES.DEPLOY_CONTRACT ||
     type === TRANSACTION_TYPES.CONTRACT_INTERACTION
   ) {
-    category = TRANSACTION_GROUP_CATEGORIES.INTERACTION;
-    const transactionTypeTitle = getTransactionTypeTitle(t, type);
+    category = TRANSACTION_GROUP_CATEGORIES.INTERACTION
+    const transactionTypeTitle = getTransactionTypeTitle(t, type)
     title =
       (methodData?.name && camelCaseToCapitalize(methodData.name)) ||
-      transactionTypeTitle;
-    subtitle = origin;
-    subtitleContainsOrigin = true;
+      transactionTypeTitle
+    subtitle = origin
+    subtitleContainsOrigin = true
   } else if (type === TRANSACTION_TYPES.INCOMING) {
-    category = TRANSACTION_GROUP_CATEGORIES.RECEIVE;
-    title = t('receive');
-    prefix = '';
-    subtitle = t('fromAddress', [shortenAddress(senderAddress)]);
+    category = TRANSACTION_GROUP_CATEGORIES.RECEIVE
+    title = t('receive')
+    prefix = ''
+    subtitle = t('fromAddress', [shortenAddress(senderAddress)])
   } else if (
     type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM ||
     type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER
   ) {
-    category = TRANSACTION_GROUP_CATEGORIES.SEND;
-    title = t('sendSpecifiedTokens', [token?.symbol || t('token')]);
-    recipientAddress = getTokenAddressParam(tokenData);
-    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)]);
+    category = TRANSACTION_GROUP_CATEGORIES.SEND
+    title = t('sendSpecifiedTokens', [token?.symbol || t('token')])
+    recipientAddress = getTokenAddressParam(tokenData)
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
   } else if (type === TRANSACTION_TYPES.SENT_ETHER) {
-    category = TRANSACTION_GROUP_CATEGORIES.SEND;
-    title = t('send');
-    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)]);
+    category = TRANSACTION_GROUP_CATEGORIES.SEND
+    title = t('send')
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
   } else {
     dispatch(
       captureSingleException(
         `useTransactionDisplayData does not recognize transaction type. Type received is: ${type}`,
       ),
-    );
+    )
   }
 
-  const primaryCurrencyPreferences = useUserPreferencedCurrency(PRIMARY);
-  const secondaryCurrencyPreferences = useUserPreferencedCurrency(SECONDARY);
+  const primaryCurrencyPreferences = useUserPreferencedCurrency(PRIMARY)
+  const secondaryCurrencyPreferences = useUserPreferencedCurrency(SECONDARY)
   const [primaryCurrency] = useCurrencyDisplay(primaryValue, {
     prefix,
     displayValue: primaryDisplayValue,
     suffix: primarySuffix,
     ...primaryCurrencyPreferences,
-  });
+  })
   const [secondaryCurrency] = useCurrencyDisplay(primaryValue, {
     prefix,
     displayValue: secondaryDisplayValue,
     hideLabel: isTokenCategory || Boolean(swapTokenValue),
     ...secondaryCurrencyPreferences,
-  });
+  })
   return {
     title,
     category,
@@ -252,5 +252,5 @@ export function useTransactionDisplayData(transactionGroup) {
     displayedStatusKey,
     isPending,
     isSubmitted,
-  };
+  }
 }

@@ -1,45 +1,45 @@
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
-import ActionableMessage from '@c/ui/actionable-message/actionable-message';
-import Box from '@c/ui/box';
-import Button from '@c/ui/button';
-import Popover from '@c/ui/popover';
-import Typography from '@c/ui/typography';
-import UrlIcon from '@c/ui/url-icon';
-import { I18nContext } from '@view/contexts/i18n';
+import React, { useContext } from 'react'
+import PropTypes from 'prop-types'
+import ActionableMessage from '@c/ui/actionable-message/actionable-message'
+import Box from '@c/ui/box'
+import Button from '@c/ui/button'
+import Popover from '@c/ui/popover'
+import Typography from '@c/ui/typography'
+import UrlIcon from '@c/ui/url-icon'
+import { I18nContext } from '@view/contexts/i18n'
 import {
   ALIGN_ITEMS,
   DISPLAY,
   FONT_WEIGHT,
   TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
+} from '@view/helpers/constants/design-system'
 export default function ImportToken({
   onImportTokenCloseClick,
   onImportTokenClick,
   setIsImportTokenModalOpen,
   tokenForImport,
 }) {
-  const t = useContext(I18nContext);
+  const t = useContext(I18nContext)
   const ImportTokenModalFooter = (
     <>
       <Button
-        type="secondary"
-        className="page-container__footer-button"
+        type='secondary'
+        className='page-container__footer-button'
         onClick={onImportTokenCloseClick}
         rounded
       >
         {t('cancel')}
       </Button>
       <Button
-        type="confirm"
-        className="page-container__footer-button"
+        type='confirm'
+        className='page-container__footer-button'
         onClick={onImportTokenClick}
         rounded
       >
         {t('import')}
       </Button>
     </>
-  );
+  )
   return (
     <Popover
       title={t('importTokenQuestion')}
@@ -50,13 +50,13 @@ export default function ImportToken({
         padding={[0, 6, 4, 6]}
         alignItems={ALIGN_ITEMS.CENTER}
         display={DISPLAY.FLEX}
-        className="import-token"
+        className='import-token'
       >
-        <ActionableMessage type="danger" message={t('importTokenWarning')} />
+        <ActionableMessage type='danger' message={t('importTokenWarning')} />
         <UrlIcon
           url={tokenForImport.iconUrl}
-          className="import-token__token-icon"
-          fallbackClassName="import-token__token-icon"
+          className='import-token__token-icon'
+          fallbackClassName='import-token__token-icon'
           name={tokenForImport.symbol}
         />
         <Typography
@@ -71,7 +71,7 @@ export default function ImportToken({
         </Typography>
         <Typography variant={TYPOGRAPHY.H6}>{t('contract')}:</Typography>
         <Typography
-          className="import-token__contract-address"
+          className='import-token__contract-address'
           variant={TYPOGRAPHY.H7}
           boxProps={{
             marginBottom: 6,
@@ -81,11 +81,11 @@ export default function ImportToken({
         </Typography>
       </Box>
     </Popover>
-  );
+  )
 }
 ImportToken.propTypes = {
   onImportTokenCloseClick: PropTypes.func,
   onImportTokenClick: PropTypes.func,
   setIsImportTokenModalOpen: PropTypes.func,
   tokenForImport: PropTypes.object,
-};
+}

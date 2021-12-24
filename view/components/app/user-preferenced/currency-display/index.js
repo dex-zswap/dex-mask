@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import CurrencyDisplay from '@c/ui/currency-display';
-import { ETH, PRIMARY, SECONDARY } from '@view/helpers/constants/common';
-import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
+import React, { useMemo } from 'react'
+import PropTypes from 'prop-types'
+import CurrencyDisplay from '@c/ui/currency-display'
+import { ETH, PRIMARY, SECONDARY } from '@view/helpers/constants/common'
+import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency'
 export default function UserPreferencedCurrencyDisplay({
   'data-testid': dataTestId,
   ethLogoHeight = 12,
@@ -20,15 +20,15 @@ export default function UserPreferencedCurrencyDisplay({
       fiatNumberOfDecimals,
       numberOfDecimals: propsNumberOfDecimals,
     },
-  );
+  )
   const prefixComponent = useMemo(() => {
     return (
       currency === ETH &&
       showEthLogo && (
-        <img src="./images/eth.svg" height={ethLogoHeight} alt="" />
+        <img src='./images/eth.svg' height={ethLogoHeight} alt='' />
       )
-    );
-  }, [currency, showEthLogo, ethLogoHeight]);
+    )
+  }, [currency, showEthLogo, ethLogoHeight])
   return (
     <CurrencyDisplay
       {...restProps}
@@ -37,5 +37,5 @@ export default function UserPreferencedCurrencyDisplay({
       numberOfDecimals={numberOfDecimals}
       prefixComponent={prefixComponent}
     />
-  );
+  )
 }

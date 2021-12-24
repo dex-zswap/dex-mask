@@ -1,13 +1,13 @@
-import { connect } from 'react-redux';
-import Initialized from './component';
+import { connect } from 'react-redux'
+import Initialized from './component'
 
 const mapStateToProps = (state) => {
   const {
     metamask: { completedOnboarding },
-  } = state;
+  } = state
   return {
     completedOnboarding,
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps)(Initialized);
+export default connect(mapStateToProps)(Initialized)

@@ -1,18 +1,18 @@
-const pify = require('pify');
-const gulp = require('gulp');
-const autoprefixer = require('gulp-autoprefixer');
-const gulpStylelint = require('gulp-stylelint');
-const watch = require('gulp-watch');
-const sourcemaps = require('gulp-sourcemaps');
-const rtlcss = require('gulp-rtlcss');
-const rename = require('gulp-rename');
-const pump = pify(require('pump'));
-const { createTask } = require('./task');
+const pify = require('pify')
+const gulp = require('gulp')
+const autoprefixer = require('gulp-autoprefixer')
+const gulpStylelint = require('gulp-stylelint')
+const watch = require('gulp-watch')
+const sourcemaps = require('gulp-sourcemaps')
+const rtlcss = require('gulp-rtlcss')
+const rename = require('gulp-rename')
+const pump = pify(require('pump'))
+const { createTask } = require('./task')
 
-let sass;
+let sass
 
 // scss compilation and autoprefixing tasks
-module.exports = createStyleTasks;
+module.exports = createStyleTasks
 
 function createStyleTasks({ livereload }) {
   const prod = createTask(
@@ -22,7 +22,7 @@ function createStyleTasks({ livereload }) {
       dest: 'view/css/output',
       devMode: false,
     }),
-  );
+  )
 
   const dev = createTask(
     'styles:dev',
@@ -32,7 +32,7 @@ function createStyleTasks({ livereload }) {
       devMode: true,
       pattern: 'view/**/*.scss',
     }),
-  );
+  )
 
   const lint = createTask('lint-scss', function () {
     return gulp.src('view/css/itcss/**/*.scss').pipe(
@@ -40,27 +40,27 @@ function createStyleTasks({ livereload }) {
         reporters: [{ formatter: 'string', console: true }],
         fix: true,
       }),
-    );
-  });
+    )
+  })
 
-  return { prod, dev, lint };
+  return { prod, dev, lint }
 
   function createScssBuildTask({ src, dest, devMode, pattern }) {
     return async function () {
       if (devMode) {
         watch(pattern, async (event) => {
-          await buildScss();
-          livereload.changed(event.path);
-        });
+          await buildScss()
+          livereload.changed(event.path)
+        })
       }
-      await buildScss();
-    };
+      await buildScss()
+    }
 
     async function buildScss() {
       await Promise.all([
         buildScssPipeline(src, dest, devMode, false),
         buildScssPipeline(src, dest, devMode, true),
-      ]);
+      ])
     }
   }
 }
@@ -68,11 +68,11 @@ function createStyleTasks({ livereload }) {
 async function buildScssPipeline(src, dest, devMode, rtl) {
   if (!sass) {
     // eslint-disable-next-line node/global-require
-    sass = require('gulp-dart-sass');
+    sass = require('gulp-dart-sass')
     // use our own compiler which runs sass in its own process
     // in order to not pollute the intrinsics
     // eslint-disable-next-line node/global-require
-    sass.compiler = require('./sass-compiler.js');
+    sass.compiler = require('./sass-compiler.js')
   }
   await pump(
     ...[
@@ -86,5 +86,5 @@ async function buildScssPipeline(src, dest, devMode, rtl) {
       devMode && sourcemaps.write(),
       gulp.dest(dest),
     ].filter(Boolean),
-  );
+  )
 }

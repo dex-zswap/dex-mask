@@ -1,15 +1,15 @@
-import React, { PureComponent } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 export default class Breadcrumbs extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     currentIndex: PropTypes.number,
     total: PropTypes.number,
-  };
+  }
 
   render() {
-    const { className, currentIndex, total } = this.props;
+    const { className, currentIndex, total } = this.props
     return (
       <div className={classnames('breadcrumbs', className)}>
         {Array(total)
@@ -17,13 +17,13 @@ export default class Breadcrumbs extends PureComponent {
           .map((_, i) => (
             <div
               key={i}
-              className="breadcrumb"
+              className='breadcrumb'
               style={{
                 backgroundColor: i === currentIndex ? '#D8D8D8' : '#FFFFFF',
               }}
             />
           ))}
       </div>
-    );
+    )
   }
 }

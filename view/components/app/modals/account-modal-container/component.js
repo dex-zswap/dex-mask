@@ -1,7 +1,7 @@
-import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Identicon from '@c/ui/identicon';
+import React from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Identicon from '@c/ui/identicon'
 export default function AccountModalContainer(props) {
   const {
     className,
@@ -10,7 +10,7 @@ export default function AccountModalContainer(props) {
     backButtonAction,
     hideModal,
     children,
-  } = props;
+  } = props
   return (
     <div
       className={classnames(className, 'account-modal')}
@@ -18,13 +18,13 @@ export default function AccountModalContainer(props) {
         borderRadius: '4px',
       }}
     >
-      <div className="account-modal__container">
-        <div className="account-modal-avatar-container">
+      <div className='account-modal__container'>
+        <div className='account-modal-avatar-container'>
           <Identicon address={selectedIdentity.address} diameter={55} />
         </div>
-        <button className="account-modal__close" onClick={hideModal} />
+        <button className='account-modal__close' onClick={hideModal} />
         {children}
       </div>
     </div>
-  );
+  )
 }
