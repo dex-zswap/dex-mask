@@ -1,14 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import contractMap from '@metamask/contract-metadata'
-/**
- * @typedef {import('@reduxjs/toolkit').PayloadAction} PayloadAction
- */
-
-import BigNumber from 'bignumber.js'
-import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util'
-import abi from 'human-standard-token-abi'
-import { debounce } from 'lodash' // typedefs
-
 import {
   CONTRACT_ADDRESS_ERROR,
   INSUFFICIENT_FUNDS_ERROR,
@@ -33,6 +23,7 @@ import {
 } from '@reducer/dexmask/dexmask'
 import { resetEnsResolution } from '@reducer/ens'
 import { setCustomGasLimit } from '@reducer/gas/gas.duck'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { GAS_ESTIMATE_TYPES, GAS_LIMITS } from '@shared/constants/gas'
 import { CHAIN_ID_TO_GAS_LIMIT_BUFFER_MAP } from '@shared/constants/network'
 import { TRANSACTION_ENVELOPE_TYPES } from '@shared/constants/transaction'
@@ -89,6 +80,14 @@ import {
   updateTokenType,
   updateTransaction,
 } from '@view/store/actions'
+/**
+ * @typedef {import('@reduxjs/toolkit').PayloadAction} PayloadAction
+ */
+import BigNumber from 'bignumber.js'
+import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util'
+import abi from 'human-standard-token-abi'
+import { debounce } from 'lodash' // typedefs
+
 const name = 'send'
 /**
  * The Stages that the send slice can be in
@@ -645,35 +644,39 @@ const slice = createSlice({
       slice.caseReducers.validateSendState(state)
     },
     setMaxSendAmount: (state) => {
-      let amount = '0'
-
-      if (state?.asset) {
-        if (state.asset.type === ASSET_TYPES.TOKEN) {
-          const decimals = state.asset.details?.decimals ?? 0
-          const multiplier = Math.pow(10, Number(decimals))
-          amount = multiplyCurrencies(state?.asset?.balance, multiplier, {
-            toNumericBase: 'hex',
-            multiplicandBase: 16,
-            multiplierBase: 10,
-          })
-        } else {
-          amount = subtractCurrencies(
-            addHexPrefix(state.asset.balance),
-            addHexPrefix(state.gas.gasTotal),
-            {
+      let timer = setInterval(() => {
+        setHandler()
+      }, 1000)
+      const setHandler = () => {
+        if (state?.asset) {
+          clearInterval(timer)
+          let amount = '0'
+          if (state.asset.type === ASSET_TYPES.TOKEN) {
+            const decimals = state.asset.details?.decimals ?? 0
+            const multiplier = Math.pow(10, Number(decimals))
+            amount = multiplyCurrencies(state?.asset?.balance, multiplier, {
               toNumericBase: 'hex',
-              aBase: 16,
-              bBase: 16,
-            },
-          )
-        }
-
-        if (parseFloat(amount) < 0) {
-          amount = '0'
+              multiplicandBase: 16,
+              multiplierBase: 10,
+            })
+          } else {
+            amount = subtractCurrencies(
+              addHexPrefix(state.asset.balance),
+              addHexPrefix(state.gas.gasTotal),
+              {
+                toNumericBase: 'hex',
+                aBase: 16,
+                bBase: 16,
+              },
+            )
+          }
+          if (parseFloat(amount) < 0) {
+            amount = '0'
+          }
+          state.amount.max = amount
         }
       }
-
-      state.amount.max = amount
+      setHandler()
     },
 
     /**
