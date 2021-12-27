@@ -164,12 +164,15 @@ export default function sendTokenInput({
 
       changeAccount && changeAccount(account)
     },
-    [accountAddress],
+    [accountAddress, changeAccount],
   )
-  const onTokenChange = useCallback((asset) => {
-    setAmount('')
-    changeToken && changeToken(asset)
-  }, [])
+  const onTokenChange = useCallback(
+    (asset) => {
+      setAmount('')
+      changeToken && changeToken(asset)
+    },
+    [changeToken],
+  )
   const onAmountChange = useCallback(
     async ({ target }) => {
       let val = target.value.trim().replace(/\n/gu, '') || null
