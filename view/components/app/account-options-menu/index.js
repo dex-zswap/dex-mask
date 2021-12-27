@@ -1,91 +1,88 @@
-import React, { useMemo, useState, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useMemo, useState, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   createCustomAccountLink,
   getAccountLink,
-} from '@metamask/etherscan-link';
-import { Menu, MenuItem } from '@c/ui/menu';
+} from '@metamask/etherscan-link'
+import { Menu, MenuItem } from '@c/ui/menu'
 import {
   CHAINID_EXPLORE_MAP,
   MAINNET_CHAIN_ID,
   NETWORK_TO_NAME_MAP,
-} from '@shared/constants/network';
-import { CONNECTED_ROUTE } from '@view/helpers/constants/routes';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+} from '@shared/constants/network'
+import { CONNECTED_ROUTE } from '@view/helpers/constants/routes'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import {
   getCurrentChainId,
   getCurrentKeyring,
   getRpcPrefsForCurrentProvider,
   getSelectedIdentity,
-} from '@view/selectors';
-import { showModal } from '@view/store/actions';
+} from '@view/selectors'
+import { showModal } from '@view/store/actions'
 export default function AccountOptionsMenu({
   anchorElement,
   onClose,
   toggleConnectedSites,
 }) {
-  const t = useI18nContext();
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const provider = useSelector((state) => state.metamask.provider);
-  const keyring = useSelector(getCurrentKeyring);
-  const chainId = useSelector(getCurrentChainId);
-  const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
-  const selectedIdentity = useSelector(getSelectedIdentity);
-  const { address } = selectedIdentity;
-  let addressLink = getAccountLink(address, chainId, rpcPrefs);
-  const { blockExplorerUrl } = rpcPrefs;
+  const t = useI18nContext()
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const provider = useSelector((state) => state.metamask.provider)
+  const keyring = useSelector(getCurrentKeyring)
+  const chainId = useSelector(getCurrentChainId)
+  const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider)
+  const selectedIdentity = useSelector(getSelectedIdentity)
+  const { address } = selectedIdentity
+  let addressLink = getAccountLink(address, chainId, rpcPrefs)
+  const { blockExplorerUrl } = rpcPrefs
 
   if (!addressLink && CHAINID_EXPLORE_MAP[chainId]) {
-    addressLink = createCustomAccountLink(
-      address,
-      CHAINID_EXPLORE_MAP[chainId],
-    );
+    addressLink = createCustomAccountLink(address, CHAINID_EXPLORE_MAP[chainId])
   }
 
   const providerType =
-    NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase();
-  const isMainnet = useMemo(() => chainId === MAINNET_CHAIN_ID, [chainId]);
+    NETWORK_TO_NAME_MAP[provider.type] ?? provider.type.toUpperCase()
+  const isMainnet = useMemo(() => chainId === MAINNET_CHAIN_ID, [chainId])
 
   const getBlockExplorerUrlHost = () => {
     try {
-      return new URL(blockExplorerUrl)?.hostname;
+      return new URL(blockExplorerUrl)?.hostname
     } catch (err) {
-      return '';
+      return ''
     }
-  };
+  }
 
-  const isRemovable = keyring.type !== 'HD Key Tree';
-  const blockExplorerUrlSubTitle = getBlockExplorerUrlHost();
+  const isRemovable = keyring.type !== 'HD Key Tree'
+  const blockExplorerUrlSubTitle = getBlockExplorerUrlHost()
   return (
     <Menu
       anchorElement={anchorElement}
-      className="account-options-menu"
+      className='account-options-menu'
       onHide={onClose}
     >
       {!process.env.DEXMASK_DEBUG ? null : (
         <MenuItem
           onClick={() => {
-            global.platform.openExtensionInBrowser();
-            onClose();
+            global.platform.openExtensionInBrowser()
+            onClose()
           }}
-          iconClassName="account-options-menu__expand-view"
+          iconClassName='account-options-menu__expand-view'
         >
           {t('expandView')}
         </MenuItem>
       )}
       <MenuItem
-        data-testid="account-options-menu__account-details"
+        data-testid='account-options-menu__account-details'
         onClick={() => {
           dispatch(
             showModal({
               name: 'ACCOUNT_DETAILS',
             }),
-          );
-          onClose();
+          )
+          onClose()
         }}
-        iconClassName="account-options-menu__account-details"
+        iconClassName='account-options-menu__account-details'
       >
         {t('accountDetails')}
       </MenuItem>
@@ -93,17 +90,17 @@ export default function AccountOptionsMenu({
         onClick={() => {
           global.platform.openTab({
             url: addressLink,
-          });
-          onClose();
+          })
+          onClose()
         }}
         subtitle={
           blockExplorerUrlSubTitle ? (
-            <span className="account-options-menu__explorer-origin">
+            <span className='account-options-menu__explorer-origin'>
               {blockExplorerUrlSubTitle}
             </span>
           ) : null
         }
-        iconClassName="account-options-menu__explorer-origin"
+        iconClassName='account-options-menu__explorer-origin'
       >
         {rpcPrefs.blockExplorerUrl
           ? t('viewinExplorer', [providerType])
@@ -112,32 +109,32 @@ export default function AccountOptionsMenu({
           : t('viewinExplorer', [providerType])}
       </MenuItem>
       <MenuItem
-        data-testid="account-options-menu__connected-sites"
+        data-testid='account-options-menu__connected-sites'
         onClick={() => {
-          toggleConnectedSites();
-          onClose();
+          toggleConnectedSites()
+          onClose()
         }}
-        iconClassName="account-options-menu__connected-sites"
+        iconClassName='account-options-menu__connected-sites'
       >
         {t('connectedSites')}
       </MenuItem>
       {isRemovable ? (
         <MenuItem
-          data-testid="account-options-menu__remove-account"
+          data-testid='account-options-menu__remove-account'
           onClick={() => {
             dispatch(
               showModal({
                 name: 'CONFIRM_REMOVE_ACCOUNT',
                 identity: selectedIdentity,
               }),
-            );
-            onClose();
+            )
+            onClose()
           }}
-          iconClassName="fas fa-trash-alt"
+          iconClassName='fas fa-trash-alt'
         >
           {t('removeAccount')}
         </MenuItem>
       ) : null}
     </Menu>
-  );
+  )
 }

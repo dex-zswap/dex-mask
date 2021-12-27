@@ -1,14 +1,14 @@
-import { ObservableStore } from '@metamask/obs-store';
-import log from 'loglevel';
-import BN from 'bn.js';
-import createId from '@shared/modules/random-id';
-import { bnToHex } from '@app/scripts/lib/util';
-import getFetchWithTimeout from '@shared/modules/fetch-with-timeout';
+import { ObservableStore } from '@metamask/obs-store'
+import log from 'loglevel'
+import BN from 'bn.js'
+import createId from '@shared/modules/random-id'
+import { bnToHex } from '@app/scripts/lib/util'
+import getFetchWithTimeout from '@shared/modules/fetch-with-timeout'
 
 import {
   TRANSACTION_TYPES,
   TRANSACTION_STATUSES,
-} from '@shared/constants/transaction';
+} from '@shared/constants/transaction'
 import {
   CHAIN_ID_TO_NETWORK_ID_MAP,
   CHAIN_ID_TO_TYPE_MAP,
@@ -17,10 +17,10 @@ import {
   MAINNET_CHAIN_ID,
   RINKEBY_CHAIN_ID,
   ROPSTEN_CHAIN_ID,
-} from '@shared/constants/network';
-import { SECOND } from '@shared/constants/time';
+} from '@shared/constants/network'
+import { SECOND } from '@shared/constants/time'
 
-const fetchWithTimeout = getFetchWithTimeout(SECOND * 30);
+const fetchWithTimeout = getFetchWithTimeout(SECOND * 30)
 
 /**
  * @typedef {import('../../../shared/constants/transaction').TransactionMeta} TransactionMeta
@@ -59,7 +59,7 @@ const etherscanSupportedNetworks = [
   MAINNET_CHAIN_ID,
   RINKEBY_CHAIN_ID,
   ROPSTEN_CHAIN_ID,
-];
+]
 
 export default class IncomingTransactionsController {
   constructor(opts = {}) {
@@ -68,16 +68,16 @@ export default class IncomingTransactionsController {
       onNetworkDidChange,
       getCurrentChainId,
       preferencesController,
-    } = opts;
-    this.blockTracker = blockTracker;
-    this.getCurrentChainId = getCurrentChainId;
-    this.preferencesController = preferencesController;
+    } = opts
+    this.blockTracker = blockTracker
+    this.getCurrentChainId = getCurrentChainId
+    this.preferencesController = preferencesController
 
     this._onLatestBlock = async (newBlockNumberHex) => {
-      const selectedAddress = this.preferencesController.getSelectedAddress();
-      const newBlockNumberDec = parseInt(newBlockNumberHex, 16);
-      await this._update(selectedAddress, newBlockNumberDec);
-    };
+      const selectedAddress = this.preferencesController.getSelectedAddress()
+      const newBlockNumberDec = parseInt(newBlockNumberHex, 16)
+      await this._update(selectedAddress, newBlockNumberDec)
+    }
 
     const initState = {
       incomingTransactions: {},
@@ -89,8 +89,8 @@ export default class IncomingTransactionsController {
         [ROPSTEN_CHAIN_ID]: null,
       },
       ...opts.initState,
-    };
-    this.store = new ObservableStore(initState);
+    }
+    this.store = new ObservableStore(initState)
 
     this.preferencesController.store.subscribe(
       previousValueComparator((prevState, currState) => {
@@ -98,58 +98,58 @@ export default class IncomingTransactionsController {
           featureFlags: {
             showIncomingTransactions: prevShowIncomingTransactions,
           } = {},
-        } = prevState;
+        } = prevState
         const {
           featureFlags: {
             showIncomingTransactions: currShowIncomingTransactions,
           } = {},
-        } = currState;
+        } = currState
 
         if (currShowIncomingTransactions === prevShowIncomingTransactions) {
-          return;
+          return
         }
 
         if (prevShowIncomingTransactions && !currShowIncomingTransactions) {
-          this.stop();
-          return;
+          this.stop()
+          return
         }
 
-        this.start();
+        this.start()
       }, this.preferencesController.store.getState()),
-    );
+    )
 
     this.preferencesController.store.subscribe(
       previousValueComparator(async (prevState, currState) => {
-        const { selectedAddress: prevSelectedAddress } = prevState;
-        const { selectedAddress: currSelectedAddress } = currState;
+        const { selectedAddress: prevSelectedAddress } = prevState
+        const { selectedAddress: currSelectedAddress } = currState
 
         if (currSelectedAddress === prevSelectedAddress) {
-          return;
+          return
         }
-        await this._update(currSelectedAddress);
+        await this._update(currSelectedAddress)
       }, this.preferencesController.store.getState()),
-    );
+    )
 
     onNetworkDidChange(async () => {
-      const address = this.preferencesController.getSelectedAddress();
-      await this._update(address);
-    });
+      const address = this.preferencesController.getSelectedAddress()
+      await this._update(address)
+    })
   }
 
   start() {
-    const { featureFlags = {} } = this.preferencesController.store.getState();
-    const { showIncomingTransactions } = featureFlags;
+    const { featureFlags = {} } = this.preferencesController.store.getState()
+    const { showIncomingTransactions } = featureFlags
 
     if (!showIncomingTransactions) {
-      return;
+      return
     }
 
-    this.blockTracker.removeListener('latest', this._onLatestBlock);
-    this.blockTracker.addListener('latest', this._onLatestBlock);
+    this.blockTracker.removeListener('latest', this._onLatestBlock)
+    this.blockTracker.addListener('latest', this._onLatestBlock)
   }
 
   stop() {
-    this.blockTracker.removeListener('latest', this._onLatestBlock);
+    this.blockTracker.removeListener('latest', this._onLatestBlock)
   }
 
   /**
@@ -163,26 +163,26 @@ export default class IncomingTransactionsController {
    * @returns {void}
    */
   async _update(address, newBlockNumberDec) {
-    const chainId = this.getCurrentChainId();
+    const chainId = this.getCurrentChainId()
     if (!etherscanSupportedNetworks.includes(chainId) || !address) {
-      return;
+      return
     }
     try {
-      const currentState = this.store.getState();
-      const currentBlock = parseInt(this.blockTracker.getCurrentBlock(), 16);
+      const currentState = this.store.getState()
+      const currentBlock = parseInt(this.blockTracker.getCurrentBlock(), 16)
 
       const mostRecentlyFetchedBlock =
-        currentState.incomingTxLastFetchedBlockByChainId[chainId];
+        currentState.incomingTxLastFetchedBlockByChainId[chainId]
       const blockToFetchFrom =
-        mostRecentlyFetchedBlock ?? newBlockNumberDec ?? currentBlock;
+        mostRecentlyFetchedBlock ?? newBlockNumberDec ?? currentBlock
 
       const newIncomingTxs = await this._getNewIncomingTransactions(
         address,
         blockToFetchFrom,
         chainId,
-      );
+      )
 
-      let newMostRecentlyFetchedBlock = blockToFetchFrom;
+      let newMostRecentlyFetchedBlock = blockToFetchFrom
 
       newIncomingTxs.forEach((tx) => {
         if (
@@ -190,9 +190,9 @@ export default class IncomingTransactionsController {
           parseInt(newMostRecentlyFetchedBlock, 10) <
             parseInt(tx.blockNumber, 10)
         ) {
-          newMostRecentlyFetchedBlock = parseInt(tx.blockNumber, 10);
+          newMostRecentlyFetchedBlock = parseInt(tx.blockNumber, 10)
         }
-      });
+      })
 
       this.store.updateState({
         incomingTxLastFetchedBlockByChainId: {
@@ -201,16 +201,16 @@ export default class IncomingTransactionsController {
         },
         incomingTransactions: newIncomingTxs.reduce(
           (transactions, tx) => {
-            transactions[tx.hash] = tx;
-            return transactions;
+            transactions[tx.hash] = tx
+            return transactions
           },
           {
             ...currentState.incomingTransactions,
           },
         ),
-      });
+      })
     } catch (err) {
-      log.error(err);
+      log.error(err)
     }
   }
 
@@ -228,33 +228,33 @@ export default class IncomingTransactionsController {
     const etherscanSubdomain =
       chainId === MAINNET_CHAIN_ID
         ? 'api'
-        : `api-${CHAIN_ID_TO_TYPE_MAP[chainId]}`;
+        : `api-${CHAIN_ID_TO_TYPE_MAP[chainId]}`
 
-    const apiUrl = `https://${etherscanSubdomain}.etherscan.io`;
-    let url = `${apiUrl}/api?module=account&action=txlist&address=${address}&tag=latest&page=1`;
+    const apiUrl = `https://${etherscanSubdomain}.etherscan.io`
+    let url = `${apiUrl}/api?module=account&action=txlist&address=${address}&tag=latest&page=1`
 
     if (fromBlock) {
-      url += `&startBlock=${parseInt(fromBlock, 10)}`;
+      url += `&startBlock=${parseInt(fromBlock, 10)}`
     }
-    const response = await fetchWithTimeout(url);
-    const { status, result } = await response.json();
-    let newIncomingTxs = [];
+    const response = await fetchWithTimeout(url)
+    const { status, result } = await response.json()
+    let newIncomingTxs = []
     if (status === '1' && Array.isArray(result) && result.length > 0) {
-      const remoteTxList = {};
-      const remoteTxs = [];
+      const remoteTxList = {}
+      const remoteTxs = []
       result.forEach((tx) => {
         if (!remoteTxList[tx.hash]) {
-          remoteTxs.push(this._normalizeTxFromEtherscan(tx, chainId));
-          remoteTxList[tx.hash] = 1;
+          remoteTxs.push(this._normalizeTxFromEtherscan(tx, chainId))
+          remoteTxList[tx.hash] = 1
         }
-      });
+      })
 
       newIncomingTxs = remoteTxs.filter(
         (tx) => tx.txParams?.to?.toLowerCase() === address.toLowerCase(),
-      );
-      newIncomingTxs.sort((a, b) => (a.time < b.time ? -1 : 1));
+      )
+      newIncomingTxs.sort((a, b) => (a.time < b.time ? -1 : 1))
     }
-    return newIncomingTxs;
+    return newIncomingTxs
   }
 
   /**
@@ -264,28 +264,26 @@ export default class IncomingTransactionsController {
    * @returns {TransactionMeta}
    */
   _normalizeTxFromEtherscan(etherscanTransaction, chainId) {
-    const time = parseInt(etherscanTransaction.timeStamp, 10) * 1000;
+    const time = parseInt(etherscanTransaction.timeStamp, 10) * 1000
     const status =
       etherscanTransaction.isError === '0'
         ? TRANSACTION_STATUSES.CONFIRMED
-        : TRANSACTION_STATUSES.FAILED;
+        : TRANSACTION_STATUSES.FAILED
     const txParams = {
       from: etherscanTransaction.from,
       gas: bnToHex(new BN(etherscanTransaction.gas)),
       nonce: bnToHex(new BN(etherscanTransaction.nonce)),
       to: etherscanTransaction.to,
       value: bnToHex(new BN(etherscanTransaction.value)),
-    };
+    }
 
     if (etherscanTransaction.gasPrice) {
-      txParams.gasPrice = bnToHex(new BN(etherscanTransaction.gasPrice));
+      txParams.gasPrice = bnToHex(new BN(etherscanTransaction.gasPrice))
     } else if (etherscanTransaction.maxFeePerGas) {
-      txParams.maxFeePerGas = bnToHex(
-        new BN(etherscanTransaction.maxFeePerGas),
-      );
+      txParams.maxFeePerGas = bnToHex(new BN(etherscanTransaction.maxFeePerGas))
       txParams.maxPriorityFeePerGas = bnToHex(
         new BN(etherscanTransaction.maxPriorityFeePerGas),
-      );
+      )
     }
 
     return {
@@ -298,7 +296,7 @@ export default class IncomingTransactionsController {
       txParams,
       hash: etherscanTransaction.hash,
       type: TRANSACTION_TYPES.INCOMING,
-    };
+    }
   }
 }
 
@@ -316,17 +314,17 @@ export default class IncomingTransactionsController {
  * @returns {void}
  */
 function previousValueComparator(comparator, initialValue) {
-  let first = true;
-  let cache;
+  let first = true
+  let cache
   return (value) => {
     try {
       if (first) {
-        first = false;
-        return comparator(initialValue ?? value, value);
+        first = false
+        return comparator(initialValue ?? value, value)
       }
-      return comparator(cache, value);
+      return comparator(cache, value)
     } finally {
-      cache = value;
+      cache = value
     }
-  };
+  }
 }

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Loading from '@c/ui/loading-screen';
-import ConfirmApprove from '@pages/confirm-approve';
-import ConfirmDecryptMessage from '@pages/confirm-decrypt-message';
-import ConfirmDeployContract from '@pages/confirm-deploy-contract';
-import ConfirmEncryptionPublicKey from '@pages/confirm-encryption-public-key';
-import ConfirmSendEther from '@pages/confirm-send-ether';
-import ConfirmSendToken from '@pages/confirm-send-token';
-import ConfirmTokenTransactionBaseContainer from '@pages/confirm-token-transaction-base';
-import ConfirmTransactionBase from '@pages/confirm-transaction-base';
-import ConfirmTransactionSwitch from '@pages/confirm-transaction-switch';
+import React, { Component } from 'react'
+import { Route, Switch } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import Loading from '@c/ui/loading-screen'
+import ConfirmApprove from '@pages/confirm-approve'
+import ConfirmDecryptMessage from '@pages/confirm-decrypt-message'
+import ConfirmDeployContract from '@pages/confirm-deploy-contract'
+import ConfirmEncryptionPublicKey from '@pages/confirm-encryption-public-key'
+import ConfirmSendEther from '@pages/confirm-send-ether'
+import ConfirmSendToken from '@pages/confirm-send-token'
+import ConfirmTokenTransactionBaseContainer from '@pages/confirm-token-transaction-base'
+import ConfirmTransactionBase from '@pages/confirm-transaction-base'
+import ConfirmTransactionSwitch from '@pages/confirm-transaction-switch'
 import {
   CONFIRM_APPROVE_PATH,
   CONFIRM_DEPLOY_CONTRACT_PATH,
@@ -23,16 +23,16 @@ import {
   DEFAULT_ROUTE,
   ENCRYPTION_PUBLIC_KEY_REQUEST_PATH,
   SIGNATURE_REQUEST_PATH,
-} from '@view/helpers/constants/routes';
+} from '@view/helpers/constants/routes'
 import {
   addPollingTokenToAppState,
   disconnectGasFeeEstimatePoller,
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
-} from '@view/store/actions';
-import ConfTx from './conf-tx';
+} from '@view/store/actions'
+import ConfTx from './conf-tx'
 export default class ConfirmTransaction extends Component {
-  static contextTypes = {};
+  static contextTypes = {}
   static propTypes = {
     history: PropTypes.object.isRequired,
     totalUnapprovedCount: PropTypes.number.isRequired,
@@ -48,24 +48,24 @@ export default class ConfirmTransaction extends Component {
     isTokenMethodAction: PropTypes.bool,
     setDefaultHomeActiveTabName: PropTypes.func,
     confirmedAction: PropTypes.string,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   _beforeUnload = () => {
-    this._isMounted = false;
+    this._isMounted = false
 
     if (this.state.pollingToken) {
-      disconnectGasFeeEstimatePoller(this.state.pollingToken);
-      removePollingTokenFromAppState(this.state.pollingToken);
+      disconnectGasFeeEstimatePoller(this.state.pollingToken)
+      removePollingTokenFromAppState(this.state.pollingToken)
     }
-  };
+  }
 
   componentDidMount() {
-    this._isMounted = true;
+    this._isMounted = true
     const {
       totalUnapprovedCount = 0,
       sendTo,
@@ -77,41 +77,41 @@ export default class ConfirmTransaction extends Component {
       paramsTransactionId,
       getTokenParams,
       isTokenMethodAction,
-    } = this.props;
+    } = this.props
     getGasFeeEstimatesAndStartPolling().then((pollingToken) => {
       if (this._isMounted) {
         this.setState({
           pollingToken,
-        });
-        addPollingTokenToAppState(pollingToken);
+        })
+        addPollingTokenToAppState(pollingToken)
       } else {
-        disconnectGasFeeEstimatePoller(pollingToken);
-        removePollingTokenFromAppState(pollingToken);
+        disconnectGasFeeEstimatePoller(pollingToken)
+        removePollingTokenFromAppState(pollingToken)
       }
-    });
-    window.addEventListener('beforeunload', this._beforeUnload); //  TODO: Why totalUnapprovedCount equals 0
+    })
+    window.addEventListener('beforeunload', this._beforeUnload) //  TODO: Why totalUnapprovedCount equals 0
     // if (!totalUnapprovedCount && !sendTo) {
     //   history.replace(mostRecentOverviewPage);
     //   return;
     // }
 
-    getContractMethodData(data);
+    getContractMethodData(data)
 
     if (isTokenMethodAction) {
-      getTokenParams(to);
+      getTokenParams(to)
     }
 
-    const txId = transactionId || paramsTransactionId;
+    const txId = transactionId || paramsTransactionId
 
     if (txId) {
-      this.props.setTransactionToConfirm(txId);
+      this.props.setTransactionToConfirm(txId)
     }
   }
 
   componentWillUnmount() {
-    this._beforeUnload();
+    this._beforeUnload()
 
-    window.removeEventListener('beforeunload', this._beforeUnload);
+    window.removeEventListener('beforeunload', this._beforeUnload)
   }
 
   componentDidUpdate(prevProps) {
@@ -127,16 +127,16 @@ export default class ConfirmTransaction extends Component {
       totalUnapprovedCount,
       setDefaultHomeActiveTabName,
       confirmedAction,
-    } = this.props;
+    } = this.props
 
     if (
       paramsTransactionId &&
       transactionId &&
       prevProps.paramsTransactionId !== paramsTransactionId
     ) {
-      clearConfirmTransaction();
-      getContractMethodData(data);
-      setTransactionToConfirm(paramsTransactionId);
+      clearConfirmTransaction()
+      getContractMethodData(data)
+      setTransactionToConfirm(paramsTransactionId)
     } else if (
       prevProps.transactionId &&
       !transactionId &&
@@ -144,22 +144,22 @@ export default class ConfirmTransaction extends Component {
     ) {
       setDefaultHomeActiveTabName('Activity').then(() => {
         if (confirmedAction) {
-          history.replace(confirmedAction);
+          history.replace(confirmedAction)
         } else {
-          history.replace(DEFAULT_ROUTE);
+          history.replace(DEFAULT_ROUTE)
         }
-      });
+      })
     } else if (
       prevProps.transactionId &&
       transactionId &&
       prevProps.transactionId !== transactionId
     ) {
-      history.replace(mostRecentOverviewPage);
+      history.replace(mostRecentOverviewPage)
     }
   }
 
   render() {
-    const { transactionId, paramsTransactionId } = this.props; // Show routes when state.confirmTransaction has been set and when either the ID in the params
+    const { transactionId, paramsTransactionId } = this.props // Show routes when state.confirmTransaction has been set and when either the ID in the params
     // isn't specified or is specified and matches the ID in state.confirmTransaction in order to
     // support URLs of /confirm-transaction or /confirm-transaction/<transactionId>
 
@@ -211,10 +211,10 @@ export default class ConfirmTransaction extends Component {
           path={`${CONFIRM_TRANSACTION_ROUTE}/:id?${ENCRYPTION_PUBLIC_KEY_REQUEST_PATH}`}
           component={ConfirmEncryptionPublicKey}
         />
-        <Route path="*" component={ConfirmTransactionSwitch} />
+        <Route path='*' component={ConfirmTransactionSwitch} />
       </Switch>
     ) : (
       <Loading />
-    );
+    )
   }
 }

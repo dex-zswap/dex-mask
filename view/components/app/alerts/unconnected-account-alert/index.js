@@ -1,71 +1,69 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import ConnectedAccountsList from '@c/app/connected/accounts-list';
-import Button from '@c/ui/button';
-import Checkbox from '@c/ui/check-box';
-import Popover from '@c/ui/popover';
-import Tooltip from '@c/ui/tooltip';
-import { ALERT_STATE } from '@reducer/alerts';
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import ConnectedAccountsList from '@c/app/connected/accounts-list'
+import Button from '@c/ui/button'
+import Checkbox from '@c/ui/check-box'
+import Popover from '@c/ui/popover'
+import Tooltip from '@c/ui/tooltip'
+import { ALERT_STATE } from '@reducer/alerts'
 import {
   connectAccount,
   dismissAlert,
   dismissAndDisableAlert,
   getAlertState,
   switchToAccount,
-} from '@reducer/alerts/unconnected-account';
-import { isExtensionUrl } from '@view/helpers/utils';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+} from '@reducer/alerts/unconnected-account'
+import { isExtensionUrl } from '@view/helpers/utils'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import {
   getOrderedConnectedAccountsForActiveTab,
   getOriginOfCurrentTab,
   getSelectedAddress,
   getSelectedIdentity,
-} from '@view/selectors';
-const { ERROR, LOADING } = ALERT_STATE;
+} from '@view/selectors'
+const { ERROR, LOADING } = ALERT_STATE
 
 const UnconnectedAccountAlert = () => {
-  const t = useI18nContext();
-  const dispatch = useDispatch();
-  const alertState = useSelector(getAlertState);
-  const connectedAccounts = useSelector(
-    getOrderedConnectedAccountsForActiveTab,
-  );
-  const origin = useSelector(getOriginOfCurrentTab);
-  const selectedIdentity = useSelector(getSelectedIdentity);
-  const selectedAddress = useSelector(getSelectedAddress);
-  const [dontShowThisAgain, setDontShowThisAgain] = useState(false);
+  const t = useI18nContext()
+  const dispatch = useDispatch()
+  const alertState = useSelector(getAlertState)
+  const connectedAccounts = useSelector(getOrderedConnectedAccountsForActiveTab)
+  const origin = useSelector(getOriginOfCurrentTab)
+  const selectedIdentity = useSelector(getSelectedIdentity)
+  const selectedAddress = useSelector(getSelectedAddress)
+  const [dontShowThisAgain, setDontShowThisAgain] = useState(false)
 
   const onClose = async () => {
     return dontShowThisAgain
       ? await dispatch(dismissAndDisableAlert())
-      : dispatch(dismissAlert());
-  };
+      : dispatch(dismissAlert())
+  }
 
   const footer = (
     <>
       {alertState === ERROR ? (
-        <div className="unconnected-account-alert__error">
+        <div className='unconnected-account-alert__error'>
           {t('failureMessage')}
         </div>
       ) : null}
-      <div className="unconnected-account-alert__footer-row">
-        <div className="unconnected-account-alert__checkbox-wrapper flex items-center">
+      <div className='unconnected-account-alert__footer-row'>
+        <div className='unconnected-account-alert__checkbox-wrapper flex items-center'>
           <Checkbox
-            id="unconnectedAccount_dontShowThisAgain"
+            id='unconnectedAccount_dontShowThisAgain'
             checked={dontShowThisAgain}
-            className="unconnected-account-alert__checkbox"
+            className='unconnected-account-alert__checkbox'
             onClick={() => setDontShowThisAgain((checked) => !checked)}
           />
           <label
-            className="unconnected-account-alert__checkbox-label"
-            htmlFor="unconnectedAccount_dontShowThisAgain"
+            className='unconnected-account-alert__checkbox-label'
+            htmlFor='unconnectedAccount_dontShowThisAgain'
           >
             {t('dontShowThisAgain')}
           </label>
         </div>
       </div>
     </>
-  );
+  )
   return (
     <Popover
       title={
@@ -73,9 +71,9 @@ const UnconnectedAccountAlert = () => {
       }
       subtitle={t('currentAccountNotConnected')}
       onClose={onClose}
-      className="unconnected-account-alert"
-      contentClassName="unconnected-account-alert__content"
-      footerClassName="unconnected-account-alert__footer"
+      className='unconnected-account-alert'
+      contentClassName='unconnected-account-alert__content'
+      footerClassName='unconnected-account-alert__footer'
       footer={footer}
     >
       <ConnectedAccountsList
@@ -87,7 +85,7 @@ const UnconnectedAccountAlert = () => {
         shouldRenderListOptions={false}
       />
     </Popover>
-  );
-};
+  )
+}
 
-export default UnconnectedAccountAlert;
+export default UnconnectedAccountAlert

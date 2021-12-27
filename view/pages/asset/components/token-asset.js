@@ -1,22 +1,22 @@
-import React from 'react';
-import TopHeader from '@c/ui/top-header';
-import ChainSwitcher from '@c/app/chain-switcher';
-import SelectedToken from '@c/app/selected-token/token';
-import TransactionList from '@c/app/transaction/list';
-import { TokenOverview } from '@c/app/wallet-overview';
-import BackBar from '@c/ui/back-bar';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { DEFAULT_ROUTE } from '@view/helpers/constants/routes';
+import React from 'react'
+import TopHeader from '@c/ui/top-header'
+import ChainSwitcher from '@c/app/chain-switcher'
+import SelectedToken from '@c/app/selected-token/token'
+import TransactionList from '@c/app/transaction/list'
+import { TokenOverview } from '@c/app/wallet-overview'
+import BackBar from '@c/ui/back-bar'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import { DEFAULT_ROUTE } from '@view/helpers/constants/routes'
 export default function TokenAsset({ token }) {
-  const t = useI18nContext();
+  const t = useI18nContext()
   return (
     <>
       <TopHeader />
       <BackBar title={t('yourAsset', [token.symbol])} url={DEFAULT_ROUTE} />
       <ChainSwitcher />
       <SelectedToken token={token} />
-      <TokenOverview className="asset__overview" token={token} />
+      <TokenOverview className='asset__overview' token={token} />
       <TransactionList tokenAddress={token.address} />
     </>
-  );
+  )
 }

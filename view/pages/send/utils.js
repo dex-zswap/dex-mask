@@ -1,5 +1,5 @@
-import abi from 'ethereumjs-abi';
-import { addHexPrefix } from '@app/scripts/lib/util';
+import abi from 'ethereumjs-abi'
+import { addHexPrefix } from '@app/scripts/lib/util'
 import {
   addCurrencies,
   conversionGreaterThan,
@@ -7,9 +7,9 @@ import {
   conversionLessThan,
   conversionUtil,
   multiplyCurrencies,
-} from '@shared/modules/conversion.utils';
-import { calcTokenAmount } from '@view/helpers/utils/token-util';
-import { TOKEN_TRANSFER_FUNCTION_SIGNATURE } from './constants';
+} from '@shared/modules/conversion.utils'
+import { calcTokenAmount } from '@view/helpers/utils/token-util'
+import { TOKEN_TRANSFER_FUNCTION_SIGNATURE } from './constants'
 export {
   addGasBuffer,
   calcGasTotal,
@@ -17,14 +17,14 @@ export {
   isBalanceSufficient,
   isTokenBalanceSufficient,
   ellipsify,
-};
+}
 
 function calcGasTotal(gasLimit = '0', gasPrice = '0') {
   return multiplyCurrencies(gasLimit, gasPrice, {
     toNumericBase: 'hex',
     multiplicandBase: 16,
     multiplierBase: 16,
-  });
+  })
 }
 
 function isBalanceSufficient({
@@ -38,7 +38,7 @@ function isBalanceSufficient({
     aBase: 16,
     bBase: 16,
     toNumericBase: 'hex',
-  });
+  })
   const balanceIsSufficient = conversionGTE(
     {
       value: balance,
@@ -52,14 +52,14 @@ function isBalanceSufficient({
       conversionRate,
       fromCurrency: primaryCurrency,
     },
-  );
-  return balanceIsSufficient;
+  )
+  return balanceIsSufficient
 }
 
 function isTokenBalanceSufficient({ amount = '0x0', tokenBalance, decimals }) {
   const amountInDec = conversionUtil(amount, {
     fromNumericBase: 'hex',
-  });
+  })
   const tokenBalanceIsSufficient = conversionGTE(
     {
       value: tokenBalance,
@@ -68,8 +68,8 @@ function isTokenBalanceSufficient({ amount = '0x0', tokenBalance, decimals }) {
     {
       value: calcTokenAmount(amountInDec, decimals),
     },
-  );
-  return tokenBalanceIsSufficient;
+  )
+  return tokenBalanceIsSufficient
 }
 
 function addGasBuffer(
@@ -82,7 +82,7 @@ function addGasBuffer(
     multiplicandBase: 16,
     multiplierBase: 10,
     numberOfDecimals: '0',
-  });
+  })
   const bufferedGasLimit = multiplyCurrencies(
     initialGasLimitHex,
     bufferMultiplier,
@@ -92,7 +92,7 @@ function addGasBuffer(
       multiplierBase: 10,
       numberOfDecimals: '0',
     },
-  ); // if initialGasLimit is above blockGasLimit, dont modify it
+  ) // if initialGasLimit is above blockGasLimit, dont modify it
 
   if (
     conversionGreaterThan(
@@ -106,7 +106,7 @@ function addGasBuffer(
       },
     )
   ) {
-    return initialGasLimitHex;
+    return initialGasLimitHex
   } // if bufferedGasLimit is below blockGasLimit, use bufferedGasLimit
 
   if (
@@ -121,10 +121,10 @@ function addGasBuffer(
       },
     )
   ) {
-    return bufferedGasLimit;
+    return bufferedGasLimit
   } // otherwise use blockGasLimit
 
-  return upperGasLimit;
+  return upperGasLimit
 }
 
 function generateTokenTransferData({
@@ -133,7 +133,7 @@ function generateTokenTransferData({
   sendToken,
 }) {
   if (!sendToken) {
-    return undefined;
+    return undefined
   }
 
   return (
@@ -147,9 +147,9 @@ function generateTokenTransferData({
         (x) => `00${x.toString(16)}`.slice(-2),
       )
       .join('')
-  );
+  )
 }
 
 function ellipsify(text, first = 6, last = 4) {
-  return `${text.slice(0, first)}...${text.slice(-last)}`;
+  return `${text.slice(0, first)}...${text.slice(-last)}`
 }

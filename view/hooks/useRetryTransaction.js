@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { useIncrementedGasFees } from './useIncrementedGasFees';
+import { useCallback, useState } from 'react'
+import { useIncrementedGasFees } from './useIncrementedGasFees'
 /**
  * @typedef {Object} RetryTransactionReturnValue
  * @property {(event: Event) => void} retryTransaction - open edit gas popover
@@ -16,19 +16,19 @@ import { useIncrementedGasFees } from './useIncrementedGasFees';
  */
 
 export function useRetryTransaction(transactionGroup) {
-  const customRetryGasSettings = useIncrementedGasFees(transactionGroup);
-  const [showRetryEditGasPopover, setShowRetryEditGasPopover] = useState(false);
+  const customRetryGasSettings = useIncrementedGasFees(transactionGroup)
+  const [showRetryEditGasPopover, setShowRetryEditGasPopover] = useState(false)
 
-  const closeRetryEditGasPopover = () => setShowRetryEditGasPopover(false);
+  const closeRetryEditGasPopover = () => setShowRetryEditGasPopover(false)
 
   const retryTransaction = useCallback(async (event) => {
-    event.stopPropagation();
-    setShowRetryEditGasPopover(true);
-  }, []);
+    event.stopPropagation()
+    setShowRetryEditGasPopover(true)
+  }, [])
   return {
     retryTransaction,
     showRetryEditGasPopover,
     closeRetryEditGasPopover,
     customRetryGasSettings,
-  };
+  }
 }

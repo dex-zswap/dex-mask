@@ -1,21 +1,21 @@
-import React, { useCallback, useContext, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import EditGasDisplay from '@c/app/edit-gas/display';
-import EditGasDisplayEducation from '@c/app/edit-gas/display-education';
-import Button from '@c/ui/button';
-import Popover from '@c/ui/popover';
-import { getGasLoadingAnimationIsShowing } from '@reducer/app';
-import { EDIT_GAS_MODES, GAS_LIMITS } from '@shared/constants/gas';
-import { txParamsAreDappSuggested } from '@shared/modules/transaction.utils';
-import { I18nContext } from '@view/contexts/i18n';
+import React, { useCallback, useContext, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
+import EditGasDisplay from '@c/app/edit-gas/display'
+import EditGasDisplayEducation from '@c/app/edit-gas/display-education'
+import Button from '@c/ui/button'
+import Popover from '@c/ui/popover'
+import { getGasLoadingAnimationIsShowing } from '@reducer/app'
+import { EDIT_GAS_MODES, GAS_LIMITS } from '@shared/constants/gas'
+import { txParamsAreDappSuggested } from '@shared/modules/transaction.utils'
+import { I18nContext } from '@view/contexts/i18n'
 import {
   decGWEIToHexWEI,
   decimalToHex,
   hexToDecimal,
-} from '@view/helpers/utils/conversions.util';
-import { useGasFeeInputs } from '@view/hooks/useGasFeeInputs';
-import { checkNetworkAndAccountSupports1559 } from '@view/selectors';
+} from '@view/helpers/utils/conversions.util'
+import { useGasFeeInputs } from '@view/hooks/useGasFeeInputs'
+import { checkNetworkAndAccountSupports1559 } from '@view/selectors'
 import {
   createCancelTransaction,
   createSpeedUpTransaction,
@@ -24,7 +24,7 @@ import {
   updateCustomSwapsEIP1559GasParams,
   updateSwapsUserFeeLevel,
   updateTransaction,
-} from '@view/store/actions';
+} from '@view/store/actions'
 export default function EditGasPopover({
   popoverTitle = '',
   confirmButtonText = '',
@@ -35,26 +35,26 @@ export default function EditGasPopover({
   onClose,
   minimumGasLimit = GAS_LIMITS.SIMPLE,
 }) {
-  const t = useContext(I18nContext);
-  const dispatch = useDispatch();
-  const showSidebar = useSelector((state) => state.appState.sidebar.isOpen);
+  const t = useContext(I18nContext)
+  const dispatch = useDispatch()
+  const showSidebar = useSelector((state) => state.appState.sidebar.isOpen)
   const networkAndAccountSupport1559 = useSelector(
     checkNetworkAndAccountSupports1559,
-  );
+  )
   const gasLoadingAnimationIsShowing = useSelector(
     getGasLoadingAnimationIsShowing,
-  );
+  )
   const showEducationButton =
     (mode === EDIT_GAS_MODES.MODIFY_IN_PLACE ||
       mode === EDIT_GAS_MODES.SWAPS) &&
-    networkAndAccountSupport1559;
-  const [showEducationContent, setShowEducationContent] = useState(false);
-  const [warning] = useState(null);
+    networkAndAccountSupport1559
+  const [showEducationContent, setShowEducationContent] = useState(false)
+  const [warning] = useState(null)
   const [
     dappSuggestedGasFeeAcknowledged,
     setDappSuggestedGasFeeAcknowledged,
-  ] = useState(false);
-  const minimumGasLimitDec = hexToDecimal(minimumGasLimit);
+  ] = useState(false)
+  const minimumGasLimitDec = hexToDecimal(minimumGasLimit)
   const {
     maxPriorityFeePerGas,
     setMaxPriorityFeePerGas,
@@ -81,9 +81,9 @@ export default function EditGasPopover({
     balanceError,
     estimatesUnavailableWarning,
     estimatedBaseFee,
-  } = useGasFeeInputs(defaultEstimateToUse, transaction, minimumGasLimit, mode);
+  } = useGasFeeInputs(defaultEstimateToUse, transaction, minimumGasLimit, mode)
   const txParamsHaveBeenCustomized =
-    estimateToUse === 'custom' || txParamsAreDappSuggested(transaction);
+    estimateToUse === 'custom' || txParamsAreDappSuggested(transaction)
   /**
    * Temporary placeholder, this should be managed by the parent component but
    * we will be extracting this component from the hard to maintain modal/
@@ -93,16 +93,16 @@ export default function EditGasPopover({
 
   const closePopover = useCallback(() => {
     if (onClose) {
-      onClose();
+      onClose()
     } else if (showSidebar) {
-      dispatch(hideSidebar());
+      dispatch(hideSidebar())
     } else {
-      dispatch(hideModal());
+      dispatch(hideModal())
     }
-  }, [showSidebar, onClose, dispatch]);
+  }, [showSidebar, onClose, dispatch])
   const onSubmit = useCallback(() => {
     if (!transaction || !mode) {
-      closePopover();
+      closePopover()
     }
 
     const newGasSettings = networkAndAccountSupport1559
@@ -118,18 +118,18 @@ export default function EditGasPopover({
           gas: decimalToHex(gasLimit),
           gasLimit: decimalToHex(gasLimit),
           gasPrice: decGWEIToHexWEI(gasPrice),
-        };
-    const cleanTransactionParams = { ...transaction.txParams };
+        }
+    const cleanTransactionParams = { ...transaction.txParams }
 
     if (networkAndAccountSupport1559) {
-      delete cleanTransactionParams.gasPrice;
+      delete cleanTransactionParams.gasPrice
     }
 
     const updatedTxMeta = {
       ...transaction,
       userFeeLevel: estimateToUse || 'custom',
       txParams: { ...cleanTransactionParams, ...newGasSettings },
-    };
+    }
 
     switch (mode) {
       case EDIT_GAS_MODES.CANCEL:
@@ -137,35 +137,35 @@ export default function EditGasPopover({
           createCancelTransaction(transaction.id, newGasSettings, {
             estimatedBaseFee,
           }),
-        );
-        break;
+        )
+        break
 
       case EDIT_GAS_MODES.SPEED_UP:
         dispatch(
           createSpeedUpTransaction(transaction.id, newGasSettings, {
             estimatedBaseFee,
           }),
-        );
-        break;
+        )
+        break
 
       case EDIT_GAS_MODES.MODIFY_IN_PLACE:
-        dispatch(updateTransaction(updatedTxMeta));
-        break;
+        dispatch(updateTransaction(updatedTxMeta))
+        break
 
       case EDIT_GAS_MODES.SWAPS:
         // This popover component should only be used for the "FEE_MARKET" type in Swaps.
         if (networkAndAccountSupport1559) {
-          dispatch(updateSwapsUserFeeLevel(estimateToUse || 'custom'));
-          dispatch(updateCustomSwapsEIP1559GasParams(newGasSettings));
+          dispatch(updateSwapsUserFeeLevel(estimateToUse || 'custom'))
+          dispatch(updateCustomSwapsEIP1559GasParams(newGasSettings))
         }
 
-        break;
+        break
 
       default:
-        break;
+        break
     }
 
-    closePopover();
+    closePopover()
   }, [
     transaction,
     mode,
@@ -176,24 +176,24 @@ export default function EditGasPopover({
     networkAndAccountSupport1559,
     estimateToUse,
     estimatedBaseFee,
-  ]);
-  let title = t('editGasTitle');
+  ])
+  let title = t('editGasTitle')
 
   if (popoverTitle) {
-    title = popoverTitle;
+    title = popoverTitle
   } else if (showEducationContent) {
-    title = t('editGasEducationModalTitle');
+    title = t('editGasEducationModalTitle')
   } else if (mode === EDIT_GAS_MODES.SPEED_UP) {
-    title = t('speedUpPopoverTitle');
+    title = t('speedUpPopoverTitle')
   } else if (mode === EDIT_GAS_MODES.CANCEL) {
-    title = t('cancelPopoverTitle');
+    title = t('cancelPopoverTitle')
   }
 
-  const footerButtonText = confirmButtonText || t('save');
+  const footerButtonText = confirmButtonText || t('save')
   return (
     <Popover
       onClose={closePopover}
-      className="edit-gas-popover__wrapper"
+      className='edit-gas-popover__wrapper'
       onBack={
         showEducationContent ? () => setShowEducationContent(false) : undefined
       }
@@ -201,7 +201,7 @@ export default function EditGasPopover({
         showEducationContent ? null : (
           <>
             <Button
-              type="ghost"
+              type='ghost'
               rightArrow
               onClick={onSubmit}
               disabled={
@@ -269,7 +269,7 @@ export default function EditGasPopover({
         )}
       </div>
     </Popover>
-  );
+  )
 }
 EditGasPopover.propTypes = {
   popoverTitle: PropTypes.string,
@@ -280,4 +280,4 @@ EditGasPopover.propTypes = {
   mode: PropTypes.oneOf(Object.values(EDIT_GAS_MODES)),
   defaultEstimateToUse: PropTypes.string,
   minimumGasLimit: PropTypes.string,
-};
+}

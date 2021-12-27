@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
-import classnames from 'classnames';
-import { ethers } from 'ethers';
-import TokenImage from '@c/ui/token-image';
+import React, { useMemo } from 'react'
+import classnames from 'classnames'
+import { ethers } from 'ethers'
+import TokenImage from '@c/ui/token-image'
 
 const AssetListItem = ({
   className,
@@ -13,7 +13,7 @@ const AssetListItem = ({
   primary,
   secondary,
 }) => {
-  const isNativeAsset = !tokenAddress;
+  const isNativeAsset = !tokenAddress
   return (
     <div
       className={classnames(
@@ -23,19 +23,19 @@ const AssetListItem = ({
       )}
       onClick={onClick}
     >
-      <div className="symbol-image">
+      <div className='symbol-image'>
         <TokenImage
           symbol={tokenSymbol}
           size={32}
           address={isNativeAsset ? ethers.constants.AddressZero : tokenAddress}
         />
-        <p className="token-symbol">{tokenSymbol}</p>
+        <p className='token-symbol'>{tokenSymbol}</p>
       </div>
-      <div className="token-balance">
-        <div className="balance">{primary}</div>
+      <div className='token-balance'>
+        <div className='balance'>{primary}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AssetListItem;
+export default AssetListItem

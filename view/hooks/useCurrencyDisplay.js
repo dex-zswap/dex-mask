@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useMemo } from 'react'
+import { useSelector } from 'react-redux'
 /**
  * Defines the shape of the options parameter for useCurrencyDisplay
  * @typedef {Object} UseCurrencyOptions
@@ -29,13 +29,13 @@ import { useSelector } from 'react-redux';
  * @return {[string, CurrencyDisplayParts]}
  */
 
-import { getConversionRate, getNativeCurrency } from '@reducer/dexmask/dexmask';
-import { conversionUtil } from '@shared/modules/conversion.utils';
+import { getConversionRate, getNativeCurrency } from '@reducer/dexmask/dexmask'
+import { conversionUtil } from '@shared/modules/conversion.utils'
 import {
   formatCurrency,
   getValueFromWeiHex,
-} from '@view/helpers/utils/confirm-tx.util';
-import { getCurrentCurrency } from '@view/selectors';
+} from '@view/helpers/utils/confirm-tx.util'
+import { getCurrentCurrency } from '@view/selectors'
 export function useCurrencyDisplay(
   inputValue,
   {
@@ -47,13 +47,13 @@ export function useCurrencyDisplay(
     ...opts
   },
 ) {
-  const currentCurrency = useSelector(getCurrentCurrency);
-  const nativeCurrency = useSelector(getNativeCurrency);
-  const conversionRate = useSelector(getConversionRate);
-  const isUserPreferredCurrency = currency === currentCurrency;
+  const currentCurrency = useSelector(getCurrentCurrency)
+  const nativeCurrency = useSelector(getNativeCurrency)
+  const conversionRate = useSelector(getConversionRate)
+  const isUserPreferredCurrency = currency === currentCurrency
   const value = useMemo(() => {
     if (displayValue) {
-      return displayValue;
+      return displayValue
     }
 
     if (
@@ -66,7 +66,7 @@ export function useCurrencyDisplay(
         fromDenomination: 'WEI',
         numberOfDecimals: numberOfDecimals || 2,
         toDenomination: denomination,
-      });
+      })
     } else if (isUserPreferredCurrency && conversionRate) {
       return formatCurrency(
         getValueFromWeiHex({
@@ -78,10 +78,10 @@ export function useCurrencyDisplay(
           toDenomination: denomination,
         }),
         currency,
-      );
+      )
     }
 
-    return '0';
+    return '0'
   }, [
     inputValue,
     nativeCurrency,
@@ -91,11 +91,11 @@ export function useCurrencyDisplay(
     denomination,
     currency,
     isUserPreferredCurrency,
-  ]);
-  let suffix;
+  ])
+  let suffix
 
   if (!opts.hideLabel) {
-    suffix = opts.suffix || currency?.toUpperCase();
+    suffix = opts.suffix || currency?.toUpperCase()
   }
 
   return [
@@ -105,5 +105,5 @@ export function useCurrencyDisplay(
       value,
       suffix,
     },
-  ];
+  ]
 }

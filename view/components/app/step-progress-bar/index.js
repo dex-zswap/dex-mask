@@ -1,20 +1,20 @@
-import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Box from '@c/ui/box';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+import React from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Box from '@c/ui/box'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 const stages = {
   PASSWORD_CREATE: 1,
   SEED_PHRASE_VIDEO: 2,
   SEED_PHRASE_REVIEW: 3,
   SEED_PHRASE_CONFIRM: 4,
   ONBOARDING_COMPLETE: 5,
-};
+}
 export default function StepProgressBar({ stage = 'PASSWORD_CREATE' }) {
-  const t = useI18nContext();
+  const t = useI18nContext()
   return (
     <Box margin={4}>
-      <ul className="progressbar">
+      <ul className='progressbar'>
         <li
           className={classnames({
             active: stages[stage] >= 1,
@@ -41,8 +41,8 @@ export default function StepProgressBar({ stage = 'PASSWORD_CREATE' }) {
         </li>
       </ul>
     </Box>
-  );
+  )
 }
 StepProgressBar.propTypes = {
   stage: PropTypes.string,
-};
+}

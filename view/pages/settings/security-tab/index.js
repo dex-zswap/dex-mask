@@ -1,38 +1,38 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import Button from '@c/ui/button';
-import Switch from '@c/ui/switch';
-import { REVEAL_SEED_ROUTE } from '@view/helpers/constants/routes';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { setFeatureFlag, setUsePhishDetect } from '@view/store/actions';
+import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import Button from '@c/ui/button'
+import Switch from '@c/ui/switch'
+import { REVEAL_SEED_ROUTE } from '@view/helpers/constants/routes'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import { setFeatureFlag, setUsePhishDetect } from '@view/store/actions'
 export default function SecurityTab() {
-  const t = useI18nContext();
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { warning } = useSelector((state) => state.appState);
+  const t = useI18nContext()
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const { warning } = useSelector((state) => state.appState)
   const {
     featureFlags: { showIncomingTransactions } = {},
     usePhishDetect,
-  } = useSelector((state) => state.metamask);
+  } = useSelector((state) => state.metamask)
   return (
-    <div className="base-width">
-      {warning && <div className="settings-tab__error">{warning}</div>}
-      <div className="setting-item">
-        <div className="setting-label">{t('revealSeedWords')}</div>
+    <div className='base-width'>
+      {warning && <div className='settings-tab__error'>{warning}</div>}
+      <div className='setting-item'>
+        <div className='setting-label'>{t('revealSeedWords')}</div>
         <Button
-          type="primary"
+          type='primary'
           onClick={(event) => {
-            event.preventDefault();
-            history.push(REVEAL_SEED_ROUTE);
+            event.preventDefault()
+            history.push(REVEAL_SEED_ROUTE)
           }}
         >
           {t('revealSeedWords')}
         </Button>
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('showIncomingTransactions')}</div>
-        <div className="setting-value">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('showIncomingTransactions')}</div>
+        <div className='setting-value'>
           {t('showIncomingTransactionsDescription')}
         </div>
         <Switch
@@ -47,9 +47,9 @@ export default function SecurityTab() {
           }
         />
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('usePhishingDetection')}</div>
-        <div className="setting-value">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('usePhishingDetection')}</div>
+        <div className='setting-value'>
           {t('usePhishingDetectionDescription')}
         </div>
         <Switch
@@ -58,5 +58,5 @@ export default function SecurityTab() {
         />
       </div>
     </div>
-  );
+  )
 }

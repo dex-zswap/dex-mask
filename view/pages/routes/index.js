@@ -1,33 +1,33 @@
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { pageChanged } from '@reducer/history/history';
-import { prepareToLeaveSwaps } from '@reducer/swaps/swaps';
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { pageChanged } from '@reducer/history/history'
+import { prepareToLeaveSwaps } from '@reducer/swaps/swaps'
 import {
   getNetworkIdentifier,
   getPreferences,
   isNetworkLoading,
   submittedPendingTransactionsSelector,
-} from '@view/selectors';
+} from '@view/selectors'
 import {
   hideSidebar,
   lockDexmask,
   setCurrentCurrency,
   setLastActiveTime,
   setMouseUserState,
-} from '@view/store/actions';
-import Routes from './component';
+} from '@view/store/actions'
+import Routes from './component'
 
 function mapStateToProps(state) {
-  const { appState } = state;
+  const { appState } = state
   const {
     sidebar,
     alertOpen,
     alertMessage,
     isLoading,
     loadingMessage,
-  } = appState;
-  const { autoLockTimeLimit = 0 } = getPreferences(state);
+  } = appState
+  const { autoLockTimeLimit = 0 } = getPreferences(state)
   return {
     sidebar,
     alertOpen,
@@ -45,7 +45,7 @@ function mapStateToProps(state) {
     providerId: getNetworkIdentifier(state),
     autoLockTimeLimit,
     browserEnvironment: state.metamask.browserEnvironment,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -58,10 +58,10 @@ function mapDispatchToProps(dispatch) {
     setLastActiveTime: () => dispatch(setLastActiveTime()),
     pageChanged: (path) => dispatch(pageChanged(path)),
     prepareToLeaveSwaps: () => dispatch(prepareToLeaveSwaps()),
-  };
+  }
 }
 
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-)(Routes);
+)(Routes)

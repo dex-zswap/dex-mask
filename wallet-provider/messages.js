@@ -35,5 +35,5 @@ const messages = {
     // misc
     experimentalMethods: `MetaMask: 'ethereum._metamask' exposes non-standard, experimental methods. They may be removed or changed without warning.`,
   },
-};
-export default messages;
+}
+export default messages

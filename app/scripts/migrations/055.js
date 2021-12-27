@@ -1,7 +1,7 @@
-import { cloneDeep, mapKeys } from 'lodash';
-import { NETWORK_TYPE_TO_ID_MAP } from '@shared/constants/network';
+import { cloneDeep, mapKeys } from 'lodash'
+import { NETWORK_TYPE_TO_ID_MAP } from '@shared/constants/network'
 
-const version = 55;
+const version = 55
 
 /**
  * replace 'incomingTxLastFetchedBlocksByNetwork' with 'incomingTxLastFetchedBlockByChainId'
@@ -9,15 +9,15 @@ const version = 55;
 export default {
   version,
   async migrate(originalVersionedData) {
-    const versionedData = cloneDeep(originalVersionedData);
-    versionedData.meta.version = version;
-    const state = versionedData.data;
-    versionedData.data = transformState(state);
-    return versionedData;
+    const versionedData = cloneDeep(originalVersionedData)
+    versionedData.meta.version = version
+    const state = versionedData.data
+    versionedData.data = transformState(state)
+    return versionedData
   },
-};
+}
 
-const UNKNOWN_CHAIN_ID_KEY = 'UNKNOWN';
+const UNKNOWN_CHAIN_ID_KEY = 'UNKNOWN'
 
 function transformState(state) {
   if (
@@ -29,15 +29,15 @@ function transformState(state) {
       // RPC network types (which don't map to a single chainId). This should
       // not be possible, but it's safer
       (_, key) => NETWORK_TYPE_TO_ID_MAP[key]?.chainId ?? UNKNOWN_CHAIN_ID_KEY,
-    );
+    )
     // Now that mainnet and test net last fetched blocks are keyed by their
     // respective chainIds, we can safely delete anything we had for custom
     // networks. Any custom network that shares a chainId with one of the
     // aforementioned networks will use the value stored by chainId.
     delete state.IncomingTransactionsController
-      .incomingTxLastFetchedBlockByChainId[UNKNOWN_CHAIN_ID_KEY];
+      .incomingTxLastFetchedBlockByChainId[UNKNOWN_CHAIN_ID_KEY]
     delete state.IncomingTransactionsController
-      .incomingTxLastFetchedBlocksByNetwork;
+      .incomingTxLastFetchedBlocksByNetwork
   }
-  return state;
+  return state
 }

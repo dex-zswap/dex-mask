@@ -1,4 +1,4 @@
-import { toBuffer as ethUtilToBuffer, isHexString } from 'ethereumjs-util';
+import { toBuffer as ethUtilToBuffer, isHexString } from 'ethereumjs-util'
 
 /**
  * Returns a buffer from the provided input, via ethereumjs-util.toBuffer but
@@ -10,7 +10,7 @@ import { toBuffer as ethUtilToBuffer, isHexString } from 'ethereumjs-util';
  */
 export function toBuffer(input) {
   if (typeof input === 'string' && isHexString(input) === false) {
-    return Buffer.from(input);
+    return Buffer.from(input)
   }
-  return ethUtilToBuffer(input);
+  return ethUtilToBuffer(input)
 }

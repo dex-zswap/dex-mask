@@ -1,51 +1,51 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import Button from '@c/ui/button';
-import { NETWORK_TYPE_RPC } from '@shared/constants/network';
-import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+import React, { useCallback, useEffect, useMemo } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import Button from '@c/ui/button'
+import { NETWORK_TYPE_RPC } from '@shared/constants/network'
+import { NETWORKS_FORM_ROUTE } from '@view/helpers/constants/routes'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import {
   editRpc,
   setNetworksTabAddMode,
   setSelectedSettingsRpcUrl,
   updateAndSetCustomRpc,
-} from '@view/store/actions';
-import { defaultNetworksData } from './constants';
-import NetworkForm from './network-form';
+} from '@view/store/actions'
+import { defaultNetworksData } from './constants'
+import NetworkForm from './network-form'
 const defaultNetworks = defaultNetworksData.map((network) => ({
   ...network,
   viewOnly: true,
-}));
+}))
 export default function NetworksTab() {
-  const t = useI18nContext();
-  const history = useHistory();
-  const { pathname } = useLocation();
-  const dispatch = useDispatch();
+  const t = useI18nContext()
+  const history = useHistory()
+  const { pathname } = useLocation()
+  const dispatch = useDispatch()
   const { networksTabSelectedRpcUrl, networksTabIsInAddMode } = useSelector(
     (state) => state.appState,
-  );
+  )
   const { frequentRpcListDetail, provider } = useSelector(
     (state) => state.metamask,
-  );
-  const providerUrl = useMemo(() => provider.rpcUrl, [provider]);
+  )
+  const providerUrl = useMemo(() => provider.rpcUrl, [provider])
   useEffect(() => {
     return () => {
-      dispatch(setSelectedSettingsRpcUrl(''));
-      dispatch(setNetworksTabAddMode(false));
-    };
-  }, []);
+      dispatch(setSelectedSettingsRpcUrl(''))
+      dispatch(setNetworksTabAddMode(false))
+    }
+  }, [])
   const setRpcTarget = useCallback(
     (newRpc, chainId, ticker, nickname, rpcPrefs) =>
       dispatch(
         updateAndSetCustomRpc(newRpc, chainId, ticker, nickname, rpcPrefs),
       ),
     [],
-  );
+  )
   const showNetworkForm = useMemo(
     () => Boolean(pathname.match(NETWORKS_FORM_ROUTE)),
     [pathname],
-  );
+  )
   const frequentRpcNetworkListDetails = frequentRpcListDetail.map((rpc) => {
     return {
       label: rpc.nickname,
@@ -55,18 +55,18 @@ export default function NetworksTab() {
       chainId: rpc.chainId,
       ticker: rpc.ticker,
       blockExplorerUrl: rpc.rpcPrefs?.blockExplorerUrl || '',
-    };
-  });
+    }
+  })
   const networksToRender = [
     ...defaultNetworks,
     ...frequentRpcNetworkListDetails,
-  ];
+  ]
   let selectedNetwork =
     networksToRender.find(
       (network) => network.rpcUrl === networksTabSelectedRpcUrl,
-    ) || {};
-  const networkIsSelected = Boolean(selectedNetwork.rpcUrl);
-  let networkDefaultedToProvider = false;
+    ) || {}
+  const networkIsSelected = Boolean(selectedNetwork.rpcUrl)
+  let networkDefaultedToProvider = false
 
   if (!networkIsSelected && !networksTabIsInAddMode) {
     selectedNetwork =
@@ -75,9 +75,9 @@ export default function NetworksTab() {
           network.rpcUrl === provider.rpcUrl ||
           (network.providerType !== NETWORK_TYPE_RPC &&
             network.providerType === provider.type)
-        );
-      }) || {};
-    networkDefaultedToProvider = true;
+        )
+      }) || {}
+    networkDefaultedToProvider = true
   }
 
   const renderNetworksList = useMemo(
@@ -89,33 +89,33 @@ export default function NetworksTab() {
           iconImg,
           rpcUrl,
           providerType: currentProviderType,
-        } = network;
+        } = network
         return (
           <div
             key={rpcUrl}
-            className="setting-network-list-item"
+            className='setting-network-list-item'
             onClick={() => {
-              dispatch(setNetworksTabAddMode(false));
-              dispatch(setSelectedSettingsRpcUrl(rpcUrl));
-              history.push(NETWORKS_FORM_ROUTE);
+              dispatch(setNetworksTabAddMode(false))
+              dispatch(setSelectedSettingsRpcUrl(rpcUrl))
+              history.push(NETWORKS_FORM_ROUTE)
             }}
           >
             <img width={12} src={`images/default-chains/${iconImg}`} />
-            <div className="setting-network-list-item-label">
+            <div className='setting-network-list-item-label'>
               {label || t(labelKey)}
             </div>
             <div>
               {currentProviderType !== NETWORK_TYPE_RPC && (
                 <img
-                  className="setting-network-list-item-lock"
+                  className='setting-network-list-item-lock'
                   width={10}
-                  src="images/settings/lock.png"
+                  src='images/settings/lock.png'
                 />
               )}
-              <img width={6} src="images/settings/arrow_right.png" />
+              <img width={6} src='images/settings/arrow_right.png' />
             </div>
           </div>
-        );
+        )
       }),
     [
       setSelectedSettingsRpcUrl,
@@ -124,7 +124,7 @@ export default function NetworksTab() {
       networksToRender,
       t,
     ],
-  );
+  )
   const renderNetworksForm = useMemo(() => {
     const {
       labelKey,
@@ -135,7 +135,7 @@ export default function NetworksTab() {
       viewOnly,
       rpcPrefs,
       blockExplorerUrl,
-    } = selectedNetwork;
+    } = selectedNetwork
     return (
       <NetworkForm
         setRpcTarget={setRpcTarget}
@@ -148,9 +148,9 @@ export default function NetworksTab() {
         networksToRender={networksToRender}
         ticker={ticker}
         onClear={(ifGoback = true) => {
-          dispatch(setNetworksTabAddMode(false));
-          dispatch(setSelectedSettingsRpcUrl(''));
-          ifGoback && history.go(-1);
+          dispatch(setNetworksTabAddMode(false))
+          dispatch(setSelectedSettingsRpcUrl(''))
+          ifGoback && history.go(-1)
         }}
         viewOnly={viewOnly}
         isCurrentRpcTarget={providerUrl === rpcUrl}
@@ -158,23 +158,23 @@ export default function NetworksTab() {
         rpcPrefs={rpcPrefs}
         blockExplorerUrl={blockExplorerUrl}
       />
-    );
-  }, [selectedNetwork]);
+    )
+  }, [selectedNetwork])
   return (
-    <div className="base-width">
+    <div className='base-width'>
       {showNetworkForm ? (
         renderNetworksForm
       ) : (
         <>
-          <div className="setting-item">
-            <div className="setting-label">{t('addNetwork')}</div>
+          <div className='setting-item'>
+            <div className='setting-label'>{t('addNetwork')}</div>
             <Button
-              type="primary"
+              type='primary'
               onClick={(event) => {
-                event.preventDefault();
-                dispatch(setSelectedSettingsRpcUrl(''));
-                dispatch(setNetworksTabAddMode(true));
-                history.push(NETWORKS_FORM_ROUTE);
+                event.preventDefault()
+                dispatch(setSelectedSettingsRpcUrl(''))
+                dispatch(setNetworksTabAddMode(true))
+                history.push(NETWORKS_FORM_ROUTE)
               }}
             >
               {t('addNetwork')}
@@ -184,5 +184,5 @@ export default function NetworksTab() {
         </>
       )}
     </div>
-  );
+  )
 }

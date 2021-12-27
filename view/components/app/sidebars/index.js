@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import CustomizeGas from '@c/app/gas-customization/gas-modal-page-container';
-import { MILLISECOND } from '@shared/constants/time';
-import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import CustomizeGas from '@c/app/gas-customization/gas-modal-page-container'
+import { MILLISECOND } from '@shared/constants/time'
+import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 export default class Sidebar extends Component {
   static propTypes = {
     sidebarOpen: PropTypes.bool,
@@ -12,54 +12,54 @@ export default class Sidebar extends Component {
     type: PropTypes.string,
     sidebarProps: PropTypes.object,
     onOverlayClose: PropTypes.func,
-  };
+  }
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   renderOverlay() {
-    const { onOverlayClose } = this.props;
+    const { onOverlayClose } = this.props
     return (
       <div
-        className="sidebar-overlay"
+        className='sidebar-overlay'
         onClick={() => {
-          onOverlayClose?.();
-          this.props.hideSidebar();
+          onOverlayClose?.()
+          this.props.hideSidebar()
         }}
       />
-    );
+    )
   }
 
   renderSidebarContent() {
-    const { type, sidebarProps = {} } = this.props;
-    const { transaction = {}, onSubmit, hideBasic } = sidebarProps;
+    const { type, sidebarProps = {} } = this.props
+    const { transaction = {}, onSubmit, hideBasic } = sidebarProps
 
     switch (type) {
       case 'customize-gas':
         return (
-          <div className="sidebar-left">
+          <div className='sidebar-left'>
             <CustomizeGas
               transaction={transaction}
               onSubmit={onSubmit}
               hideBasic={hideBasic}
             />
           </div>
-        );
+        )
 
       default:
-        return null;
+        return null
     }
   }
 
   componentDidUpdate(prevProps) {
     if (!prevProps.sidebarShouldClose && this.props.sidebarShouldClose) {
-      this.props.hideSidebar();
+      this.props.hideSidebar()
     }
   }
 
   render() {
-    const { transitionName, sidebarOpen, sidebarShouldClose } = this.props;
-    const showSidebar = sidebarOpen && !sidebarShouldClose;
+    const { transitionName, sidebarOpen, sidebarShouldClose } = this.props
+    const showSidebar = sidebarOpen && !sidebarShouldClose
     return (
       <div>
         <ReactCSSTransitionGroup
@@ -71,6 +71,6 @@ export default class Sidebar extends Component {
         </ReactCSSTransitionGroup>
         {showSidebar ? this.renderOverlay() : null}
       </div>
-    );
+    )
   }
 }

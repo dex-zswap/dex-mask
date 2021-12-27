@@ -1,17 +1,17 @@
-import React, { PureComponent } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 export default class SignatureRequestMessage extends PureComponent {
   static propTypes = {
     data: PropTypes.object.isRequired,
-  };
+  }
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   renderNode(data) {
     return (
-      <div className="signature-request-message--node">
+      <div className='signature-request-message--node'>
         {Object.entries(data).map(([label, value], i) => (
           <div
             className={classnames('signature-request-message--node', {
@@ -20,33 +20,33 @@ export default class SignatureRequestMessage extends PureComponent {
             })}
             key={i}
           >
-            <span className="signature-request-message--node-label">
+            <span className='signature-request-message--node-label'>
               {label}:{' '}
             </span>
             {typeof value === 'object' && value !== null ? (
               this.renderNode(value)
             ) : (
-              <span className="signature-request-message--node-value">
+              <span className='signature-request-message--node-value'>
                 {`${value}`}
               </span>
             )}
           </div>
         ))}
       </div>
-    );
+    )
   }
 
   render() {
-    const { data } = this.props;
+    const { data } = this.props
     return (
-      <div className="signature-request-message">
-        <div className="signature-request-message__title">
+      <div className='signature-request-message'>
+        <div className='signature-request-message__title'>
           {this.context.t('signatureRequest1')}
         </div>
-        <div className="signature-request-message--root">
+        <div className='signature-request-message--root'>
           {this.renderNode(data)}
         </div>
       </div>
-    );
+    )
   }
 }

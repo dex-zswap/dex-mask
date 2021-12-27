@@ -7,18 +7,18 @@
  * @typedef {'popup' | 'notification' | 'fullscreen' | 'background'} EnvironmentType
  */
 
-import { ethers } from 'ethers';
+import { ethers } from 'ethers'
 
-export const ENVIRONMENT_TYPE_POPUP = 'popup';
-export const ENVIRONMENT_TYPE_NOTIFICATION = 'notification';
-export const ENVIRONMENT_TYPE_FULLSCREEN = 'fullscreen';
-export const ENVIRONMENT_TYPE_BACKGROUND = 'background';
+export const ENVIRONMENT_TYPE_POPUP = 'popup'
+export const ENVIRONMENT_TYPE_NOTIFICATION = 'notification'
+export const ENVIRONMENT_TYPE_FULLSCREEN = 'fullscreen'
+export const ENVIRONMENT_TYPE_BACKGROUND = 'background'
 
-export const PLATFORM_BRAVE = 'Brave';
-export const PLATFORM_CHROME = 'Chrome';
-export const PLATFORM_EDGE = 'Edge';
-export const PLATFORM_FIREFOX = 'Firefox';
-export const PLATFORM_OPERA = 'Opera';
+export const PLATFORM_BRAVE = 'Brave'
+export const PLATFORM_CHROME = 'Chrome'
+export const PLATFORM_EDGE = 'Edge'
+export const PLATFORM_FIREFOX = 'Firefox'
+export const PLATFORM_OPERA = 'Opera'
 
 export const MESSAGE_TYPE = {
   ETH_DECRYPT: 'eth_decrypt',
@@ -32,12 +32,12 @@ export const MESSAGE_TYPE = {
   WATCH_ASSET_LEGACY: 'metamask_watchAsset',
   ADD_ETHEREUM_CHAIN: 'wallet_addEthereumChain',
   SWITCH_ETHEREUM_CHAIN: 'wallet_switchEthereumChain',
-};
+}
 
 export const POLLING_TOKEN_ENVIRONMENT_TYPES = {
   [ENVIRONMENT_TYPE_POPUP]: 'popupGasPollTokens',
   [ENVIRONMENT_TYPE_NOTIFICATION]: 'notificationGasPollTokens',
   [ENVIRONMENT_TYPE_FULLSCREEN]: 'fullScreenGasPollTokens',
-};
+}
 
-export const MAX_UINT_256 = ethers.constants.MaxUint256.toHexString();
+export const MAX_UINT_256 = ethers.constants.MaxUint256.toHexString()

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Button from '@c/ui/button';
-import Checkbox from '@c/ui/check-box';
-import Tooltip from '@c/ui/tooltip';
+import React, { useState } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Button from '@c/ui/button'
+import Checkbox from '@c/ui/check-box'
+import Tooltip from '@c/ui/tooltip'
 
 const HomeNotification = ({
   acceptText,
@@ -16,36 +16,36 @@ const HomeNotification = ({
   onAccept,
   onIgnore,
 }) => {
-  const [checkboxState, setCheckBoxState] = useState(false);
+  const [checkboxState, setCheckBoxState] = useState(false)
   const checkboxElement = checkboxText && (
     <Checkbox
-      id="homeNotification_checkbox"
+      id='homeNotification_checkbox'
       checked={checkboxState}
-      className="home-notification__checkbox"
+      className='home-notification__checkbox'
       onClick={() => setCheckBoxState((checked) => !checked)}
     />
-  );
+  )
   return (
     <div className={classnames('home-notification', ...classNames)}>
-      <div className="home-notification__content">
-        <div className="home-notification__content-container">
-          <div className="home-notification__text">{descriptionText}</div>
+      <div className='home-notification__content'>
+        <div className='home-notification__content-container'>
+          <div className='home-notification__text'>{descriptionText}</div>
         </div>
         {infoText ? (
           <Tooltip
-            position="top"
+            position='top'
             title={infoText}
-            wrapperClassName="home-notification__tooltip-wrapper"
+            wrapperClassName='home-notification__tooltip-wrapper'
           >
-            <i className="fa fa-info-circle" />
+            <i className='fa fa-info-circle' />
           </Tooltip>
         ) : null}
       </div>
-      <div className="home-notification__buttons">
+      <div className='home-notification__buttons'>
         {onAccept && acceptText ? (
           <Button
-            type="primary"
-            className="home-notification__accept-button"
+            type='primary'
+            className='home-notification__accept-button'
             onClick={onAccept}
           >
             {acceptText}
@@ -53,8 +53,8 @@ const HomeNotification = ({
         ) : null}
         {onIgnore && ignoreText ? (
           <Button
-            type="secondary"
-            className="home-notification__ignore-button" // Some onIgnore handlers use the checkboxState to determine whether
+            type='secondary'
+            className='home-notification__ignore-button' // Some onIgnore handlers use the checkboxState to determine whether
             // to disable the notification
             onClick={() => onIgnore(checkboxState)}
           >
@@ -62,12 +62,12 @@ const HomeNotification = ({
           </Button>
         ) : null}
         {checkboxText ? (
-          <div className="home-notification__checkbox-wrapper">
+          <div className='home-notification__checkbox-wrapper'>
             {checkboxTooltipText ? (
               <Tooltip
-                position="top"
+                position='top'
                 title={checkboxTooltipText}
-                wrapperClassName="home-notification__checkbox-label-tooltip"
+                wrapperClassName='home-notification__checkbox-label-tooltip'
               >
                 {checkboxElement}
               </Tooltip>
@@ -75,8 +75,8 @@ const HomeNotification = ({
               checkboxElement
             )}
             <label
-              className="home-notification__checkbox-label"
-              htmlFor="homeNotification_checkbox"
+              className='home-notification__checkbox-label'
+              htmlFor='homeNotification_checkbox'
             >
               {checkboxText}
             </label>
@@ -84,8 +84,8 @@ const HomeNotification = ({
         ) : null}
       </div>
     </div>
-  );
-};
+  )
+}
 
 HomeNotification.propTypes = {
   acceptText: PropTypes.node,
@@ -97,5 +97,5 @@ HomeNotification.propTypes = {
   infoText: PropTypes.node,
   onAccept: PropTypes.func,
   onIgnore: PropTypes.func,
-};
-export default HomeNotification;
+}
+export default HomeNotification

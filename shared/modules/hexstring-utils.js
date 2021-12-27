@@ -5,12 +5,12 @@ import {
   addHexPrefix,
   toChecksumAddress,
   zeroAddress,
-} from 'ethereumjs-util';
+} from 'ethereumjs-util'
 
-export const BURN_ADDRESS = zeroAddress();
+export const BURN_ADDRESS = zeroAddress()
 
 export function isBurnAddress(address) {
-  return address === BURN_ADDRESS;
+  return address === BURN_ADDRESS
 }
 
 /**
@@ -36,22 +36,22 @@ export function isValidHexAddress(
 ) {
   const addressToCheck = allowNonPrefixed
     ? addHexPrefix(possibleAddress)
-    : possibleAddress;
+    : possibleAddress
   if (!isHexString(addressToCheck)) {
-    return false;
+    return false
   }
 
   if (mixedCaseUseChecksum) {
-    const prefixRemoved = addressToCheck.slice(2);
-    const lower = prefixRemoved.toLowerCase();
-    const upper = prefixRemoved.toUpperCase();
-    const allOneCase = prefixRemoved === lower || prefixRemoved === upper;
+    const prefixRemoved = addressToCheck.slice(2)
+    const lower = prefixRemoved.toLowerCase()
+    const upper = prefixRemoved.toUpperCase()
+    const allOneCase = prefixRemoved === lower || prefixRemoved === upper
     if (!allOneCase) {
-      return isValidChecksumAddress(addressToCheck);
+      return isValidChecksumAddress(addressToCheck)
     }
   }
 
-  return isValidAddress(addressToCheck);
+  return isValidAddress(addressToCheck)
 }
 
 export function toChecksumHexAddress(address) {
@@ -60,15 +60,15 @@ export function toChecksumHexAddress(address) {
     // return an empty string for nullish input. If any direct usages of
     // ethereumjs-util.toChecksumAddress were called with nullish input it
     // would have resulted in an error on version 5.1.
-    return '';
+    return ''
   }
-  const hexPrefixed = addHexPrefix(address);
+  const hexPrefixed = addHexPrefix(address)
   if (!isHexString(hexPrefixed)) {
     // Version 5.1 of ethereumjs-utils would have returned '0xY' for input 'y'
     // but we shouldn't waste effort trying to change case on a clearly invalid
     // string. Instead just return the hex prefixed original string which most
     // closely mimics the original behavior.
-    return hexPrefixed;
+    return hexPrefixed
   }
-  return toChecksumAddress(addHexPrefix(address));
+  return toChecksumAddress(addHexPrefix(address))
 }

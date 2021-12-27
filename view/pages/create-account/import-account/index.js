@@ -1,47 +1,47 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Selector from '@c/ui/selector';
-import Logo from '@c/ui/logo';
-import BackBar from '@c/ui/back-bar';
-import Button from '@c/ui/button';
-import JsonImportView from './json';
-import PrivateKeyImportView from './private-key';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Selector from '@c/ui/selector'
+import Logo from '@c/ui/logo'
+import BackBar from '@c/ui/back-bar'
+import Button from '@c/ui/button'
+import JsonImportView from './json'
+import PrivateKeyImportView from './private-key'
 export default class AccountImportSubview extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   state = {
     type: 'privateKey',
-  };
+  }
 
   renderImportView() {
-    const { type } = this.state;
+    const { type } = this.state
 
     switch (type) {
       case 'privateKey':
-        return <PrivateKeyImportView />;
+        return <PrivateKeyImportView />
 
       case 'jsonFile':
-        return <JsonImportView />;
+        return <JsonImportView />
 
       default:
-        return <JsonImportView />;
+        return <JsonImportView />
     }
   }
 
   render() {
-    const { type } = this.state;
+    const { type } = this.state
     return (
-      <div className="new-account-import-form dex-page-container space-between base-width">
+      <div className='new-account-import-form dex-page-container space-between base-width'>
         <div>
           <Logo plain isCenter />
           <BackBar title={this.context.t('importAccount')} />
-          <div className="new-account-import-form__select-section flex items-center space-between">
-            <div className="new-account-import-form__select-label">
+          <div className='new-account-import-form__select-section flex items-center space-between'>
+            <div className='new-account-import-form__select-label'>
               {this.context.t('selectType')}
             </div>
             <Selector
-              className="select-import-type"
+              className='select-import-type'
               selectedValue={type}
               options={[
                 {
@@ -56,15 +56,15 @@ export default class AccountImportSubview extends Component {
               onSelect={(type) => {
                 this.setState({
                   type,
-                });
+                })
               }}
             />
           </div>
         </div>
-        <div className="new-account-import-bottom">
+        <div className='new-account-import-bottom'>
           {this.renderImportView()}
         </div>
       </div>
-    );
+    )
   }
 }

@@ -1,16 +1,16 @@
-import React, { useContext } from 'react';
-import Typography from '@c/ui/typography';
-import { I18nContext } from '@view/contexts/i18n';
+import React, { useContext } from 'react'
+import Typography from '@c/ui/typography'
+import { I18nContext } from '@view/contexts/i18n'
 import {
   COLORS,
   FONT_WEIGHT,
   TYPOGRAPHY,
-} from '@view/helpers/constants/design-system';
+} from '@view/helpers/constants/design-system'
 export default function EditGasDisplayEducation() {
-  const t = useContext(I18nContext);
+  const t = useContext(I18nContext)
   return (
-    <div className="edit-gas-display-education">
-      <Typography tag="p" color={COLORS.UI4} variant={TYPOGRAPHY.H6}>
+    <div className='edit-gas-display-education'>
+      <Typography tag='p' color={COLORS.UI4} variant={TYPOGRAPHY.H6}>
         {t('editGasEducationModalIntro')}
       </Typography>
       <Typography
@@ -20,7 +20,7 @@ export default function EditGasDisplayEducation() {
       >
         {t('editGasHigh')}
       </Typography>
-      <Typography tag="p" color={COLORS.UI4} variant={TYPOGRAPHY.H6}>
+      <Typography tag='p' color={COLORS.UI4} variant={TYPOGRAPHY.H6}>
         {t('editGasEducationHighExplanation')}
       </Typography>
       <Typography
@@ -30,7 +30,7 @@ export default function EditGasDisplayEducation() {
       >
         {t('editGasMedium')}
       </Typography>
-      <Typography tag="p" color={COLORS.UI4} variant={TYPOGRAPHY.H6}>
+      <Typography tag='p' color={COLORS.UI4} variant={TYPOGRAPHY.H6}>
         {t('editGasEducationMediumExplanation')}
       </Typography>
       <Typography
@@ -40,9 +40,9 @@ export default function EditGasDisplayEducation() {
       >
         {t('editGasLow')}
       </Typography>
-      <Typography tag="p" color={COLORS.UI4} variant={TYPOGRAPHY.H6}>
+      <Typography tag='p' color={COLORS.UI4} variant={TYPOGRAPHY.H6}>
         {t('editGasEducationLowExplanation')}
       </Typography>
     </div>
-  );
+  )
 }

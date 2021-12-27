@@ -5,65 +5,65 @@ import React, {
   useState,
   useEffect,
   useCallback,
-} from 'react';
-import { useSelector } from 'react-redux';
-import copyToClipboard from 'copy-to-clipboard';
-import { ethers } from 'ethers';
-import { I18nContext } from '@view/contexts/i18n';
-import TokenImage from '@c/ui/token-image';
-import Tooltip from '@c/ui/tooltip';
-import { SECOND } from '@shared/constants/time';
-import { toChecksumHexAddress } from '@shared/modules/hexstring-utils';
-import { shortenAddress } from '@view/helpers/utils';
-import { getNativeCurrency } from '@reducer/dexmask/dexmask';
-import { PRIMARY, SECONDARY } from '@view/helpers/constants/common';
-import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency';
-import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
-import { getSelectedAccount, getSelectedIdentity } from '@view/selectors';
-import AccountSwitcher from './account-switcher';
+} from 'react'
+import { useSelector } from 'react-redux'
+import copyToClipboard from 'copy-to-clipboard'
+import { ethers } from 'ethers'
+import { I18nContext } from '@view/contexts/i18n'
+import TokenImage from '@c/ui/token-image'
+import Tooltip from '@c/ui/tooltip'
+import { SECOND } from '@shared/constants/time'
+import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
+import { shortenAddress } from '@view/helpers/utils'
+import { getNativeCurrency } from '@reducer/dexmask/dexmask'
+import { PRIMARY, SECONDARY } from '@view/helpers/constants/common'
+import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency'
+import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay'
+import { getSelectedAccount, getSelectedIdentity } from '@view/selectors'
+import AccountSwitcher from './account-switcher'
 export default function SelectedNativeToken() {
-  const t = useContext(I18nContext);
-  const selectedIdentity = useSelector(getSelectedIdentity);
-  const selectedAccount = useSelector(getSelectedAccount);
-  const nativeCurrency = useSelector(getNativeCurrency);
+  const t = useContext(I18nContext)
+  const selectedIdentity = useSelector(getSelectedIdentity)
+  const selectedAccount = useSelector(getSelectedAccount)
+  const nativeCurrency = useSelector(getNativeCurrency)
   const [state, setState] = useState({
     copied: false,
-  });
-  const copyTimeout = useRef(null);
-  const { balance } = selectedAccount;
+  })
+  const copyTimeout = useRef(null)
+  const { balance } = selectedAccount
   const {
     currency: primaryCurrency,
     numberOfDecimals: primaryNumberOfDecimals,
   } = useUserPreferencedCurrency(PRIMARY, {
     ethNumberOfDecimals: 4,
-  });
+  })
   const {
     currency: secondaryCurrency,
     numberOfDecimals: secondaryNumberOfDecimals,
   } = useUserPreferencedCurrency(SECONDARY, {
     ethNumberOfDecimals: 4,
-  });
+  })
   const [, primaryCurrencyProperties] = useCurrencyDisplay(balance, {
     numberOfDecimals: primaryNumberOfDecimals,
     currency: primaryCurrency,
-  });
+  })
   const [
     secondaryCurrencyDisplay,
     secondaryCurrencyProperties,
   ] = useCurrencyDisplay(balance, {
     numberOfDecimals: secondaryNumberOfDecimals,
     currency: secondaryCurrency,
-  });
+  })
   const checksummedAddress = useMemo(
     () => toChecksumHexAddress(selectedIdentity.address),
     [selectedIdentity.address],
-  );
+  )
   const copyAddress = useCallback(() => {
     setState((state) =>
       Object.assign({}, state, {
         copied: true,
       }),
-    );
+    )
     copyTimeout.current = setTimeout(
       () =>
         setState((state) =>
@@ -72,37 +72,37 @@ export default function SelectedNativeToken() {
           }),
         ),
       SECOND * 3,
-    );
-    copyToClipboard(checksummedAddress);
-  }, [checksummedAddress, copyToClipboard, copyTimeout.current, state.copied]);
+    )
+    copyToClipboard(checksummedAddress)
+  }, [checksummedAddress, copyToClipboard, copyTimeout.current, state.copied])
   useEffect(() => {
     if (copyTimeout.current) {
-      window.clearTimeout(copyTimeout.current);
+      window.clearTimeout(copyTimeout.current)
     }
-  }, [copyTimeout.current]);
+  }, [copyTimeout.current])
   return (
     <>
-      <div className="selected-token base-width">
-        <div className="account-address flex space-between items-center">
+      <div className='selected-token base-width'>
+        <div className='account-address flex space-between items-center'>
           <AccountSwitcher />
           <Tooltip
-            wrapperClassName="selected-account__tooltip-wrapper"
-            position="top"
+            wrapperClassName='selected-account__tooltip-wrapper'
+            position='top'
             title={state.copied ? t('copiedExclamation') : t('copyToClipboard')}
           >
-            <div className="address flex items-center" onClick={copyAddress}>
+            <div className='address flex items-center' onClick={copyAddress}>
               {shortenAddress(checksummedAddress)}
-              <div className="copy-icon"></div>
+              <div className='copy-icon'></div>
             </div>
           </Tooltip>
         </div>
-        <div className="native-currency flex space-between items-center">
-          <div className="native-currency-balance">
-            <div className="token-balance">
+        <div className='native-currency flex space-between items-center'>
+          <div className='native-currency-balance'>
+            <div className='token-balance'>
               {primaryCurrencyProperties.value}{' '}
               {primaryCurrencyProperties.suffix}
             </div>
-            <div className="token-usd">
+            <div className='token-usd'>
               {secondaryCurrencyProperties.value}{' '}
               {secondaryCurrencyProperties.suffix}
             </div>
@@ -115,5 +115,5 @@ export default function SelectedNativeToken() {
         </div>
       </div>
     </>
-  );
+  )
 }

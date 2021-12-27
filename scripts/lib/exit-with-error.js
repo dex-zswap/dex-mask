@@ -9,8 +9,8 @@
  *   zero exit code.
  */
 function exitWithError(errorMessage) {
-  console.error(errorMessage);
-  process.exitCode = 1;
+  console.error(errorMessage)
+  process.exitCode = 1
 }
 
-module.exports = { exitWithError };
+module.exports = { exitWithError }

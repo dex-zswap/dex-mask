@@ -1,18 +1,18 @@
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { getEnvironmentType } from '@app/scripts/lib/util';
-import { hideWhatsNewPopup, setThreeBoxLastUpdated } from '@reducer/app';
-import { getWeb3ShimUsageAlertEnabledness } from '@reducer/dexmask/dexmask';
-import { getSwapsFeatureIsLive } from '@reducer/swaps/swaps';
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { getEnvironmentType } from '@app/scripts/lib/util'
+import { hideWhatsNewPopup, setThreeBoxLastUpdated } from '@reducer/app'
+import { getWeb3ShimUsageAlertEnabledness } from '@reducer/dexmask/dexmask'
+import { getSwapsFeatureIsLive } from '@reducer/swaps/swaps'
 import {
   ALERT_TYPES,
   WEB3_SHIM_USAGE_ALERT_STATES,
-} from '@shared/constants/alerts';
+} from '@shared/constants/alerts'
 import {
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_POPUP,
-} from '@shared/constants/app';
+} from '@shared/constants/app'
 import {
   activeTabHasPermissions,
   getCurrentEthBalance,
@@ -27,7 +27,7 @@ import {
   getUnapprovedTemplatedConfirmations,
   getWeb3ShimUsageStateForOrigin,
   unconfirmedTransactionsCountSelector,
-} from '@view/selectors';
+} from '@view/selectors'
 import {
   getThreeBoxLastUpdated,
   restoreFromThreeBox,
@@ -39,11 +39,11 @@ import {
   setShowRestorePromptToFalse,
   setWeb3ShimUsageAlertDismissed,
   turnThreeBoxSyncingOn,
-} from '@view/store/actions';
-import Home from './component';
+} from '@view/store/actions'
+import Home from './component'
 
 const mapStateToProps = (state) => {
-  const { metamask, appState } = state;
+  const { metamask, appState } = state
   const {
     suggestedTokens,
     seedPhraseBackedUp,
@@ -55,27 +55,27 @@ const mapStateToProps = (state) => {
     defaultHomeActiveTabName,
     swapsState,
     dismissSeedBackUpReminder,
-  } = metamask;
-  const accountBalance = getCurrentEthBalance(state);
-  const { forgottenPassword, threeBoxLastUpdated } = appState;
-  const totalUnapprovedCount = getTotalUnapprovedCount(state);
-  const swapsEnabled = getSwapsFeatureIsLive(state);
-  const pendingConfirmations = getUnapprovedTemplatedConfirmations(state);
-  const envType = getEnvironmentType();
-  const isPopup = envType === ENVIRONMENT_TYPE_POPUP;
-  const isNotification = envType === ENVIRONMENT_TYPE_NOTIFICATION;
-  const firstPermissionsRequest = getFirstPermissionRequest(state);
+  } = metamask
+  const accountBalance = getCurrentEthBalance(state)
+  const { forgottenPassword, threeBoxLastUpdated } = appState
+  const totalUnapprovedCount = getTotalUnapprovedCount(state)
+  const swapsEnabled = getSwapsFeatureIsLive(state)
+  const pendingConfirmations = getUnapprovedTemplatedConfirmations(state)
+  const envType = getEnvironmentType()
+  const isPopup = envType === ENVIRONMENT_TYPE_POPUP
+  const isNotification = envType === ENVIRONMENT_TYPE_NOTIFICATION
+  const firstPermissionsRequest = getFirstPermissionRequest(state)
   const firstPermissionsRequestId =
     firstPermissionsRequest && firstPermissionsRequest.metadata
       ? firstPermissionsRequest.metadata.id
-      : null;
-  const originOfCurrentTab = getOriginOfCurrentTab(state);
+      : null
+  const originOfCurrentTab = getOriginOfCurrentTab(state)
   const shouldShowWeb3ShimUsageNotification =
     isPopup &&
     getWeb3ShimUsageAlertEnabledness(state) &&
     activeTabHasPermissions(state) &&
     getWeb3ShimUsageStateForOrigin(state, originOfCurrentTab) ===
-      WEB3_SHIM_USAGE_ALERT_STATES.RECORDED;
+      WEB3_SHIM_USAGE_ALERT_STATES.RECORDED
   return {
     forgottenPassword,
     suggestedTokens,
@@ -107,20 +107,20 @@ const mapStateToProps = (state) => {
     notificationsToShow: getSortedNotificationsToShow(state).length > 0,
     showWhatsNewPopup: getShowWhatsNewPopup(state),
     showRecoveryPhraseReminder: getShowRecoveryPhraseReminder(state),
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => ({
   turnThreeBoxSyncingOn: () => dispatch(turnThreeBoxSyncingOn()),
   setupThreeBox: () => {
     dispatch(getThreeBoxLastUpdated()).then((lastUpdated) => {
       if (lastUpdated) {
-        dispatch(setThreeBoxLastUpdated(lastUpdated));
+        dispatch(setThreeBoxLastUpdated(lastUpdated))
       } else {
-        dispatch(setShowRestorePromptToFalse());
-        dispatch(turnThreeBoxSyncingOn());
+        dispatch(setShowRestorePromptToFalse())
+        dispatch(turnThreeBoxSyncingOn())
       }
-    });
+    })
   },
   restoreFromThreeBox: (address) => dispatch(restoreFromThreeBox(address)),
   setShowRestorePromptToFalse: () => dispatch(setShowRestorePromptToFalse()),
@@ -136,9 +136,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(setRecoveryPhraseReminderHasBeenShown()),
   setRecoveryPhraseReminderLastShown: (lastShown) =>
     dispatch(setRecoveryPhraseReminderLastShown(lastShown)),
-});
+})
 
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-)(Home);
+)(Home)

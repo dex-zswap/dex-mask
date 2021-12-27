@@ -1,5 +1,5 @@
-import MetaMaskInpageProvider from './MetaMaskInpageProvider';
-import shimWeb3 from './shimWeb3';
+import MetaMaskInpageProvider from './MetaMaskInpageProvider'
+import shimWeb3 from './shimWeb3'
 /**
  * Initializes a MetaMaskInpageProvider and (optionally) assigns it as window.ethereum.
  *
@@ -26,18 +26,18 @@ export function initializeProvider({
     logger,
     maxEventListeners,
     shouldSendMetadata,
-  });
+  })
   provider = new Proxy(provider, {
     // some common libraries, e.g. web3@1.x, mess with our API
     deleteProperty: () => true,
-  });
+  })
   if (shouldSetOnWindow) {
-    setGlobalProvider(provider);
+    setGlobalProvider(provider)
   }
   if (shouldShimWeb3) {
-    shimWeb3(provider, logger);
+    shimWeb3(provider, logger)
   }
-  return provider;
+  return provider
 }
 /**
  * Sets the given provider instance as window.dexEthereum and dispatches the
@@ -46,6 +46,6 @@ export function initializeProvider({
  * @param providerInstance - The provider instance.
  */
 export function setGlobalProvider(providerInstance) {
-  window.dexEthereum = providerInstance;
-  window.dispatchEvent(new Event('dexEthereum#initialized'));
+  window.dexEthereum = providerInstance
+  window.dispatchEvent(new Event('dexEthereum#initialized'))
 }

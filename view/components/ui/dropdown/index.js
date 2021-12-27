@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import React, { useCallback } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 
 const Dropdown = ({
   className,
@@ -13,12 +13,12 @@ const Dropdown = ({
 }) => {
   const _onChange = useCallback(
     (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      onChange(event.target.value);
+      event.preventDefault()
+      event.stopPropagation()
+      onChange(event.target.value)
     },
     [onChange],
-  );
+  )
 
   return (
     <select
@@ -34,11 +34,11 @@ const Dropdown = ({
           <option key={option.value} value={option.value}>
             {option.name || option.value}
           </option>
-        );
+        )
       })}
     </select>
-  );
-};
+  )
+}
 
 Dropdown.propTypes = {
   className: PropTypes.string,
@@ -53,12 +53,12 @@ Dropdown.propTypes = {
   ).isRequired,
   selectedOption: PropTypes.string,
   style: PropTypes.object,
-};
+}
 Dropdown.defaultProps = {
   className: undefined,
   disabled: false,
   title: undefined,
   selectedOption: null,
   style: undefined,
-};
-export default Dropdown;
+}
+export default Dropdown

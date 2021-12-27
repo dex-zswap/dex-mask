@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Menu } from '@c/ui/menu';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { Menu } from '@c/ui/menu'
 
 const ConnectedAccountsListOptions = ({
   children,
@@ -8,11 +8,11 @@ const ConnectedAccountsListOptions = ({
   onHideOptions,
   show,
 }) => {
-  const [optionsButtonElement, setOptionsButtonElement] = useState(null);
+  const [optionsButtonElement, setOptionsButtonElement] = useState(null)
   return (
     <>
       <button
-        className="fas fa-ellipsis-v connected-accounts-options__button"
+        className='fas fa-ellipsis-v connected-accounts-options__button'
         onClick={onShowOptions}
         ref={setOptionsButtonElement}
       />
@@ -20,7 +20,7 @@ const ConnectedAccountsListOptions = ({
         <Menu
           anchorElement={optionsButtonElement}
           onHide={onHideOptions}
-          className="connected-accounts-list-item__menu"
+          className='connected-accounts-list-item__menu'
           popperOptions={{
             modifiers: [
               {
@@ -36,13 +36,13 @@ const ConnectedAccountsListOptions = ({
         </Menu>
       ) : null}
     </>
-  );
-};
+  )
+}
 
 ConnectedAccountsListOptions.propTypes = {
   children: PropTypes.node.isRequired,
   onHideOptions: PropTypes.func.isRequired,
   onShowOptions: PropTypes.func.isRequired,
   show: PropTypes.bool.isRequired,
-};
-export default ConnectedAccountsListOptions;
+}
+export default ConnectedAccountsListOptions

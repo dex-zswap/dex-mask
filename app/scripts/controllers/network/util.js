@@ -1,10 +1,10 @@
-import { NETWORK_TO_NAME_MAP } from '@shared/constants/network';
-import { TRANSACTION_ENVELOPE_TYPES } from '@shared/constants/transaction';
+import { NETWORK_TO_NAME_MAP } from '@shared/constants/network'
+import { TRANSACTION_ENVELOPE_TYPES } from '@shared/constants/transaction'
 
-export const getNetworkDisplayName = (key) => NETWORK_TO_NAME_MAP[key];
+export const getNetworkDisplayName = (key) => NETWORK_TO_NAME_MAP[key]
 
 export function formatTxMetaForRpcResult(txMeta) {
-  const { r, s, v, hash, txReceipt, txParams } = txMeta;
+  const { r, s, v, hash, txReceipt, txParams } = txMeta
   const {
     to,
     data,
@@ -16,7 +16,7 @@ export function formatTxMetaForRpcResult(txMeta) {
     accessList,
     maxFeePerGas,
     maxPriorityFeePerGas,
-  } = txParams;
+  } = txParams
 
   const formattedTxMeta = {
     v,
@@ -33,17 +33,17 @@ export function formatTxMetaForRpcResult(txMeta) {
     blockHash: txReceipt?.blockHash || null,
     blockNumber: txReceipt?.blockNumber || null,
     transactionIndex: txReceipt?.transactionIndex || null,
-  };
-
-  if (maxFeePerGas && maxPriorityFeePerGas) {
-    formattedTxMeta.gasPrice = maxFeePerGas;
-    formattedTxMeta.maxFeePerGas = maxFeePerGas;
-    formattedTxMeta.maxPriorityFeePerGas = maxPriorityFeePerGas;
-    formattedTxMeta.type = TRANSACTION_ENVELOPE_TYPES.FEE_MARKET;
-  } else {
-    formattedTxMeta.gasPrice = gasPrice;
-    formattedTxMeta.type = TRANSACTION_ENVELOPE_TYPES.LEGACY;
   }
 
-  return formattedTxMeta;
+  if (maxFeePerGas && maxPriorityFeePerGas) {
+    formattedTxMeta.gasPrice = maxFeePerGas
+    formattedTxMeta.maxFeePerGas = maxFeePerGas
+    formattedTxMeta.maxPriorityFeePerGas = maxPriorityFeePerGas
+    formattedTxMeta.type = TRANSACTION_ENVELOPE_TYPES.FEE_MARKET
+  } else {
+    formattedTxMeta.gasPrice = gasPrice
+    formattedTxMeta.type = TRANSACTION_ENVELOPE_TYPES.LEGACY
+  }
+
+  return formattedTxMeta
 }

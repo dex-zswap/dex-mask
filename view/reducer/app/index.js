@@ -1,6 +1,6 @@
-import * as actionConstants from '@view/store/actionConstants'; // actionConstants
+import * as actionConstants from '@view/store/actionConstants' // actionConstants
 
-const SET_THREEBOX_LAST_UPDATED = 'metamask/app/SET_THREEBOX_LAST_UPDATED';
+const SET_THREEBOX_LAST_UPDATED = 'metamask/app/SET_THREEBOX_LAST_UPDATED'
 export default function reduceApp(state = {}, action) {
   // default state
   const appState = {
@@ -54,7 +54,7 @@ export default function reduceApp(state = {}, action) {
     },
     gasLoadingAnimationIsShowing: false,
     ...state,
-  };
+  }
 
   switch (action.type) {
     // dropdown methods
@@ -63,32 +63,32 @@ export default function reduceApp(state = {}, action) {
         ...appState,
         networkDropdownOpen: true,
         networkType: action.payload,
-      };
+      }
 
     case actionConstants.NETWORK_DROPDOWN_CLOSE:
-      return { ...appState, networkDropdownOpen: false, networkType: null };
+      return { ...appState, networkDropdownOpen: false, networkType: null }
     // sidebar methods
 
     case actionConstants.SIDEBAR_OPEN:
-      return { ...appState, sidebar: { ...action.value, isOpen: true } };
+      return { ...appState, sidebar: { ...action.value, isOpen: true } }
 
     case actionConstants.SIDEBAR_CLOSE:
-      return { ...appState, sidebar: { ...appState.sidebar, isOpen: false } };
+      return { ...appState, sidebar: { ...appState.sidebar, isOpen: false } }
     // alert methods
 
     case actionConstants.ALERT_OPEN:
-      return { ...appState, alertOpen: true, alertMessage: action.value };
+      return { ...appState, alertOpen: true, alertMessage: action.value }
 
     case actionConstants.ALERT_CLOSE:
-      return { ...appState, alertOpen: false, alertMessage: null };
+      return { ...appState, alertOpen: false, alertMessage: null }
     // qr scanner methods
 
     case actionConstants.QR_CODE_DETECTED:
-      return { ...appState, qrCodeData: action.value };
+      return { ...appState, qrCodeData: action.value }
     // modal methods:
 
     case actionConstants.MODAL_OPEN: {
-      const { name, ...modalProps } = action.payload;
+      const { name, ...modalProps } = action.payload
       return {
         ...appState,
         modal: {
@@ -99,7 +99,7 @@ export default function reduceApp(state = {}, action) {
           },
           previousModalState: { ...appState.modal.modalState },
         },
-      };
+      }
     }
 
     case actionConstants.MODAL_CLOSE:
@@ -120,19 +120,19 @@ export default function reduceApp(state = {}, action) {
             previousModalState: appState.modal.modalState,
           },
         ),
-      };
+      }
 
     case actionConstants.CLEAR_ACCOUNT_DETAILS:
-      return { ...appState, accountDetail: {} };
+      return { ...appState, accountDetail: {} }
 
     case actionConstants.FORGOT_PASSWORD:
-      return { ...appState, forgottenPassword: action.value };
+      return { ...appState, forgottenPassword: action.value }
 
     case actionConstants.SHOW_SEND_TOKEN_PAGE:
-      return { ...appState, warning: null };
+      return { ...appState, warning: null }
 
     case actionConstants.LOCK_DEXMASK:
-      return { ...appState, warning: null };
+      return { ...appState, warning: null }
     // accounts
 
     case actionConstants.GO_HOME:
@@ -144,7 +144,7 @@ export default function reduceApp(state = {}, action) {
           privateKey: '',
         },
         warning: null,
-      };
+      }
 
     case actionConstants.SHOW_ACCOUNT_DETAIL:
       return {
@@ -157,7 +157,7 @@ export default function reduceApp(state = {}, action) {
           accountExport: 'none',
           privateKey: '',
         },
-      };
+      }
 
     case actionConstants.SHOW_ACCOUNTS_PAGE:
       return {
@@ -166,14 +166,14 @@ export default function reduceApp(state = {}, action) {
         warning: null,
         scrollToBottom: false,
         forgottenPassword: false,
-      };
+      }
 
     case actionConstants.SHOW_CONF_TX_PAGE:
-      return { ...appState, txId: action.id, warning: null, isLoading: false };
+      return { ...appState, txId: action.id, warning: null, isLoading: false }
 
     case actionConstants.COMPLETED_TX:
       if (action.value.unconfirmedActionsCount > 0) {
-        return { ...appState, txId: null, warning: null };
+        return { ...appState, txId: null, warning: null }
       }
 
       return {
@@ -185,38 +185,38 @@ export default function reduceApp(state = {}, action) {
         accountDetail: {
           subview: 'transactions',
         },
-      };
+      }
 
     case actionConstants.TRANSACTION_ERROR:
-      return { ...appState };
+      return { ...appState }
 
     case actionConstants.UNLOCK_FAILED:
       return {
         ...appState,
         warning: action.value || 'Incorrect password. Try again.',
-      };
+      }
 
     case actionConstants.UNLOCK_SUCCEEDED:
-      return { ...appState, warning: '' };
+      return { ...appState, warning: '' }
 
     case actionConstants.SET_HARDWARE_WALLET_DEFAULT_HD_PATH: {
-      const { device, path } = action.value;
-      const newDefaults = { ...appState.defaultHdPaths };
-      newDefaults[device] = path;
-      return { ...appState, defaultHdPaths: newDefaults };
+      const { device, path } = action.value
+      const newDefaults = { ...appState.defaultHdPaths }
+      newDefaults[device] = path
+      return { ...appState, defaultHdPaths: newDefaults }
     }
 
     case actionConstants.SHOW_LOADING:
-      return { ...appState, isLoading: true, loadingMessage: action.value };
+      return { ...appState, isLoading: true, loadingMessage: action.value }
 
     case actionConstants.HIDE_LOADING:
-      return { ...appState, isLoading: false };
+      return { ...appState, isLoading: false }
 
     case actionConstants.DISPLAY_WARNING:
-      return { ...appState, warning: action.value, isLoading: false };
+      return { ...appState, warning: action.value, isLoading: false }
 
     case actionConstants.HIDE_WARNING:
-      return { ...appState, warning: undefined };
+      return { ...appState, warning: undefined }
 
     case actionConstants.SHOW_PRIVATE_KEY:
       return {
@@ -226,37 +226,37 @@ export default function reduceApp(state = {}, action) {
           accountExport: 'completed',
           privateKey: action.value,
         },
-      };
+      }
 
     case actionConstants.SET_MOUSE_USER_STATE:
-      return { ...appState, isMouseUser: action.value };
+      return { ...appState, isMouseUser: action.value }
 
     case actionConstants.SET_SELECTED_SETTINGS_RPC_URL:
-      return { ...appState, networksTabSelectedRpcUrl: action.value };
+      return { ...appState, networksTabSelectedRpcUrl: action.value }
 
     case actionConstants.SET_NETWORKS_TAB_ADD_MODE:
-      return { ...appState, networksTabIsInAddMode: action.value };
+      return { ...appState, networksTabIsInAddMode: action.value }
 
     case actionConstants.LOADING_METHOD_DATA_STARTED:
-      return { ...appState, loadingMethodData: true };
+      return { ...appState, loadingMethodData: true }
 
     case actionConstants.LOADING_METHOD_DATA_FINISHED:
-      return { ...appState, loadingMethodData: false };
+      return { ...appState, loadingMethodData: false }
 
     case SET_THREEBOX_LAST_UPDATED:
-      return { ...appState, threeBoxLastUpdated: action.value };
+      return { ...appState, threeBoxLastUpdated: action.value }
 
     case actionConstants.SET_REQUEST_ACCOUNT_TABS:
-      return { ...appState, requestAccountTabs: action.value };
+      return { ...appState, requestAccountTabs: action.value }
 
     case actionConstants.SET_OPEN_DEXMASK_TABIDS:
-      return { ...appState, openMetaMaskTabs: action.value };
+      return { ...appState, openMetaMaskTabs: action.value }
 
     case actionConstants.SET_CURRENT_WINDOW_TAB:
-      return { ...appState, currentWindowTab: action.value };
+      return { ...appState, currentWindowTab: action.value }
 
     case actionConstants.HIDE_WHATS_NEW_POPUP:
-      return { ...appState, showWhatsNewPopup: false };
+      return { ...appState, showWhatsNewPopup: false }
 
     case actionConstants.CAPTURE_SINGLE_EXCEPTION:
       return {
@@ -265,13 +265,13 @@ export default function reduceApp(state = {}, action) {
           ...appState.singleExceptions,
           [action.value]: null,
         },
-      };
+      }
 
     case actionConstants.TOGGLE_GAS_LOADING_ANIMATION:
-      return { ...appState, gasLoadingAnimationIsShowing: action.value };
+      return { ...appState, gasLoadingAnimationIsShowing: action.value }
 
     default:
-      return appState;
+      return appState
   }
 } // Action Creators
 
@@ -279,23 +279,23 @@ export function setThreeBoxLastUpdated(lastUpdated) {
   return {
     type: SET_THREEBOX_LAST_UPDATED,
     value: lastUpdated,
-  };
+  }
 }
 export function hideWhatsNewPopup() {
   return {
     type: actionConstants.HIDE_WHATS_NEW_POPUP,
-  };
+  }
 }
 export function toggleGasLoadingAnimation(value) {
   return {
     type: actionConstants.TOGGLE_GAS_LOADING_ANIMATION,
     value,
-  };
+  }
 } // Selectors
 
 export function getQrCodeData(state) {
-  return state.appState.qrCodeData;
+  return state.appState.qrCodeData
 }
 export function getGasLoadingAnimationIsShowing(state) {
-  return state.appState.gasLoadingAnimationIsShowing;
+  return state.appState.gasLoadingAnimationIsShowing
 }

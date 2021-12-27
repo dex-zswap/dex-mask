@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import { getNativeCurrency } from '@reducer/dexmask/dexmask';
-import { getSendAssetAddress, updateSendAsset } from '@reducer/send';
+import { connect } from 'react-redux'
+import { getNativeCurrency } from '@reducer/dexmask/dexmask'
+import { getSendAssetAddress, updateSendAsset } from '@reducer/send'
 import {
   getAssetImages,
   getDexMaskAccounts,
   getNativeCurrencyImage,
-} from '@view/selectors';
-import SendAssetRow from './component';
+} from '@view/selectors'
+import SendAssetRow from './component'
 
 function mapStateToProps(state) {
   return {
@@ -17,7 +17,7 @@ function mapStateToProps(state) {
     nativeCurrency: getNativeCurrency(state),
     nativeCurrencyImage: getNativeCurrencyImage(state),
     assetImages: getAssetImages(state),
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -29,7 +29,7 @@ function mapDispatchToProps(dispatch) {
           details,
         }),
       ),
-  };
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendAssetRow);
+export default connect(mapStateToProps, mapDispatchToProps)(SendAssetRow)

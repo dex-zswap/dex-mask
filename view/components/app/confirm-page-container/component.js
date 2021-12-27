@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import EditGasPopover from '@c/app/edit-gas/popover';
-import { PageContainerFooter } from '@c/ui/page-container';
-import { EDIT_GAS_MODES } from '@shared/constants/gas';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import EditGasPopover from '@c/app/edit-gas/popover'
+import { PageContainerFooter } from '@c/ui/page-container'
+import { EDIT_GAS_MODES } from '@shared/constants/gas'
 import {
   ConfirmPageContainerContent,
   ConfirmPageContainerHeader,
   ConfirmPageContainerHeaderContent,
   ConfirmPageContainerNavigation,
-} from '.';
+} from '.'
 export default class ConfirmPageContainer extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   static propTypes = {
     // Header
     tokenData: PropTypes.object,
@@ -65,7 +65,7 @@ export default class ConfirmPageContainer extends Component {
     handleCloseEditGas: PropTypes.func,
     // Gas Popover
     currentTransaction: PropTypes.object.isRequired,
-  };
+  }
 
   render() {
     const {
@@ -114,10 +114,10 @@ export default class ConfirmPageContainer extends Component {
       editingGas,
       handleCloseEditGas,
       currentTransaction,
-    } = this.props;
-    const renderAssetImage = contentComponent || !identiconAddress;
+    } = this.props
+    const renderAssetImage = contentComponent || !identiconAddress
     return (
-      <div className="page-container">
+      <div className='page-container'>
         <ConfirmPageContainerNavigation
           totalTx={totalTx}
           positionOfCurrentTx={positionOfCurrentTx}
@@ -194,7 +194,7 @@ export default class ConfirmPageContainer extends Component {
             cancelText={this.context.t('reject')}
             onSubmit={onSubmit}
             submitText={this.context.t('confirm')}
-            submitButtonType="confirm"
+            submitButtonType='confirm'
             disabled={disabled}
           >
             {unapprovedTxCount > 1 && (
@@ -212,6 +212,6 @@ export default class ConfirmPageContainer extends Component {
           />
         )}
       </div>
-    );
+    )
   }
 }

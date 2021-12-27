@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import {
   getCurrentChainId,
   getIsMainnet,
   getIsTestnet,
   getSelectedAddress,
-} from '@selectors/selectors';
-import { buyEth, hideModal, hideWarning, showModal } from '@view/store/actions';
-import DepositEtherModal from './component';
+} from '@selectors/selectors'
+import { buyEth, hideModal, hideWarning, showModal } from '@view/store/actions'
+import DepositEtherModal from './component'
 
 function mapStateToProps(state) {
   return {
@@ -14,7 +14,7 @@ function mapStateToProps(state) {
     isTestnet: getIsTestnet(state),
     isMainnet: getIsMainnet(state),
     address: getSelectedAddress(state),
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -25,7 +25,7 @@ function mapDispatchToProps(dispatch) {
           service: 'wyre',
           address,
         }),
-      );
+      )
     },
     toTransak: (address) => {
       dispatch(
@@ -33,20 +33,20 @@ function mapDispatchToProps(dispatch) {
           service: 'transak',
           address,
         }),
-      );
+      )
     },
     hideModal: () => {
-      dispatch(hideModal());
+      dispatch(hideModal())
     },
     hideWarning: () => {
-      dispatch(hideWarning());
+      dispatch(hideWarning())
     },
     showAccountDetailModal: () => {
       dispatch(
         showModal({
           name: 'ACCOUNT_DETAILS',
         }),
-      );
+      )
     },
     toFaucet: (chainId) =>
       dispatch(
@@ -54,7 +54,7 @@ function mapDispatchToProps(dispatch) {
           chainId,
         }),
       ),
-  };
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepositEtherModal);
+export default connect(mapStateToProps, mapDispatchToProps)(DepositEtherModal)

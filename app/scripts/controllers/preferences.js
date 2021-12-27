@@ -1,21 +1,21 @@
-import contractsMap from '@metamask/contract-metadata';
-import { ObservableStore } from '@metamask/obs-store';
-import { strict as assert } from 'assert';
-import { ethErrors } from 'eth-rpc-errors';
-import { normalize as normalizeAddress } from 'eth-sig-util';
-import { ethers } from 'ethers';
-import abiERC721 from 'human-standard-collectible-abi';
-import log from 'loglevel';
-import { NETWORK_TYPE_TO_ID_MAP } from '@shared/constants/network';
-import { LISTED_CONTRACT_ADDRESSES } from '@shared/constants/tokens';
+import contractsMap from '@metamask/contract-metadata'
+import { ObservableStore } from '@metamask/obs-store'
+import { strict as assert } from 'assert'
+import { ethErrors } from 'eth-rpc-errors'
+import { normalize as normalizeAddress } from 'eth-sig-util'
+import { ethers } from 'ethers'
+import abiERC721 from 'human-standard-collectible-abi'
+import log from 'loglevel'
+import { NETWORK_TYPE_TO_ID_MAP } from '@shared/constants/network'
+import { LISTED_CONTRACT_ADDRESSES } from '@shared/constants/tokens'
 import {
   isValidHexAddress,
   toChecksumHexAddress,
-} from '@shared/modules/hexstring-utils';
-import { isPrefixedFormattedHexString } from '@shared/modules/network.utils';
-import { NETWORK_EVENTS } from './network';
+} from '@shared/modules/hexstring-utils'
+import { isPrefixedFormattedHexString } from '@shared/modules/network.utils'
+import { NETWORK_EVENTS } from './network'
 
-const ERC721_INTERFACE_ID = '0x80ac58cd';
+const ERC721_INTERFACE_ID = '0x80ac58cd'
 
 export default class PreferencesController {
   /**
@@ -78,26 +78,26 @@ export default class PreferencesController {
       infuraBlocked: null,
       useLedgerLive: false,
       ...opts.initState,
-    };
+    }
 
-    this.network = opts.network;
-    this.ethersProvider = new ethers.providers.Web3Provider(opts.provider);
-    this.store = new ObservableStore(initState);
-    this.store.setMaxListeners(12);
-    this.openPopup = opts.openPopup;
-    this.migrateAddressBookState = opts.migrateAddressBookState;
+    this.network = opts.network
+    this.ethersProvider = new ethers.providers.Web3Provider(opts.provider)
+    this.store = new ObservableStore(initState)
+    this.store.setMaxListeners(12)
+    this.openPopup = opts.openPopup
+    this.migrateAddressBookState = opts.migrateAddressBookState
 
     this.network.on(NETWORK_EVENTS.NETWORK_DID_CHANGE, () => {
-      const { tokens, hiddenTokens } = this._getTokenRelatedStates();
-      this.ethersProvider = new ethers.providers.Web3Provider(opts.provider);
-      this._updateAccountTokens(tokens, this.getAssetImages(), hiddenTokens);
-    });
+      const { tokens, hiddenTokens } = this._getTokenRelatedStates()
+      this.ethersProvider = new ethers.providers.Web3Provider(opts.provider)
+      this._updateAccountTokens(tokens, this.getAssetImages(), hiddenTokens)
+    })
 
-    this._subscribeToInfuraAvailability();
+    this._subscribeToInfuraAvailability()
 
     global.setPreference = (key, value) => {
-      return this.setFeatureFlag(key, value);
-    };
+      return this.setFeatureFlag(key, value)
+    }
   }
   // PUBLIC METHODS
 
@@ -106,7 +106,7 @@ export default class PreferencesController {
    * @param {boolean} forgottenPassword - whether or not the user has forgotten their password
    */
   setPasswordForgotten(forgottenPassword) {
-    this.store.updateState({ forgottenPassword });
+    this.store.updateState({ forgottenPassword })
   }
 
   /**
@@ -116,7 +116,7 @@ export default class PreferencesController {
    *
    */
   setUseBlockie(val) {
-    this.store.updateState({ useBlockie: val });
+    this.store.updateState({ useBlockie: val })
   }
 
   /**
@@ -126,7 +126,7 @@ export default class PreferencesController {
    *
    */
   setUseNonceField(val) {
-    this.store.updateState({ useNonceField: val });
+    this.store.updateState({ useNonceField: val })
   }
 
   /**
@@ -136,7 +136,7 @@ export default class PreferencesController {
    *
    */
   setUsePhishDetect(val) {
-    this.store.updateState({ usePhishDetect: val });
+    this.store.updateState({ usePhishDetect: val })
   }
 
   /**
@@ -146,7 +146,7 @@ export default class PreferencesController {
    *
    */
   setUseStaticTokenList(val) {
-    this.store.updateState({ useStaticTokenList: val });
+    this.store.updateState({ useStaticTokenList: val })
   }
 
   /**
@@ -156,15 +156,15 @@ export default class PreferencesController {
    *
    */
   setFirstTimeFlowType(type) {
-    this.store.updateState({ firstTimeFlowType: type });
+    this.store.updateState({ firstTimeFlowType: type })
   }
 
   getSuggestedTokens() {
-    return this.store.getState().suggestedTokens;
+    return this.store.getState().suggestedTokens
   }
 
   getAssetImages() {
-    return this.store.getState().assetImages;
+    return this.store.getState().assetImages
   }
 
   /**
@@ -174,9 +174,9 @@ export default class PreferencesController {
    * @param {string} methodData - Corresponding data method
    */
   addKnownMethodData(fourBytePrefix, methodData) {
-    const { knownMethodData } = this.store.getState();
-    knownMethodData[fourBytePrefix] = methodData;
-    this.store.updateState({ knownMethodData });
+    const { knownMethodData } = this.store.getState()
+    knownMethodData[fourBytePrefix] = methodData
+    this.store.updateState({ knownMethodData })
   }
 
   /**
@@ -185,15 +185,15 @@ export default class PreferencesController {
    * @param {Object} req - The watchAsset JSON-RPC request object.
    */
   async requestWatchAsset(req) {
-    const { type, options } = req.params;
+    const { type, options } = req.params
 
     switch (type) {
       case 'ERC20':
-        return await this._handleWatchAssetERC20(options);
+        return await this._handleWatchAssetERC20(options)
       default:
         throw ethErrors.rpc.invalidParams(
           `Asset of type "${type}" not supported.`,
-        );
+        )
     }
   }
 
@@ -206,12 +206,12 @@ export default class PreferencesController {
   setCurrentLocale(key) {
     const textDirection = ['ar', 'dv', 'fa', 'he', 'ku'].includes(key)
       ? 'rtl'
-      : 'auto';
+      : 'auto'
     this.store.updateState({
       currentLocale: key,
       textDirection,
-    });
-    return textDirection;
+    })
+    return textDirection
   }
 
   /**
@@ -222,26 +222,26 @@ export default class PreferencesController {
    *
    */
   setAddresses(addresses) {
-    const oldIdentities = this.store.getState().identities;
-    const oldAccountTokens = this.store.getState().accountTokens;
-    const oldAccountHiddenTokens = this.store.getState().accountHiddenTokens;
+    const oldIdentities = this.store.getState().identities
+    const oldAccountTokens = this.store.getState().accountTokens
+    const oldAccountHiddenTokens = this.store.getState().accountHiddenTokens
 
     const identities = addresses.reduce((ids, address, index) => {
-      const oldId = oldIdentities[address] || {};
-      ids[address] = { name: `Account ${index + 1}`, address, ...oldId };
-      return ids;
-    }, {});
+      const oldId = oldIdentities[address] || {}
+      ids[address] = { name: `Account ${index + 1}`, address, ...oldId }
+      return ids
+    }, {})
     const accountTokens = addresses.reduce((tokens, address) => {
-      const oldTokens = oldAccountTokens[address] || {};
-      tokens[address] = oldTokens;
-      return tokens;
-    }, {});
+      const oldTokens = oldAccountTokens[address] || {}
+      tokens[address] = oldTokens
+      return tokens
+    }, {})
     const accountHiddenTokens = addresses.reduce((hiddenTokens, address) => {
-      const oldHiddenTokens = oldAccountHiddenTokens[address] || {};
-      hiddenTokens[address] = oldHiddenTokens;
-      return hiddenTokens;
-    }, {});
-    this.store.updateState({ identities, accountTokens, accountHiddenTokens });
+      const oldHiddenTokens = oldAccountHiddenTokens[address] || {}
+      hiddenTokens[address] = oldHiddenTokens
+      return hiddenTokens
+    }, {})
+    this.store.updateState({ identities, accountTokens, accountHiddenTokens })
   }
 
   /**
@@ -255,23 +255,23 @@ export default class PreferencesController {
       identities,
       accountTokens,
       accountHiddenTokens,
-    } = this.store.getState();
+    } = this.store.getState()
 
     if (!identities[address]) {
-      throw new Error(`${address} can't be deleted cause it was not found`);
+      throw new Error(`${address} can't be deleted cause it was not found`)
     }
-    delete identities[address];
-    delete accountTokens[address];
-    delete accountHiddenTokens[address];
-    this.store.updateState({ identities, accountTokens, accountHiddenTokens });
+    delete identities[address]
+    delete accountTokens[address]
+    delete accountHiddenTokens[address]
+    this.store.updateState({ identities, accountTokens, accountHiddenTokens })
 
     // If the selected account is no longer valid,
     // select an arbitrary other account:
     if (address === this.getSelectedAddress()) {
-      const selected = Object.keys(identities)[0];
-      this.setSelectedAddress(selected);
+      const selected = Object.keys(identities)[0]
+      this.setSelectedAddress(selected)
     }
-    return address;
+    return address
   }
 
   /**
@@ -285,20 +285,20 @@ export default class PreferencesController {
       identities,
       accountTokens,
       accountHiddenTokens,
-    } = this.store.getState();
+    } = this.store.getState()
     addresses.forEach((address) => {
       // skip if already exists
       if (identities[address]) {
-        return;
+        return
       }
       // add missing identity
-      const identityCount = Object.keys(identities).length;
+      const identityCount = Object.keys(identities).length
 
-      accountTokens[address] = {};
-      accountHiddenTokens[address] = {};
-      identities[address] = { name: `Account ${identityCount + 1}`, address };
-    });
-    this.store.updateState({ identities, accountTokens, accountHiddenTokens });
+      accountTokens[address] = {}
+      accountHiddenTokens[address] = {}
+      identities[address] = { name: `Account ${identityCount + 1}`, address }
+    })
+    this.store.updateState({ identities, accountTokens, accountHiddenTokens })
   }
 
   /**
@@ -310,46 +310,46 @@ export default class PreferencesController {
    */
   syncAddresses(addresses) {
     if (!Array.isArray(addresses) || addresses.length === 0) {
-      throw new Error('Expected non-empty array of addresses. Error #11201');
+      throw new Error('Expected non-empty array of addresses. Error #11201')
     }
 
-    const { identities, lostIdentities } = this.store.getState();
+    const { identities, lostIdentities } = this.store.getState()
 
-    const newlyLost = {};
+    const newlyLost = {}
     Object.keys(identities).forEach((identity) => {
       if (!addresses.includes(identity)) {
-        newlyLost[identity] = identities[identity];
-        delete identities[identity];
+        newlyLost[identity] = identities[identity]
+        delete identities[identity]
       }
-    });
+    })
 
     // Identities are no longer present.
     if (Object.keys(newlyLost).length > 0) {
       // store lost accounts
       Object.keys(newlyLost).forEach((key) => {
-        lostIdentities[key] = newlyLost[key];
-      });
+        lostIdentities[key] = newlyLost[key]
+      })
     }
 
-    this.store.updateState({ identities, lostIdentities });
-    this.addAddresses(addresses);
+    this.store.updateState({ identities, lostIdentities })
+    this.addAddresses(addresses)
 
     // If the selected account is no longer valid,
     // select an arbitrary other account:
-    let selected = this.getSelectedAddress();
+    let selected = this.getSelectedAddress()
     if (!addresses.includes(selected)) {
-      selected = addresses[0];
-      this.setSelectedAddress(selected);
+      selected = addresses[0]
+      this.setSelectedAddress(selected)
     }
 
-    return selected;
+    return selected
   }
 
   removeSuggestedTokens() {
     return new Promise((resolve) => {
-      this.store.updateState({ suggestedTokens: {} });
-      resolve({});
-    });
+      this.store.updateState({ suggestedTokens: {} })
+      resolve({})
+    })
   }
 
   /**
@@ -360,18 +360,18 @@ export default class PreferencesController {
    *
    */
   setSelectedAddress(_address) {
-    const address = normalizeAddress(_address);
-    this._updateTokens(address);
+    const address = normalizeAddress(_address)
+    this._updateTokens(address)
 
-    const { identities, tokens } = this.store.getState();
-    const selectedIdentity = identities[address];
+    const { identities, tokens } = this.store.getState()
+    const selectedIdentity = identities[address]
     if (!selectedIdentity) {
-      throw new Error(`Identity for '${address} not found`);
+      throw new Error(`Identity for '${address} not found`)
     }
 
-    selectedIdentity.lastSelected = Date.now();
-    this.store.updateState({ identities, selectedAddress: address });
-    return Promise.resolve(tokens);
+    selectedIdentity.lastSelected = Date.now()
+    this.store.updateState({ identities, selectedAddress: address })
+    return Promise.resolve(tokens)
   }
 
   /**
@@ -381,7 +381,7 @@ export default class PreferencesController {
    *
    */
   getSelectedAddress() {
-    return this.store.getState().selectedAddress;
+    return this.store.getState().selectedAddress
   }
 
   /**
@@ -406,28 +406,28 @@ export default class PreferencesController {
    *
    */
   async addToken(rawAddress, symbol, decimals, image) {
-    const address = normalizeAddress(rawAddress);
-    const newEntry = { address, symbol, decimals: Number(decimals) };
-    const { tokens, hiddenTokens } = this.store.getState();
-    const assetImages = this.getAssetImages();
+    const address = normalizeAddress(rawAddress)
+    const newEntry = { address, symbol, decimals: Number(decimals) }
+    const { tokens, hiddenTokens } = this.store.getState()
+    const assetImages = this.getAssetImages()
     const updatedHiddenTokens = hiddenTokens.filter(
       (tokenAddress) => tokenAddress !== rawAddress.toLowerCase(),
-    );
+    )
     const previousEntry = tokens.find((token) => {
-      return token.address === address;
-    });
-    const previousIndex = tokens.indexOf(previousEntry);
+      return token.address === address
+    })
+    const previousIndex = tokens.indexOf(previousEntry)
 
-    newEntry.isERC721 = await this._detectIsERC721(newEntry.address);
+    newEntry.isERC721 = await this._detectIsERC721(newEntry.address)
 
     if (previousEntry) {
-      tokens[previousIndex] = newEntry;
+      tokens[previousIndex] = newEntry
     } else {
-      tokens.push(newEntry);
+      tokens.push(newEntry)
     }
-    assetImages[address] = image;
-    this._updateAccountTokens(tokens, assetImages, updatedHiddenTokens);
-    return Promise.resolve(tokens);
+    assetImages[address] = image
+    this._updateAccountTokens(tokens, assetImages, updatedHiddenTokens)
+    return Promise.resolve(tokens)
   }
 
   /**
@@ -439,13 +439,13 @@ export default class PreferencesController {
    *
    */
   async updateTokenType(tokenAddress) {
-    const { tokens } = this.store.getState();
+    const { tokens } = this.store.getState()
     const tokenIndex = tokens.findIndex((token) => {
-      return token.address === tokenAddress;
-    });
-    tokens[tokenIndex].isERC721 = await this._detectIsERC721(tokenAddress);
-    this.store.updateState({ tokens });
-    return Promise.resolve(tokens[tokenIndex]);
+      return token.address === tokenAddress
+    })
+    tokens[tokenIndex].isERC721 = await this._detectIsERC721(tokenAddress)
+    this.store.updateState({ tokens })
+    return Promise.resolve(tokens[tokenIndex])
   }
 
   /**
@@ -456,15 +456,13 @@ export default class PreferencesController {
    *
    */
   removeToken(rawAddress) {
-    const { tokens, hiddenTokens } = this.store.getState();
-    const assetImages = this.getAssetImages();
-    const updatedTokens = tokens.filter(
-      (token) => token.address !== rawAddress,
-    );
-    const updatedHiddenTokens = [...hiddenTokens, rawAddress.toLowerCase()];
-    delete assetImages[rawAddress];
-    this._updateAccountTokens(updatedTokens, assetImages, updatedHiddenTokens);
-    return Promise.resolve(updatedTokens);
+    const { tokens, hiddenTokens } = this.store.getState()
+    const assetImages = this.getAssetImages()
+    const updatedTokens = tokens.filter((token) => token.address !== rawAddress)
+    const updatedHiddenTokens = [...hiddenTokens, rawAddress.toLowerCase()]
+    delete assetImages[rawAddress]
+    this._updateAccountTokens(updatedTokens, assetImages, updatedHiddenTokens)
+    return Promise.resolve(updatedTokens)
   }
 
   /**
@@ -474,7 +472,7 @@ export default class PreferencesController {
    *
    */
   getTokens() {
-    return this.store.getState().tokens;
+    return this.store.getState().tokens
   }
 
   /**
@@ -487,14 +485,14 @@ export default class PreferencesController {
     if (!account) {
       throw new Error(
         `setAccountLabel requires a valid address, got ${String(account)}`,
-      );
+      )
     }
-    const address = normalizeAddress(account);
-    const { identities } = this.store.getState();
-    identities[address] = identities[address] || {};
-    identities[address].name = label;
-    this.store.updateState({ identities });
-    return Promise.resolve(label);
+    const address = normalizeAddress(account)
+    const { identities } = this.store.getState()
+    identities[address] = identities[address] || {}
+    identities[address].name = label
+    this.store.updateState({ identities })
+    return Promise.resolve(label)
   }
 
   /**
@@ -509,30 +507,30 @@ export default class PreferencesController {
    *
    */
   async updateRpc(newRpcDetails) {
-    const rpcList = this.getFrequentRpcListDetail();
+    const rpcList = this.getFrequentRpcListDetail()
     const index = rpcList.findIndex((element) => {
-      return element.rpcUrl === newRpcDetails.rpcUrl;
-    });
+      return element.rpcUrl === newRpcDetails.rpcUrl
+    })
     if (index > -1) {
-      const rpcDetail = rpcList[index];
-      const updatedRpc = { ...rpcDetail, ...newRpcDetails };
+      const rpcDetail = rpcList[index]
+      const updatedRpc = { ...rpcDetail, ...newRpcDetails }
       if (rpcDetail.chainId !== updatedRpc.chainId) {
         // When the chainId is changed, associated address book entries should
         // also be migrated. The address book entries are keyed by the `network` state,
         // which for custom networks is the chainId with a fallback to the networkId
         // if the chainId is not set.
 
-        let addressBookKey = rpcDetail.chainId;
+        let addressBookKey = rpcDetail.chainId
         if (!addressBookKey) {
           // We need to find the networkId to determine what these addresses were keyed by
           try {
-            addressBookKey = await this.ethersProvider.send('net_version');
-            assert(typeof addressBookKey === 'string');
+            addressBookKey = await this.ethersProvider.send('net_version')
+            assert(typeof addressBookKey === 'string')
           } catch (error) {
-            log.debug(error);
+            log.debug(error)
             log.warn(
               `Failed to get networkId from ${rpcDetail.rpcUrl}; skipping address book migration`,
-            );
+            )
           }
         }
 
@@ -540,37 +538,31 @@ export default class PreferencesController {
         // value. In this case, the contact book entries are duplicated so that they remain
         // on both networks, since we don't know which network each contact is intended for.
 
-        let duplicate = false;
+        let duplicate = false
         const builtInProviderNetworkIds = Object.values(
           NETWORK_TYPE_TO_ID_MAP,
-        ).map((ids) => ids.networkId);
+        ).map((ids) => ids.networkId)
         const otherRpcEntries = rpcList.filter(
           (entry) => entry.rpcUrl !== newRpcDetails.rpcUrl,
-        );
+        )
         if (
           builtInProviderNetworkIds.includes(addressBookKey) ||
           otherRpcEntries.some((entry) => entry.chainId === addressBookKey)
         ) {
-          duplicate = true;
+          duplicate = true
         }
 
         this.migrateAddressBookState(
           addressBookKey,
           updatedRpc.chainId,
           duplicate,
-        );
+        )
       }
-      rpcList[index] = updatedRpc;
-      this.store.updateState({ frequentRpcListDetail: rpcList });
+      rpcList[index] = updatedRpc
+      this.store.updateState({ frequentRpcListDetail: rpcList })
     } else {
-      const {
-        rpcUrl,
-        chainId,
-        ticker,
-        nickname,
-        rpcPrefs = {},
-      } = newRpcDetails;
-      this.addToFrequentRpcList(rpcUrl, chainId, ticker, nickname, rpcPrefs);
+      const { rpcUrl, chainId, ticker, nickname, rpcPrefs = {} } = newRpcDetails
+      this.addToFrequentRpcList(rpcUrl, chainId, ticker, nickname, rpcPrefs)
     }
   }
 
@@ -591,21 +583,21 @@ export default class PreferencesController {
     nickname = '',
     rpcPrefs = {},
   ) {
-    const rpcList = this.getFrequentRpcListDetail();
+    const rpcList = this.getFrequentRpcListDetail()
 
     const index = rpcList.findIndex((element) => {
-      return element.rpcUrl === rpcUrl;
-    });
+      return element.rpcUrl === rpcUrl
+    })
     if (index !== -1) {
-      rpcList.splice(index, 1);
+      rpcList.splice(index, 1)
     }
 
     if (!isPrefixedFormattedHexString(chainId)) {
-      throw new Error(`Invalid chainId: "${chainId}"`);
+      throw new Error(`Invalid chainId: "${chainId}"`)
     }
 
-    rpcList.push({ rpcUrl, chainId, ticker, nickname, rpcPrefs });
-    this.store.updateState({ frequentRpcListDetail: rpcList });
+    rpcList.push({ rpcUrl, chainId, ticker, nickname, rpcPrefs })
+    this.store.updateState({ frequentRpcListDetail: rpcList })
   }
 
   /**
@@ -616,15 +608,15 @@ export default class PreferencesController {
    *
    */
   removeFromFrequentRpcList(url) {
-    const rpcList = this.getFrequentRpcListDetail();
+    const rpcList = this.getFrequentRpcListDetail()
     const index = rpcList.findIndex((element) => {
-      return element.rpcUrl === url;
-    });
+      return element.rpcUrl === url
+    })
     if (index !== -1) {
-      rpcList.splice(index, 1);
+      rpcList.splice(index, 1)
     }
-    this.store.updateState({ frequentRpcListDetail: rpcList });
-    return Promise.resolve(rpcList);
+    this.store.updateState({ frequentRpcListDetail: rpcList })
+    return Promise.resolve(rpcList)
   }
 
   /**
@@ -634,7 +626,7 @@ export default class PreferencesController {
    *
    */
   getFrequentRpcListDetail() {
-    return this.store.getState().frequentRpcListDetail;
+    return this.store.getState().frequentRpcListDetail
   }
 
   /**
@@ -646,15 +638,15 @@ export default class PreferencesController {
    *
    */
   setFeatureFlag(feature, activated) {
-    const currentFeatureFlags = this.store.getState().featureFlags;
+    const currentFeatureFlags = this.store.getState().featureFlags
     const updatedFeatureFlags = {
       ...currentFeatureFlags,
       [feature]: activated,
-    };
+    }
 
-    this.store.updateState({ featureFlags: updatedFeatureFlags });
+    this.store.updateState({ featureFlags: updatedFeatureFlags })
 
-    return Promise.resolve(updatedFeatureFlags);
+    return Promise.resolve(updatedFeatureFlags)
   }
 
   /**
@@ -665,14 +657,14 @@ export default class PreferencesController {
    * @returns {Promise<object>} Promises a new object; the updated preferences object.
    */
   setPreference(preference, value) {
-    const currentPreferences = this.getPreferences();
+    const currentPreferences = this.getPreferences()
     const updatedPreferences = {
       ...currentPreferences,
       [preference]: value,
-    };
+    }
 
-    this.store.updateState({ preferences: updatedPreferences });
-    return Promise.resolve(updatedPreferences);
+    this.store.updateState({ preferences: updatedPreferences })
+    return Promise.resolve(updatedPreferences)
   }
 
   /**
@@ -680,7 +672,7 @@ export default class PreferencesController {
    * @returns {Object} A key-boolean map of user-selected preferences.
    */
   getPreferences() {
-    return this.store.getState().preferences;
+    return this.store.getState().preferences
   }
 
   /**
@@ -688,8 +680,8 @@ export default class PreferencesController {
    * onboarding process.
    */
   completeOnboarding() {
-    this.store.updateState({ completedOnboarding: true });
-    return Promise.resolve(true);
+    this.store.updateState({ completedOnboarding: true })
+    return Promise.resolve(true)
   }
 
   /**
@@ -697,7 +689,7 @@ export default class PreferencesController {
    * @returns {string} The current IPFS gateway domain
    */
   getIpfsGateway() {
-    return this.store.getState().ipfsGateway;
+    return this.store.getState().ipfsGateway
   }
 
   /**
@@ -706,8 +698,8 @@ export default class PreferencesController {
    * @returns {Promise<string>} A promise of the update IPFS gateway domain
    */
   setIpfsGateway(domain) {
-    this.store.updateState({ ipfsGateway: domain });
-    return Promise.resolve(domain);
+    this.store.updateState({ ipfsGateway: domain })
+    return Promise.resolve(domain)
   }
 
   /**
@@ -716,8 +708,8 @@ export default class PreferencesController {
    * @returns {Promise<string>} A promise of the update to useLedgerLive
    */
   async setLedgerLivePreference(useLedgerLive) {
-    this.store.updateState({ useLedgerLive });
-    return useLedgerLive;
+    this.store.updateState({ useLedgerLive })
+    return useLedgerLive
   }
 
   /**
@@ -725,7 +717,7 @@ export default class PreferencesController {
    * @returns {boolean} User preference of using Ledger Live
    */
   getLedgerLivePreference() {
-    return this.store.getState().useLedgerLive;
+    return this.store.getState().useLedgerLive
   }
 
   /**
@@ -736,7 +728,7 @@ export default class PreferencesController {
   async setDismissSeedBackUpReminder(dismissSeedBackUpReminder) {
     await this.store.updateState({
       dismissSeedBackUpReminder,
-    });
+    })
   }
 
   //
@@ -745,11 +737,11 @@ export default class PreferencesController {
 
   _subscribeToInfuraAvailability() {
     this.network.on(NETWORK_EVENTS.INFURA_IS_BLOCKED, () => {
-      this._setInfuraBlocked(true);
-    });
+      this._setInfuraBlocked(true)
+    })
     this.network.on(NETWORK_EVENTS.INFURA_IS_UNBLOCKED, () => {
-      this._setInfuraBlocked(false);
-    });
+      this._setInfuraBlocked(false)
+    })
   }
 
   /**
@@ -759,13 +751,13 @@ export default class PreferencesController {
    *
    */
   _setInfuraBlocked(isBlocked) {
-    const { infuraBlocked } = this.store.getState();
+    const { infuraBlocked } = this.store.getState()
 
     if (infuraBlocked === isBlocked) {
-      return;
+      return
     }
 
-    this.store.updateState({ infuraBlocked: isBlocked });
+    this.store.updateState({ infuraBlocked: isBlocked })
   }
 
   /**
@@ -782,16 +774,16 @@ export default class PreferencesController {
       chainId,
       selectedAddress,
       accountHiddenTokens,
-    } = this._getTokenRelatedStates();
-    accountTokens[selectedAddress][chainId] = tokens;
-    accountHiddenTokens[selectedAddress][chainId] = hiddenTokens;
+    } = this._getTokenRelatedStates()
+    accountTokens[selectedAddress][chainId] = tokens
+    accountHiddenTokens[selectedAddress][chainId] = hiddenTokens
     this.store.updateState({
       accountTokens,
       tokens,
       assetImages,
       accountHiddenTokens,
       hiddenTokens,
-    });
+    })
   }
 
   /**
@@ -801,24 +793,24 @@ export default class PreferencesController {
    *
    */
   async _detectIsERC721(tokenAddress) {
-    const checksumAddress = toChecksumHexAddress(tokenAddress);
+    const checksumAddress = toChecksumHexAddress(tokenAddress)
     // if this token is already in our contract metadata map we don't need
     // to check against the contract
     if (contractsMap[checksumAddress]?.erc721 === true) {
-      return Promise.resolve(true);
+      return Promise.resolve(true)
     }
     const tokenContract = await this._createEthersContract(
       tokenAddress,
       abiERC721,
       this.ethersProvider,
-    );
+    )
 
     return await tokenContract
       .supportsInterface(ERC721_INTERFACE_ID)
       .catch((error) => {
-        log.debug(error);
-        return false;
-      });
+        log.debug(error)
+        return false
+      })
   }
 
   async _createEthersContract(tokenAddress, abi, ethersProvider) {
@@ -826,8 +818,8 @@ export default class PreferencesController {
       tokenAddress,
       abi,
       ethersProvider,
-    );
-    return tokenContract;
+    )
+    return tokenContract
   }
 
   /**
@@ -839,8 +831,8 @@ export default class PreferencesController {
   _updateTokens(selectedAddress) {
     const { tokens, hiddenTokens } = this._getTokenRelatedStates(
       selectedAddress,
-    );
-    this.store.updateState({ tokens, hiddenTokens });
+    )
+    this.store.updateState({ tokens, hiddenTokens })
   }
 
   /**
@@ -851,26 +843,26 @@ export default class PreferencesController {
    *
    */
   _getTokenRelatedStates(selectedAddress) {
-    const { accountTokens, accountHiddenTokens } = this.store.getState();
+    const { accountTokens, accountHiddenTokens } = this.store.getState()
     if (!selectedAddress) {
       // eslint-disable-next-line no-param-reassign
-      selectedAddress = this.store.getState().selectedAddress;
+      selectedAddress = this.store.getState().selectedAddress
     }
-    const chainId = this.network.getCurrentChainId();
+    const chainId = this.network.getCurrentChainId()
     if (!(selectedAddress in accountTokens)) {
-      accountTokens[selectedAddress] = {};
+      accountTokens[selectedAddress] = {}
     }
     if (!(selectedAddress in accountHiddenTokens)) {
-      accountHiddenTokens[selectedAddress] = {};
+      accountHiddenTokens[selectedAddress] = {}
     }
     if (!(chainId in accountTokens[selectedAddress])) {
-      accountTokens[selectedAddress][chainId] = [];
+      accountTokens[selectedAddress][chainId] = []
     }
     if (!(chainId in accountHiddenTokens[selectedAddress])) {
-      accountHiddenTokens[selectedAddress][chainId] = [];
+      accountHiddenTokens[selectedAddress][chainId] = []
     }
-    const tokens = accountTokens[selectedAddress][chainId];
-    const hiddenTokens = accountHiddenTokens[selectedAddress][chainId];
+    const tokens = accountTokens[selectedAddress][chainId]
+    const hiddenTokens = accountHiddenTokens[selectedAddress][chainId]
     return {
       tokens,
       accountTokens,
@@ -878,7 +870,7 @@ export default class PreferencesController {
       accountHiddenTokens,
       chainId,
       selectedAddress,
-    };
+    }
   }
 
   /**
@@ -888,17 +880,17 @@ export default class PreferencesController {
    *
    */
   async _handleWatchAssetERC20(tokenMetadata) {
-    this._validateERC20AssetParams(tokenMetadata);
+    this._validateERC20AssetParams(tokenMetadata)
 
-    const address = normalizeAddress(tokenMetadata.address);
-    const { symbol, decimals, image } = tokenMetadata;
-    this._addSuggestedERC20Asset(address, symbol, decimals, image);
+    const address = normalizeAddress(tokenMetadata.address)
+    const { symbol, decimals, image } = tokenMetadata
+    this._addSuggestedERC20Asset(address, symbol, decimals, image)
 
-    await this.openPopup();
+    await this.openPopup()
     const tokenAddresses = this.getTokens().filter(
       (token) => token.address === address,
-    );
-    return tokenAddresses.length > 0;
+    )
+    return tokenAddresses.length > 0
   }
 
   /**
@@ -913,29 +905,29 @@ export default class PreferencesController {
     if (!address || !symbol || typeof decimals === 'undefined') {
       throw ethErrors.rpc.invalidParams(
         `Must specify address, symbol, and decimals.`,
-      );
+      )
     }
     if (typeof symbol !== 'string') {
-      throw ethErrors.rpc.invalidParams(`Invalid symbol: not a string.`);
+      throw ethErrors.rpc.invalidParams(`Invalid symbol: not a string.`)
     }
     if (!(symbol.length > 0)) {
       throw ethErrors.rpc.invalidParams(
         `Invalid symbol "${symbol}": shorter than a character.`,
-      );
+      )
     }
     if (!(symbol.length < 12)) {
       throw ethErrors.rpc.invalidParams(
         `Invalid symbol "${symbol}": longer than 11 characters.`,
-      );
+      )
     }
-    const numDecimals = parseInt(decimals, 10);
+    const numDecimals = parseInt(decimals, 10)
     if (isNaN(numDecimals) || numDecimals > 36 || numDecimals < 0) {
       throw ethErrors.rpc.invalidParams(
         `Invalid decimals "${decimals}": must be 0 <= 36.`,
-      );
+      )
     }
     if (!isValidHexAddress(address, { allowNonPrefixed: false })) {
-      throw ethErrors.rpc.invalidParams(`Invalid address "${address}".`);
+      throw ethErrors.rpc.invalidParams(`Invalid address "${address}".`)
     }
   }
 
@@ -946,9 +938,9 @@ export default class PreferencesController {
       decimals,
       image,
       unlisted: !LISTED_CONTRACT_ADDRESSES.includes(address),
-    };
-    const suggested = this.getSuggestedTokens();
-    suggested[address] = newEntry;
-    this.store.updateState({ suggestedTokens: suggested });
+    }
+    const suggested = this.getSuggestedTokens()
+    suggested[address] = newEntry
+    this.store.updateState({ suggestedTokens: suggested })
   }
 }

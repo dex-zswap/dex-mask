@@ -1,13 +1,13 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getPlatform } from '@app/scripts/lib/util';
-import Button from '@c/ui/button';
-import Switch from '@c/ui/switch';
-import TextField from '@c/ui/text-field';
-import { PLATFORM_FIREFOX } from '@shared/constants/app';
-import { exportAsFile } from '@view/helpers/utils';
-import { useI18nContext } from '@view/hooks/useI18nContext';
-import { getPreferences } from '@view/selectors';
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getPlatform } from '@app/scripts/lib/util'
+import Button from '@c/ui/button'
+import Switch from '@c/ui/switch'
+import TextField from '@c/ui/text-field'
+import { PLATFORM_FIREFOX } from '@shared/constants/app'
+import { exportAsFile } from '@view/helpers/utils'
+import { useI18nContext } from '@view/hooks/useI18nContext'
+import { getPreferences } from '@view/selectors'
 import {
   displayWarning,
   setAutoLockTimeLimit,
@@ -20,21 +20,21 @@ import {
   setUseNonceField,
   showModal,
   turnThreeBoxSyncingOnAndInitialize,
-} from '@view/store/actions';
+} from '@view/store/actions'
 
 function addUrlProtocolPrefix(urlString) {
   if (!urlString.match(/(^http:\/\/)|(^https:\/\/)/u)) {
-    return `https://${urlString}`;
+    return `https://${urlString}`
   }
 
-  return urlString;
+  return urlString
 }
 
-let ipfsGatewayError = '';
+let ipfsGatewayError = ''
 export default function AdvancedTab({ lockTimeError }) {
-  const t = useI18nContext();
-  const dispatch = useDispatch();
-  const { warning } = useSelector((state) => state.appState);
+  const t = useI18nContext()
+  const dispatch = useDispatch()
+  const { warning } = useSelector((state) => state.appState)
   const {
     featureFlags: { sendHexData, advancedInlineGas } = {},
     threeBoxSyncingAllowed,
@@ -43,76 +43,76 @@ export default function AdvancedTab({ lockTimeError }) {
     ipfsGateway,
     useLedgerLive,
     dismissSeedBackUpReminder,
-  } = useSelector((state) => state.metamask);
-  const { showFiatInTestnets, autoLockTimeLimit } = useSelector(getPreferences);
-  let allowed = threeBoxSyncingAllowed;
+  } = useSelector((state) => state.metamask)
+  const { showFiatInTestnets, autoLockTimeLimit } = useSelector(getPreferences)
+  let allowed = threeBoxSyncingAllowed
 
   if (threeBoxDisabled) {
-    allowed = false;
+    allowed = false
   }
 
   const handleIpfsGatewayChange = (url) => {
     try {
-      const urlObj = new URL(addUrlProtocolPrefix(url));
+      const urlObj = new URL(addUrlProtocolPrefix(url))
 
       if (!urlObj.host) {
-        throw new Error();
+        throw new Error()
       } // don't allow the use of this gateway
 
       if (urlObj.host === 'gateway.ipfs.io') {
-        throw new Error('Forbidden gateway');
+        throw new Error('Forbidden gateway')
       }
 
-      setIpfsGateway(url);
+      setIpfsGateway(url)
     } catch (error) {
       ipfsGatewayError =
         error.message === 'Forbidden gateway'
           ? t('forbiddenIpfsGateway')
-          : t('invalidIpfsGateway');
+          : t('invalidIpfsGateway')
     }
-  };
+  }
 
   return (
-    <div className="setting-advanced-wrap base-width">
-      {warning && <div className="settings-tab__error">{warning}</div>}
-      <div className="setting-item">
-        <div className="setting-label">{t('stateLogs')}</div>
-        <div className="setting-value">{t('stateLogsDescription')}</div>
+    <div className='setting-advanced-wrap base-width'>
+      {warning && <div className='settings-tab__error'>{warning}</div>}
+      <div className='setting-item'>
+        <div className='setting-label'>{t('stateLogs')}</div>
+        <div className='setting-value'>{t('stateLogsDescription')}</div>
         <Button
-          type="primary"
+          type='primary'
           onClick={() => {
             window.logStateString((err, result) => {
               if (err) {
-                dispatch(displayWarning(t('stateLogError')));
+                dispatch(displayWarning(t('stateLogError')))
               } else {
-                exportAsFile(`${t('stateLogFileName')}.json`, result);
+                exportAsFile(`${t('stateLogFileName')}.json`, result)
               }
-            });
+            })
           }}
         >
           {t('downloadStateLogs')}
         </Button>
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('resetAccount')}</div>
-        <div className="setting-value">{t('resetAccountDescription')}</div>
+      <div className='setting-item'>
+        <div className='setting-label'>{t('resetAccount')}</div>
+        <div className='setting-value'>{t('resetAccountDescription')}</div>
         <Button
-          type="warning"
+          type='warning'
           onClick={(event) => {
-            event.preventDefault();
+            event.preventDefault()
             dispatch(
               showModal({
                 name: 'CONFIRM_RESET_ACCOUNT',
               }),
-            );
+            )
           }}
         >
           {t('resetAccount')}
         </Button>
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('showAdvancedGasInline')}</div>
-        <div className="setting-value">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('showAdvancedGasInline')}</div>
+        <div className='setting-value'>
           {t('showAdvancedGasInlineDescription')}
         </div>
         <Switch
@@ -122,17 +122,17 @@ export default function AdvancedTab({ lockTimeError }) {
           }
         />
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('showHexData')}</div>
-        <div className="setting-value">{t('showHexDataDescription')}</div>
+      <div className='setting-item'>
+        <div className='setting-label'>{t('showHexData')}</div>
+        <div className='setting-value'>{t('showHexDataDescription')}</div>
         <Switch
           value={sendHexData}
           onChange={() => dispatch(setFeatureFlag('sendHexData', !sendHexData))}
         />
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('showFiatConversionInTestnets')}</div>
-        <div className="setting-value">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('showFiatConversionInTestnets')}</div>
+        <div className='setting-value'>
           {t('showFiatConversionInTestnetsDescription')}
         </div>
         <Switch
@@ -144,33 +144,33 @@ export default function AdvancedTab({ lockTimeError }) {
           }
         />
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('nonceField')}</div>
-        <div className="setting-value">{t('nonceFieldDescription')}</div>
+      <div className='setting-item'>
+        <div className='setting-label'>{t('nonceField')}</div>
+        <div className='setting-value'>{t('nonceFieldDescription')}</div>
         <Switch
           value={useNonceField}
           onChange={() => dispatch(setUseNonceField(!useNonceField))}
         />
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('autoLockTimeLimit')}</div>
-        <div className="setting-value">{t('autoLockTimeLimitDescription')}</div>
-        <div className="setting-input-btn-wrap">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('autoLockTimeLimit')}</div>
+        <div className='setting-value'>{t('autoLockTimeLimitDescription')}</div>
+        <div className='setting-input-btn-wrap'>
           <TextField
-            type="number"
-            id="autoTimeout"
-            placeholder="5"
+            type='number'
+            id='autoTimeout'
+            placeholder='5'
             value={autoLockTimeLimit}
             defaultValue={autoLockTimeLimit}
             onChange={(e) => handleLockChange(e.target.value)}
             error={lockTimeError}
             fullWidth
-            margin="dense"
+            margin='dense'
             min={0}
           />
           <Button
-            type="primary"
-            className="settings-tab__rpc-save-button"
+            type='primary'
+            className='settings-tab__rpc-save-button'
             disabled={lockTimeError !== ''}
             onClick={() => dispatch(setAutoLockTimeLimit(autoLockTimeLimit))}
           >
@@ -178,9 +178,9 @@ export default function AdvancedTab({ lockTimeError }) {
           </Button>
         </div>
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('syncWithThreeBox')}</div>
-        <div className="setting-value">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('syncWithThreeBox')}</div>
+        <div className='setting-value'>
           {threeBoxDisabled
             ? t('syncWithThreeBoxDisabled')
             : t('syncWithThreeBoxDescription')}
@@ -190,42 +190,42 @@ export default function AdvancedTab({ lockTimeError }) {
           onChange={() => {
             if (!threeBoxDisabled) {
               if (!allowed) {
-                dispatch(turnThreeBoxSyncingOnAndInitialize());
+                dispatch(turnThreeBoxSyncingOnAndInitialize())
               } else {
-                dispatch(setThreeBoxSyncingPermission(!allowed));
+                dispatch(setThreeBoxSyncingPermission(!allowed))
               }
             }
           }}
         />
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('ipfsGateway')}</div>
-        <div className="setting-value">{t('ipfsGatewayDescription')}</div>
-        <div className="setting-input-btn-wrap">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('ipfsGateway')}</div>
+        <div className='setting-value'>{t('ipfsGatewayDescription')}</div>
+        <div className='setting-input-btn-wrap'>
           <TextField
-            type="text"
+            type='text'
             value={ipfsGateway}
             onChange={(e) => handleIpfsGatewayChange(e.target.value)}
             error={ipfsGatewayError}
             fullWidth
-            margin="dense"
+            margin='dense'
           />
           <Button
-            type="primary"
-            className="settings-tab__rpc-save-button"
+            type='primary'
+            className='settings-tab__rpc-save-button'
             disabled={Boolean(ipfsGatewayError)}
             onClick={() => {
-              const { host } = new URL(addUrlProtocolPrefix(ipfsGateway));
-              dispatch(setIpfsGateway(host));
+              const { host } = new URL(addUrlProtocolPrefix(ipfsGateway))
+              dispatch(setIpfsGateway(host))
             }}
           >
             {t('save')}
           </Button>
         </div>
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('ledgerLiveAdvancedSetting')}</div>
-        <div className="setting-value">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('ledgerLiveAdvancedSetting')}</div>
+        <div className='setting-value'>
           {t('ledgerLiveAdvancedSettingDescription')}
         </div>
         <Switch
@@ -234,9 +234,9 @@ export default function AdvancedTab({ lockTimeError }) {
           disabled={getPlatform() === PLATFORM_FIREFOX}
         />
       </div>
-      <div className="setting-item">
-        <div className="setting-label">{t('dismissReminderField')}</div>
-        <div className="setting-value">
+      <div className='setting-item'>
+        <div className='setting-label'>{t('dismissReminderField')}</div>
+        <div className='setting-value'>
           {t('dismissReminderDescriptionField')}
         </div>
         <Switch
@@ -247,5 +247,5 @@ export default function AdvancedTab({ lockTimeError }) {
         />
       </div>
     </div>
-  );
+  )
 }

@@ -1,99 +1,99 @@
-export const ROPSTEN = 'ropsten';
-export const RINKEBY = 'rinkeby';
-export const KOVAN = 'kovan';
-export const MAINNET = 'mainnet';
-export const BSC_MAINNET = 'bscMainnet';
-export const DEX_MAINNET = 'dexMainnet';
-export const GOERLI = 'goerli';
-export const NETWORK_TYPE_RPC = 'rpc';
+export const ROPSTEN = 'ropsten'
+export const RINKEBY = 'rinkeby'
+export const KOVAN = 'kovan'
+export const MAINNET = 'mainnet'
+export const BSC_MAINNET = 'bscMainnet'
+export const DEX_MAINNET = 'dexMainnet'
+export const GOERLI = 'goerli'
+export const NETWORK_TYPE_RPC = 'rpc'
 
-export const MAINNET_NETWORK_ID = '1';
-export const ROPSTEN_NETWORK_ID = '3';
-export const RINKEBY_NETWORK_ID = '4';
-export const GOERLI_NETWORK_ID = '5';
-export const KOVAN_NETWORK_ID = '42';
-export const LOCALHOST_NETWORK_ID = '1337';
-export const BSC_NETWORK_ID = '56';
-export const DEX_NETWORK_ID = '3603102';
+export const MAINNET_NETWORK_ID = '1'
+export const ROPSTEN_NETWORK_ID = '3'
+export const RINKEBY_NETWORK_ID = '4'
+export const GOERLI_NETWORK_ID = '5'
+export const KOVAN_NETWORK_ID = '42'
+export const LOCALHOST_NETWORK_ID = '1337'
+export const BSC_NETWORK_ID = '56'
+export const DEX_NETWORK_ID = '3603102'
 
-export const MAINNET_CHAIN_ID = '0x1';
-export const ROPSTEN_CHAIN_ID = '0x3';
-export const RINKEBY_CHAIN_ID = '0x4';
-export const GOERLI_CHAIN_ID = '0x5';
-export const KOVAN_CHAIN_ID = '0x2a';
-export const LOCALHOST_CHAIN_ID = '0x539';
-export const BSC_CHAIN_ID = '0x38';
-export const DEX_CHAIN_ID = '0x36fa9e';
-export const OPTIMISM_CHAIN_ID = '0xa';
-export const OPTIMISM_TESTNET_CHAIN_ID = '0x45';
-export const POLYGON_CHAIN_ID = '0x89';
+export const MAINNET_CHAIN_ID = '0x1'
+export const ROPSTEN_CHAIN_ID = '0x3'
+export const RINKEBY_CHAIN_ID = '0x4'
+export const GOERLI_CHAIN_ID = '0x5'
+export const KOVAN_CHAIN_ID = '0x2a'
+export const LOCALHOST_CHAIN_ID = '0x539'
+export const BSC_CHAIN_ID = '0x38'
+export const DEX_CHAIN_ID = '0x36fa9e'
+export const OPTIMISM_CHAIN_ID = '0xa'
+export const OPTIMISM_TESTNET_CHAIN_ID = '0x45'
+export const POLYGON_CHAIN_ID = '0x89'
 
 /**
  * The largest possible chain ID we can handle.
  * Explanation: https://gist.github.com/rekmarks/a47bd5f2525936c4b8eee31a16345553
  */
-export const MAX_SAFE_CHAIN_ID = 4503599627370476;
+export const MAX_SAFE_CHAIN_ID = 4503599627370476
 
-export const ROPSTEN_DISPLAY_NAME = 'Ropsten';
-export const RINKEBY_DISPLAY_NAME = 'Rinkeby';
-export const KOVAN_DISPLAY_NAME = 'Kovan';
-export const MAINNET_DISPLAY_NAME = 'Eth';
-export const GOERLI_DISPLAY_NAME = 'Goerli';
-export const BSC_DISPLAY_NAME = 'BSC';
-export const DEX_DISPLAY_NAME = 'DEX';
+export const ROPSTEN_DISPLAY_NAME = 'Ropsten'
+export const RINKEBY_DISPLAY_NAME = 'Rinkeby'
+export const KOVAN_DISPLAY_NAME = 'Kovan'
+export const MAINNET_DISPLAY_NAME = 'Eth'
+export const GOERLI_DISPLAY_NAME = 'Goerli'
+export const BSC_DISPLAY_NAME = 'BSC'
+export const DEX_DISPLAY_NAME = 'DEX'
 
-const infuraProjectId = process.env.INFURA_PROJECT_ID;
+const infuraProjectId = process.env.INFURA_PROJECT_ID
 const getRpcUrl = (network) =>
-  `https://${network}.infura.io/v3/${infuraProjectId}`;
+  `https://${network}.infura.io/v3/${infuraProjectId}`
 
-export const ROPSTEN_RPC_URL = getRpcUrl('ropsten');
-export const RINKEBY_RPC_URL = getRpcUrl('rinkeby');
-export const KOVAN_RPC_URL = getRpcUrl('kovan');
-export const MAINNET_RPC_URL = getRpcUrl('mainnet');
-export const GOERLI_RPC_URL = getRpcUrl('goerli');
-export const BSC_RPC_URL = 'https://bsc-dataseed.binance.org';
-export const DEX_RPC_URL = 'https://rpc.testnet.dex.io';
+export const ROPSTEN_RPC_URL = getRpcUrl('ropsten')
+export const RINKEBY_RPC_URL = getRpcUrl('rinkeby')
+export const KOVAN_RPC_URL = getRpcUrl('kovan')
+export const MAINNET_RPC_URL = getRpcUrl('mainnet')
+export const GOERLI_RPC_URL = getRpcUrl('goerli')
+export const BSC_RPC_URL = 'https://bsc-dataseed.binance.org'
+export const DEX_RPC_URL = 'https://rpc.testnet.dex.io'
 
-export const BSC_EXPLORE_URL = 'https://bscscan.com';
-export const DEX_EXPLORE_URL = 'https://explorer.testnet.dex.io';
+export const BSC_EXPLORE_URL = 'https://bscscan.com'
+export const DEX_EXPLORE_URL = 'https://explorer.testnet.dex.io'
 
-export const ETH_SYMBOL = 'ETH';
-export const WETH_SYMBOL = 'WETH';
-export const TEST_ETH_SYMBOL = 'ETH';
-export const BNB_SYMBOL = 'BNB';
-export const MATIC_SYMBOL = 'MATIC';
-export const DEX_SYMBOL = 'DEX';
+export const ETH_SYMBOL = 'ETH'
+export const WETH_SYMBOL = 'WETH'
+export const TEST_ETH_SYMBOL = 'ETH'
+export const BNB_SYMBOL = 'BNB'
+export const MATIC_SYMBOL = 'MATIC'
+export const DEX_SYMBOL = 'DEX'
 
 // export const ETH_TOKEN_IMAGE_URL = 'images/eth_logo.svg';
-export const ETH_TOKEN_IMAGE_URL = 'images/eth_logo.png';
+export const ETH_TOKEN_IMAGE_URL = 'images/eth_logo.png'
 // export const TEST_ETH_TOKEN_IMAGE_URL = 'images/black-eth-logo.svg';
-export const TEST_ETH_TOKEN_IMAGE_URL = ETH_TOKEN_IMAGE_URL;
-export const BNB_TOKEN_IMAGE_URL = 'images/bnb.png';
-export const MATIC_TOKEN_IMAGE_URL = 'images/matic-token.png';
-export const DEX_TOKEN_IMAGE_URL = 'images/dex-token.png';
+export const TEST_ETH_TOKEN_IMAGE_URL = ETH_TOKEN_IMAGE_URL
+export const BNB_TOKEN_IMAGE_URL = 'images/bnb.png'
+export const MATIC_TOKEN_IMAGE_URL = 'images/matic-token.png'
+export const DEX_TOKEN_IMAGE_URL = 'images/dex-token.png'
 
-export const INFURA_PROVIDER_TYPES = [ROPSTEN, RINKEBY, KOVAN, MAINNET, GOERLI];
-export const SPECIAL_PROVIDER_TYPES = [BSC_MAINNET, DEX_MAINNET];
+export const INFURA_PROVIDER_TYPES = [ROPSTEN, RINKEBY, KOVAN, MAINNET, GOERLI]
+export const SPECIAL_PROVIDER_TYPES = [BSC_MAINNET, DEX_MAINNET]
 export const SPECIAL_CHAINID = [
   BSC_CHAIN_ID,
   DEX_CHAIN_ID,
   BSC_NETWORK_ID,
   DEX_NETWORK_ID,
-];
+]
 
 export const CHAINID_EXPLORE_MAP = {
   [BSC_CHAIN_ID]: BSC_EXPLORE_URL,
   [DEX_CHAIN_ID]: DEX_EXPLORE_URL,
   [BSC_NETWORK_ID]: BSC_EXPLORE_URL,
   [DEX_NETWORK_ID]: DEX_EXPLORE_URL,
-};
+}
 
 export const TEST_CHAINS = [
   ROPSTEN_CHAIN_ID,
   RINKEBY_CHAIN_ID,
   GOERLI_CHAIN_ID,
   KOVAN_CHAIN_ID,
-];
+]
 
 /**
  * Map of all build-in Infura networks to their network and chain IDs.
@@ -134,7 +134,7 @@ export const NETWORK_TYPE_TO_ID_MAP = {
     chainId: DEX_CHAIN_ID,
     symbol: DEX_SYMBOL,
   },
-};
+}
 
 export const NETWORK_TO_NAME_MAP = {
   [ROPSTEN]: ROPSTEN_DISPLAY_NAME,
@@ -160,14 +160,14 @@ export const NETWORK_TO_NAME_MAP = {
   [MAINNET_CHAIN_ID]: MAINNET_DISPLAY_NAME,
   [BSC_CHAIN_ID]: BSC_DISPLAY_NAME,
   [DEX_CHAIN_ID]: DEX_DISPLAY_NAME,
-};
+}
 
 export const CHAIN_ID_TO_TYPE_MAP = Object.entries(
   NETWORK_TYPE_TO_ID_MAP,
 ).reduce((chainIdToTypeMap, [networkType, { chainId }]) => {
-  chainIdToTypeMap[chainId] = networkType;
-  return chainIdToTypeMap;
-}, {});
+  chainIdToTypeMap[chainId] = networkType
+  return chainIdToTypeMap
+}, {})
 
 export const CHAIN_ID_TO_RPC_URL_MAP = {
   [ROPSTEN_CHAIN_ID]: ROPSTEN_RPC_URL,
@@ -184,14 +184,14 @@ export const CHAIN_ID_TO_RPC_URL_MAP = {
   [MAINNET_NETWORK_ID]: MAINNET_RPC_URL,
   [BSC_NETWORK_ID]: BSC_RPC_URL,
   [DEX_NETWORK_ID]: DEX_RPC_URL,
-};
+}
 
 export const CHAIN_ID_TO_NETWORK_ID_MAP = Object.values(
   NETWORK_TYPE_TO_ID_MAP,
 ).reduce((chainIdToNetworkIdMap, { chainId, networkId }) => {
-  chainIdToNetworkIdMap[chainId] = networkId;
-  return chainIdToNetworkIdMap;
-}, {});
+  chainIdToNetworkIdMap[chainId] = networkId
+  return chainIdToNetworkIdMap
+}, {})
 
 export const NATIVE_CURRENCY_TOKEN_IMAGE_MAP = {
   [ETH_SYMBOL]: ETH_TOKEN_IMAGE_URL,
@@ -199,9 +199,9 @@ export const NATIVE_CURRENCY_TOKEN_IMAGE_MAP = {
   [BNB_SYMBOL]: BNB_TOKEN_IMAGE_URL,
   [DEX_SYMBOL]: DEX_TOKEN_IMAGE_URL,
   [MATIC_SYMBOL]: MATIC_TOKEN_IMAGE_URL,
-};
+}
 
-export const INFURA_BLOCKED_KEY = 'countryBlocked';
+export const INFURA_BLOCKED_KEY = 'countryBlocked'
 
 /**
  * Hardforks are points in the chain where logic is changed significantly
@@ -222,12 +222,12 @@ export const INFURA_BLOCKED_KEY = 'countryBlocked';
 export const HARDFORKS = {
   BERLIN: 'berlin',
   LONDON: 'london',
-};
+}
 
 export const CHAIN_ID_TO_GAS_LIMIT_BUFFER_MAP = {
   [OPTIMISM_CHAIN_ID]: 1,
   [OPTIMISM_TESTNET_CHAIN_ID]: 1,
-};
+}
 
 export const CHAIN_ID_NATIVE_TOKEN_IMAGE = {
   [ROPSTEN_NETWORK_ID]: ETH_TOKEN_IMAGE_URL,
@@ -245,7 +245,7 @@ export const CHAIN_ID_NATIVE_TOKEN_IMAGE = {
   [MAINNET_CHAIN_ID]: ETH_TOKEN_IMAGE_URL,
   [BSC_CHAIN_ID]: BSC_DISPLAY_NAME,
   [DEX_CHAIN_ID]: DEX_TOKEN_IMAGE_URL,
-};
+}
 
 export const DEFAULT_NETWORK_LIST = [
   {
@@ -297,4 +297,4 @@ export const DEFAULT_NETWORK_LIST = [
     isBulltIn: true,
     label: 'Goerli Smart Chain Testnet',
   },
-];
+]

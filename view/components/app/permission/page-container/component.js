@@ -1,39 +1,39 @@
-import React, { Component } from 'react';
-import { isEqual } from 'lodash';
-import PropTypes from 'prop-types';
-import PermissionsConnectFooter from '@c/app/permission/connect-footer';
-import Button from '@c/ui/button';
-import { PermissionPageContainerContent } from '.';
+import React, { Component } from 'react'
+import { isEqual } from 'lodash'
+import PropTypes from 'prop-types'
+import PermissionsConnectFooter from '@c/app/permission/connect-footer'
+import Button from '@c/ui/button'
+import { PermissionPageContainerContent } from '.'
 export default class PermissionPageContainer extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   state = {
     selectedPermissions: this.getRequestedMethodState(
       this.getRequestedMethodNames(this.props),
     ),
-  };
+  }
 
   componentDidUpdate() {
-    const newMethodNames = this.getRequestedMethodNames(this.props);
+    const newMethodNames = this.getRequestedMethodNames(this.props)
 
     if (!isEqual(Object.keys(this.state.selectedPermissions), newMethodNames)) {
       // this should be a new request, so just overwrite
       this.setState({
         selectedPermissions: this.getRequestedMethodState(newMethodNames),
-      });
+      })
     }
   }
 
   getRequestedMethodState(methodNames) {
     return methodNames.reduce((acc, methodName) => {
-      acc[methodName] = true;
-      return acc;
-    }, {});
+      acc[methodName] = true
+      return acc
+    }, {})
   }
 
   getRequestedMethodNames(props) {
-    return Object.keys(props.request.permissions || {});
+    return Object.keys(props.request.permissions || {})
   }
 
   onPermissionToggle = (methodName) => {
@@ -42,35 +42,35 @@ export default class PermissionPageContainer extends Component {
         ...this.state.selectedPermissions,
         [methodName]: !this.state.selectedPermissions[methodName],
       },
-    });
-  };
+    })
+  }
   onCancel = () => {
-    const { request, rejectPermissionsRequest } = this.props;
-    rejectPermissionsRequest(request.metadata.id);
-  };
+    const { request, rejectPermissionsRequest } = this.props
+    rejectPermissionsRequest(request.metadata.id)
+  }
   onSubmit = () => {
     const {
       request: _request,
       approvePermissionsRequest,
       rejectPermissionsRequest,
       selectedIdentities,
-    } = this.props;
-    const request = { ..._request, permissions: { ..._request.permissions } };
+    } = this.props
+    const request = { ..._request, permissions: { ..._request.permissions } }
     Object.keys(this.state.selectedPermissions).forEach((key) => {
       if (!this.state.selectedPermissions[key]) {
-        delete request.permissions[key];
+        delete request.permissions[key]
       }
-    });
+    })
 
     if (Object.keys(request.permissions).length > 0) {
       approvePermissionsRequest(
         request,
         selectedIdentities.map((selectedIdentity) => selectedIdentity.address),
-      );
+      )
     } else {
-      rejectPermissionsRequest(request.metadata.id);
+      rejectPermissionsRequest(request.metadata.id)
     }
-  };
+  }
 
   render() {
     const {
@@ -78,9 +78,9 @@ export default class PermissionPageContainer extends Component {
       targetDomainMetadata,
       selectedIdentities,
       allIdentitiesSelected,
-    } = this.props;
+    } = this.props
     return (
-      <div className="permission-approval-container dex-page-container space-between base-width">
+      <div className='permission-approval-container dex-page-container space-between base-width'>
         <PermissionPageContainerContent
           requestMetadata={requestMetadata}
           domainMetadata={targetDomainMetadata}
@@ -89,15 +89,15 @@ export default class PermissionPageContainer extends Component {
           selectedIdentities={selectedIdentities}
           allIdentitiesSelected={allIdentitiesSelected}
         />
-        <div className="permission-approval-container__footers">
+        <div className='permission-approval-container__footers'>
           <PermissionsConnectFooter />
-          <div className="permission-approval-container__footers-buttons flex space-between">
-            <Button className="half-button" onClick={() => this.onCancel()}>
+          <div className='permission-approval-container__footers-buttons flex space-between'>
+            <Button className='half-button' onClick={() => this.onCancel()}>
               {this.context.t('cancel')}
             </Button>
             <Button
-              type="primary"
-              className="half-button"
+              type='primary'
+              className='half-button'
               onClick={() => this.onSubmit()}
             >
               {this.context.t('connect')}
@@ -105,6 +105,6 @@ export default class PermissionPageContainer extends Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

@@ -1,11 +1,11 @@
-import React from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import React from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 
 const TabBar = (props) => {
-  const { tabs = [], onSelect, isActive } = props;
+  const { tabs = [], onSelect, isActive } = props
   return (
-    <div className="tab-bar">
+    <div className='tab-bar'>
       {tabs.map(({ key, content, classNames, description }) => (
         <button
           key={key}
@@ -15,21 +15,21 @@ const TabBar = (props) => {
           onClick={() => onSelect(key)}
         >
           <div className={classnames(['tab-bar__tab__content', classNames])}>
-            <div className="tab-bar__tab__content__title">{content}</div>
-            <div className="tab-bar__tab__content__description">
+            <div className='tab-bar__tab__content__title'>{content}</div>
+            <div className='tab-bar__tab__content__description'>
               {description}
             </div>
           </div>
-          <div className="tab-bar__tab__caret" />
+          <div className='tab-bar__tab__caret' />
         </button>
       ))}
     </div>
-  );
-};
+  )
+}
 
 TabBar.propTypes = {
   isActive: PropTypes.func.isRequired,
   tabs: PropTypes.array,
   onSelect: PropTypes.func,
-};
-export default TabBar;
+}
+export default TabBar

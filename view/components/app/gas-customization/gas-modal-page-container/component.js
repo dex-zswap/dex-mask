@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import PageContainer from '@c/ui/page-container';
-import { Tab, Tabs } from '@c/ui/tabs';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import PageContainer from '@c/ui/page-container'
+import { Tab, Tabs } from '@c/ui/tabs'
 import {
   addPollingTokenToAppState,
   disconnectGasFeeEstimatePoller,
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
-} from '@view/store/actions';
-import AdvancedTabContent from './advanced-tab-content';
-import BasicTabContent from './basic-tab-content';
+} from '@view/store/actions'
+import AdvancedTabContent from './advanced-tab-content'
+import BasicTabContent from './basic-tab-content'
 export default class GasModalPageContainer extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   static propTypes = {
     hideBasic: PropTypes.bool,
     updateCustomGasPrice: PropTypes.func,
@@ -37,50 +37,50 @@ export default class GasModalPageContainer extends Component {
     isRetry: PropTypes.bool,
     disableSave: PropTypes.bool,
     customPriceIsExcessive: PropTypes.bool.isRequired,
-  };
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       pollingToken: undefined,
-    };
+    }
   }
 
   componentDidMount() {
-    this._isMounted = true;
+    this._isMounted = true
     getGasFeeEstimatesAndStartPolling().then((pollingToken) => {
       if (this._isMounted) {
-        addPollingTokenToAppState(pollingToken);
+        addPollingTokenToAppState(pollingToken)
         this.setState({
           pollingToken,
-        });
+        })
       } else {
-        disconnectGasFeeEstimatePoller(pollingToken);
-        removePollingTokenFromAppState(pollingToken);
+        disconnectGasFeeEstimatePoller(pollingToken)
+        removePollingTokenFromAppState(pollingToken)
       }
-    });
-    window.addEventListener('beforeunload', this._beforeUnload);
+    })
+    window.addEventListener('beforeunload', this._beforeUnload)
   }
 
   _beforeUnload = () => {
-    this._isMounted = false;
+    this._isMounted = false
 
     if (this.state.pollingToken) {
-      disconnectGasFeeEstimatePoller(this.state.pollingToken);
-      removePollingTokenFromAppState(this.state.pollingToken);
+      disconnectGasFeeEstimatePoller(this.state.pollingToken)
+      removePollingTokenFromAppState(this.state.pollingToken)
     }
-  };
+  }
 
   componentWillUnmount() {
-    this._beforeUnload();
+    this._beforeUnload()
 
-    window.removeEventListener('beforeunload', this._beforeUnload);
+    window.removeEventListener('beforeunload', this._beforeUnload)
   }
 
   renderBasicTabContent(gasPriceButtonGroupProps) {
     return (
       <BasicTabContent gasPriceButtonGroupProps={gasPriceButtonGroupProps} />
-    );
+    )
   }
 
   renderAdvancedTabContent() {
@@ -95,7 +95,7 @@ export default class GasModalPageContainer extends Component {
       isRetry,
       customPriceIsExcessive,
       infoRowProps: { transactionFee },
-    } = this.props;
+    } = this.props
     return (
       <AdvancedTabContent
         updateCustomGasPrice={updateCustomGasPrice}
@@ -109,45 +109,45 @@ export default class GasModalPageContainer extends Component {
         isRetry={isRetry}
         customPriceIsExcessive={customPriceIsExcessive}
       />
-    );
+    )
   }
 
   renderInfoRows(newTotalFiat, newTotalEth, sendAmount, transactionFee) {
     return (
-      <div className="gas-modal-content__info-row-wrapper">
-        <div className="gas-modal-content__info-row">
-          <div className="gas-modal-content__info-row__send-info">
-            <span className="gas-modal-content__info-row__send-info__label">
+      <div className='gas-modal-content__info-row-wrapper'>
+        <div className='gas-modal-content__info-row'>
+          <div className='gas-modal-content__info-row__send-info'>
+            <span className='gas-modal-content__info-row__send-info__label'>
               {this.context.t('sendAmount')}
             </span>
-            <span className="gas-modal-content__info-row__send-info__value">
+            <span className='gas-modal-content__info-row__send-info__value'>
               {sendAmount}
             </span>
           </div>
-          <div className="gas-modal-content__info-row__transaction-info">
-            <span className="gas-modal-content__info-row__transaction-info__label">
+          <div className='gas-modal-content__info-row__transaction-info'>
+            <span className='gas-modal-content__info-row__transaction-info__label'>
               {this.context.t('transactionFee')}
             </span>
-            <span className="gas-modal-content__info-row__transaction-info__value">
+            <span className='gas-modal-content__info-row__transaction-info__value'>
               {transactionFee}
             </span>
           </div>
-          <div className="gas-modal-content__info-row__total-info">
-            <span className="gas-modal-content__info-row__total-info__label">
+          <div className='gas-modal-content__info-row__total-info'>
+            <span className='gas-modal-content__info-row__total-info__label'>
               {this.context.t('newTotal')}
             </span>
-            <span className="gas-modal-content__info-row__total-info__value">
+            <span className='gas-modal-content__info-row__total-info__value'>
               {newTotalEth}
             </span>
           </div>
-          <div className="gas-modal-content__info-row__fiat-total-info">
-            <span className="gas-modal-content__info-row__fiat-total-info__value">
+          <div className='gas-modal-content__info-row__fiat-total-info'>
+            <span className='gas-modal-content__info-row__fiat-total-info__value'>
               {newTotalFiat}
             </span>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   renderTabs() {
@@ -155,8 +155,8 @@ export default class GasModalPageContainer extends Component {
       gasPriceButtonGroupProps,
       hideBasic,
       infoRowProps: { newTotalFiat, newTotalEth, sendAmount, transactionFee },
-    } = this.props;
-    let tabsToRender;
+    } = this.props
+    let tabsToRender
 
     if (hideBasic) {
       tabsToRender = [
@@ -164,7 +164,7 @@ export default class GasModalPageContainer extends Component {
           name: this.context.t('advanced'),
           content: this.renderAdvancedTabContent(),
         },
-      ];
+      ]
     } else {
       tabsToRender = [
         {
@@ -175,14 +175,14 @@ export default class GasModalPageContainer extends Component {
           name: this.context.t('advanced'),
           content: this.renderAdvancedTabContent(),
         },
-      ];
+      ]
     }
 
     return (
       <Tabs>
         {tabsToRender.map(({ name, content }, i) => (
           <Tab name={name} key={`gas-modal-tab-${i}`}>
-            <div className="gas-modal-content">
+            <div className='gas-modal-content'>
               {content}
               {this.renderInfoRows(
                 newTotalFiat,
@@ -194,7 +194,7 @@ export default class GasModalPageContainer extends Component {
           </Tab>
         ))}
       </Tabs>
-    );
+    )
   }
 
   render() {
@@ -205,9 +205,9 @@ export default class GasModalPageContainer extends Component {
       customModalGasLimitInHex,
       disableSave,
       isSpeedUp,
-    } = this.props;
+    } = this.props
     return (
-      <div className="gas-modal-page-container">
+      <div className='gas-modal-page-container'>
         <PageContainer
           title={this.context.t('customGas')}
           subtitle={this.context.t('customGasSubTitle')}
@@ -216,13 +216,13 @@ export default class GasModalPageContainer extends Component {
           onCancel={() => cancelAndClose()}
           onClose={() => cancelAndClose()}
           onSubmit={() => {
-            onSubmit(customModalGasLimitInHex, customModalGasPriceInHex);
+            onSubmit(customModalGasLimitInHex, customModalGasPriceInHex)
           }}
           submitText={this.context.t('save')}
           headerCloseText={this.context.t('close')}
           hideCancel
         />
       </div>
-    );
+    )
   }
 }

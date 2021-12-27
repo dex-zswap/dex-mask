@@ -1,42 +1,39 @@
-import { getEnvironmentType } from '@app/scripts/lib/util'; // Modal Components
-import ConfirmCustomizeGasModal from '@c/app/gas-customization/gas-modal-page-container';
-import SwapsGasCustomizationModal from '@pages/swaps/swaps-gas-customization-modal';
-import { resetCustomData as resetCustomGasData } from '@reducer/gas/gas.duck';
-import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app';
-import isMobileView from '@view/helpers/utils/is-mobile-view';
-import * as actions from '@view/store/actions';
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import AccountDetailsModal from './account-details-modal';
-import AddToAddressBookModal from './add-to-addressbook-modal';
-import CancelTransaction from './cancel-transaction';
-import ConfirmDeleteNetwork from './confirm-delete-network';
-import ConfirmRemoveAccount from './confirm-remove-account';
-import ConfirmResetAccount from './confirm-reset-account';
-import CustomizeNonceModal from './customize-nonce';
-import DepositEtherModal from './deposit-ether-modal';
-import EditApprovalPermission from './edit-approval-permission';
-import ExportPrivateKeyModal from './export-private-key-modal';
-import FadeModal from './fade-modal';
-import HideTokenConfirmationModal from './hide-token-confirmation-modal';
-import MetaMetricsOptInModal from './metametrics-opt-in-modal';
-import NewAccountModal from './new-account-modal';
-import QRScanner from './qr-scanner';
-import RejectTransactions from './reject-transactions';
-import TransactionConfirmed from './transaction-confirmed';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { getEnvironmentType } from '@app/scripts/lib/util' // Modal Components
 
+import ConfirmCustomizeGasModal from '@c/app/gas-customization/gas-modal-page-container'
+import SwapsGasCustomizationModal from '@pages/swaps/swaps-gas-customization-modal'
+import { resetCustomData as resetCustomGasData } from '@reducer/gas/gas.duck'
+import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app'
+import isMobileView from '@view/helpers/utils/is-mobile-view'
+import * as actions from '@view/store/actions'
+import AccountDetailsModal from './account-details-modal'
+import AddToAddressBookModal from './add-to-addressbook-modal'
+import CancelTransaction from './cancel-transaction'
+import ConfirmDeleteNetwork from './confirm-delete-network'
+import ConfirmRemoveAccount from './confirm-remove-account'
+import ConfirmResetAccount from './confirm-reset-account'
+import CustomizeNonceModal from './customize-nonce'
+import DepositEtherModal from './deposit-ether-modal'
+import EditApprovalPermission from './edit-approval-permission'
+import ExportPrivateKeyModal from './export-private-key-modal'
+import FadeModal from './fade-modal'
+import HideTokenConfirmationModal from './hide-token-confirmation-modal'
+import MetaMetricsOptInModal from './metametrics-opt-in-modal'
+import NewAccountModal from './new-account-modal'
+import QRScanner from './qr-scanner'
+import RejectTransactions from './reject-transactions'
+import TransactionConfirmed from './transaction-confirmed'
 const modalContainerBaseStyle = {
   border: 'none',
   borderRadius: '8px',
   backgroundColor: 'rgba(#1b1a2c, 0.95)',
   boxShadow: 'none',
-};
-const modalContainerLaptopStyle = {
-  ...modalContainerBaseStyle,
-  width: '344px',
-};
-const modalContainerMobileStyle = { ...modalContainerBaseStyle, width: '90vw' };
+}
+const modalContainerLaptopStyle = { ...modalContainerBaseStyle, width: '90vw' }
+const modalContainerMobileStyle = { ...modalContainerBaseStyle, width: '90vw' }
 const accountModalStyle = {
   mobileModalStyle: {
     width: '90vw',
@@ -63,7 +60,7 @@ const accountModalStyle = {
   contentStyle: {
     borderRadius: '12px',
   },
-};
+}
 const MODALS = {
   DEPOSIT_ETHER: {
     contents: <DepositEtherModal />,
@@ -331,31 +328,31 @@ const MODALS = {
     mobileModalStyle: {},
     laptopModalStyle: {},
   },
-};
+}
 const BACKDROPSTYLE = {
   backgroundColor: 'rgba(0, 0, 0, 0.7)',
-};
+}
 
 function mapStateToProps(state) {
   return {
     active: state.appState.modal.open,
     modalState: state.appState.modal.modalState,
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     hideModal: (customOnHideOpts) => {
-      dispatch(actions.hideModal());
+      dispatch(actions.hideModal())
 
       if (customOnHideOpts && customOnHideOpts.action) {
-        dispatch(customOnHideOpts.action(...customOnHideOpts.args));
+        dispatch(customOnHideOpts.action(...customOnHideOpts.args))
       }
     },
     hideWarning: () => {
-      dispatch(actions.hideWarning());
+      dispatch(actions.hideWarning())
     },
-  };
+  }
 }
 
 class Modal extends Component {
@@ -364,30 +361,30 @@ class Modal extends Component {
     hideModal: PropTypes.func.isRequired,
     hideWarning: PropTypes.func.isRequired,
     modalState: PropTypes.object.isRequired,
-  };
+  }
 
   hide() {
-    this.modalRef.hide();
+    this.modalRef.hide()
   }
 
   show() {
-    this.modalRef.show();
+    this.modalRef.show()
   }
 
   UNSAFE_componentWillReceiveProps(nextProps, _) {
     if (nextProps.active) {
-      this.show();
+      this.show()
     } else if (this.props.active) {
-      this.hide();
+      this.hide()
     }
   }
 
   render() {
-    const modal = MODALS[this.props.modalState.name || 'DEFAULT'];
-    const { contents: children, disableBackdropClick = false } = modal;
+    const modal = MODALS[this.props.modalState.name || 'DEFAULT']
+    const { contents: children, disableBackdropClick = false } = modal
     const modalStyle =
-      modal[isMobileView() ? 'mobileModalStyle' : 'laptopModalStyle'];
-    const contentStyle = modal.contentStyle || {};
+      modal[isMobileView() ? 'mobileModalStyle' : 'laptopModalStyle']
+    const contentStyle = modal.contentStyle || {}
     return (
       <FadeModal
         keyboard={false}
@@ -395,13 +392,13 @@ class Modal extends Component {
           if (modal.onHide) {
             modal.onHide({
               hideWarning: this.props.hideWarning,
-            });
+            })
           }
 
-          this.props.hideModal(modal.customOnHideOpts);
+          this.props.hideModal(modal.customOnHideOpts)
         }}
         ref={(ref) => {
-          this.modalRef = ref;
+          this.modalRef = ref
         }}
         modalStyle={modalStyle}
         contentStyle={contentStyle}
@@ -410,8 +407,8 @@ class Modal extends Component {
       >
         {children}
       </FadeModal>
-    );
+    )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Modal);
+export default connect(mapStateToProps, mapDispatchToProps)(Modal)

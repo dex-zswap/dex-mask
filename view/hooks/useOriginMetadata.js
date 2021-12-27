@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux';
-import { getDomainMetadata } from '@view/selectors';
+import { useSelector } from 'react-redux'
+import { getDomainMetadata } from '@view/selectors'
 /**
  * @typedef {Object} OriginMetadata
  * @property {string} host - The host of the origin
@@ -20,22 +20,22 @@ import { getDomainMetadata } from '@view/selectors';
  */
 
 export function useOriginMetadata(origin) {
-  const domainMetaData = useSelector(getDomainMetadata);
+  const domainMetaData = useSelector(getDomainMetadata)
 
   if (!origin) {
-    return null;
+    return null
   }
 
-  const url = new URL(origin);
+  const url = new URL(origin)
   const minimumOriginMetadata = {
     host: url.host,
     hostname: url.hostname,
     origin,
-  };
-
-  if (domainMetaData?.[origin]) {
-    return { ...minimumOriginMetadata, ...domainMetaData[origin] };
   }
 
-  return minimumOriginMetadata;
+  if (domainMetaData?.[origin]) {
+    return { ...minimumOriginMetadata, ...domainMetaData[origin] }
+  }
+
+  return minimumOriginMetadata
 }

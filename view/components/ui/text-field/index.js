@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import classnames from 'classnames';
+import React, { useMemo } from 'react'
+import classnames from 'classnames'
 
 const TextField = (
   { className, error, label, bordered = true, ...inputProps },
@@ -13,7 +13,7 @@ const TextField = (
         `${className}-input`,
       ),
     [className, bordered],
-  );
+  )
   return (
     <div className={classnames('dex-text-field', className)}>
       {React.isValidElement(label) ? (
@@ -26,9 +26,9 @@ const TextField = (
         </label>
       )}
       <input {...inputProps} className={inputClassNames} ref={ref} />
-      {error && <div className="input-error">{error}</div>}
+      {error && <div className='input-error'>{error}</div>}
     </div>
-  );
-};
+  )
+}
 
-export default React.forwardRef(TextField);
+export default React.forwardRef(TextField)

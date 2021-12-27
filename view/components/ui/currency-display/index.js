@@ -1,7 +1,7 @@
-import React from 'react';
-import classnames from 'classnames';
-import { GWEI } from '@view/helpers/constants/common';
-import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay';
+import React from 'react'
+import classnames from 'classnames'
+import { GWEI } from '@view/helpers/constants/common'
+import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay'
 export default function CurrencyDisplay({
   value,
   displayValue,
@@ -24,7 +24,7 @@ export default function CurrencyDisplay({
     denomination,
     currency,
     suffix,
-  });
+  })
   return (
     <div
       className={classnames('currency-display-component', className)}
@@ -32,15 +32,15 @@ export default function CurrencyDisplay({
       title={(!hideTitle && title) || null}
     >
       {prefixComponent}
-      <span className="currency-display-component__text">
+      <span className='currency-display-component__text'>
         {parts.prefix}
         {['0.00', '$0.00'].includes(parts.value) ? '0' : parts.value ?? '0'}
       </span>
       {parts.suffix && (
-        <span className="currency-display-component__suffix">
+        <span className='currency-display-component__suffix'>
           {parts.suffix}
         </span>
       )}
     </div>
-  );
+  )
 }

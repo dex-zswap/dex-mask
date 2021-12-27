@@ -1,18 +1,18 @@
-import pump from 'pump';
-import { JsonRpcEngine, createIdRemapMiddleware } from 'json-rpc-engine';
-import createStreamMiddleware from 'json-rpc-middleware-stream';
-import ObjectMultiplex from '@metamask/object-multiplex';
-import SafeEventEmitter from '@metamask/safe-event-emitter';
-import dequal from 'fast-deep-equal';
-import { ethErrors, EthereumRpcError } from 'eth-rpc-errors';
-import { duplex as isDuplex } from 'is-stream';
-import messages from './messages';
+import pump from 'pump'
+import { JsonRpcEngine, createIdRemapMiddleware } from 'json-rpc-engine'
+import createStreamMiddleware from 'json-rpc-middleware-stream'
+import ObjectMultiplex from '@metamask/object-multiplex'
+import SafeEventEmitter from '@metamask/safe-event-emitter'
+import dequal from 'fast-deep-equal'
+import { ethErrors, EthereumRpcError } from 'eth-rpc-errors'
+import { duplex as isDuplex } from 'is-stream'
+import messages from './messages'
 import {
   createErrorMiddleware,
   EMITTED_NOTIFICATIONS,
   getRpcPromiseCallback,
   logStreamDisconnectWarning,
-} from './utils';
+} from './utils'
 export default class BaseProvider extends SafeEventEmitter {
   /**
    * @param connectionStream - A Node.js duplex stream
@@ -31,74 +31,74 @@ export default class BaseProvider extends SafeEventEmitter {
       maxEventListeners = 100,
     } = {},
   ) {
-    super();
+    super()
     if (!isDuplex(connectionStream)) {
-      throw new Error(messages.errors.invalidDuplexStream());
+      throw new Error(messages.errors.invalidDuplexStream())
     }
-    this._log = logger;
-    this.setMaxListeners(maxEventListeners);
+    this._log = logger
+    this.setMaxListeners(maxEventListeners)
     // private state
-    this._state = Object.assign({}, BaseProvider._defaultState);
+    this._state = Object.assign({}, BaseProvider._defaultState)
     // public state
-    this.selectedAddress = null;
-    this.chainId = null;
+    this.selectedAddress = null
+    this.chainId = null
     // bind functions (to prevent consumers from making unbound calls)
-    this._handleAccountsChanged = this._handleAccountsChanged.bind(this);
-    this._handleConnect = this._handleConnect.bind(this);
-    this._handleChainChanged = this._handleChainChanged.bind(this);
-    this._handleDisconnect = this._handleDisconnect.bind(this);
-    this._handleStreamDisconnect = this._handleStreamDisconnect.bind(this);
-    this._handleUnlockStateChanged = this._handleUnlockStateChanged.bind(this);
-    this._rpcRequest = this._rpcRequest.bind(this);
-    this.request = this.request.bind(this);
+    this._handleAccountsChanged = this._handleAccountsChanged.bind(this)
+    this._handleConnect = this._handleConnect.bind(this)
+    this._handleChainChanged = this._handleChainChanged.bind(this)
+    this._handleDisconnect = this._handleDisconnect.bind(this)
+    this._handleStreamDisconnect = this._handleStreamDisconnect.bind(this)
+    this._handleUnlockStateChanged = this._handleUnlockStateChanged.bind(this)
+    this._rpcRequest = this._rpcRequest.bind(this)
+    this.request = this.request.bind(this)
     // setup connectionStream multiplexing
-    const mux = new ObjectMultiplex();
+    const mux = new ObjectMultiplex()
     pump(
       connectionStream,
       mux,
       connectionStream,
       this._handleStreamDisconnect.bind(this, 'MetaMask'),
-    );
+    )
     // setup own event listeners
     // EIP-1193 connect
     this.on('connect', () => {
-      this._state.isConnected = true;
-    });
+      this._state.isConnected = true
+    })
     // setup RPC connection
-    this._jsonRpcConnection = createStreamMiddleware();
+    this._jsonRpcConnection = createStreamMiddleware()
     pump(
       this._jsonRpcConnection.stream,
       mux.createStream(jsonRpcStreamName),
       this._jsonRpcConnection.stream,
       this._handleStreamDisconnect.bind(this, 'DexMask RpcProvider'),
-    );
+    )
     // handle RPC requests via dapp-side rpc engine
-    const rpcEngine = new JsonRpcEngine();
-    rpcEngine.push(createIdRemapMiddleware());
-    rpcEngine.push(createErrorMiddleware(this._log));
-    rpcEngine.push(this._jsonRpcConnection.middleware);
-    this._rpcEngine = rpcEngine;
-    this._initializeState();
+    const rpcEngine = new JsonRpcEngine()
+    rpcEngine.push(createIdRemapMiddleware())
+    rpcEngine.push(createErrorMiddleware(this._log))
+    rpcEngine.push(this._jsonRpcConnection.middleware)
+    this._rpcEngine = rpcEngine
+    this._initializeState()
     // handle JSON-RPC notifications
     this._jsonRpcConnection.events.on('notification', (payload) => {
-      const { method, params } = payload;
+      const { method, params } = payload
       if (method === 'metamask_accountsChanged') {
-        this._handleAccountsChanged(params);
+        this._handleAccountsChanged(params)
       } else if (method === 'metamask_unlockStateChanged') {
-        this._handleUnlockStateChanged(params);
+        this._handleUnlockStateChanged(params)
       } else if (method === 'metamask_chainChanged') {
-        this._handleChainChanged(params);
+        this._handleChainChanged(params)
       } else if (EMITTED_NOTIFICATIONS.includes(method)) {
         this.emit('message', {
           type: method,
           data: params,
-        });
+        })
       } else if (method === 'METAMASK_STREAM_FAILURE') {
         connectionStream.destroy(
           new Error(messages.errors.permanentlyDisconnected()),
-        );
+        )
       }
-    });
+    })
   }
   //====================
   // Public Methods
@@ -107,7 +107,7 @@ export default class BaseProvider extends SafeEventEmitter {
    * Returns whether the provider can process RPC requests.
    */
   isConnected() {
-    return this._state.isConnected;
+    return this._state.isConnected
   }
   /**
    * Submits an RPC request for the given method, with the given params.
@@ -124,14 +124,14 @@ export default class BaseProvider extends SafeEventEmitter {
       throw ethErrors.rpc.invalidRequest({
         message: messages.errors.invalidRequestArgs(),
         data: args,
-      });
+      })
     }
-    const { method, params } = args;
+    const { method, params } = args
     if (typeof method !== 'string' || method.length === 0) {
       throw ethErrors.rpc.invalidRequest({
         message: messages.errors.invalidRequestMethod(),
         data: args,
-      });
+      })
     }
     if (
       params !== undefined &&
@@ -141,14 +141,14 @@ export default class BaseProvider extends SafeEventEmitter {
       throw ethErrors.rpc.invalidRequest({
         message: messages.errors.invalidRequestParams(),
         data: args,
-      });
+      })
     }
     return new Promise((resolve, reject) => {
       this._rpcRequest(
         { method, params },
         getRpcPromiseCallback(resolve, reject),
-      );
-    });
+      )
+    })
   }
   //====================
   // Private Methods
@@ -167,20 +167,20 @@ export default class BaseProvider extends SafeEventEmitter {
         networkVersion,
       } = await this.request({
         method: 'metamask_getProviderState',
-      });
+      })
       // indicate that we've connected, for EIP-1193 compliance
-      this.emit('connect', { chainId });
-      this._handleChainChanged({ chainId, networkVersion });
-      this._handleUnlockStateChanged({ accounts, isUnlocked });
-      this._handleAccountsChanged(accounts);
+      this.emit('connect', { chainId })
+      this._handleChainChanged({ chainId, networkVersion })
+      this._handleUnlockStateChanged({ accounts, isUnlocked })
+      this._handleAccountsChanged(accounts)
     } catch (error) {
       this._log.error(
         'MetaMask: Failed to get initial state. Please report this bug.',
         error,
-      );
+      )
     } finally {
-      this._state.initialized = true;
-      this.emit('_initialized');
+      this._state.initialized = true
+      this.emit('_initialized')
     }
   }
   /**
@@ -191,10 +191,10 @@ export default class BaseProvider extends SafeEventEmitter {
    * @param callback - The consumer's callback.
    */
   _rpcRequest(payload, callback) {
-    let cb = callback;
+    let cb = callback
     if (!Array.isArray(payload)) {
       if (!payload.jsonrpc) {
-        payload.jsonrpc = '2.0';
+        payload.jsonrpc = '2.0'
       }
       if (
         payload.method === 'eth_accounts' ||
@@ -205,13 +205,13 @@ export default class BaseProvider extends SafeEventEmitter {
           this._handleAccountsChanged(
             res.result || [],
             payload.method === 'eth_accounts',
-          );
-          callback(err, res);
-        };
+          )
+          callback(err, res)
+        }
       }
-      return this._rpcEngine.handle(payload, cb);
+      return this._rpcEngine.handle(payload, cb)
     }
-    return this._rpcEngine.handle(payload, cb);
+    return this._rpcEngine.handle(payload, cb)
   }
   /**
    * When the provider becomes connected, updates internal state and emits
@@ -222,9 +222,9 @@ export default class BaseProvider extends SafeEventEmitter {
    */
   _handleConnect(chainId) {
     if (!this._state.isConnected) {
-      this._state.isConnected = true;
-      this.emit('connect', { chainId });
-      this._log.debug(messages.info.connected(chainId));
+      this._state.isConnected = true
+      this.emit('connect', { chainId })
+      this._log.debug(messages.info.connected(chainId))
     }
   }
   /**
@@ -243,27 +243,27 @@ export default class BaseProvider extends SafeEventEmitter {
       this._state.isConnected ||
       (!this._state.isPermanentlyDisconnected && !isRecoverable)
     ) {
-      this._state.isConnected = false;
-      let error;
+      this._state.isConnected = false
+      let error
       if (isRecoverable) {
         error = new EthereumRpcError(
           1013, // Try again later
           errorMessage || messages.errors.disconnected(),
-        );
-        this._log.debug(error);
+        )
+        this._log.debug(error)
       } else {
         error = new EthereumRpcError(
           1011, // Internal error
           errorMessage || messages.errors.permanentlyDisconnected(),
-        );
-        this._log.error(error);
-        this.chainId = null;
-        this._state.accounts = null;
-        this.selectedAddress = null;
-        this._state.isUnlocked = false;
-        this._state.isPermanentlyDisconnected = true;
+        )
+        this._log.error(error)
+        this.chainId = null
+        this._state.accounts = null
+        this.selectedAddress = null
+        this._state.isUnlocked = false
+        this._state.isPermanentlyDisconnected = true
       }
-      this.emit('disconnect', error);
+      this.emit('disconnect', error)
     }
   }
   /**
@@ -272,8 +272,8 @@ export default class BaseProvider extends SafeEventEmitter {
    * @emits MetamaskInpageProvider#disconnect
    */
   _handleStreamDisconnect(streamName, error) {
-    logStreamDisconnectWarning(this._log, streamName, error, this);
-    this._handleDisconnect(false, error ? error.message : undefined);
+    logStreamDisconnectWarning(this._log, streamName, error, this)
+    this._handleDisconnect(false, error ? error.message : undefined)
   }
   /**
    * Upon receipt of a new chainId and networkVersion, emits corresponding
@@ -297,17 +297,17 @@ export default class BaseProvider extends SafeEventEmitter {
       this._log.error(
         'MetaMask: Received invalid network parameters. Please report this bug.',
         { chainId, networkVersion },
-      );
-      return;
+      )
+      return
     }
     if (networkVersion === 'loading') {
-      this._handleDisconnect(true);
+      this._handleDisconnect(true)
     } else {
-      this._handleConnect(chainId);
+      this._handleConnect(chainId)
       if (chainId !== this.chainId) {
-        this.chainId = chainId;
+        this.chainId = chainId
         if (this._state.initialized) {
-          this.emit('chainChanged', this.chainId);
+          this.emit('chainChanged', this.chainId)
         }
       }
     }
@@ -322,22 +322,22 @@ export default class BaseProvider extends SafeEventEmitter {
    * a call to eth_accounts.
    */
   _handleAccountsChanged(accounts, isEthAccounts = false) {
-    let _accounts = accounts;
+    let _accounts = accounts
     if (!Array.isArray(accounts)) {
       this._log.error(
         'MetaMask: Received invalid accounts parameter. Please report this bug.',
         accounts,
-      );
-      _accounts = [];
+      )
+      _accounts = []
     }
     for (const account of accounts) {
       if (typeof account !== 'string') {
         this._log.error(
           'MetaMask: Received non-string account. Please report this bug.',
           accounts,
-        );
-        _accounts = [];
-        break;
+        )
+        _accounts = []
+        break
       }
     }
     // emit accountsChanged if anything about the accounts array has changed
@@ -348,16 +348,16 @@ export default class BaseProvider extends SafeEventEmitter {
         this._log.error(
           `MetaMask: 'eth_accounts' unexpectedly updated accounts. Please report this bug.`,
           _accounts,
-        );
+        )
       }
-      this._state.accounts = _accounts;
+      this._state.accounts = _accounts
       // handle selectedAddress
       if (this.selectedAddress !== _accounts[0]) {
-        this.selectedAddress = _accounts[0] || null;
+        this.selectedAddress = _accounts[0] || null
       }
       // finally, after all state has been updated, emit the event
       if (this._state.initialized) {
-        this.emit('accountsChanged', _accounts);
+        this.emit('accountsChanged', _accounts)
       }
     }
   }
@@ -377,12 +377,12 @@ export default class BaseProvider extends SafeEventEmitter {
     if (typeof isUnlocked !== 'boolean') {
       this._log.error(
         'MetaMask: Received invalid isUnlocked parameter. Please report this bug.',
-      );
-      return;
+      )
+      return
     }
     if (isUnlocked !== this._state.isUnlocked) {
-      this._state.isUnlocked = isUnlocked;
-      this._handleAccountsChanged(accounts || []);
+      this._state.isUnlocked = isUnlocked
+      this._handleAccountsChanged(accounts || [])
     }
   }
 }
@@ -392,4 +392,4 @@ BaseProvider._defaultState = {
   isUnlocked: false,
   initialized: false,
   isPermanentlyDisconnected: false,
-};
+}

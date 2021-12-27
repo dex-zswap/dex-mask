@@ -1,6 +1,6 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash'
 
-const version = 61;
+const version = 61
 
 /**
  * Initialize attributes related to recovery seed phrase reminder
@@ -8,25 +8,25 @@ const version = 61;
 export default {
   version,
   async migrate(originalVersionedData) {
-    const versionedData = cloneDeep(originalVersionedData);
-    versionedData.meta.version = version;
-    const state = versionedData.data;
-    const newState = transformState(state);
-    versionedData.data = newState;
-    return versionedData;
+    const versionedData = cloneDeep(originalVersionedData)
+    versionedData.meta.version = version
+    const state = versionedData.data
+    const newState = transformState(state)
+    versionedData.data = newState
+    return versionedData
   },
-};
+}
 
 function transformState(state) {
-  const currentTime = new Date().getTime();
+  const currentTime = new Date().getTime()
   if (state.AppStateController) {
-    state.AppStateController.recoveryPhraseReminderHasBeenShown = false;
-    state.AppStateController.recoveryPhraseReminderLastShown = currentTime;
+    state.AppStateController.recoveryPhraseReminderHasBeenShown = false
+    state.AppStateController.recoveryPhraseReminderLastShown = currentTime
   } else {
     state.AppStateController = {
       recoveryPhraseReminderHasBeenShown: false,
       recoveryPhraseReminderLastShown: currentTime,
-    };
+    }
   }
-  return state;
+  return state
 }

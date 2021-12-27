@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 import {
   disconnectGasFeeEstimatePoller,
   getGasFeeEstimatesAndStartPolling,
   addPollingTokenToAppState,
   removePollingTokenFromAppState,
-} from '@view/store/actions';
+} from '@view/store/actions'
 /**
  * Provides a reusable hook that can be used for safely updating the polling
  * data in the gas fee controller. It makes a request to get estimates and
@@ -16,31 +16,31 @@ import {
 
 export function useSafeGasEstimatePolling() {
   useEffect(() => {
-    let active = true;
-    let pollToken;
+    let active = true
+    let pollToken
 
     const cleanup = () => {
-      active = false;
+      active = false
 
       if (pollToken) {
-        disconnectGasFeeEstimatePoller(pollToken);
-        removePollingTokenFromAppState(pollToken);
+        disconnectGasFeeEstimatePoller(pollToken)
+        removePollingTokenFromAppState(pollToken)
       }
-    };
+    }
 
     getGasFeeEstimatesAndStartPolling().then((newPollToken) => {
       if (active) {
-        pollToken = newPollToken;
-        addPollingTokenToAppState(pollToken);
+        pollToken = newPollToken
+        addPollingTokenToAppState(pollToken)
       } else {
-        disconnectGasFeeEstimatePoller(newPollToken);
-        removePollingTokenFromAppState(pollToken);
+        disconnectGasFeeEstimatePoller(newPollToken)
+        removePollingTokenFromAppState(pollToken)
       }
-    });
-    window.addEventListener('beforeunload', cleanup);
+    })
+    window.addEventListener('beforeunload', cleanup)
     return () => {
-      cleanup();
-      window.removeEventListener('beforeunload', cleanup);
-    };
-  }, []);
+      cleanup()
+      window.removeEventListener('beforeunload', cleanup)
+    }
+  }, [])
 }

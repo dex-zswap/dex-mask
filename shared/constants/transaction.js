@@ -1,4 +1,4 @@
-import { MESSAGE_TYPE } from './app';
+import { MESSAGE_TYPE } from './app'
 
 /**
  * Transaction Type is a MetaMask construct used internally
@@ -59,7 +59,7 @@ export const TRANSACTION_TYPES = {
   PERSONAL_SIGN: MESSAGE_TYPE.PERSONAL_SIGN,
   ETH_DECRYPT: MESSAGE_TYPE.ETH_DECRYPT,
   ETH_GET_ENCRYPTION_PUBLIC_KEY: MESSAGE_TYPE.ETH_GET_ENCRYPTION_PUBLIC_KEY,
-};
+}
 
 /**
  * In EIP-2718 typed transaction envelopes were specified, with the very first
@@ -86,7 +86,7 @@ export const TRANSACTION_ENVELOPE_TYPES = {
   LEGACY: '0x0',
   ACCESS_LIST: '0x1',
   FEE_MARKET: '0x2',
-};
+}
 
 /**
  * Transaction Status is a mix of Ethereum and MetaMask terminology, used internally
@@ -124,7 +124,7 @@ export const TRANSACTION_STATUSES = {
   FAILED: 'failed',
   DROPPED: 'dropped',
   CONFIRMED: 'confirmed',
-};
+}
 
 /**
  * Transaction Group Status is a MetaMask construct to track the status of groups
@@ -143,7 +143,7 @@ export const TRANSACTION_STATUSES = {
 export const TRANSACTION_GROUP_STATUSES = {
   CANCELLED: 'cancelled',
   PENDING: 'pending',
-};
+}
 
 /**
  * Transaction Group Category is a MetaMask construct to categorize the intent
@@ -178,7 +178,7 @@ export const TRANSACTION_GROUP_CATEGORIES = {
   APPROVAL: 'approval',
   SIGNATURE_REQUEST: 'signature-request',
   SWAP: 'swap',
-};
+}
 
 /**
  * @typedef {Object} TxParams

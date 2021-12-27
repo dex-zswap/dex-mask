@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { zeroAddress } from 'ethereumjs-util';
-import PropTypes from 'prop-types';
-import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display';
-import AccountSwitcher from '@c/ui/cross-chain/account-switcher';
-import ChainSwitcher from '@c/ui/cross-chain/chain-switcher';
-import SendCardAmountInput from '@c/ui/send-card';
-import TokenBalance from '@c/ui/token-balance';
-import TokenImage from '@c/ui/token-image';
-import { ASSET_TYPES } from '@reducer/send';
-import { PRIMARY } from '@view/helpers/constants/common';
+import React, { Component } from 'react'
+import { zeroAddress } from 'ethereumjs-util'
+import PropTypes from 'prop-types'
+import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
+import AccountSwitcher from '@c/ui/cross-chain/account-switcher'
+import ChainSwitcher from '@c/ui/cross-chain/chain-switcher'
+import SendCardAmountInput from '@c/ui/send-card'
+import TokenBalance from '@c/ui/token-balance'
+import TokenImage from '@c/ui/token-image'
+import { ASSET_TYPES } from '@reducer/send'
+import { PRIMARY } from '@view/helpers/constants/common'
 export default class SendAssetRow extends Component {
   static propTypes = {
     tokens: PropTypes.arrayOf(
@@ -32,31 +32,31 @@ export default class SendAssetRow extends Component {
     changeFromAccountAddress: PropTypes.func,
     changeToAccountAddress: PropTypes.func,
     onAmountChange: PropTypes.func,
-  };
+  }
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
   state = {
     accountAddress: '',
     isShowingDropdown: false,
     sendableTokens: [],
-  };
+  }
 
   async componentDidMount() {
-    const sendableTokens = this.props.tokens.filter((token) => !token.isERC721);
+    const sendableTokens = this.props.tokens.filter((token) => !token.isERC721)
     this.setState({
       sendableTokens,
-    });
+    })
   }
 
   openDropdown = () =>
     this.setState({
       isShowingDropdown: true,
-    });
+    })
   closeDropdown = () =>
     this.setState({
       isShowingDropdown: false,
-    });
+    })
   selectToken = (type, token) => {
     this.setState(
       {
@@ -66,22 +66,22 @@ export default class SendAssetRow extends Component {
         this.props.updateSendAsset({
           type,
           details: type === ASSET_TYPES.NATIVE ? null : token,
-        });
+        })
       },
-    );
-  };
+    )
+  }
   accountChange = (account) => {
     if (this.props.isInternalTrans) {
-      this.props.changeToAccountAddress(account.address);
+      this.props.changeToAccountAddress(account.address)
     } else {
-      this.props.changeFromAccountAddress(account.address);
-      this.props.showAccountDetail(account.address);
+      this.props.changeFromAccountAddress(account.address)
+      this.props.showAccountDetail(account.address)
     }
-  };
+  }
 
   render() {
-    const { t } = this.context;
-    const { sendStage, isInternalTrans } = this.props; // if (![SEND_STAGES.DRAFT, SEND_STAGES.EDIT].includes(sendStage)) {
+    const { t } = this.context
+    const { sendStage, isInternalTrans } = this.props // if (![SEND_STAGES.DRAFT, SEND_STAGES.EDIT].includes(sendStage)) {
     //   return null;
     // }
 
@@ -93,29 +93,29 @@ export default class SendAssetRow extends Component {
             : 'send-token-info__wrapper'
         }
       >
-        <div className="send-v2__asset-dropdown">
+        <div className='send-v2__asset-dropdown'>
           {this.renderSendToken()}
           {/* {this.state.sendableTokens.length > 0
           ? this.renderAssetDropdown()
           : null} */}
         </div>
       </div>
-    );
+    )
   }
 
   renderSendToken() {
-    const { sendAssetAddress } = this.props;
+    const { sendAssetAddress } = this.props
     const token = this.props.tokens.find(
       ({ address }) => address === sendAssetAddress,
-    );
+    )
     return (
       <div
-        className="send-v2__asset-dropdown__input-wrapper"
+        className='send-v2__asset-dropdown__input-wrapper'
         onClick={this.openDropdown}
       >
         {token ? this.renderAsset(token) : this.renderNativeCurrency()}
       </div>
-    );
+    )
   }
 
   renderAssetDropdown() {
@@ -123,10 +123,10 @@ export default class SendAssetRow extends Component {
       this.state.isShowingDropdown && (
         <div>
           <div
-            className="send-v2__asset-dropdown__close-area"
+            className='send-v2__asset-dropdown__close-area'
             onClick={this.closeDropdown}
           />
-          <div className="send-v2__asset-dropdown__list">
+          <div className='send-v2__asset-dropdown__list'>
             {this.renderNativeCurrency(true)}
             {this.state.sendableTokens.map((token) =>
               this.renderAsset(token, true),
@@ -134,11 +134,11 @@ export default class SendAssetRow extends Component {
           </div>
         </div>
       )
-    );
+    )
   }
 
   renderNativeCurrency(insideDropdown = false) {
-    const { t } = this.context;
+    const { t } = this.context
     const {
       chainId,
       accounts,
@@ -148,10 +148,10 @@ export default class SendAssetRow extends Component {
       changeChain,
       isInternalTrans,
       onAmountChange,
-    } = this.props;
+    } = this.props
     const balanceValue = accounts[selectedAddress]
       ? accounts[selectedAddress].balance
-      : '';
+      : ''
     return (
       <div
         className={
@@ -160,8 +160,8 @@ export default class SendAssetRow extends Component {
             : 'send-v2__asset-dropdown__single-asset'
         } // onClick={() => this.selectToken(ASSET_TYPES.NATIVE)}
       >
-        <div className="send-v2__asset-dropdown__asset-icon">
-          <div className="send-v2__asset-dropdown__icon-name">
+        <div className='send-v2__asset-dropdown__asset-icon'>
+          <div className='send-v2__asset-dropdown__icon-name'>
             <div>
               <TokenImage
                 address={zeroAddress()}
@@ -174,7 +174,7 @@ export default class SendAssetRow extends Component {
               image={nativeCurrencyImage}
               address={nativeCurrency}
               /> */}
-              <div className="send-v2__asset-dropdown__symbol">
+              <div className='send-v2__asset-dropdown__symbol'>
                 <div title={nativeCurrency}>{nativeCurrency}</div>
                 <AccountSwitcher
                   address={selectedAddress}
@@ -195,14 +195,14 @@ export default class SendAssetRow extends Component {
                   isRpc,
                   chainInfo,
                   isInternalTrans ? false : true,
-                );
+                )
               }}
             />
           </div>
         </div>
         {!isInternalTrans && (
-          <div className="send-v2__asset-dropdown__asset-data">
-            <div className="send-v2__asset-dropdown__name">
+          <div className='send-v2__asset-dropdown__asset-data'>
+            <div className='send-v2__asset-dropdown__name'>
               <SendCardAmountInput
                 accountVal={balanceValue}
                 isNativeCurrency={true}
@@ -217,8 +217,8 @@ export default class SendAssetRow extends Component {
           </div>
         )}
         {!insideDropdown && (
-          <div className="send-v2__asset-dropdown__asset-data-max">
-            <div className="send-v2__asset-dropdown__name">
+          <div className='send-v2__asset-dropdown__asset-data-max'>
+            <div className='send-v2__asset-dropdown__name'>
               {isInternalTrans ? t('balance') : t('max')}:{' '}
               <UserPreferencedCurrencyDisplay
                 value={balanceValue}
@@ -228,12 +228,12 @@ export default class SendAssetRow extends Component {
           </div>
         )}
       </div>
-    );
+    )
   }
 
   renderAsset(token, insideDropdown = false) {
-    const { address, symbol } = token;
-    const { t } = this.context;
+    const { address, symbol } = token
+    const { t } = this.context
     const {
       selectedAddress,
       chainId,
@@ -241,14 +241,14 @@ export default class SendAssetRow extends Component {
       changeChain,
       isInternalTrans,
       onAmountChange,
-    } = this.props;
+    } = this.props
     return (
       <div
         key={address}
-        className="send-v2__asset-dropdown__asset" // onClick={() => this.selectToken(ASSET_TYPES.TOKEN, token)}
+        className='send-v2__asset-dropdown__asset' // onClick={() => this.selectToken(ASSET_TYPES.TOKEN, token)}
       >
-        <div className="send-v2__asset-dropdown__asset-icon">
-          <div className="send-v2__asset-dropdown__icon-name">
+        <div className='send-v2__asset-dropdown__asset-icon'>
+          <div className='send-v2__asset-dropdown__icon-name'>
             <div>
               <TokenImage
                 address={address}
@@ -261,7 +261,7 @@ export default class SendAssetRow extends Component {
               diameter={insideDropdown ? 30 : 40}
               image={assetImages[address]}
               /> */}
-              <div className="send-v2__asset-dropdown__symbol">
+              <div className='send-v2__asset-dropdown__symbol'>
                 <div title={symbol}>{symbol}</div>
                 <AccountSwitcher
                   address={selectedAddress}
@@ -282,14 +282,14 @@ export default class SendAssetRow extends Component {
                   isRpc,
                   chainInfo,
                   isInternalTrans ? false : true,
-                );
+                )
               }}
             />
           </div>
         </div>
         {!isInternalTrans && (
-          <div className="send-v2__asset-dropdown__asset-data">
-            <div className="send-v2__asset-dropdown__name">
+          <div className='send-v2__asset-dropdown__asset-data'>
+            <div className='send-v2__asset-dropdown__name'>
               <SendCardAmountInput
                 token={token}
                 onAmountChange={onAmountChange}
@@ -300,14 +300,14 @@ export default class SendAssetRow extends Component {
           </div>
         )}
         {!insideDropdown && (
-          <div className="send-v2__asset-dropdown__asset-data-max">
-            <div className="send-v2__asset-dropdown__name">
+          <div className='send-v2__asset-dropdown__asset-data-max'>
+            <div className='send-v2__asset-dropdown__name'>
               {isInternalTrans ? t('balance') : t('max')}:{' '}
               <TokenBalance token={token} accountAddress={selectedAddress} />
             </div>
           </div>
         )}
       </div>
-    );
+    )
   }
 }

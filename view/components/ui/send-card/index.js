@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import BigNumber from 'bignumber.js';
-import { zeroAddress } from 'ethereumjs-util';
-import { getNativeCurrency } from '@reducer/dexmask/dexmask';
-import { conversionUtil } from '@shared/modules/conversion.utils';
-import { getPrice } from '@view/helpers/cross-chain-api';
-import { useFetch } from '@view/hooks/useFetch';
-import { useTokenTracker } from '@view/hooks/useTokenTracker';
-import { getCurrentChainId } from '@view/selectors';
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import { zeroAddress } from 'ethereumjs-util'
+import { getNativeCurrency } from '@reducer/dexmask/dexmask'
+import { conversionUtil } from '@shared/modules/conversion.utils'
+import { getPrice } from '@view/helpers/cross-chain-api'
+import { useFetch } from '@view/hooks/useFetch'
+import { useTokenTracker } from '@view/hooks/useTokenTracker'
+import { getCurrentChainId } from '@view/selectors'
 export default function SendCardAmountInput({
   isNativeCurrency = false,
   accountVal = 0,
@@ -19,15 +19,15 @@ export default function SendCardAmountInput({
   onAmountChange,
   accountAddress,
 }) {
-  const chainId = useSelector(getCurrentChainId);
-  const nativeCurrency = useSelector(getNativeCurrency);
+  const chainId = useSelector(getCurrentChainId)
+  const nativeCurrency = useSelector(getNativeCurrency)
   const { tokensWithBalances } = useTokenTracker(
     token ? [token] : [],
     false,
     false,
     accountAddress,
-  );
-  const { string } = tokensWithBalances[0] || {};
+  )
+  const { string } = tokensWithBalances[0] || {}
   const initVal = useMemo(
     () =>
       isNativeCurrency
@@ -46,12 +46,12 @@ export default function SendCardAmountInput({
           )
         : Number(string),
     [isNativeCurrency, accountVal, string],
-  );
+  )
   const tokenSymbol = useMemo(
     () => (isNativeCurrency ? nativeCurrency : token?.symbol),
     [isNativeCurrency, nativeCurrency, token?.symbol],
-  );
-  const [tokenVal, setTokenVal] = useState(''); // useEffect(() => {
+  )
+  const [tokenVal, setTokenVal] = useState('') // useEffect(() => {
   //   setTokenVal(initVal);
   //   onAmountChange(initVal);
   // }, [initVal]);
@@ -63,45 +63,45 @@ export default function SendCardAmountInput({
         symbol: isNativeCurrency ? nativeCurrency : token?.symbol,
       }),
     [isNativeCurrency, nativeCurrency, token?.address, token?.symbol],
-  );
+  )
   const usdPrice = useMemo(() => {
     if (error || loading) {
-      return 0;
+      return 0
     }
 
     return new BigNumber(
       new BigNumber(res?.d?.price || 0)
         .times(new BigNumber(tokenVal || 0))
         .toFixed(3),
-    ).toFixed();
-  }, [res, error, loading, tokenVal]);
+    ).toFixed()
+  }, [res, error, loading, tokenVal])
   const changeTokenVal = useCallback(
     ({ target }) => {
-      let val = target.value.trim().replace(/\n/gu, '') || null;
+      let val = target.value.trim().replace(/\n/gu, '') || null
 
       if (!val || isNaN(Number(val)) || val < 0) {
-        val = '';
+        val = ''
       }
 
       if (val > initVal) {
-        val = initVal;
+        val = initVal
       }
 
-      setTokenVal(val);
-      onAmountChange(val);
+      setTokenVal(val)
+      onAmountChange(val)
     },
     [initVal],
-  );
+  )
   useEffect(() => {
-    setTokenVal('');
-  }, [chainId]);
+    setTokenVal('')
+  }, [chainId])
   return (
-    <div className="send-card-amount-input-wrap">
+    <div className='send-card-amount-input-wrap'>
       <div>
         <label>{tokenVal}</label>
         <input
-          type="text"
-          placeholder="0"
+          type='text'
+          placeholder='0'
           value={tokenVal}
           onChange={changeTokenVal}
         />
@@ -109,5 +109,5 @@ export default function SendCardAmountInput({
       </div>
       <div>≈ {usdPrice} USD</div>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import { Tooltip as ReactTippy } from 'react-tippy';
-import merge from 'lodash/merge';
-import isEqual from 'lodash/isEqual';
+import React, { PureComponent } from 'react'
+import { Tooltip as ReactTippy } from 'react-tippy'
+import merge from 'lodash/merge'
+import isEqual from 'lodash/isEqual'
 const defaultProps = {
   arrow: true,
   children: null,
@@ -17,7 +17,7 @@ const defaultProps = {
   wrapperClassName: undefined,
   theme: '',
   tag: 'div',
-};
+}
 
 function Tooltip(props) {
   const {
@@ -38,10 +38,10 @@ function Tooltip(props) {
     theme,
     tabIndex,
     tag,
-  } = merge(defaultProps, props);
+  } = merge(defaultProps, props)
 
   if (!title && !html) {
-    return <div className={wrapperClassName}>{children}</div>;
+    return <div className={wrapperClassName}>{children}</div>
   }
 
   return React.createElement(
@@ -69,7 +69,7 @@ function Tooltip(props) {
     >
       {children}
     </ReactTippy>,
-  );
+  )
 }
 
-export default React.memo(Tooltip, isEqual);
+export default React.memo(Tooltip, isEqual)

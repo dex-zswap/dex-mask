@@ -1,44 +1,44 @@
-import React, { useMemo, useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import classnames from 'classnames';
-import { NETWORK_TYPE_TO_ID_MAP } from '@shared/constants/network';
-import { toBnString } from '@view/helpers/utils/conversions.util';
+import React, { useMemo, useState, useCallback } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import classnames from 'classnames'
+import { NETWORK_TYPE_TO_ID_MAP } from '@shared/constants/network'
+import { toBnString } from '@view/helpers/utils/conversions.util'
 import {
   getAllSupportBridge,
   checkTokenBridge,
-} from '@view/helpers/cross-chain-api';
-import useDeepEffect from '@view/hooks/useDeepEffect';
-import { getCrossChainState } from '@view/selectors';
-import { updateCrossChainState, setProviderType } from '@view/store/actions';
-import { useI18nContext } from '@view/hooks/useI18nContext';
+} from '@view/helpers/cross-chain-api'
+import useDeepEffect from '@view/hooks/useDeepEffect'
+import { getCrossChainState } from '@view/selectors'
+import { updateCrossChainState, setProviderType } from '@view/store/actions'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 
 const CrossChainSplitor = () => {
-  const t = useI18nContext();
-  const dispatch = useDispatch();
-  const [reverseCross, setReverseCross] = useState(false);
-  const crossInfo = useSelector(getCrossChainState);
+  const t = useI18nContext()
+  const dispatch = useDispatch()
+  const [reverseCross, setReverseCross] = useState(false)
+  const crossInfo = useSelector(getCrossChainState)
   const isDifferentChain = useMemo(
     () => toBnString(crossInfo.fromChain) !== toBnString(crossInfo.destChain),
     [crossInfo],
-  );
+  )
   const fromChainProviderType = useMemo(() => {
-    const types = Object.keys(NETWORK_TYPE_TO_ID_MAP);
+    const types = Object.keys(NETWORK_TYPE_TO_ID_MAP)
 
     for (
       let i = 0, { length } = types, providerType, providerInfo;
       i < length;
       i++
     ) {
-      providerType = types[i];
-      providerInfo = NETWORK_TYPE_TO_ID_MAP[providerType];
+      providerType = types[i]
+      providerInfo = NETWORK_TYPE_TO_ID_MAP[providerType]
 
       if (
         toBnString(providerInfo.chainId) === toBnString(crossInfo.destChain)
       ) {
-        return providerType;
+        return providerType
       }
     }
-  }, [crossInfo.destChain]);
+  }, [crossInfo.destChain])
   const reverseTokenAndChain = useCallback(() => {
     checkTokenBridge({
       token_address: crossInfo.targetCoinAddress,
@@ -50,7 +50,7 @@ const CrossChainSplitor = () => {
           const target = res.d.find(
             ({ target_meta_chain_id, token_address }) =>
               token_address === crossInfo.coinAddress,
-          );
+          )
           const newCrossInfo = Object.assign({}, crossInfo, {
             destChain: crossInfo.fromChain,
             fromChain: crossInfo.destChain,
@@ -61,12 +61,12 @@ const CrossChainSplitor = () => {
             userInputValue: '',
             supportChains: res.d,
             target,
-          });
-          await dispatch(setProviderType(fromChainProviderType));
-          setTimeout(() => dispatch(updateCrossChainState(newCrossInfo)), 1000);
+          })
+          await dispatch(setProviderType(fromChainProviderType))
+          setTimeout(() => dispatch(updateCrossChainState(newCrossInfo)), 1000)
         }
-      });
-  }, [reverseCross, crossInfo, fromChainProviderType]);
+      })
+  }, [reverseCross, crossInfo, fromChainProviderType])
   useDeepEffect(() => {
     getAllSupportBridge({
       offset: 0,
@@ -75,16 +75,16 @@ const CrossChainSplitor = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.c === 200) {
-          const destChain = toBnString(crossInfo.destChain);
-          const destToken = crossInfo.targetCoinAddress;
+          const destChain = toBnString(crossInfo.destChain)
+          const destToken = crossInfo.targetCoinAddress
           const reverseCross = res.d.some(
             ({ meta_chain_id, token_address }) =>
               meta_chain_id === destChain && token_address === destToken,
-          );
-          setReverseCross(reverseCross);
+          )
+          setReverseCross(reverseCross)
         }
-      });
-  }, [crossInfo]);
+      })
+  }, [crossInfo])
   return (
     <div
       className={classnames([
@@ -94,18 +94,18 @@ const CrossChainSplitor = () => {
     >
       <div>
         {isDifferentChain ? (
-          <div className="bridge">{t('dexBridge')}</div>
+          <div className='bridge'>{t('dexBridge')}</div>
         ) : null}
         {reverseCross ? (
-          <div className="reverse-cross" onClick={reverseTokenAndChain}>
-            <div className="cicle-arrow"></div>
+          <div className='reverse-cross' onClick={reverseTokenAndChain}>
+            <div className='cicle-arrow'></div>
           </div>
         ) : (
-          <div className="arrow"></div>
+          <div className='arrow'></div>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CrossChainSplitor;
+export default CrossChainSplitor

@@ -1,20 +1,20 @@
-import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import { Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import {
   DEFAULT_ROUTE,
   LOCK_ROUTE,
   INITIALIZE_END_OF_FLOW_ROUTE,
   INITIALIZE_WELCOME_ROUTE,
   INITIALIZE_UNLOCK_ROUTE,
-} from '@view/helpers/constants/routes';
+} from '@view/helpers/constants/routes'
 export default class FirstTimeFlowSwitch extends PureComponent {
   static propTypes = {
     completedOnboarding: PropTypes.bool,
     isInitialized: PropTypes.bool,
     isUnlocked: PropTypes.bool,
     seedPhraseBackedUp: PropTypes.bool,
-  };
+  }
 
   render() {
     const {
@@ -22,7 +22,7 @@ export default class FirstTimeFlowSwitch extends PureComponent {
       isInitialized,
       isUnlocked,
       seedPhraseBackedUp,
-    } = this.props;
+    } = this.props
 
     if (completedOnboarding) {
       return (
@@ -31,7 +31,7 @@ export default class FirstTimeFlowSwitch extends PureComponent {
             pathname: DEFAULT_ROUTE,
           }}
         />
-      );
+      )
     }
 
     if (seedPhraseBackedUp !== null) {
@@ -41,7 +41,7 @@ export default class FirstTimeFlowSwitch extends PureComponent {
             pathname: INITIALIZE_END_OF_FLOW_ROUTE,
           }}
         />
-      );
+      )
     }
 
     if (isUnlocked) {
@@ -51,7 +51,7 @@ export default class FirstTimeFlowSwitch extends PureComponent {
             pathname: LOCK_ROUTE,
           }}
         />
-      );
+      )
     }
 
     if (!isInitialized) {
@@ -61,7 +61,7 @@ export default class FirstTimeFlowSwitch extends PureComponent {
             pathname: INITIALIZE_WELCOME_ROUTE,
           }}
         />
-      );
+      )
     }
 
     return (
@@ -70,6 +70,6 @@ export default class FirstTimeFlowSwitch extends PureComponent {
           pathname: INITIALIZE_UNLOCK_ROUTE,
         }}
       />
-    );
+    )
   }
 }

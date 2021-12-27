@@ -29,7 +29,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import SendFooter from './send-footer';
-
 export default function SendTransactionScreen() {
   const t = useI18nContext();
   const dispatch = useDispatch();
@@ -54,19 +53,23 @@ export default function SendTransactionScreen() {
     () => new BigNumber(hexToString(`0x${maxSendAmountHex}`)).toString(),
     [maxSendAmountHex],
   );
-
   const changeToken = useCallback(
     ({ address, symbol, isNativeCurrency, decimals = 18 }) => {
       dispatch(
         updateSendAsset({
           type: isNativeCurrency ? ASSET_TYPES.NATIVE : ASSET_TYPES.TOKEN,
-          details: isNativeCurrency ? null : { address, symbol, decimals },
+          details: isNativeCurrency
+            ? null
+            : {
+                address,
+                symbol,
+                decimals,
+              },
         }),
       );
     },
     [],
   );
-
   const changeAmount = useCallback((val) => {
     dispatch(
       updateSendAmount(
@@ -74,13 +77,16 @@ export default function SendTransactionScreen() {
       ),
     );
   }, []);
-
   const changeSendToAccountAddress = useCallback((address) => {
     setSendToAccountAddress(address);
     dispatch(updateRecipientUserInput(address));
-    dispatch(updateRecipient({ address, nickname: '' }));
+    dispatch(
+      updateRecipient({
+        address,
+        nickname: '',
+      }),
+    );
   }, []);
-
   const toggleCheck = useCallback(
     (checked) => {
       if (checked) {

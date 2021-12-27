@@ -1,6 +1,6 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash'
 
-const version = 56;
+const version = 56
 
 /**
  * Remove tokens that don't have an address due to
@@ -10,15 +10,15 @@ const version = 56;
 export default {
   version,
   async migrate(originalVersionedData) {
-    const versionedData = cloneDeep(originalVersionedData);
-    versionedData.meta.version = version;
+    const versionedData = cloneDeep(originalVersionedData)
+    versionedData.meta.version = version
 
-    const { PreferencesController } = versionedData.data;
+    const { PreferencesController } = versionedData.data
 
     if (Array.isArray(PreferencesController.tokens)) {
       PreferencesController.tokens = PreferencesController.tokens.filter(
         ({ address }) => address,
-      );
+      )
     }
 
     if (
@@ -26,26 +26,24 @@ export default {
       typeof PreferencesController.accountTokens === 'object'
     ) {
       Object.keys(PreferencesController.accountTokens).forEach((account) => {
-        const chains = Object.keys(
-          PreferencesController.accountTokens[account],
-        );
+        const chains = Object.keys(PreferencesController.accountTokens[account])
         chains.forEach((chain) => {
           PreferencesController.accountTokens[account][
             chain
           ] = PreferencesController.accountTokens[account][chain].filter(
             ({ address }) => address,
-          );
-        });
-      });
+          )
+        })
+      })
     }
 
     if (
       PreferencesController.assetImages &&
       'undefined' in PreferencesController.assetImages
     ) {
-      delete PreferencesController.assetImages.undefined;
+      delete PreferencesController.assetImages.undefined
     }
 
-    return versionedData;
+    return versionedData
   },
-};
+}

@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { getTokenData } from '@view/helpers/utils/transactions.util';
+import { useMemo } from 'react'
+import { getTokenData } from '@view/helpers/utils/transactions.util'
 /**
  * useTokenData
  * Given the data string from txParams return a decoded object of the details of the
@@ -16,9 +16,9 @@ import { getTokenData } from '@view/helpers/utils/transactions.util';
 export function useTokenData(transactionData, isTokenTransaction = true) {
   return useMemo(() => {
     if (!isTokenTransaction || !transactionData) {
-      return null;
+      return null
     }
 
-    return getTokenData(transactionData);
-  }, [isTokenTransaction, transactionData]);
+    return getTokenData(transactionData)
+  }, [isTokenTransaction, transactionData])
 }

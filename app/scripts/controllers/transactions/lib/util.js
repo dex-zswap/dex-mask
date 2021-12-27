@@ -1,11 +1,11 @@
-import { ethErrors } from 'eth-rpc-errors';
-import { addHexPrefix } from '@app/scripts/lib/util';
+import { ethErrors } from 'eth-rpc-errors'
+import { addHexPrefix } from '@app/scripts/lib/util'
 import {
   TRANSACTION_ENVELOPE_TYPES,
   TRANSACTION_STATUSES,
-} from '@shared/constants/transaction';
-import { isEIP1559Transaction } from '@shared/modules/transaction.utils';
-import { isValidHexAddress } from '@shared/modules/hexstring-utils';
+} from '@shared/constants/transaction'
+import { isEIP1559Transaction } from '@shared/modules/transaction.utils'
+import { isValidHexAddress } from '@shared/modules/hexstring-utils'
 
 const normalizers = {
   from: addHexPrefix,
@@ -19,12 +19,12 @@ const normalizers = {
   maxFeePerGas: addHexPrefix,
   maxPriorityFeePerGas: addHexPrefix,
   type: addHexPrefix,
-};
+}
 
 export function normalizeAndValidateTxParams(txParams, lowerCase = true) {
-  const normalizedTxParams = normalizeTxParams(txParams, lowerCase);
-  validateTxParams(normalizedTxParams);
-  return normalizedTxParams;
+  const normalizedTxParams = normalizeTxParams(txParams, lowerCase)
+  validateTxParams(normalizedTxParams)
+  return normalizedTxParams
 }
 
 /**
@@ -36,13 +36,13 @@ export function normalizeAndValidateTxParams(txParams, lowerCase = true) {
  */
 export function normalizeTxParams(txParams, lowerCase = true) {
   // apply only keys in the normalizers
-  const normalizedTxParams = {};
+  const normalizedTxParams = {}
   for (const key in normalizers) {
     if (txParams[key]) {
-      normalizedTxParams[key] = normalizers[key](txParams[key], lowerCase);
+      normalizedTxParams[key] = normalizers[key](txParams[key], lowerCase)
     }
   }
-  return normalizedTxParams;
+  return normalizedTxParams
 }
 
 /**
@@ -62,7 +62,7 @@ function ensureMutuallyExclusiveFieldsNotProvided(
   if (typeof txParams[mutuallyExclusiveField] !== 'undefined') {
     throw ethErrors.rpc.invalidParams(
       `Invalid transaction params: specified ${fieldBeingValidated} but also included ${mutuallyExclusiveField}, these cannot be mixed`,
-    );
+    )
   }
 }
 
@@ -77,7 +77,7 @@ function ensureFieldIsString(txParams, field) {
   if (typeof txParams[field] !== 'string') {
     throw ethErrors.rpc.invalidParams(
       `Invalid transaction params: ${field} is not a string. got: (${txParams[field]})`,
-    );
+    )
   }
 }
 
@@ -101,9 +101,9 @@ function ensureProperTransactionEnvelopeTypeProvided(txParams, field) {
       ) {
         throw ethErrors.rpc.invalidParams(
           `Invalid transaction envelope type: specified type "${txParams.type}" but including maxFeePerGas and maxPriorityFeePerGas requires type: "${TRANSACTION_ENVELOPE_TYPES.FEE_MARKET}"`,
-        );
+        )
       }
-      break;
+      break
     case 'gasPrice':
     default:
       if (
@@ -112,7 +112,7 @@ function ensureProperTransactionEnvelopeTypeProvided(txParams, field) {
       ) {
         throw ethErrors.rpc.invalidParams(
           `Invalid transaction envelope type: specified type "${txParams.type}" but included a gasPrice instead of maxFeePerGas and maxPriorityFeePerGas`,
-        );
+        )
       }
   }
 }
@@ -127,88 +127,88 @@ export function validateTxParams(txParams, eip1559Compatibility = true) {
   if (!txParams || typeof txParams !== 'object' || Array.isArray(txParams)) {
     throw ethErrors.rpc.invalidParams(
       'Invalid transaction params: must be an object.',
-    );
+    )
   }
   if (!txParams.to && !txParams.data) {
     throw ethErrors.rpc.invalidParams(
       'Invalid transaction params: must specify "data" for contract deployments, or "to" (and optionally "data") for all other types of transactions.',
-    );
+    )
   }
   if (isEIP1559Transaction({ txParams }) && !eip1559Compatibility) {
     throw ethErrors.rpc.invalidParams(
       'Invalid transaction params: params specify an EIP-1559 transaction but the current network does not support EIP-1559',
-    );
+    )
   }
 
   Object.entries(txParams).forEach(([key, value]) => {
     // validate types
     switch (key) {
       case 'from':
-        validateFrom(txParams);
-        break;
+        validateFrom(txParams)
+        break
       case 'to':
-        validateRecipient(txParams);
-        break;
+        validateRecipient(txParams)
+        break
       case 'gasPrice':
-        ensureProperTransactionEnvelopeTypeProvided(txParams, 'gasPrice');
+        ensureProperTransactionEnvelopeTypeProvided(txParams, 'gasPrice')
         ensureMutuallyExclusiveFieldsNotProvided(
           txParams,
           'gasPrice',
           'maxFeePerGas',
-        );
+        )
         ensureMutuallyExclusiveFieldsNotProvided(
           txParams,
           'gasPrice',
           'maxPriorityFeePerGas',
-        );
-        ensureFieldIsString(txParams, 'gasPrice');
-        break;
+        )
+        ensureFieldIsString(txParams, 'gasPrice')
+        break
       case 'maxFeePerGas':
-        ensureProperTransactionEnvelopeTypeProvided(txParams, 'maxFeePerGas');
+        ensureProperTransactionEnvelopeTypeProvided(txParams, 'maxFeePerGas')
         ensureMutuallyExclusiveFieldsNotProvided(
           txParams,
           'maxFeePerGas',
           'gasPrice',
-        );
-        ensureFieldIsString(txParams, 'maxFeePerGas');
-        break;
+        )
+        ensureFieldIsString(txParams, 'maxFeePerGas')
+        break
       case 'maxPriorityFeePerGas':
         ensureProperTransactionEnvelopeTypeProvided(
           txParams,
           'maxPriorityFeePerGas',
-        );
+        )
         ensureMutuallyExclusiveFieldsNotProvided(
           txParams,
           'maxPriorityFeePerGas',
           'gasPrice',
-        );
-        ensureFieldIsString(txParams, 'maxPriorityFeePerGas');
-        break;
+        )
+        ensureFieldIsString(txParams, 'maxPriorityFeePerGas')
+        break
       case 'value':
-        ensureFieldIsString(txParams, 'value');
+        ensureFieldIsString(txParams, 'value')
         if (value.toString().includes('-')) {
           throw ethErrors.rpc.invalidParams(
             `Invalid transaction value "${value}": not a positive number.`,
-          );
+          )
         }
 
         if (value.toString().includes('.')) {
           throw ethErrors.rpc.invalidParams(
             `Invalid transaction value of "${value}": number must be in wei.`,
-          );
+          )
         }
-        break;
+        break
       case 'chainId':
         if (typeof value !== 'number' && typeof value !== 'string') {
           throw ethErrors.rpc.invalidParams(
             `Invalid transaction params: ${key} is not a Number or hex string. got: (${value})`,
-          );
+          )
         }
-        break;
+        break
       default:
-        ensureFieldIsString(txParams, key);
+        ensureFieldIsString(txParams, key)
     }
-  });
+  })
 }
 
 /**
@@ -220,10 +220,10 @@ export function validateFrom(txParams) {
   if (!(typeof txParams.from === 'string')) {
     throw ethErrors.rpc.invalidParams(
       `Invalid "from" address "${txParams.from}": not a string.`,
-    );
+    )
   }
   if (!isValidHexAddress(txParams.from, { allowNonPrefixed: false })) {
-    throw ethErrors.rpc.invalidParams('Invalid "from" address.');
+    throw ethErrors.rpc.invalidParams('Invalid "from" address.')
   }
 }
 
@@ -236,17 +236,17 @@ export function validateFrom(txParams) {
 export function validateRecipient(txParams) {
   if (txParams.to === '0x' || txParams.to === null) {
     if (txParams.data) {
-      delete txParams.to;
+      delete txParams.to
     } else {
-      throw ethErrors.rpc.invalidParams('Invalid "to" address.');
+      throw ethErrors.rpc.invalidParams('Invalid "to" address.')
     }
   } else if (
     txParams.to !== undefined &&
     !isValidHexAddress(txParams.to, { allowNonPrefixed: false })
   ) {
-    throw ethErrors.rpc.invalidParams('Invalid "to" address.');
+    throw ethErrors.rpc.invalidParams('Invalid "to" address.')
   }
-  return txParams;
+  return txParams
 }
 
 /**
@@ -259,5 +259,5 @@ export function getFinalStates() {
     TRANSACTION_STATUSES.CONFIRMED, // the tx has been included in a block.
     TRANSACTION_STATUSES.FAILED, // the tx failed for some reason, included on tx data.
     TRANSACTION_STATUSES.DROPPED, // the tx nonce was already used
-  ];
+  ]
 }

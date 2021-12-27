@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { I18nContext } from '@view/contexts/i18n';
+import { useContext } from 'react'
+import { I18nContext } from '@view/contexts/i18n'
 /**
  * useI18ncContext
  *
@@ -9,5 +9,5 @@ import { I18nContext } from '@view/contexts/i18n';
  */
 
 export function useI18nContext() {
-  return useContext(I18nContext);
+  return useContext(I18nContext)
 }

@@ -1,9 +1,9 @@
-import React from 'react';
-import classnames from 'classnames';
-import { omit } from 'lodash';
-import PropTypes from 'prop-types';
-import Typography from '@c/ui/typography';
-import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system';
+import React from 'react'
+import classnames from 'classnames'
+import { omit } from 'lodash'
+import PropTypes from 'prop-types'
+import Typography from '@c/ui/typography'
+import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system'
 export default function Chip({
   className,
   children,
@@ -17,11 +17,11 @@ export default function Chip({
 }) {
   const onKeyPress = (event) => {
     if (event.key === 'Enter' && onClick) {
-      onClick(event);
+      onClick(event)
     }
-  };
+  }
 
-  const isInteractive = typeof onClick === 'function';
+  const isInteractive = typeof onClick === 'function'
   return (
     <div
       onClick={onClick}
@@ -34,21 +34,21 @@ export default function Chip({
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}
     >
-      {leftIcon && <div className="chip__left-icon">{leftIcon}</div>}
+      {leftIcon && <div className='chip__left-icon'>{leftIcon}</div>}
       {children ?? (
         <Typography
-          className="chip__label"
+          className='chip__label'
           variant={TYPOGRAPHY.H6}
-          tag="span"
+          tag='span'
           color={COLORS.UI4}
           {...labelProps}
         >
           {label}
         </Typography>
       )}
-      {rightIcon && <div className="chip__right-icon">{rightIcon}</div>}
+      {rightIcon && <div className='chip__right-icon'>{rightIcon}</div>}
     </div>
-  );
+  )
 }
 Chip.propTypes = {
   borderColor: PropTypes.oneOf(Object.values(COLORS)),
@@ -63,4 +63,4 @@ Chip.propTypes = {
   onClick: PropTypes.func,
   inputValue: PropTypes.string,
   setInputValue: PropTypes.func,
-};
+}

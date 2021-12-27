@@ -1,10 +1,10 @@
-import { isHexString } from 'ethereumjs-util';
+import { isHexString } from 'ethereumjs-util'
 
 export function transactionMatchesNetwork(transaction, chainId, networkId) {
   if (typeof transaction.chainId !== 'undefined') {
-    return transaction.chainId === chainId;
+    return transaction.chainId === chainId
   }
-  return transaction.metamaskNetworkId === networkId;
+  return transaction.metamaskNetworkId === networkId
 }
 
 /**
@@ -18,7 +18,7 @@ export function isEIP1559Transaction(transaction) {
   return (
     isHexString(transaction?.txParams?.maxFeePerGas) &&
     isHexString(transaction?.txParams?.maxPriorityFeePerGas)
-  );
+  )
 }
 
 /**
@@ -36,7 +36,7 @@ export function isLegacyTransaction(transaction) {
     typeof transaction.txParams.maxPriorityFeePerGas === 'undefined' &&
     (typeof transaction.txParams.gasPrice === 'undefined' ||
       isHexString(transaction.txParams.gasPrice))
-  );
+  )
 }
 
 /**
@@ -48,7 +48,7 @@ export function isLegacyTransaction(transaction) {
  */
 export function txParamsAreDappSuggested(transaction) {
   const { gasPrice, maxPriorityFeePerGas, maxFeePerGas } =
-    transaction?.txParams || {};
+    transaction?.txParams || {}
   return (
     (gasPrice && gasPrice === transaction?.dappSuggestedGasFees?.gasPrice) ||
     (maxPriorityFeePerGas &&
@@ -56,5 +56,5 @@ export function txParamsAreDappSuggested(transaction) {
       transaction?.dappSuggestedGasFees?.maxPriorityFeePerGas ===
         maxPriorityFeePerGas &&
       transaction?.dappSuggestedGasFees?.maxFeePerGas === maxFeePerGas)
-  );
+  )
 }

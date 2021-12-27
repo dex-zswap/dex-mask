@@ -1,13 +1,13 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { UNLOCK_ROUTE, INITIALIZE_ROUTE } from '@view/helpers/constants/routes';
+import React from 'react'
+import { Redirect, Route } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import { UNLOCK_ROUTE, INITIALIZE_ROUTE } from '@view/helpers/constants/routes'
 export default function Authenticated(props) {
-  const { isUnlocked, completedOnboarding } = props;
+  const { isUnlocked, completedOnboarding } = props
 
   switch (true) {
     case isUnlocked && completedOnboarding:
-      return <Route {...props} />;
+      return <Route {...props} />
 
     case !completedOnboarding:
       return (
@@ -16,7 +16,7 @@ export default function Authenticated(props) {
             pathname: INITIALIZE_ROUTE,
           }}
         />
-      );
+      )
 
     default:
       return (
@@ -25,10 +25,10 @@ export default function Authenticated(props) {
             pathname: UNLOCK_ROUTE,
           }}
         />
-      );
+      )
   }
 }
 Authenticated.propTypes = {
   isUnlocked: PropTypes.bool,
   completedOnboarding: PropTypes.bool,
-};
+}

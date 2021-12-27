@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ErrorMessage from '@c/ui/error-message';
-import { PageContainerFooter } from '@c/ui/page-container';
-import { Tab, Tabs } from '@c/ui/tabs';
-import { ConfirmPageContainerWarning } from '.';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ErrorMessage from '@c/ui/error-message'
+import { PageContainerFooter } from '@c/ui/page-container'
+import { Tab, Tabs } from '@c/ui/tabs'
+import { ConfirmPageContainerWarning } from '.'
 export default class ConfirmPageContainerContent extends Component {
   static contextTypes = {
     t: PropTypes.func.isRequired,
-  };
+  }
   static propTypes = {
     action: PropTypes.string,
     dataComponent: PropTypes.node,
@@ -33,34 +33,34 @@ export default class ConfirmPageContainerContent extends Component {
     disabled: PropTypes.bool,
     unapprovedTxCount: PropTypes.number,
     rejectNText: PropTypes.string,
-  };
+  }
 
   renderContent() {
-    const { detailsComponent, dataComponent } = this.props;
+    const { detailsComponent, dataComponent } = this.props
 
     if (detailsComponent && dataComponent) {
-      return this.renderTabs();
+      return this.renderTabs()
     }
 
-    return detailsComponent || dataComponent;
+    return detailsComponent || dataComponent
   }
 
   renderTabs() {
-    const { t } = this.context;
-    const { detailsComponent, dataComponent } = this.props;
+    const { t } = this.context
+    const { detailsComponent, dataComponent } = this.props
     return (
       <Tabs>
         <Tab
-          className="confirm-page-container-content__tab"
+          className='confirm-page-container-content__tab'
           name={t('details')}
         >
           {detailsComponent}
         </Tab>
-        <Tab className="confirm-page-container-content__tab" name={t('data')}>
+        <Tab className='confirm-page-container-content__tab' name={t('data')}>
           {dataComponent}
         </Tab>
       </Tabs>
-    );
+    )
   }
 
   render() {
@@ -88,9 +88,9 @@ export default class ConfirmPageContainerContent extends Component {
       rejectNText,
       origin,
       ethGasPriceWarning,
-    } = this.props;
+    } = this.props
     return (
-      <div className="confirm-page-container-content">
+      <div className='confirm-page-container-content'>
         {warning && <ConfirmPageContainerWarning warning={warning} />}
         {ethGasPriceWarning && (
           <ConfirmPageContainerWarning warning={ethGasPriceWarning} />
@@ -112,7 +112,7 @@ export default class ConfirmPageContainerContent extends Component {
         /> */}
         {this.renderContent()}
         {(errorKey || errorMessage) && (
-          <div className="confirm-page-container-content__error-container">
+          <div className='confirm-page-container-content__error-container'>
             <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
           </div>
         )}
@@ -121,12 +121,12 @@ export default class ConfirmPageContainerContent extends Component {
           cancelText={cancelText}
           onSubmit={onSubmit}
           submitText={submitText}
-          submitButtonType="confirm"
+          submitButtonType='confirm'
           disabled={disabled}
         >
           {unapprovedTxCount > 1 && <a onClick={onCancelAll}>{rejectNText}</a>}
         </PageContainerFooter>
       </div>
-    );
+    )
   }
 }

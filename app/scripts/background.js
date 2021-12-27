@@ -3,65 +3,65 @@
  */
 
 // polyfills
-import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch'
 
-import endOfStream from 'end-of-stream';
-import pump from 'pump';
-import debounce from 'debounce-stream';
-import log from 'loglevel';
-import extension from 'extensionizer';
-import { storeAsStream, storeTransformStream } from '@metamask/obs-store';
-import PortStream from 'extension-port-stream';
+import endOfStream from 'end-of-stream'
+import pump from 'pump'
+import debounce from 'debounce-stream'
+import log from 'loglevel'
+import extension from 'extensionizer'
+import { storeAsStream, storeTransformStream } from '@metamask/obs-store'
+import PortStream from 'extension-port-stream'
 
 import {
   ENVIRONMENT_TYPE_POPUP,
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_FULLSCREEN,
-} from '@shared/constants/app';
-import { SECOND } from '@shared/constants/time';
-import migrations from './migrations';
-import Migrator from './lib/migrator';
-import ExtensionPlatform from './platforms/extension';
-import LocalStore from './lib/local-store';
-import ReadOnlyNetworkStore from './lib/network-store';
-import createStreamSink from './lib/createStreamSink';
-import NotificationManager from './lib/notification-manager';
+} from '@shared/constants/app'
+import { SECOND } from '@shared/constants/time'
+import migrations from './migrations'
+import Migrator from './lib/migrator'
+import ExtensionPlatform from './platforms/extension'
+import LocalStore from './lib/local-store'
+import ReadOnlyNetworkStore from './lib/network-store'
+import createStreamSink from './lib/createStreamSink'
+import NotificationManager from './lib/notification-manager'
 import DexmaskController, {
   DEXMASK_CONTROLLER_EVENTS,
-} from './dexmask-controller';
-import rawFirstTimeState from './first-time-state';
-import getFirstPreferredLangCode from './lib/get-first-preferred-lang-code';
-import getObjStructure from './lib/getObjStructure';
-import setupEnsIpfsResolver from './lib/ens-ipfs/setup';
+} from './dexmask-controller'
+import rawFirstTimeState from './first-time-state'
+import getFirstPreferredLangCode from './lib/get-first-preferred-lang-code'
+import getObjStructure from './lib/getObjStructure'
+import setupEnsIpfsResolver from './lib/ens-ipfs/setup'
 /* eslint-enable import/first */
 
-const { sentry } = global;
-const firstTimeState = { ...rawFirstTimeState };
+const { sentry } = global
+const firstTimeState = { ...rawFirstTimeState }
 
-log.setDefaultLevel(process.env.DEXMASK_DEBUG ? 'debug' : 'info');
+log.setDefaultLevel(process.env.DEXMASK_DEBUG ? 'debug' : 'info')
 
-const platform = new ExtensionPlatform();
+const platform = new ExtensionPlatform()
 
-const notificationManager = new NotificationManager();
-global.METAMASK_NOTIFIER = notificationManager;
+const notificationManager = new NotificationManager()
+global.METAMASK_NOTIFIER = notificationManager
 
-let popupIsOpen = false;
-let notificationIsOpen = false;
-let uiIsTriggering = false;
-const openMetamaskTabsIDs = {};
-const requestAccountTabIds = {};
+let popupIsOpen = false
+let notificationIsOpen = false
+let uiIsTriggering = false
+const openMetamaskTabsIDs = {}
+const requestAccountTabIds = {}
 
 // state persistence
-const inTest = process.env.IN_TEST === 'true';
-const localStore = inTest ? new ReadOnlyNetworkStore() : new LocalStore();
-let versionedData;
+const inTest = process.env.IN_TEST === 'true'
+const localStore = inTest ? new ReadOnlyNetworkStore() : new LocalStore()
+let versionedData
 
 if (inTest || process.env.DEXMASK_DEBUG) {
-  global.metamaskGetState = localStore.get.bind(localStore);
+  global.metamaskGetState = localStore.get.bind(localStore)
 }
 
 // initialization flow
-initialize().catch(log.error);
+initialize().catch(log.error)
 
 /**
  * @typedef {import('../../shared/constants/transaction').TransactionMeta} TransactionMeta
@@ -122,10 +122,10 @@ initialize().catch(log.error);
  * @returns {Promise} Setup complete.
  */
 async function initialize() {
-  const initState = await loadStateFromPersistence();
-  const initLangCode = await getFirstPreferredLangCode();
-  await setupController(initState, initLangCode);
-  log.info('DexMask initialization complete.');
+  const initState = await loadStateFromPersistence()
+  const initLangCode = await getFirstPreferredLangCode()
+  await setupController(initState, initLangCode)
+  log.info('DexMask initialization complete.')
 }
 
 //
@@ -139,32 +139,32 @@ async function initialize() {
  */
 async function loadStateFromPersistence() {
   // migrations
-  const migrator = new Migrator({ migrations });
-  migrator.on('error', console.warn);
+  const migrator = new Migrator({ migrations })
+  migrator.on('error', console.warn)
 
   // read from disk
   // first from preferred, async API:
   versionedData =
-    (await localStore.get()) || migrator.generateInitialState(firstTimeState);
+    (await localStore.get()) || migrator.generateInitialState(firstTimeState)
 
   // migrate data
-  versionedData = await migrator.migrateData(versionedData);
+  versionedData = await migrator.migrateData(versionedData)
   if (!versionedData) {
-    throw new Error('DexMask - migrator returned undefined');
+    throw new Error('DexMask - migrator returned undefined')
   }
 
   // write to disk
   if (localStore.isSupported) {
-    localStore.set(versionedData);
+    localStore.set(versionedData)
   } else {
     // throw in setTimeout so as to not block boot
     setTimeout(() => {
-      throw new Error('DexMask - Localstore not supported');
-    });
+      throw new Error('DexMask - Localstore not supported')
+    })
   }
 
   // return just the data
-  return versionedData.data;
+  return versionedData.data
 }
 
 /**
@@ -195,12 +195,12 @@ function setupController(initState, initLangCode) {
     platform,
     extension,
     getRequestAccountTabIds: () => {
-      return requestAccountTabIds;
+      return requestAccountTabIds
     },
     getOpenMetamaskTabsIds: () => {
-      return openMetamaskTabsIDs;
+      return openMetamaskTabsIDs
     },
-  });
+  })
 
   setupEnsIpfsResolver({
     getCurrentChainId: controller.networkController.getCurrentChainId.bind(
@@ -210,7 +210,7 @@ function setupController(initState, initLangCode) {
       controller.preferencesController,
     ),
     provider: controller.provider,
-  });
+  })
 
   // setup state persistence
   pump(
@@ -219,9 +219,9 @@ function setupController(initState, initLangCode) {
     storeTransformStream(versionifyData),
     createStreamSink(persistData),
     (error) => {
-      log.error('DexMask - Persistence pipeline failed', error);
+      log.error('DexMask - Persistence pipeline failed', error)
     },
-  );
+  )
 
   /**
    * Assigns the given state to the versioned object (with metadata), and returns that.
@@ -229,31 +229,31 @@ function setupController(initState, initLangCode) {
    * @returns {VersionedData} The state object wrapped in an object that includes a metadata key.
    */
   function versionifyData(state) {
-    versionedData.data = state;
-    return versionedData;
+    versionedData.data = state
+    return versionedData
   }
 
-  let dataPersistenceFailing = false;
+  let dataPersistenceFailing = false
 
   async function persistData(state) {
     if (!state) {
-      throw new Error('DexMask - updated state is missing');
+      throw new Error('DexMask - updated state is missing')
     }
     if (!state.data) {
-      throw new Error('DexMask - updated state does not have data');
+      throw new Error('DexMask - updated state does not have data')
     }
     if (localStore.isSupported) {
       try {
-        await localStore.set(state);
+        await localStore.set(state)
         if (dataPersistenceFailing) {
-          dataPersistenceFailing = false;
+          dataPersistenceFailing = false
         }
       } catch (err) {
         // log error so we dont break the pipeline
         if (!dataPersistenceFailing) {
-          dataPersistenceFailing = true;
+          dataPersistenceFailing = true
         }
-        log.error('error setting state in local store:', err);
+        log.error('error setting state in local store:', err)
       }
     }
   }
@@ -261,29 +261,29 @@ function setupController(initState, initLangCode) {
   //
   // connect to other contexts
   //
-  extension.runtime.onConnect.addListener(connectRemote);
-  extension.runtime.onConnectExternal.addListener(connectExternal);
+  extension.runtime.onConnect.addListener(connectRemote)
+  extension.runtime.onConnectExternal.addListener(connectExternal)
 
   const metamaskInternalProcessHash = {
     [ENVIRONMENT_TYPE_POPUP]: true,
     [ENVIRONMENT_TYPE_NOTIFICATION]: true,
     [ENVIRONMENT_TYPE_FULLSCREEN]: true,
-  };
+  }
 
-  const metamaskBlockedPorts = ['trezor-connect'];
+  const metamaskBlockedPorts = ['trezor-connect']
 
   const isClientOpenStatus = () => {
     return (
       popupIsOpen ||
       Boolean(Object.keys(openMetamaskTabsIDs).length) ||
       notificationIsOpen
-    );
-  };
+    )
+  }
 
   const onCloseEnvironmentInstances = (isClientOpen, environmentType) => {
     // if all instances of DexMask are closed we call a method on the controller to stop gasFeeController polling
     if (isClientOpen === false) {
-      controller.onClientClosed();
+      controller.onClientClosed()
       // otherwise we want to only remove the polling tokens for the environment type that has closed
     } else {
       // in the case of fullscreen environment a user might have multiple tabs open so we don't want to disconnect all of
@@ -292,11 +292,11 @@ function setupController(initState, initLangCode) {
         environmentType === ENVIRONMENT_TYPE_FULLSCREEN &&
         Boolean(Object.keys(openMetamaskTabsIDs).length)
       ) {
-        return;
+        return
       }
-      controller.onEnvironmentTypeClosed(environmentType);
+      controller.onEnvironmentTypeClosed(environmentType)
     }
-  };
+  }
 
   /**
    * A runtime.Port object, as provided by the browser:
@@ -311,131 +311,128 @@ function setupController(initState, initLangCode) {
    * @param {Port} remotePort - The port provided by a new context.
    */
   function connectRemote(remotePort) {
-    const processName = remotePort.name;
-    const isMetaMaskInternalProcess = metamaskInternalProcessHash[processName];
+    const processName = remotePort.name
+    const isMetaMaskInternalProcess = metamaskInternalProcessHash[processName]
 
     if (metamaskBlockedPorts.includes(remotePort.name)) {
-      return;
+      return
     }
 
     if (isMetaMaskInternalProcess) {
-      const portStream = new PortStream(remotePort);
+      const portStream = new PortStream(remotePort)
       // communication with popup
-      controller.isClientOpen = true;
-      controller.setupTrustedCommunication(portStream, remotePort.sender);
+      controller.isClientOpen = true
+      controller.setupTrustedCommunication(portStream, remotePort.sender)
 
       if (processName === ENVIRONMENT_TYPE_POPUP) {
-        popupIsOpen = true;
+        popupIsOpen = true
         endOfStream(portStream, () => {
-          popupIsOpen = false;
-          const isClientOpen = isClientOpenStatus();
-          controller.isClientOpen = isClientOpen;
-          onCloseEnvironmentInstances(isClientOpen, ENVIRONMENT_TYPE_POPUP);
-        });
+          popupIsOpen = false
+          const isClientOpen = isClientOpenStatus()
+          controller.isClientOpen = isClientOpen
+          onCloseEnvironmentInstances(isClientOpen, ENVIRONMENT_TYPE_POPUP)
+        })
       }
 
       if (processName === ENVIRONMENT_TYPE_NOTIFICATION) {
-        notificationIsOpen = true;
+        notificationIsOpen = true
 
         endOfStream(portStream, () => {
-          notificationIsOpen = false;
-          const isClientOpen = isClientOpenStatus();
-          controller.isClientOpen = isClientOpen;
+          notificationIsOpen = false
+          const isClientOpen = isClientOpenStatus()
+          controller.isClientOpen = isClientOpen
           onCloseEnvironmentInstances(
             isClientOpen,
             ENVIRONMENT_TYPE_NOTIFICATION,
-          );
-        });
+          )
+        })
       }
 
       if (processName === ENVIRONMENT_TYPE_FULLSCREEN) {
-        const tabId = remotePort.sender.tab.id;
-        openMetamaskTabsIDs[tabId] = true;
+        const tabId = remotePort.sender.tab.id
+        openMetamaskTabsIDs[tabId] = true
 
         endOfStream(portStream, () => {
-          delete openMetamaskTabsIDs[tabId];
-          const isClientOpen = isClientOpenStatus();
-          controller.isClientOpen = isClientOpen;
-          onCloseEnvironmentInstances(
-            isClientOpen,
-            ENVIRONMENT_TYPE_FULLSCREEN,
-          );
-        });
+          delete openMetamaskTabsIDs[tabId]
+          const isClientOpen = isClientOpenStatus()
+          controller.isClientOpen = isClientOpen
+          onCloseEnvironmentInstances(isClientOpen, ENVIRONMENT_TYPE_FULLSCREEN)
+        })
       }
     } else {
       if (remotePort.sender && remotePort.sender.tab && remotePort.sender.url) {
-        const tabId = remotePort.sender.tab.id;
-        const url = new URL(remotePort.sender.url);
-        const { origin } = url;
+        const tabId = remotePort.sender.tab.id
+        const url = new URL(remotePort.sender.url)
+        const { origin } = url
 
         remotePort.onMessage.addListener((msg) => {
           if (msg.data && msg.data.method === 'eth_requestAccounts') {
-            requestAccountTabIds[origin] = tabId;
+            requestAccountTabIds[origin] = tabId
           }
-        });
+        })
       }
-      connectExternal(remotePort);
+      connectExternal(remotePort)
     }
   }
 
   // communication with page or other extension
   function connectExternal(remotePort) {
-    const portStream = new PortStream(remotePort);
-    controller.setupUntrustedCommunication(portStream, remotePort.sender);
+    const portStream = new PortStream(remotePort)
+    controller.setupUntrustedCommunication(portStream, remotePort.sender)
   }
 
   //
   // User Interface setup
   //
 
-  updateBadge();
+  updateBadge()
   controller.txController.on(
     DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE,
     updateBadge,
-  );
+  )
   controller.messageManager.on(
     DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE,
     updateBadge,
-  );
+  )
   controller.personalMessageManager.on(
     DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE,
     updateBadge,
-  );
+  )
   controller.decryptMessageManager.on(
     DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE,
     updateBadge,
-  );
+  )
   controller.encryptionPublicKeyManager.on(
     DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE,
     updateBadge,
-  );
+  )
   controller.typedMessageManager.on(
     DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE,
     updateBadge,
-  );
-  controller.approvalController.subscribe(updateBadge);
+  )
+  controller.approvalController.subscribe(updateBadge)
   controller.appStateController.on(
     DEXMASK_CONTROLLER_EVENTS.UPDATE_BADGE,
     updateBadge,
-  );
+  )
 
   /**
    * Updates the Web Extension's "badge" number, on the little fox in the toolbar.
    * The number reflects the current number of pending transactions or message signatures needing user approval.
    */
   function updateBadge() {
-    let label = '';
-    const unapprovedTxCount = controller.txController.getUnapprovedTxCount();
-    const { unapprovedMsgCount } = controller.messageManager;
-    const { unapprovedPersonalMsgCount } = controller.personalMessageManager;
-    const { unapprovedDecryptMsgCount } = controller.decryptMessageManager;
+    let label = ''
+    const unapprovedTxCount = controller.txController.getUnapprovedTxCount()
+    const { unapprovedMsgCount } = controller.messageManager
+    const { unapprovedPersonalMsgCount } = controller.personalMessageManager
+    const { unapprovedDecryptMsgCount } = controller.decryptMessageManager
     const {
       unapprovedEncryptionPublicKeyMsgCount,
-    } = controller.encryptionPublicKeyManager;
-    const { unapprovedTypedMessagesCount } = controller.typedMessageManager;
-    const pendingApprovalCount = controller.approvalController.getTotalApprovalCount();
+    } = controller.encryptionPublicKeyManager
+    const { unapprovedTypedMessagesCount } = controller.typedMessageManager
+    const pendingApprovalCount = controller.approvalController.getTotalApprovalCount()
     const waitingForUnlockCount =
-      controller.appStateController.waitingForUnlock.length;
+      controller.appStateController.waitingForUnlock.length
     const count =
       unapprovedTxCount +
       unapprovedMsgCount +
@@ -444,15 +441,15 @@ function setupController(initState, initLangCode) {
       unapprovedEncryptionPublicKeyMsgCount +
       unapprovedTypedMessagesCount +
       pendingApprovalCount +
-      waitingForUnlockCount;
+      waitingForUnlockCount
     if (count) {
-      label = String(count);
+      label = String(count)
     }
-    extension.browserAction.setBadgeText({ text: label });
-    extension.browserAction.setBadgeBackgroundColor({ color: '#037DD6' });
+    extension.browserAction.setBadgeText({ text: label })
+    extension.browserAction.setBadgeBackgroundColor({ color: '#037DD6' })
   }
 
-  return Promise.resolve();
+  return Promise.resolve()
 }
 
 //
@@ -463,26 +460,26 @@ function setupController(initState, initLangCode) {
  * Opens the browser popup for user confirmation
  */
 async function triggerUi() {
-  const tabs = await platform.getActiveTabs();
+  const tabs = await platform.getActiveTabs()
   const currentlyActiveMetamaskTab = Boolean(
     tabs.find((tab) => openMetamaskTabsIDs[tab.id]),
-  );
+  )
   // Vivaldi is not closing port connection on popup close, so popupIsOpen does not work correctly
   // To be reviewed in the future if this behaviour is fixed - also the way we determine isVivaldi variable might change at some point
   const isVivaldi =
     tabs.length > 0 &&
     tabs[0].extData &&
-    tabs[0].extData.indexOf('vivaldi_tab') > -1;
+    tabs[0].extData.indexOf('vivaldi_tab') > -1
   if (
     !uiIsTriggering &&
     (isVivaldi || !popupIsOpen) &&
     !currentlyActiveMetamaskTab
   ) {
-    uiIsTriggering = true;
+    uiIsTriggering = true
     try {
-      await notificationManager.showPopup();
+      await notificationManager.showPopup()
     } finally {
-      uiIsTriggering = false;
+      uiIsTriggering = false
     }
   }
 }
@@ -492,15 +489,15 @@ async function triggerUi() {
  * then it waits until user interact with the UI
  */
 async function openPopup() {
-  await triggerUi();
+  await triggerUi()
   await new Promise((resolve) => {
     const interval = setInterval(() => {
       if (!notificationIsOpen) {
-        clearInterval(interval);
-        resolve();
+        clearInterval(interval)
+        resolve()
       }
-    }, SECOND);
-  });
+    }, SECOND)
+  })
 }
 
 // On first install, open a new tab with MetaMask
@@ -509,6 +506,6 @@ extension.runtime.onInstalled.addListener(({ reason }) => {
     reason === 'install' &&
     !(process.env.DEXMASK_DEBUG || process.env.IN_TEST)
   ) {
-    platform.openExtensionInBrowser();
+    platform.openExtensionInBrowser()
   }
-});
+})

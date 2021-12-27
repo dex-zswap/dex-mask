@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import Button from '@c/ui/button';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import Button from '@c/ui/button'
 export default class PageContainerHeader extends Component {
   static propTypes = {
     title: PropTypes.string,
@@ -14,11 +14,11 @@ export default class PageContainerHeader extends Component {
     tabs: PropTypes.node,
     headerCloseText: PropTypes.string,
     className: PropTypes.string,
-  };
+  }
 
   renderTabs() {
-    const { tabs } = this.props;
-    return tabs && <ul className="page-container__tabs">{tabs}</ul>;
+    const { tabs } = this.props
+    return tabs && <ul className='page-container__tabs'>{tabs}</ul>
   }
 
   renderHeaderRow() {
@@ -27,12 +27,12 @@ export default class PageContainerHeader extends Component {
       onBackButtonClick,
       backButtonStyles,
       backButtonString,
-    } = this.props;
+    } = this.props
     return (
       showBackButton && (
-        <div className="page-container__header-row">
+        <div className='page-container__header-row'>
           <span
-            className="page-container__back-button"
+            className='page-container__back-button'
             onClick={onBackButtonClick}
             style={backButtonStyles}
           >
@@ -40,7 +40,7 @@ export default class PageContainerHeader extends Component {
           </span>
         </div>
       )
-    );
+    )
   }
 
   render() {
@@ -51,24 +51,24 @@ export default class PageContainerHeader extends Component {
       tabs,
       headerCloseText,
       className,
-    } = this.props;
+    } = this.props
     return (
       <div
         className={classnames('page-container__header', className, {
           'page-container__header--no-padding-bottom': Boolean(tabs),
         })}
-        data-testid="page-container__header"
+        data-testid='page-container__header'
       >
         {this.renderHeaderRow()}
 
-        {title && <div className="page-container__title">{title}</div>}
+        {title && <div className='page-container__title'>{title}</div>}
 
-        {subtitle && <div className="page-container__subtitle">{subtitle}</div>}
+        {subtitle && <div className='page-container__subtitle'>{subtitle}</div>}
 
         {onClose && headerCloseText ? (
           <Button
-            type="link"
-            className="page-container__header-close-text"
+            type='link'
+            className='page-container__header-close-text'
             onClick={() => onClose()}
           >
             {headerCloseText}
@@ -76,7 +76,7 @@ export default class PageContainerHeader extends Component {
         ) : (
           onClose && (
             <div
-              className="page-container__header-close"
+              className='page-container__header-close'
               onClick={() => onClose()}
             />
           )
@@ -84,6 +84,6 @@ export default class PageContainerHeader extends Component {
 
         {this.renderTabs()}
       </div>
-    );
+    )
   }
 }

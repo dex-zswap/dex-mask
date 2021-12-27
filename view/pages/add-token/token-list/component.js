@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import { checkExistingAddresses } from '@view/helpers/utils';
-import TokenListPlaceholder from './token-list-placeholder';
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
+import { checkExistingAddresses } from '@view/helpers/utils'
+import TokenListPlaceholder from './token-list-placeholder'
 export default class TokenList extends Component {
   static contextTypes = {
     t: PropTypes.func,
-  };
+  }
 
   render() {
     const {
@@ -14,21 +14,21 @@ export default class TokenList extends Component {
       selectedTokens = {},
       onToggleToken,
       tokens = [],
-    } = this.props;
+    } = this.props
     return results.length === 0 ? (
       <TokenListPlaceholder />
     ) : (
-      <div className="token-list">
-        <div className="token-list__title">
+      <div className='token-list'>
+        <div className='token-list__title'>
           {this.context.t('searchResults')}
         </div>
-        <div className="token-list__tokens-container">
+        <div className='token-list__tokens-container'>
           {results.slice(0, 6).map((_, i) => {
-            const { logo, symbol, name, address } = results[i] || {};
-            const tokenAlreadyAdded = checkExistingAddresses(address, tokens);
+            const { logo, symbol, name, address } = results[i] || {}
+            const tokenAlreadyAdded = checkExistingAddresses(address, tokens)
 
             const onClick = () =>
-              !tokenAlreadyAdded && onToggleToken(results[i]);
+              !tokenAlreadyAdded && onToggleToken(results[i])
 
             return (
               Boolean(logo || symbol || name) && (
@@ -40,23 +40,23 @@ export default class TokenList extends Component {
                   onClick={onClick}
                   onKeyPress={(event) => event.key === 'Enter' && onClick()}
                   key={i}
-                  tabIndex="0"
+                  tabIndex='0'
                 >
                   <div
-                    className="token-list__token-icon"
+                    className='token-list__token-icon'
                     style={{
                       backgroundImage: logo && `url(images/contract/${logo})`,
                     }}
                   />
-                  <div className="token-list__token-data">
-                    <span className="token-list__token-name">{`${name} (${symbol})`}</span>
+                  <div className='token-list__token-data'>
+                    <span className='token-list__token-name'>{`${name} (${symbol})`}</span>
                   </div>
                 </div>
               )
-            );
+            )
           })}
         </div>
       </div>
-    );
+    )
   }
 }

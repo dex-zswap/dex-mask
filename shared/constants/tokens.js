@@ -1,4 +1,4 @@
-import contractMap from '@metamask/contract-metadata';
+import contractMap from '@metamask/contract-metadata'
 
 /**
  * A normalized list of addresses exported as part of the contractMap in
@@ -7,7 +7,6 @@ import contractMap from '@metamask/contract-metadata';
  */
 export const LISTED_CONTRACT_ADDRESSES = Object.keys(
   contractMap,
-).map((address) => address.toLowerCase());
+).map((address) => address.toLowerCase())
 
-export const NATIVE_TOKEN_ADDRESS =
-  '0x0000000000000000000000000000000000000000';
+export const NATIVE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000'

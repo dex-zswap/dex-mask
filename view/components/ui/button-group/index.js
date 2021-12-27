@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 export default class ButtonGroup extends PureComponent {
   static propTypes = {
     defaultActiveButtonIndex: PropTypes.number,
@@ -11,17 +11,17 @@ export default class ButtonGroup extends PureComponent {
     style: PropTypes.object,
     newActiveButtonIndex: PropTypes.number,
     variant: PropTypes.oneOf(['radiogroup', 'default']),
-  };
+  }
   static defaultProps = {
     className: 'button-group',
     defaultActiveButtonIndex: 0,
     variant: 'default',
-  };
+  }
   state = {
     activeButtonIndex: this.props.noButtonActiveByDefault
       ? null
       : this.props.defaultActiveButtonIndex,
-  };
+  }
 
   componentDidUpdate(_, prevState) {
     // Provides an API for dynamically updating the activeButtonIndex
@@ -31,18 +31,18 @@ export default class ButtonGroup extends PureComponent {
     ) {
       this.setState({
         activeButtonIndex: this.props.newActiveButtonIndex,
-      });
+      })
     }
   }
 
   handleButtonClick(activeButtonIndex) {
     this.setState({
       activeButtonIndex,
-    });
+    })
   }
 
   renderButtons() {
-    const { children, disabled, variant } = this.props;
+    const { children, disabled, variant } = this.props
     return React.Children.map(children, (child, index) => {
       return (
         child && (
@@ -63,8 +63,8 @@ export default class ButtonGroup extends PureComponent {
             )}
             data-testid={`button-group__button${index}`}
             onClick={() => {
-              this.handleButtonClick(index);
-              child.props.onClick?.();
+              this.handleButtonClick(index)
+              child.props.onClick?.()
             }}
             disabled={disabled || child.props.disabled}
             key={index}
@@ -72,12 +72,12 @@ export default class ButtonGroup extends PureComponent {
             {child.props.children}
           </button>
         )
-      );
-    });
+      )
+    })
   }
 
   render() {
-    const { className, style, variant } = this.props;
+    const { className, style, variant } = this.props
     return (
       <div
         className={classnames(className, {
@@ -88,6 +88,6 @@ export default class ButtonGroup extends PureComponent {
       >
         {this.renderButtons()}
       </div>
-    );
+    )
   }
 }
