@@ -15,7 +15,8 @@ import { useI18nContext } from '@view/hooks/useI18nContext'
 import useInterval from '@view/hooks/useInterval'
 import { getCrossChainState } from '@view/selectors'
 import { showConfTxPage, updateConfirmAction } from '@view/store/actions'
-const abiInterface = new ethers.utils.Interface(MINTABLE_ABI)
+const mintAbiInterface = new ethers.utils.Interface(MINTABLE_ABI)
+const bridgeAbiInterface = new ethers.utils.Interface(BRIDGE_ABI)
 export default function CrossChainButton() {
   const t = useI18nContext()
   const history = useHistory()
@@ -34,6 +35,9 @@ export default function CrossChainButton() {
 
     return crossChainState.tokenDecimals
   }, [isNativeAsset, crossChainState.tokenDecimals])
+
+  const userInputValue = useMemo(() => crossChainState.userInputValue ?? '0', [crossChainState.userInputValue])
+
   const disableButton = useMemo(() => {
     if (!allowed) {
       return false
@@ -45,6 +49,7 @@ export default function CrossChainButton() {
       !Boolean(crossChainState.dest)
     )
   }, [crossChainState, allowed])
+
   const crossChain = useCallback(() => {
     const sendData = [
       '0x',
@@ -64,7 +69,7 @@ export default function CrossChainButton() {
         .substr(2),
       crossChainState.dest.substr(2),
     ].join('')
-    const data = abiInterface.encodeFunctionData('deposit', [
+    const data = bridgeAbiInterface.encodeFunctionData('deposit', [
       crossChainState.target.target_chain_id,
       crossChainState.target.resource_id,
       sendData,
@@ -84,8 +89,10 @@ export default function CrossChainButton() {
         )
     global.ethQuery.sendTransaction(
       {
-        from: crossInfo.from,
-        to: crossInfo.target.bridge,
+        from: crossChainState.from,
+        to: crossChainState.target.bridge,
+        gasPrice: crossChainState.gas.gasPrice,
+        gasLimit: crossChainState.gas.gasLimit,
         value,
         data,
       },
@@ -96,7 +103,7 @@ export default function CrossChainButton() {
     history.push(CONFIRM_TRANSACTION_ROUTE)
   }, [decimals, isNativeAsset, crossChainState, history])
   const approve = useCallback(() => {
-    const data = abiInterface.encodeFunctionData('approve', [
+    const data = mintAbiInterface.encodeFunctionData('approve', [
       crossChainState.target.handler,
       MAX_UINT_256,
     ])
@@ -118,7 +125,7 @@ export default function CrossChainButton() {
     }
 
     return approve()
-  }, [allowed])
+  }, [allowed, crossChainState, history, decimals, isNativeAsset])
   useInterval(() => {
     if (isNativeAsset || (mounted.current && allowed)) {
       return
