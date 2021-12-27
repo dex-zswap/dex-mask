@@ -9,7 +9,6 @@ import {
   getRecipient,
   getRecipientUserInput,
   getSendAssetAddress,
-  initializeSendState,
   resetRecipientInput,
   resetSendState,
   updateRecipient,
@@ -35,34 +34,17 @@ export default function SendTransactionScreen() {
   const t = useI18nContext();
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
+
   const selectedAddress = useSelector(getSelectedAddress);
   const isUsingMyAccountsForRecipientSearch = useSelector(
     getIsUsingMyAccountForRecipientSearch,
   );
   const recipient = useSelector(getRecipient);
   const userInput = useSelector(getRecipientUserInput);
-  const location = useLocation();
   const [sendToAccountAddress, setSendToAccountAddress] = useState(
     selectedAddress,
   );
-
-  useEffect(() => {
-    dispatch(initializeSendState());
-  }, []);
-
-  const cleanup = useCallback(() => {
-    dispatch(resetSendState());
-  }, []);
-
-  useEffect(() => {
-    if (location.search === '?scan=true') {
-      dispatch(showQrScanner()); // Clear the queryString param after showing the modal
-
-      const cleanUrl = window.location.href.split('?')[0];
-      window.history.pushState({}, null, `${cleanUrl}`);
-      window.location.hash = '#send';
-    }
-  }, [location, dispatch]);
 
   const sendAssetAddress = useSelector(getSendAssetAddress);
 
@@ -75,10 +57,6 @@ export default function SendTransactionScreen() {
 
   const changeToken = useCallback(
     ({ address, symbol, isNativeCurrency, decimals = 18 }) => {
-      console.log({
-        type: isNativeCurrency ? ASSET_TYPES.NATIVE : ASSET_TYPES.TOKEN,
-        details: isNativeCurrency ? null : { address, symbol, decimals },
-      });
       dispatch(
         updateSendAsset({
           type: isNativeCurrency ? ASSET_TYPES.NATIVE : ASSET_TYPES.TOKEN,
@@ -114,14 +92,27 @@ export default function SendTransactionScreen() {
     [changeSendToAccountAddress, selectedAddress],
   );
 
+  const cleanup = useCallback(() => {
+    dispatch(resetSendState());
+  }, []);
+
+  useEffect(() => {
+    if (location.search === '?scan=true') {
+      dispatch(showQrScanner());
+      const cleanUrl = window.location.href.split('?')[0];
+      window.history.pushState({}, null, `${cleanUrl}`);
+      window.location.hash = '#send';
+    }
+    return () => {
+      cleanup();
+    };
+  }, [location]);
+
   return (
     <div className="dex-page-container flex space-between">
       <div>
         <TopHeader />
-        <BackBar
-          title={t('sendToken')}
-          backCb={() => dispatch(resetSendState())}
-        />
+        <BackBar title={t('sendToken')} backCb={cleanup} />
         <SendTokenInput
           tokenAddress={sendAssetAddress}
           maxSendAmount={maxSendAmount}
