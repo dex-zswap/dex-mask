@@ -230,7 +230,7 @@ export default class QrScanner extends Component {
     return (
       <>
         <div className='qr-scanner__image'>
-          <img src='images/webcam.svg' width='70' height='70' alt='' />
+          <img src='images/icons/camera.png' width='70' height='70' alt='' />
         </div>
         {title ? <div className='qr-scanner__title'>{title}</div> : null}
         <div className='qr-scanner__error'>{msg}</div>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { zeroAddress } from 'ethereumjs-util'
 import { ethers } from 'ethers'
+import classnames from 'classnames'
 import TokenListItem from '@c/app/send-token-input/token-list-item'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Identicon from '@c/ui/identicon'
@@ -31,11 +32,15 @@ export default function sendTokenInput({
   tokenAddress,
   tokenList,
   maxSendAmount,
-  includesNativeCurrencyToken = true,
   nativeCurrencyAmount,
   changeAccount,
   changeToken,
   changeAmount,
+  autoChangeAccount,
+  optionsDirection,
+  reverseAble,
+  onReverse,
+  includesNativeCurrencyToken = true,
   showAmountWrap = true,
 }) {
   const t = useI18nContext()
@@ -47,6 +52,18 @@ export default function sendTokenInput({
   const shouldHideZeroBalanceTokens = useSelector(
     getShouldHideZeroBalanceTokens,
   )
+  const accountMenuStyle = useMemo(() => {
+    if (optionsDirection !== 'top') {
+      return {};
+    }
+
+    const bodyHeight = Math.min(accounts.length * 61, 182);
+
+    return {
+      top: `-${(bodyHeight + 23)}px`
+    };
+  }, [optionsDirection, accounts])
+  
   const [showSelectAccountMenu, setShowSelectAccountMenu] = useState(false)
   const [showSelectTokenMenu, setShowSelectTokenMenu] = useState(false)
   const selectedAccount = useMemo(
@@ -142,9 +159,11 @@ export default function sendTokenInput({
   }, [])
   const onAccountChange = useCallback((account) => {
     setAmount('')
-    !accountAddress && dispatch(showAccountDetail(account.address))
+    if (autoChangeAccount) {
+      !accountAddress && dispatch(showAccountDetail(account.address))
+    }
     changeAccount && changeAccount(account)
-  }, [])
+  }, [autoChangeAccount, accountAddress])
   const onTokenChange = useCallback((asset) => {
     setAmount('')
     changeToken && changeToken(asset)
@@ -170,6 +189,9 @@ export default function sendTokenInput({
     setAmount(maxSendAmount)
     changeAmount && changeAmount(maxSendAmount)
   }, [maxSendAmount, changeAmount])
+  const reverseAction = useCallback(() => {
+    onReverse && onReverse()
+  }, [onReverse])
   useEffect(() => {
     dispatch(setMaxSendAmount())
   }, [selectedAccount])
@@ -194,7 +216,7 @@ export default function sendTokenInput({
                   toggleAccountMenu()
                 }}
               ></div>
-              <div className='send-token-account-menu  send-token-input-menu'>
+              <div style={accountMenuStyle} className={classnames('send-token-account-menu send-token-input-menu', optionsDirection)}>
                 {accounts.map((account) => (
                   <div
                     key={account.address}
@@ -223,8 +245,13 @@ export default function sendTokenInput({
       {showAmountWrap && (
         <div className='send-token-bottom-wrap'>
           <div className='line-wrap'>
-            <div>
-              <img width={8} src='images/icons/arrow-down.png' />
+            <div onClick={reverseAction}>
+              {
+                reverseAble ?
+                <img className='reverseable-icon' width={12} src='images/icons/reverse.png' />
+                :
+                <img width={8} src='images/icons/arrow-down.png' /> 
+              }
             </div>
           </div>
           <div className='asset-label-wrap'>

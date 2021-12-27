@@ -133,9 +133,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(actions.setRpcTarget(target, chainId, ticker, nickname))
     },
     hideNetworkDropdown: () => dispatch(actions.hideNetworkDropdown()),
-    setNetworksTabAddMode: (isInAddMode) => {
-      dispatch(actions.setNetworksTabAddMode(isInAddMode))
-    },
     setSelectedSettingsRpcUrl: (url) => {
       dispatch(actions.setSelectedSettingsRpcUrl(url))
     },

@@ -44,19 +44,16 @@ export default function CrossChainBtn() {
         <div
           className='cross-chain-transfer-button flex items-center'
           onClick={() => {
-            const destChain = toHexString(
-              defaultTargetChain.target_meta_chain_id,
-            )
             dispatch(
               updateCrossChainState({
                 coinAddress: ethers.constants.AddressZero,
-                targetCoinAddress: defaultTargetChain.target_token_address,
                 coinSymbol: nativeCurrency,
+                targetCoinAddress: defaultTargetChain.target_token_address,
                 targetCoinSymbol: defaultTargetChain.target_token,
+                target: defaultTargetChain,
                 from: selectedAccount.address,
                 fromChain: chainId,
-                target: defaultTargetChain,
-                destChain,
+                destChain: defaultTargetChain.target_meta_chain_id,
                 supportChains: [],
                 chainTokens: [],
               }),

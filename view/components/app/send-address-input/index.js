@@ -16,6 +16,8 @@ export default function SendAddressInput({
   onPaste,
   onReset,
   toggleCheck,
+  autoChangeAccount = true,
+  optionsDirection = 'bottom'
 }) {
   const t = useI18nContext()
   const dispatch = useDispatch()
@@ -27,6 +29,8 @@ export default function SendAddressInput({
           accountAddress={accountAddress}
           changeAccount={changeAccount}
           showAmountWrap={false}
+          autoChangeAccount={autoChangeAccount}
+          optionsDirection={optionsDirection}
         />
       ) : (
         <EnsInput

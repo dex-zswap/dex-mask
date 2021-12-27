@@ -95,7 +95,4 @@ const AssetList = ({ onClickAsset }) => {
   )
 }
 
-AssetList.propTypes = {
-  onClickAsset: PropTypes.func.isRequired,
-}
 export default AssetList

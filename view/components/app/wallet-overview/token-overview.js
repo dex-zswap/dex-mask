@@ -92,7 +92,6 @@ const TokenOverview = ({ className, token }) => {
         iconClass: 'cross-chain-icon',
         label: t('crossChain'),
         onClick: () => {
-          const destChain = toHexString(defaultTargetChain.target_meta_chain_id)
           dispatch(
             updateCrossChainState({
               coinAddress: token.address,
@@ -102,7 +101,7 @@ const TokenOverview = ({ className, token }) => {
               from: selectedAccount.address,
               fromChain: chainId,
               target: defaultTargetChain,
-              destChain,
+              destChain: defaultTargetChain.target_meta_chain_id,
               supportChains: [],
               chainTokens: [],
             }),

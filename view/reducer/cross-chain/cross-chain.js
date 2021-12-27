@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
 import { addHexPrefix } from 'ethereumjs-util'
 import { ethers } from 'ethers'
-import BigNumber from 'bignumber.js'
 import clone from 'lodash/cloneDeep'
 import BRIDGE_ABI from '@shared/contract-abis/bridge'
 import { UPDATE_CROSS_CHAIN_STATE } from '@view/store/actionConstants'
 import { GAS_ESTIMATE_TYPES, GAS_LIMITS } from '@shared/constants/gas'
 import {
   expandDecimals,
-  hexToString
+  hexToString,
 } from '@view/helpers/utils/conversions.util'
 import { subtractCurrencies } from '@shared/modules/conversion.utils'
 import { MIN_GAS_LIMIT_HEX } from '@pages/send/constants'
@@ -18,7 +18,7 @@ import {
   disconnectGasFeeEstimatePoller,
   estimateGas,
   getGasFeeEstimatesAndStartPolling,
-  removePollingTokenFromAppState
+  removePollingTokenFromAppState,
 } from '@view/store/actions'
 export const initialState = {
   coinAddress: '',
@@ -34,6 +34,7 @@ export const initialState = {
   maxSendAmount: '0',
   targetCoinAddress: '',
   targetCoinSymbol: '',
+  tokenDecimals: 18,
   chainTokens: [],
   gas: {
     gasLimit: '0x0',
@@ -57,6 +58,7 @@ const estimateGasLimitForCross = async ({
   const blockGasLimit = MIN_GAS_LIMIT_HEX
   const bufferMultiplier = 1.5
   const abiInterface = new ethers.utils.Interface(BRIDGE_ABI)
+
   try {
     const sendData = [
       '0x',
@@ -78,15 +80,15 @@ const estimateGasLimitForCross = async ({
     ])
     const value = isNativeAsset
       ? ethers.utils.hexZeroPad(
-        ethers.BigNumber.from(expandDecimals(fee))
-          .add(expandDecimals(inputValue))
-          .toHexString(),
-        32,
-      )
+          ethers.BigNumber.from(expandDecimals(fee))
+            .add(expandDecimals(inputValue))
+            .toHexString(),
+          32,
+        )
       : ethers.utils.hexZeroPad(
-        ethers.BigNumber.from(expandDecimals(fee)).toHexString(),
-        32,
-      )
+          ethers.BigNumber.from(expandDecimals(fee)).toHexString(),
+          32,
+        )
     const estimatedGasLimit = await estimateGas({
       from,
       to,
@@ -101,7 +103,7 @@ const estimateGasLimitForCross = async ({
     )
     return addHexPrefix(estimateWithBuffer)
   } catch (e) {
-    return addHexPrefix(blockGasLimit);
+    return addHexPrefix(blockGasLimit)
   }
 }
 
@@ -147,11 +149,13 @@ export const initializeCrossState = createAsyncThunk(
 
     try {
       const gasTotal = calcGasTotal(gasLimitEstimated, gasPrice)
-      let nativeMaxAmount = addHexPrefix(subtractCurrencies(balance, addHexPrefix(gasTotal), {
-        toNumericBase: 'hex',
-        aBase: 16,
-        bBase: 16,
-      }))
+      let nativeMaxAmount = addHexPrefix(
+        subtractCurrencies(balance, addHexPrefix(gasTotal), {
+          toNumericBase: 'hex',
+          aBase: 16,
+          bBase: 16,
+        }),
+      )
 
       if (parseFloat(nativeMaxAmount) < 0) {
         nativeMaxAmount = '0'
@@ -191,12 +195,16 @@ const crossChainSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(UPDATE_CROSS_CHAIN_STATE, (state, action) => {
-        Object.keys(action.value).forEach((key) => state[key] = action.value[key])
+        Object.keys(action.value).forEach(
+          (key) => (state[key] = action.value[key]),
+        )
       })
       .addCase(initializeCrossState.fulfilled, (state, action) => {
         state.gas = action.payload.gas
         state.nativeMaxAmount = action.payload.nativeMaxAmount
-        state.nativeMaxSendAmount = new BigNumber(hexToString(state.nativeMaxAmount)).toString()
+        state.nativeMaxSendAmount = new BigNumber(
+          hexToString(state.nativeMaxAmount),
+        ).toString()
       })
   },
 })

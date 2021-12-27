@@ -23,7 +23,7 @@ import {
   TRADE_ROUTE,
 } from '@view/helpers/constants/routes'
 import { checkTokenBridge } from '@view/helpers/cross-chain-api'
-import { toBnString, toHexString } from '@view/helpers/utils/conversions.util'
+import { toBnString } from '@view/helpers/utils/conversions.util'
 import { useFetch } from '@view/hooks/useFetch'
 import { updateCrossChainState } from '@view/store/actions'
 import WalletOverview from './wallet-overview'
@@ -83,7 +83,6 @@ const EthOverview = ({ className }) => {
         iconClass: 'cross-chain-icon',
         label: t('crossChain'),
         onClick: () => {
-          const destChain = toHexString(defaultTargetChain.target_meta_chain_id)
           dispatch(
             updateCrossChainState({
               coinAddress: ethers.constants.AddressZero,
@@ -93,7 +92,7 @@ const EthOverview = ({ className }) => {
               from: selectedAccount.address,
               fromChain: chainId,
               target: defaultTargetChain,
-              destChain,
+              destChain: defaultTargetChain.target_meta_chain_id,
               supportChains: [],
               chainTokens: [],
             }),
