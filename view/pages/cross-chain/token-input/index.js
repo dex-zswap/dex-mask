@@ -1,25 +1,27 @@
-import React, { useState, useMemo, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import SendTokenInput from '@c/app/send-token-input'
 import SendAddressInput from '@c/app/send-address-input'
-import { getTokens } from '@reducer/dexmask/dexmask'
-import useDeepEffect from '@view/hooks/useDeepEffect'
-import { getDexMaskState } from '@reducer/dexmask/dexmask'
-import { getCrossChainState } from '@view/selectors'
-import { updateCrossChainState } from '@view/store/actions'
-import {
-  getAllSupportBridge,
-  checkTokenBridge,
-} from '@view/helpers/cross-chain-api'
-import { toBnString } from '@view/helpers/utils/conversions.util'
+import SendTokenInput from '@c/app/send-token-input'
+import { getDexMaskState, getTokens } from '@reducer/dexmask/dexmask'
+import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 import {
   isBurnAddress,
   isValidHexAddress,
 } from '@shared/modules/hexstring-utils'
-import { setProviderType, setRpcTarget } from '@view/store/actions'
-import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
+import {
+  checkTokenBridge,
+  getAllSupportBridge,
+} from '@view/helpers/cross-chain-api'
+import { toBnString } from '@view/helpers/utils/conversions.util'
+import useDeepEffect from '@view/hooks/useDeepEffect'
+import { getCrossChainState } from '@view/selectors'
+import {
+  setProviderType,
+  setRpcTarget,
+  updateCrossChainState,
+} from '@view/store/actions'
+import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
+import React, { useCallback, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import CrossDestChainSwitcher from './dest-chain-switcher'
 import CrossFromChainSwitcher from './from-chain-switcher'
 export default function CrossChainTokenInput() {
@@ -164,9 +166,7 @@ export default function CrossChainTokenInput() {
       <CrossFromChainSwitcher />
       <SendTokenInput
         {...state}
-        accountAddress={crossChainState.from}
         tokenAddress={crossChainState.coinAddress}
-        autoChangeAccount={true}
         maxSendAmount={
           isNative
             ? crossChainState.nativeMaxSendAmount
@@ -200,7 +200,6 @@ export default function CrossChainTokenInput() {
         optionsDirection='top'
         accountAddress={crossChainState.dest}
         selectedAddress={crossChainState.dest}
-        autoChangeAccount={false}
         onChange={(dest) => {
           if (!isBurnAddress(dest) && isValidHexAddress(dest)) {
             updateCrossState({

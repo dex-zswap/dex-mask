@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import SendTokenInput from '@c/app/send-token-input'
 import EnsInput from '@pages/send/send-content/add-recipient/ens-input'
 import { useI18nContext } from '@view/hooks/useI18nContext'
 import { showQrScanner } from '@view/store/actions'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 export default function SendAddressInput({
   accountAddress,
   changeAccount,
@@ -16,7 +16,6 @@ export default function SendAddressInput({
   onPaste,
   onReset,
   toggleCheck,
-  autoChangeAccount = true,
   optionsDirection = 'bottom',
 }) {
   const t = useI18nContext()
@@ -29,7 +28,6 @@ export default function SendAddressInput({
           accountAddress={accountAddress}
           changeAccount={changeAccount}
           showAmountWrap={false}
-          autoChangeAccount={autoChangeAccount}
           optionsDirection={optionsDirection}
         />
       ) : (
