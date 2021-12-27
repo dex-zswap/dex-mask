@@ -17,7 +17,7 @@ export default function SendAddressInput({
   onReset,
   toggleCheck,
   autoChangeAccount = true,
-  optionsDirection = 'bottom'
+  optionsDirection = 'bottom',
 }) {
   const t = useI18nContext()
   const dispatch = useDispatch()

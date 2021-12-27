@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-
+import { useDispatch, useSelector } from 'react-redux'
 import { ethers } from 'ethers'
-
 import Button from '@c/ui/button'
-
 import { MAX_UINT_256 } from '@shared/constants/app'
 import BRIDGE_ABI from '@shared/contract-abis/bridge'
 import MINTABLE_ABI from '@shared/contract-abis/mintable'
@@ -18,34 +15,35 @@ import { useI18nContext } from '@view/hooks/useI18nContext'
 import useInterval from '@view/hooks/useInterval'
 import { getCrossChainState } from '@view/selectors'
 import { showConfTxPage, updateConfirmAction } from '@view/store/actions'
-
 const abiInterface = new ethers.utils.Interface(MINTABLE_ABI)
-
 export default function CrossChainButton() {
   const t = useI18nContext()
   const history = useHistory()
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
-
-  const isNativeAsset = useMemo(() => crossChainState.coinAddress === ethers.constants.AddressZero, [crossChainState.coinAddress])
-
+  const isNativeAsset = useMemo(
+    () => crossChainState.coinAddress === ethers.constants.AddressZero,
+    [crossChainState.coinAddress],
+  )
   const mounted = useRef(false || isNativeAsset)
   const [allowed, setAllowed] = useState(false || isNativeAsset)
-
   const decimals = useMemo(() => {
     if (isNativeAsset) {
       return 18
     }
+
     return crossChainState.tokenDecimals
   }, [isNativeAsset, crossChainState.tokenDecimals])
-
   const disableButton = useMemo(() => {
     if (!allowed) {
-      return false;
+      return false
     }
-    return expandDecimals(crossChainState.userInputValue).isZero() || !Boolean(crossChainState.dest)
-  }, [crossChainState, allowed])
 
+    return (
+      expandDecimals(crossChainState.userInputValue).isZero() ||
+      !Boolean(crossChainState.dest)
+    )
+  }, [crossChainState, allowed])
   const crossChain = useCallback(() => {
     const sendData = [
       '0x',
@@ -58,45 +56,44 @@ export default function CrossChainButton() {
         )
         .substr(2),
       ethers.utils
-        .hexZeroPad(ethers.utils.hexlify((crossChainState.from.length - 2) / 2), 32)
+        .hexZeroPad(
+          ethers.utils.hexlify((crossChainState.from.length - 2) / 2),
+          32,
+        )
         .substr(2),
-        crossChainState.dest.substr(2),
+      crossChainState.dest.substr(2),
     ].join('')
-
     const data = abiInterface.encodeFunctionData('deposit', [
       crossChainState.target.target_chain_id,
       crossChainState.target.resource_id,
       sendData,
     ])
-
     const value = isNativeAsset
-    ? ethers.utils.hexZeroPad(
-        ethers.BigNumber.from(expandDecimals(crossChainState.target.fee))
-          .add(expandDecimals(crossChainState.userInputValue))
-          .toHexString(),
-        32,
-      )
-    : ethers.utils.hexZeroPad(
-        ethers.BigNumber.from(
-          expandDecimals(crossChainState.target.fee),
-        ).toHexString(),
-        32,
-      )
-
-      global.ethQuery.sendTransaction(
-        {
-          from: crossInfo.from,
-          to: crossInfo.target.bridge,
-          value,
-          data,
-        },
-        (e) => {},
-      )
-      dispatch(showConfTxPage())
-      dispatch(updateConfirmAction(null))
-      history.push(CONFIRM_TRANSACTION_ROUTE)
+      ? ethers.utils.hexZeroPad(
+          ethers.BigNumber.from(expandDecimals(crossChainState.target.fee))
+            .add(expandDecimals(crossChainState.userInputValue))
+            .toHexString(),
+          32,
+        )
+      : ethers.utils.hexZeroPad(
+          ethers.BigNumber.from(
+            expandDecimals(crossChainState.target.fee),
+          ).toHexString(),
+          32,
+        )
+    global.ethQuery.sendTransaction(
+      {
+        from: crossInfo.from,
+        to: crossInfo.target.bridge,
+        value,
+        data,
+      },
+      (e) => {},
+    )
+    dispatch(showConfTxPage())
+    dispatch(updateConfirmAction(null))
+    history.push(CONFIRM_TRANSACTION_ROUTE)
   }, [decimals, isNativeAsset, crossChainState, history])
-
   const approve = useCallback(() => {
     const data = abiInterface.encodeFunctionData('approve', [
       crossChainState.target.handler,
@@ -114,23 +111,21 @@ export default function CrossChainButton() {
     dispatch(updateConfirmAction(CROSSCHAIN_ROUTE))
     history.push(CONFIRM_TRANSACTION_ROUTE)
   }, [crossChainState, history])
-
   const doCrossOrApprove = useCallback(() => {
     if (allowed) {
-      return crossChain();
+      return crossChain()
     }
-    return approve();
-  }, [allowed])
 
+    return approve()
+  }, [allowed])
   useInterval(() => {
     if (isNativeAsset || (mounted.current && allowed)) {
-      return;
+      return
     }
 
     const mintContract = global.eth
-    .contract(MINTABLE_ABI)
-    .at(crossChainState.coinAddress)
-
+      .contract(MINTABLE_ABI)
+      .at(crossChainState.coinAddress)
     mintContract
       .allowance(crossChainState.from, crossChainState.target?.handler)
       .then((res) => {
@@ -141,11 +136,17 @@ export default function CrossChainButton() {
       mounted.current = true
     }
   }, 2000)
-
   return (
     <div className='cross-chain-buttons flex space-between'>
-      <Button className='half-button' onClick={() => history.goBack()}>{t('back')}</Button>
-      <Button type='primary' className='half-button' disabled={disableButton} onClick={doCrossOrApprove}>
+      <Button className='half-button' onClick={() => history.goBack()}>
+        {t('back')}
+      </Button>
+      <Button
+        type='primary'
+        className='half-button'
+        disabled={disableButton}
+        onClick={doCrossOrApprove}
+      >
         {t(allowed ? 'next' : 'approveButtonText')}
       </Button>
     </div>

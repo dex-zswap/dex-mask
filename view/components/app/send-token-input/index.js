@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
 import { zeroAddress } from 'ethereumjs-util'
 import { ethers } from 'ethers'
-import classnames from 'classnames'
 import TokenListItem from '@c/app/send-token-input/token-list-item'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Identicon from '@c/ui/identicon'
@@ -54,16 +54,14 @@ export default function sendTokenInput({
   )
   const accountMenuStyle = useMemo(() => {
     if (optionsDirection !== 'top') {
-      return {};
+      return {}
     }
 
-    const bodyHeight = Math.min(accounts.length * 61, 182);
-
+    const bodyHeight = Math.min(accounts.length * 61, 182)
     return {
-      top: `-${(bodyHeight + 23)}px`
-    };
+      top: `-${bodyHeight + 23}px`,
+    }
   }, [optionsDirection, accounts])
-  
   const [showSelectAccountMenu, setShowSelectAccountMenu] = useState(false)
   const [showSelectTokenMenu, setShowSelectTokenMenu] = useState(false)
   const selectedAccount = useMemo(
@@ -157,13 +155,18 @@ export default function sendTokenInput({
   const toggleTokenMenu = useCallback(() => {
     setShowSelectTokenMenu((pre) => !pre)
   }, [])
-  const onAccountChange = useCallback((account) => {
-    setAmount('')
-    if (autoChangeAccount) {
-      !accountAddress && dispatch(showAccountDetail(account.address))
-    }
-    changeAccount && changeAccount(account)
-  }, [autoChangeAccount, accountAddress])
+  const onAccountChange = useCallback(
+    (account) => {
+      setAmount('')
+
+      if (autoChangeAccount) {
+        !accountAddress && dispatch(showAccountDetail(account.address))
+      }
+
+      changeAccount && changeAccount(account)
+    },
+    [autoChangeAccount, accountAddress],
+  )
   const onTokenChange = useCallback((asset) => {
     setAmount('')
     changeToken && changeToken(asset)
@@ -216,7 +219,13 @@ export default function sendTokenInput({
                   toggleAccountMenu()
                 }}
               ></div>
-              <div style={accountMenuStyle} className={classnames('send-token-account-menu send-token-input-menu', optionsDirection)}>
+              <div
+                style={accountMenuStyle}
+                className={classnames(
+                  'send-token-account-menu send-token-input-menu',
+                  optionsDirection,
+                )}
+              >
                 {accounts.map((account) => (
                   <div
                     key={account.address}
@@ -246,12 +255,15 @@ export default function sendTokenInput({
         <div className='send-token-bottom-wrap'>
           <div className='line-wrap'>
             <div onClick={reverseAction}>
-              {
-                reverseAble ?
-                <img className='reverseable-icon' width={12} src='images/icons/reverse.png' />
-                :
-                <img width={8} src='images/icons/arrow-down.png' /> 
-              }
+              {reverseAble ? (
+                <img
+                  className='reverseable-icon'
+                  width={12}
+                  src='images/icons/reverse.png'
+                />
+              ) : (
+                <img width={8} src='images/icons/arrow-down.png' />
+              )}
             </div>
           </div>
           <div className='asset-label-wrap'>

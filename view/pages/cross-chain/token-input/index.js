@@ -9,56 +9,52 @@ import useDeepEffect from '@view/hooks/useDeepEffect'
 import { getDexMaskState } from '@reducer/dexmask/dexmask'
 import { getCrossChainState } from '@view/selectors'
 import { updateCrossChainState } from '@view/store/actions'
-import { getAllSupportBridge, checkTokenBridge } from '@view/helpers/cross-chain-api'
+import {
+  getAllSupportBridge,
+  checkTokenBridge,
+} from '@view/helpers/cross-chain-api'
 import { toBnString } from '@view/helpers/utils/conversions.util'
-import { isBurnAddress, isValidHexAddress } from '@shared/modules/hexstring-utils'
+import {
+  isBurnAddress,
+  isValidHexAddress,
+} from '@shared/modules/hexstring-utils'
 import { setProviderType, setRpcTarget } from '@view/store/actions'
 import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 import CrossDestChainSwitcher from './dest-chain-switcher'
 import CrossFromChainSwitcher from './from-chain-switcher'
-
 export default function CrossChainTokenInput() {
   const [state, setState] = useState({
     includesNativeCurrencyToken: true,
     tokenList: [],
-    reverseAble: false
+    reverseAble: false,
   })
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
   const tokens = useSelector(getTokens)
   const { frequentRpcListDetail } = useSelector(getDexMaskState)
-
   const allNetworks = useMemo(() => {
-    return DEFAULT_NETWORK_LIST.map(({
-      chainId,
-      symbol,
-      provider,
-      isBulitIn,
-      label
-    }) => {
-      return {
-        chainId,
-        isBulitIn,
-        label,
-        provider,
-        networkId: toBnString(chainId),
-      };
-    }).concat(frequentRpcListDetail.map(({
-      chainId,
-      nickname,
-      rpcUrl,
-      ticker
-    }) => {
-      return {
-        chainId,
-        isBulitIn: false,
-        label: nickname,
-        setPrcParams: [rpcUrl, chainId, ticker, nickname],
-        networkId: toBnString(chainId)
-      }
-    }))
+    return DEFAULT_NETWORK_LIST.map(
+      ({ chainId, symbol, provider, isBulitIn, label }) => {
+        return {
+          chainId,
+          isBulitIn,
+          label,
+          provider,
+          networkId: toBnString(chainId),
+        }
+      },
+    ).concat(
+      frequentRpcListDetail.map(({ chainId, nickname, rpcUrl, ticker }) => {
+        return {
+          chainId,
+          isBulitIn: false,
+          label: nickname,
+          setPrcParams: [rpcUrl, chainId, ticker, nickname],
+          networkId: toBnString(chainId),
+        }
+      }),
+    )
   }, [frequentRpcListDetail])
-
   const isNative = useMemo(
     () => crossChainState.coinAddress === ethers.constants.AddressZero,
     [crossChainState.coinAddress],
@@ -83,7 +79,8 @@ export default function CrossChainTokenInput() {
         if (res.c === 200) {
           const target = res.d.find(
             ({ target_meta_chain_id, token_address }) =>
-            target_meta_chain_id === toBnString(crossChainState.fromChain) && token_address === crossChainState.coinAddress,
+              target_meta_chain_id === toBnString(crossChainState.fromChain) &&
+              token_address === crossChainState.coinAddress,
           )
           const newCrossInfo = Object.assign({}, crossChainState, {
             destChain: crossChainState.fromChain,
@@ -96,9 +93,14 @@ export default function CrossChainTokenInput() {
             supportChains: res.d,
             target,
           })
-
-          const targetChainInfo = allNetworks.find(({ networkId }) => networkId === toBnString(newCrossInfo.fromChain))
-          dispatch(targetChainInfo.isBulitIn ? setProviderType(targetChainInfo.provider) : setRpcTarget(...targetChainInfo.setPrcParams)).then(() => {
+          const targetChainInfo = allNetworks.find(
+            ({ networkId }) => networkId === toBnString(newCrossInfo.fromChain),
+          )
+          dispatch(
+            targetChainInfo.isBulitIn
+              ? setProviderType(targetChainInfo.provider)
+              : setRpcTarget(...targetChainInfo.setPrcParams),
+          ).then(() => {
             updateCrossState(newCrossInfo)
           })
         }
@@ -118,7 +120,6 @@ export default function CrossChainTokenInput() {
         if (res.c === 200) {
           const destChain = toBnString(crossChainState.destChain)
           const destToken = crossChainState.targetCoinAddress
-
           res.d.forEach((item) => {
             if (item.meta_chain_id === chainId) {
               if (item.token_address === ethers.constants.AddressZero) {
@@ -136,8 +137,11 @@ export default function CrossChainTokenInput() {
               }
             }
 
-            if (item.meta_chain_id === destChain && item.token_address === destToken) {
-              reverseAble = true;
+            if (
+              item.meta_chain_id === destChain &&
+              item.token_address === destToken
+            ) {
+              reverseAble = true
             }
           })
         }
@@ -145,11 +149,16 @@ export default function CrossChainTokenInput() {
         setState(() => ({
           includesNativeCurrencyToken,
           tokenList,
-          reverseAble
+          reverseAble,
         }))
       })
-  }, [chainId, tokenAddresses, tokens, crossChainState.destChain, crossChainState.targetCoinAddress])
-
+  }, [
+    chainId,
+    tokenAddresses,
+    tokens,
+    crossChainState.destChain,
+    crossChainState.targetCoinAddress,
+  ])
   return (
     <div>
       <CrossFromChainSwitcher />
@@ -164,7 +173,11 @@ export default function CrossChainTokenInput() {
             : crossChainState.maxSendAmount
         }
         onReverse={reverseCross}
-        changeToken={({ address: coinAddress, decimals: tokenDecimals, string }) => {
+        changeToken={({
+          address: coinAddress,
+          decimals: tokenDecimals,
+          string,
+        }) => {
           updateCrossState({
             coinAddress,
             tokenDecimals,
@@ -178,33 +191,33 @@ export default function CrossChainTokenInput() {
         }}
         changeAccount={({ address: from }) =>
           updateCrossState({
-            from
+            from,
           })
         }
       />
       <CrossDestChainSwitcher />
       <SendAddressInput
-        optionsDirection="top"
+        optionsDirection='top'
         accountAddress={crossChainState.dest}
         selectedAddress={crossChainState.dest}
         autoChangeAccount={false}
         onChange={(dest) => {
           if (!isBurnAddress(dest) && isValidHexAddress(dest)) {
             updateCrossState({
-              dest
+              dest,
             })
           }
         }}
         onPaste={(dest) => {
           if (!isBurnAddress(dest) && isValidHexAddress(dest)) {
             updateCrossState({
-              dest
+              dest,
             })
           }
         }}
         changeAccount={({ address: dest }) =>
           updateCrossState({
-            dest
+            dest,
           })
         }
         onReset={() =>
@@ -212,9 +225,9 @@ export default function CrossChainTokenInput() {
             dest: '',
           })
         }
-        toggleCheck={(isInWallet) => 
+        toggleCheck={(isInWallet) =>
           updateCrossState({
-            dest: isInWallet ? crossChainState.from : ''
+            dest: isInWallet ? crossChainState.from : '',
           })
         }
       />
