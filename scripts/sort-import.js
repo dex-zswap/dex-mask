@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const babelParser = require('@babel/parser')
+const babelTypes = require('@babel/types')
 const { default: babelGenerator } = require('@babel/generator')
 const { default: babelTraverse } = require('@babel/traverse')
 const prettier = require('prettier')
@@ -44,7 +45,7 @@ const sortImport = (file) => {
           value: path.node.source.value,
           path,
         })
-      },
+      }
     })
 
     if (deps.length) {
@@ -94,12 +95,13 @@ const sortImport = (file) => {
       ast.program.body = newDeps.concat(
         ast.program.body.filter(({ type }) => type !== 'ImportDeclaration'),
       )
-      newCodeContent = babelGenerator(ast)
+      newCodeContent = babelGenerator(ast);
 
       fs.writeFileSync(file, newCodeContent.code, 'utf8')
       console.log([file, '文件写入完成.'].join(''))
     }
   } catch (e) {
+    console.log(e);
     console.log([file, '发生异常, 已跳过.'])
   }
 }

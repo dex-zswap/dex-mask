@@ -855,11 +855,11 @@
     "description": "Displayed error name for debugging purposes. $1 is the error name"
   },
   "errorPageMessage": {
-    "message": "Try again by reloading the page, or contact support $1.",
+    "message": "Try again by reloading the page.",
     "description": "Message displayed on generic error page in the fullscreen or notification UI, $1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
   },
   "errorPagePopupMessage": {
-    "message": "Try again by closing and reopening the popup, or contact support $1.",
+    "message": "Try again by closing and reopening the popup.",
     "description": "Message displayed on generic error page in the popup UI, $1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
   },
   "errorPageTitle": {

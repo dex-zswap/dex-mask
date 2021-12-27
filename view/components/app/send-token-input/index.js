@@ -25,7 +25,14 @@ import BigNumber from 'bignumber.js'
 import classnames from 'classnames'
 import { zeroAddress } from 'ethereumjs-util'
 import { ethers } from 'ethers'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  default as React,
+  default as React,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 export default function sendTokenInput({
@@ -159,9 +166,11 @@ export default function sendTokenInput({
   const onAccountChange = useCallback(
     (account) => {
       setAmount('')
+
       if (autoChangeAccount) {
         !accountAddress && dispatch(showAccountDetail(account.address))
       }
+
       changeAccount && changeAccount(account)
     },
     [accountAddress, changeAccount],

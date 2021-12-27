@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { getEnvironmentType } from '@app/scripts/lib/util'
+import Logo from '@c/ui/logo'
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app'
 
 class ErrorPage extends PureComponent {
   static contextTypes = {
     t: PropTypes.func.isRequired,
-  }
-  static propTypes = {
-    error: PropTypes.object.isRequired,
   }
 
   renderErrorDetail(content) {
@@ -33,8 +31,10 @@ class ErrorPage extends PureComponent {
     const { t } = this.context
     const isPopup = getEnvironmentType() === ENVIRONMENT_TYPE_POPUP
     const message = isPopup ? t('errorPagePopupMessage') : t('errorPageMessage')
+
     return (
-      <section className='error-page'>
+      <section className='error-page base-width'>
+        <Logo isCenter />
         <h1 className='error-page__header'>{t('errorPageTitle')}</h1>
         <h2 className='error-page__subheader'>{message}</h2>
         <section className='error-page__details'>
