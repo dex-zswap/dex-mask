@@ -22,10 +22,12 @@ import {
 } from '@view/selectors'
 import { showAccountDetail } from '@view/store/actions'
 import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
 import { zeroAddress } from 'ethereumjs-util'
 import { ethers } from 'ethers'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+
 export default function sendTokenInput({
   accountAddress,
   tokenAddress,
@@ -35,7 +37,7 @@ export default function sendTokenInput({
   changeAccount,
   changeToken,
   changeAmount,
-  autoChangeAccount,
+  autoChangeAccount = true,
   optionsDirection,
   reverseAble,
   onReverse,

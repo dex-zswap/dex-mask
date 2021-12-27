@@ -12,9 +12,9 @@
     }
   }
   .back-bar-title {
+    @include text-ellipsis;
     height: 24px;
     flex: 1;
-    @include text-ellipsis;
     line-height: 24px;
     color: #fff;
     font-size: 16px;
