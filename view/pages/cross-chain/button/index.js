@@ -40,6 +40,7 @@ export default function CrossChainButton() {
     }
 
     return (
+      !Boolean(crossChainState.userInputValue) ||
       expandDecimals(crossChainState.userInputValue).isZero() ||
       !Boolean(crossChainState.dest)
     )

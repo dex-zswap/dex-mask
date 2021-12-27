@@ -1,3 +1,8 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import { zeroAddress } from 'ethereumjs-util'
+import { ethers } from 'ethers'
 import TokenListItem from '@c/app/send-token-input/token-list-item'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Identicon from '@c/ui/identicon'
@@ -21,11 +26,6 @@ import {
   getShouldHideZeroBalanceTokens,
 } from '@view/selectors'
 import { showAccountDetail } from '@view/store/actions'
-import BigNumber from 'bignumber.js'
-import { zeroAddress } from 'ethereumjs-util'
-import { ethers } from 'ethers'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 export default function sendTokenInput({
   accountAddress,
   tokenAddress,
@@ -157,9 +157,11 @@ export default function sendTokenInput({
   const onAccountChange = useCallback(
     (account) => {
       setAmount('')
+
       if (autoChangeAccount) {
         !accountAddress && dispatch(showAccountDetail(account.address))
       }
+
       changeAccount && changeAccount(account)
     },
     [accountAddress],

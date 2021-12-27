@@ -4,42 +4,35 @@
   align-items: center;
   font-style: normal;
   font-weight: normal;
-  padding: 35px 10px 10px 10px;
   height: 100%;
+  padding: 30px 0;
 
-  &__header {
-    @include H1;
-
+  .error-page__header {
     display: flex;
     justify-content: center;
-    padding: 10px 0;
+    padding: 30px 0 10px;
     text-align: center;
+    color: $white;
+    font-size: 18px;
+    font-weight: bold;
   }
-
-  &__subheader {
-    @include H4;
-
+  .error-page__subheader {
     padding: 10px 0;
     width: 100%;
-    max-width: 720px;
     text-align: center;
+    color: $white;
+    font-size: 12px;
   }
-
-  &__details {
-    @include H4;
-
+  .error-page__details {
     overflow-y: auto;
     width: 100%;
-    max-width: 720px;
     padding-top: 10px;
+    color: $white;
+    font-size: 12px;
   }
-
-  &__stack {
+  .error-page__stack {
     overflow-x: auto;
-    background-color: #eee;
-  }
-
-  &__link-text {
-    color: #037dd6;
+    color: $white;
+    font-size: 12px;
   }
 }

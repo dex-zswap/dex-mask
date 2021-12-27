@@ -53,7 +53,4 @@ class Page extends PureComponent {
   }
 }
 
-Page.propTypes = {
-  store: PropTypes.object,
-}
 export default Page
