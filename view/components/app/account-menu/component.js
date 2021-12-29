@@ -52,7 +52,6 @@ export default class AccountMenu extends Component {
   }
   accountsRef
   state = {
-    shouldShowScrollButton: false,
     searchQuery: '',
   }
   addressFuse = new Fuse([], {
@@ -72,22 +71,6 @@ export default class AccountMenu extends Component {
       },
     ],
   })
-
-  componentDidUpdate(prevProps, prevState) {
-    const { isAccountMenuOpen: prevIsAccountMenuOpen } = prevProps
-    const { searchQuery: prevSearchQuery } = prevState
-    const { isAccountMenuOpen } = this.props
-    const { searchQuery } = this.state
-
-    if (!prevIsAccountMenuOpen && isAccountMenuOpen) {
-      this.setShouldShowScrollButton()
-    } // recalculate on each search query change
-    // whether we can show scroll down button
-
-    if (isAccountMenuOpen && prevSearchQuery !== searchQuery) {
-      this.setShouldShowScrollButton()
-    }
-  }
 
   renderAccounts() {
     const {
@@ -152,51 +135,6 @@ export default class AccountMenu extends Component {
     })
   }
 
-  setShouldShowScrollButton = () => {
-    if (!this.accountsRef) {
-      return
-    }
-
-    const { scrollTop, offsetHeight, scrollHeight } = this.accountsRef
-    const canScroll = scrollHeight > offsetHeight
-    const atAccountListBottom = scrollTop + offsetHeight >= scrollHeight
-    const shouldShowScrollButton = canScroll && !atAccountListBottom
-    this.setState({
-      shouldShowScrollButton,
-    })
-  }
-  onScroll = debounce(this.setShouldShowScrollButton, 25)
-  handleScrollDown = (e) => {
-    e.stopPropagation()
-    const { scrollHeight } = this.accountsRef
-    this.accountsRef.scroll({
-      left: 0,
-      top: scrollHeight,
-      behavior: 'smooth',
-    })
-    this.setShouldShowScrollButton()
-  }
-
-  renderScrollButton() {
-    if (!this.state.shouldShowScrollButton) {
-      return null
-    }
-
-    return (
-      <div
-        className='account-menu__scroll-button'
-        onClick={this.handleScrollDown}
-      >
-        <img
-          src='./images/icons/down-arrow.svg'
-          width='28'
-          height='28'
-          alt={this.context.t('scrollDown')}
-        />
-      </div>
-    )
-  }
-
   render() {
     const { t } = this.context
     const {
@@ -237,7 +175,6 @@ export default class AccountMenu extends Component {
             >
               {this.renderAccounts()}
             </div>
-            {this.renderScrollButton()}
           </div>
           <AccountMenuItem
             onClick={() => {

@@ -265,6 +265,7 @@ export function getAccountsWithLabels(state) {
   return getDexMaskAccountsOrdered(state).map(({ address, name, balance }) => ({
     address,
     addressLabel: `${name} (...${address.slice(address.length - 4)})`,
+    addressSliced: `(...${address.slice(address.length - 4)})`,
     label: name,
     balance,
   }))

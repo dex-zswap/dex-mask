@@ -23,10 +23,11 @@
     + .connected-sites__footer-row {
       margin-top: 15px;
     }
+  }
 
-    .connected-sites__text-button {
-      font-size: $size-12;
-      color: $pink;
-    }
+  .connected-sites__text-button {
+    font-size: $size-12;
+    color: $pink;
+    cursor: pointer;
   }
 }

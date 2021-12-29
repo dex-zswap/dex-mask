@@ -40,13 +40,13 @@ export default function SelectedAccount() {
     currency: primaryCurrency,
     numberOfDecimals: primaryNumberOfDecimals,
   } = useUserPreferencedCurrency(PRIMARY, {
-    ethNumberOfDecimals: 4,
+    ethNumberOfDecimals: 2,
   })
   const {
     currency: secondaryCurrency,
     numberOfDecimals: secondaryNumberOfDecimals,
   } = useUserPreferencedCurrency(SECONDARY, {
-    ethNumberOfDecimals: 4,
+    ethNumberOfDecimals: 2,
   })
   const [, primaryCurrencyProperties] = useCurrencyDisplay(balance, {
     numberOfDecimals: primaryNumberOfDecimals,
@@ -140,12 +140,10 @@ export default function SelectedAccount() {
         <div className='native-currency flex space-between items-center'>
           <div className='native-currency-balance'>
             <div className='token-balance'>
-              {primaryCurrencyProperties.value}{' '}
-              {primaryCurrencyProperties.suffix}
+              <LongLetter text={primaryCurrencyProperties.value} subfix={` ${primaryCurrencyProperties.suffix}`} length={7} />
             </div>
             <div className='token-usd'>
-              {secondaryCurrencyProperties.value}{' '}
-              {secondaryCurrencyProperties.suffix}
+              <LongLetter text={secondaryCurrencyProperties.value} subfix={` ${secondaryCurrencyProperties.suffix}`} length={10} />
             </div>
           </div>
           <TokenImage

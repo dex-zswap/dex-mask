@@ -68,7 +68,6 @@ export default class Home extends PureComponent {
     } else if (!isNotification && swapsFetchParams) {
       history.push(BUILD_QUOTE_ROUTE)
     } else if (firstPermissionsRequestId) {
-      console.log('connect')
       history.push(`${CONNECT_ROUTE}/${firstPermissionsRequestId}`)
     } else if (unconfirmedTransactionsCount > 0) {
       history.push(CONFIRM_TRANSACTION_ROUTE)

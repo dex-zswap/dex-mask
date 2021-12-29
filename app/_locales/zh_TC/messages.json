@@ -402,6 +402,9 @@
   "createPassword": {
     "message": "創建密碼"
   },
+  "createAPassword": {
+    "message": "創建密碼"
+  },
   "createWallet": {
     "message": "創建錢包"
   },

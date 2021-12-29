@@ -26,7 +26,7 @@ function createManifestTasks({ browserPlatforms }) {
         )
         const result = merge(
           cloneDeep(baseManifest),
-          { version },
+          { version: version.split('-')[0] },
           platformModifications,
         )
         const dir = path.join('.', 'dist', platform)

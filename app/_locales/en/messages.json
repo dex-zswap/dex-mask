@@ -504,6 +504,9 @@
   "createPassword": {
     "message": "Create a Password to access your wallet."
   },
+  "createAPassword": {
+    "message": "Create a Password"
+  },
   "createWallet": {
     "message": "Create Wallet"
   },
@@ -1713,7 +1716,7 @@
     "message": "Search, public address (0x) or DNS"
   },
   "reciveToken": {
-    "message": "Recieve Token"
+    "message": "Receive Token"
   },
   "recommendedGasLabel": {
     "message": "Recommended"
@@ -1794,7 +1797,7 @@
     "message": "Restore"
   },
   "restoreAccountWithSeed": {
-    "message": "Restore your Account with Secret Recovery Phrase"
+    "message": "Restore your Account with Secret Recovery Phrase."
   },
   "restoreWalletPreferences": {
     "message": "A backup of your data from $1 has been found. Would you like to restore your wallet preferences?",
