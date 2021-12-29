@@ -93,8 +93,8 @@ export default function RestoreVaultPage() {
         <div className='restore-vault-title'>{t('restoreAccountWithSeed')}</div>
         <div className='restore-vault-subtitle'>{t('secretPhrase')}</div>
         <div className='setting-item'>
-          <div className='setting-label'>{t('walletSeedRestore')}</div>
           <TextField
+            label={t('walletSeedRestore')}
             value={seedPhrase}
             onChange={(e) => handleSeedPhraseChange(e.target.value)}
             placeholder={t('separateEachWord')}
@@ -102,8 +102,8 @@ export default function RestoreVaultPage() {
           />
         </div>
         <div className='setting-item'>
-          <div className='setting-label'>{t('newPassword')}</div>
           <TextField
+            label={t('password')}
             type='password'
             value={password}
             onChange={(event) => handlePasswordChange(event.target.value)}
@@ -113,8 +113,8 @@ export default function RestoreVaultPage() {
           />
         </div>
         <div className='setting-item'>
-          <div className='setting-label'>{t('confirmPassword')}</div>
           <TextField
+            label={t('confirmPassword')}
             type='password'
             className='first-time-flow__input'
             value={confirmPassword}

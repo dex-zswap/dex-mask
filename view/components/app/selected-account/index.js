@@ -11,6 +11,7 @@ import copyToClipboard from 'copy-to-clipboard'
 import { ethers } from 'ethers'
 import { I18nContext } from '@view/contexts/i18n'
 import AccountOptionsMenu from '@c/app/account-options-menu'
+import LongLetter from '@c/ui/long-letter'
 import TokenImage from '@c/ui/token-image'
 import Tooltip from '@c/ui/tooltip'
 import { SECOND } from '@shared/constants/time'
@@ -118,7 +119,7 @@ export default function SelectedAccount() {
       <div className='selected-account base-width'>
         <div className='account-address flex space-between items-center'>
           <div className='account flex items-center'>
-            {selectedIdentity.name}
+            <LongLetter text={selectedIdentity.name} length={10} />
             <div
               className='drop-trigger'
               onClick={toggleAccountDrop}

@@ -35,9 +35,9 @@ export default function CrossChainButton() {
 
     return crossChainState.tokenDecimals
   }, [isNativeAsset, crossChainState.tokenDecimals])
-
-  const userInputValue = useMemo(() => crossChainState.userInputValue ?? '0', [crossChainState.userInputValue])
-
+  const userInputValue = useMemo(() => crossChainState.userInputValue ?? '0', [
+    crossChainState.userInputValue,
+  ])
   const disableButton = useMemo(() => {
     if (!allowed) {
       return false
@@ -49,7 +49,6 @@ export default function CrossChainButton() {
       !Boolean(crossChainState.dest)
     )
   }, [crossChainState, allowed])
-
   const crossChain = useCallback(() => {
     const sendData = [
       '0x',

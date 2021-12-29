@@ -1,6 +1,8 @@
 html,
 body {
   background: $page-background;
+  height: 100vh;
+  overflow: auto;
 }
 
 input,
@@ -12,11 +14,6 @@ textarea {
 
 .w-100 {
   width: 100%;
-}
-
-#app-content {
-  height: 100vh;
-  overflow-y: auto;
 }
 
 .base-width {
@@ -49,6 +46,10 @@ textarea {
   &.half-button {
     width: 139px;
   }
+}
+
+.overflow-hidden {
+  overflow: hidden!important;
 }
 
 .flex {

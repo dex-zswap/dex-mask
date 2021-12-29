@@ -1093,6 +1093,9 @@
   "importAccount": {
     "message": "Import account"
   },
+  "importAccountTitle": {
+    "message": "Import Account"
+  },
   "importAccountLinkText": {
     "message": "import using Secret Recovery Phrase"
   },
@@ -1629,7 +1632,7 @@
     "message": "Passwords Don't Match"
   },
   "pastePrivateKey": {
-    "message": "Paste your private key string here:",
+    "message": "Paste your Private Key String here:",
     "description": "For importing an account from a private key"
   },
   "pay": {
@@ -1710,7 +1713,7 @@
     "message": "Search, public address (0x) or DNS"
   },
   "reciveToken": {
-    "message": "Recive Token"
+    "message": "Recieve Token"
   },
   "recommendedGasLabel": {
     "message": "Recommended"
@@ -2859,5 +2862,8 @@
   },
   "zswap": {
     "message": "ZSWAP"
+  },
+  "enterPrivateKeyString": {
+    "message": "Enter private key string"
   }
 }

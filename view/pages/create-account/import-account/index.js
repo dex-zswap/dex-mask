@@ -35,7 +35,7 @@ export default class AccountImportSubview extends Component {
       <div className='new-account-import-form dex-page-container space-between base-width'>
         <div>
           <Logo plain isCenter />
-          <BackBar title={this.context.t('importAccount')} />
+          <BackBar title={this.context.t('importAccountTitle')} />
           <div className='new-account-import-form__select-section flex items-center space-between'>
             <div className='new-account-import-form__select-label'>
               {this.context.t('selectType')}

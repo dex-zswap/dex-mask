@@ -805,6 +805,9 @@
   "importAccount": {
     "message": "導入賬戶"
   },
+  "importAccountTitle": {
+    "message": "導入賬戶"
+  },
   "importAccountLinkText": {
     "message": "import using Secret Recovery Phrase"
   },
@@ -2071,5 +2074,8 @@
   },
   "zswap": {
     "message": "ZSWAP"
+  },
+  "enterPrivateKeyString": {
+    "message": "輸入您的私鑰"
   }
 }

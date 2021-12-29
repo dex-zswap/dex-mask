@@ -1,3 +1,7 @@
+import React, { useCallback, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import SendAddressInput from '@c/app/send-address-input'
 import SendTokenInput from '@c/app/send-token-input'
 import { getDexMaskState, getTokens } from '@reducer/dexmask/dexmask'
@@ -18,10 +22,6 @@ import {
   setRpcTarget,
   updateCrossChainState,
 } from '@view/store/actions'
-import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import React, { useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import CrossDestChainSwitcher from './dest-chain-switcher'
 import CrossFromChainSwitcher from './from-chain-switcher'
 export default function CrossChainTokenInput() {

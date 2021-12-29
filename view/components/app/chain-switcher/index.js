@@ -105,6 +105,7 @@ class ChainSwitcher extends Component {
               ) : null
             }
             small
+            toTop
           />
         </div>
       </>

@@ -20,7 +20,9 @@ export default class ExportPrivateKeyModal extends Component {
     showWarning: true,
     copied: false,
   }
+
   copyTimeOut = null
+
   copyAddress = () => {
     const {
       props: {
@@ -29,6 +31,29 @@ export default class ExportPrivateKeyModal extends Component {
     } = this
     window.clearTimeout(this.copyTimeOut)
     copyToClipboard(address)
+    this.setState(
+      (state) => {
+        return { ...state, copied: !state.copied }
+      },
+      () => {
+        this.copyTimeOut = setTimeout(() => {
+          window.clearTimeout(this.copyTimeOut)
+          this.setState((state) => {
+            return { ...state, copied: !state.copied }
+          })
+        }, SECOND * 3)
+      },
+    )
+  }
+
+  copyPrivateKey = () => {
+    const {
+      state: {
+        privateKey
+      },
+    } = this
+    window.clearTimeout(this.copyTimeOut)
+    copyToClipboard(privateKey)
     this.setState(
       (state) => {
         return { ...state, copied: !state.copied }
@@ -86,7 +111,14 @@ export default class ExportPrivateKeyModal extends Component {
       <div className='private-key-display'>
         <div className='header flex space-between items-center'>
           {this.context.t('copyPrivateKey')}
-          <i className='copy-icon'></i>
+          <ToolTip
+            position='top'
+            title={
+              this.state.copied ? this.context.t('copiedExclamation') : this.context.t('copyToClipboard')
+            }
+          >
+            <i className='copy-icon' onClick={this.copyPrivateKey}></i>
+          </ToolTip>
         </div>
         <div className='private-key'>{plainKey}</div>
       </div>
@@ -96,14 +128,6 @@ export default class ExportPrivateKeyModal extends Component {
   renderButtons(privateKey, address, hideModal) {
     return (
       <div className='export-private-key-modal__buttons'>
-        {!privateKey && (
-          <Button
-            className='export-private-key-modal__button export-private-key-modal__button--cancel'
-            onClick={() => hideModal()}
-          >
-            {this.context.t('cancel')}
-          </Button>
-        )}
         {privateKey ? (
           <Button
             onClick={() => hideModal()}
@@ -112,16 +136,24 @@ export default class ExportPrivateKeyModal extends Component {
             {this.context.t('close')}
           </Button>
         ) : (
-          <Button
-            onClick={() =>
-              this.exportAccountAndGetPrivateKey(this.state.password, address)
-            }
-            type='primary'
-            className='export-private-key-modal__button'
-            disabled={!this.state.password}
-          >
-            {this.context.t('confirm')}
-          </Button>
+          <>
+            <Button
+              onClick={() =>
+                this.exportAccountAndGetPrivateKey(this.state.password, address)
+              }
+              type='primary'
+              className='export-private-key-modal__button'
+              disabled={!this.state.password}
+            >
+              {this.context.t('confirm')}
+            </Button>
+            <Button
+              className='export-private-key-modal__button export-private-key-modal__button--cancel'
+              onClick={() => hideModal()}
+            >
+              {this.context.t('cancel')}
+            </Button>
+          </>
         )}
       </div>
     )

@@ -73,6 +73,7 @@ class PrivateKeyImportView extends Component {
             <TextField
               className='new-account-import-form__input-password'
               label={this.context.t('pastePrivateKey')}
+              placeholder={this.context.t('enterPrivateKeyString')}
               type='password'
               id='private-key-box'
               onKeyPress={(e) => this.createKeyringOnEnter(e)}

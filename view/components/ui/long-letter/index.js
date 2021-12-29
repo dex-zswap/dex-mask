@@ -5,7 +5,7 @@ const LongLetter = ({ text, length }) => {
     return text
   }
 
-  return [text.substring(0, length), '...'].join('')
+  return <span title={text}>{[text.substring(0, length), '...'].join('')}</span>
 }
 
 export default LongLetter

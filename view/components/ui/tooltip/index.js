@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react'
+import React from 'react'
 import { Tooltip as ReactTippy } from 'react-tippy'
-import merge from 'lodash/merge'
 import isEqual from 'lodash/isEqual'
 const defaultProps = {
   arrow: true,
@@ -38,7 +37,10 @@ function Tooltip(props) {
     theme,
     tabIndex,
     tag,
-  } = merge(defaultProps, props)
+  } = {
+    ...defaultProps,
+    ...props
+  }
 
   if (!title && !html) {
     return <div className={wrapperClassName}>{children}</div>
@@ -72,4 +74,4 @@ function Tooltip(props) {
   )
 }
 
-export default React.memo(Tooltip, isEqual)
+export default React.memo(Tooltip)

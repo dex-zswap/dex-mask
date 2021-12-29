@@ -31,7 +31,6 @@ class ErrorPage extends PureComponent {
     const { t } = this.context
     const isPopup = getEnvironmentType() === ENVIRONMENT_TYPE_POPUP
     const message = isPopup ? t('errorPagePopupMessage') : t('errorPageMessage')
-
     return (
       <section className='error-page base-width'>
         <Logo isCenter />
