@@ -46,7 +46,7 @@ export default function SelectAction() {
               className='create-wallet-button'
               onClick={handleCreate}
             >
-              {t('createWallet')}
+              {t('createAWallet')}
             </Button>
             <Button
               type='default'

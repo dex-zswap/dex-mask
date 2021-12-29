@@ -122,7 +122,7 @@ export default function NewAccount({ onSubmit }) {
         <form className='first-time-flow__form' onSubmit={handleCreate}>
           <TextField
             id='create-password'
-            label={t('newPassword')}
+            label={t('password')}
             type='password'
             className='first-time-flow__input'
             value={state.password}
