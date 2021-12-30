@@ -13,7 +13,6 @@ import Popover from '@c/ui/popover'
 import SenderToRecipient from '@c/ui/sender-to-recipient'
 import { FLAT_VARIANT } from '@c/ui/sender-to-recipient/constants'
 import Tooltip from '@c/ui/tooltip'
-import { shortenAddress } from '@view/helpers/utils'
 import {
   CHAINID_EXPLORE_MAP,
   MAINNET_CHAIN_ID,
@@ -240,13 +239,11 @@ export default class TransactionListItemDetails extends PureComponent {
               <SenderToRecipient
                 warnUserOnAccountMismatch={false}
                 variant={FLAT_VARIANT}
-                addressOnly
                 recipientEns={recipientEns}
-                recipientAddress={shortenAddress(recipientAddress, 11, -6)}
+                recipientAddress={recipientAddress}
                 recipientNickname={recipientNickname}
                 senderName={senderNickname}
-                senderAddress={shortenAddress(senderAddress, 11, -6)}
-                onRecipientClick={() => {}}
+                senderAddress={senderAddress}
                 addressOnly
               />
             </div>

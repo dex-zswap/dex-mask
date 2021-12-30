@@ -105,67 +105,9 @@ export default function TransactionListItem({
 
     setShowDetails((prev) => !prev)
   }, [isUnapproved, history, id])
-  const cancelButton = useMemo(() => {
-    const btn = (
-      <Button
-        onClick={cancelTransaction}
-        type='ghost'
-        rounded
-        className='transaction-list-item__header-button'
-        disabled={!hasEnoughCancelGas}
-      >
-        {t('cancel')}
-      </Button>
-    )
 
-    if (hasCancelled || !isPending || isUnapproved) {
-      return null
-    }
+  const nonSignReqAndApproval = useMemo(() => !isSignatureReq && !isApproval, [isSignatureReq, isApproval])
 
-    return hasEnoughCancelGas ? (
-      btn
-    ) : (
-      <Tooltip title={t('notEnoughGas')} position='bottom'>
-        <div>{btn}</div>
-      </Tooltip>
-    )
-  }, [
-    isPending,
-    t,
-    isUnapproved,
-    hasEnoughCancelGas,
-    cancelTransaction,
-    hasCancelled,
-  ])
-  const speedUpButton = useMemo(() => {
-    if (!shouldShowSpeedUp || !isPending || isUnapproved) {
-      return null
-    }
-
-    return (
-      <Button
-        type='primary'
-        onClick={hasCancelled ? cancelTransaction : retryTransaction}
-        style={
-          hasCancelled
-            ? {
-                width: 'auto',
-              }
-            : null
-        }
-      >
-        {hasCancelled ? t('speedUpCancellation') : t('speedUp')}
-      </Button>
-    )
-  }, [
-    shouldShowSpeedUp,
-    isUnapproved,
-    t,
-    isPending,
-    retryTransaction,
-    hasCancelled,
-    cancelTransaction,
-  ])
   return (
     <>
       <div className='transaction-list-item__wrapper'>
@@ -173,30 +115,24 @@ export default function TransactionListItem({
           className={classnames('transaction-list-row-item', className)}
           onClick={toggleShowDetails}
         >
-          <div className='left-info-icon'>
-            <TransactionIcon category={category} status={displayedStatusKey} />
-            <div className='call-method-status'>
+          <TransactionIcon category={category} status={displayedStatusKey} />
+          <div className="transaction-info">
+            <div className='left-info'>
               <div className={classnames('method-name', statusClassName)}>
                 {title}
               </div>
-              <div className='status'>{statusText}</div>
-            </div>
-          </div>
-          <div className='right-status'>
-            {!isSignatureReq && !isApproval && (
-              <>
-                <h2 title={primaryCurrency} className='primary-currency'>
+              {nonSignReqAndApproval ? (
+                <h2 className='primary-currency'>
                   {primaryCurrency}
                 </h2>
-                <h3 className='secondary-currency'>{secondaryCurrency}</h3>
-              </>
-            )}
-            {/* {(speedUpButton || cancelButton) && (
-            <div className="transaction-list-item__pending-actions">
-            {speedUpButton}
-            {cancelButton}
+              ) : <span></span>}
             </div>
-            )} */}
+            <div className='right-status'>
+              <div className='status'>{statusText}</div>
+              {nonSignReqAndApproval ? (
+                <h3 className='secondary-currency'>{secondaryCurrency}</h3>
+              ): <span></span>}
+            </div>
           </div>
         </div>
       </div>

@@ -29,20 +29,20 @@ const ReciveToken = () => {
     )
     copyTimeout.current = setTimeout(
       () =>
-        setState((state) =>
-          Object.assign({}, state, {
-            copied: false,
-          }),
-        ),
+      setState((state) =>
+        Object.assign({}, state, {
+          copied: false,
+        }),
+      ),
       SECOND * 3,
     )
     copyToClipboard(address)
   }, [address, copyToClipboard, copyTimeout.current, state.copied])
   useEffect(() => {
-    if (copyTimeout.current) {
-      window.clearTimeout(copyTimeout.current)
-    }
-  }, [copyTimeout.current])
+    return () => {
+      copyTimeout.current && window.clearTimeout(copyTimeout.current)
+    };
+  }, [])
   return (
     <div className='recive-token dex-page-container base-width'>
       <TopHeader />

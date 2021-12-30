@@ -16,6 +16,7 @@ import {
 } from '@view/helpers/cross-chain-api'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import useDeepEffect from '@view/hooks/useDeepEffect'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import { getCrossChainState } from '@view/selectors'
 import {
   setProviderType,
@@ -40,8 +41,8 @@ export default function CrossChainTokenInput() {
         return {
           chainId,
           isBulitIn,
-          label,
           provider,
+          label: t(provider),
           networkId: toBnString(chainId),
         }
       },

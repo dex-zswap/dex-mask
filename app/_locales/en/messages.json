@@ -272,7 +272,7 @@
     "message": "Your Browser is not supported..."
   },
   "bscMainnet": {
-    "message": "BSC"
+    "message": "Binance Smart Chain Mainnet"
   },
   "buildContactList": {
     "message": "Build your contact list"
@@ -606,7 +606,7 @@
     "message": "DEX Bridge"
   },
   "dexMainnet": {
-    "message": "DEX"
+    "message": "DEX Smart Chain Mainnet"
   },
   "dex_trans": {
     "message": "In-wallet transfer"
@@ -1045,7 +1045,7 @@
     "message": "Go"
   },
   "goerli": {
-    "message": "Goerli Test Network"
+    "message": "Goerli Smart Chain Testnet"
   },
   "happyToSeeYou": {
     "message": "We are happy to see you !"
@@ -1277,7 +1277,7 @@
     "message": "Lock time is too great"
   },
   "mainnet": {
-    "message": "ETH"
+    "message": "Ethereum Mainnet"
   },
   "makeAnotherSwap": {
     "message": "Create a new swap"
@@ -1831,10 +1831,10 @@
     "message": "The right way to metaverse, DeFi, Dex, NFT, GameFi and many more ..."
   },
   "rinkeby": {
-    "message": "Rinkeby Test Network"
+    "message": "Rinkeby Smart Chain Testnet"
   },
   "ropsten": {
-    "message": "Ropsten Test Network"
+    "message": "Ropsten Smart Chain Testnet"
   },
   "rpcUrl": {
     "message": "New RPC URL"

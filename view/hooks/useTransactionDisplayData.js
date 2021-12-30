@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { getTokens } from '@reducer/dexmask/dexmask'
+import { getTokens, getNativeCurrency } from '@reducer/dexmask/dexmask'
 import { getKnownMethodData } from '@selectors/selectors'
 import {
   TRANSACTION_GROUP_CATEGORIES,
@@ -61,6 +61,7 @@ export function useTransactionDisplayData(transactionGroup) {
   const dispatch = useDispatch()
   const currentAsset = useCurrentAsset()
   const knownTokens = useSelector(getTokens)
+  const nativeCurrency = useSelector(getNativeCurrency)
   const t = useI18nContext()
   const { initialTransaction, primaryTransaction } = transactionGroup // initialTransaction contains the data we need to derive the primary purpose of this transaction group
 
@@ -210,7 +211,7 @@ export function useTransactionDisplayData(transactionGroup) {
     subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
   } else if (type === TRANSACTION_TYPES.SENT_ETHER) {
     category = TRANSACTION_GROUP_CATEGORIES.SEND
-    title = t('send')
+    title = t('sendSpecifiedTokens', [nativeCurrency])
     subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
   } else {
     dispatch(

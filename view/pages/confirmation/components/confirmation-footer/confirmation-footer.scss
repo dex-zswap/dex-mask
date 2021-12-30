@@ -1,13 +1,7 @@
 .confirmation-footer {
-  grid-area: footer;
-
-  &__actions {
+  .confirmation-footer__actions {
     display: flex;
-    padding: 16px;
-
-    & .button:first-child {
-      margin-right: 16px;
-    }
+    padding: 16px 0;
   }
 
   .warning {

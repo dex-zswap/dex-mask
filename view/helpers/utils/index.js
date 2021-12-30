@@ -14,7 +14,7 @@ import {
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
 import punycode from 'punycode/punycode' // formatData :: ( date: <Unix Timestamp> ) -> String
 
-export function formatDate(date, format = "M LLL y 'at' T") {
+export function formatDate(date, format = "dd LLL y 'at' T") {
   if (!date) {
     return ''
   }

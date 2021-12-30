@@ -3,15 +3,20 @@
   border-radius: $size-12;
   height: 66px;
   padding: 15px;
+  margin: 10px 0 0;
 
   .transaction-list-item {
     @include flex(space-between);
 
-    .left-info-icon {
-      @include flex(space-between);
+    .transaction-info {
+      flex: 1;
+      height: 35px;
+      padding: 0 0 0 $size-12;
+      @include flex(space-between, flex-start, column);
 
-      .call-method-status {
-        margin: 0 0 0 $size-12;
+      .left-info {
+        width: 100%;
+        @include flex(space-between);
 
         .method-name {
           font-size: 14px;
@@ -51,27 +56,28 @@
           }
         }
 
+        .primary-currency {
+          font-size: 14px;
+          color: $white;
+          font-weight: 500;
+          text-align: right;
+        }
+      }
+  
+      .right-status {
+        width: 100%;
+        @include flex(space-between);
+
         .status {
           font-size: 10px;
           color: $gray;
-          margin: 5px 0 0;
         }
-      }
-    }
-
-    .right-status {
-      .primary-currency {
-        font-size: 14px;
-        color: $white;
-        font-weight: 500;
-        text-align: right;
-      }
-
-      .secondary-currency {
-        font-size: 10px;
-        color: $gray;
-        margin: 5px 0 0;
-        text-align: right;
+  
+        .secondary-currency {
+          font-size: 10px;
+          color: $gray;
+          text-align: right;
+        }
       }
     }
   }

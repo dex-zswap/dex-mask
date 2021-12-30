@@ -151,7 +151,7 @@ export default function ConfirmationPage() {
   }
 
   return (
-    <div className='confirmation-page'>
+    <div className='confirmation-page dex-page-container space-between base-width'>
       {pendingConfirmations.length > 1 && (
         <div className='confirmation-page__navigation'>
           <p>

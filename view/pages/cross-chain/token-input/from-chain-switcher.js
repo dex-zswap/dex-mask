@@ -12,10 +12,12 @@ import {
   getAllSupportBridge,
   checkTokenBridge,
 } from '@view/helpers/cross-chain-api'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 
 const CrossFromChainSwitcher = () => {
   const dispatch = useDispatch()
+  const t = useI18nContext()
   const crossChainState = useSelector(getCrossChainState)
   const { frequentRpcListDetail } = useSelector(getDexMaskState)
   const [chains, setChains] = useState([])
@@ -26,8 +28,8 @@ const CrossFromChainSwitcher = () => {
         return {
           chainId,
           isBulitIn,
-          label,
           provider,
+          label: t(provider),
           networkId: toBnString(chainId),
         }
       },

@@ -9,10 +9,12 @@ import useDeepEffect from '@view/hooks/useDeepEffect'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import { setProviderType, setRpcTarget } from '@view/store/actions'
 import { checkTokenBridge } from '@view/helpers/cross-chain-api'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 
 const CrossDestChainSwitcher = () => {
   const dispatch = useDispatch()
+  const t = useI18nContext()
   const crossChainState = useSelector(getCrossChainState)
   const { frequentRpcListDetail } = useSelector(getDexMaskState)
   const [chains, setChains] = useState([])
@@ -23,8 +25,8 @@ const CrossDestChainSwitcher = () => {
         return {
           chainId,
           isBulitIn,
-          label,
           provider,
+          label: t(provider),
           networkId: toBnString(chainId),
         }
       },
@@ -39,7 +41,7 @@ const CrossDestChainSwitcher = () => {
         }
       }),
     )
-  }, [frequentRpcListDetail])
+  }, [frequentRpcListDetail, t])
   const isNative = useMemo(
     () => ethers.constants.AddressZero === crossChainState.coinAddress,
     [crossChainState.coinAddress],
