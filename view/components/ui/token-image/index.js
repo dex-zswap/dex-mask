@@ -11,8 +11,8 @@ export default function TokenImage({
   address,
   symbol,
   size,
+  showLetter,
   chainId = '',
-  showLetter = false,
 }) {
   const [loading, setLoading] = useState(true)
   const [success, setSuccess] = useState(false)

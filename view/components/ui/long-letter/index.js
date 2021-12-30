@@ -1,7 +1,10 @@
 import React, { useMemo } from 'react'
 
 const LongLetter = ({ text, length, prefix, subfix }) => {
-  const displayText = useMemo(() => [prefix ?? '', text, subfix ?? ''].join(''), [text, prefix, subfix]);
+  const displayText = useMemo(
+    () => [prefix ?? '', text, subfix ?? ''].join(''),
+    [text, prefix, subfix],
+  )
 
   if (length >= text.length) {
     return displayText

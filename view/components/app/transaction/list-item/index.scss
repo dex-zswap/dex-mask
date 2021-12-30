@@ -63,7 +63,7 @@
           text-align: right;
         }
       }
-  
+
       .right-status {
         width: 100%;
         @include flex(space-between);
@@ -72,7 +72,7 @@
           font-size: 10px;
           color: $gray;
         }
-  
+
         .secondary-currency {
           font-size: 10px;
           color: $gray;

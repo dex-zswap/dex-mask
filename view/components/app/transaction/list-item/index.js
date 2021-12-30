@@ -105,9 +105,10 @@ export default function TransactionListItem({
 
     setShowDetails((prev) => !prev)
   }, [isUnapproved, history, id])
-
-  const nonSignReqAndApproval = useMemo(() => !isSignatureReq && !isApproval, [isSignatureReq, isApproval])
-
+  const nonSignReqAndApproval = useMemo(() => !isSignatureReq && !isApproval, [
+    isSignatureReq,
+    isApproval,
+  ])
   return (
     <>
       <div className='transaction-list-item__wrapper'>
@@ -116,22 +117,24 @@ export default function TransactionListItem({
           onClick={toggleShowDetails}
         >
           <TransactionIcon category={category} status={displayedStatusKey} />
-          <div className="transaction-info">
+          <div className='transaction-info'>
             <div className='left-info'>
               <div className={classnames('method-name', statusClassName)}>
                 {title}
               </div>
               {nonSignReqAndApproval ? (
-                <h2 className='primary-currency'>
-                  {primaryCurrency}
-                </h2>
-              ) : <span></span>}
+                <h2 className='primary-currency'>{primaryCurrency}</h2>
+              ) : (
+                <span></span>
+              )}
             </div>
             <div className='right-status'>
               <div className='status'>{statusText}</div>
               {nonSignReqAndApproval ? (
                 <h3 className='secondary-currency'>{secondaryCurrency}</h3>
-              ): <span></span>}
+              ) : (
+                <span></span>
+              )}
             </div>
           </div>
         </div>

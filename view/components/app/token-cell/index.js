@@ -36,8 +36,6 @@ export default function TokenCell({
           {formattedFiat && <div className='token-usd'>{formattedFiat}</div>}
           <div className='token-amount'>
             <LongLetter text={string || '0'} length={10} subfix={symbol} />
-            &nbsp;&nbsp;
-            {symbol}
           </div>
         </div>
       }

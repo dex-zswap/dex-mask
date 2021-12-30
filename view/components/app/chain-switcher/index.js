@@ -34,7 +34,6 @@ class ChainSwitcher extends Component {
   static contextTypes = {
     t: PropTypes.func,
   }
-
   defaultChains = DEFAULT_NETWORK_LIST.map(({ chainId, provider, label }) => {
     return {
       key: chainId,

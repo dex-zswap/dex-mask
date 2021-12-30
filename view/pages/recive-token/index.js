@@ -29,11 +29,11 @@ const ReciveToken = () => {
     )
     copyTimeout.current = setTimeout(
       () =>
-      setState((state) =>
-        Object.assign({}, state, {
-          copied: false,
-        }),
-      ),
+        setState((state) =>
+          Object.assign({}, state, {
+            copied: false,
+          }),
+        ),
       SECOND * 3,
     )
     copyToClipboard(address)
@@ -41,7 +41,7 @@ const ReciveToken = () => {
   useEffect(() => {
     return () => {
       copyTimeout.current && window.clearTimeout(copyTimeout.current)
-    };
+    }
   }, [])
   return (
     <div className='recive-token dex-page-container base-width'>

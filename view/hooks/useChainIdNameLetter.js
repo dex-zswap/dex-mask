@@ -1,9 +1,8 @@
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { CHAIN_ID_NAME_LETTER_MAP } from '@c/ui/cross-chain/constants'
+import { NETWORK_TYPE_TO_ID_MAP } from '@shared/constants/network'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import { getCurrentChainId } from '@view/selectors'
-const chainIdNameLetterMap = { ...CHAIN_ID_NAME_LETTER_MAP }
 export default function useChainIdNameLetter(chainId) {
   const currentChainId = useSelector(getCurrentChainId)
   const frequentRpcList = useSelector(
@@ -11,19 +10,22 @@ export default function useChainIdNameLetter(chainId) {
   )
   useEffect(() => {
     frequentRpcList.map(({ chainId, nickname }) => {
-      chainIdNameLetterMap[chainId] = nickname.substring(0, 1).toUpperCase()
+      NETWORK_TYPE_TO_ID_MAP[chainId] = nickname.substring(0, 1).toUpperCase()
     })
   }, [frequentRpcList])
-  const chainIdKeys = useMemo(() => Object.keys(chainIdNameLetterMap), [
-    chainIdNameLetterMap,
+  const chainIdKeys = useMemo(() => Object.keys(NETWORK_TYPE_TO_ID_MAP), [
+    NETWORK_TYPE_TO_ID_MAP,
   ])
+
   return useMemo(() => {
     const id = chainId || currentChainId
 
     for (let i = 0, { length } = chainIdKeys; i < length; i++) {
-      if (toBnString(chainIdKeys[i]) === toBnString(id)) {
-        return chainIdNameLetterMap[chainIdKeys[i]]
+      if (NETWORK_TYPE_TO_ID_MAP[chainIdKeys[i]].networkId === toBnString(id)) {
+        return NETWORK_TYPE_TO_ID_MAP[chainIdKeys[i]].symbol.substring(0, 1)
       }
     }
-  }, [chainId, currentChainId, chainIdNameLetterMap])
+
+    return 'U';
+  }, [chainId, currentChainId, NETWORK_TYPE_TO_ID_MAP])
 }
