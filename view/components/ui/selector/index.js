@@ -9,7 +9,7 @@ export default function Selector({
   className,
   footer,
   small,
-  toTop
+  toTop,
 }) {
   const [show, setShow] = useState(false)
   const toggleShow = useCallback(() => setShow((show) => !show), [])
@@ -28,14 +28,14 @@ export default function Selector({
     () => options.find(({ value }) => value === selectedValue)?.label || '',
     [options, selectedValue],
   )
-
   useEffect(() => {
     if (toTop) {
-      const body = document.querySelector('body');
+      const body = document.querySelector('body')
+
       if (show) {
         body.scrollTo({
           top: 0,
-          behavior: 'smooth'
+          behavior: 'smooth',
         })
         body.classList.toggle('overflow-hidden')
       } else {
@@ -45,7 +45,6 @@ export default function Selector({
       }
     }
   }, [toTop, show])
-
   return (
     <div
       className={classnames([

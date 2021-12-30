@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import classnames from 'classnames'
 import { ethers } from 'ethers'
 import { getDexMaskState } from '@reducer/dexmask/dexmask'
 import { getCrossChainState } from '@view/selectors'
 import { updateCrossChainState } from '@view/store/actions'
+import useDeepEffect from '@view/hooks/useDeepEffect'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import { setProviderType, setRpcTarget } from '@view/store/actions'
 import { checkTokenBridge } from '@view/helpers/cross-chain-api'
@@ -58,7 +59,7 @@ const CrossDestChainSwitcher = () => {
       setShowChainSwitcher((showChainSwitcher) => !showChainSwitcher),
     [chains],
   )
-  useEffect(() => {
+  useDeepEffect(() => {
     checkTokenBridge({
       meta_chain_id: toBnString(crossChainState.fromChain),
       token_address: crossChainState.coinAddress,

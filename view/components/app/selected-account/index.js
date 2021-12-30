@@ -119,7 +119,7 @@ export default function SelectedAccount() {
       <div className='selected-account base-width'>
         <div className='account-address flex space-between items-center'>
           <div className='account flex items-center'>
-            <LongLetter text={selectedIdentity.name} length={10} />
+            <LongLetter text={selectedIdentity.name} length={9} />
             <div
               className='drop-trigger'
               onClick={toggleAccountDrop}
@@ -140,10 +140,18 @@ export default function SelectedAccount() {
         <div className='native-currency flex space-between items-center'>
           <div className='native-currency-balance'>
             <div className='token-balance'>
-              <LongLetter text={primaryCurrencyProperties.value} subfix={` ${primaryCurrencyProperties.suffix}`} length={7} />
+              <LongLetter
+                text={primaryCurrencyProperties.value}
+                subfix={` ${primaryCurrencyProperties.suffix}`}
+                length={7}
+              />
             </div>
             <div className='token-usd'>
-              <LongLetter text={secondaryCurrencyProperties.value} subfix={` ${secondaryCurrencyProperties.suffix}`} length={10} />
+              <LongLetter
+                text={secondaryCurrencyProperties.value}
+                subfix={` ${secondaryCurrencyProperties.suffix}`}
+                length={10}
+              />
             </div>
           </div>
           <TokenImage

@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import contractMap from '@metamask/contract-metadata'
-
 /**
  * @typedef {import('@reduxjs/toolkit').PayloadAction} PayloadAction
  */
+
 import BigNumber from 'bignumber.js'
 import { addHexPrefix, toChecksumAddress } from 'ethereumjs-util'
 import abi from 'human-standard-token-abi'

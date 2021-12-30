@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import classnames from 'classnames'
 import { ethers } from 'ethers'
 import { getDexMaskState } from '@reducer/dexmask/dexmask'
 import { getCrossChainState } from '@view/selectors'
 import { updateCrossChainState } from '@view/store/actions'
+import useDeepEffect from '@view/hooks/useDeepEffect'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import { setProviderType, setRpcTarget } from '@view/store/actions'
 import {
@@ -96,7 +97,7 @@ const CrossFromChainSwitcher = () => {
     },
     [fromChainInfo],
   )
-  useEffect(() => {
+  useDeepEffect(() => {
     getAllSupportBridge({
       offset: 0,
       limit: 1000000,

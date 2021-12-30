@@ -100,10 +100,18 @@ export default function SelectedNativeToken() {
         <div className='native-currency flex space-between items-center'>
           <div className='native-currency-balance'>
             <div className='token-balance'>
-              <LongLetter text={primaryCurrencyProperties.value} subfix={` ${primaryCurrencyProperties.suffix}`} length={7} />
+              <LongLetter
+                text={primaryCurrencyProperties.value}
+                subfix={` ${primaryCurrencyProperties.suffix}`}
+                length={6}
+              />
             </div>
             <div className='token-usd'>
-              <LongLetter text={secondaryCurrencyProperties.value} subfix={` ${secondaryCurrencyProperties.suffix}`} length={10} />
+              <LongLetter
+                text={secondaryCurrencyProperties.value}
+                subfix={` ${secondaryCurrencyProperties.suffix}`}
+                length={10}
+              />
             </div>
           </div>
           <TokenImage

@@ -393,6 +393,9 @@
   "create": {
     "message": "創建"
   },
+  "createAPassword": {
+    "message": "創建密碼"
+  },
   "createAWallet": {
     "message": "I’m New !"
   },
@@ -400,9 +403,6 @@
     "message": "創建賬戶"
   },
   "createPassword": {
-    "message": "創建密碼"
-  },
-  "createAPassword": {
     "message": "創建密碼"
   },
   "createWallet": {
@@ -613,6 +613,9 @@
   "enterPasswordContinue": {
     "message": "輸入密碼以繼續"
   },
+  "enterPrivateKeyString": {
+    "message": "輸入您的私鑰"
+  },
   "errorCode": {
     "message": "代碼：$1",
     "description": "Displayed error code for debugging purposes. $1 is the error code"
@@ -808,9 +811,6 @@
   "importAccount": {
     "message": "導入賬戶"
   },
-  "importAccountTitle": {
-    "message": "導入賬戶"
-  },
   "importAccountLinkText": {
     "message": "import using Secret Recovery Phrase"
   },
@@ -823,6 +823,9 @@
   "importAccountText": {
     "message": "or $1",
     "description": "$1 represents the text from `importAccountLinkText` as a link"
+  },
+  "importAccountTitle": {
+    "message": "導入賬戶"
   },
   "importWallet": {
     "message": "導入錢包"
@@ -2077,8 +2080,5 @@
   },
   "zswap": {
     "message": "ZSWAP"
-  },
-  "enterPrivateKeyString": {
-    "message": "輸入您的私鑰"
   }
 }

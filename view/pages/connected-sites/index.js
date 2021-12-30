@@ -1,6 +1,6 @@
 import { withRouter } from 'react-router-dom'
-import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 import { getMostRecentOverviewPage } from '@reducer/history/history'
 import { CONNECT_ROUTE } from '@view/helpers/constants/routes'
 import {
@@ -111,8 +111,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   }
 }
 
-export default compose(withRouter, connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps,
-))(ConnectedSites)
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps, mergeProps),
+)(ConnectedSites)

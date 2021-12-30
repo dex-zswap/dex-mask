@@ -54,7 +54,7 @@ export default function AccountSwitcher() {
                       selectedAddress === account.address && 'active',
                     )}
                   >
-                    <LongLetter text={account.name} length={10} />
+                    <LongLetter text={account.name} length={9} />
                   </p>
                 </div>
                 <p

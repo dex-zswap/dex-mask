@@ -492,6 +492,9 @@
   "create": {
     "message": "Create"
   },
+  "createAPassword": {
+    "message": "Create a Password"
+  },
   "createAWallet": {
     "message": "Create a Wallet"
   },
@@ -503,9 +506,6 @@
   },
   "createPassword": {
     "message": "Create a Password to access your wallet."
-  },
-  "createAPassword": {
-    "message": "Create a Password"
   },
   "createWallet": {
     "message": "Create Wallet"
@@ -841,6 +841,9 @@
   "enterPasswordContinue": {
     "message": "Enter password to continue"
   },
+  "enterPrivateKeyString": {
+    "message": "Enter private key string"
+  },
   "errorCode": {
     "message": "Code: $1",
     "description": "Displayed error code for debugging purposes. $1 is the error code"
@@ -1096,9 +1099,6 @@
   "importAccount": {
     "message": "Import account"
   },
-  "importAccountTitle": {
-    "message": "Import Account"
-  },
   "importAccountLinkText": {
     "message": "import using Secret Recovery Phrase"
   },
@@ -1111,6 +1111,9 @@
   "importAccountText": {
     "message": "or $1",
     "description": "$1 represents the text from `importAccountLinkText` as a link"
+  },
+  "importAccountTitle": {
+    "message": "Import Account"
   },
   "importTokenQuestion": {
     "message": "Import token?"
@@ -2865,8 +2868,5 @@
   },
   "zswap": {
     "message": "ZSWAP"
-  },
-  "enterPrivateKeyString": {
-    "message": "Enter private key string"
   }
 }

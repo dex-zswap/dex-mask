@@ -37,10 +37,7 @@ function Tooltip(props) {
     theme,
     tabIndex,
     tag,
-  } = {
-    ...defaultProps,
-    ...props
-  }
+  } = { ...defaultProps, ...props }
 
   if (!title && !html) {
     return <div className={wrapperClassName}>{children}</div>

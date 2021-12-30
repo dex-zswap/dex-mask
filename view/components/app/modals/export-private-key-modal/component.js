@@ -20,9 +20,7 @@ export default class ExportPrivateKeyModal extends Component {
     showWarning: true,
     copied: false,
   }
-
   copyTimeOut = null
-
   copyAddress = () => {
     const {
       props: {
@@ -45,12 +43,9 @@ export default class ExportPrivateKeyModal extends Component {
       },
     )
   }
-
   copyPrivateKey = () => {
     const {
-      state: {
-        privateKey
-      },
+      state: { privateKey },
     } = this
     window.clearTimeout(this.copyTimeOut)
     copyToClipboard(privateKey)
@@ -114,7 +109,9 @@ export default class ExportPrivateKeyModal extends Component {
           <ToolTip
             position='top'
             title={
-              this.state.copied ? this.context.t('copiedExclamation') : this.context.t('copyToClipboard')
+              this.state.copied
+                ? this.context.t('copiedExclamation')
+                : this.context.t('copyToClipboard')
             }
           >
             <i className='copy-icon' onClick={this.copyPrivateKey}></i>

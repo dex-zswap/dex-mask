@@ -83,7 +83,11 @@ export default class ChooseAccount extends Component {
                 />
                 <div className='permissions-connect-choose-account__account__info'>
                   <div className='permissions-connect-choose-account__account__label'>
-                    <LongLetter text={label} length={10} subfix={addressSliced} />
+                    <LongLetter
+                      text={label}
+                      length={10}
+                      subfix={addressSliced}
+                    />
                   </div>
                   <UserPreferencedCurrencyDisplay
                     className='permissions-connect-choose-account__account__balance'
