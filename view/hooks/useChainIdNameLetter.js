@@ -16,7 +16,6 @@ export default function useChainIdNameLetter(chainId) {
   const chainIdKeys = useMemo(() => Object.keys(NETWORK_TYPE_TO_ID_MAP), [
     NETWORK_TYPE_TO_ID_MAP,
   ])
-
   return useMemo(() => {
     const id = chainId || currentChainId
 
@@ -26,6 +25,6 @@ export default function useChainIdNameLetter(chainId) {
       }
     }
 
-    return 'U';
+    return 'U'
   }, [chainId, currentChainId, NETWORK_TYPE_TO_ID_MAP])
 }

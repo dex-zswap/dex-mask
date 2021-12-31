@@ -4,6 +4,7 @@ import Fuse from 'fuse.js'
 import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
+import LongLetter from '@c/ui/long-letter'
 import SearchIcon from '@c/ui/search-icon'
 import TextField from '@c/ui/text-field'
 import Identicon from '@c/ui/identicon'
@@ -123,7 +124,9 @@ export default class AccountMenu extends Component {
             <Identicon address={identity.address} diameter={28} />
           </div>
           <div className='account-menu__account-info'>
-            <div className='account-menu__name'>{identity.name || ''}</div>
+            <div className='account-menu__name'>
+              <LongLetter text={identity.name || ''} length={14} />
+            </div>
             <UserPreferencedCurrencyDisplay
               className='account-menu__balance'
               value={identity.balance}
