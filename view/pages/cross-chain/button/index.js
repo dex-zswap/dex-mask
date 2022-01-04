@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useCallback } from 'react'
+import React, { useMemo, useRef, useCallback, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { ethers } from 'ethers'
@@ -12,7 +12,6 @@ import {
 } from '@view/helpers/constants/routes'
 import { expandDecimals } from '@view/helpers/utils/conversions.util'
 import { useI18nContext } from '@view/hooks/useI18nContext'
-import useDeepEffect from '@view/hooks/useDeepEffect'
 import useInterval from '@view/hooks/useInterval'
 import { getCrossChainState } from '@view/selectors'
 import { showConfTxPage, updateConfirmAction } from '@view/store/actions'
@@ -28,7 +27,7 @@ export default function CrossChainButton() {
     [crossChainState.coinAddress],
   )
   const mounted = useRef(false || isNativeAsset)
-  const [allowed, setAllowed] = useState(false || isNativeAsset)
+  const allowed = useRef(false || isNativeAsset)
   const decimals = useMemo(() => {
     if (isNativeAsset) {
       return 18
@@ -40,7 +39,7 @@ export default function CrossChainButton() {
     crossChainState.userInputValue,
   ])
   const disableButton = useMemo(() => {
-    if (!allowed) {
+    if (!allowed.current) {
       return false
     }
 
@@ -49,7 +48,7 @@ export default function CrossChainButton() {
       expandDecimals(crossChainState.userInputValue).isZero() ||
       !Boolean(crossChainState.dest)
     )
-  }, [crossChainState, allowed])
+  }, [crossChainState, allowed.current])
   const crossChain = useCallback(() => {
     const sendData = [
       '0x',
@@ -91,17 +90,16 @@ export default function CrossChainButton() {
       {
         from: crossChainState.from,
         to: crossChainState.target.bridge,
-        gasPrice: crossChainState.gas.gasPrice,
-        gasLimit: crossChainState.gas.gasLimit,
         value,
         data,
       },
-      (e) => {},
+      (e) => {}
     )
+
     dispatch(showConfTxPage())
     dispatch(updateConfirmAction(null))
     history.push(CONFIRM_TRANSACTION_ROUTE)
-  }, [decimals, isNativeAsset, crossChainState, history])
+  }, [decimals, isNativeAsset, crossChainState])
   const approve = useCallback(() => {
     const data = mintAbiInterface.encodeFunctionData('approve', [
       crossChainState.target.handler,
@@ -118,22 +116,15 @@ export default function CrossChainButton() {
     dispatch(showConfTxPage())
     dispatch(updateConfirmAction(CROSSCHAIN_ROUTE))
     history.push(CONFIRM_TRANSACTION_ROUTE)
-  }, [crossChainState, history])
-  const doCrossOrApprove = useCallback(() => {
-    if (allowed) {
-      return crossChain()
+  }, [crossChainState])
+  useEffect(() => {
+    if (!isNativeAsset) {
+      allowed.current = false
     }
-
-    return approve()
-  }, [allowed, crossChainState, history, decimals, isNativeAsset])
-  useDeepEffect(() => {
-    if (allowed && !isNativeAsset) {
-      setAllowed(false)
-    }
-  }, [allowed, isNativeAsset, crossChainState])
+  }, [isNativeAsset, crossChainState.coinAddress, crossChainState.target])
 
   useInterval(() => {
-    if (isNativeAsset || (mounted.current && allowed)) {
+    if (isNativeAsset || (mounted.current && allowed.current)) {
       return
     }
 
@@ -143,26 +134,49 @@ export default function CrossChainButton() {
     mintContract
       .allowance(crossChainState.from, crossChainState.target?.handler)
       .then((res) => {
-        setAllowed(!res[0].isZero())
+        allowed.current = !res[0].isZero()
       })
 
     if (!mounted.current) {
       mounted.current = true
     }
   }, 2000)
+
   return (
     <div className='cross-chain-buttons flex space-between'>
       <Button className='half-button' onClick={() => history.goBack()}>
         {t('back')}
       </Button>
-      <Button
-        type='primary'
-        className='half-button'
-        disabled={disableButton}
-        onClick={doCrossOrApprove}
-      >
-        {t(allowed ? 'next' : 'approveButtonText')}
-      </Button>
+      {
+        mounted.current ?
+        (
+          <>
+            {
+              allowed.current ? 
+              (
+                <Button
+                  type='primary'
+                  className='half-button'
+                  disabled={disableButton}
+                  onClick={crossChain}
+                >
+                  {t('next')}
+                </Button>
+              )
+              :
+              (
+                <Button
+                  type='primary'
+                  className='half-button'
+                  onClick={approve}
+                >
+                  {t('approveButtonText')}
+                </Button>
+              )
+            }
+          </>
+        ) : <span></span>
+      }
     </div>
   )
 }
