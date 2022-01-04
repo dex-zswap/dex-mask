@@ -274,6 +274,9 @@
   "confirmSecretBackupPhrase": {
     "message": "请确认您的账户助记词"
   },
+  "confirmSend": {
+    "message": "确认付款"
+  },
   "confirmed": {
     "message": "确认"
   },
@@ -1437,6 +1440,9 @@
   },
   "sendTokens": {
     "message": "发送代币"
+  },
+  "sending": {
+    "message": "付款"
   },
   "sentEther": {
     "message": "发送 Ether"

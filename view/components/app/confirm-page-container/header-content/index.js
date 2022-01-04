@@ -1,10 +1,3 @@
-import React, { useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
-import BigNumber from 'bignumber.js'
-import classnames from 'classnames'
-import copyToClipboard from 'copy-to-clipboard'
-import { zeroAddress } from 'ethereumjs-util'
-import PropTypes from 'prop-types'
 import AccountMismatchWarning from '@c/ui/account-mismatch-warning'
 import Identicon from '@c/ui/identicon'
 import {
@@ -12,18 +5,23 @@ import {
   DEFAULT_VARIANT,
   FLAT_VARIANT,
 } from '@c/ui/sender-to-recipient/constants'
-import TokenImage from '@c/ui/token-image'
 import Tooltip from '@c/ui/tooltip'
 import { getNativeCurrency } from '@reducer/dexmask/dexmask'
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
 import { SECONDARY } from '@view/helpers/constants/common'
-import { getPrice } from '@view/helpers/cross-chain-api'
 import { shortenAddress } from '@view/helpers/utils'
 import { useCurrencyDisplay } from '@view/hooks/useCurrencyDisplay'
-import { useFetch } from '@view/hooks/useFetch'
 import { useI18nContext } from '@view/hooks/useI18nContext'
 import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount'
 import { useUserPreferencedCurrency } from '@view/hooks/useUserPreferencedCurrency'
+import { getDexMaskAccountsOrdered } from '@view/selectors'
+import classnames from 'classnames'
+import copyToClipboard from 'copy-to-clipboard'
+import { zeroAddress } from 'ethereumjs-util'
+import PropTypes from 'prop-types'
+import React, { useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
+
 const variantHash = {
   [DEFAULT_VARIANT]: 'sender-to-recipient--default',
   [CARDS_VARIANT]: 'sender-to-recipient--cards',
@@ -223,10 +221,29 @@ export default function ConfirmPageContainerHeaderContent({
   variant,
   warnUserOnAccountMismatch,
 }) {
-  const nativeCurrency = useSelector(getNativeCurrency)
   const t = useI18nContext()
+  const nativeCurrency = useSelector(getNativeCurrency)
+  const accounts = useSelector(getDexMaskAccountsOrdered)
   const checksummedSenderAddress = toChecksumHexAddress(senderAddress)
   const checksummedRecipientAddress = toChecksumHexAddress(recipientAddress)
+
+  const senderAccountName = useMemo(
+    () =>
+      accounts?.find(
+        ({ address }) =>
+          address.toLowerCase() === checksummedSenderAddress.toLowerCase(),
+      )?.name,
+    [accounts, checksummedSenderAddress],
+  )
+  const recipientAccountName = useMemo(
+    () =>
+      accounts?.find(
+        ({ address }) =>
+          address.toLowerCase() === checksummedRecipientAddress.toLowerCase(),
+      )?.name,
+    [accounts, checksummedRecipientAddress],
+  )
+
   const address = useMemo(() => tokenData?.address || zeroAddress(), [
     tokenData?.address,
   ])
@@ -255,70 +272,90 @@ export default function ConfirmPageContainerHeaderContent({
   const tokenUsdValue = useTokenFiatAmount(address, amount, symbol, {
     showFiat: true,
   })
-  const { res, error, loading } = useFetch(
-    () =>
-      getPrice({
-        token_address: address,
-        symbol,
-      }),
-    [address, symbol],
-  )
-  const usdPrice = useMemo(() => {
-    if (error || loading) {
-      return 0
-    }
-
-    return new BigNumber(
-      new BigNumber(res?.d?.price || 0).times(new BigNumber(amount)).toFixed(3),
-    ).toFixed()
-  }, [res, error, loading, amount])
   return (
-    <div className='confirm-page-container-header-content-wrap'>
-      <div>
-        <div className='confirm-page-container-header-content-wrap_sender'>
-          <TokenImage address={address} symbol={symbol} size={40} showLetter />
-          {/* <img
+    <div className='base-width'>
+      <div className='confirm-send-header-wrap'>
+        <div>
+          <div className='arrow-wrap'>
+            <img width={8} src='images/icons/arrow-down.png' />
+          </div>
+          <Identicon address={checksummedSenderAddress} diameter={28} />
+          <div>
+            {senderAccountName || shortenAddress(checksummedSenderAddress)}
+          </div>
+        </div>
+        <div>
+          <Identicon address={checksummedRecipientAddress} diameter={28} />
+          <div>
+            {recipientAccountName ||
+              shortenAddress(checksummedRecipientAddress)}
+          </div>
+        </div>
+      </div>
+      <div className='confirm-send-price-wrap'>
+        <div>{t('sending')}</div>
+        <div className='price-wrap'>
+          <div>
+            {titleComponent || title.split(' ')[0]}{' '}
+            {titleComponent ? nativeCurrency : title.split(' ')[1]}
+          </div>
+          <div>
+            ≈ {isNativeCurrency ? secondaryCurrencyDisplay : tokenUsdValue}
+          </div>
+        </div>
+      </div>
+      {/* <div className='confirm-page-container-header-content-wrap'>
+        <div>
+          <div className='confirm-page-container-header-content-wrap_sender'>
+            <TokenImage
+              address={address}
+              symbol={symbol}
+              size={40}
+              showLetter
+            />
+            <img
           style={{ borderRadius: '50%' }}
           width="40px"
           height="40px"
           src={assetImage || nativeCurrencyImage}
-          /> */}
-          <div
-            className='confirm-page-container-header-content-wrap_sender_title-wrap'
-            style={{
-              marginLeft: '6px',
-            }}
-          >
+          />
             <div
-              className='confirm-page-container-header-content-wrap_sender_title'
-              title={title ? title.split(' ')[1] : nativeCurrency}
+              className='confirm-page-container-header-content-wrap_sender_title-wrap'
+              style={{
+                marginLeft: '6px',
+              }}
             >
-              {title ? title.split(' ')[1] : nativeCurrency}
+              <div
+                className='confirm-page-container-header-content-wrap_sender_title'
+                title={title ? title.split(' ')[1] : nativeCurrency}
+              >
+                {title ? title.split(' ')[1] : nativeCurrency}
+              </div>
+              <div title={senderName}>{senderName}</div>
             </div>
-            <div title={senderName}>{senderName}</div>
           </div>
-        </div>
-        <div className='confirm-page-container-header-content-wrap_arrow'>
-          <img src='images/dex/arrow_right.png' />
-        </div>
-        <div
-          title={checksummedRecipientAddress}
-          className='confirm-page-container-header-content-wrap_recipient'
-        >
-          {shortenAddress(checksummedRecipientAddress, 4, -3)}
-        </div>
-      </div>
-      <div>
-        <div className='confirm-header-value-wrap'>
-          <div className='confirm-header-value'>
-            {titleComponent || title.split(' ')[0]}
+          <div className='confirm-page-container-header-content-wrap_arrow'>
+            <img src='images/dex/arrow_right.png' />
           </div>
-          <span>{titleComponent ? nativeCurrency : title.split(' ')[1]}</span>
+          <div
+            title={checksummedRecipientAddress}
+            className='confirm-page-container-header-content-wrap_recipient'
+          >
+            {shortenAddress(checksummedRecipientAddress, 4, -3)}
+          </div>
         </div>
         <div>
-          ≈ {isNativeCurrency ? secondaryCurrencyDisplay : tokenUsdValue}
+          <div className='confirm-header-value-wrap'>
+            <div className='confirm-header-value'>
+              {titleComponent || title.split(' ')[0]}
+            </div>
+            <span>{titleComponent ? nativeCurrency : title.split(' ')[1]}</span>
+          </div>
+          <div>
+            ≈ {isNativeCurrency ? secondaryCurrencyDisplay : tokenUsdValue}
+          </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
   return (

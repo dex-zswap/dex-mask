@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import ErrorMessage from '@c/ui/error-message'
 import { PageContainerFooter } from '@c/ui/page-container'
 import { Tab, Tabs } from '@c/ui/tabs'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { ConfirmPageContainerWarning } from '.'
 export default class ConfirmPageContainerContent extends Component {
   static contextTypes = {
@@ -110,7 +110,7 @@ export default class ConfirmPageContainerContent extends Component {
         assetImage={assetImage}
         origin={origin}
         /> */}
-        {this.renderContent()}
+        {/* {this.renderContent()} */}
         {(errorKey || errorMessage) && (
           <div className='confirm-page-container-content__error-container'>
             <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />

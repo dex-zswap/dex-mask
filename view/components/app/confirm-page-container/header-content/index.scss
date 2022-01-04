@@ -89,3 +89,56 @@
     padding: 8px 10px;
   }
 }
+
+.confirm-send-header-wrap {
+  margin-bottom: 28px;
+  > div {
+    @include flex(flex-start);
+    position: relative;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1px solid $primary-border;
+    background: $primary-background;
+    .arrow-wrap {
+      @include w-h(18px, 18px);
+      @include flex;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -9px;
+      margin: auto;
+      background: $primary-gradient;
+      border-radius: 50%;
+    }
+    > div:last-child {
+      @include text-ellipsis;
+      flex: 1;
+      font-size: 14px;
+      color: #fff;
+      margin-left: 8px;
+    }
+  }
+}
+
+.confirm-send-price-wrap {
+  @include flex(space-between, flex-start);
+  color: $gray;
+  font-size: 12px;
+  .price-wrap {
+    flex: 1;
+    margin-left: 10px;
+    overflow: hidden;
+    > div {
+      @include text-ellipsis;
+      width: 100%;
+      text-align: right;
+      &:first-child {
+        @include flex(flex-end, flex-start);
+        font-size: 28px;
+        line-height: 26px;
+        color: #fff;
+        margin-bottom: 6px;
+      }
+    }
+  }
+}

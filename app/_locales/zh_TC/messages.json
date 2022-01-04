@@ -274,6 +274,9 @@
   "confirmSecretBackupPhrase": {
     "message": "請確認您的賬戶助記詞"
   },
+  "confirmSend": {
+    "message": "確認付款"
+  },
   "confirmed": {
     "message": "確認"
   },
@@ -1434,6 +1437,9 @@
   },
   "sendTokens": {
     "message": "發送代幣"
+  },
+  "sending": {
+    "message": "付款"
   },
   "sentEther": {
     "message": "發送 Ether"

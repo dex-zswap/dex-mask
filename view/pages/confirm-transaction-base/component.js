@@ -1,5 +1,3 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { getEnvironmentType } from '@app/scripts/lib/util'
 import ConfirmPageContainer from '@c/app/confirm-page-container'
 import GasTiming from '@c/app/gas-timing'
@@ -38,6 +36,8 @@ import {
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
 } from '@view/store/actions'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 
 const renderHeartBeatIfNotInTest = () =>
   process.env.IN_TEST === 'true' ? null : <LoadingHeartBeat />
@@ -503,6 +503,7 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   renderData(functionType) {
+    console.log('functionType', functionType)
     const { t } = this.context
     const {
       txData: { txParams: { data } = {} } = {},

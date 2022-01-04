@@ -349,6 +349,9 @@
   "confirmSeedPhrase": {
     "message": "Confirm Seed Phrase"
   },
+  "confirmSend": {
+    "message": "Confirm Send"
+  },
   "confirmed": {
     "message": "Confirmed"
   },
@@ -1993,6 +1996,9 @@
   },
   "sendTokens": {
     "message": "Send Tokens"
+  },
+  "sending": {
+    "message": "Sending"
   },
   "sentEther": {
     "message": "sent ether"
