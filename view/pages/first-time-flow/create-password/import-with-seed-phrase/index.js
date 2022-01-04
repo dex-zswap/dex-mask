@@ -177,7 +177,7 @@ export default function ImportWithSeedPhrase({ onSubmit }) {
         </div>
         <TextField
           id='password'
-          label={t('newPassword')}
+          label={t('password')}
           type='password'
           className='first-time-flow__input'
           value={state.password}

@@ -9,6 +9,7 @@ import React, {
 import { useSelector } from 'react-redux'
 import copyToClipboard from 'copy-to-clipboard'
 import { I18nContext } from '@view/contexts/i18n'
+import LongLetter from '@c/ui/long-letter'
 import TokenImage from '@c/ui/token-image'
 import Tooltip from '@c/ui/tooltip'
 import { SECOND } from '@shared/constants/time'
@@ -50,10 +51,10 @@ export default function SelectedToken({ token }) {
   )
   const tokenBalance = useMemo(() => {
     if (tokensWithBalancesLoading) {
-      return `0.00 ${token.symbol}`
+      return `0.00`
     }
 
-    return [targetToken?.string ?? '0.00', token.symbol].join(' ')
+    return targetToken?.string ?? '0.00'
   }, [targetToken])
   const formattedFiat = useTokenFiatAmount(
     token?.address,
@@ -103,7 +104,13 @@ export default function SelectedToken({ token }) {
         </div>
         <div className='native-currency flex space-between items-center'>
           <div className='native-currency-balance'>
-            <div className='token-balance'>{tokenBalance}</div>
+            <div className='token-balance'>
+              <LongLetter
+                text={tokenBalance}
+                subfix={token.symbol}
+                length={7}
+              />
+            </div>
             <div className='token-usd'>{formattedFiat}</div>
           </div>
           <TokenImage symbol={token.symbol} address={token.address} size={48} />

@@ -396,6 +396,9 @@
   "create": {
     "message": "创建"
   },
+  "createAPassword": {
+    "message": "创建密码"
+  },
   "createAWallet": {
     "message": "I’m New !"
   },
@@ -613,6 +616,9 @@
   "enterPasswordContinue": {
     "message": "输入密码以继续"
   },
+  "enterPrivateKeyString": {
+    "message": "输入您的私钥"
+  },
   "errorCode": {
     "message": "代码：$1",
     "description": "Displayed error code for debugging purposes. $1 is the error code"
@@ -823,6 +829,9 @@
   "importAccountText": {
     "message": "or $1",
     "description": "$1 represents the text from `importAccountLinkText` as a link"
+  },
+  "importAccountTitle": {
+    "message": "导入账户"
   },
   "importWallet": {
     "message": "导入钱包"

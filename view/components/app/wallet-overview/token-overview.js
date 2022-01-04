@@ -52,6 +52,9 @@ const TokenOverview = ({ className, token }) => {
 
     return res?.d?.length
   }, [loading, error, res])
+  const supportChains = useMemo(() => {
+    return supportCrossChain ? res.d : [];
+  },[supportCrossChain, res]);
   const defaultTargetChain = useMemo(
     () => (supportCrossChain ? res.d[0] : null),
     [supportCrossChain, res],
@@ -97,13 +100,11 @@ const TokenOverview = ({ className, token }) => {
               coinAddress: token.address,
               targetCoinAddress: defaultTargetChain.target_token_address,
               coinSymbol: token.symbol,
-              targetCoinSymbol: defaultTargetChain.target_token,
               from: selectedAccount.address,
               fromChain: chainId,
               target: defaultTargetChain,
               destChain: defaultTargetChain.target_meta_chain_id,
-              supportChains: [],
-              chainTokens: [],
+              supportChains
             }),
           )
           history.push(CROSSCHAIN_ROUTE)

@@ -1,17 +1,20 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import classnames from 'classnames'
 import { ethers } from 'ethers'
 import { getDexMaskState } from '@reducer/dexmask/dexmask'
 import { getCrossChainState } from '@view/selectors'
 import { updateCrossChainState } from '@view/store/actions'
+import useDeepEffect from '@view/hooks/useDeepEffect'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import { setProviderType, setRpcTarget } from '@view/store/actions'
 import { checkTokenBridge } from '@view/helpers/cross-chain-api'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 
 const CrossDestChainSwitcher = () => {
   const dispatch = useDispatch()
+  const t = useI18nContext()
   const crossChainState = useSelector(getCrossChainState)
   const { frequentRpcListDetail } = useSelector(getDexMaskState)
   const [chains, setChains] = useState([])
@@ -22,8 +25,8 @@ const CrossDestChainSwitcher = () => {
         return {
           chainId,
           isBulitIn,
-          label,
           provider,
+          label: t(provider),
           networkId: toBnString(chainId),
         }
       },
@@ -38,7 +41,7 @@ const CrossDestChainSwitcher = () => {
         }
       }),
     )
-  }, [frequentRpcListDetail])
+  }, [frequentRpcListDetail, t])
   const isNative = useMemo(
     () => ethers.constants.AddressZero === crossChainState.coinAddress,
     [crossChainState.coinAddress],
@@ -58,7 +61,7 @@ const CrossDestChainSwitcher = () => {
       setShowChainSwitcher((showChainSwitcher) => !showChainSwitcher),
     [chains],
   )
-  useEffect(() => {
+  useDeepEffect(() => {
     checkTokenBridge({
       meta_chain_id: toBnString(crossChainState.fromChain),
       token_address: crossChainState.coinAddress,
@@ -125,12 +128,18 @@ const CrossDestChainSwitcher = () => {
                     )}
                     onClick={(e) => {
                       e.stopPropagation()
+                      toggleChainSwitcher()
+                      if (chain.networkId === crossChainState.target.target_meta_chain_id) {
+                        return;
+                      }
+                      const target = crossChainState.supportChains.find(({ target_meta_chain_id }) => target_meta_chain_id === chain.networkId);
                       dispatch(
                         updateCrossChainState({
                           destChain: chain.chainId,
+                          targetCoinAddress: target.target_token_address,
+                          target
                         }),
                       )
-                      toggleChainSwitcher()
                     }}
                   >
                     <i

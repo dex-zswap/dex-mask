@@ -272,7 +272,7 @@
     "message": "Your Browser is not supported..."
   },
   "bscMainnet": {
-    "message": "BSC"
+    "message": "Binance Smart Chain Mainnet"
   },
   "buildContactList": {
     "message": "Build your contact list"
@@ -495,6 +495,9 @@
   "create": {
     "message": "Create"
   },
+  "createAPassword": {
+    "message": "Create a Password"
+  },
   "createAWallet": {
     "message": "Create a Wallet"
   },
@@ -606,7 +609,7 @@
     "message": "DEX Bridge"
   },
   "dexMainnet": {
-    "message": "DEX"
+    "message": "DEX Smart Chain Mainnet"
   },
   "dex_trans": {
     "message": "In-wallet transfer"
@@ -841,6 +844,9 @@
   "enterPasswordContinue": {
     "message": "Enter password to continue"
   },
+  "enterPrivateKeyString": {
+    "message": "Enter private key string"
+  },
   "errorCode": {
     "message": "Code: $1",
     "description": "Displayed error code for debugging purposes. $1 is the error code"
@@ -1042,7 +1048,7 @@
     "message": "Go"
   },
   "goerli": {
-    "message": "Goerli Test Network"
+    "message": "Goerli Smart Chain Testnet"
   },
   "happyToSeeYou": {
     "message": "We are happy to see you !"
@@ -1108,6 +1114,9 @@
   "importAccountText": {
     "message": "or $1",
     "description": "$1 represents the text from `importAccountLinkText` as a link"
+  },
+  "importAccountTitle": {
+    "message": "Import Account"
   },
   "importTokenQuestion": {
     "message": "Import token?"
@@ -1271,7 +1280,7 @@
     "message": "Lock time is too great"
   },
   "mainnet": {
-    "message": "ETH"
+    "message": "Ethereum Mainnet"
   },
   "makeAnotherSwap": {
     "message": "Create a new swap"
@@ -1632,7 +1641,7 @@
     "message": "Passwords Don't Match"
   },
   "pastePrivateKey": {
-    "message": "Paste your private key string here:",
+    "message": "Paste your Private Key String here:",
     "description": "For importing an account from a private key"
   },
   "pay": {
@@ -1713,7 +1722,7 @@
     "message": "Search, public address (0x) or DNS"
   },
   "reciveToken": {
-    "message": "Recive Token"
+    "message": "Receive Token"
   },
   "recommendedGasLabel": {
     "message": "Recommended"
@@ -1794,7 +1803,7 @@
     "message": "Restore"
   },
   "restoreAccountWithSeed": {
-    "message": "Restore your Account with Secret Recovery Phrase"
+    "message": "Restore your Account with Secret Recovery Phrase."
   },
   "restoreWalletPreferences": {
     "message": "A backup of your data from $1 has been found. Would you like to restore your wallet preferences?",
@@ -1825,10 +1834,10 @@
     "message": "The right way to metaverse, DeFi, Dex, NFT, GameFi and many more ..."
   },
   "rinkeby": {
-    "message": "Rinkeby Test Network"
+    "message": "Rinkeby Smart Chain Testnet"
   },
   "ropsten": {
-    "message": "Ropsten Test Network"
+    "message": "Ropsten Smart Chain Testnet"
   },
   "rpcUrl": {
     "message": "New RPC URL"

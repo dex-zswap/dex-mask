@@ -67,13 +67,12 @@ const AssetList = ({ onClickAsset }) => {
             {showFiat && (
               <div className='token-usd'>{secondaryCurrencyDisplay}</div>
             )}
-            <div
-              className='token-amount'
-              title={`${primaryCurrencyProperties.value} ${primaryCurrencyProperties.suffix}`}
-            >
-              <LongLetter text={primaryCurrencyProperties.value} length={10} />
-              &nbsp;&nbsp;
-              {primaryCurrencyProperties.suffix}
+            <div className='token-amount'>
+              <LongLetter
+                text={primaryCurrencyProperties.value}
+                subfix={primaryCurrencyProperties.suffix}
+                length={10}
+              />
             </div>
           </div>
         }

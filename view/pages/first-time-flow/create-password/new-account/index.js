@@ -123,6 +123,7 @@ export default function NewAccount({ onSubmit }) {
           <TextField
             id='create-password'
             label={t('password')}
+            placeholder={t('createAPassword')}
             type='password'
             className='first-time-flow__input'
             value={state.password}

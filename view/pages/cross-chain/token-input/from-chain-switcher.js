@@ -1,20 +1,23 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import classnames from 'classnames'
 import { ethers } from 'ethers'
 import { getDexMaskState } from '@reducer/dexmask/dexmask'
 import { getCrossChainState } from '@view/selectors'
 import { updateCrossChainState } from '@view/store/actions'
+import useDeepEffect from '@view/hooks/useDeepEffect'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import { setProviderType, setRpcTarget } from '@view/store/actions'
 import {
   getAllSupportBridge,
   checkTokenBridge,
 } from '@view/helpers/cross-chain-api'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 
 const CrossFromChainSwitcher = () => {
   const dispatch = useDispatch()
+  const t = useI18nContext()
   const crossChainState = useSelector(getCrossChainState)
   const { frequentRpcListDetail } = useSelector(getDexMaskState)
   const [chains, setChains] = useState([])
@@ -25,8 +28,8 @@ const CrossFromChainSwitcher = () => {
         return {
           chainId,
           isBulitIn,
-          label,
           provider,
+          label: t(provider),
           networkId: toBnString(chainId),
         }
       },
@@ -41,7 +44,7 @@ const CrossFromChainSwitcher = () => {
         }
       }),
     )
-  }, [frequentRpcListDetail])
+  }, [frequentRpcListDetail, t])
   const isNative = useMemo(
     () => ethers.constants.AddressZero === crossChainState.coinAddress,
     [crossChainState.coinAddress],
@@ -85,9 +88,9 @@ const CrossFromChainSwitcher = () => {
                   fromChain: chain.chainId,
                   coinAddress: ethers.constants.AddressZero,
                   targetCoinAddress: defaultTargetChain.target_token_address,
-                  targetCoinSymbol: defaultTargetChain.target_token,
                   destChain: defaultTargetChain.target_meta_chain_id,
                   target: defaultTargetChain,
+                  supportChains: res.d
                 }),
               )
             })
@@ -96,7 +99,7 @@ const CrossFromChainSwitcher = () => {
     },
     [fromChainInfo],
   )
-  useEffect(() => {
+  useDeepEffect(() => {
     getAllSupportBridge({
       offset: 0,
       limit: 1000000,

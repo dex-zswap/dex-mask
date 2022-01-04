@@ -1,3 +1,7 @@
+import React, { useCallback, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import SendAddressInput from '@c/app/send-address-input'
 import SendTokenInput from '@c/app/send-token-input'
 import { getDexMaskState, getTokens } from '@reducer/dexmask/dexmask'
@@ -12,16 +16,13 @@ import {
 } from '@view/helpers/cross-chain-api'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import useDeepEffect from '@view/hooks/useDeepEffect'
+import { useI18nContext } from '@view/hooks/useI18nContext'
 import { getCrossChainState } from '@view/selectors'
 import {
   setProviderType,
   setRpcTarget,
   updateCrossChainState,
 } from '@view/store/actions'
-import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import React, { useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import CrossDestChainSwitcher from './dest-chain-switcher'
 import CrossFromChainSwitcher from './from-chain-switcher'
 export default function CrossChainTokenInput() {
@@ -30,6 +31,7 @@ export default function CrossChainTokenInput() {
     tokenList: [],
     reverseAble: false,
   })
+  const t = useI18nContext();
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
   const tokens = useSelector(getTokens)
@@ -40,8 +42,8 @@ export default function CrossChainTokenInput() {
         return {
           chainId,
           isBulitIn,
-          label,
           provider,
+          label: t(provider),
           networkId: toBnString(chainId),
         }
       },
@@ -56,7 +58,7 @@ export default function CrossChainTokenInput() {
         }
       }),
     )
-  }, [frequentRpcListDetail])
+  }, [frequentRpcListDetail, t])
   const isNative = useMemo(
     () => crossChainState.coinAddress === ethers.constants.AddressZero,
     [crossChainState.coinAddress],
@@ -88,9 +90,7 @@ export default function CrossChainTokenInput() {
             destChain: crossChainState.fromChain,
             fromChain: crossChainState.destChain,
             coinAddress: crossChainState.targetCoinAddress,
-            coinSymbol: crossChainState.targetCoinSymbol,
             targetCoinAddress: crossChainState.coinAddress,
-            targetCoinSymbol: crossChainState.coinSymbol,
             userInputValue: '',
             supportChains: res.d,
             target,

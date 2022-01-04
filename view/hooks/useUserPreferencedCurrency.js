@@ -60,7 +60,7 @@ export function useUserPreferencedCurrency(type, opts = {}) {
 
   if (!currency) {
     currency = nativeCurrency
-    numberOfDecimals = opts.numberOfDecimals || opts.fiatNumberOfDecimals || 4
+    numberOfDecimals = opts.numberOfDecimals || opts.fiatNumberOfDecimals || 2
   }
 
   return {

@@ -77,10 +77,16 @@ const Popover = ({
   )
 }
 
-export default class Item extends PureComponent {
+export default class PopoverWrapper extends PureComponent {
   static propTypes = Popover.propTypes
-  rootNode = document.getElementById('dex-popover-content')
+  rootNode = document.getElementById('popover-content')
+  body = document.querySelector('body')
   instanceNode = document.createElement('div')
+  overHiddenClass = 'overflow-hidden'
+
+  alreadyContainClass() {
+    return this.body.classList.contains(this.overHiddenClass)
+  }
 
   componentDidMount() {
     if (!this.rootNode) {
@@ -88,6 +94,14 @@ export default class Item extends PureComponent {
     }
 
     this.rootNode.appendChild(this.instanceNode)
+    this.body.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+
+    if (!this.alreadyContainClass()) {
+      this.body.classList.add('overflow-hidden')
+    }
   }
 
   componentWillUnmount() {
@@ -96,6 +110,10 @@ export default class Item extends PureComponent {
     }
 
     this.rootNode.removeChild(this.instanceNode)
+
+    if (this.alreadyContainClass()) {
+      this.body.classList.remove('overflow-hidden')
+    }
   }
 
   render() {

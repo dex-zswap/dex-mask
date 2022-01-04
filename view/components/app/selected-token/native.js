@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 import copyToClipboard from 'copy-to-clipboard'
 import { ethers } from 'ethers'
 import { I18nContext } from '@view/contexts/i18n'
+import LongLetter from '@c/ui/long-letter'
 import TokenImage from '@c/ui/token-image'
 import Tooltip from '@c/ui/tooltip'
 import { SECOND } from '@shared/constants/time'
@@ -35,13 +36,13 @@ export default function SelectedNativeToken() {
     currency: primaryCurrency,
     numberOfDecimals: primaryNumberOfDecimals,
   } = useUserPreferencedCurrency(PRIMARY, {
-    ethNumberOfDecimals: 4,
+    ethNumberOfDecimals: 2,
   })
   const {
     currency: secondaryCurrency,
     numberOfDecimals: secondaryNumberOfDecimals,
   } = useUserPreferencedCurrency(SECONDARY, {
-    ethNumberOfDecimals: 4,
+    ethNumberOfDecimals: 2,
   })
   const [, primaryCurrencyProperties] = useCurrencyDisplay(balance, {
     numberOfDecimals: primaryNumberOfDecimals,
@@ -99,12 +100,18 @@ export default function SelectedNativeToken() {
         <div className='native-currency flex space-between items-center'>
           <div className='native-currency-balance'>
             <div className='token-balance'>
-              {primaryCurrencyProperties.value}{' '}
-              {primaryCurrencyProperties.suffix}
+              <LongLetter
+                text={primaryCurrencyProperties.value}
+                subfix={` ${primaryCurrencyProperties.suffix}`}
+                length={6}
+              />
             </div>
             <div className='token-usd'>
-              {secondaryCurrencyProperties.value}{' '}
-              {secondaryCurrencyProperties.suffix}
+              <LongLetter
+                text={secondaryCurrencyProperties.value}
+                subfix={` ${secondaryCurrencyProperties.suffix}`}
+                length={10}
+              />
             </div>
           </div>
           <TokenImage

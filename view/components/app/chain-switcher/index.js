@@ -40,7 +40,7 @@ class ChainSwitcher extends Component {
       value: chainId,
       provider: provider,
       isBulitIn: true,
-      label,
+      label: this.context.t(provider),
     }
   })
 
@@ -105,6 +105,7 @@ class ChainSwitcher extends Component {
               ) : null
             }
             small
+            toTop
           />
         </div>
       </>

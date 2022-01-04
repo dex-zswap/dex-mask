@@ -1,3 +1,8 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import SendAddressInput from '@c/app/send-address-input'
 import SendTokenInput from '@c/app/send-token-input'
 import BackBar from '@c/ui/back-bar'
@@ -24,18 +29,12 @@ import {
 import { useI18nContext } from '@view/hooks/useI18nContext'
 import { getSelectedAddress } from '@view/selectors'
 import { showQrScanner } from '@view/store/actions'
-import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router-dom'
 import SendFooter from './send-footer'
 export default function SendTransactionScreen() {
   const t = useI18nContext()
   const dispatch = useDispatch()
   const history = useHistory()
   const location = useLocation()
-
   const selectedAddress = useSelector(getSelectedAddress)
   const isUsingMyAccountsForRecipientSearch = useSelector(
     getIsUsingMyAccountForRecipientSearch,
@@ -45,11 +44,8 @@ export default function SendTransactionScreen() {
   const [sendToAccountAddress, setSendToAccountAddress] = useState(
     selectedAddress,
   )
-
   const sendAssetAddress = useSelector(getSendAssetAddress)
-
   const maxSendAmountHex = useSelector(getMaxSendAmount)
-
   const maxSendAmount = useMemo(
     () => new BigNumber(hexToString(`0x${maxSendAmountHex}`)).toString(),
     [maxSendAmountHex],
@@ -98,18 +94,15 @@ export default function SendTransactionScreen() {
     },
     [changeSendToAccountAddress, selectedAddress],
   )
-
   const cleanup = useCallback(() => {
     dispatch(resetSendState())
   }, [])
-
   useEffect(() => {
     dispatch(initializeSendState())
     return () => {
       cleanup()
     }
   }, [])
-
   useEffect(() => {
     if (location.search === '?scan=true') {
       dispatch(showQrScanner())
@@ -118,7 +111,6 @@ export default function SendTransactionScreen() {
       window.location.hash = '#send'
     }
   }, [location])
-
   return (
     <div className='dex-page-container flex space-between'>
       <div>

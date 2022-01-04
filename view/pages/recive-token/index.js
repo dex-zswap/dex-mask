@@ -6,6 +6,7 @@ import { getSelectedIdentity } from '@view/selectors'
 import QrView from '@c/ui/qr-code'
 import TopHeader from '@c/ui/top-header'
 import BackBar from '@c/ui/back-bar'
+import LongLetter from '@c/ui/long-letter'
 import Tooltip from '@c/ui/tooltip'
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
 import { SECOND } from '@shared/constants/time'
@@ -39,10 +40,10 @@ const ReciveToken = () => {
     copyToClipboard(address)
   }, [address, copyToClipboard, copyTimeout.current, state.copied])
   useEffect(() => {
-    if (copyTimeout.current) {
-      window.clearTimeout(copyTimeout.current)
+    return () => {
+      copyTimeout.current && window.clearTimeout(copyTimeout.current)
     }
-  }, [copyTimeout.current])
+  }, [])
   return (
     <div className='recive-token dex-page-container base-width'>
       <TopHeader />
@@ -60,7 +61,9 @@ const ReciveToken = () => {
             }}
           />
         </div>
-        <div className='account-name'>{selectedIdentity.name}</div>
+        <div className='account-name'>
+          <LongLetter text={selectedIdentity.name} length={20} />
+        </div>
         <Tooltip
           position='top'
           title={state.copied ? t('copiedExclamation') : t('copyToClipboard')}

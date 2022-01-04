@@ -6,6 +6,7 @@ import PermissionsConnectHeader from '@c/app/permission/connect-header'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Button from '@c/ui/button'
 import CheckBox, { CHECKED, INDETERMINATE, UNCHECKED } from '@c/ui/check-box'
+import LongLetter from '@c/ui/long-letter'
 import Identicon from '@c/ui/identicon'
 import Tooltip from '@c/ui/tooltip'
 import { PRIMARY } from '@view/helpers/constants/common'
@@ -63,7 +64,7 @@ export default class ChooseAccount extends Component {
     return (
       <div className='permissions-connect-choose-account__accounts-list'>
         {accounts.map((account, index) => {
-          const { address, addressLabel, balance } = account
+          const { address, label, addressSliced, balance } = account
           return (
             <div
               key={`permissions-connect-choose-account-${index}`}
@@ -82,7 +83,11 @@ export default class ChooseAccount extends Component {
                 />
                 <div className='permissions-connect-choose-account__account__info'>
                   <div className='permissions-connect-choose-account__account__label'>
-                    {addressLabel}
+                    <LongLetter
+                      text={label}
+                      length={10}
+                      subfix={addressSliced}
+                    />
                   </div>
                   <UserPreferencedCurrencyDisplay
                     className='permissions-connect-choose-account__account__balance'

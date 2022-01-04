@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useMemo, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import classnames from 'classnames'
+import LongLetter from '@c/ui/long-letter'
 import { Menu, MenuItem } from '@c/ui/menu'
 import Identicon from '@c/ui/identicon'
 import { getDexMaskAccountsOrdered, getSelectedIdentity } from '@view/selectors'
@@ -53,7 +54,7 @@ export default function AccountSwitcher() {
                       selectedAddress === account.address && 'active',
                     )}
                   >
-                    {account.name}
+                    <LongLetter text={account.name} length={8} />
                   </p>
                 </div>
                 <p
@@ -70,7 +71,7 @@ export default function AccountSwitcher() {
         </Menu>
       )}
       <div className='account flex items-center'>
-        {selectedIdentity.name}
+        <LongLetter text={selectedIdentity.name} length={9} />
         <div
           className='drop-trigger'
           onClick={toggleAccountDrop}

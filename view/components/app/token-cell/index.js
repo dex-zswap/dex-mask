@@ -34,10 +34,8 @@ export default function TokenCell({
       primary={
         <div className='token-detail'>
           {formattedFiat && <div className='token-usd'>{formattedFiat}</div>}
-          <div className='token-amount' title={`${string || '0'}${symbol}`}>
-            <LongLetter text={string || '0'} length={10} />
-            &nbsp;&nbsp;
-            {symbol}
+          <div className='token-amount'>
+            <LongLetter text={string || '0'} length={10} subfix={symbol} />
           </div>
         </div>
       }

@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
-const LongLetter = ({ text, length }) => {
+const LongLetter = ({ text, length, prefix, subfix }) => {
+  const displayText = useMemo(
+    () => [prefix ?? '', text, subfix ?? ''].join(''),
+    [text, prefix, subfix],
+  )
+
   if (length >= text.length) {
-    return text
+    return displayText
   }
 
-  return [text.substring(0, length), '...'].join('')
+  return (
+    <span title={displayText}>
+      {[prefix ?? '', text.substring(0, length), '...', subfix ?? ''].join('')}
+    </span>
+  )
 }
 
 export default LongLetter

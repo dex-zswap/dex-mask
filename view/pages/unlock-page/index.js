@@ -85,7 +85,7 @@ class UnlockPage extends Component {
     this.setState({
       password: target.value,
       error: null,
-    }) // tell mascot to look at page action
+    })
 
     if (target.getBoundingClientRect) {
       const element = target
@@ -131,11 +131,12 @@ class UnlockPage extends Component {
             <Logo isCenter />
           </div>
           <h1 className='unlock-page__title'>{t('welcomeBack')}</h1>
-          <div className='unlock-page__message'>{t('rightWay')}</div>
+          <div className='unlock-page__message'>{t('unlockMessage')}</div>
           <form className='unlock-page__form' onSubmit={this.handleSubmit}>
             <TextField
               id='password'
               label={t('password')}
+              placeholder={t('enterPassword')}
               type='password'
               value={password}
               onChange={(event) => this.handleInputChange(event)}

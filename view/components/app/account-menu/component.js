@@ -4,6 +4,7 @@ import Fuse from 'fuse.js'
 import { debounce } from 'lodash'
 import PropTypes from 'prop-types'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
+import LongLetter from '@c/ui/long-letter'
 import SearchIcon from '@c/ui/search-icon'
 import TextField from '@c/ui/text-field'
 import Identicon from '@c/ui/identicon'
@@ -52,7 +53,6 @@ export default class AccountMenu extends Component {
   }
   accountsRef
   state = {
-    shouldShowScrollButton: false,
     searchQuery: '',
   }
   addressFuse = new Fuse([], {
@@ -72,22 +72,6 @@ export default class AccountMenu extends Component {
       },
     ],
   })
-
-  componentDidUpdate(prevProps, prevState) {
-    const { isAccountMenuOpen: prevIsAccountMenuOpen } = prevProps
-    const { searchQuery: prevSearchQuery } = prevState
-    const { isAccountMenuOpen } = this.props
-    const { searchQuery } = this.state
-
-    if (!prevIsAccountMenuOpen && isAccountMenuOpen) {
-      this.setShouldShowScrollButton()
-    } // recalculate on each search query change
-    // whether we can show scroll down button
-
-    if (isAccountMenuOpen && prevSearchQuery !== searchQuery) {
-      this.setShouldShowScrollButton()
-    }
-  }
 
   renderAccounts() {
     const {
@@ -140,7 +124,9 @@ export default class AccountMenu extends Component {
             <Identicon address={identity.address} diameter={28} />
           </div>
           <div className='account-menu__account-info'>
-            <div className='account-menu__name'>{identity.name || ''}</div>
+            <div className='account-menu__name'>
+              <LongLetter text={identity.name || ''} length={14} />
+            </div>
             <UserPreferencedCurrencyDisplay
               className='account-menu__balance'
               value={identity.balance}
@@ -150,51 +136,6 @@ export default class AccountMenu extends Component {
         </div>
       )
     })
-  }
-
-  setShouldShowScrollButton = () => {
-    if (!this.accountsRef) {
-      return
-    }
-
-    const { scrollTop, offsetHeight, scrollHeight } = this.accountsRef
-    const canScroll = scrollHeight > offsetHeight
-    const atAccountListBottom = scrollTop + offsetHeight >= scrollHeight
-    const shouldShowScrollButton = canScroll && !atAccountListBottom
-    this.setState({
-      shouldShowScrollButton,
-    })
-  }
-  onScroll = debounce(this.setShouldShowScrollButton, 25)
-  handleScrollDown = (e) => {
-    e.stopPropagation()
-    const { scrollHeight } = this.accountsRef
-    this.accountsRef.scroll({
-      left: 0,
-      top: scrollHeight,
-      behavior: 'smooth',
-    })
-    this.setShouldShowScrollButton()
-  }
-
-  renderScrollButton() {
-    if (!this.state.shouldShowScrollButton) {
-      return null
-    }
-
-    return (
-      <div
-        className='account-menu__scroll-button'
-        onClick={this.handleScrollDown}
-      >
-        <img
-          src='./images/icons/down-arrow.svg'
-          width='28'
-          height='28'
-          alt={this.context.t('scrollDown')}
-        />
-      </div>
-    )
   }
 
   render() {
@@ -237,7 +178,6 @@ export default class AccountMenu extends Component {
             >
               {this.renderAccounts()}
             </div>
-            {this.renderScrollButton()}
           </div>
           <AccountMenuItem
             onClick={() => {

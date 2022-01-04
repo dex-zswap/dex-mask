@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
 import classnames from 'classnames'
 export default function Selector({
   options,
@@ -9,6 +9,7 @@ export default function Selector({
   className,
   footer,
   small,
+  toTop,
 }) {
   const [show, setShow] = useState(false)
   const toggleShow = useCallback(() => setShow((show) => !show), [])
@@ -27,6 +28,23 @@ export default function Selector({
     () => options.find(({ value }) => value === selectedValue)?.label || '',
     [options, selectedValue],
   )
+  useEffect(() => {
+    if (toTop) {
+      const body = document.querySelector('body')
+
+      if (show) {
+        body.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
+        body.classList.toggle('overflow-hidden')
+      } else {
+        if (body.classList.contains('overflow-hidden')) {
+          body.classList.remove('overflow-hidden')
+        }
+      }
+    }
+  }, [toTop, show])
   return (
     <div
       className={classnames([
