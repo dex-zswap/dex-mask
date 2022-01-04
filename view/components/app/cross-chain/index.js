@@ -34,6 +34,9 @@ export default function CrossChainBtn() {
 
     return res?.d?.length
   }, [loading, error, res])
+  const supportChains = useMemo(() => {
+    return supportCrossChain ? res.d : [];
+  },[supportCrossChain, res])
   const defaultTargetChain = useMemo(
     () => (supportCrossChain ? res.d[0] : null),
     [supportCrossChain, res],
@@ -47,15 +50,12 @@ export default function CrossChainBtn() {
             dispatch(
               updateCrossChainState({
                 coinAddress: ethers.constants.AddressZero,
-                coinSymbol: nativeCurrency,
                 targetCoinAddress: defaultTargetChain.target_token_address,
-                targetCoinSymbol: defaultTargetChain.target_token,
                 target: defaultTargetChain,
                 from: selectedAccount.address,
                 fromChain: chainId,
                 destChain: defaultTargetChain.target_meta_chain_id,
-                supportChains: [],
-                chainTokens: [],
+                supportChains,
               }),
             )
             history.push(CROSSCHAIN_ROUTE)

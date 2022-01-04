@@ -33,7 +33,6 @@ export const initialState = {
   nativeMaxSendAmount: '0',
   maxSendAmount: '0',
   targetCoinAddress: '',
-  targetCoinSymbol: '',
   tokenDecimals: 18,
   chainTokens: [],
   gas: {

@@ -31,6 +31,7 @@ export default function CrossChainTokenInput() {
     tokenList: [],
     reverseAble: false,
   })
+  const t = useI18nContext();
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
   const tokens = useSelector(getTokens)
@@ -57,7 +58,7 @@ export default function CrossChainTokenInput() {
         }
       }),
     )
-  }, [frequentRpcListDetail])
+  }, [frequentRpcListDetail, t])
   const isNative = useMemo(
     () => crossChainState.coinAddress === ethers.constants.AddressZero,
     [crossChainState.coinAddress],
@@ -89,9 +90,7 @@ export default function CrossChainTokenInput() {
             destChain: crossChainState.fromChain,
             fromChain: crossChainState.destChain,
             coinAddress: crossChainState.targetCoinAddress,
-            coinSymbol: crossChainState.targetCoinSymbol,
             targetCoinAddress: crossChainState.coinAddress,
-            targetCoinSymbol: crossChainState.coinSymbol,
             userInputValue: '',
             supportChains: res.d,
             target,

@@ -44,7 +44,7 @@ const CrossFromChainSwitcher = () => {
         }
       }),
     )
-  }, [frequentRpcListDetail])
+  }, [frequentRpcListDetail, t])
   const isNative = useMemo(
     () => ethers.constants.AddressZero === crossChainState.coinAddress,
     [crossChainState.coinAddress],
@@ -88,9 +88,9 @@ const CrossFromChainSwitcher = () => {
                   fromChain: chain.chainId,
                   coinAddress: ethers.constants.AddressZero,
                   targetCoinAddress: defaultTargetChain.target_token_address,
-                  targetCoinSymbol: defaultTargetChain.target_token,
                   destChain: defaultTargetChain.target_meta_chain_id,
                   target: defaultTargetChain,
+                  supportChains: res.d
                 }),
               )
             })

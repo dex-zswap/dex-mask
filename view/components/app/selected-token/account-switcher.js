@@ -54,7 +54,7 @@ export default function AccountSwitcher() {
                       selectedAddress === account.address && 'active',
                     )}
                   >
-                    <LongLetter text={account.name} length={9} />
+                    <LongLetter text={account.name} length={8} />
                   </p>
                 </div>
                 <p
@@ -71,7 +71,7 @@ export default function AccountSwitcher() {
         </Menu>
       )}
       <div className='account flex items-center'>
-        <LongLetter text={selectedIdentity.name} length={10} />
+        <LongLetter text={selectedIdentity.name} length={9} />
         <div
           className='drop-trigger'
           onClick={toggleAccountDrop}

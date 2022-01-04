@@ -128,12 +128,18 @@ const CrossDestChainSwitcher = () => {
                     )}
                     onClick={(e) => {
                       e.stopPropagation()
+                      toggleChainSwitcher()
+                      if (chain.networkId === crossChainState.target.target_meta_chain_id) {
+                        return;
+                      }
+                      const target = crossChainState.supportChains.find(({ target_meta_chain_id }) => target_meta_chain_id === chain.networkId);
                       dispatch(
                         updateCrossChainState({
                           destChain: chain.chainId,
+                          targetCoinAddress: target.target_token_address,
+                          target
                         }),
                       )
-                      toggleChainSwitcher()
                     }}
                   >
                     <i

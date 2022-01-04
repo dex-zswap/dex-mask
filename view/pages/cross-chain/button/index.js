@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react'
+import React, { useState, useMemo, useRef, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { ethers } from 'ethers'
@@ -12,6 +12,7 @@ import {
 } from '@view/helpers/constants/routes'
 import { expandDecimals } from '@view/helpers/utils/conversions.util'
 import { useI18nContext } from '@view/hooks/useI18nContext'
+import useDeepEffect from '@view/hooks/useDeepEffect'
 import useInterval from '@view/hooks/useInterval'
 import { getCrossChainState } from '@view/selectors'
 import { showConfTxPage, updateConfirmAction } from '@view/store/actions'
@@ -125,6 +126,12 @@ export default function CrossChainButton() {
 
     return approve()
   }, [allowed, crossChainState, history, decimals, isNativeAsset])
+  useDeepEffect(() => {
+    if (allowed && !isNativeAsset) {
+      setAllowed(false)
+    }
+  }, [allowed, isNativeAsset, crossChainState])
+
   useInterval(() => {
     if (isNativeAsset || (mounted.current && allowed)) {
       return
