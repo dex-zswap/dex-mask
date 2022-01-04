@@ -96,7 +96,9 @@ export default function CrossChainButton() {
       (e) => {}
     )
 
-    dispatch(showConfTxPage())
+    dispatch(showConfTxPage({
+      isBridge: true
+    }))
     dispatch(updateConfirmAction(null))
     history.push(CONFIRM_TRANSACTION_ROUTE)
   }, [decimals, isNativeAsset, crossChainState])

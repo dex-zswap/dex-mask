@@ -1194,7 +1194,7 @@ export function showAccountsPage() {
     type: actionConstants.SHOW_ACCOUNTS_PAGE,
   }
 }
-export function showConfTxPage({ id } = {}) {
+export function showConfTxPage({ id, isBridge } = {}) {
   return {
     type: actionConstants.SHOW_CONF_TX_PAGE,
     id,
