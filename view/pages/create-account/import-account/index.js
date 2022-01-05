@@ -25,7 +25,7 @@ export default class AccountImportSubview extends Component {
         return <JsonImportView />
 
       default:
-        return <JsonImportView />
+        return <PrivateKeyImportView />
     }
   }
 
@@ -36,7 +36,7 @@ export default class AccountImportSubview extends Component {
         <div>
           <Logo plain isCenter />
           <BackBar title={this.context.t('importAccountTitle')} />
-          <div className='new-account-import-form__select-section flex items-center space-between'>
+          {/* <div className='new-account-import-form__select-section flex items-center space-between'>
             <div className='new-account-import-form__select-label'>
               {this.context.t('selectType')}
             </div>
@@ -59,10 +59,11 @@ export default class AccountImportSubview extends Component {
                 })
               }}
             />
-          </div>
+          </div> */}
         </div>
         <div className='new-account-import-bottom'>
-          {this.renderImportView()}
+          <PrivateKeyImportView />
+          {/* {this.renderImportView()} */}
         </div>
       </div>
     )
