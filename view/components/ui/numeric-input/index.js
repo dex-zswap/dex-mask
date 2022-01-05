@@ -1,8 +1,9 @@
-import React from 'react'
-import classNames from 'classnames'
-import PropTypes from 'prop-types'
+import TextField from '@c/ui/text-field'
 import Typography from '@c/ui/typography'
 import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
+import React from 'react'
 export default function NumericInput({
   detailText = '',
   value = 0,
@@ -14,11 +15,11 @@ export default function NumericInput({
 }) {
   return (
     <div
-      className={classNames('numeric-input', {
+      className={classNames({
         'numeric-input--error': error,
       })}
     >
-      <input
+      <TextField
         type='number'
         value={value}
         onKeyDown={(e) => {
@@ -32,7 +33,7 @@ export default function NumericInput({
         min='0'
         autoFocus={autoFocus}
         disabled={disabled}
-      />
+      ></TextField>
       {detailText && (
         <Typography color={COLORS.UI4} variant={TYPOGRAPHY.H7} tag='span'>
           {detailText}

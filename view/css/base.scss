@@ -16,6 +16,15 @@ textarea {
   width: 100%;
 }
 
+.h-100 {
+  height: 100%;
+}
+
+.w-h {
+  width: 100%;
+  height: 100%;
+}
+
 .base-width {
   width: 90vw !important;
   margin-left: auto;
@@ -54,6 +63,10 @@ textarea {
 
 .flex {
   display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
 }
 
 .flex-inline {

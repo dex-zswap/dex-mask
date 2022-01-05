@@ -139,6 +139,26 @@
         color: #fff;
         margin-bottom: 6px;
       }
+      > div {
+        @include text-ellipsis;
+        max-width: 100%;
+      }
+    }
+    .currency-display-component {
+      max-width: 100%;
+    }
+  }
+  .usd-wrap {
+    @include flex(flex-end, flex-start);
+    .usd-content {
+      @include flex(flex-end, flex-start);
+      max-width: calc(100% - 12px);
+      > div {
+        &:first-child {
+          @include text-ellipsis;
+          flex: 1;
+        }
+      }
     }
   }
 }

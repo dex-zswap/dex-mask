@@ -1,16 +1,16 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 const ErrorMessage = (props, context) => {
   const { errorMessage, errorKey } = props
   const error = errorKey ? context.t(errorKey) : errorMessage
   return (
     <div className='error-message'>
-      <img
+      {/* <img
         src='./images/alert-red.svg'
         alt=''
         className='error-message__icon'
-      />
+      /> */}
       <div className='error-message__text'>{error}</div>
     </div>
   )

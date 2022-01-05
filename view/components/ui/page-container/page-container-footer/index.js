@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import Button from '@c/ui/button'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
-import Button from '@c/ui/button'
+import React, { Component } from 'react'
 export default class PageContainerFooter extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -58,7 +58,7 @@ export default class PageContainerFooter extends Component {
 
           <Button
             rightArrow={rightArrow}
-            type={submitButtonType || 'secondary'}
+            type={submitButtonType || 'primary'}
             large={buttonSizeLarge}
             className={classnames(
               'page-container__footer-button',

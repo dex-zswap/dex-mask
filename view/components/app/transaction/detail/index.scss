@@ -1,5 +1,6 @@
 .transaction-detail {
   position: relative;
+  margin-top: 24px;
 
   .transaction-detail-edit {
     text-align: end;
@@ -23,7 +24,11 @@
 
   &-item {
     padding: 20px 0;
-    border-bottom: 1px solid #575960;
+    border-bottom: 1px solid $primary-border;
+
+    .transaction-detail-item__row:first-child {
+      margin-bottom: 4px;
+    }
 
     &:first-child {
       padding-top: 0;

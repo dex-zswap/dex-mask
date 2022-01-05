@@ -12,7 +12,6 @@ import { ENVIRONMENT_TYPE_NOTIFICATION } from '@shared/constants/app'
 import { TRANSACTION_STATUSES } from '@shared/constants/transaction'
 import { toBuffer } from '@shared/modules/buffer-utils'
 import { PRIMARY, SECONDARY } from '@view/helpers/constants/common'
-import { COLORS } from '@view/helpers/constants/design-system'
 import {
   ETH_GAS_PRICE_FETCH_WARNING_KEY,
   GAS_LIMIT_TOO_LOW_ERROR_KEY,
@@ -293,11 +292,13 @@ export default class ConfirmTransactionBase extends Component {
       ) {
         // Native Send
         return (
-          <UserPreferencedCurrencyDisplay
-            type={PRIMARY}
-            value={addHexes(txData.txParams.value, hexMaximumTransactionFee)}
-            hideLabel={!useNativeCurrencyAsPrimaryCurrency}
-          />
+          <div className='confirm-transaction-total-amount-wrap'>
+            <UserPreferencedCurrencyDisplay
+              type={PRIMARY}
+              value={addHexes(txData.txParams.value, hexMaximumTransactionFee)}
+              hideLabel={!useNativeCurrencyAsPrimaryCurrency}
+            />
+          </div>
         )
       } // Token send
 
@@ -378,7 +379,6 @@ export default class ConfirmTransactionBase extends Component {
     return (
       <div className='confirm-page-container-content__details'>
         <TransactionDetail
-          onEdit={() => this.handleEditGas()}
           rows={[
             <TransactionDetailItem
               key='gas-item'
@@ -391,9 +391,7 @@ export default class ConfirmTransactionBase extends Component {
                     <InfoTooltip
                       contentText={t('transactionDetailDappGasTooltip')}
                       position='top'
-                    >
-                      <i className='fa fa-info-circle' />
-                    </InfoTooltip>
+                    ></InfoTooltip>
                   </>
                 ) : (
                   <>
@@ -415,59 +413,56 @@ export default class ConfirmTransactionBase extends Component {
                         </>
                       }
                       position='top'
-                    >
-                      <i className='fa fa-info-circle' />
-                    </InfoTooltip>
+                    ></InfoTooltip>
                   </>
                 )
-              }
-              detailTitleColor={
-                txData.dappSuggestedGasFees ? COLORS.SECONDARY1 : COLORS.BLACK
               }
               detailTotal={
                 <div className='confirm-page-container-content__currency-container'>
                   {renderHeartBeatIfNotInTest()}
+                  <img
+                    width={10}
+                    style={{ marginRight: '6px' }}
+                    src='images/icons/edit.png'
+                    onClick={() => {
+                      this.handleEditGas()
+                    }}
+                  />
                   <UserPreferencedCurrencyDisplay
                     type={PRIMARY}
                     value={hexMinimumTransactionFee}
                     hideLabel={!useNativeCurrencyAsPrimaryCurrency}
                   />
                 </div>
-              } // detailText={null}
-              detailText={
-                <div className='confirm-page-container-content__currency-container'>
-                  {renderHeartBeatIfNotInTest()}
-                  <UserPreferencedCurrencyDisplay
-                    prefix='≈ '
-                    type={SECONDARY}
-                    value={hexMinimumTransactionFee}
-                    hideLabel
-                  />
-                </div>
               }
+              detailText={null}
+              // detailText={
+              //   <div className='confirm-page-container-content__currency-container'>
+              //     {renderHeartBeatIfNotInTest()}
+              //     <UserPreferencedCurrencyDisplay
+              //       prefix='≈ '
+              //       type={SECONDARY}
+              //       value={hexMinimumTransactionFee}
+              //       hideLabel
+              //     />
+              //   </div>
+              // }
               subText={t('editGasSubTextFee', [
                 <div
                   key='editGasSubTextFeeValue'
                   className='confirm-page-container-content__currency-container confirm-page-container-content__currency-container2'
                 >
                   {renderHeartBeatIfNotInTest()}
+                  <div style={{ marginRight: '4px' }}>{t('maxFee')}:</div>
                   <UserPreferencedCurrencyDisplay
+                    className='max-fee-amount-wrap'
                     key='editGasSubTextFeeAmount'
                     type={PRIMARY}
                     value={hexMaximumTransactionFee}
                     hideLabel={!useNativeCurrencyAsPrimaryCurrency}
                   />
                 </div>,
-                <div
-                  style={{
-                    textAlign: 'right',
-                    marginTop: '4px',
-                    color: '#3d3f48',
-                  }}
-                  key='editGasSubTextFeeLabel'
-                >
-                  {t('editGasSubTextFeeLabel')}
-                </div>,
+                <></>,
               ])}
               subTitle={
                 <GasTiming
@@ -485,7 +480,11 @@ export default class ConfirmTransactionBase extends Component {
               key='total-item'
               detailTitle={t('total')} // detailText={<></>}
               detailTotal={renderTotalMaxAmount()}
-              detailText={renderTotalDetailText()} // detailTotal={renderTotalDetailTotal()}
+              detailText={
+                <div className='confirm-transaction-total-detail-text'>
+                  {renderTotalDetailText()}
+                </div>
+              } // detailTotal={renderTotalDetailTotal()}
               subTitle={<></>}
               subText={<></>} // subTitle={t('transactionDetailGasTotalSubtitle')}
               // subText={t('editGasSubTextAmount', [
@@ -503,7 +502,6 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   renderData(functionType) {
-    console.log('functionType', functionType)
     const { t } = this.context
     const {
       txData: { txParams: { data } = {} } = {},

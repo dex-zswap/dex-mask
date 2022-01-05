@@ -1,11 +1,15 @@
 .transaction-detail-item {
-  color: rgba(246, 246, 246, 0.6);
+  color: $gray;
 
   &__row {
     display: flex;
     grid-gap: 5px;
+    h6 {
+      font-size: 12px !important;
+      margin: 0;
+    }
     .typography--color-black {
-      color: #888;
+      color: $gray;
     }
 
     &.justify-end {
@@ -48,7 +52,7 @@
 
   &__detail-text {
     .currency-display-component__text {
-      color: #888 !important;
+      color: $gray;
     }
   }
 }

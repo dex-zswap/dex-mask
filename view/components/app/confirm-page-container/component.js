@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import EditGasPopover from '@c/app/edit-gas/popover'
 import { PageContainerFooter } from '@c/ui/page-container'
 import { EDIT_GAS_MODES } from '@shared/constants/gas'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import {
   ConfirmPageContainerContent,
   ConfirmPageContainerHeader,
@@ -117,7 +117,7 @@ export default class ConfirmPageContainer extends Component {
     } = this.props
     const renderAssetImage = contentComponent || !identiconAddress
     return (
-      <div className='page-container'>
+      <>
         <ConfirmPageContainerNavigation
           totalTx={totalTx}
           positionOfCurrentTx={positionOfCurrentTx}
@@ -190,6 +190,7 @@ export default class ConfirmPageContainer extends Component {
         )}
         {contentComponent && (
           <PageContainerFooter
+            footerClassName='confirm-transaction-footer'
             onCancel={onCancel}
             cancelText={this.context.t('reject')}
             onSubmit={onSubmit}
@@ -211,7 +212,7 @@ export default class ConfirmPageContainer extends Component {
             transaction={currentTransaction}
           />
         )}
-      </div>
+      </>
     )
   }
 }

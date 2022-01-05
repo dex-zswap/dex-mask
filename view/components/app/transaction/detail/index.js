@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
 import TransactionDetailItem from '@c/app/transaction/detail-item'
 import { I18nContext } from '@view/contexts/i18n'
-export default function TransactionDetail({ rows = [], onEdit }) {
+import PropTypes from 'prop-types'
+import React, { useContext } from 'react'
+export default function TransactionDetail({ rows = [] }) {
   const t = useContext(I18nContext)
   return (
     <div className='transaction-detail'>
-      {onEdit && (
+      {/* {onEdit && (
         <div className='transaction-detail-edit'>
           <img
             style={{
@@ -16,9 +16,8 @@ export default function TransactionDetail({ rows = [], onEdit }) {
             src='images/dex/edit.png'
             onClick={onEdit}
           />
-          {/* <button onClick={onEdit}>{t('edit')}</button> */}
         </div>
-      )}
+      )} */}
       <div className='transaction-detail-rows'>{rows}</div>
     </div>
   )

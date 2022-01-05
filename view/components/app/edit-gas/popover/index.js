@@ -1,6 +1,3 @@
-import React, { useCallback, useContext, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import PropTypes from 'prop-types'
 import EditGasDisplay from '@c/app/edit-gas/display'
 import EditGasDisplayEducation from '@c/app/edit-gas/display-education'
 import Button from '@c/ui/button'
@@ -25,6 +22,9 @@ import {
   updateSwapsUserFeeLevel,
   updateTransaction,
 } from '@view/store/actions'
+import PropTypes from 'prop-types'
+import React, { useCallback, useContext, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 export default function EditGasPopover({
   popoverTitle = '',
   confirmButtonText = '',
@@ -197,29 +197,10 @@ export default function EditGasPopover({
       onBack={
         showEducationContent ? () => setShowEducationContent(false) : undefined
       }
-      footer={
-        showEducationContent ? null : (
-          <>
-            <Button
-              type='ghost'
-              rightArrow
-              onClick={onSubmit}
-              disabled={
-                hasGasErrors ||
-                balanceError ||
-                ((isGasEstimatesLoading || gasLoadingAnimationIsShowing) &&
-                  !txParamsHaveBeenCustomized)
-              }
-            >
-              {footerButtonText}
-            </Button>
-          </>
-        )
-      }
     >
       <div
         style={{
-          padding: '0 10px 10px',
+          padding: '0 24px 20px',
           position: 'relative',
         }}
       >
@@ -265,6 +246,22 @@ export default function EditGasPopover({
               txParamsHaveBeenCustomized={txParamsHaveBeenCustomized}
               {...editGasDisplayProps}
             />
+          </>
+        )}
+        {showEducationContent ? null : (
+          <>
+            <Button
+              type='primary'
+              onClick={onSubmit}
+              disabled={
+                hasGasErrors ||
+                balanceError ||
+                ((isGasEstimatesLoading || gasLoadingAnimationIsShowing) &&
+                  !txParamsHaveBeenCustomized)
+              }
+            >
+              {footerButtonText}
+            </Button>
           </>
         )}
       </div>
