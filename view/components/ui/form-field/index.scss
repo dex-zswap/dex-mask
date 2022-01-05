@@ -1,9 +1,8 @@
 .form-field {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 
   &__heading {
     display: flex;
-    margin-top: 4px;
   }
 
   .info-tooltip {
@@ -22,8 +21,8 @@
   }
 
   h6 {
-    padding-bottom: 6px;
-    margin-inline-end: 6px;
+    margin: 0;
+    padding: 0;
   }
 
   i {

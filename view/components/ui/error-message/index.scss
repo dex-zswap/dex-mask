@@ -1,22 +1,12 @@
 .error-message {
-  @include H7;
-
+  width: 90vw;
+  font-size: 12px;
+  font-weight: normal;
+  margin: auto;
   min-height: 32px;
-  border: 1px solid $Red-300;
-  color: $ui-black;
-  background: $error-2;
-  border-radius: 8px;
+  color: $warning;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 8px 10px;
-
-  &__icon {
-    margin-right: 8px;
-    flex: 0 0 auto;
-  }
-
-  &__text {
-    overflow: auto;
-  }
+  padding: 8px 0;
 }

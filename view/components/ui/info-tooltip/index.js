@@ -1,7 +1,7 @@
-import React from 'react'
+import Tooltip from '@c/ui/tooltip'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
-import Tooltip from '@c/ui/tooltip'
+import React from 'react'
 const positionArrowClassMap = {
   top: 'info-tooltip__top-tooltip-arrow',
   bottom: 'info-tooltip__bottom-tooltip-arrow',
@@ -32,7 +32,7 @@ export default function InfoTooltip({
         theme={wide ? 'tippy-tooltip-wideInfo' : 'tippy-tooltip-info'}
       >
         <div>
-          <img width='12px' src='images/dex/info.png' />
+          <img width='12px' src='images/settings/info.png' />
         </div>
       </Tooltip>
     </div>

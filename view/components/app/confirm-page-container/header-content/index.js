@@ -262,16 +262,17 @@ export default function ConfirmPageContainerHeaderContent({
   } = useUserPreferencedCurrency(SECONDARY, {
     ethNumberOfDecimals: 4,
   })
-  const [
-    secondaryCurrencyDisplay,
-    secondaryCurrencyProperties,
-  ] = useCurrencyDisplay(amount, {
+  const [secondaryCurrencyDisplay] = useCurrencyDisplay(amount, {
     numberOfDecimals: secondaryNumberOfDecimals,
     currency: secondaryCurrency,
   })
   const tokenUsdValue = useTokenFiatAmount(address, amount, symbol, {
     showFiat: true,
   })
+  const usdPrice = useMemo(
+    () => (isNativeCurrency ? secondaryCurrencyDisplay : tokenUsdValue),
+    [isNativeCurrency, secondaryCurrencyDisplay, tokenUsdValue],
+  )
   return (
     <div className='base-width'>
       <div className='confirm-send-header-wrap'>
@@ -296,11 +297,17 @@ export default function ConfirmPageContainerHeaderContent({
         <div>{t('sending')}</div>
         <div className='price-wrap'>
           <div>
-            {titleComponent || title.split(' ')[0]}{' '}
-            {titleComponent ? nativeCurrency : title.split(' ')[1]}
+            <div>{titleComponent || title.split(' ')[0]}</div>
+            <span style={{ marginLeft: '4px' }}>
+              {titleComponent ? nativeCurrency : title.split(' ')[1]}
+            </span>
           </div>
-          <div>
-            ≈ {isNativeCurrency ? secondaryCurrencyDisplay : tokenUsdValue}
+          <div className='usd-wrap'>
+            <div style={{ marginRight: '4px' }}>≈</div>
+            <div className='usd-content'>
+              <div>{usdPrice.split(' ')[0]}</div>
+              <div style={{ marginLeft: '4px' }}>{usdPrice.split(' ')[1]}</div>
+            </div>
           </div>
         </div>
       </div>

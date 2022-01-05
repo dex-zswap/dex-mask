@@ -2,18 +2,13 @@
 @import 'confirm-page-container-summary/index';
 
 .confirm-page-container-content {
-  overflow-y: auto;
-  height: 100%;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-
   .typography--weight-bold {
     font-weight: normal;
   }
 
   .typography--h6 {
     color: #78797b;
+    margin: 0;
   }
 
   &__error-container {
@@ -21,8 +16,9 @@
   }
 
   &__details {
+    width: 90vw;
+    margin: auto;
     box-sizing: border-box;
-    padding: 0 4vw;
   }
 
   &__data {
@@ -104,23 +100,40 @@
   }
 
   &__currency-container {
+    @include flex(flex-end);
+    font-size: 12px;
+    color: $gray;
     position: relative;
     .currency-display-component {
-      max-width: 130px;
-      text-align: right;
-      display: inline-block !important;
-      .currency-display-component__text,
-      .currency-display-component__suffix {
-        font-size: 12px;
-      }
+      max-width: 140px;
     }
   }
+  .max-fee-amount-wrap {
+    max-width: calc(90vw - 53px);
+  }
+}
 
-  &__currency-container2 {
+.transaction-detail-item .transaction-detail-item__row {
+  &:first-child {
     .currency-display-component__text,
     .currency-display-component__suffix {
-      font-size: 12px;
-      color: #888;
+      color: #fff;
+    }
+  }
+  .currency-display-component__text,
+  .currency-display-component__suffix {
+    font-size: 12px;
+    color: $gray;
+  }
+  .currency-display-component {
+    @include text-ellipsis;
+    display: flex !important;
+    justify-content: flex-end;
+    text-align: right;
+    .currency-display-component__text {
+      @include text-ellipsis;
+      display: block;
+      flex: 1;
     }
   }
 }

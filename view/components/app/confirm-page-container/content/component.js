@@ -1,6 +1,6 @@
 import ErrorMessage from '@c/ui/error-message'
 import { PageContainerFooter } from '@c/ui/page-container'
-import { Tab, Tabs } from '@c/ui/tabs'
+import Tabs from '@c/ui/tabs'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { ConfirmPageContainerWarning } from '.'
@@ -39,7 +39,8 @@ export default class ConfirmPageContainerContent extends Component {
     const { detailsComponent, dataComponent } = this.props
 
     if (detailsComponent && dataComponent) {
-      return this.renderTabs()
+      return detailsComponent
+      // return this.renderTabs()
     }
 
     return detailsComponent || dataComponent
@@ -48,17 +49,21 @@ export default class ConfirmPageContainerContent extends Component {
   renderTabs() {
     const { t } = this.context
     const { detailsComponent, dataComponent } = this.props
+
     return (
-      <Tabs>
-        <Tab
-          className='confirm-page-container-content__tab'
-          name={t('details')}
-        >
+      <Tabs
+        actived='details'
+        tabs={[
+          { label: t('details'), key: 'details' },
+          { label: t('data'), key: 'data' },
+        ]}
+      >
+        <div className='confirm-page-container-content__tab'>
           {detailsComponent}
-        </Tab>
-        <Tab className='confirm-page-container-content__tab' name={t('data')}>
+        </div>
+        <div className='confirm-page-container-content__tab'>
           {dataComponent}
-        </Tab>
+        </div>
       </Tabs>
     )
   }
@@ -110,18 +115,22 @@ export default class ConfirmPageContainerContent extends Component {
         assetImage={assetImage}
         origin={origin}
         /> */}
-        {/* {this.renderContent()} */}
-        {(errorKey || errorMessage) && (
+        {this.renderContent()}
+        {/* {(errorKey || errorMessage) && (
           <div className='confirm-page-container-content__error-container'>
             <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
           </div>
-        )}
+        )} */}
+        <div className='confirm-page-container-content__error-container'>
+          <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
+        </div>
         <PageContainerFooter
+          footerClassName='confirm-transaction-footer'
           onCancel={onCancel}
           cancelText={cancelText}
           onSubmit={onSubmit}
           submitText={submitText}
-          submitButtonType='confirm'
+          submitButtonType='primary'
           disabled={disabled}
         >
           {unapprovedTxCount > 1 && <a onClick={onCancelAll}>{rejectNText}</a>}

@@ -53,10 +53,11 @@
     flex: 0 0 auto;
 
     footer {
+      width: 90vw;
+      margin: auto;
       display: flex;
       flex-flow: row;
       justify-content: center;
-      padding: 4vw;
       flex: 0 0 auto;
     }
 
@@ -64,17 +65,14 @@
       display: flex;
       flex-flow: row;
       justify-content: space-around;
-      padding: 0 16px 16px;
+      margin-top: 8px;
       flex: 0 0 auto;
-
+      font-size: 12px;
       a,
       a:hover {
-        @include H7;
-
-        text-decoration: none;
         cursor: pointer;
         text-transform: uppercase;
-        color: #2f9ae0;
+        color: $warning;
       }
     }
   }

@@ -9,3 +9,24 @@
     height: 100%;
   }
 }
+
+.confirm-transaction-total-amount-wrap .currency-display-component {
+  max-width: calc(90vw - 44px);
+}
+
+.confirm-transaction-total-detail-text {
+  font-size: 12px;
+  color: $gray;
+  .currency-display-component {
+    max-width: 100%;
+    .currency-display-component__text {
+      display: block;
+    }
+  }
+}
+
+.confirm-transaction-footer {
+  position: fixed;
+  bottom: 20px;
+  left: 5vw;
+}
