@@ -6,7 +6,7 @@
     "message": "About"
   },
   "aboutSettingsDescription": {
-    "message": "Version, support center, and contact info"
+    "message": "Version"
   },
   "acceleratingATransaction": {
     "message": "* Accelerating a transaction by using a higher gas price increases its chances of getting processed by the network faster, but it is not always guaranteed."
@@ -143,7 +143,7 @@
     "message": "This alert is shown in the popup when you are browsing a site that tries to use the removed window.web3 API, and may be broken as a result."
   },
   "alerts": {
-    "message": "Note"
+    "message": "Alerts"
   },
   "alertsSettingsDescription": {
     "message": "Enable or disable each alert"
@@ -1029,7 +1029,7 @@
     "description": "this translation is intended to be exclusively used as the replacement for the $1 in the gdprMessage translation"
   },
   "general": {
-    "message": "Common"
+    "message": "General"
   },
   "generalSettingsDescription": {
     "message": "Currency conversion, primary currency, language, blockies identicon"

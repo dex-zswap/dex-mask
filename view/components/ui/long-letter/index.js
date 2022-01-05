@@ -1,8 +1,11 @@
 import React, { useMemo } from 'react'
 
 const LongLetter = ({ text, length, prefix, subfix }) => {
+  const subBlank = useMemo(() => subfix ? '  ' : '', [subfix])
+  const preBlank = useMemo(() => prefix ? '  ' : '', [prefix])
+
   const displayText = useMemo(
-    () => [prefix ?? '', text, subfix ?? ''].join(''),
+    () => [prefix ?? '', preBlank, text, subBlank, subfix ?? ''].join(''),
     [text, prefix, subfix],
   )
 
@@ -12,7 +15,7 @@ const LongLetter = ({ text, length, prefix, subfix }) => {
 
   return (
     <span title={displayText}>
-      {[prefix ?? '', text.substring(0, length), '...', subfix ?? ''].join('')}
+      {[prefix ?? '', preBlank, text.substring(0, length), '...', preBlank , subfix ?? ''].join('')}
     </span>
   )
 }
