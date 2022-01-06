@@ -112,28 +112,3 @@
     max-width: calc(90vw - 53px);
   }
 }
-
-.transaction-detail-item .transaction-detail-item__row {
-  &:first-child {
-    .currency-display-component__text,
-    .currency-display-component__suffix {
-      color: #fff;
-    }
-  }
-  .currency-display-component__text,
-  .currency-display-component__suffix {
-    font-size: 12px;
-    color: $gray;
-  }
-  .currency-display-component {
-    @include text-ellipsis;
-    display: flex !important;
-    justify-content: flex-end;
-    text-align: right;
-    .currency-display-component__text {
-      @include text-ellipsis;
-      display: block;
-      flex: 1;
-    }
-  }
-}

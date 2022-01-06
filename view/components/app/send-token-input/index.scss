@@ -167,14 +167,15 @@
           height: 100%;
           .token-symbol {
             @include text-ellipsis;
-            max-width: calc(100% - 21px);
-            margin-right: 5px;
+            max-width: calc(100% - 20px);
+            margin-right: 4px;
           }
           > div {
             @include flex(flex-start);
             width: 100%;
             font-size: 14px;
             color: $white;
+            overflow: hidden;
             &:last-child,
             .currency-display-component__text {
               color: $gray;
@@ -188,25 +189,27 @@
       }
     }
     .amount-input-wrap {
-      max-width: calc(100% - 38px);
+      @include flex;
+      max-width: calc(100% - 37px);
       height: 17px;
       line-height: 17px;
       position: relative;
-      label {
+      > div {
         max-width: 100%;
         height: 100%;
-        display: inline-block;
         visibility: hidden;
+        letter-spacing: 1px;
         font-size: 14px;
         padding: 0;
         min-width: 10px;
       }
       input {
+        width: fit-content;
         max-width: 100%;
         height: 100%;
-        display: inline;
         position: absolute;
         left: 0;
+        top: 0;
         outline: 0;
         border: 0;
         margin: 0;
@@ -218,6 +221,10 @@
         margin-bottom: -6px;
         padding: 0;
       }
+    }
+    .amount-input-token-label {
+      @include text-ellipsis;
+      margin-left: 4px;
     }
     .display-amount-wrap {
       @include flex(flex-start);

@@ -223,6 +223,9 @@
   "blockiesIdenticon": {
     "message": "使用 Blockies Identicon 图标头像"
   },
+  "bridgeConfirmSend": {
+    "message": "确认付款 - DEX桥"
+  },
   "browserNotSupported": {
     "message": "您的浏览器不支持该功能……"
   },
