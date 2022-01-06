@@ -15,6 +15,7 @@ import { useI18nContext } from '@view/hooks/useI18nContext'
 import useInterval from '@view/hooks/useInterval'
 import { getCrossChainState } from '@view/selectors'
 import { showConfTxPage, updateConfirmAction } from '@view/store/actions'
+import { getMostRecentOverviewPage } from '@reducer/history/history'
 const mintAbiInterface = new ethers.utils.Interface(MINTABLE_ABI)
 const bridgeAbiInterface = new ethers.utils.Interface(BRIDGE_ABI)
 export default function CrossChainButton() {
@@ -22,6 +23,7 @@ export default function CrossChainButton() {
   const history = useHistory()
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
+  const mostRecentOverviewPage = useSelector(getMostRecentOverviewPage)
   const isNativeAsset = useMemo(
     () => crossChainState.coinAddress === ethers.constants.AddressZero,
     [crossChainState.coinAddress],
@@ -146,7 +148,7 @@ export default function CrossChainButton() {
 
   return (
     <div className='cross-chain-buttons flex space-between'>
-      <Button className='half-button' onClick={() => history.goBack()}>
+      <Button className='half-button' onClick={() => history.push(mostRecentOverviewPage)}>
         {t('back')}
       </Button>
       {

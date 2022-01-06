@@ -645,44 +645,48 @@ const slice = createSlice({
       slice.caseReducers.validateSendState(state)
     },
     setMaxSendAmount: (state) => {
-      let timer = setInterval(() => {
-        setHandler()
-      }, 1000)
-
-      const setHandler = () => {
-        if (state?.asset) {
-          clearInterval(timer)
-          let amount = '0'
-
-          if (state.asset.type === ASSET_TYPES.TOKEN) {
-            const decimals = state.asset.details?.decimals ?? 0
-            const multiplier = Math.pow(10, Number(decimals))
-            amount = multiplyCurrencies(state?.asset?.balance, multiplier, {
-              toNumericBase: 'hex',
-              multiplicandBase: 16,
-              multiplierBase: 10,
-            })
-          } else {
-            amount = subtractCurrencies(
-              addHexPrefix(state.asset.balance),
-              addHexPrefix(state.gas.gasTotal),
-              {
+      try {
+        let timer = setInterval(() => {
+          setHandler()
+        }, 1000)
+  
+        const setHandler = () => {
+          if (state?.asset) {
+            clearInterval(timer)
+            let amount = '0'
+  
+            if (state.asset.type === ASSET_TYPES.TOKEN) {
+              const decimals = state.asset.details?.decimals ?? 0
+              const multiplier = Math.pow(10, Number(decimals))
+              amount = multiplyCurrencies(state?.asset?.balance, multiplier, {
                 toNumericBase: 'hex',
-                aBase: 16,
-                bBase: 16,
-              },
-            )
+                multiplicandBase: 16,
+                multiplierBase: 10,
+              })
+            } else {
+              amount = subtractCurrencies(
+                addHexPrefix(state.asset.balance),
+                addHexPrefix(state.gas.gasTotal),
+                {
+                  toNumericBase: 'hex',
+                  aBase: 16,
+                  bBase: 16,
+                },
+              )
+            }
+  
+            if (parseFloat(amount) < 0) {
+              amount = '0'
+            }
+  
+            state.amount.max = amount
           }
-
-          if (parseFloat(amount) < 0) {
-            amount = '0'
-          }
-
-          state.amount.max = amount
         }
-      }
+  
+        setHandler()
+      } catch (e) {
 
-      setHandler()
+      }
     },
 
     /**

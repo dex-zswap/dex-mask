@@ -44,6 +44,7 @@ const platform = new ExtensionPlatform()
 
 const notificationManager = new NotificationManager()
 global.METAMASK_NOTIFIER = notificationManager
+global.localStore = new LocalStore()
 
 let popupIsOpen = false
 let notificationIsOpen = false
@@ -53,7 +54,7 @@ const requestAccountTabIds = {}
 
 // state persistence
 const inTest = process.env.IN_TEST === 'true'
-const localStore = inTest ? new ReadOnlyNetworkStore() : new LocalStore()
+const localStore = inTest ? new ReadOnlyNetworkStore() : global.localStore
 let versionedData
 
 if (inTest || process.env.DEXMASK_DEBUG) {

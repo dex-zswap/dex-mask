@@ -45,6 +45,20 @@ export default function TokenList({ onTokenClick }) {
       )
   }, [tokensWithBalances, tokenDisplayOrders])
 
+  const tokensDisplay = useMemo(() => {
+    const tokensDisplay = []
+    const toAddressedCache = []
+
+    tokenSorted.forEach((token) => {
+      if (token && !toAddressedCache.includes(token.address)) {
+        toAddressedCache.push(token.address)
+        tokensDisplay.push(token)
+      }
+    })
+
+    return tokensDisplay
+  }, [tokenSorted])
+
   if (loading) {
     return (
       <div
@@ -63,7 +77,7 @@ export default function TokenList({ onTokenClick }) {
 
   return (
     <div>
-      {tokenSorted.map((tokenData, index) => {
+      {tokensDisplay.map((tokenData, index) => {
         if (tokenData) {
           tokenData.image = assetImages[tokenData.address]
           return <TokenCell key={index} {...tokenData} onClick={onTokenClick} />
