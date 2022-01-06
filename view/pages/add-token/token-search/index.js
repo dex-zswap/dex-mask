@@ -1,33 +1,9 @@
 import React, { Component } from 'react'
-import contractMap from '@metamask/contract-metadata'
 import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import PropTypes from 'prop-types'
 import TextField from '@c/ui/text-field'
 import { getAllAssets } from '@view/helpers/cross-chain-api'
-const contractList = Object.entries(contractMap)
-  .map(([address, tokenData]) => ({ ...tokenData, address }))
-  .filter((tokenData) => Boolean(tokenData.erc20))
-const fuse = new Fuse(contractList, {
-  shouldSort: true,
-  threshold: 0.45,
-  location: 0,
-  distance: 100,
-  maxPatternLength: 32,
-  minMatchCharLength: 1,
-  keys: [
-    {
-      name: 'name',
-      weight: 0.5,
-    },
-    {
-      name: 'symbol',
-      weight: 0.5,
-    },
-  ],
-})
-
-console.log(contractList)
 
 export default class TokenSearch extends Component {
   static contextTypes = {
@@ -49,7 +25,7 @@ export default class TokenSearch extends Component {
     if (res.c === 200) {
       this.contractList = res.d.filter(({ meta_chain_id, token_address }) => meta_chain_id === chainId && token_address !== ethers.constants.AddressZero).map(({
         decimals,
-        symbol,
+        token: symbol,
         token_address: address,
         token_name: name
       }) => ({
@@ -90,15 +66,23 @@ export default class TokenSearch extends Component {
     this.setState({
       searchQuery,
     })
-    const fuseSearchResult = fuse.search(searchQuery)
-    const addressSearchResult = contractList.filter((token) => {
-      return token.address.toLowerCase() === searchQuery.toLowerCase()
-    })
-    const results = [...addressSearchResult, ...fuseSearchResult]
-    this.props.onSearch({
-      searchQuery,
-      results,
-    })
+
+    if (searchQuery) {
+      const fuseSearchResult = this.fuse.search(searchQuery)
+      const addressSearchResult = this.contractList.filter((token) => {
+        return token.address.toLowerCase() === searchQuery.toLowerCase()
+      })
+      const results = [...addressSearchResult, ...fuseSearchResult]
+      this.props.onSearch({
+        searchQuery,
+        results,
+      })
+    } else {
+      this.props.onSearch({
+        searchQuery,
+        results: []
+      })
+    }
   }
 
   render() {
