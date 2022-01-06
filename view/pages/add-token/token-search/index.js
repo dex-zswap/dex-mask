@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import contractMap from '@metamask/contract-metadata'
+import { ethers } from 'ethers'
 import Fuse from 'fuse.js'
 import PropTypes from 'prop-types'
 import TextField from '@c/ui/text-field'
-import InputAdornment from '@material-ui/core/InputAdornment'
+import { getAllAssets } from '@view/helpers/cross-chain-api'
 const contractList = Object.entries(contractMap)
   .map(([address, tokenData]) => ({ ...tokenData, address }))
   .filter((tokenData) => Boolean(tokenData.erc20))
@@ -25,12 +26,64 @@ const fuse = new Fuse(contractList, {
     },
   ],
 })
+
+console.log(contractList)
+
 export default class TokenSearch extends Component {
   static contextTypes = {
     t: PropTypes.func,
   }
   state = {
     searchQuery: '',
+  }
+
+  fuse = null
+
+  contractList = null
+
+  async componentDidMount() {
+    const { chainId } = this.props
+    const resp = await getAllAssets()
+    const res = await resp.json()
+
+    if (res.c === 200) {
+      this.contractList = res.d.filter(({ meta_chain_id, token_address }) => meta_chain_id === chainId && token_address !== ethers.constants.AddressZero).map(({
+        decimals,
+        symbol,
+        token_address: address,
+        token_name: name
+      }) => ({
+        address,
+        decimals,
+        name,
+        symbol,
+        chainId,
+        erc20: true
+      }))
+      this.fuse = new Fuse(this.contractList, {
+        shouldSort: true,
+        threshold: 0.45,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          {
+            name: 'name',
+            weight: 0.5,
+          },
+          {
+            name: 'symbol',
+            weight: 0.5,
+          },
+        ],
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    this.contractList = null
+    this.fuse = null
   }
 
   handleSearch(searchQuery) {
@@ -48,19 +101,6 @@ export default class TokenSearch extends Component {
     })
   }
 
-  renderAdornment() {
-    return (
-      <InputAdornment
-        position='start'
-        style={{
-          marginRight: '12px',
-        }}
-      >
-        <img src='images/search.svg' width='17' height='17' alt='' />
-      </InputAdornment>
-    )
-  }
-
   render() {
     const { error } = this.props
     const { searchQuery } = this.state
@@ -76,7 +116,6 @@ export default class TokenSearch extends Component {
         fullWidth
         autoFocus
         autoComplete='off'
-        startAdornment={this.renderAdornment()}
       />
     )
   }

@@ -44,6 +44,7 @@ const renderHeartBeatIfNotInTest = () =>
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
     t: PropTypes.func,
+    recordTransaction: PropTypes.func,
   }
   static propTypes = {
     // react-router props
@@ -636,6 +637,8 @@ export default class ConfirmTransactionBase extends Component {
       },
       () => {
         this._removeBeforeUnload()
+
+        this.context.recordTransaction(txData)
 
         sendTransaction(txData)
           .then(() => {

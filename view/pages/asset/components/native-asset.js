@@ -16,7 +16,7 @@ export default function NativeAsset({ nativeCurrency }) {
       <ChainSwitcher />
       <SelectedNativeToken />
       <EthOverview className='asset__overview' />
-      <TransactionList hideTokenTransactions />
+      <TransactionList hideTokenTransactions hidePrimary />
     </>
   )
 }

@@ -2000,6 +2000,10 @@
     "message": "Send $1",
     "description": "Symbol of the specified token"
   },
+  "receiveSpecifiedTokens": {
+    "message": "Receive $1",
+    "description": "Symbol of the specified token"
+  },
   "sendToken": {
     "message": "Send Token"
   },

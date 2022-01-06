@@ -102,8 +102,7 @@ export default function SelectedNativeToken() {
             <div className='token-balance'>
               <LongLetter
                 text={primaryCurrencyProperties.value}
-                subfix={` ${primaryCurrencyProperties.suffix}`}
-                length={6}
+                length={12}
               />
             </div>
             <div className='token-usd'>

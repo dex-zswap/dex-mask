@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import PropTypes from 'prop-types'
 import AutoInitTokens from '@c/app/auto-init-tokens'
 import { I18nProvider, LegacyI18nProvider } from '@view/contexts/i18n'
+import { TransactionCacheProvider, LegacyTransactionCacheProvider } from '@view/contexts/transaction-cache'
 import ErrorPage from './error'
 import Routes from './routes'
 
@@ -39,14 +40,18 @@ class Page extends PureComponent {
     return (
       <Provider store={store}>
         <HashRouter hashType='noslash'>
-          <I18nProvider>
-            <LegacyI18nProvider>
-              <>
-                <Routes />
-                <AutoInitTokens />
-              </>
-            </LegacyI18nProvider>
-          </I18nProvider>
+          <TransactionCacheProvider>
+            <LegacyTransactionCacheProvider>
+              <I18nProvider>
+                <LegacyI18nProvider>
+                  <>
+                    <Routes />
+                    <AutoInitTokens />
+                  </>
+                </LegacyI18nProvider>
+              </I18nProvider>
+            </LegacyTransactionCacheProvider>
+          </TransactionCacheProvider>
         </HashRouter>
       </Provider>
     )

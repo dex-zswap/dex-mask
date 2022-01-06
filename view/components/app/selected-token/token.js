@@ -107,8 +107,7 @@ export default function SelectedToken({ token }) {
             <div className='token-balance'>
               <LongLetter
                 text={tokenBalance}
-                subfix={token.symbol}
-                length={7}
+                length={12}
               />
             </div>
             <div className='token-usd'>{formattedFiat}</div>

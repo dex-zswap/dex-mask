@@ -19,12 +19,6 @@ export const I18nProvider = (props) => {
   }, [currentLocale, current, en])
   return <I18nContext.Provider value={t}>{props.children}</I18nContext.Provider>
 }
-I18nProvider.propTypes = {
-  children: PropTypes.node,
-}
-I18nProvider.defaultProps = {
-  children: undefined,
-}
 export class LegacyI18nProvider extends Component {
   static propTypes = {
     children: PropTypes.node,
