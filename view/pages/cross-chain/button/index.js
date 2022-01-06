@@ -1,8 +1,5 @@
-import React, { useMemo, useRef, useCallback, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { ethers } from 'ethers'
 import Button from '@c/ui/button'
+import { getMostRecentOverviewPage } from '@reducer/history/history'
 import { MAX_UINT_256 } from '@shared/constants/app'
 import BRIDGE_ABI from '@shared/contract-abis/bridge'
 import MINTABLE_ABI from '@shared/contract-abis/mintable'
@@ -15,9 +12,15 @@ import { useI18nContext } from '@view/hooks/useI18nContext'
 import useInterval from '@view/hooks/useInterval'
 import { getCrossChainState } from '@view/selectors'
 import { showConfTxPage, updateConfirmAction } from '@view/store/actions'
-import { getMostRecentOverviewPage } from '@reducer/history/history'
+import { ethers } from 'ethers'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 const mintAbiInterface = new ethers.utils.Interface(MINTABLE_ABI)
 const bridgeAbiInterface = new ethers.utils.Interface(BRIDGE_ABI)
+
+export const CONFIRM_SEND_BRIDGE = 'CONFIRM_SEND_BRIDGE'
+
 export default function CrossChainButton() {
   const t = useI18nContext()
   const history = useHistory()
@@ -95,12 +98,15 @@ export default function CrossChainButton() {
         value,
         data,
       },
-      (e) => {}
+      (e) => {},
     )
 
-    dispatch(showConfTxPage({
-      isBridge: true
-    }))
+    dispatch(
+      showConfTxPage({
+        isBridge: true,
+      }),
+    )
+    localStorage[CONFIRM_SEND_BRIDGE] = crossChainState.dest
     dispatch(updateConfirmAction(null))
     history.push(CONFIRM_TRANSACTION_ROUTE)
   }, [decimals, isNativeAsset, crossChainState])
@@ -148,39 +154,32 @@ export default function CrossChainButton() {
 
   return (
     <div className='cross-chain-buttons flex space-between'>
-      <Button className='half-button' onClick={() => history.push(mostRecentOverviewPage)}>
+      <Button
+        className='half-button'
+        onClick={() => history.push(mostRecentOverviewPage)}
+      >
         {t('back')}
       </Button>
-      {
-        mounted.current ?
-        (
-          <>
-            {
-              allowed.current ? 
-              (
-                <Button
-                  type='primary'
-                  className='half-button'
-                  disabled={disableButton}
-                  onClick={crossChain}
-                >
-                  {t('next')}
-                </Button>
-              )
-              :
-              (
-                <Button
-                  type='primary'
-                  className='half-button'
-                  onClick={approve}
-                >
-                  {t('approveButtonText')}
-                </Button>
-              )
-            }
-          </>
-        ) : <span></span>
-      }
+      {mounted.current ? (
+        <>
+          {allowed.current ? (
+            <Button
+              type='primary'
+              className='half-button'
+              disabled={disableButton}
+              onClick={crossChain}
+            >
+              {t('next')}
+            </Button>
+          ) : (
+            <Button type='primary' className='half-button' onClick={approve}>
+              {t('approveButtonText')}
+            </Button>
+          )}
+        </>
+      ) : (
+        <span></span>
+      )}
     </div>
   )
 }

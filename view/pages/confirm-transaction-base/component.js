@@ -336,7 +336,6 @@ export default class ConfirmTransactionBase extends Component {
             prefix='≈ '
             type={SECONDARY}
             value={hexTransactionTotal}
-            hideLabel={Boolean(useNativeCurrencyAsPrimaryCurrency)}
           />
         )
       }

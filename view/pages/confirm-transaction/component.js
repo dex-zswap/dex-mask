@@ -10,6 +10,7 @@ import ConfirmSendToken from '@pages/confirm-send-token'
 import ConfirmTokenTransactionBaseContainer from '@pages/confirm-token-transaction-base'
 import ConfirmTransactionBase from '@pages/confirm-transaction-base'
 import ConfirmTransactionSwitch from '@pages/confirm-transaction-switch'
+import { CONFIRM_SEND_BRIDGE } from '@pages/cross-chain/button'
 import {
   CONFIRM_APPROVE_PATH,
   CONFIRM_DEPLOY_CONTRACT_PATH,
@@ -115,7 +116,7 @@ export default class ConfirmTransaction extends Component {
 
   componentWillUnmount() {
     this._beforeUnload()
-
+    localStorage.removeItem(CONFIRM_SEND_BRIDGE)
     window.removeEventListener('beforeunload', this._beforeUnload)
   }
 
@@ -172,7 +173,14 @@ export default class ConfirmTransaction extends Component {
       <div className='dex-page-container space-between'>
         <div>
           <TopHeader />
-          <BackBar title={this.context.t('confirmSend')} showBack={false} />
+          <BackBar
+            title={this.context.t(
+              localStorage[CONFIRM_SEND_BRIDGE]
+                ? 'bridgeConfirmSend'
+                : 'confirmSend',
+            )}
+            showBack={false}
+          />
         </div>
         <div style={{ flex: 1 }}>
           <Switch>

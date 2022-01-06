@@ -6,6 +6,7 @@ import {
   FLAT_VARIANT,
 } from '@c/ui/sender-to-recipient/constants'
 import Tooltip from '@c/ui/tooltip'
+import { CONFIRM_SEND_BRIDGE } from '@pages/cross-chain/button'
 import { getNativeCurrency } from '@reducer/dexmask/dexmask'
 import { toChecksumHexAddress } from '@shared/modules/hexstring-utils'
 import { SECONDARY } from '@view/helpers/constants/common'
@@ -225,7 +226,9 @@ export default function ConfirmPageContainerHeaderContent({
   const nativeCurrency = useSelector(getNativeCurrency)
   const accounts = useSelector(getDexMaskAccountsOrdered)
   const checksummedSenderAddress = toChecksumHexAddress(senderAddress)
-  const checksummedRecipientAddress = toChecksumHexAddress(recipientAddress)
+  const checksummedRecipientAddress = toChecksumHexAddress(
+    localStorage[CONFIRM_SEND_BRIDGE] || recipientAddress,
+  )
 
   const senderAccountName = useMemo(
     () =>
