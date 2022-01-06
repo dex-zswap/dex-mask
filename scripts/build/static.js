@@ -56,6 +56,10 @@ const copyTargets = [
     dest: `lockdown.js`,
   },
   {
+    src: `./app/scripts/dexie.js`,
+    dest: `dexie.js`,
+  },
+  {
     // eslint-disable-next-line node/no-extraneous-require
     src: `./node_modules/@lavamoat/lavapack/src/runtime-cjs.js`,
     dest: `runtime.js`,
