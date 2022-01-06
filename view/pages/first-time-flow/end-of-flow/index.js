@@ -10,9 +10,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { DEFAULT_ROUTE } from '@view/helpers/constants/routes'
 import { I18nContext } from '@view/contexts/i18n'
 import { getOnboardingInitiator } from '@view/selectors'
-import { setCompletedOnboarding } from '@view/store/actions'
+import { setCompletedOnboarding, setProviderType } from '@view/store/actions'
 import { getDexMaskState } from '@reducer/dexmask/dexmask'
 import { returnToOnboardingInitiator } from '@pages/first-time-flow/util'
+import { DEX_MAINNET } from '@shared/constants/network'
 import Button from '@c/ui/button'
 import Logo from '@c/ui/logo'
 export default function EndOfFlow() {
@@ -40,6 +41,7 @@ export default function EndOfFlow() {
   const onComplete = useCallback(async () => {
     removeBeforeUnload()
     await onOnboardingComplete()
+    await dispatch(setProviderType(DEX_MAINNET))
 
     if (onboardingInitiator) {
       await returnToOnboardingInitiator(onboardingInitiator)

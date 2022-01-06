@@ -1109,7 +1109,7 @@
     "message": " Imported accounts will not be associated with your originally created DEXMask account Secret Recovery Phrase. Learn more about imported accounts "
   },
   "importAccountSeedPhrase": {
-    "message": "Import an account with Secret Recovery Phrase"
+    "message": "Import an account with Secret Recovery Phrase."
   },
   "importAccountText": {
     "message": "or $1",

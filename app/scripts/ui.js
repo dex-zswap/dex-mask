@@ -55,7 +55,6 @@ async function start() {
       const state = store.getState()
       const { metamask: { completedOnboarding } = {} } = state
 
-      //  FIXME: 原先在浏览器打开
       if (process.env.DEXMASK_DEBUG) {
         if (
           !completedOnboarding &&
