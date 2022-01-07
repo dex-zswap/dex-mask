@@ -7,9 +7,11 @@
   overflow: hidden;
   padding: 20px 18px;
   @include modal;
+  z-index: 1060;
 
   &__close-area {
     @include modal-background;
+    z-index: 1060;
   }
 
   .account-menu__header {
