@@ -1,11 +1,13 @@
-import React, { PureComponent } from 'react'
+import Modal from '@c/app/modal'
+import Button from '@c/ui/button'
+import Identicon from '@c/ui/identicon'
+import TextField from '@c/ui/text-field'
+import { calcTokenAmount } from '@view/helpers/utils/token-util'
 import BigNumber from 'bignumber.js'
 import classnames from 'classnames'
 import log from 'loglevel'
 import PropTypes from 'prop-types'
-import Modal from '@c/app/modal'
-import TextField from '@c/ui/text-field'
-import { calcTokenAmount } from '@view/helpers/utils/token-util'
+import React, { PureComponent } from 'react'
 const MAX_UNSIGNED_256_INT = new BigNumber(2).pow(256).minus(1).toString(10)
 export default class EditApprovalPermission extends PureComponent {
   static propTypes = {
@@ -48,27 +50,22 @@ export default class EditApprovalPermission extends PureComponent {
           <div className='edit-approval-permission__title'>
             {t('editPermission')}
           </div>
-          <div
-            className='edit-approval-permission__header__close'
+          <img
+            width={10}
+            src='images/icons/close.png'
             onClick={() => hideModal()}
           />
         </div>
-        <div className='edit-approval-permission__account-info'>
-          <div className='edit-approval-permission__account-info__account'>
-            <img
-              width='32px'
-              src='images/dex/account-menu/account-avatar.png'
-            />
-            {/* <Identicon address={address} diameter={32} /> */}
-            <div className='edit-approval-permission__name-and-balance-container'>
-              <div className='edit-approval-permission__account-info__name'>
-                {name}
-              </div>
-              <div>{t('balance')}</div>
-            </div>
+        <div className='edit-approval-account-wrap'>
+          <div className='edit-approval-account'>
+            <Identicon address={address} diameter={28} />
+            <div>{name}</div>
           </div>
-          <div className='edit-approval-permission__account-info__balance'>
-            {`${Number(tokenBalance).toPrecision(9)} ${tokenSymbol}`}
+          <div>
+            <span>{t('balance')}</span>
+            <span>{`${Number(tokenBalance).toPrecision(
+              9,
+            )} ${tokenSymbol}`}</span>
           </div>
         </div>
         <div className='edit-approval-permission__edit-section'>
@@ -80,22 +77,15 @@ export default class EditApprovalPermission extends PureComponent {
           </div>
           <div className='edit-approval-permission__edit-section__option'>
             <div
-              className='edit-approval-permission__edit-section__radio-button'
+              className='edit-approval-permission-radio-wrap'
               onClick={() =>
                 this.setState({
                   selectedOptionIsUnlimited: true,
                 })
               }
             >
-              <div
-                className={classnames({
-                  'edit-approval-permission__edit-section__radio-button-outline': !selectedOptionIsUnlimited,
-                  'edit-approval-permission__edit-section__radio-button-outline--selected': selectedOptionIsUnlimited,
-                })}
-              />
-              <div className='edit-approval-permission__edit-section__radio-button-fill' />
               {selectedOptionIsUnlimited && (
-                <div className='edit-approval-permission__edit-section__radio-button-dot' />
+                <div className='edit-approval-permission-radio'></div>
               )}
             </div>
             <div className='edit-approval-permission__edit-section__option-text'>
@@ -121,22 +111,15 @@ export default class EditApprovalPermission extends PureComponent {
           </div>
           <div className='edit-approval-permission__edit-section__option'>
             <div
-              className='edit-approval-permission__edit-section__radio-button'
+              className='edit-approval-permission-radio-wrap'
               onClick={() =>
                 this.setState({
                   selectedOptionIsUnlimited: false,
                 })
               }
             >
-              <div
-                className={classnames({
-                  'edit-approval-permission__edit-section__radio-button-outline': selectedOptionIsUnlimited,
-                  'edit-approval-permission__edit-section__radio-button-outline--selected': !selectedOptionIsUnlimited,
-                })}
-              />
-              <div className='edit-approval-permission__edit-section__radio-button-fill' />
               {!selectedOptionIsUnlimited && (
-                <div className='edit-approval-permission__edit-section__radio-button-dot' />
+                <div className='edit-approval-permission-radio'></div>
               )}
             </div>
             <div className='edit-approval-permission__edit-section__option-text'>
@@ -177,6 +160,16 @@ export default class EditApprovalPermission extends PureComponent {
             </div>
           </div>
         </div>
+        <Button
+          className='edit-approval-save-btn'
+          type='primary'
+          onSubmit={() => {
+            setCustomAmount(selectedOptionIsUnlimited ? '' : customSpendLimit)
+            hideModal()
+          }}
+        >
+          {t('save')}
+        </Button>
       </div>
     )
   }
@@ -230,15 +223,9 @@ export default class EditApprovalPermission extends PureComponent {
     )
     return (
       <Modal
-        onSubmit={() => {
-          setCustomAmount(selectedOptionIsUnlimited ? '' : customSpendLimit)
-          hideModal()
-        }}
-        submitText={t('save')}
-        submitType='primary'
         contentClass='edit-approval-permission-modal-content'
-        containerClass='edit-approval-permission-modal-container'
         submitDisabled={disabled}
+        hideFooter
       >
         {this.renderModalContent(error)}
       </Modal>

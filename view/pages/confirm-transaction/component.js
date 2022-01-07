@@ -165,7 +165,11 @@ export default class ConfirmTransaction extends Component {
   }
 
   render() {
-    const { transactionId, paramsTransactionId } = this.props // Show routes when state.confirmTransaction has been set and when either the ID in the params
+    const {
+      location: { pathname },
+      transactionId,
+      paramsTransactionId,
+    } = this.props // Show routes when state.confirmTransaction has been set and when either the ID in the params
     // isn't specified or is specified and matches the ID in state.confirmTransaction in order to
     // support URLs of /confirm-transaction or /confirm-transaction/<transactionId>
 
@@ -174,14 +178,16 @@ export default class ConfirmTransaction extends Component {
       <div className='dex-page-container space-between'>
         <div>
           <TopHeader />
-          <BackBar
-            title={this.context.t(
-              localStorage[CONFIRM_SEND_BRIDGE]
-                ? 'bridgeConfirmSend'
-                : 'confirmSend',
-            )}
-            showBack={false}
-          />
+          {!pathname.includes('approve') && (
+            <BackBar
+              title={this.context.t(
+                localStorage[CONFIRM_SEND_BRIDGE]
+                  ? 'bridgeConfirmSend'
+                  : 'confirmSend',
+              )}
+              showBack={false}
+            />
+          )}
         </div>
         <div
           style={{

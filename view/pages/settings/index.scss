@@ -75,14 +75,14 @@
     }
   }
   .setting-input-btn-wrap {
-    @include flex(space-between);
+    @include flex(space-between, flex-start);
     > div {
       flex: 1;
     }
     button {
       @include w-h(64px, 26px);
       font-size: 12px;
-      margin-left: 15px;
+      margin: 19px 0 0 15px;
     }
   }
 }
