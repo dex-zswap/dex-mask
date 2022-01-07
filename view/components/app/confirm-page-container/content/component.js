@@ -1,8 +1,8 @@
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import ErrorMessage from '@c/ui/error-message'
 import { PageContainerFooter } from '@c/ui/page-container'
 import Tabs from '@c/ui/tabs'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 import { ConfirmPageContainerWarning } from '.'
 export default class ConfirmPageContainerContent extends Component {
   static contextTypes = {
@@ -39,8 +39,7 @@ export default class ConfirmPageContainerContent extends Component {
     const { detailsComponent, dataComponent } = this.props
 
     if (detailsComponent && dataComponent) {
-      return detailsComponent
-      // return this.renderTabs()
+      return detailsComponent // return this.renderTabs()
     }
 
     return detailsComponent || dataComponent
@@ -49,13 +48,18 @@ export default class ConfirmPageContainerContent extends Component {
   renderTabs() {
     const { t } = this.context
     const { detailsComponent, dataComponent } = this.props
-
     return (
       <Tabs
         actived='details'
         tabs={[
-          { label: t('details'), key: 'details' },
-          { label: t('data'), key: 'data' },
+          {
+            label: t('details'),
+            key: 'details',
+          },
+          {
+            label: t('data'),
+            key: 'data',
+          },
         ]}
       >
         <div className='confirm-page-container-content__tab'>
@@ -117,9 +121,9 @@ export default class ConfirmPageContainerContent extends Component {
         /> */}
         {this.renderContent()}
         {/* {(errorKey || errorMessage) && (
-          <div className='confirm-page-container-content__error-container'>
-            <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
-          </div>
+         <div className='confirm-page-container-content__error-container'>
+           <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
+         </div>
         )} */}
         <div className='confirm-page-container-content__error-container'>
           <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />

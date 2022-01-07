@@ -51,11 +51,12 @@ import { useUserPreferencedCurrency } from './useUserPreferencedCurrency'
  * state access required to take a transactionGroup and derive from it a shape
  * of data that can power all views related to a transaction. Presently the main
  * case is for shared logic between transaction-list-item and transaction-detail-view
- * @param {Object} transactionGroup - group of transactions
+ * @param {Object}  transactionGroup - group of transactions
+ * @param {Boolean} hidePrimary - hide primary currency
  * @return {TransactionDisplayData}
  */
 
-export function useTransactionDisplayData(transactionGroup) {
+export function useTransactionDisplayData(transactionGroup, hidePrimary) {
   // To determine which primary currency to display for swaps transactions we need to be aware
   // of which asset, if any, we are viewing at present
   const dispatch = useDispatch()
@@ -194,11 +195,11 @@ export function useTransactionDisplayData(transactionGroup) {
     title =
       (methodData?.name && camelCaseToCapitalize(methodData.name)) ||
       transactionTypeTitle
-    subtitle = origin
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
     subtitleContainsOrigin = true
   } else if (type === TRANSACTION_TYPES.INCOMING) {
     category = TRANSACTION_GROUP_CATEGORIES.RECEIVE
-    title = t('receive')
+    title = t('receiveSpecifiedTokens', [nativeCurrency])
     prefix = ''
     subtitle = t('fromAddress', [shortenAddress(senderAddress)])
   } else if (
@@ -226,7 +227,7 @@ export function useTransactionDisplayData(transactionGroup) {
   const [primaryCurrency] = useCurrencyDisplay(primaryValue, {
     prefix,
     displayValue: primaryDisplayValue,
-    suffix: primarySuffix,
+    suffix: hidePrimary ? ' ' : primarySuffix,
     ...primaryCurrencyPreferences,
   })
   const [secondaryCurrency] = useCurrencyDisplay(primaryValue, {
@@ -235,6 +236,12 @@ export function useTransactionDisplayData(transactionGroup) {
     hideLabel: isTokenCategory || Boolean(swapTokenValue),
     ...secondaryCurrencyPreferences,
   })
+  const currency = secondaryCurrencyPreferences.currency.toUpperCase()
+  const secondaryCurrencyDisplay =
+    (isTokenCategory && !tokenFiatAmount) ||
+    (type === TRANSACTION_TYPES.SWAP && !swapTokenFiatAmount)
+      ? undefined
+      : secondaryCurrency
   return {
     title,
     category,
@@ -245,11 +252,9 @@ export function useTransactionDisplayData(transactionGroup) {
       type === TRANSACTION_TYPES.SWAP && isPending ? '' : primaryCurrency,
     senderAddress,
     recipientAddress,
-    secondaryCurrency:
-      (isTokenCategory && !tokenFiatAmount) ||
-      (type === TRANSACTION_TYPES.SWAP && !swapTokenFiatAmount)
-        ? undefined
-        : secondaryCurrency,
+    secondaryCurrency: secondaryCurrencyDisplay.endsWith(currency)
+      ? secondaryCurrencyDisplay
+      : [secondaryCurrencyDisplay, currency].join(' '),
     displayedStatusKey,
     isPending,
     isSubmitted,

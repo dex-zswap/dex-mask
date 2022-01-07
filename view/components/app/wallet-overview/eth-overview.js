@@ -52,8 +52,8 @@ const EthOverview = ({ className }) => {
     return res?.d?.length
   }, [loading, error, res])
   const supportChains = useMemo(() => {
-    return supportCrossChain ? res.d : [];
-  },[supportCrossChain, res]);
+    return supportCrossChain ? res.d : []
+  }, [supportCrossChain, res])
   const defaultTargetChain = useMemo(
     () => (supportCrossChain ? res.d[0] : null),
     [supportCrossChain, res],

@@ -1,3 +1,9 @@
+import React, { useCallback, useEffect, useMemo, useState, forwardRef, useImperativeHandle } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
+import { zeroAddress } from 'ethereumjs-util'
+import { ethers } from 'ethers'
 import TokenListItem from '@c/app/send-token-input/token-list-item'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Identicon from '@c/ui/identicon'
@@ -21,13 +27,7 @@ import {
   getShouldHideZeroBalanceTokens,
 } from '@view/selectors'
 import { showAccountDetail } from '@view/store/actions'
-import BigNumber from 'bignumber.js'
-import classnames from 'classnames'
-import { zeroAddress } from 'ethereumjs-util'
-import { ethers } from 'ethers'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-export default function sendTokenInput({
+function SendTokenInput({
   accountAddress,
   tokenAddress,
   tokenList,
@@ -41,7 +41,7 @@ export default function sendTokenInput({
   onReverse,
   includesNativeCurrencyToken = true,
   showAmountWrap = true,
-}) {
+}, ref) {
   const t = useI18nContext()
   const dispatch = useDispatch()
   const nativeCurrency = useSelector(getNativeCurrency)
@@ -186,6 +186,9 @@ export default function sendTokenInput({
     },
     [maxSendAmount, changeAmount],
   )
+  const resetAmount = useCallback(() => {
+    setAmount('')
+  }, [])
   const setAmountToMax = useCallback(() => {
     setAmount(maxSendAmount)
     changeAmount && changeAmount(maxSendAmount)
@@ -196,6 +199,10 @@ export default function sendTokenInput({
   useEffect(() => {
     dispatch(setMaxSendAmount())
   }, [selectedAccount])
+
+  useImperativeHandle(ref, () => ({
+    resetAmount
+  }))
   return (
     <div className='base-width'>
       <div className='send-token-input-wrap w-100'>
@@ -347,7 +354,11 @@ export default function sendTokenInput({
               )}
             </div>
             <div className='send-token-input-wrap half-wrap w-100'>
-              <div style={{ width: 'calc(100% - 40px)' }}>
+              <div
+                style={{
+                  width: 'calc(100% - 40px)',
+                }}
+              >
                 <div>
                   <div className='amount-input-wrap'>
                     <div>{amount}</div>
@@ -385,3 +396,5 @@ export default function sendTokenInput({
     </div>
   )
 }
+
+export default forwardRef(SendTokenInput)

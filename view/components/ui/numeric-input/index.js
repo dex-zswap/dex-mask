@@ -1,9 +1,9 @@
+import React from 'react'
+import classNames from 'classnames'
+import PropTypes from 'prop-types'
 import TextField from '@c/ui/text-field'
 import Typography from '@c/ui/typography'
 import { COLORS, TYPOGRAPHY } from '@view/helpers/constants/design-system'
-import classNames from 'classnames'
-import PropTypes from 'prop-types'
-import React from 'react'
 export default function NumericInput({
   detailText = '',
   value = 0,

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
+import TokenImage from '@c/ui/token-image'
 import { checkExistingAddresses } from '@view/helpers/utils'
 import TokenListPlaceholder from './token-list-placeholder'
 export default class TokenList extends Component {
@@ -24,7 +25,7 @@ export default class TokenList extends Component {
         </div>
         <div className='token-list__tokens-container'>
           {results.slice(0, 6).map((_, i) => {
-            const { logo, symbol, name, address } = results[i] || {}
+            const { logo, symbol, name, address, chainId } = results[i] || {}
             const tokenAlreadyAdded = checkExistingAddresses(address, tokens)
 
             const onClick = () =>
@@ -42,12 +43,9 @@ export default class TokenList extends Component {
                   key={i}
                   tabIndex='0'
                 >
-                  <div
-                    className='token-list__token-icon'
-                    style={{
-                      backgroundImage: logo && `url(images/contract/${logo})`,
-                    }}
-                  />
+                  <div className='token-list__token-icon'>
+                    <TokenImage address={address} chainId={chainId} size={32} />
+                  </div>
                   <div className='token-list__token-data'>
                     <span className='token-list__token-name'>{`${name} (${symbol})`}</span>
                   </div>

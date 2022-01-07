@@ -93,13 +93,6 @@ export default function AccountOptionsMenu({
           })
           onClose()
         }}
-        subtitle={
-          blockExplorerUrlSubTitle ? (
-            <span className='account-options-menu__explorer-origin'>
-              {blockExplorerUrlSubTitle}
-            </span>
-          ) : null
-        }
         iconClassName='account-options-menu__explorer-origin'
       >
         {rpcPrefs.blockExplorerUrl

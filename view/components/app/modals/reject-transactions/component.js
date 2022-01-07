@@ -27,7 +27,7 @@ export default class RejectTransactionsModal extends PureComponent {
         onCancel={hideModal}
         submitText={t('rejectAll')}
         cancelText={t('cancel')}
-        submitType='secondary'
+        submitType='warning'
       >
         <div>
           <div className='reject-transactions__description'>

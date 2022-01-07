@@ -16,7 +16,7 @@ export default function TokenAsset({ token }) {
       <ChainSwitcher />
       <SelectedToken token={token} />
       <TokenOverview className='asset__overview' token={token} />
-      <TransactionList tokenAddress={token.address} />
+      <TransactionList tokenAddress={token.address} hidePrimary />
     </>
   )
 }

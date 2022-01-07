@@ -1,7 +1,7 @@
-import Button from '@c/ui/button'
+import React, { Component } from 'react'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import Button from '@c/ui/button'
 export default class PageContainerFooter extends Component {
   static propTypes = {
     children: PropTypes.node,

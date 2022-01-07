@@ -1718,6 +1718,10 @@
   "receive2": {
     "message": "Receive"
   },
+  "receiveSpecifiedTokens": {
+    "message": "Receive $1",
+    "description": "Symbol of the specified token"
+  },
   "recents": {
     "message": "Recents"
   },

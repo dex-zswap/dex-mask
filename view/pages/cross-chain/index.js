@@ -7,7 +7,7 @@ import { useI18nContext } from '@view/hooks/useI18nContext'
 import {
   getSelectedAccount,
   getCurrentChainId,
-  getCrossChainState
+  getCrossChainState,
 } from '@view/selectors'
 import { getTokens } from '@reducer/dexmask/dexmask'
 import {
@@ -24,23 +24,28 @@ export default function CrossChain() {
   const selectedAccount = useSelector(getSelectedAccount)
   const crossChainState = useSelector(getCrossChainState)
   const tokens = useSelector(getTokens)
-  const isNative = useMemo(() => crossChainState.coinAddress === ethers.constants.AddressZero, [crossChainState.coinAddress])
-  const { loading, tokensWithBalances } = useTokenTracker(
-    tokens,
-    true
+  const isNative = useMemo(
+    () => crossChainState.coinAddress === ethers.constants.AddressZero,
+    [crossChainState.coinAddress],
   )
+  const { loading, tokensWithBalances } = useTokenTracker(tokens, true)
   const targetToken = useMemo(() => {
     if (isNative || loading) {
       return null
     }
 
-    return tokensWithBalances.find(({ address }) => address.toLowerCase() === crossChainState.coinAddress.toLowerCase())
+    return tokensWithBalances.find(
+      ({ address }) =>
+        address.toLowerCase() === crossChainState.coinAddress.toLowerCase(),
+    )
   }, [isNative, loading, tokensWithBalances, crossChainState.coinAddress])
   const cleanUp = useCallback(() => {
     dispatch(disposePollingGas())
-    dispatch(updateCrossChainState({
-      dest: ''
-    }))
+    dispatch(
+      updateCrossChainState({
+        dest: '',
+      }),
+    )
   }, [])
   useEffect(() => {
     dispatch(initializeCrossState(selectedAccount.balance))
@@ -50,15 +55,15 @@ export default function CrossChain() {
     selectedAccount.address,
     selectedAccount.balance,
   ])
-
   useEffect(() => {
     if (targetToken) {
-      dispatch(updateCrossChainState({
-        maxSendAmount: targetToken.string
-      }))
+      dispatch(
+        updateCrossChainState({
+          maxSendAmount: targetToken.string,
+        }),
+      )
     }
   }, [targetToken])
-
   return (
     <div className='cross-chain-page dex-page-container space-between base-width'>
       <div className='cross-chain-top'>

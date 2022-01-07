@@ -21,6 +21,7 @@ import { useShouldShowSpeedUp } from '@view/hooks/useShouldShowSpeedUp'
 import { useTransactionDisplayData } from '@view/hooks/useTransactionDisplayData'
 export default function TransactionListItem({
   transactionGroup,
+  hidePrimary,
   isEarliestNonce = false,
 }) {
   const t = useI18nContext()
@@ -60,7 +61,7 @@ export default function TransactionListItem({
     displayedStatusKey,
     isPending,
     senderAddress,
-  } = useTransactionDisplayData(transactionGroup)
+  } = useTransactionDisplayData(transactionGroup, hidePrimary)
   const isSignatureReq =
     category === TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST
   const isApproval = category === TRANSACTION_GROUP_CATEGORIES.APPROVAL

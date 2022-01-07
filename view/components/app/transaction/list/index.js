@@ -58,6 +58,7 @@ const getFilteredTransactionGroups = (
 export default function TransactionList({
   hideTokenTransactions,
   tokenAddress,
+  hidePrimary = false,
 }) {
   const [limit, setLimit] = useState(PAGE_INCREMENT)
   const t = useI18nContext()
@@ -116,14 +117,12 @@ export default function TransactionList({
                 isEarliestNonce={index === 0}
                 transactionGroup={transactionGroup}
                 key={`${transactionGroup.nonce}:${index}`}
+                hidePrimary={hidePrimary}
               />
             ))}
           </div>
         )}
         <div className='transaction-list__completed-transactions'>
-          {pendingLength > 0 ? (
-            <div className='transaction-list__header'>{t('history')}</div>
-          ) : null}
           {completedTransactions.length > 0 ? (
             completedTransactions
               .slice(0, limit)
@@ -131,6 +130,7 @@ export default function TransactionList({
                 <TransactionListItem
                   transactionGroup={transactionGroup}
                   key={`${transactionGroup.nonce}:${limit + index - 10}`}
+                  hidePrimary={hidePrimary}
                 />
               ))
           ) : (
@@ -143,8 +143,7 @@ export default function TransactionList({
           {completedTransactions.length > limit && (
             <Button
               className='transaction-list__view-more'
-              type='primary'
-              rounded
+              type='transparent'
               onClick={viewMore}
             >
               {t('viewMore')}

@@ -5,7 +5,6 @@ import { clone } from 'lodash'
 import log from 'loglevel'
 import { getEnvironmentType } from '@app/scripts/lib/util'
 import { ALERT_TYPES } from '@shared/constants/alerts'
-
 import { ENVIRONMENT_TYPE_POPUP } from '@shared/constants/app'
 import * as actions from './store/actions'
 import configureStore from './store/store'

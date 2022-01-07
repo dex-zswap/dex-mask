@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
@@ -26,12 +26,13 @@ import {
 import CrossDestChainSwitcher from './dest-chain-switcher'
 import CrossFromChainSwitcher from './from-chain-switcher'
 export default function CrossChainTokenInput() {
+  const tokenInputRef = useRef(null)
   const [state, setState] = useState({
     includesNativeCurrencyToken: true,
     tokenList: [],
     reverseAble: false,
   })
-  const t = useI18nContext();
+  const t = useI18nContext()
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
   const tokens = useSelector(getTokens)
@@ -82,10 +83,11 @@ export default function CrossChainTokenInput() {
       .then((res) => {
         if (res.c === 200) {
           const target = res.d.find(
-            ({ target_meta_chain_id, token_address }) =>
+            ({ target_meta_chain_id, target_token_address }) =>
               target_meta_chain_id === toBnString(crossChainState.fromChain) &&
-              token_address === crossChainState.coinAddress,
+              target_token_address === crossChainState.coinAddress,
           )
+
           const newCrossInfo = Object.assign({}, crossChainState, {
             destChain: crossChainState.fromChain,
             fromChain: crossChainState.destChain,
@@ -107,7 +109,8 @@ export default function CrossChainTokenInput() {
           })
         }
       })
-  }, [crossChainState, allNetworks])
+      tokenInputRef.current?.resetAmount?.()
+  }, [crossChainState, allNetworks, tokenInputRef.current])
   useDeepEffect(() => {
     const tokenList = []
     let reverseAble = false
@@ -163,9 +166,10 @@ export default function CrossChainTokenInput() {
   ])
   return (
     <div>
-      <CrossFromChainSwitcher />
+      <CrossFromChainSwitcher resetAmount={tokenInputRef.current?.resetAmount} />
       <SendTokenInput
         {...state}
+        ref={component => tokenInputRef.current = component}
         tokenAddress={crossChainState.coinAddress}
         maxSendAmount={
           isNative

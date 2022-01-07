@@ -20,7 +20,9 @@ const BackBar = ({ title, url, method = 'push', backCb, showBack = true }) => {
         </div>
       )}
       <div
-        style={{ marginRight: showBack ? '44px' : '20px' }}
+        style={{
+          marginRight: showBack ? '44px' : '20px',
+        }}
         className='back-bar-title'
       >
         {title}

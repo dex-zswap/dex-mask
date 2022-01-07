@@ -44,18 +44,15 @@ export default function TokenList({ onTokenClick }) {
         ),
       )
   }, [tokensWithBalances, tokenDisplayOrders])
-
   const tokensDisplay = useMemo(() => {
     const tokensDisplay = []
     const toAddressedCache = []
-
     tokenSorted.forEach((token) => {
       if (token && !toAddressedCache.includes(token.address)) {
         toAddressedCache.push(token.address)
         tokensDisplay.push(token)
       }
     })
-
     return tokensDisplay
   }, [tokenSorted])
 

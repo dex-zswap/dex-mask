@@ -1,3 +1,5 @@
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { getEnvironmentType } from '@app/scripts/lib/util'
 import ConfirmPageContainer from '@c/app/confirm-page-container'
 import GasTiming from '@c/app/gas-timing'
@@ -35,8 +37,8 @@ import {
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
 } from '@view/store/actions'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import { SEND_BEIDGE_TOKEN } from '@pages/cross-chain/button'
+import cloneDeep from 'lodash/cloneDeep'
 
 const renderHeartBeatIfNotInTest = () =>
   process.env.IN_TEST === 'true' ? null : <LoadingHeartBeat />
@@ -44,6 +46,7 @@ const renderHeartBeatIfNotInTest = () =>
 export default class ConfirmTransactionBase extends Component {
   static contextTypes = {
     t: PropTypes.func,
+    recordTransaction: PropTypes.func,
   }
   static propTypes = {
     // react-router props
@@ -421,7 +424,9 @@ export default class ConfirmTransactionBase extends Component {
                   {renderHeartBeatIfNotInTest()}
                   <img
                     width={10}
-                    style={{ marginRight: '6px' }}
+                    style={{
+                      marginRight: '6px',
+                    }}
                     src='images/icons/edit.png'
                     onClick={() => {
                       this.handleEditGas()
@@ -434,8 +439,7 @@ export default class ConfirmTransactionBase extends Component {
                   />
                 </div>
               }
-              detailText={null}
-              // detailText={
+              detailText={null} // detailText={
               //   <div className='confirm-page-container-content__currency-container'>
               //     {renderHeartBeatIfNotInTest()}
               //     <UserPreferencedCurrencyDisplay
@@ -452,7 +456,13 @@ export default class ConfirmTransactionBase extends Component {
                   className='confirm-page-container-content__currency-container confirm-page-container-content__currency-container2'
                 >
                   {renderHeartBeatIfNotInTest()}
-                  <div style={{ marginRight: '4px' }}>{t('maxFee')}:</div>
+                  <div
+                    style={{
+                      marginRight: '4px',
+                    }}
+                  >
+                    {t('maxFee')}:
+                  </div>
                   <UserPreferencedCurrencyDisplay
                     className='max-fee-amount-wrap'
                     key='editGasSubTextFeeAmount'
@@ -636,6 +646,15 @@ export default class ConfirmTransactionBase extends Component {
       () => {
         this._removeBeforeUnload()
 
+        const reportTxData = cloneDeep(txData)
+
+        if (localStorage[SEND_BEIDGE_TOKEN]) {
+          reportTxData.tokenAddress = localStorage[SEND_BEIDGE_TOKEN]
+          reportTxData.type = 'crossChain'
+          localStorage.removeItem(SEND_BEIDGE_TOKEN)
+        }
+
+        this.context.recordTransaction(reportTxData)
         sendTransaction(txData)
           .then(() => {
             clearConfirmTransaction()

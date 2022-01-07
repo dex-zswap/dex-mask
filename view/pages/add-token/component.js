@@ -13,6 +13,7 @@ import {
   CONFIRM_ADD_TOKEN_ROUTE,
   DEFAULT_ROUTE,
 } from '@view/helpers/constants/routes'
+import { toBnString } from '@view/helpers/utils/conversions.util'
 import { checkExistingAddresses } from '@view/helpers/utils'
 import { tokenInfoGetter } from '@view/helpers/utils/token-util'
 import TokenList from './token-list'
@@ -331,9 +332,11 @@ class AddToken extends Component {
 
   renderSearchToken() {
     const { tokenSelectorError, selectedTokens, searchResults } = this.state
+    const { chainId } = this.props
     return (
       <div className='add-token__search-token'>
         <TokenSearch
+          chainId={toBnString(chainId)}
           onSearch={({ results = [] }) =>
             this.setState({
               searchResults: results,
