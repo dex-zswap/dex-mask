@@ -20,6 +20,7 @@ const mintAbiInterface = new ethers.utils.Interface(MINTABLE_ABI)
 const bridgeAbiInterface = new ethers.utils.Interface(BRIDGE_ABI)
 
 export const CONFIRM_SEND_BRIDGE = 'CONFIRM_SEND_BRIDGE'
+export const SEND_BEIDGE_TOKEN = 'SEND_BEIDGE_TOKEN'
 
 export default function CrossChainButton() {
   const t = useI18nContext()
@@ -107,6 +108,7 @@ export default function CrossChainButton() {
       }),
     )
     localStorage[CONFIRM_SEND_BRIDGE] = crossChainState.dest
+    localStorage[SEND_BEIDGE_TOKEN] = crossChainState.coinAddress
     dispatch(updateConfirmAction(null))
     history.push(CONFIRM_TRANSACTION_ROUTE)
   }, [decimals, isNativeAsset, crossChainState])

@@ -195,7 +195,7 @@ export function useTransactionDisplayData(transactionGroup, hidePrimary) {
     title =
       (methodData?.name && camelCaseToCapitalize(methodData.name)) ||
       transactionTypeTitle
-    subtitle = origin
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
     subtitleContainsOrigin = true
   } else if (type === TRANSACTION_TYPES.INCOMING) {
     category = TRANSACTION_GROUP_CATEGORIES.RECEIVE

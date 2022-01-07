@@ -35,6 +35,8 @@ import {
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
 } from '@view/store/actions'
+import { SEND_BEIDGE_TOKEN } from '@pages/cross-chain/button'
+import cloneDeep from 'lodash/cloneDeep'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
@@ -637,7 +639,15 @@ export default class ConfirmTransactionBase extends Component {
       () => {
         this._removeBeforeUnload()
 
-        this.context.recordTransaction(txData)
+        const reportTxData = cloneDeep(txData)
+
+        if (localStorage[SEND_BEIDGE_TOKEN]) {
+          reportTxData.tokenAddress = localStorage[SEND_BEIDGE_TOKEN]
+          reportTxData.type = 'crossChain'
+          localStorage.removeItem(SEND_BEIDGE_TOKEN)
+        }
+
+        this.context.recordTransaction(reportTxData)
 
         sendTransaction(txData)
           .then(() => {

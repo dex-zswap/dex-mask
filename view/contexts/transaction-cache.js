@@ -6,7 +6,7 @@ export const TransactionCacheContext = createContext((key) => `[${key}]`)
 
 export const TransactionCacheProvider = (props) => {
   const recordTransaction = useCallback(async(txData) => {
-    
+    console.log(txData)
   }, [])
 
   return (
