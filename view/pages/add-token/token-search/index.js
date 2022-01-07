@@ -4,7 +4,6 @@ import Fuse from 'fuse.js'
 import PropTypes from 'prop-types'
 import TextField from '@c/ui/text-field'
 import { getAllAssets } from '@view/helpers/cross-chain-api'
-
 export default class TokenSearch extends Component {
   static contextTypes = {
     t: PropTypes.func,
@@ -12,9 +11,7 @@ export default class TokenSearch extends Component {
   state = {
     searchQuery: '',
   }
-
   fuse = null
-
   contractList = null
 
   async componentDidMount() {
@@ -23,19 +20,27 @@ export default class TokenSearch extends Component {
     const res = await resp.json()
 
     if (res.c === 200) {
-      this.contractList = res.d.filter(({ meta_chain_id, token_address }) => meta_chain_id === chainId && token_address !== ethers.constants.AddressZero).map(({
-        decimals,
-        token: symbol,
-        token_address: address,
-        token_name: name
-      }) => ({
-        address,
-        decimals,
-        name,
-        symbol,
-        chainId,
-        erc20: true
-      }))
+      this.contractList = res.d
+        .filter(
+          ({ meta_chain_id, token_address }) =>
+            meta_chain_id === chainId &&
+            token_address !== ethers.constants.AddressZero,
+        )
+        .map(
+          ({
+            decimals,
+            token: symbol,
+            token_address: address,
+            token_name: name,
+          }) => ({
+            address,
+            decimals,
+            name,
+            symbol,
+            chainId,
+            erc20: true,
+          }),
+        )
       this.fuse = new Fuse(this.contractList, {
         shouldSort: true,
         threshold: 0.45,
@@ -80,7 +85,7 @@ export default class TokenSearch extends Component {
     } else {
       this.props.onSearch({
         searchQuery,
-        results: []
+        results: [],
       })
     }
   }

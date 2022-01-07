@@ -1,3 +1,5 @@
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { getPlatform } from '@app/scripts/lib/util'
 import Button from '@c/ui/button'
 import Switch from '@c/ui/switch'
@@ -19,8 +21,6 @@ import {
   showModal,
   turnThreeBoxSyncingOnAndInitialize,
 } from '@view/store/actions'
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 function addUrlProtocolPrefix(urlString) {
   if (!urlString.match(/(^http:\/\/)|(^https:\/\/)/u)) {

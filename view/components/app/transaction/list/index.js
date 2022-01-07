@@ -58,7 +58,7 @@ const getFilteredTransactionGroups = (
 export default function TransactionList({
   hideTokenTransactions,
   tokenAddress,
-  hidePrimary = false
+  hidePrimary = false,
 }) {
   const [limit, setLimit] = useState(PAGE_INCREMENT)
   const t = useI18nContext()

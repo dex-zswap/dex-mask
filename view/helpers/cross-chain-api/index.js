@@ -26,7 +26,7 @@ export const getAllSupportBridge = async (body) =>
     method: 'POST',
     body: JSON.stringify(body),
   })
-export const getAllAssets = async () => 
+export const getAllAssets = async () =>
   await fetch(`${API_BASE}/getAllAssets`, {
     method: 'POST',
     body: JSON.stringify({}),

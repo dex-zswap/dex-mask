@@ -43,9 +43,7 @@ export default class TokenList extends Component {
                   key={i}
                   tabIndex='0'
                 >
-                  <div
-                    className='token-list__token-icon'
-                  >
+                  <div className='token-list__token-icon'>
                     <TokenImage address={address} chainId={chainId} size={32} />
                   </div>
                   <div className='token-list__token-data'>

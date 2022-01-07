@@ -90,7 +90,7 @@ const CrossFromChainSwitcher = () => {
                   targetCoinAddress: defaultTargetChain.target_token_address,
                   destChain: defaultTargetChain.target_meta_chain_id,
                   target: defaultTargetChain,
-                  supportChains: res.d
+                  supportChains: res.d,
                 }),
               )
             })

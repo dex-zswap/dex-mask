@@ -100,10 +100,7 @@ export default function SelectedNativeToken() {
         <div className='native-currency flex space-between items-center'>
           <div className='native-currency-balance'>
             <div className='token-balance'>
-              <LongLetter
-                text={primaryCurrencyProperties.value}
-                length={12}
-              />
+              <LongLetter text={primaryCurrencyProperties.value} length={12} />
             </div>
             <div className='token-usd'>
               <LongLetter

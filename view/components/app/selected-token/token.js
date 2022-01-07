@@ -105,10 +105,7 @@ export default function SelectedToken({ token }) {
         <div className='native-currency flex space-between items-center'>
           <div className='native-currency-balance'>
             <div className='token-balance'>
-              <LongLetter
-                text={tokenBalance}
-                length={12}
-              />
+              <LongLetter text={tokenBalance} length={12} />
             </div>
             <div className='token-usd'>{formattedFiat}</div>
           </div>

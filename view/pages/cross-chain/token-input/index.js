@@ -31,7 +31,7 @@ export default function CrossChainTokenInput() {
     tokenList: [],
     reverseAble: false,
   })
-  const t = useI18nContext();
+  const t = useI18nContext()
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
   const tokens = useSelector(getTokens)

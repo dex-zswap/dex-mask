@@ -1,3 +1,7 @@
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { ethers } from 'ethers'
 import Button from '@c/ui/button'
 import { getMostRecentOverviewPage } from '@reducer/history/history'
 import { MAX_UINT_256 } from '@shared/constants/app'
@@ -12,16 +16,10 @@ import { useI18nContext } from '@view/hooks/useI18nContext'
 import useInterval from '@view/hooks/useInterval'
 import { getCrossChainState } from '@view/selectors'
 import { showConfTxPage, updateConfirmAction } from '@view/store/actions'
-import { ethers } from 'ethers'
-import React, { useCallback, useEffect, useMemo, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 const mintAbiInterface = new ethers.utils.Interface(MINTABLE_ABI)
 const bridgeAbiInterface = new ethers.utils.Interface(BRIDGE_ABI)
-
 export const CONFIRM_SEND_BRIDGE = 'CONFIRM_SEND_BRIDGE'
 export const SEND_BEIDGE_TOKEN = 'SEND_BEIDGE_TOKEN'
-
 export default function CrossChainButton() {
   const t = useI18nContext()
   const history = useHistory()
@@ -101,7 +99,6 @@ export default function CrossChainButton() {
       },
       (e) => {},
     )
-
     dispatch(
       showConfTxPage({
         isBridge: true,
@@ -134,7 +131,6 @@ export default function CrossChainButton() {
       allowed.current = false
     }
   }, [isNativeAsset, crossChainState.coinAddress, crossChainState.target])
-
   useInterval(() => {
     if (isNativeAsset || (mounted.current && allowed.current)) {
       return
@@ -153,7 +149,6 @@ export default function CrossChainButton() {
       mounted.current = true
     }
   }, 2000)
-
   return (
     <div className='cross-chain-buttons flex space-between'>
       <Button

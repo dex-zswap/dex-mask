@@ -1,3 +1,6 @@
+import React, { Component } from 'react'
+import { Route, Switch } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import BackBar from '@c/ui/back-bar'
 import Loading from '@c/ui/loading-screen'
 import TopHeader from '@c/ui/top-header'
@@ -30,9 +33,6 @@ import {
   getGasFeeEstimatesAndStartPolling,
   removePollingTokenFromAppState,
 } from '@view/store/actions'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
 import ConfTx from './conf-tx'
 export default class ConfirmTransaction extends Component {
   static propTypes = {
@@ -51,7 +51,6 @@ export default class ConfirmTransaction extends Component {
     setDefaultHomeActiveTabName: PropTypes.func,
     confirmedAction: PropTypes.string,
   }
-
   static contextTypes = {
     t: PropTypes.func,
   }
@@ -116,6 +115,7 @@ export default class ConfirmTransaction extends Component {
 
   componentWillUnmount() {
     this._beforeUnload()
+
     localStorage.removeItem(CONFIRM_SEND_BRIDGE)
     window.removeEventListener('beforeunload', this._beforeUnload)
   }
@@ -168,6 +168,7 @@ export default class ConfirmTransaction extends Component {
     const { transactionId, paramsTransactionId } = this.props // Show routes when state.confirmTransaction has been set and when either the ID in the params
     // isn't specified or is specified and matches the ID in state.confirmTransaction in order to
     // support URLs of /confirm-transaction or /confirm-transaction/<transactionId>
+
     return transactionId &&
       (!paramsTransactionId || paramsTransactionId === transactionId) ? (
       <div className='dex-page-container space-between'>
@@ -182,7 +183,11 @@ export default class ConfirmTransaction extends Component {
             showBack={false}
           />
         </div>
-        <div style={{ flex: 1 }}>
+        <div
+          style={{
+            flex: 1,
+          }}
+        >
           <Switch>
             <Route
               exact

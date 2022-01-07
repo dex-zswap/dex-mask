@@ -169,7 +169,13 @@ export default function reduceApp(state = {}, action) {
       }
 
     case actionConstants.SHOW_CONF_TX_PAGE:
-      return { ...appState, txId: action.id, isBridge: action.isBridge ?? false, warning: null, isLoading: false }
+      return {
+        ...appState,
+        txId: action.id,
+        isBridge: action.isBridge ?? false,
+        warning: null,
+        isLoading: false,
+      }
 
     case actionConstants.COMPLETED_TX:
       if (action.value.unconfirmedActionsCount > 0) {

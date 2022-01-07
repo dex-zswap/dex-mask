@@ -1,8 +1,8 @@
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import EditGasPopover from '@c/app/edit-gas/popover'
 import { PageContainerFooter } from '@c/ui/page-container'
 import { EDIT_GAS_MODES } from '@shared/constants/gas'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 import {
   ConfirmPageContainerContent,
   ConfirmPageContainerHeader,

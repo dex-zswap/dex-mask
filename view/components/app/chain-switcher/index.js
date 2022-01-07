@@ -79,7 +79,6 @@ class ChainSwitcher extends Component {
     } = this.props
     const networkOptions = this.getNetWorkOptions()
     const body = document.body
-
     return (
       <>
         <div className='chain-switcher'>
@@ -98,6 +97,7 @@ class ChainSwitcher extends Component {
                     if (body.classList.contains('overflow-hidden')) {
                       body.classList.remove('overflow-hidden')
                     }
+
                     resetNetworksForm()
                     history.push(NETWORKS_FORM_ROUTE)
                   }}

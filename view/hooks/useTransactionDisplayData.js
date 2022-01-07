@@ -236,10 +236,12 @@ export function useTransactionDisplayData(transactionGroup, hidePrimary) {
     hideLabel: isTokenCategory || Boolean(swapTokenValue),
     ...secondaryCurrencyPreferences,
   })
-
   const currency = secondaryCurrencyPreferences.currency.toUpperCase()
-  const secondaryCurrencyDisplay = (isTokenCategory && !tokenFiatAmount) || (type === TRANSACTION_TYPES.SWAP && !swapTokenFiatAmount) ? undefined : secondaryCurrency
-
+  const secondaryCurrencyDisplay =
+    (isTokenCategory && !tokenFiatAmount) ||
+    (type === TRANSACTION_TYPES.SWAP && !swapTokenFiatAmount)
+      ? undefined
+      : secondaryCurrency
   return {
     title,
     category,
@@ -250,7 +252,9 @@ export function useTransactionDisplayData(transactionGroup, hidePrimary) {
       type === TRANSACTION_TYPES.SWAP && isPending ? '' : primaryCurrency,
     senderAddress,
     recipientAddress,
-    secondaryCurrency: secondaryCurrencyDisplay.endsWith(currency) ? secondaryCurrencyDisplay : [secondaryCurrencyDisplay, currency].join(' '),
+    secondaryCurrency: secondaryCurrencyDisplay.endsWith(currency)
+      ? secondaryCurrencyDisplay
+      : [secondaryCurrencyDisplay, currency].join(' '),
     displayedStatusKey,
     isPending,
     isSubmitted,

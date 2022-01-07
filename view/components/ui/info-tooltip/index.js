@@ -1,7 +1,7 @@
-import Tooltip from '@c/ui/tooltip'
+import React from 'react'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
-import React from 'react'
+import Tooltip from '@c/ui/tooltip'
 const positionArrowClassMap = {
   top: 'info-tooltip__top-tooltip-arrow',
   bottom: 'info-tooltip__bottom-tooltip-arrow',

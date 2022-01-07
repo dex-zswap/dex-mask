@@ -649,12 +649,12 @@ const slice = createSlice({
         let timer = setInterval(() => {
           setHandler()
         }, 1000)
-  
+
         const setHandler = () => {
           if (state?.asset) {
             clearInterval(timer)
             let amount = '0'
-  
+
             if (state.asset.type === ASSET_TYPES.TOKEN) {
               const decimals = state.asset.details?.decimals ?? 0
               const multiplier = Math.pow(10, Number(decimals))
@@ -674,19 +674,17 @@ const slice = createSlice({
                 },
               )
             }
-  
+
             if (parseFloat(amount) < 0) {
               amount = '0'
             }
-  
+
             state.amount.max = amount
           }
         }
-  
-        setHandler()
-      } catch (e) {
 
-      }
+        setHandler()
+      } catch (e) {}
     },
 
     /**

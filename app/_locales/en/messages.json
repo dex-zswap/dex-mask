@@ -1718,6 +1718,10 @@
   "receive2": {
     "message": "Receive"
   },
+  "receiveSpecifiedTokens": {
+    "message": "Receive $1",
+    "description": "Symbol of the specified token"
+  },
   "recents": {
     "message": "Recents"
   },
@@ -2001,10 +2005,6 @@
   },
   "sendSpecifiedTokens": {
     "message": "Send $1",
-    "description": "Symbol of the specified token"
-  },
-  "receiveSpecifiedTokens": {
-    "message": "Receive $1",
     "description": "Symbol of the specified token"
   },
   "sendToken": {

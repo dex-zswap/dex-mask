@@ -4,7 +4,10 @@ import { Provider } from 'react-redux'
 import PropTypes from 'prop-types'
 import AutoInitTokens from '@c/app/auto-init-tokens'
 import { I18nProvider, LegacyI18nProvider } from '@view/contexts/i18n'
-import { TransactionCacheProvider, LegacyTransactionCacheProvider } from '@view/contexts/transaction-cache'
+import {
+  TransactionCacheProvider,
+  LegacyTransactionCacheProvider,
+} from '@view/contexts/transaction-cache'
 import ErrorPage from './error'
 import Routes from './routes'
 

@@ -1,3 +1,6 @@
+import React, { useCallback, useContext, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 import EditGasDisplay from '@c/app/edit-gas/display'
 import EditGasDisplayEducation from '@c/app/edit-gas/display-education'
 import Button from '@c/ui/button'
@@ -22,9 +25,6 @@ import {
   updateSwapsUserFeeLevel,
   updateTransaction,
 } from '@view/store/actions'
-import PropTypes from 'prop-types'
-import React, { useCallback, useContext, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 export default function EditGasPopover({
   popoverTitle = '',
   confirmButtonText = '',
