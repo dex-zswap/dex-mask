@@ -1,5 +1,6 @@
 .edit-approval-permission {
   width: 100%;
+  padding: 0 18px;
 
   &__header,
   &__account-info {
@@ -7,85 +8,67 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    border-bottom: 1px solid #2c3146;
+    border-bottom: 1px solid $primary-border;
+  }
+
+  .edit-approval-account-wrap {
+    @include flex(space-between);
+    padding: 12px 0;
+    border-bottom: 1px solid $primary-border;
+    .edit-approval-account {
+      @include flex;
+      > div:last-child {
+        font-size: 14px;
+        line-height: 16px;
+        margin: 0 10px;
+        white-space: nowrap;
+      }
+    }
+    > div:last-child {
+      @include text-ellipsis;
+      font-size: 12px;
+      line-height: 14px;
+      color: $gray;
+      span:first-child {
+        color: #fff;
+        margin-right: 4px;
+      }
+    }
   }
 
   &__header {
-    padding: 24px;
-
-    &__close {
-      position: absolute;
-      right: 24px;
-      background-image: url('/images/close-gray.svg');
-      width: 0.75rem;
-      height: 0.75rem;
-      cursor: pointer;
-    }
+    @include flex(space-between);
+    padding: 28px 0 22px;
   }
 
   &__title {
-    @include H4;
-
+    font-size: 16px;
+    line-height: 19px;
+    color: #fff;
     font-weight: bold;
   }
 
-  &__account-info {
-    justify-content: space-between;
-    padding: 8px 24px;
-
-    &__account,
-    &__balance {
-      @include H6;
-      width: 50%;
-      font-weight: normal;
-      color: #24292e;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    &__account {
-      display: flex;
-      align-items: center;
-    }
-
-    &__name {
-      margin-right: 8px;
-      min-width: 64px;
-    }
-
-    &__balance {
-      color: #6a737d;
-      margin-left: 8px;
-    }
-  }
-
   &__edit-section {
-    padding: 24px;
+    padding-top: 17px;
 
     &__title {
-      @include H6;
-
+      font-size: 14px;
+      line-height: 18px;
+      color: $gray;
       font-weight: bold;
-      color: #474b4d;
     }
 
     &__description {
-      @include H7;
-
-      font-weight: normal;
-      color: #6a737d;
-      margin-top: 8px;
+      font-size: 12px;
+      line-height: 14px;
+      color: $gray;
+      margin-top: 12px;
     }
 
     &__option {
       display: flex;
       align-items: flex-start;
       margin-top: 20px;
-    }
-
-    &__radio-button {
-      width: 18px;
     }
 
     &__option-text {
@@ -95,67 +78,41 @@
 
     &__option-label,
     &__option-label--selected {
-      @include H6;
-
-      font-weight: normal;
-      color: #474b4d;
-    }
-
-    &__option-label--selected {
-      color: $primary-blue;
-    }
-
-    &__option-description {
-      @include H7;
-
-      color: #6a737d;
-      margin-top: 8px;
-      margin-bottom: 6px;
-    }
-
-    &__option-value {
-      @include H4;
-
+      font-size: 12px;
+      line-height: 14px;
       color: #fff;
     }
 
-    &__radio-button {
-      position: relative;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-right: 4px;
+    &__option-label--selected {
+      color: $pink;
     }
 
-    &__radio-button-outline,
-    &__radio-button-outline--selected {
-      width: 18px;
-      height: 18px;
-      background: #dadcdd;
-      border-radius: 9px;
-      position: absolute;
+    &__option-description {
+      font-size: 12px;
+      line-height: 14px;
+      color: $gray;
+      margin-top: 4px;
+      margin-bottom: 12px;
     }
 
-    &__radio-button-outline--selected {
-      background: $primary-blue;
+    &__option-value {
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 16px;
+      color: #fff;
     }
 
-    &__radio-button-fill {
-      width: 14px;
-      height: 14px;
-      background: white;
-      border-radius: 7px;
-      position: absolute;
-    }
-
-    &__radio-button-dot {
-      width: 8px;
-      height: 8px;
-      background: $primary-blue;
-      border-radius: 4px;
-      position: absolute;
+    .edit-approval-permission-radio-wrap {
+      @include w-h(13px, 13px);
+      @include flex;
+      border-radius: 50%;
+      border: 1px solid $pink;
+      margin-right: 8px;
+      .edit-approval-permission-radio {
+        @include w-h(5px, 5px);
+        border-radius: 50%;
+        background: $primary-gradient;
+      }
     }
   }
 
@@ -176,11 +133,10 @@
   }
 }
 
-.edit-approval-permission-modal-content {
-  padding: 0;
+.edit-approval-save-btn {
+  margin: 12px 0 20px;
 }
 
-.edit-approval-permission-modal-container {
-  max-height: 550px;
-  width: 100%;
+.edit-approval-permission-modal-content {
+  padding: 0;
 }

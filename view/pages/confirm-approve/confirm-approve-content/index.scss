@@ -3,7 +3,142 @@
   flex-flow: column;
   align-items: center;
   width: 100%;
-  font-style: normal;
+  color: #fff;
+  padding-bottom: 20px;
+
+  .confirm-approve-title {
+    width: 195px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 24px;
+    margin: 26px 0 20px;
+    text-align: center;
+  }
+
+  .confirm-approve-desc {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .confirm-approve-edit-wrap {
+    @include flex;
+    color: $pink;
+    font-size: 12px;
+    line-height: 14px;
+    margin: 50px 0;
+    img {
+      margin-left: 10px;
+    }
+  }
+
+  .confirm-approve-line {
+    height: 1px;
+    margin: auto;
+    background: $primary-border;
+  }
+
+  .confirm-approve-trans-wrap {
+    margin: 20px 0;
+  }
+
+  .confirm-approve-card {
+    padding: 20px 0;
+    .confirm-approve-card-header {
+      @include flex(space-between);
+      margin-bottom: 12px;
+      > div:first-child {
+        @include flex;
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        margin-right: 10px;
+        > div:nth-child(2) {
+          @include flex;
+          @include text-ellipsis;
+          flex: 1;
+          margin-left: 10px;
+        }
+      }
+      .confirm-approve-card-header-edit {
+        color: $pink;
+        font-size: 12px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .confirm-approve-trans-fee-wrap {
+    @include flex(space-between);
+    > div {
+      font-size: 12px;
+      line-height: 14px;
+      color: $gray;
+      &:first-child {
+        width: 150px;
+        margin-right: 10px;
+      }
+      &:last-child {
+        @include text-ellipsis;
+        flex: 1;
+        > div {
+          @include text-ellipsis;
+          text-align: right;
+          width: 100%;
+          &:first-child {
+            font-size: 14px;
+            color: #fff;
+            font-weight: bold;
+            line-height: 16px;
+            margin-bottom: 5px;
+          }
+          &:last-child {
+            @include flex(flex-end);
+            > div:first-child {
+              @include text-ellipsis;
+              flex: 1;
+              margin-right: 4px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .confirm-approve-show-full-btn {
+    @include flex;
+    font-size: 12px;
+    line-height: 14px;
+    color: #fff;
+    margin-top: 20px;
+    &.arrow-up img {
+      transform: rotate(-180deg);
+    }
+    img {
+      margin-left: 8px;
+      transition: 0.2s all ease-in-out;
+    }
+  }
+
+  .confirm-approve-card-content-row {
+    color: $gray;
+    font-size: 12px;
+    line-height: 14px;
+    word-break: break-all;
+  }
+
+  .mb-15 {
+    margin-bottom: 15px;
+  }
+
+  .confirm-approve-card-label-value-row {
+    color: #fff;
+    font-size: 14px;
+    line-height: 18px;
+    word-break: break-all;
+    > span:first-child {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+  }
 
   &__identicon-wrapper {
     display: flex;

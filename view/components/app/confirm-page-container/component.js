@@ -190,12 +190,11 @@ export default class ConfirmPageContainer extends Component {
         )}
         {contentComponent && (
           <PageContainerFooter
-            footerClassName='confirm-transaction-footer'
             onCancel={onCancel}
             cancelText={this.context.t('reject')}
             onSubmit={onSubmit}
             submitText={this.context.t('confirm')}
-            submitButtonType='confirm'
+            submitButtonType='primary'
             disabled={disabled}
           >
             {unapprovedTxCount > 1 && (

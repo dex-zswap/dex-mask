@@ -19,7 +19,7 @@ import {
   showModal,
   turnThreeBoxSyncingOnAndInitialize,
 } from '@view/store/actions'
-import React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 function addUrlProtocolPrefix(urlString) {
@@ -30,8 +30,7 @@ function addUrlProtocolPrefix(urlString) {
   return urlString
 }
 
-let ipfsGatewayError = ''
-export default function AdvancedTab({ lockTimeError }) {
+export default function AdvancedTab() {
   const t = useI18nContext()
   const dispatch = useDispatch()
   const { warning } = useSelector((state) => state.appState)
@@ -45,32 +44,50 @@ export default function AdvancedTab({ lockTimeError }) {
     dismissSeedBackUpReminder,
   } = useSelector((state) => state.metamask)
   const { showFiatInTestnets, autoLockTimeLimit } = useSelector(getPreferences)
-  let allowed = threeBoxSyncingAllowed
 
-  if (threeBoxDisabled) {
-    allowed = false
-  }
+  const [currentIpfsGateway, setCurrentIpfsGateway] = useState(ipfsGateway)
+  const [ipfsGatewayError, setIpfsGatewayError] = useState('')
+  const [currentAutoLockTimeLimit, setCurrentAutoLockTimeLimit] = useState(
+    autoLockTimeLimit,
+  )
+  const [lockTimeError, setLockTimeError] = useState('')
 
-  const handleIpfsGatewayChange = (url) => {
-    try {
-      const urlObj = new URL(addUrlProtocolPrefix(url))
+  const allowed = useMemo(
+    () => (threeBoxDisabled ? false : threeBoxSyncingAllowed),
+    [threeBoxDisabled, threeBoxSyncingAllowed],
+  )
 
-      if (!urlObj.host) {
-        throw new Error()
-      } // don't allow the use of this gateway
+  const handleLockChange = useCallback(
+    (time) => {
+      const _time = Math.max(Number(time), 0)
+      setCurrentAutoLockTimeLimit(_time)
+      setLockTimeError(_time > 10080 ? t('lockTimeTooGreat') : '')
+    },
+    [t],
+  )
 
-      if (urlObj.host === 'gateway.ipfs.io') {
-        throw new Error('Forbidden gateway')
+  const handleIpfsGatewayChange = useCallback(
+    (url) => {
+      try {
+        setCurrentIpfsGateway(url)
+        const urlObj = new URL(addUrlProtocolPrefix(url))
+        setIpfsGatewayError(
+          !urlObj.host
+            ? t('invalidIpfsGateway')
+            : urlObj.host === 'gateway.ipfs.io'
+            ? t('forbiddenIpfsGateway')
+            : '',
+        )
+      } catch (error) {
+        setIpfsGatewayError(
+          error.message === 'Forbidden gateway'
+            ? t('forbiddenIpfsGateway')
+            : t('invalidIpfsGateway'),
+        )
       }
-
-      setIpfsGateway(url)
-    } catch (error) {
-      ipfsGatewayError =
-        error.message === 'Forbidden gateway'
-          ? t('forbiddenIpfsGateway')
-          : t('invalidIpfsGateway')
-    }
-  }
+    },
+    [t],
+  )
 
   return (
     <div className='setting-advanced-wrap base-width'>
@@ -159,20 +176,18 @@ export default function AdvancedTab({ lockTimeError }) {
           <TextField
             type='number'
             id='autoTimeout'
-            placeholder='5'
-            value={autoLockTimeLimit}
-            defaultValue={autoLockTimeLimit}
+            value={currentAutoLockTimeLimit}
             onChange={(e) => handleLockChange(e.target.value)}
             error={lockTimeError}
-            fullWidth
-            margin='dense'
             min={0}
           />
           <Button
             type='primary'
             className='settings-tab__rpc-save-button'
             disabled={lockTimeError}
-            onClick={() => dispatch(setAutoLockTimeLimit(autoLockTimeLimit))}
+            onClick={() =>
+              dispatch(setAutoLockTimeLimit(currentAutoLockTimeLimit))
+            }
           >
             {t('save')}
           </Button>
@@ -204,18 +219,16 @@ export default function AdvancedTab({ lockTimeError }) {
         <div className='setting-input-btn-wrap'>
           <TextField
             type='text'
-            value={ipfsGateway}
+            value={currentIpfsGateway}
             onChange={(e) => handleIpfsGatewayChange(e.target.value)}
             error={ipfsGatewayError}
-            fullWidth
-            margin='dense'
           />
           <Button
             type='primary'
             className='settings-tab__rpc-save-button'
             disabled={Boolean(ipfsGatewayError)}
             onClick={() => {
-              const { host } = new URL(addUrlProtocolPrefix(ipfsGateway))
+              const { host } = new URL(addUrlProtocolPrefix(currentIpfsGateway))
               dispatch(setIpfsGateway(host))
             }}
           >
