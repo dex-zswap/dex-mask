@@ -49,9 +49,8 @@
     top: calc(#{$size-48} + 10px);
     background: $popup-background;
     border-radius: $size-12;
-    max-height: 308px;
     overflow: scroll;
-    z-index: 999;
+    z-index: 9999;
 
     .select-option {
       padding: 0 0 0 18px;

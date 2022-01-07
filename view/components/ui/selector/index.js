@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState, useEffect, useRef } from 'react'
 import classnames from 'classnames'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 export default function Selector({
   options,
   onSelect,
@@ -10,6 +10,7 @@ export default function Selector({
   footer,
   small,
   toTop,
+  maxHeight = '308px',
 }) {
   const [show, setShow] = useState(false)
   const toggleShow = useCallback(() => setShow((show) => !show), [])
@@ -62,7 +63,7 @@ export default function Selector({
       {show && (
         <>
           <div className='options-mask' onClick={() => setShow(false)}></div>
-          <div className='selector-menu'>
+          <div style={{ maxHeight }} className='selector-menu'>
             <div
               className={classnames(
                 'select-menu-area',
