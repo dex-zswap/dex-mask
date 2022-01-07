@@ -83,10 +83,11 @@ export default function CrossChainTokenInput() {
       .then((res) => {
         if (res.c === 200) {
           const target = res.d.find(
-            ({ target_meta_chain_id, token_address }) =>
+            ({ target_meta_chain_id, target_token_address }) =>
               target_meta_chain_id === toBnString(crossChainState.fromChain) &&
-              token_address === crossChainState.coinAddress,
+              target_token_address === crossChainState.coinAddress,
           )
+
           const newCrossInfo = Object.assign({}, crossChainState, {
             destChain: crossChainState.fromChain,
             fromChain: crossChainState.destChain,
@@ -165,7 +166,7 @@ export default function CrossChainTokenInput() {
   ])
   return (
     <div>
-      <CrossFromChainSwitcher />
+      <CrossFromChainSwitcher resetAmount={tokenInputRef.current?.resetAmount} />
       <SendTokenInput
         {...state}
         ref={component => tokenInputRef.current = component}

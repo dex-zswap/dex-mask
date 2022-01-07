@@ -15,7 +15,7 @@ import {
 import { useI18nContext } from '@view/hooks/useI18nContext'
 import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 
-const CrossFromChainSwitcher = () => {
+const CrossFromChainSwitcher = ({ resetAmount }) => {
   const dispatch = useDispatch()
   const t = useI18nContext()
   const crossChainState = useSelector(getCrossChainState)
@@ -82,6 +82,7 @@ const CrossFromChainSwitcher = () => {
                 ? setProviderType(chain.provider)
                 : setRpcTarget(...chain.setPrcParams),
             ).then(() => {
+              typeof resetAmount === 'function' && resetAmount()
               const defaultTargetChain = res.d[0]
               dispatch(
                 updateCrossChainState({
@@ -97,7 +98,7 @@ const CrossFromChainSwitcher = () => {
           }
         })
     },
-    [fromChainInfo],
+    [fromChainInfo, resetAmount],
   )
   useDeepEffect(() => {
     getAllSupportBridge({
