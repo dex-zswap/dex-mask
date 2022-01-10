@@ -66,6 +66,7 @@ class PrivateKeyImportView extends Component {
   render() {
     const { error, displayWarning } = this.props
     const { isEmpty } = this.state
+
     return (
       <div className='new-account-import-form__private-key flex space-between'>
         <div>
@@ -79,11 +80,11 @@ class PrivateKeyImportView extends Component {
               onKeyPress={(e) => this.createKeyringOnEnter(e)}
               onChange={() => this.checkInputEmpty()}
               ref={this.inputRef}
+              error={error}
               autoFocus
               bordered
             />
           </div>
-          {error ? <span className='error'>{error}</span> : null}
         </div>
         <div className='new-account-import-form-buttons flex space-between'>
           <Button className='half-button' onClick={this.back}>

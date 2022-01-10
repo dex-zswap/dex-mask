@@ -55,7 +55,7 @@ const estimateGasLimitForCross = async ({
   fee,
 }) => {
   const blockGasLimit = MIN_GAS_LIMIT_HEX
-  const bufferMultiplier = 1.5
+  const bufferMultiplier = 2
   const abiInterface = new ethers.utils.Interface(BRIDGE_ABI)
 
   try {
@@ -113,27 +113,20 @@ export const initializeCrossState = createAsyncThunk(
     const { crossChain, metamask } = state
     const isNativeAsset =
       crossChain.coinAddress === ethers.constants.AddressZero
+
+      if (crossChain.gasEstimatePollToken) {
+        await disconnectGasFeeEstimatePoller(gasEstimatePollToken)
+        removePollingTokenFromAppState(gasEstimatePollToken)
+      }
+
     const gasEstimatePollToken = await getGasFeeEstimatesAndStartPolling()
     addPollingTokenToAppState(gasEstimatePollToken)
+
     const {
       metamask: { gasFeeEstimates, gasEstimateType },
     } = thunkApi.getState()
-    let gasPrice = '0x1'
+    const gasPrice = '0x1'
     let gasLimit = GAS_LIMITS.SIMPLE
-
-    if (gasEstimateType === GAS_ESTIMATE_TYPES.LEGACY) {
-      gasPrice = getGasPriceInHexWei(gasFeeEstimates.medium)
-    } else if (gasEstimateType === GAS_ESTIMATE_TYPES.ETH_GASPRICE) {
-      gasPrice = getRoundedGasPrice(gasFeeEstimates.gasPrice)
-    } else if (gasEstimateType === GAS_ESTIMATE_TYPES.FEE_MARKET) {
-      gasPrice = getGasPriceInHexWei(
-        gasFeeEstimates.medium.suggestedMaxFeePerGas,
-      )
-    } else {
-      gasPrice = gasFeeEstimates.gasPrice
-        ? getRoundedGasPrice(gasFeeEstimates.gasPrice)
-        : '0x1'
-    }
 
     const gasLimitEstimated = await estimateGasLimitForCross({
       isNativeAsset,
@@ -156,7 +149,7 @@ export const initializeCrossState = createAsyncThunk(
         }),
       )
 
-      if (parseFloat(nativeMaxAmount) < 0) {
+      if (nativeMaxAmount.startsWith('0x-')) {
         nativeMaxAmount = '0'
       }
 
@@ -202,7 +195,7 @@ const crossChainSlice = createSlice({
         state.gas = action.payload.gas
         state.nativeMaxAmount = action.payload.nativeMaxAmount
         state.nativeMaxSendAmount = new BigNumber(
-          hexToString(state.nativeMaxAmount),
+          hexToString(action.payload.nativeMaxAmount)
         ).toString()
       })
   },

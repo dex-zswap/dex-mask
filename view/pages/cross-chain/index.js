@@ -23,6 +23,7 @@ export default function CrossChain() {
   const dispatch = useDispatch()
   const selectedAccount = useSelector(getSelectedAccount)
   const crossChainState = useSelector(getCrossChainState)
+  const chainId = useSelector(getCurrentChainId)
   const tokens = useSelector(getTokens)
   const isNative = useMemo(
     () => crossChainState.coinAddress === ethers.constants.AddressZero,
@@ -49,11 +50,8 @@ export default function CrossChain() {
   }, [])
   useEffect(() => {
     dispatch(initializeCrossState(selectedAccount.balance))
-    return () => cleanUp()
   }, [
-    crossChainState.fromChain,
-    selectedAccount.address,
-    selectedAccount.balance,
+    selectedAccount
   ])
   useEffect(() => {
     if (targetToken) {
@@ -64,6 +62,7 @@ export default function CrossChain() {
       )
     }
   }, [targetToken])
+  useEffect(cleanUp, [])
   return (
     <div className='cross-chain-page dex-page-container space-between base-width'>
       <div className='cross-chain-top'>
