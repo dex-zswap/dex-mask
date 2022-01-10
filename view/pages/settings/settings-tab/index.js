@@ -1,3 +1,5 @@
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import locales from '@app/_locales/index.json'
 import Selector from '@c/ui/selector'
 import Switch from '@c/ui/switch'
@@ -10,8 +12,6 @@ import {
   setUseBlockie,
   updateCurrentLocale,
 } from '@view/store/actions'
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 const sortedCurrencies = availableCurrencies.sort((a, b) => {
   return a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase())
 })

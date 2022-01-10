@@ -1,3 +1,6 @@
+import React, { Component } from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 import Box from '@c/ui/box'
 import Button from '@c/ui/button'
 import Typography from '@c/ui/typography'
@@ -8,9 +11,6 @@ import {
 } from '@view/helpers/constants/design-system'
 import { addressSummary } from '@view/helpers/utils'
 import { formatCurrency } from '@view/helpers/utils/confirm-tx.util'
-import classnames from 'classnames'
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
 export default class ConfirmApproveContent extends Component {
   static contextTypes = {
     t: PropTypes.func,
@@ -252,7 +252,9 @@ export default class ConfirmApproveContent extends Component {
           {this.renderApproveContentCard({
             symbol: (
               <img
-                style={{ marginBottom: '-2px' }}
+                style={{
+                  marginBottom: '-2px',
+                }}
                 width={13}
                 src='images/icons/tag.png'
               />

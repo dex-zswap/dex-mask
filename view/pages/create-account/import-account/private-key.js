@@ -66,7 +66,6 @@ class PrivateKeyImportView extends Component {
   render() {
     const { error, displayWarning } = this.props
     const { isEmpty } = this.state
-
     return (
       <div className='new-account-import-form__private-key flex space-between'>
         <div>

@@ -2778,3 +2778,8 @@ export function updateConfirmAction(value) {
     value,
   }
 }
+export function toggleGasLoading() {
+  return {
+    type: actionConstants.TOGGLE_GAS_LOADING
+  }
+}

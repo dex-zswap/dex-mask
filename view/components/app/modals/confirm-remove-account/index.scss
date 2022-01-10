@@ -1,13 +1,12 @@
 .confirm-remove-account {
   .confirm-remove-account__description {
-    text-align: center;
     font-size: $size-12;
-    color: $gray;
+    color: $white;
   }
 
   .confirm-remove-account__account {
-    border: 1px solid $primary-border;
-    border-radius: 4px;
+    border-top: 1px solid $primary-border;
+    border-bottom: 1px solid $primary-border;
     padding: 10px;
     display: flex;
     margin: 10px 0 20px;
@@ -22,20 +21,23 @@
 
   .confirm-remove-account__account__label {
     display: block;
-    color: $gray;
+    color: $white;
     font-size: 10px;
   }
 
   .account_value {
     font-size: $size-12;
     padding: 6px 0 0;
+    word-break: break-all;
+    max-width: 95px;
+    display: inline-block;
   }
 
   .confirm-remove-account__account__link {
     .view-in-explore {
       display: block;
-      width: 13px;
-      height: 13px;
+      width: 16px;
+      height: 16px;
       background: url('/images/icons/view-in-broswer.png') no-repeat center;
       background-size: 100%;
     }

@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState, forwardRef, useImperativeHandle } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import classnames from 'classnames'
@@ -27,21 +34,26 @@ import {
   getShouldHideZeroBalanceTokens,
 } from '@view/selectors'
 import { showAccountDetail } from '@view/store/actions'
-function SendTokenInput({
-  accountAddress,
-  tokenAddress,
-  tokenList,
-  maxSendAmount,
-  nativeCurrencyAmount,
-  changeAccount,
-  changeToken,
-  changeAmount,
-  optionsDirection,
-  reverseAble,
-  onReverse,
-  includesNativeCurrencyToken = true,
-  showAmountWrap = true,
-}, ref) {
+
+function SendTokenInput(
+  {
+    accountAddress,
+    tokenAddress,
+    tokenList,
+    maxSendAmount,
+    nativeCurrencyAmount,
+    changeAccount,
+    changeToken,
+    changeAmount,
+    optionsDirection,
+    reverseAble,
+    onReverse,
+    includesNativeCurrencyToken = true,
+    showAmountWrap = true,
+    gasLoading = false
+  },
+  ref,
+) {
   const t = useI18nContext()
   const dispatch = useDispatch()
   const nativeCurrency = useSelector(getNativeCurrency)
@@ -190,18 +202,20 @@ function SendTokenInput({
     setAmount('')
   }, [])
   const setAmountToMax = useCallback(() => {
+    if (gasLoading) {
+      return
+    }
     setAmount(maxSendAmount)
     changeAmount && changeAmount(maxSendAmount)
-  }, [maxSendAmount, changeAmount])
+  }, [maxSendAmount, changeAmount, gasLoading])
   const reverseAction = useCallback(() => {
     onReverse && onReverse()
   }, [onReverse])
   useEffect(() => {
     dispatch(setMaxSendAmount())
   }, [selectedAccount])
-
   useImperativeHandle(ref, () => ({
-    resetAmount
+    resetAmount,
   }))
   return (
     <div className='base-width'>
@@ -386,7 +400,7 @@ function SendTokenInput({
                   </div>
                 </div>
               </div>
-              <div className='max-label' onClick={setAmountToMax}>
+              <div className={classnames('max-label', gasLoading ? 'disabled' : '')} onClick={setAmountToMax}>
                 {t('maxUp')}
               </div>
             </div>

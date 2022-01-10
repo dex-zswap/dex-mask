@@ -87,7 +87,6 @@ export default function CrossChainTokenInput() {
               target_meta_chain_id === toBnString(crossChainState.fromChain) &&
               target_token_address === crossChainState.coinAddress,
           )
-
           const newCrossInfo = Object.assign({}, crossChainState, {
             destChain: crossChainState.fromChain,
             fromChain: crossChainState.destChain,
@@ -109,7 +108,7 @@ export default function CrossChainTokenInput() {
           })
         }
       })
-      tokenInputRef.current?.resetAmount?.()
+    tokenInputRef.current?.resetAmount?.()
   }, [crossChainState, allNetworks, tokenInputRef.current])
   useDeepEffect(() => {
     const tokenList = []
@@ -166,16 +165,19 @@ export default function CrossChainTokenInput() {
   ])
   return (
     <div>
-      <CrossFromChainSwitcher resetAmount={tokenInputRef.current?.resetAmount} />
+      <CrossFromChainSwitcher
+        resetAmount={tokenInputRef.current?.resetAmount}
+      />
       <SendTokenInput
         {...state}
-        ref={component => tokenInputRef.current = component}
+        ref={(component) => (tokenInputRef.current = component)}
         tokenAddress={crossChainState.coinAddress}
         maxSendAmount={
           isNative
             ? crossChainState.nativeMaxSendAmount
             : crossChainState.maxSendAmount
         }
+        gasLoading={crossChainState.gasLoading}
         onReverse={reverseCross}
         changeToken={({
           address: coinAddress,

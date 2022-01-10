@@ -1,3 +1,5 @@
+import React, { useCallback, useMemo, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { getPlatform } from '@app/scripts/lib/util'
 import Button from '@c/ui/button'
 import Switch from '@c/ui/switch'
@@ -19,8 +21,6 @@ import {
   showModal,
   turnThreeBoxSyncingOnAndInitialize,
 } from '@view/store/actions'
-import React, { useCallback, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 function addUrlProtocolPrefix(urlString) {
   if (!urlString.match(/(^http:\/\/)|(^https:\/\/)/u)) {
@@ -44,28 +44,25 @@ export default function AdvancedTab() {
     dismissSeedBackUpReminder,
   } = useSelector((state) => state.metamask)
   const { showFiatInTestnets, autoLockTimeLimit } = useSelector(getPreferences)
-
   const [currentIpfsGateway, setCurrentIpfsGateway] = useState(ipfsGateway)
   const [ipfsGatewayError, setIpfsGatewayError] = useState('')
   const [currentAutoLockTimeLimit, setCurrentAutoLockTimeLimit] = useState(
     autoLockTimeLimit,
   )
   const [lockTimeError, setLockTimeError] = useState('')
-
   const allowed = useMemo(
     () => (threeBoxDisabled ? false : threeBoxSyncingAllowed),
     [threeBoxDisabled, threeBoxSyncingAllowed],
   )
-
   const handleLockChange = useCallback(
     (time) => {
       const _time = Math.max(Number(time), 0)
+
       setCurrentAutoLockTimeLimit(_time)
       setLockTimeError(_time > 10080 ? t('lockTimeTooGreat') : '')
     },
     [t],
   )
-
   const handleIpfsGatewayChange = useCallback(
     (url) => {
       try {
@@ -88,7 +85,6 @@ export default function AdvancedTab() {
     },
     [t],
   )
-
   return (
     <div className='setting-advanced-wrap base-width'>
       {warning && <div className='settings-tab__error'>{warning}</div>}
