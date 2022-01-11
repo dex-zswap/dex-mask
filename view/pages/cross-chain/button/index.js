@@ -43,7 +43,7 @@ export default function CrossChainButton() {
     crossChainState.userInputValue,
   ])
   const disableButton = useMemo(() => {
-    if (!allowed.current) {
+    if (!allowed.current && !isNativeAsset) {
       return false
     }
 
@@ -52,7 +52,7 @@ export default function CrossChainButton() {
       expandDecimals(crossChainState.userInputValue).isZero() ||
       !Boolean(crossChainState.dest)
     )
-  }, [crossChainState, allowed.current])
+  }, [crossChainState, allowed.current, isNativeAsset])
   const crossChain = useCallback(() => {
     const sendData = [
       '0x',
@@ -148,7 +148,7 @@ export default function CrossChainButton() {
     if (!mounted.current) {
       mounted.current = true
     }
-  }, 2000)
+  }, 1000)
   return (
     <div className='cross-chain-buttons flex space-between'>
       <Button
@@ -159,7 +159,7 @@ export default function CrossChainButton() {
       </Button>
       {mounted.current ? (
         <>
-          {allowed.current ? (
+          {(allowed.current || isNativeAsset) ? (
             <Button
               type='primary'
               className='half-button'

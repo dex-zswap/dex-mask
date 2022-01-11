@@ -177,14 +177,14 @@ export function useTransactionDisplayData(transactionGroup, hidePrimary) {
   } else if (type === TRANSACTION_TYPES.SWAP_APPROVAL) {
     category = TRANSACTION_GROUP_CATEGORIES.APPROVAL
     title = t('swapApproval', [primaryTransaction.sourceTokenSymbol])
-    subtitle = origin
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
     subtitleContainsOrigin = true
     primarySuffix = primaryTransaction.sourceTokenSymbol
   } else if (type === TRANSACTION_TYPES.TOKEN_METHOD_APPROVE) {
     category = TRANSACTION_GROUP_CATEGORIES.APPROVAL
     prefix = ''
     title = t('approveSpendLimit', [token?.symbol || t('token')])
-    subtitle = origin
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
     subtitleContainsOrigin = true
   } else if (
     type === TRANSACTION_TYPES.DEPLOY_CONTRACT ||

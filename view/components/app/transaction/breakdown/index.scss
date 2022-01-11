@@ -19,6 +19,12 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &.break {
+      display: block;
+      word-break: break-all;
+      white-space: break-spaces;
+    }
   }
 
   .transaction-breakdown__value--eth-total {

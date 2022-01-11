@@ -675,7 +675,7 @@ const slice = createSlice({
               )
             }
 
-            if (parseFloat(amount) < 0) {
+            if (amount.startsWith('0x-') || amount.startsWith('-')) {
               amount = '0'
             }
 

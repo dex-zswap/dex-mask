@@ -163,7 +163,7 @@ export default class EditApprovalPermission extends PureComponent {
         <Button
           className='edit-approval-save-btn'
           type='primary'
-          onSubmit={() => {
+          onClick={() => {
             setCustomAmount(selectedOptionIsUnlimited ? '' : customSpendLimit)
             hideModal()
           }}
