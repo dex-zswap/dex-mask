@@ -159,7 +159,7 @@ export default function CrossChainButton() {
       </Button>
       {mounted.current ? (
         <>
-          {(allowed.current || isNativeAsset) ? (
+          {allowed.current || isNativeAsset ? (
             <Button
               type='primary'
               className='half-button'

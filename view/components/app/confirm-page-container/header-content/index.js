@@ -329,54 +329,54 @@ export default function ConfirmPageContainerHeaderContent({
       </div>
       {/* <div className='confirm-page-container-header-content-wrap'>
       <div>
-        <div className='confirm-page-container-header-content-wrap_sender'>
-          <TokenImage
-            address={address}
-            symbol={symbol}
-            size={40}
-            showLetter
-          />
-          <img
-        style={{ borderRadius: '50%' }}
-        width="40px"
-        height="40px"
-        src={assetImage || nativeCurrencyImage}
-        />
-          <div
-            className='confirm-page-container-header-content-wrap_sender_title-wrap'
-            style={{
-              marginLeft: '6px',
-            }}
-          >
-            <div
-              className='confirm-page-container-header-content-wrap_sender_title'
-              title={title ? title.split(' ')[1] : nativeCurrency}
-            >
-              {title ? title.split(' ')[1] : nativeCurrency}
-            </div>
-            <div title={senderName}>{senderName}</div>
-          </div>
-        </div>
-        <div className='confirm-page-container-header-content-wrap_arrow'>
-          <img src='images/dex/arrow_right.png' />
-        </div>
-        <div
-          title={checksummedRecipientAddress}
-          className='confirm-page-container-header-content-wrap_recipient'
-        >
-          {shortenAddress(checksummedRecipientAddress, 4, -3)}
-        </div>
+       <div className='confirm-page-container-header-content-wrap_sender'>
+         <TokenImage
+           address={address}
+           symbol={symbol}
+           size={40}
+           showLetter
+         />
+         <img
+       style={{ borderRadius: '50%' }}
+       width="40px"
+       height="40px"
+       src={assetImage || nativeCurrencyImage}
+       />
+         <div
+           className='confirm-page-container-header-content-wrap_sender_title-wrap'
+           style={{
+             marginLeft: '6px',
+           }}
+         >
+           <div
+             className='confirm-page-container-header-content-wrap_sender_title'
+             title={title ? title.split(' ')[1] : nativeCurrency}
+           >
+             {title ? title.split(' ')[1] : nativeCurrency}
+           </div>
+           <div title={senderName}>{senderName}</div>
+         </div>
+       </div>
+       <div className='confirm-page-container-header-content-wrap_arrow'>
+         <img src='images/dex/arrow_right.png' />
+       </div>
+       <div
+         title={checksummedRecipientAddress}
+         className='confirm-page-container-header-content-wrap_recipient'
+       >
+         {shortenAddress(checksummedRecipientAddress, 4, -3)}
+       </div>
       </div>
       <div>
-        <div className='confirm-header-value-wrap'>
-          <div className='confirm-header-value'>
-            {titleComponent || title.split(' ')[0]}
-          </div>
-          <span>{titleComponent ? nativeCurrency : title.split(' ')[1]}</span>
-        </div>
-        <div>
-          ≈ {isNativeCurrency ? secondaryCurrencyDisplay : tokenUsdValue}
-        </div>
+       <div className='confirm-header-value-wrap'>
+         <div className='confirm-header-value'>
+           {titleComponent || title.split(' ')[0]}
+         </div>
+         <span>{titleComponent ? nativeCurrency : title.split(' ')[1]}</span>
+       </div>
+       <div>
+         ≈ {isNativeCurrency ? secondaryCurrencyDisplay : tokenUsdValue}
+       </div>
       </div>
       </div> */}
     </div>

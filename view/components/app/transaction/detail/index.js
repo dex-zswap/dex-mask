@@ -8,14 +8,14 @@ export default function TransactionDetail({ rows = [] }) {
     <div className='transaction-detail'>
       {/* {onEdit && (
       <div className='transaction-detail-edit'>
-        <img
-          style={{
-            cursor: 'pointer',
-          }}
-          width='12px'
-          src='images/dex/edit.png'
-          onClick={onEdit}
-        />
+       <img
+         style={{
+           cursor: 'pointer',
+         }}
+         width='12px'
+         src='images/dex/edit.png'
+         onClick={onEdit}
+       />
       </div>
       )} */}
       <div className='transaction-detail-rows'>{rows}</div>

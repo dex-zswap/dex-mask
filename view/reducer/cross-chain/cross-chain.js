@@ -4,7 +4,10 @@ import { addHexPrefix } from 'ethereumjs-util'
 import { ethers } from 'ethers'
 import clone from 'lodash/cloneDeep'
 import BRIDGE_ABI from '@shared/contract-abis/bridge'
-import { UPDATE_CROSS_CHAIN_STATE, TOGGLE_GAS_LOADING } from '@view/store/actionConstants'
+import {
+  UPDATE_CROSS_CHAIN_STATE,
+  TOGGLE_GAS_LOADING,
+} from '@view/store/actionConstants'
 import { GAS_ESTIMATE_TYPES, GAS_LIMITS } from '@shared/constants/gas'
 import { toggleGasLoading } from '@view/store/actions'
 import {
@@ -112,7 +115,6 @@ export const initializeCrossState = createAsyncThunk(
   'cross/initializeCrossState',
   async (balance, thunkApi) => {
     thunkApi.dispatch(toggleGasLoading())
-
     const state = thunkApi.getState()
     const { crossChain, metamask } = state
     const isNativeAsset =

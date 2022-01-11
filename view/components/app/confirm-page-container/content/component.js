@@ -122,7 +122,7 @@ export default class ConfirmPageContainerContent extends Component {
         {this.renderContent()}
         {/* {(errorKey || errorMessage) && (
         <div className='confirm-page-container-content__error-container'>
-          <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
+         <ErrorMessage errorMessage={errorMessage} errorKey={errorKey} />
         </div>
         )} */}
         <div className='confirm-page-container-content__error-container'>

@@ -50,7 +50,7 @@ function SendTokenInput(
     onReverse,
     includesNativeCurrencyToken = true,
     showAmountWrap = true,
-    gasLoading = false
+    gasLoading = false,
   },
   ref,
 ) {
@@ -205,6 +205,7 @@ function SendTokenInput(
     if (gasLoading) {
       return
     }
+
     setAmount(maxSendAmount)
     changeAmount && changeAmount(maxSendAmount)
   }, [maxSendAmount, changeAmount, gasLoading])
@@ -400,7 +401,13 @@ function SendTokenInput(
                   </div>
                 </div>
               </div>
-              <div className={classnames('max-label', gasLoading ? 'disabled' : '')} onClick={setAmountToMax}>
+              <div
+                className={classnames(
+                  'max-label',
+                  gasLoading ? 'disabled' : '',
+                )}
+                onClick={setAmountToMax}
+              >
                 {t('maxUp')}
               </div>
             </div>
