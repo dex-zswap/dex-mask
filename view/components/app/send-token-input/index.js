@@ -1,16 +1,3 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import BigNumber from 'bignumber.js'
-import classnames from 'classnames'
-import { zeroAddress } from 'ethereumjs-util'
-import { ethers } from 'ethers'
 import TokenListItem from '@c/app/send-token-input/token-list-item'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Identicon from '@c/ui/identicon'
@@ -34,6 +21,19 @@ import {
   getShouldHideZeroBalanceTokens,
 } from '@view/selectors'
 import { showAccountDetail } from '@view/store/actions'
+import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
+import { zeroAddress } from 'ethereumjs-util'
+import { ethers } from 'ethers'
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 function SendTokenInput(
   {
@@ -67,7 +67,6 @@ function SendTokenInput(
     if (optionsDirection !== 'top') {
       return {}
     }
-
     const bodyHeight = Math.min(accounts.length * 61, 182)
     return {
       top: `-${bodyHeight + 23}px`,
@@ -75,6 +74,31 @@ function SendTokenInput(
   }, [optionsDirection, accounts])
   const [showSelectAccountMenu, setShowSelectAccountMenu] = useState(false)
   const [showSelectTokenMenu, setShowSelectTokenMenu] = useState(false)
+  const [amount, setAmount] = useState('')
+  const resetAmount = useCallback(() => {
+    setAmount('')
+  }, [])
+  const toggleAccountMenu = useCallback(() => {
+    setShowSelectAccountMenu((pre) => !pre)
+  }, [])
+  const toggleTokenMenu = useCallback(() => {
+    setShowSelectTokenMenu((pre) => !pre)
+  }, [])
+  const onAccountChange = useCallback(
+    (account) => {
+      resetAmount()
+      !accountAddress && dispatch(showAccountDetail(account.address))
+      changeAccount && changeAccount(account)
+    },
+    [accountAddress, changeAccount],
+  )
+  const onTokenChange = useCallback(
+    (asset) => {
+      resetAmount()
+      changeToken && changeToken(asset)
+    },
+    [changeToken],
+  )
   const selectedAccount = useMemo(
     () =>
       accounts.find(
@@ -86,6 +110,24 @@ function SendTokenInput(
     value: nativeCurrencyDisplayAmount,
     suffix: nativeCurrencyDisplayAmountUnit,
   } = useNativeCurrencyDisplay(nativeCurrencyAmount ?? selectedAccount?.balance)
+  const nativeAsset = useMemo(() => {
+    return {
+      address: zeroAddress(),
+      string: new BigNumber(
+        hexToString(nativeCurrencyAmount ?? selectedAccount?.balance),
+      ).toString(),
+      symbol: nativeCurrency,
+      isNativeCurrency: true,
+      nativeCurrencyDisplayAmount,
+      nativeCurrencyDisplayAmountUnit,
+    }
+  }, [
+    nativeCurrencyAmount,
+    selectedAccount,
+    nativeCurrency,
+    nativeCurrencyDisplayAmount,
+    nativeCurrencyDisplayAmountUnit,
+  ])
   const tokenData = useMemo(() => tokenList || accountTokens, [
     tokenList,
     accountTokens,
@@ -100,40 +142,22 @@ function SendTokenInput(
     () => tokenData.find(({ address }) => address === tokenAddress),
     [tokenData, tokenAddress],
   )
-  const selectedTokenAddress = useMemo(
-    () => (selectedToken ? selectedToken.address : zeroAddress()),
-    [selectedToken],
-  )
+  const selectedTokenAddress = useMemo(() => {
+    if (selectedToken) {
+      return selectedToken.address
+    } else {
+      onTokenChange(nativeAsset)
+      return zeroAddress()
+    }
+  }, [selectedToken, changeToken, nativeAsset])
   const selectedTokenSymbol = useMemo(
     () => (selectedToken ? selectedToken.symbol : nativeCurrency),
     [selectedToken, nativeCurrency],
   )
   const assetList = useMemo(() => {
-    const data = includesNativeCurrencyToken
-      ? [
-          {
-            address: zeroAddress(),
-            string: new BigNumber(
-              hexToString(nativeCurrencyAmount ?? selectedAccount?.balance),
-            ).toString(),
-            symbol: nativeCurrency,
-            isNativeCurrency: true,
-            nativeCurrencyDisplayAmount,
-            nativeCurrencyDisplayAmountUnit,
-          },
-        ]
-      : []
+    const data = includesNativeCurrencyToken ? [nativeAsset] : []
     return [...data, ...tokensWithBalances]
-  }, [
-    includesNativeCurrencyToken,
-    nativeCurrencyAmount,
-    selectedAccount,
-    nativeCurrency,
-    nativeCurrencyDisplayAmount,
-    nativeCurrencyDisplayAmountUnit,
-    tokensWithBalances,
-  ])
-  const [amount, setAmount] = useState('')
+  }, [includesNativeCurrencyToken, nativeAsset, tokensWithBalances])
   const hexAmount = useMemo(
     () => ethers.BigNumber.from(expandDecimals(amount || 0)).toHexString(),
     [amount],
@@ -160,27 +184,6 @@ function SendTokenInput(
     () => tokenInputDisplayStr?.split(' ')[1],
     [tokenInputDisplayStr],
   )
-  const toggleAccountMenu = useCallback(() => {
-    setShowSelectAccountMenu((pre) => !pre)
-  }, [])
-  const toggleTokenMenu = useCallback(() => {
-    setShowSelectTokenMenu((pre) => !pre)
-  }, [])
-  const onAccountChange = useCallback(
-    (account) => {
-      setAmount('')
-      !accountAddress && dispatch(showAccountDetail(account.address))
-      changeAccount && changeAccount(account)
-    },
-    [accountAddress, changeAccount],
-  )
-  const onTokenChange = useCallback(
-    (asset) => {
-      setAmount('')
-      changeToken && changeToken(asset)
-    },
-    [changeToken],
-  )
   const onAmountChange = useCallback(
     async ({ target }) => {
       let val = target.value.trim().replace(/\n/gu, '') || null
@@ -198,14 +201,10 @@ function SendTokenInput(
     },
     [maxSendAmount, changeAmount],
   )
-  const resetAmount = useCallback(() => {
-    setAmount('')
-  }, [])
   const setAmountToMax = useCallback(() => {
     if (gasLoading) {
       return
     }
-
     setAmount(maxSendAmount)
     changeAmount && changeAmount(maxSendAmount)
   }, [maxSendAmount, changeAmount, gasLoading])

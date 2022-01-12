@@ -44,7 +44,7 @@ export default class EditApprovalPermission extends PureComponent {
       setCustomAmount,
     } = this.props
     const { name, address } = selectedIdentity || {}
-    const { selectedOptionIsUnlimited } = this.state
+    const { selectedOptionIsUnlimited, customSpendLimit } = this.state
     return (
       <div className='edit-approval-permission'>
         <div className='edit-approval-permission__header'>
@@ -165,6 +165,11 @@ export default class EditApprovalPermission extends PureComponent {
           className='edit-approval-save-btn'
           type='primary'
           onClick={() => {
+            console.log(
+              'selectedOptionIsUnlimited',
+              selectedOptionIsUnlimited,
+              customSpendLimit,
+            )
             setCustomAmount(selectedOptionIsUnlimited ? '' : customSpendLimit)
             hideModal()
           }}
