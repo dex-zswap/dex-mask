@@ -146,10 +146,9 @@ function SendTokenInput(
     if (selectedToken) {
       return selectedToken.address
     } else {
-      onTokenChange(nativeAsset)
       return zeroAddress()
     }
-  }, [selectedToken, changeToken, nativeAsset])
+  }, [selectedToken])
   const selectedTokenSymbol = useMemo(
     () => (selectedToken ? selectedToken.symbol : nativeCurrency),
     [selectedToken, nativeCurrency],
@@ -214,6 +213,11 @@ function SendTokenInput(
   useEffect(() => {
     dispatch(setMaxSendAmount())
   }, [selectedAccount])
+  useEffect(() => {
+    if (selectedTokenAddress === zeroAddress()) {
+      onTokenChange(nativeAsset)
+    }
+  }, [selectedTokenAddress, nativeAsset])
   useImperativeHandle(ref, () => ({
     resetAmount,
   }))

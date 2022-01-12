@@ -77,6 +77,10 @@ export default function TransactionListItem({
       ].includes(displayedStatusKey),
   })
   const statusText = useMemo(() => {
+    if (displayedStatusKey === TRANSACTION_STATUSES.CONFIRMED) {
+      return date
+    }
+
     if (hasCancelled) {
       return 'canceled'
     }
@@ -86,7 +90,7 @@ export default function TransactionListItem({
     }
 
     return date
-  }, [hasCancelled, isPending, date, subtitle])
+  }, [hasCancelled, isPending, date, subtitle, displayedStatusKey])
   const statusClassName = useMemo(() => {
     if (hasCancelled) {
       return 'canceled'
@@ -110,6 +114,7 @@ export default function TransactionListItem({
     isSignatureReq,
     isApproval,
   ])
+
   return (
     <>
       <div className='transaction-list-item__wrapper'>
@@ -120,7 +125,7 @@ export default function TransactionListItem({
           <TransactionIcon category={category} status={displayedStatusKey} />
           <div className='transaction-info'>
             <div className='left-info'>
-              <div className={classnames('method-name', statusClassName)}>
+              <div className={classnames('method-name', statusClassName, displayedStatusKey)}>
                 {title}
               </div>
               {nonSignReqAndApproval ? (
