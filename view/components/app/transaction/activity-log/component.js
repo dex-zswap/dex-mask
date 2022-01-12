@@ -123,8 +123,6 @@ export default class TransactionActivityLog extends PureComponent {
             <p className='node-time'>{formattedTimestamp}</p>
             <p className='node-activity'>{activityText}</p>
           </div>
-          {/* {this.renderInlineRetry(index)}
-          {this.renderInlineCancel(index)} */}
         </div>
       </div>
     )

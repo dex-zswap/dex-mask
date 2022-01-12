@@ -6,6 +6,10 @@
   border-radius: 12px;
   border: 1px solid $primary-border;
   background: $primary-background;
+
+  .currency-display-component__suffix {
+    display: none;
+  }
 }
 
 .send-token-input-menu-mask {
