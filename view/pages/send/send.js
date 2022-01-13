@@ -169,7 +169,7 @@ export default function SendTransactionScreen() {
                   targetCoinSymbol: targetChain?.target_token,
                 }),
               );
-              history.push(CROSSCHAIN_ROUTE);
+              // history.push(CROSSCHAIN_ROUTE);
             } else {
               await dispatchChainId();
             }

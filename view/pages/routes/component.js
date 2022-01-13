@@ -15,7 +15,6 @@ import ConfirmAddTokenPage from '@pages/confirm-add-token';
 import ConfirmTransaction from '@pages/confirm-transaction';
 import ConfirmationPage from '@pages/confirmation';
 import CreateAccountPage from '@pages/create-account';
-import CrossChain from '@pages/cross-chain';
 import FirstTimeFlow from '@pages/first-time-flow';
 import Home from '@pages/home';
 import RestoreVaultPage from '@pages/keychains/restore-vault';
@@ -163,7 +162,6 @@ export default class Routes extends Component {
         <Authenticated path={`${ASSET_ROUTE}/:asset`} component={Asset} />
         <Authenticated path={RECIVE_TOKEN_ROUTE} component={ReciveToken} />
         <Authenticated path={TRADE_ROUTE} component={Trade} />
-        <Authenticated path={CROSSCHAIN_ROUTE} component={CrossChain} />
         <Authenticated path={DEFAULT_ROUTE} component={Home} />
       </Switch>
     );
