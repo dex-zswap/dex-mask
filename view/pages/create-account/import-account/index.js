@@ -38,26 +38,26 @@ export default class AccountImportSubview extends Component {
           <BackBar title={this.context.t('importAccountTitle')} />
           {/* <div className='new-account-import-form__select-section flex items-center space-between'>
           <div className='new-account-import-form__select-label'>
-           {this.context.t('selectType')}
+          {this.context.t('selectType')}
           </div>
           <Selector
-           className='select-import-type'
-           selectedValue={type}
-           options={[
-             {
-               value: 'privateKey',
-               label: this.context.t('privateKey'),
-             },
-             {
-               value: 'jsonFile',
-               label: this.context.t('jsonFile'),
-             },
-           ]}
-           onSelect={(type) => {
-             this.setState({
-               type,
-             })
-           }}
+          className='select-import-type'
+          selectedValue={type}
+          options={[
+            {
+              value: 'privateKey',
+              label: this.context.t('privateKey'),
+            },
+            {
+              value: 'jsonFile',
+              label: this.context.t('jsonFile'),
+            },
+          ]}
+          onSelect={(type) => {
+            this.setState({
+              type,
+            })
+          }}
           />
           </div> */}
         </div>

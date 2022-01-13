@@ -1,13 +1,13 @@
+import React, { PureComponent } from 'react'
+import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
+import log from 'loglevel'
+import PropTypes from 'prop-types'
 import Modal from '@c/app/modal'
 import Button from '@c/ui/button'
 import Identicon from '@c/ui/identicon'
 import TextField from '@c/ui/text-field'
 import { calcTokenAmount } from '@view/helpers/utils/token-util'
-import BigNumber from 'bignumber.js'
-import classnames from 'classnames'
-import log from 'loglevel'
-import PropTypes from 'prop-types'
-import React, { PureComponent } from 'react'
 const MAX_UNSIGNED_256_INT = new BigNumber(2).pow(256).minus(1).toString(10)
 export default class EditApprovalPermission extends PureComponent {
   static propTypes = {

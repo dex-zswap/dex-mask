@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useRef } from 'react'
+import React, { useCallback, useState, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
@@ -23,7 +23,7 @@ import {
   setRpcTarget,
   updateCrossChainState,
   showLoadingIndication,
-  hideLoadingIndication
+  hideLoadingIndication,
 } from '@view/store/actions'
 import CrossDestChainSwitcher from './dest-chain-switcher'
 import CrossFromChainSwitcher from './from-chain-switcher'
@@ -117,9 +117,7 @@ export default function CrossChainTokenInput() {
     let reverseAble = false
     let includesNativeCurrencyToken = false
     let tokenIndex
-
     dispatch(showLoadingIndication())
-
     getAllSupportBridge({
       offset: 0,
       limit: 1000000,
@@ -160,7 +158,6 @@ export default function CrossChainTokenInput() {
           tokenList,
           reverseAble,
         }))
-
         dispatch(hideLoadingIndication())
       })
   }, [
@@ -176,44 +173,41 @@ export default function CrossChainTokenInput() {
       <CrossFromChainSwitcher
         resetAmount={tokenInputRef.current?.resetAmount}
       />
-      {
-        Boolean(state.tokenList.length) &&
-        (
-          <SendTokenInput
-            {...state}
-            ref={(component) => (tokenInputRef.current = component)}
-            tokenAddress={crossChainState.coinAddress}
-            maxSendAmount={
-              isNative
-                ? crossChainState.nativeMaxSendAmount
-                : crossChainState.maxSendAmount
-            }
-            gasLoading={crossChainState.gasLoading}
-            onReverse={reverseCross}
-            changeToken={({
-              address: coinAddress,
-              decimals: tokenDecimals,
-              string,
-            }) => {
-              updateCrossState({
-                coinAddress,
-                tokenDecimals,
-                maxSendAmount: new BigNumber(string).toString(),
-              })
-            }}
-            changeAmount={(userInputValue) => {
-              updateCrossState({
-                userInputValue,
-              })
-            }}
-            changeAccount={({ address: from }) =>
-              updateCrossState({
-                from,
-              })
-            }
-          />
-        )
-      }
+      {(Boolean(state.tokenList.length) || state.includesNativeCurrencyToken) && (
+        <SendTokenInput
+          {...state}
+          ref={(component) => (tokenInputRef.current = component)}
+          tokenAddress={crossChainState.coinAddress}
+          maxSendAmount={
+            isNative
+              ? crossChainState.nativeMaxSendAmount
+              : crossChainState.maxSendAmount
+          }
+          gasLoading={crossChainState.gasLoading}
+          onReverse={reverseCross}
+          changeToken={({
+            address: coinAddress,
+            decimals: tokenDecimals,
+            string,
+          }) => {
+            updateCrossState({
+              coinAddress,
+              tokenDecimals,
+              maxSendAmount: new BigNumber(string).toString(),
+            })
+          }}
+          changeAmount={(userInputValue) => {
+            updateCrossState({
+              userInputValue,
+            })
+          }}
+          changeAccount={({ address: from }) =>
+            updateCrossState({
+              from,
+            })
+          }
+        />
+      )}
       <CrossDestChainSwitcher />
       <SendAddressInput
         optionsDirection='top'

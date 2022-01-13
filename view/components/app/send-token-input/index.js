@@ -1,3 +1,17 @@
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
+import { zeroAddress } from 'ethereumjs-util'
+import { ethers } from 'ethers'
+import { useRef } from 'react'
 import TokenListItem from '@c/app/send-token-input/token-list-item'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Identicon from '@c/ui/identicon'
@@ -22,20 +36,6 @@ import {
   getShouldHideZeroBalanceTokens,
 } from '@view/selectors'
 import { showAccountDetail } from '@view/store/actions'
-import BigNumber from 'bignumber.js'
-import classnames from 'classnames'
-import { zeroAddress } from 'ethereumjs-util'
-import { ethers } from 'ethers'
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useRef } from 'react'
 
 function SendTokenInput(
   {
@@ -69,6 +69,7 @@ function SendTokenInput(
     if (optionsDirection !== 'top') {
       return {}
     }
+
     const bodyHeight = Math.min(accounts.length * 61, 182)
     return {
       top: `-${bodyHeight + 23}px`,
@@ -206,6 +207,7 @@ function SendTokenInput(
     if (gasLoading) {
       return
     }
+
     setAmount(maxSendAmount)
     changeAmount && changeAmount(maxSendAmount)
   }, [maxSendAmount, changeAmount, gasLoading])

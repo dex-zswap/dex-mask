@@ -114,7 +114,6 @@ export default function TransactionListItem({
     isSignatureReq,
     isApproval,
   ])
-
   return (
     <>
       <div className='transaction-list-item__wrapper'>
@@ -125,7 +124,13 @@ export default function TransactionListItem({
           <TransactionIcon category={category} status={displayedStatusKey} />
           <div className='transaction-info'>
             <div className='left-info'>
-              <div className={classnames('method-name', statusClassName, displayedStatusKey)}>
+              <div
+                className={classnames(
+                  'method-name',
+                  statusClassName,
+                  displayedStatusKey,
+                )}
+              >
                 {title}
               </div>
               {nonSignReqAndApproval ? (
