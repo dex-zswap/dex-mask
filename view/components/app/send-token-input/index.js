@@ -15,6 +15,7 @@ import { useI18nContext } from '@view/hooks/useI18nContext'
 import useNativeCurrencyDisplay from '@view/hooks/useNativeCurrencyDisplay'
 import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount'
 import { useTokenTracker } from '@view/hooks/useTokenTracker'
+import useDeepEffect from '@view/hooks/useDeepEffect'
 import {
   getDexMaskAccountsOrdered,
   getSelectedAddress,
@@ -34,6 +35,7 @@ import React, {
   useState,
 } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useRef } from 'react'
 
 function SendTokenInput(
   {
@@ -213,7 +215,7 @@ function SendTokenInput(
   useEffect(() => {
     dispatch(setMaxSendAmount())
   }, [selectedAccount])
-  useEffect(() => {
+  useDeepEffect(() => {
     if (selectedTokenAddress === zeroAddress()) {
       onTokenChange(nativeAsset)
     }
