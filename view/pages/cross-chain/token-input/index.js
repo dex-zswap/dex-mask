@@ -30,7 +30,7 @@ import CrossFromChainSwitcher from './from-chain-switcher'
 export default function CrossChainTokenInput() {
   const tokenInputRef = useRef(null)
   const [state, setState] = useState({
-    includesNativeCurrencyToken: true,
+    includesNativeCurrencyToken: false,
     tokenList: [],
     reverseAble: false,
   })
