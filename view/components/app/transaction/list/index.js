@@ -107,22 +107,15 @@ export default function TransactionList({
   return (
     <div className='transaction-list'>
       <div className='transaction-list__transactions'>
-        {pendingLength > 0 && (
-          <div className='transaction-list__pending-transactions'>
-            <div className='transaction-list__header'>
-              {`${t('queue')} (${pendingTransactions.length})`}
-            </div>
-            {pendingTransactions.map((transactionGroup, index) => (
-              <TransactionListItem
-                isEarliestNonce={index === 0}
-                transactionGroup={transactionGroup}
-                key={`${transactionGroup.nonce}:${index}`}
-                hidePrimary={hidePrimary}
-              />
-            ))}
-          </div>
-        )}
         <div className='transaction-list__completed-transactions'>
+          {pendingTransactions.map((transactionGroup, index) => (
+            <TransactionListItem
+              isEarliestNonce={index === 0}
+              transactionGroup={transactionGroup}
+              key={`${transactionGroup.nonce}:${index}`}
+              hidePrimary={hidePrimary}
+            />
+          ))}
           {completedTransactions.length > 0 ? (
             completedTransactions
               .slice(0, limit)

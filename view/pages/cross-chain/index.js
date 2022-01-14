@@ -50,6 +50,9 @@ export default function CrossChain() {
     )
   }, [])
   useDeepEffect(() => {
+    dispatch(updateCrossChainState({
+      from: selectedAccount.address
+    }))
     dispatch(initializeCrossState(selectedAccount.balance))
   }, [selectedAccount])
   useEffect(() => {

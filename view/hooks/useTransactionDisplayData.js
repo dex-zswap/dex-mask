@@ -177,14 +177,14 @@ export function useTransactionDisplayData(transactionGroup, hidePrimary) {
   } else if (type === TRANSACTION_TYPES.SWAP_APPROVAL) {
     category = TRANSACTION_GROUP_CATEGORIES.APPROVAL
     title = t('swapApproval', [primaryTransaction.sourceTokenSymbol])
-    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 3, -3)])
     subtitleContainsOrigin = true
     primarySuffix = primaryTransaction.sourceTokenSymbol
   } else if (type === TRANSACTION_TYPES.TOKEN_METHOD_APPROVE) {
     category = TRANSACTION_GROUP_CATEGORIES.APPROVAL
     prefix = ''
     title = t('approveSpendLimit', [token?.symbol || t('token')])
-    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 3, -3)])
     subtitleContainsOrigin = true
   } else if (
     type === TRANSACTION_TYPES.DEPLOY_CONTRACT ||
@@ -195,7 +195,7 @@ export function useTransactionDisplayData(transactionGroup, hidePrimary) {
     title =
       (methodData?.name && camelCaseToCapitalize(methodData.name)) ||
       transactionTypeTitle
-    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 3, -3)])
     subtitleContainsOrigin = true
   } else if (type === TRANSACTION_TYPES.INCOMING) {
     category = TRANSACTION_GROUP_CATEGORIES.RECEIVE
@@ -209,11 +209,11 @@ export function useTransactionDisplayData(transactionGroup, hidePrimary) {
     category = TRANSACTION_GROUP_CATEGORIES.SEND
     title = t('sendSpecifiedTokens', [token?.symbol || t('token')])
     recipientAddress = getTokenAddressParam(tokenData)
-    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 3, -3)])
   } else if (type === TRANSACTION_TYPES.SENT_ETHER) {
     category = TRANSACTION_GROUP_CATEGORIES.SEND
     title = t('sendSpecifiedTokens', [nativeCurrency])
-    subtitle = t('toAddress', [shortenAddress(recipientAddress, 4, -6)])
+    subtitle = t('toAddress', [shortenAddress(recipientAddress, 3, -3)])
   } else {
     dispatch(
       captureSingleException(

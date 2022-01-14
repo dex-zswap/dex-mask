@@ -17,7 +17,7 @@ import {
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import useDeepEffect from '@view/hooks/useDeepEffect'
 import { useI18nContext } from '@view/hooks/useI18nContext'
-import { getCrossChainState } from '@view/selectors'
+import { getCrossChainState, getSelectedAccount } from '@view/selectors'
 import {
   setProviderType,
   setRpcTarget,
@@ -37,6 +37,7 @@ export default function CrossChainTokenInput() {
   const t = useI18nContext()
   const dispatch = useDispatch()
   const crossChainState = useSelector(getCrossChainState)
+  const selectedAccount = useSelector(getSelectedAccount)
   const tokens = useSelector(getTokens)
   const { frequentRpcListDetail } = useSelector(getDexMaskState)
   const allNetworks = useMemo(() => {
@@ -239,7 +240,7 @@ export default function CrossChainTokenInput() {
         }
         toggleCheck={(isInWallet) =>
           updateCrossState({
-            dest: isInWallet ? crossChainState.from : '',
+            dest: isInWallet ? selectedAccount.address : '',
           })
         }
       />
