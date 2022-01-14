@@ -16,9 +16,9 @@ import {
 } from '@reducer/cross-chain/cross-chain'
 import { useTokenTracker } from '@view/hooks/useTokenTracker'
 import useDeepEffect from '@view/hooks/useDeepEffect'
+import { updateCrossChainState } from '@view/store/actions'
 import CrossChainButton from './button'
 import CrossChainTokenInput from './token-input'
-import { updateCrossChainState } from '@view/store/actions'
 export default function CrossChain() {
   const t = useI18nContext()
   const dispatch = useDispatch()

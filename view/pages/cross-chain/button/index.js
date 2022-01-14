@@ -14,6 +14,7 @@ import {
 import { expandDecimals } from '@view/helpers/utils/conversions.util'
 import { useI18nContext } from '@view/hooks/useI18nContext'
 import useInterval from '@view/hooks/useInterval'
+import useDeepEffect from '@view/hooks/useDeepEffect'
 import { getCrossChainState } from '@view/selectors'
 import { showConfTxPage, updateConfirmAction } from '@view/store/actions'
 const mintAbiInterface = new ethers.utils.Interface(MINTABLE_ABI)
@@ -126,9 +127,13 @@ export default function CrossChainButton() {
     dispatch(updateConfirmAction(CROSSCHAIN_ROUTE))
     history.push(CONFIRM_TRANSACTION_ROUTE)
   }, [crossChainState])
-  useEffect(() => {
+  useDeepEffect(() => {
     if (!isNativeAsset) {
+      mounted.current = false
       allowed.current = false
+    } else {
+      mounted.current = true
+      allowed.current = true
     }
   }, [isNativeAsset, crossChainState.coinAddress, crossChainState.target])
   useInterval(() => {
@@ -143,12 +148,10 @@ export default function CrossChainButton() {
       .allowance(crossChainState.from, crossChainState.target?.handler)
       .then((res) => {
         allowed.current = !res[0].isZero()
+        mounted.current = true
       })
+  }, 500)
 
-    if (!mounted.current) {
-      mounted.current = true
-    }
-  }, 1000)
   return (
     <div className='cross-chain-buttons flex space-between'>
       <Button
@@ -175,7 +178,9 @@ export default function CrossChainButton() {
           )}
         </>
       ) : (
-        <span></span>
+        <Button disabled={true} type='primary' className='half-button'>
+          {t('loading')}
+        </Button>
       )}
     </div>
   )

@@ -2,7 +2,7 @@ import { addHexPrefix, isHexString } from 'ethereumjs-util'
 import { ALERT_TYPES } from '@shared/constants/alerts'
 import { GAS_ESTIMATE_TYPES } from '@shared/constants/gas'
 import { NETWORK_TYPE_RPC } from '@shared/constants/network'
-import { decGWEIToHexWEI } from '@view/helpers/utils/conversions.util'
+import { decGWEIToHexWEI, toBnString } from '@view/helpers/utils/conversions.util'
 import {
   accountsWithSendEtherInfoSelector,
   checkNetworkAndAccountSupports1559,
@@ -209,6 +209,17 @@ export const getWeb3ShimUsageAlertEnabledness = (state) =>
 export const getUnconnectedAccountAlertShown = (state) =>
   state.metamask.unconnectedAccountAlertShownOrigins
 export const getTokens = (state) => state.metamask.tokens
+export function getAllAccountTokens(state) {
+  const { accountTokens } = state.metamask
+  let addresses = []
+  Object.keys(accountTokens).forEach((accountAddress) => {
+    const currentAccountToken = accountTokens[accountAddress]
+    Object.keys(currentAccountToken).forEach((chainId) => {
+      currentAccountToken[toBnString(chainId)] = currentAccountToken[chainId]
+    })
+  })
+  return accountTokens
+}
 export function getBlockGasLimit(state) {
   return state.metamask.currentBlockGasLimit
 }

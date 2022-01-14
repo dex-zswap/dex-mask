@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import SendAddressInput from '@c/app/send-address-input'
 import SendTokenInput from '@c/app/send-token-input'
-import { getDexMaskState, getTokens } from '@reducer/dexmask/dexmask'
+import { getDexMaskState, getTokens, getAllAccountTokens } from '@reducer/dexmask/dexmask'
 import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 import {
   isBurnAddress,
@@ -14,6 +14,9 @@ import {
   checkTokenBridge,
   getAllSupportBridge,
 } from '@view/helpers/cross-chain-api'
+import {
+  initializeCrossState
+} from '@reducer/cross-chain/cross-chain'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import useDeepEffect from '@view/hooks/useDeepEffect'
 import { useI18nContext } from '@view/hooks/useI18nContext'
@@ -39,6 +42,7 @@ export default function CrossChainTokenInput() {
   const crossChainState = useSelector(getCrossChainState)
   const selectedAccount = useSelector(getSelectedAccount)
   const tokens = useSelector(getTokens)
+  const allAccountTokens = useSelector(getAllAccountTokens)
   const { frequentRpcListDetail } = useSelector(getDexMaskState)
   const allNetworks = useMemo(() => {
     return DEFAULT_NETWORK_LIST.map(
@@ -77,6 +81,7 @@ export default function CrossChainTokenInput() {
   const updateCrossState = useCallback((state) => {
     dispatch(updateCrossChainState(state))
   }, [])
+
   const reverseCross = useCallback(() => {
     checkTokenBridge({
       token_address: crossChainState.targetCoinAddress,
@@ -108,11 +113,13 @@ export default function CrossChainTokenInput() {
               : setRpcTarget(...targetChainInfo.setPrcParams),
           ).then(() => {
             updateCrossState(newCrossInfo)
+            dispatch(initializeCrossState(selectedAccount.balance))
           })
         }
       })
     tokenInputRef.current?.resetAmount?.()
-  }, [crossChainState, allNetworks, tokenInputRef.current])
+  }, [crossChainState, allNetworks, tokenInputRef.current, selectedAccount])
+
   useDeepEffect(() => {
     const tokenList = []
     let reverseAble = false
@@ -150,6 +157,10 @@ export default function CrossChainTokenInput() {
               item.token_address === destToken
             ) {
               reverseAble = true
+
+              if (!allAccountTokens[crossChainState.from][crossChainState.destChain].find((token) => token.address === crossChainState.targetCoinAddress)) {
+                reverseAble = false
+              }
             }
           })
         }
@@ -165,8 +176,8 @@ export default function CrossChainTokenInput() {
     chainId,
     tokenAddresses,
     tokens,
-    crossChainState.destChain,
-    crossChainState.targetCoinAddress,
+    allAccountTokens,
+    crossChainState
   ])
 
   return (
