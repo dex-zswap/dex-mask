@@ -212,8 +212,8 @@ function SendTokenInput(
     changeAmount && changeAmount(maxSendAmount)
   }, [maxSendAmount, changeAmount, gasLoading])
   const reverseAction = useCallback(() => {
-    onReverse && onReverse()
-  }, [onReverse])
+    (reverseAble && onReverse) && onReverse()
+  }, [onReverse, reverseAble])
   useEffect(() => {
     dispatch(setMaxSendAmount())
   }, [selectedAccount])

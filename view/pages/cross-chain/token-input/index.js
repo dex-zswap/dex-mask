@@ -2,6 +2,7 @@ import React, { useCallback, useState, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
+import omit from 'lodash/omit'
 import SendAddressInput from '@c/app/send-address-input'
 import SendTokenInput from '@c/app/send-token-input'
 import {
@@ -158,10 +159,9 @@ export default function CrossChainTokenInput() {
             ) {
               reverseAble = true
 
-              if (
-                !allAccountTokens[crossChainState.from][
-                  crossChainState.destChain
-                ].find(
+              const targetChainTokenInfo = allAccountTokens[crossChainState.from][crossChainState.destChain] || []
+
+              if (crossChainState.targetCoinAddress !== ethers.constants.AddressZero && !targetChainTokenInfo.find(
                   (token) =>
                     token.address === crossChainState.targetCoinAddress,
                 )
@@ -179,7 +179,32 @@ export default function CrossChainTokenInput() {
         }))
         dispatch(hideLoadingIndication())
       })
-  }, [chainId, tokenAddresses, tokens, allAccountTokens, crossChainState])
+  }, [chainId, tokenAddresses, tokens, allAccountTokens, omit(crossChainState, ['userInputValue'])])
+  const tokenChanged = useCallback(({
+    address: coinAddress,
+    decimals: tokenDecimals,
+    string,
+  }) => {
+    checkTokenBridge({
+      token_address: coinAddress,
+      meta_chain_id: toBnString(crossChainState.fromChain),
+    }).then((res) => res.json())
+      .then((res) => {
+        if (res.c === 200) {
+          const defaultTargetChain = res.d[0]
+          updateCrossState({
+            coinAddress,
+            tokenDecimals,
+            maxSendAmount: new BigNumber(string).toString(),
+            targetCoinAddress: defaultTargetChain.target_token_address,
+            target: defaultTargetChain,
+            destChain: defaultTargetChain.target_meta_chain_id,
+            supportChains: res.d
+          })
+        }
+      })
+  }, [crossChainState])
+
   return (
     <div>
       <CrossFromChainSwitcher
@@ -198,17 +223,7 @@ export default function CrossChainTokenInput() {
           }
           gasLoading={crossChainState.gasLoading}
           onReverse={reverseCross}
-          changeToken={({
-            address: coinAddress,
-            decimals: tokenDecimals,
-            string,
-          }) => {
-            updateCrossState({
-              coinAddress,
-              tokenDecimals,
-              maxSendAmount: new BigNumber(string).toString(),
-            })
-          }}
+          changeToken={tokenChanged}
           changeAmount={(userInputValue) => {
             updateCrossState({
               userInputValue,
