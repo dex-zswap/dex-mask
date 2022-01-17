@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import omit from 'lodash/omit'
+import get from 'lodash/get'
 import SendAddressInput from '@c/app/send-address-input'
 import SendTokenInput from '@c/app/send-token-input'
 import {
@@ -157,7 +158,7 @@ export default function CrossChainTokenInput() {
             ) {
               reverseAble = true
 
-              const targetChainTokenInfo = allAccountTokens[crossChainState.from][crossChainState.destChain] || []
+              const targetChainTokenInfo = get(allAccountTokens, `${crossChainState.from}.${crossChainState.destChain}`) || []
 
               if (crossChainState.targetCoinAddress !== ethers.constants.AddressZero && !targetChainTokenInfo.find(
                   (token) =>
