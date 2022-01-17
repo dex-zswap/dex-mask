@@ -4,7 +4,11 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import SendAddressInput from '@c/app/send-address-input'
 import SendTokenInput from '@c/app/send-token-input'
-import { getDexMaskState, getTokens, getAllAccountTokens } from '@reducer/dexmask/dexmask'
+import {
+  getDexMaskState,
+  getTokens,
+  getAllAccountTokens,
+} from '@reducer/dexmask/dexmask'
 import { DEFAULT_NETWORK_LIST } from '@shared/constants/network'
 import {
   isBurnAddress,
@@ -14,9 +18,7 @@ import {
   checkTokenBridge,
   getAllSupportBridge,
 } from '@view/helpers/cross-chain-api'
-import {
-  initializeCrossState
-} from '@reducer/cross-chain/cross-chain'
+import { initializeCrossState } from '@reducer/cross-chain/cross-chain'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import useDeepEffect from '@view/hooks/useDeepEffect'
 import { useI18nContext } from '@view/hooks/useI18nContext'
@@ -81,7 +83,6 @@ export default function CrossChainTokenInput() {
   const updateCrossState = useCallback((state) => {
     dispatch(updateCrossChainState(state))
   }, [])
-
   const reverseCross = useCallback(() => {
     checkTokenBridge({
       token_address: crossChainState.targetCoinAddress,
@@ -119,7 +120,6 @@ export default function CrossChainTokenInput() {
       })
     tokenInputRef.current?.resetAmount?.()
   }, [crossChainState, allNetworks, tokenInputRef.current, selectedAccount])
-
   useDeepEffect(() => {
     const tokenList = []
     let reverseAble = false
@@ -158,7 +158,14 @@ export default function CrossChainTokenInput() {
             ) {
               reverseAble = true
 
-              if (!allAccountTokens[crossChainState.from][crossChainState.destChain].find((token) => token.address === crossChainState.targetCoinAddress)) {
+              if (
+                !allAccountTokens[crossChainState.from][
+                  crossChainState.destChain
+                ].find(
+                  (token) =>
+                    token.address === crossChainState.targetCoinAddress,
+                )
+              ) {
                 reverseAble = false
               }
             }
@@ -172,20 +179,14 @@ export default function CrossChainTokenInput() {
         }))
         dispatch(hideLoadingIndication())
       })
-  }, [
-    chainId,
-    tokenAddresses,
-    tokens,
-    allAccountTokens,
-    crossChainState
-  ])
-
+  }, [chainId, tokenAddresses, tokens, allAccountTokens, crossChainState])
   return (
     <div>
       <CrossFromChainSwitcher
         resetAmount={tokenInputRef.current?.resetAmount}
       />
-      {(Boolean(state.tokenList.length) || state.includesNativeCurrencyToken) && (
+      {(Boolean(state.tokenList.length) ||
+        state.includesNativeCurrencyToken) && (
         <SendTokenInput
           {...state}
           ref={(component) => (tokenInputRef.current = component)}

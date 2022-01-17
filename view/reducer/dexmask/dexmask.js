@@ -2,7 +2,10 @@ import { addHexPrefix, isHexString } from 'ethereumjs-util'
 import { ALERT_TYPES } from '@shared/constants/alerts'
 import { GAS_ESTIMATE_TYPES } from '@shared/constants/gas'
 import { NETWORK_TYPE_RPC } from '@shared/constants/network'
-import { decGWEIToHexWEI, toBnString } from '@view/helpers/utils/conversions.util'
+import {
+  decGWEIToHexWEI,
+  toBnString,
+} from '@view/helpers/utils/conversions.util'
 import {
   accountsWithSendEtherInfoSelector,
   checkNetworkAndAccountSupports1559,

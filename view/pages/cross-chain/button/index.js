@@ -151,7 +151,6 @@ export default function CrossChainButton() {
         mounted.current = true
       })
   }, 500)
-
   return (
     <div className='cross-chain-buttons flex space-between'>
       <Button

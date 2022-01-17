@@ -46,3 +46,7 @@ DEXMask Wallet will be continuously upgraded to introduce a new generation of us
 2、在跨链桥中，可以跨链的币种可以通过我们的配置文件去添加和减少币种
 3、人性化的币种排位方式，当用户某个币种余额发生变动，当用户在钱包中搜索过某个币种，当用户对某个币种有个操作的时候，此币种自动排序在前边（主链币置顶）
 4、跨链的优化，通过DEX链或其他链点击进入跨链页面后，在此页面中可以双向选择跨链（即先切换链，再查询支持的币）。
+
+
+repeat scene diamond major depart upgrade advice federal tuition sing various lesson
+always art various blame bomb educate push life problem zone key jungle

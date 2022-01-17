@@ -26,7 +26,6 @@ export default function TransactionListItem({
 }) {
   const t = useI18nContext()
   const history = useHistory()
-  const { hasCancelled } = transactionGroup
   const [showDetails, setShowDetails] = useState(false)
   const {
     initialTransaction: { id },
@@ -62,6 +61,7 @@ export default function TransactionListItem({
     isPending,
     senderAddress,
   } = useTransactionDisplayData(transactionGroup, hidePrimary)
+  const hasCancelled = transactionGroup.hasCancelled && displayedStatusKey !== TRANSACTION_STATUSES.CONFIRMED
   const isSignatureReq =
     category === TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST
   const isApproval = category === TRANSACTION_GROUP_CATEGORIES.APPROVAL
@@ -77,10 +77,6 @@ export default function TransactionListItem({
       ].includes(displayedStatusKey),
   })
   const statusText = useMemo(() => {
-    if (displayedStatusKey === TRANSACTION_STATUSES.CONFIRMED) {
-      return date
-    }
-
     if (hasCancelled) {
       return 'canceled'
     }
