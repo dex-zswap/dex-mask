@@ -19,7 +19,6 @@ import {
   checkTokenBridge,
   getAllSupportBridge,
 } from '@view/helpers/cross-chain-api'
-import { initializeCrossState } from '@reducer/cross-chain/cross-chain'
 import { toBnString } from '@view/helpers/utils/conversions.util'
 import useDeepEffect from '@view/hooks/useDeepEffect'
 import { useI18nContext } from '@view/hooks/useI18nContext'
@@ -115,7 +114,6 @@ export default function CrossChainTokenInput() {
               : setRpcTarget(...targetChainInfo.setPrcParams),
           ).then(() => {
             updateCrossState(newCrossInfo)
-            dispatch(initializeCrossState(selectedAccount.balance))
           })
         }
       })
