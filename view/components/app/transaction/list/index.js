@@ -127,11 +127,20 @@ export default function TransactionList({
                 />
               ))
           ) : (
-            <div className='transaction-list__empty'>
-              <div className='transaction-list__empty-text'>
-                {t('noTransactions')}
-              </div>
-            </div>
+            <>
+              {
+                pendingTransactions.length === 0 ?
+                (
+                  <div className='transaction-list__empty'>
+                    <div className='transaction-list__empty-text'>
+                      {t('noTransactions')}
+                    </div>
+                  </div>
+                )
+                :
+                null
+              }
+            </>
           )}
           {completedTransactions.length > limit && (
             <Button

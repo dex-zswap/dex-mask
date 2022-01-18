@@ -199,13 +199,13 @@
     "message": "已批准"
   },
   "asset": {
-    "message": "资産"
+    "message": "资产"
   },
   "assetOptions": {
     "message": "资産选项"
   },
   "assets": {
-    "message": "资産"
+    "message": "资产"
   },
   "attemptToCancel": {
     "message": "尝试取消?"
@@ -1476,7 +1476,7 @@
     "message": "新交易费用"
   },
   "next": {
-    "message": "下一部"
+    "message": "下一步"
   },
   "nextNonceWarning": {
     "message": "Nonce 高于建议的 nonce 值 $1",

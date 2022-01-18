@@ -1476,7 +1476,7 @@
     "message": "新交易費用"
   },
   "next": {
-    "message": "下一部"
+    "message": "下一步"
   },
   "nextNonceWarning": {
     "message": "Nonce 高于建議的 nonce 值 $1",
