@@ -50,6 +50,7 @@ function SendTokenInput(
     optionsDirection,
     reverseAble,
     onReverse,
+    usedByCross = false,
     includesNativeCurrencyToken = true,
     showAmountWrap = true,
     gasLoading = false,
@@ -114,15 +115,26 @@ function SendTokenInput(
     suffix: nativeCurrencyDisplayAmountUnit,
   } = useNativeCurrencyDisplay(nativeCurrencyAmount ?? selectedAccount?.balance)
   const nativeAsset = useMemo(() => {
-    return {
-      address: zeroAddress(),
-      string: new BigNumber(
-        hexToString(nativeCurrencyAmount ?? selectedAccount?.balance),
-      ).toString(),
-      symbol: nativeCurrency,
-      isNativeCurrency: true,
-      nativeCurrencyDisplayAmount,
-      nativeCurrencyDisplayAmountUnit,
+    try {
+      return {
+        address: zeroAddress(),
+        string: new BigNumber(
+          hexToString(nativeCurrencyAmount ?? selectedAccount?.balance),
+        ).toString(),
+        symbol: nativeCurrency,
+        isNativeCurrency: true,
+        nativeCurrencyDisplayAmount,
+        nativeCurrencyDisplayAmountUnit,
+      }
+    } catch (e) {
+      return {
+        address: zeroAddress(),
+        string: '0',
+        symbol: nativeCurrency,
+        isNativeCurrency: true,
+        nativeCurrencyDisplayAmount,
+        nativeCurrencyDisplayAmountUnit,
+      }
     }
   }, [
     nativeCurrencyAmount,
@@ -218,10 +230,10 @@ function SendTokenInput(
     dispatch(setMaxSendAmount())
   }, [selectedAccount])
   useDeepEffect(() => {
-    if (selectedTokenAddress === zeroAddress()) {
+    if (!usedByCross && selectedTokenAddress === zeroAddress()) {
       onTokenChange(nativeAsset)
     }
-  }, [selectedTokenAddress, nativeAsset])
+  }, [selectedTokenAddress, nativeAsset, usedByCross])
   useImperativeHandle(ref, () => ({
     resetAmount,
   }))

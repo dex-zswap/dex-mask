@@ -158,8 +158,7 @@ export default function CrossChainTokenInput() {
             ) {
               reverseAble = true
 
-              const targetChainTokenInfo = get(allAccountTokens, `${crossChainState.from}.${crossChainState.destChain}`) || []
-
+              const targetChainTokenInfo = get(allAccountTokens, `${(crossChainState.dest ?? '').toLowerCase()}.${crossChainState.destChain}`) || []
               if (crossChainState.targetCoinAddress !== ethers.constants.AddressZero && !targetChainTokenInfo.find(
                   (token) =>
                     token.address === crossChainState.targetCoinAddress,
@@ -214,6 +213,7 @@ export default function CrossChainTokenInput() {
         <SendTokenInput
           {...state}
           ref={(component) => (tokenInputRef.current = component)}
+          usedByCross={true}
           tokenAddress={crossChainState.coinAddress}
           maxSendAmount={
             isNative
@@ -264,11 +264,7 @@ export default function CrossChainTokenInput() {
             dest: '',
           })
         }
-        toggleCheck={(isInWallet) =>
-          updateCrossState({
-            dest: isInWallet ? selectedAccount.address : '',
-          })
-        }
+        toggleCheck={(isInWallet) => updateCrossState({ dest: isInWallet ? selectedAccount.address : '' })}
       />
     </div>
   )

@@ -9,7 +9,7 @@
     "message": "版本"
   },
   "acceleratingATransaction": {
-    "message": "* 设定更高燃料价格，可以加快交易完成进度，提高网络快速处理机率，但无法保证每次均能够实现提速。"
+    "message": "* 设定更高的燃料价格以加快交易完成进度，提高网络快速处理的机率，但无法保证每次均能够实现提速。"
   },
   "acceptTermsOfUse": {
     "message": "我已阅读并同意 $1",
@@ -20,7 +20,7 @@
     "description": "$1 is the url of the site requesting ability to spend"
   },
   "accessingYourCamera": {
-    "message": "正在获取您的相机……"
+    "message": "正在访问你的相机..."
   },
   "account": {
     "message": "账户"
@@ -35,22 +35,52 @@
     "message": "账户选项"
   },
   "accountSelectionRequired": {
-    "message": "您需要选择一个账户 ！"
+    "message": "请选择一个账户！"
   },
   "active": {
-    "message": "当前"
+    "message": "在使用"
   },
   "activity": {
     "message": "活动"
   },
   "activityLog": {
-    "message": "活动日志"
+    "message": "活动纪录"
   },
   "addAcquiredTokens": {
-    "message": "在 DEXMask 上添加获得的代币"
+    "message": "在 DEXMask 上添加你已获得的代币"
   },
   "addAlias": {
     "message": "添加别名"
+  },
+  "addContact": {
+    "message": "添加联络人"
+  },
+  "addCustomTokenByContractAddress": {
+    "message": "找不到代币？ 你可以贴上合约地址以添加任何代币。 代币合约地址可以在 $1 上找到。",
+    "description": "$1 is a blockchain explorer for a specific network, e.g. Etherscan for Ethereum"
+  },
+  "addCustomTokens": {
+    "message": "添加自定义代币"
+  },
+  "addEthereumChainConfirmationDescription": {
+    "message": "这将允许该网络在 DEXMask 中使用"
+  },
+  "addEthereumChainConfirmationRisks": {
+    "message": "DEXMask 不验证自定义网络"
+  },
+  "addEthereumChainConfirmationRisksLearnMore": {
+    "message": "了解 $1 ",
+    "description": "$1 is a link with text that is provided by the 'addEthereumChainConfirmationRisksLearnMoreLink' key"
+  },
+  "addEthereumChainConfirmationRisksLearnMoreLink": {
+    "message": "诈骗和网络安全风险",
+    "description": "Link text for the 'addEthereumChainConfirmationRisksLearnMore' translation key"
+  },
+  "addEthereumChainConfirmationTitle": {
+    "message": "允许此网站添加网络吗？"
+  },
+  "addFriendsAndAddresses": {
+    "message": "添加你信任的朋友和地址"
   },
   "addNetwork": {
     "message": "添加网络"
@@ -65,65 +95,71 @@
     "message": "添加推荐代币"
   },
   "addToAddressBook": {
-    "message": "添加地址簿"
+    "message": "添加到地址簿"
   },
   "addToAddressBookModalPlaceholder": {
     "message": "如：John D."
   },
   "addToken": {
-    "message": "添加代币"
+    "message": "添加更多资产"
   },
   "addTokens": {
     "message": "添加代币"
   },
+  "addressBookIcon": {
+    "message": "地址簿图标"
+  },
   "advanced": {
-    "message": "高级"
+    "message": "进阶的"
+  },
+  "advancedGasPriceTitle": {
+    "message": "燃料价格"
   },
   "advancedOptions": {
-    "message": "高级选项"
+    "message": "进阶选项"
   },
   "advancedSettingsDescription": {
-    "message": "访问开发者功能，下载状态日志，重置账户，设置测试网和自定义 RPC。"
+    "message": "访问开发者功能，下载状态纪录，重置账户，设置测试网和自定义 RPC"
   },
   "affirmAgree": {
     "message": "我同意"
   },
   "aggregatorFeeCost": {
-    "message": "聚集器网络手续费"
+    "message": "聚合器网络费用"
   },
   "alertDisableTooltip": {
-    "message": "这个可以在“设置 > 提醒”中进行更改"
+    "message": "这个可以在 '设置 > 提醒' 中进行更改"
   },
   "alertSettingsUnconnectedAccount": {
-    "message": "选择了未连接的账户时浏览网站"
+    "message": "选择了未连接的账户浏览网站中"
   },
   "alertSettingsUnconnectedAccountDescription": {
-    "message": "当您在浏览已连接的 Web3 网站，但当前选择的账户没有连接时，该提醒会在弹出的窗口中显示。"
+    "message": "当你在浏览已连接的 Web3 网站，但当前选择的账户没有连接时，此提醒会在弹出的窗口中显示。"
   },
   "alertSettingsWeb3ShimUsage": {
     "message": "当网站尝试使用已经删除的 window.web3 API"
   },
   "alertSettingsWeb3ShimUsageDescription": {
-    "message": "当您在浏览的网站尝试使用已经删除的 window.web3 API 时，该提醒会在弹出的窗口中显示。"
+    "message": "当你在浏览尝试使用已删除 window.web3 API 的网站，并可能因此而断掉时，此提醒会在弹出的窗口中显示。"
   },
   "alerts": {
     "message": "提醒"
   },
   "alertsSettingsDescription": {
-    "message": "启用或禁用每个提醒"
+    "message": "啓用或禁用每个提醒"
   },
   "allowExternalExtensionTo": {
-    "message": "允许这个外部扩展到："
+    "message": "允许此外部扩展："
   },
   "allowOriginSpendToken": {
-    "message": "允许 $1 使用您的 $2?",
+    "message": "允许 $1 使用你的 $2 ?",
     "description": "$1 is the url of the site and $2 is the symbol of the token they are requesting to spend"
   },
   "allowThisSiteTo": {
-    "message": "允许本网站："
+    "message": "允许此网站："
   },
   "allowWithdrawAndSpend": {
-    "message": "允许 $1 提取和最多消费以下数额：",
+    "message": "允许 $1 提取和使用以下的最高数额：",
     "description": "The url of the site that requested permission to 'withdraw and spend'"
   },
   "amount": {
@@ -133,7 +169,7 @@
     "message": "数额："
   },
   "appDescription": {
-    "message": "以太坊浏览器插件",
+    "message": "你浏览器内的以太币钱包",
     "description": "The description of the application"
   },
   "appName": {
@@ -141,35 +177,41 @@
     "description": "The name of the application"
   },
   "approvalAndAggregatorTxFeeCost": {
-    "message": "批准聚合商网络手续费"
+    "message": "批准聚合器网络费用"
   },
   "approvalTxGasCost": {
     "message": "批准交易燃料成本"
   },
   "approve": {
-    "message": "批准消费限额"
+    "message": "批准使用限额"
+  },
+  "approveButtonText": {
+    "message": "批准"
   },
   "approveSpendLimit": {
-    "message": "批准 $1 消费限额",
+    "message": "批准 $1 使用限额",
     "description": "The token symbol that is being approved"
   },
   "approveText": {
-    "message": "授权 $1"
+    "message": "批准 $1"
   },
   "approved": {
     "message": "已批准"
   },
   "asset": {
-    "message": "资产"
+    "message": "资産"
+  },
+  "assetOptions": {
+    "message": "资産选项"
   },
   "assets": {
-    "message": "资产"
+    "message": "资産"
   },
   "attemptToCancel": {
-    "message": "想要取消吗？"
+    "message": "尝试取消?"
   },
   "attemptToCancelDescription": {
-    "message": "确认提交该操作无法保证能够成功取消您的原始交易。如取消成功，您将被收取上述交易费。"
+    "message": "确认提交此操作无法保证能够成功取消你的原始交易。如取消成功，你将被收取上述交易费。"
   },
   "attemptingConnect": {
     "message": "正在尝试连接到区块链。"
@@ -178,13 +220,13 @@
     "message": "来源"
   },
   "authorizedPermissions": {
-    "message": "您已授权以下权限"
+    "message": "你已授权以下权限"
   },
   "autoLockTimeLimit": {
-    "message": "自动锁定定时（分钟）"
+    "message": "自动锁定计时器（分钟）"
   },
   "autoLockTimeLimitDescription": {
-    "message": "请设置 DEXMask 自动锁定前的空闲时间（单位：分钟）"
+    "message": "请设置 DEXMask 自动锁定前的空闲时间（分钟）"
   },
   "average": {
     "message": "平均值"
@@ -196,16 +238,16 @@
     "message": "返回全部"
   },
   "backupApprovalInfo": {
-    "message": "如果不慎丢失个人设备，忘记密码，或者需要重新安装 DEXMask，亦或是需在另一台设备上打开钱包，请使用该保密码恢复个人钱包数据。"
+    "message": "如果不慎丢失个人设备、忘记密码，需要重新安装 DEXMask，或是需在另一台设备上打开钱包，请使用此保密码恢复你的钱包。"
   },
   "backupApprovalNotice": {
-    "message": "请备份您的账户助记词，保证您的钱包和资金安全。"
+    "message": "请备份你的账户助记词，确保你的钱包和资金安全。"
   },
   "backupNow": {
     "message": "立即备份"
   },
   "balance": {
-    "message": "余额 "
+    "message": "余额"
   },
   "balanceOutdated": {
     "message": "余额可能已过期"
@@ -214,7 +256,10 @@
     "message": "基本"
   },
   "blockExplorerUrl": {
-    "message": "区块浏览器"
+    "message": "区块链浏览器网址"
+  },
+  "blockExplorerUrlDefinition": {
+    "message": "用作此网络的区块链浏览器的网址。The URL used as the block explorer for this network."
   },
   "blockExplorerView": {
     "message": "通过 $1 查看账户",
@@ -224,31 +269,46 @@
     "message": "使用 Blockies Identicon 图标头像"
   },
   "bridgeConfirmSend": {
-    "message": "确认付款 - DEX桥"
+    "message": "确认发送 - DEX Bridge"
   },
   "browserNotSupported": {
-    "message": "您的浏览器不支持该功能……"
+    "message": "你的浏览器不支持此功能"
   },
   "bscMainnet": {
-    "message": "BSC"
+    "message": "币安智能链主网络"
+  },
+  "buildContactList": {
+    "message": "建立你的联络人列表"
+  },
+  "builtAroundTheWorld": {
+    "message": "DEXMask is designed and built around the world."
   },
   "buy": {
     "message": "收款"
+  },
+  "buyWithTransak": {
+    "message": "使用 Transak 购买 ETH"
+  },
+  "buyWithTransakDescription": {
+    "message": "Transak 支援使用信用卡或银行转账（取决于地点）多达59个以上的国家/地区，将 ETH 存入你的 DEXMask 账户。"
   },
   "buyWithWyre": {
     "message": "使用 Wyre 购买 ETH"
   },
   "buyWithWyreDescription": {
-    "message": "您可以通过 Wyre 使用信用卡将 ETH 存入您的 DEXMask 账户。"
+    "message": "你可以通过 Wyre 使用信用卡将 ETH 存入您的 DEXMask 账户。"
   },
   "bytes": {
-    "message": "字节"
+    "message": "Bytes"
   },
   "canToggleInSettings": {
-    "message": "您可以在 设置 -> 提醒 中重新启用该提醒通知。"
+    "message": "你可以在 设置 -> 提醒 中重新啓用该提醒通知。"
   },
   "cancel": {
     "message": "取消"
+  },
+  "cancelPopoverTitle": {
+    "message": "取消交易"
   },
   "cancellationGasFee": {
     "message": "取消交易燃料费用"
@@ -259,11 +319,17 @@
   "chainId": {
     "message": "链 ID"
   },
+  "chainIdDefinition": {
+    "message": "用作此网络签署交易的链 ID。"
+  },
+  "chainIdExistsErrorMsg": {
+    "message": "此链 ID 当前由 $1 网络使用。"
+  },
   "chromeRequiredForHardwareWallets": {
-    "message": "您需要在谷歌浏览器（Google Chrome）上使用 DEXMask 才能连接到您的硬件钱包。"
+    "message": "你需要在谷歌浏览器（Google Chrome）上使用 DEXMask 才能连接到您的硬件钱包。"
   },
   "clickToRevealSeed": {
-    "message": "点击此处显示密语"
+    "message": "点击此处显示保密语"
   },
   "close": {
     "message": "关闭"
@@ -274,14 +340,32 @@
   "confirmPassword": {
     "message": "确认密码"
   },
+  "confirmRecoveryPhrase": {
+    "message": "请确认你的保密账户恢复语"
+  },
+  "confirmRecoveryPhraseDescription": {
+    "message": "请选择每个助记词以确保它是正确的。"
+  },
   "confirmSecretBackupPhrase": {
-    "message": "请确认您的账户助记词"
+    "message": "请确认你的保密账户助记词"
+  },
+  "confirmSeedPhrase": {
+    "message": "请确认你的账户助记词"
   },
   "confirmSend": {
-    "message": "确认付款"
+    "message": "确认发送"
   },
   "confirmed": {
-    "message": "确认"
+    "message": "已确认"
+  },
+  "confusableUnicode": {
+    "message": "'$1' 相类似于 '$2'。"
+  },
+  "confusableZeroWidthUnicode": {
+    "message": "找到零宽度的字符。"
+  },
+  "confusingEnsDomain": {
+    "message": "我们在 ENS 名称中侦测到一个易混淆的字符。 请检查 ENS 名称以避免潜在诈骗。"
   },
   "congratulations": {
     "message": "恭喜"
@@ -296,14 +380,14 @@
     "message": "连接硬件钱包"
   },
   "connectManually": {
-    "message": "手动连接到当前站点"
+    "message": "手动连接到当前网站"
   },
   "connectTo": {
     "message": "连接到 $1",
     "description": "$1 is the name/origin of a web3 site/application that the user can connect to DEXMask"
   },
   "connectToAll": {
-    "message": "连接到您的全部$1",
+    "message": "连接到你的全部 $1",
     "description": "$1 will be replaced by the translation of connectToAllAccounts"
   },
   "connectToAllAccounts": {
@@ -311,7 +395,7 @@
     "description": "will replace $1 in connectToAll, completing the sentence 'connect to all of your accounts', will be text that shows list of accounts on hover"
   },
   "connectToMultiple": {
-    "message": "连接到  $1",
+    "message": "连接到 $1",
     "description": "$1 will be replaced by the translation of connectToMultipleNumberOfAccounts"
   },
   "connectToMultipleNumberOfAccounts": {
@@ -322,20 +406,20 @@
     "message": "使用 DEXMask 连接"
   },
   "connectedAccountsDescriptionPlural": {
-    "message": "您有 $1 个账户连接到了该网站。",
+    "message": "你有 $1 个账户连接到了此网站。",
     "description": "$1 is the number of accounts"
   },
   "connectedAccountsDescriptionSingular": {
-    "message": "您有 1 个账户连接到了该网站。"
+    "message": "你有 1 个账户连接到了此网站。"
   },
   "connectedAccountsEmptyDescription": {
-    "message": "DEXMask 没有连接这个网站。要连接到 web3 网站，请在他们的网站上找到连接按钮。"
+    "message": "DEXMask 没有连接到此网站。要连接到 web3 网站，请在他们的网站上找到连接按钮。"
   },
   "connectedSites": {
     "message": "已连接的网站"
   },
   "connectedSitesDescription": {
-    "message": "$1 已连接到这些网站。他们可以查看您的账户地址。",
+    "message": "$1 已连接到这些网站。他们可以查看你的账户地址。",
     "description": "$1 is the account name"
   },
   "connectedSitesEmptyDescription": {
@@ -343,13 +427,13 @@
     "description": "$1 is the account name"
   },
   "connecting": {
-    "message": "连接中……"
+    "message": "连接中..."
   },
   "connectingTo": {
     "message": "正在连接 $1"
   },
   "connectingToGoerli": {
-    "message": "正在连接 Goerli 测试网络"
+    "message": "正在连接到 Goerli 测试网络"
   },
   "connectingToKovan": {
     "message": "正在连接到 Kovan 测试网络"
@@ -364,22 +448,37 @@
     "message": "正在连接到 Ropsten 测试网络"
   },
   "contactUs": {
-    "message": "联系我们"
+    "message": "联络我们"
   },
   "contacts": {
-    "message": "联系人"
+    "message": "联络人"
   },
   "contactsSettingsDescription": {
-    "message": "添加、编辑、删除和管理您的联系人。"
+    "message": "添加、编辑、删除和管理你的联络人"
+  },
+  "continue": {
+    "message": "继续"
+  },
+  "continueToTransak": {
+    "message": "继续到 Transak"
+  },
+  "continueToWyre": {
+    "message": "继续到 Wyre"
+  },
+  "contract": {
+    "message": "合约"
+  },
+  "contractAddressError": {
+    "message": "你正在将代币发送到代币的合约地址，这可能会导致损失这些代币。"
   },
   "contractDeployment": {
     "message": "合约部署"
   },
   "contractInteraction": {
-    "message": "合约交互"
+    "message": "合约调用"
   },
   "copiedExclamation": {
-    "message": "已复制"
+    "message": "已复制!"
   },
   "copiedTransactionId": {
     "message": "交易 ID 复制成功"
@@ -388,7 +487,7 @@
     "message": "复制地址到剪贴板"
   },
   "copyPrivateKey": {
-    "message": "您的私钥"
+    "message": "你的私钥"
   },
   "copyToClipboard": {
     "message": "复制到剪贴板"
@@ -403,25 +502,34 @@
     "message": "创建密码"
   },
   "createAWallet": {
-    "message": "I’m New !"
+    "message": "创建钱包"
   },
   "createAccount": {
     "message": "创建账户"
   },
+  "createNewWallet": {
+    "message": "创建新钱包"
+  },
   "createPassword": {
-    "message": "创建密码"
+    "message": "创建密码以访问你的钱包"
   },
   "createWallet": {
     "message": "创建钱包"
   },
   "crossChain": {
-    "message": "跨链"
+    "message": "桥"
   },
   "currencyConversion": {
     "message": "货币转换"
   },
+  "currencySymbol": {
+    "message": "货币符号"
+  },
+  "currencySymbolDefinition": {
+    "message": "此网络的货币显示的符号"
+  },
   "currentAccountNotConnected": {
-    "message": "您的当前账户没有连接"
+    "message": "你当前的账户没有在连接"
   },
   "currentExtension": {
     "message": "当前扩展页"
@@ -442,35 +550,38 @@
     "message": "自定义 RPC"
   },
   "customSpendLimit": {
-    "message": "自定义消费限额"
+    "message": "自定义使用限额"
   },
   "customToken": {
     "message": "自定义代币"
   },
+  "data": {
+    "message": "数据"
+  },
   "dataBackupFoundInfo": {
-    "message": "您的部分账户数据已在之前安装的 DEXMask 时备份。其中可能包括您的设置、联系人和代币。您现在想恢复这些数据吗？"
+    "message": "你的部分账户数据已在之前安装的 DEXMask 时备份。其中可能包括你的设置、联络人和代币。你现在想恢复这些数据吗？"
   },
   "decimal": {
-    "message": "小数精度"
+    "message": "代币小数位"
   },
   "decimalsMustZerotoTen": {
-    "message": "小数位最小为0并且不超过36位."
+    "message": "小数位最小为0， 并且不超过36位。"
   },
   "decrypt": {
     "message": "解密"
   },
   "decryptCopy": {
-    "message": "复制加密信息"
+    "message": "复制已加密信息"
   },
   "decryptDEXMask": {
     "message": "解密信息"
   },
   "decryptInlineError": {
-    "message": "无法解密此消息，错误：$1",
+    "message": "无法解密此讯息，错误：$1",
     "description": "$1 is error message"
   },
   "decryptMessageNotice": {
-    "message": "$1 希望阅读此信息来完成您的操作。",
+    "message": "$1 希望阅读此讯息以完成你的操作",
     "description": "$1 is the web3 site name"
   },
   "decryptRequest": {
@@ -489,7 +600,7 @@
     "message": "删除网络？"
   },
   "deleteNetworkDescription": {
-    "message": "是否确认要删除该网络？"
+    "message": "是否确认要删除此网络？"
   },
   "depositEther": {
     "message": "存入 Ether"
@@ -498,13 +609,10 @@
     "message": "详情"
   },
   "dexBridge": {
-    "message": "DEX桥"
+    "message": "DEX 桥"
   },
   "dexMainnet": {
-    "message": "DEX"
-  },
-  "dexMaskVersion": {
-    "message": "DEXMask 版本"
+    "message": "DEX 智能链主网络"
   },
   "dex_trans": {
     "message": "DEX钱包内转账"
@@ -513,25 +621,34 @@
     "message": "直接存入 Ether"
   },
   "directDepositEtherExplainer": {
-    "message": "如果您已经有了一些 Ether，最快捷的方法就是直接向新钱包存入 Ether。"
+    "message": "如果你已拥有一些 Ether，最快捷的方法就是直接存入 Ether 到新钱包。"
   },
   "disconnect": {
-    "message": "断开"
+    "message": "中断连接"
   },
   "disconnectAllAccounts": {
-    "message": "断开所有账户"
+    "message": "中断连接所有账户"
   },
   "disconnectAllAccountsConfirmationDescription": {
-    "message": "您确定要断开连接吗？您可能会失去网站功能。"
+    "message": "你确定要中断连接吗？你可能会失去该网站功能性。"
   },
   "disconnectPrompt": {
-    "message": "断开 $1"
+    "message": "中断连接 $1"
   },
   "disconnectThisAccount": {
-    "message": "断开此账户的连接"
+    "message": "中断连接此账户"
   },
   "dismiss": {
     "message": "关闭"
+  },
+  "dismissReminderDescriptionField": {
+    "message": "开啓此选项可关闭保密账户助记词的备份提醒讯息。 我们强烈建议备份你的保密账户助记词以避免资金损失。"
+  },
+  "dismissReminderField": {
+    "message": "关闭保密账户助记词的备份提醒"
+  },
+  "domain": {
+    "message": "网域"
   },
   "done": {
     "message": "完成"
@@ -540,78 +657,189 @@
     "message": "不再显示"
   },
   "downloadGoogleChrome": {
-    "message": "下载 Google Chrome 浏览器"
+    "message": "下载谷歌浏览器（Google Chrome）"
   },
   "downloadSecretBackup": {
-    "message": "下载账户助记词，并将其安全保存在外部加密硬盘或存储介质上。"
+    "message": "下载此保密账户助记词，并将其安全保存在外部加密硬盘或存储体上。."
   },
   "downloadStateLogs": {
-    "message": "下载状态日志"
+    "message": "下载状态记录"
   },
   "dropped": {
-    "message": "丢弃"
+    "message": "已丢弃"
   },
   "edit": {
     "message": "编辑"
   },
   "editContact": {
-    "message": "编辑联系人"
+    "message": "编辑联络人"
+  },
+  "editGasEducationButtonText": {
+    "message": "我应该如何选择？"
+  },
+  "editGasEducationHighExplanation": {
+    "message": "这最适合兑换交易或其他时间相关的交易。如果兑换处理时间过长，它通常会失败，可能会导致你损失资金。"
+  },
+  "editGasEducationLowExplanation": {
+    "message": "只有在处理时间不太重要的交易中，才应选择较低的燃料费用。由于费用较低，很难预测你的交易何时（或是否）会成功。"
+  },
+  "editGasEducationMediumExplanation": {
+    "message": "中等的燃料费用适合于发送、提取或其他非时间相关但重要的交易。"
+  },
+  "editGasEducationModalIntro": {
+    "message": "选择正确的燃料费用取决于交易的类型和它的重要程度。"
+  },
+  "editGasEducationModalTitle": {
+    "message": "如何选择？"
+  },
+  "editGasHigh": {
+    "message": "高等的"
+  },
+  "editGasLimitOutOfBounds": {
+    "message": "燃料限制必须至少 $1"
+  },
+  "editGasLimitTooltip": {
+    "message": "燃料限制是你愿意使用的最大燃料单位。 燃料单位是“最大优先费用”和“最大费用”相乘。"
+  },
+  "editGasLow": {
+    "message": "低等的"
+  },
+  "editGasMaxFeeHigh": {
+    "message": "最大收费高于需要的水平"
+  },
+  "editGasMaxFeeLow": {
+    "message": "对于网络条件，最大费用过低"
+  },
+  "editGasMaxFeePriorityImbalance": {
+    "message": "最大费用不能低于最大优先费用"
+  },
+  "editGasMaxFeeTooltip": {
+    "message": "最大费用是你支付的最大费用（基本费用 + 优先费用）。"
+  },
+  "editGasMaxPriorityFeeBelowMinimum": {
+    "message": "最大优先费用必须大于 0 GWEI"
+  },
+  "editGasMaxPriorityFeeHigh": {
+    "message": "最大优先费用高于必要。你可能会支付超出需要的费用。"
+  },
+  "editGasMaxPriorityFeeLow": {
+    "message": "对于网络条件，最大优先费用处于极低的水平"
+  },
+  "editGasMaxPriorityFeeTooltip": {
+    "message": "最大优先费用（又称 '矿工小费'）直接给予矿工，激励他们优先处理你的交易。你通常会支付你的最大设置费用。"
+  },
+  "editGasMedium": {
+    "message": "中等的"
+  },
+  "editGasPriceTooLow": {
+    "message": "燃料价格必须大于 0"
+  },
+  "editGasPriceTooltip": {
+    "message": "此网络在提交交易时需要提供 '燃料价格'。燃料价格是指你将支付的每个燃料单位的金额。"
+  },
+  "editGasSubTextAmount": {
+    "message": "$1 $2",
+    "description": "$1 will be passed the editGasSubTextAmountLabel and $2 will be passed the amount in either cryptocurrency or fiat"
+  },
+  "editGasSubTextAmountLabel": {
+    "message": "最大金额:",
+    "description": "This is meant to be used as the $1 substitution editGasSubTextAmount"
+  },
+  "editGasSubTextFee": {
+    "message": "$1 $2",
+    "description": "$1 will be passed the editGasSubTextFeeLabel and $2 will be passed the fee amount in either cryptocurrency or fiat"
+  },
+  "editGasSubTextFeeLabel": {
+    "message": "最大费用",
+    "description": "$1 represents a dollar amount"
+  },
+  "editGasTitle": {
+    "message": "编辑优先级别"
+  },
+  "editGasTooLow": {
+    "message": "未知处理时间"
+  },
+  "editGasTooLowTooltip": {
+    "message": "在当前市场条件下，你的最大费用或最大优先费用可能较低。 我们不知道你的交易何时（或是否）会被处理。"
+  },
+  "editGasTotalBannerSubtitle": {
+    "message": "最大费用 $1 ($2)",
+    "display": "$1 represents a fiat value"
+  },
+  "editNonceField": {
+    "message": "编辑 Nonce"
+  },
+  "editNonceMessage": {
+    "message": "这是一项进阶功能，请谨慎使用。"
   },
   "editPermission": {
     "message": "编辑权限"
   },
   "encryptionPublicKeyNotice": {
-    "message": "$1 希望得到您的加密公钥。同意后该网站将可以想您发送加密信息。",
+    "message": "$1 希望得到你的加密公钥。同意后该网站将可以发送加密信息给你。",
     "description": "$1 is the web3 site name"
   },
   "encryptionPublicKeyRequest": {
-    "message": "申请加密公钥"
+    "message": "请求加密公钥"
   },
   "endOfFlowMessage1": {
-    "message": "您通过了测试—— 保管好您的账户助记词，这是您的责任!"
+    "message": "你的钱包已创建完成！"
   },
   "endOfFlowMessage10": {
-    "message": "全部完成"
+    "message": "开始使用"
   },
   "endOfFlowMessage11": {
-    "message": "全部完成"
+    "message": "你的钱包已导入完成！"
   },
   "endOfFlowMessage2": {
-    "message": "安全保存技巧"
+    "message": "安全保存钱包的技巧"
   },
   "endOfFlowMessage3": {
-    "message": "在多处保存备份数据。"
+    "message": "请在多处保存备份数据。"
   },
   "endOfFlowMessage4": {
-    "message": "不向任何任何人分享该账户助记词。"
+    "message": "请不要与任何人分享你的账户助记词。"
   },
   "endOfFlowMessage5": {
-    "message": "谨防网络钓鱼！DEXMask 绝不会主动要求您提供个人账户助记词。"
+    "message": "谨防网络钓鱼！DEXMask 绝不会主动要求你提供个人账户助记词。"
   },
   "endOfFlowMessage6": {
-    "message": "如果您需要再次备份账户助记词，请通过设置 -> 安全选项完成该操作。"
+    "message": "如果你需要再次备份账户助记词，请在设置 -> 安全选项完成该操作。"
+  },
+  "endOfFlowMessage7": {
+    "message": "如果你有任何疑问或发现任何可疑之处，请联系我们的帮助中心 $1.",
+    "description": "$1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
   },
   "endOfFlowMessage8": {
-    "message": "DEXMask 无法恢复您的账户助记词。"
+    "message": "DEXMask 无法恢复你的账户助记词。"
   },
   "endOfFlowMessage9": {
-    "message": "了解详情。"
+    "message": "了解详情"
   },
   "endpointReturnedDifferentChainId": {
-    "message": "RPC 端点使用链不同的链 ID: $1",
+    "message": "端点使用了不同的链 ID： $1",
     "description": "$1 is the return value of eth_chainId from an RPC endpoint"
   },
+  "ensIllegalCharacter": {
+    "message": "ENS 非法字符。"
+  },
   "ensNotFoundOnCurrentNetwork": {
-    "message": "未在当前网络找到 ENS 名称。请尝试切换至主以太坊网络。"
+    "message": "未能在当前网络找到 ENS 名称，请尝试切换至以太坊主网络。"
+  },
+  "ensNotSupportedOnNetwork": {
+    "message": "网络不支援 ENS"
   },
   "ensRegistrationError": {
     "message": "ENS 名称登记错误"
+  },
+  "ensUnknownError": {
+    "message": "ENS 查找失败"
   },
   "enterAnAlias": {
     "message": "输入别名"
   },
   "enterMaxSpendLimit": {
-    "message": "输入最高消费额度"
+    "message": "输入最大消费额度"
   },
   "enterPassword": {
     "message": "输入密码"
@@ -620,7 +848,7 @@
     "message": "输入密码以继续"
   },
   "enterPrivateKeyString": {
-    "message": "输入您的私钥"
+    "message": "输入私钥字符串"
   },
   "errorCode": {
     "message": "代码：$1",
@@ -631,36 +859,47 @@
     "description": "Title for collapsible section that displays error details for debugging purposes"
   },
   "errorMessage": {
-    "message": "信息：$1",
+    "message": "讯息：$1",
     "description": "Displayed error message for debugging purposes. $1 is the error message"
   },
   "errorName": {
     "message": "代码：$1",
     "description": "Displayed error name for debugging purposes. $1 is the error name"
   },
+  "errorPageMessage": {
+    "message": "请重新加载页面以重试。",
+    "description": "Message displayed on generic error page in the fullscreen or notification UI, $1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
+  },
+  "errorPagePopupMessage": {
+    "message": "请关闭并重新打开弹出窗口以重试。",
+    "description": "Message displayed on generic error page in the popup UI, $1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
+  },
   "errorPageTitle": {
     "message": "DEXMask 遇到了一个错误",
     "description": "Title of generic error page"
   },
   "errorStack": {
-    "message": "栈：",
+    "message": "错误：",
     "description": "Title for error stack, which is displayed for debugging purposes"
   },
   "estimatedProcessingTimes": {
     "message": "预计处理时间"
   },
+  "ethGasPriceFetchWarning": {
+    "message": "由于目前主要的燃料估算服务不可使用，因此提供了备用燃料价格。"
+  },
   "eth_accounts": {
-    "message": "查看您允许的账户的地址（必填）",
+    "message": "查看允许账户的地址（必需的）",
     "description": "The description for the `eth_accounts` permission"
   },
   "ethereumPublicAddress": {
     "message": "以太坊 Ethereum 公开地址"
   },
   "etherscan": {
-    "message": "区块链浏览器"
+    "message": "以太坊区块链浏览器"
   },
   "etherscanView": {
-    "message": "在区块链浏览器上查看账户"
+    "message": "在以太坊区块链浏览器上查看账户"
   },
   "expandView": {
     "message": "展开视图"
@@ -679,10 +918,10 @@
     "message": "失败"
   },
   "failedToFetchChainId": {
-    "message": "无法获取链 IC，您的 RPC URL 地址是正确的么？"
+    "message": "无法获取链 ID，请检查你的 RPC 地址是否正确。"
   },
   "failureMessage": {
-    "message": "出了点问题，我们无法完成这个操作。"
+    "message": "出现错误，我们无法完成操作"
   },
   "fast": {
     "message": "快"
@@ -694,7 +933,7 @@
     "message": "此请求需要支付一定的费用。"
   },
   "fiat": {
-    "message": "FIAT",
+    "message": "法币",
     "description": "Exchange type"
   },
   "fileImportFail": {
@@ -720,11 +959,21 @@
   "functionType": {
     "message": "功能类型"
   },
+  "gasDisplayAcknowledgeDappButtonText": {
+    "message": "编辑建议的燃料费用"
+  },
+  "gasDisplayDappWarning": {
+    "message": "$1 建议这个燃料费。 漠视它可能会导致您的交易出现问题。 如果你有任何问题，请联系 $1",
+    "description": "$1 represents the Dapp's origin"
+  },
+  "gasEstimatesUnavailableWarning": {
+    "message": "我们的低、中、高估算不可用。"
+  },
   "gasLimit": {
     "message": "燃料限制"
   },
   "gasLimitInfoTooltipContent": {
-    "message": "燃料限制是指您愿意花费的最燃料量单位。"
+    "message": "燃料限制是指你愿意花费的最大燃料量单位。"
   },
   "gasLimitTooLow": {
     "message": "燃料限制至少要 21000"
@@ -734,19 +983,48 @@
     "description": "$1 is the custom gas limit, in decimal."
   },
   "gasPrice": {
-    "message": "燃料价格(GWEI)"
+    "message": "燃料价格 (GWEI)"
+  },
+  "gasPriceExcessive": {
+    "message": "你的燃料费设置得过高，请考虑降低金额。"
+  },
+  "gasPriceExcessiveInput": {
+    "message": "燃料价格过高"
   },
   "gasPriceExtremelyLow": {
     "message": "燃料价格极低"
   },
+  "gasPriceFetchFailed": {
+    "message": "由于网络错误，燃料价格估算失败。"
+  },
   "gasPriceInfoTooltipContent": {
-    "message": "燃料价格规定了您愿意为每单位燃料支付的 Ether 数量。"
+    "message": "燃料价格指定你愿意为每单位燃料支付的以太币数量。"
+  },
+  "gasTimingMinutes": {
+    "message": "$1 分钟",
+    "description": "$1 represents a number of minutes"
+  },
+  "gasTimingNegative": {
+    "message": "或许在 $1",
+    "description": "$1 represents an amount of time"
+  },
+  "gasTimingPositive": {
+    "message": "可能在 < $1",
+    "description": "$1 represents an amount of time"
+  },
+  "gasTimingSeconds": {
+    "message": "$1 秒",
+    "description": "$1 represents a number of seconds"
+  },
+  "gasTimingVeryPositive": {
+    "message": "很有可能在 < $1",
+    "description": "$1 represents an amount of time"
   },
   "gasUsed": {
-    "message": "燃料使用"
+    "message": "已使用的燃料"
   },
   "gdprMessage": {
-    "message": "这些数据是汇总的，因此，根据《GDPR 通用数据保护条例》(EU)2016/679，这些数据是匿名的。有关我们隐私惯例的更多信息，请参见我们的 $1。",
+    "message": "这些数据是汇总的，因此就《GDPR 通用数据保护条例》(EU)2016/679，这些数据是匿名的。有关我们隐私惯例的更多信息，请参阅我们的 $1。",
     "description": "$1 refers to the gdprMessagePrivacyPolicy message, the translation of which is meant to be used exclusively in the context of gdprMessage"
   },
   "gdprMessagePrivacyPolicy": {
@@ -757,7 +1035,7 @@
     "message": "通用设置"
   },
   "generalSettingsDescription": {
-    "message": "货币转换、主要价格单位、语言和 Blockies Identicon 图标头像"
+    "message": "货币转换、基本货币、语言和 Blockies Identicon 图标头像"
   },
   "getEther": {
     "message": "获取 Ether"
@@ -773,10 +1051,10 @@
     "message": "打开"
   },
   "goerli": {
-    "message": "Goerli 测试网络"
+    "message": "Goerli 智能链测试网络"
   },
   "happyToSeeYou": {
-    "message": "我们很高兴见到您。"
+    "message": "我们很高兴见到你！"
   },
   "hardware": {
     "message": "硬件"
@@ -784,11 +1062,18 @@
   "hardwareWalletConnected": {
     "message": "已连接的硬件钱包"
   },
+  "hardwareWalletLegacyDescription": {
+    "message": "(旧版)",
+    "description": "Text representing the MEW path"
+  },
+  "hardwareWalletSupportLinkConversion": {
+    "message": "点击这里"
+  },
   "hardwareWallets": {
     "message": "连接硬件钱包"
   },
   "hardwareWalletsMsg": {
-    "message": "选择希望用于 DEXMask 的硬件钱包"
+    "message": "请选择你想用于 DEXMask 的硬件钱包。"
   },
   "here": {
     "message": "这里",
@@ -821,42 +1106,55 @@
     "message": "导入账户"
   },
   "importAccountLinkText": {
-    "message": "import using Secret Recovery Phrase"
+    "message": "使用账户助记词导入"
   },
   "importAccountMsg": {
-    "message": "导入的账户将不会与最初创建的 DEXMask 账户助记词相关联。了解更多有关导入账户的信息 。"
+    "message": " 导入的账户将不会与最初创建的 DEXMask 账户助记词相关联。了解更多有关导入账户的信息。"
   },
   "importAccountSeedPhrase": {
     "message": "使用账户助记词导入账户"
   },
   "importAccountText": {
-    "message": "or $1",
+    "message": "或者 $1",
     "description": "$1 represents the text from `importAccountLinkText` as a link"
   },
   "importAccountTitle": {
     "message": "导入账户"
   },
+  "importTokenQuestion": {
+    "message": "导入代币？"
+  },
+  "importTokenWarning": {
+    "message": "任何人都可以创建任何名称的代币，包括现有代币的伪造版本。 添加和交易代币的风险请自负！"
+  },
   "importWallet": {
     "message": "导入钱包"
+  },
+  "importYourExisting": {
+    "message": "使用账户助记词导入你现有的钱包"
   },
   "imported": {
     "message": "已导入",
     "description": "status showing that an account has been fully loaded into the keyring"
   },
+  "infuraBlockedNotification": {
+    "message": "DEXMask 无法连接到区块鍊主机。 查看可能的原因 $1。",
+    "description": "$1 is a clickable link with with text defined by the 'here' key"
+  },
   "initialTransactionConfirmed": {
-    "message": "您的初始交易已通过网络确认。请点击“确定”返回。"
+    "message": "你的初始交易已通过网络确认。请点击“确定”返回。"
   },
   "inputAmount": {
     "message": "输入数额"
   },
   "insufficientBalance": {
-    "message": "余额不足。"
+    "message": "余额不足"
   },
   "insufficientFunds": {
-    "message": "余额不足。"
+    "message": "资金不足"
   },
   "insufficientTokens": {
-    "message": "代币余额不足。"
+    "message": "代币不足"
   },
   "invalidAddress": {
     "message": "无效地址"
@@ -865,45 +1163,45 @@
     "message": "接收方地址无效"
   },
   "invalidAddressRecipientNotEthNetwork": {
-    "message": "非 ETH 网络，请使用小写"
+    "message": "非以太坊 ETH 网络，请使用小写"
   },
   "invalidBlockExplorerURL": {
-    "message": "无效的区块浏览器 URL"
+    "message": "无效的区块浏览器网址"
   },
   "invalidChainIdTooBig": {
     "message": "无效的链 ID，该链 ID 数字过大。"
   },
   "invalidCustomNetworkAlertContent1": {
-    "message": "需要重新输入自定义网络'$1'的链 ID。",
+    "message": "需要重新输入自定义网络'$1'的链 ID",
     "description": "$1 is the name/identifier of the network."
   },
   "invalidCustomNetworkAlertContent2": {
-    "message": "为了保护您免受恶意或有问题的网络提供商的侵害，现在所有的自定义网络都需要提供链 ID。"
+    "message": "为了保护你免受恶意或有问题的网络提供商的侵害，现在所有的自定义网络都需要提供链 ID。"
   },
   "invalidCustomNetworkAlertContent3": {
-    "message": "进入设置 > 网络并输入链 ID。您可以通过 $1 查找常用的链 ID。",
+    "message": "进入设置 > 网络并输入链 ID。你可以通过 $1 查找最常用的链 ID。",
     "description": "$1 is a link to https://chainid.network"
   },
   "invalidCustomNetworkAlertTitle": {
     "message": "无效的自定义网络"
   },
   "invalidHexNumber": {
-    "message": "无效的十六进制数。"
+    "message": "无效的十六进制数"
   },
   "invalidHexNumberLeadingZeros": {
-    "message": "无效的十六进制数。去除任何开头的零。"
+    "message": "无效的十六进制数，请去除任何开头的零。"
   },
   "invalidIpfsGateway": {
-    "message": "无效的 IPFS 网关。该值必须是一个有效的 URL"
+    "message": "无效的 IPFS 网关。该值必须是一个有效的网址"
   },
   "invalidNumber": {
-    "message": "无效的数字。输入一个数字或‘0x’开头的十六进制数。"
+    "message": "无效的数字。请输入一个数字或‘0x’开头的十六进制数。"
   },
   "invalidNumberLeadingZeros": {
-    "message": "无效的数字。去除任何开头的零。"
+    "message": "无效的数字。请去除任何开头的零。"
   },
   "invalidRPC": {
-    "message": "无效 RPC URL"
+    "message": "无效的 RPC 网址"
   },
   "invalidSeedPhrase": {
     "message": "无效的账户助记词"
@@ -912,17 +1210,17 @@
     "message": "IPFS 网关"
   },
   "ipfsGatewayDescription": {
-    "message": "输入用于 ENS 内容解析的 IPFS CID 网关的 URL。"
+    "message": "请输入用于 ENS 内容解析的 IPFS CID 网关的网址"
   },
   "jsonFile": {
     "message": "JSON 文件",
     "description": "format for importing an account"
   },
   "knownAddressRecipient": {
-    "message": "已知接收方地址。"
+    "message": "已知合约地址"
   },
   "knownTokenWarning": {
-    "message": "此操作将编辑已经在您的钱包中列出的代币，有肯能被用来欺骗您。只有确定要更改这些代币的内容时，才通过此操作。"
+    "message": "此操作将编辑已经在你的钱包中列出的代币，这可能会被用来欺骗你。只有当你确定要更改这些代币的内容时，才通过此操作。"
   },
   "kovan": {
     "message": "Kovan 测试网络"
@@ -937,16 +1235,31 @@
     "message": "查看更多"
   },
   "ledgerAccountRestriction": {
-    "message": "在添加新的账户之前，需要使用您的最后一个账户。"
+    "message": "在添加新的账户之前，你需要先使用你的上一个账户。"
+  },
+  "ledgerLiveAdvancedSetting": {
+    "message": "使用 Ledger Live"
+  },
+  "ledgerLiveAdvancedSettingDescription": {
+    "message": "新的 Ledger Live 桥使你可以更轻松地使用你的 Ledger。 仅在 Chrome 中可用。"
+  },
+  "ledgerLiveApp": {
+    "message": "Ledger Live 应用程序"
+  },
+  "ledgerLocked": {
+    "message": "无法连接到 Ledger 设备。 请确保你的设备已解锁并且已打开以太坊应用程序。"
+  },
+  "ledgerTimeout": {
+    "message": "Ledger Live的响应时间过长或连接超时。请确保Ledger Live应用程序已打开，以及你的设备已解锁。"
   },
   "letsGoSetUp": {
-    "message": "第一次，立即开始设置！"
+    "message": "是的，立即开始设置！"
   },
   "likeToAddTokens": {
-    "message": "您想添加这些代币吗？"
+    "message": "你想添加这些代币吗？"
   },
   "links": {
-    "message": "链接"
+    "message": "连结"
   },
   "liquidity": {
     "message": "流动性挖矿"
@@ -961,7 +1274,7 @@
     "message": "加载代币中……"
   },
   "localhost": {
-    "message": "Localhost 8545"
+    "message": "本地主机 8545"
   },
   "lock": {
     "message": "锁定"
@@ -970,13 +1283,26 @@
     "message": "锁定时间过长"
   },
   "mainnet": {
-    "message": "ETH"
+    "message": "以太坊主网络"
+  },
+  "makeAnotherSwap": {
+    "message": "创建一个新的兑换"
+  },
+  "makeSureNoOneWatching": {
+    "message": "请确保没有人在看你的屏幕",
+    "description": "Warning to users to be care while creating and saving their new seed phrase"
   },
   "manage": {
     "message": "管理"
   },
   "max": {
     "message": "最大"
+  },
+  "maxFee": {
+    "message": "最大费用"
+  },
+  "maxPriorityFee": {
+    "message": "最大优先费用"
   },
   "maxUp": {
     "message": "最大"
@@ -985,81 +1311,132 @@
     "message": "备忘"
   },
   "memorizePhrase": {
-    "message": "记住该账户助记词。"
+    "message": "请记住此账户助记词。"
   },
   "message": {
-    "message": "消息"
+    "message": "讯息"
   },
   "metaMaskConnectStatusParagraphOne": {
-    "message": "现在您可在 DEXMask 中对账户连接进行更多的控制。"
+    "message": "你现在于DEXMask中的账户连接有了更多的控制。"
   },
   "metaMaskConnectStatusParagraphThree": {
-    "message": "点击管理连接的账户。"
+    "message": "点击它以管理你已连接的账户。"
   },
   "metaMaskConnectStatusParagraphTwo": {
-    "message": "连接状态按钮显示所访问的网站是否与您当前选择的账户连接。"
+    "message": "连接状态按钮显示你正在访问的网站是否已连接到你当前选择的账户。"
   },
   "metaMaskDescription": {
-    "message": "将您与 Ethereum 和去中心化网络连接起来。"
+    "message": "将你与以太坊和去中心化网络连接。"
   },
   "metaMaskSwapsOfflineDescription": {
-    "message": "DEXMask Swaps 正在进行维护。请稍后访问。"
+    "message": "DEXMask 兑换正在进行维护，请稍后再回来查看。"
+  },
+  "metaMaskVersion": {
+    "message": "DEXMask 版本"
   },
   "metametricsCommitmentsAllowOptOut": {
-    "message": "始终允许您通过设置选择退出"
+    "message": "随时通过设置选择取消订阅"
   },
   "metametricsCommitmentsBoldNever": {
     "message": "从不",
     "description": "This string is localized separately from some of the commitments so that we can bold it"
   },
   "metametricsCommitmentsIntro": {
-    "message": "DEXMask……"
+    "message": "DEXMask ……"
   },
   "metametricsCommitmentsNeverCollectIP": {
-    "message": "$1收集您的完整IP地址",
+    "message": "$1 收集你的完整IP地址",
     "description": "The $1 is the bolded word 'Never', from 'metametricsCommitmentsBoldNever'"
   },
   "metametricsCommitmentsNeverCollectKeysEtc": {
-    "message": "$1收集密钥、地址、交易记录、余额、哈希或任何个人信息",
+    "message": "$1 收集密钥、地址、交易记录、余额、哈希或任何个人信息",
     "description": "The $1 is the bolded word 'Never', from 'metametricsCommitmentsBoldNever'"
   },
   "metametricsCommitmentsNeverSellDataForProfit": {
-    "message": "$1为利益而出售您的数据，永远不会！",
+    "message": "$1 为利益而出售你的数据，永远不会！",
     "description": "The $1 is the bolded word 'Never', from 'metametricsCommitmentsBoldNever'"
   },
   "metametricsCommitmentsSendAnonymizedEvents": {
-    "message": "发送匿名的点击和页面浏览事件信息"
+    "message": "发送匿名点击和分页浏览事件"
   },
   "metametricsHelpImproveDEXMask": {
-    "message": "帮助我们让 DEXMask 变得更好"
+    "message": "协助我们让 DEXMask 变得更好"
   },
   "metametricsOptInDescription": {
-    "message": "DEXMask 希望收集使用数据，以更好地了解我们的用户如何与扩展进行互动。这些数据将被用于持续改进我们产品和 Ethereum 生态系统的可用性和用户体验。"
+    "message": "DEXMask 希望透过收集使用数据，以更好地了解我们的用户如何与产品互动。这些数据将被用于持续改进我们的産品和 Ethereum 生态系统的可用性和用户体验。"
+  },
+  "mismatchedChain": {
+    "message": "这个链 ID 的网络详细信息与我们的记录不符。我们建议你在进行之前先 $1 。",
+    "description": "$1 is a clickable link with text defined by the 'mismatchedChainLinkText' key"
+  },
+  "mismatchedChainLinkText": {
+    "message": "验证网络详细信息",
+    "description": "Serves as link text for the 'mismatchedChain' key. This text will be embedded inside the translation for that key."
+  },
+  "mobileSyncWarning": {
+    "message": " '与扩展钱包同步' 的功能暂时停用。如果你想在DEXMask手机应用程序上使用你的扩展钱包，那么在你的手机应用程序上：请去钱包设置选项，选择 '使用账户助记词导入' 选项，然后使用你的扩展钱包的账户助记词将你的钱包导入到手机。"
   },
   "mustSelectOne": {
-    "message": "至少选择 1 种代币。"
+    "message": "至少选择 1 种代币"
   },
   "myAccounts": {
     "message": "我的账户"
   },
+  "name": {
+    "message": "名称"
+  },
   "needEtherInWallet": {
-    "message": "使用 DEXMask 与分布式应用交互，需要您的钱包里需要有 Ether。"
+    "message": "使用 DEXMask 与去中心化应用程序进行互动，你的钱包里需要有 Ether。"
+  },
+  "needHelp": {
+    "message": "需要帮忙？ 请联系 $1",
+    "description": "$1 represents `needHelpLinkText`, the text which goes in the help link"
+  },
+  "needHelpLinkText": {
+    "message": "DEXMask 帮助中心"
   },
   "needImportFile": {
-    "message": "必须选择一个文件来导入。",
+    "message": "你必须选择一个文件来导入。",
     "description": "User is important an account and needs to add a file to continue"
   },
   "negativeETH": {
-    "message": "不能发负值的 ETH。"
+    "message": "不能发送负值的 ETH。"
+  },
+  "networkDetails": {
+    "message": "网络详情"
   },
   "networkName": {
     "message": "网络名称"
   },
+  "networkNameBSC": {
+    "message": "BSC 网络"
+  },
+  "networkNameDefinition": {
+    "message": "与此网络关联的名称。"
+  },
+  "networkNameEthereum": {
+    "message": "Ethereum 网络"
+  },
+  "networkNamePolygon": {
+    "message": "Polygon 网络"
+  },
+  "networkNameRinkeby": {
+    "message": "Rinkeby 网络"
+  },
+  "networkNameTestnet": {
+    "message": "Testnet 网络"
+  },
   "networkSettingsChainIdDescription": {
-    "message": "链 ID 用于签署交易。它必须与网络返回的链 ID 相匹配。您可以输入十进制或'0x'前缀的十六进制数字，但我们将以十进制显示。"
+    "message": "链 ID 用于签署交易。它必须与网络返回的链 ID 符合。你可以输入十进制的数字或以'0x'为字首的十六进制数字，但我们将以十进制显示该数字。"
   },
   "networkSettingsDescription": {
     "message": "添加和编辑自定义 RPC 网络"
+  },
+  "networkURL": {
+    "message": "网络网址"
+  },
+  "networkURLDefinition": {
+    "message": "用于访问此网络的网址。"
   },
   "networks": {
     "message": "网络"
@@ -1078,16 +1455,16 @@
     "description": "Default name of next account to be created on create account screen"
   },
   "newContact": {
-    "message": "新联系人"
+    "message": "新增联络人"
   },
   "newContract": {
-    "message": "新合约"
+    "message": "新增合约"
   },
   "newNetwork": {
     "message": "新增网络"
   },
   "newPassword": {
-    "message": "新密码（至少 8 个字符）"
+    "message": "新密码"
   },
   "newToDEXMask": {
     "message": "第一次使用 DEXMask？"
@@ -1099,7 +1476,7 @@
     "message": "新交易费用"
   },
   "next": {
-    "message": ""
+    "message": "下一部"
   },
   "nextNonceWarning": {
     "message": "Nonce 高于建议的 nonce 值 $1",
@@ -1109,7 +1486,7 @@
     "message": "没找到查询的账户"
   },
   "noAddressForName": {
-    "message": "这个名字还没有设置地址。"
+    "message": "这个名称还没有设置地址。"
   },
   "noAlreadyHaveSeed": {
     "message": "不，我已经有一个账户助记词了。"
@@ -1121,59 +1498,120 @@
     "message": "不，谢谢"
   },
   "noTransactions": {
-    "message": "没有交易"
+    "message": "还没有交易记录。请开始使用 DexMask 并兑换加密货币。"
   },
   "noWebcamFound": {
-    "message": "未找到您的电脑摄像头。请重试。"
+    "message": "未能找到你的计算机摄像镜头。请重试。"
   },
   "noWebcamFoundTitle": {
-    "message": "未找到摄像头"
+    "message": "找不到计算机摄像镜头"
+  },
+  "nonce": {
+    "message": "Nonce"
   },
   "nonceField": {
     "message": "自定义交易 nonce"
   },
   "nonceFieldDescription": {
-    "message": "开启此功能可以改变确认屏幕上的 nonce（交易号）。此为高级功能，请谨慎使用。"
+    "message": "开啓此功能以改变确认屏幕上的 nonce（交易号）。此为进阶功能，请谨慎使用。"
   },
   "nonceFieldHeading": {
     "message": "自定义 Nonce"
   },
   "notCurrentAccount": {
-    "message": "这是正确的账户吗？这与您钱包中当前选择的账户不同。"
+    "message": "这是正确的账户吗？这与你钱包中当前选择的账户不同。"
   },
   "notEnoughGas": {
     "message": "燃料不足"
   },
+  "notifications1Description": {
+    "message": "DEXMask 的手机用户现在可以在他们的手机钱包内兑换代币。扫描二维码以下载应用程序并开始交换。",
+    "description": "Description of a notification in the 'See What's New' popup. Describes the swapping on mobile feature."
+  },
+  "notifications1Title": {
+    "message": "DEXMask 手机交换代币就从这里开始！",
+    "description": "Title for a notification in the 'See What's New' popup. Tells users that they can now use DEXMask Swaps on Mobile."
+  },
+  "notifications3ActionText": {
+    "message": "阅读更多",
+    "description": "The 'call to action' on the button, or link, of the 'Stay secure' notification. Upon clicking, users will be taken to a page about security on the DEXMask support website."
+  },
+  "notifications3Description": {
+    "message": "保持对DEXMask安全最佳实践的关注，并从DEXMask官方帮助中心获得最新的安全提示。",
+    "description": "Description of a notification in the 'See What's New' popup. Describes the information they can get on security from the linked support page."
+  },
+  "notifications3Title": {
+    "message": "时刻保持安全",
+    "description": "Title for a notification in the 'See What's New' popup. Encourages users to consider security."
+  },
+  "notifications4ActionText": {
+    "message": "开始交换代币",
+    "description": "The 'call to action' on the button, or link, of the 'Swap on Binance Smart Chain!' notification. Upon clicking, users will be taken to a page where then can swap tokens on Binance Smart Chain."
+  },
+  "notifications4Description": {
+    "message": "在你的钱包里直接获得代币兑换的最佳价格。 DEXMask现将你与币安智能链上的多个去中心化交易所聚合器和专业做市商联系起来。",
+    "description": "Description of a notification in the 'See What's New' popup."
+  },
+  "notifications4Title": {
+    "message": "在币安智能链交换代币",
+    "description": "Title for a notification in the 'See What's New' popup. Encourages users to do swaps on Binance Smart Chain."
+  },
+  "notifications5Description": {
+    "message": "你的 \"Seed Phrase\" 现在被称为你的 \"账户助记词\"",
+    "description": "Description of a notification in the 'See What's New' popup. Describes the seed phrase wording update."
+  },
+  "notifications6DescriptionOne": {
+    "message": "从Chrome 91版本开始，使我们的Ledger支援（U2F）的API不再支持硬件钱包。 DEXMask 已经使用了新的Ledger Live支援，允许你继续通过Ledger Live桌面应用程序连接到你的Ledger设备。",
+    "description": "Description of a notification in the 'See What's New' popup. Describes the Ledger support update."
+  },
+  "notifications6DescriptionThree": {
+    "message": "当你在DEXMask中与你的Ledger账户互动时，将打开一个新页，你将被要求打开Ledger Live应用程序。一旦应用程序打开，你将被要求允许一个WebSocket 连接到你的 DEXMask 账户。",
+    "description": "Description of a notification in the 'See What's New' popup. Describes the Ledger support update."
+  },
+  "notifications6DescriptionTwo": {
+    "message": "你可以在 设置 > 进阶 > 使用 Ledger Live 来启用 Ledger Live 支援。",
+    "description": "Description of a notification in the 'See What's New' popup. Describes the Ledger support update."
+  },
+  "notifications6Title": {
+    "message": "Chrome 用户的 Ledger 支援更新",
+    "description": "Title for a notification in the 'See What's New' popup. Lets users know about the Ledger support update"
+  },
   "ofTextNofM": {
-    "message": "/"
+    "message": "的"
   },
   "off": {
-    "message": "关"
+    "message": "关闭"
   },
   "offlineForMaintenance": {
-    "message": "脱机维护"
+    "message": "离线维护"
   },
   "ok": {
     "message": "确定"
   },
   "on": {
-    "message": "启用"
+    "message": "啓用"
   },
   "onboardingReturnNotice": {
-    "message": "“$1”会关闭此标签，直接回到 $2",
+    "message": "\"$1\" 会关闭此页，直接回到 $2",
     "description": "Return the user to the site that initiated onboarding"
   },
+  "onlyAddTrustedNetworks": {
+    "message": "恶意的网络供应商可能会谎报区块链的状态并记录你的网络活动。仅添加你信任的自定义网络。"
+  },
   "onlyAvailableOnMainnet": {
-    "message": "仅在主网（mainnet）上提供"
+    "message": "仅在主网络（mainnet）提供"
   },
   "onlyConnectTrust": {
-    "message": "只连接您信任的网站。"
+    "message": "只与你信任的网站连接。"
+  },
+  "optional": {
+    "message": "选填"
   },
   "optionalBlockExplorerUrl": {
-    "message": "区块浏览器 URL（选填）"
+    "message": "区块链浏览器网址 (选填)"
   },
   "optionalCurrencySymbol": {
-    "message": "符号（选填）"
+    "message": "货币符号 (选填)"
   },
   "origin": {
     "message": "来源"
@@ -1188,7 +1626,7 @@
     "message": "加入 MetaMetrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "加入 MetaMetrics ，帮助我们改善 DEXMask 服务"
+    "message": "加入 MetaMetrics，协助我们改善 DEXMask。"
   },
   "password": {
     "message": "密码"
@@ -1196,24 +1634,30 @@
   "passwordNotLongEnough": {
     "message": "密码长度不足"
   },
+  "passwordSetupDetails": {
+    "message": "此密码仅在此设备上解锁你的 DEXMask 钱包。DEXMask 无法恢复此密码。"
+  },
+  "passwordTermsWarning": {
+    "message": "我明白 DEXMask 不能为我恢复此密码。 $1"
+  },
   "passwordsDontMatch": {
     "message": "密码不匹配"
   },
   "pastePrivateKey": {
-    "message": "请粘贴您的私钥:",
+    "message": "请在此贴上你的私钥:",
     "description": "For importing an account from a private key"
   },
   "pay": {
-    "message": "转账"
+    "message": "支付"
   },
   "pending": {
     "message": "待处理"
   },
   "permissionCheckedIconDescription": {
-    "message": "您已同意该权限"
+    "message": "你已同意此权限"
   },
   "permissionUncheckedIconDescription": {
-    "message": "您还未同意该权限"
+    "message": "你还未同意此权限"
   },
   "permissions": {
     "message": "权限"
@@ -1222,17 +1666,20 @@
     "message": "检测到个人地址。请输入代币合约地址。"
   },
   "plusXMore": {
-    "message": "+ $1",
+    "message": "+ $1 ",
     "description": "$1 is a number of additional but unshown items in a list- this message will be shown in place of those items"
+  },
+  "pre": {
+    "message": "返回"
   },
   "prev": {
     "message": "上一个"
   },
   "primaryCurrencySetting": {
-    "message": "主要货币"
+    "message": "基本货币"
   },
   "primaryCurrencySettingDescription": {
-    "message": "请选择“本地”，优先显示当地货币链价值（如 ETH ）。选择“货币”则优先以所选货币作为价值显示单位。"
+    "message": "选择原生货币，优先显示链上的原生货币价值（如ETH）。选择法币以优先显示你所选择的法币价值。"
   },
   "privacyMsg": {
     "message": "隐私政策"
@@ -1242,10 +1689,10 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": "注意：永远不要公开这个私钥。任何拥有您的私钥的人都可以窃取您帐户中的任何资产。"
+    "message": "注意：永远不要公开此私钥。任何拥有你的私钥的人都可以窃取你账户中的任何资産。"
   },
   "privateNetwork": {
-    "message": "私有网络"
+    "message": "私人网络"
   },
   "proposedApprovalLimit": {
     "message": "拟议的审批上限"
@@ -1253,23 +1700,69 @@
   "provide": {
     "message": "提供"
   },
+  "publicAddress": {
+    "message": "公用地址"
+  },
   "queue": {
-    "message": "队列"
+    "message": "排队"
   },
   "queued": {
-    "message": "队列中"
+    "message": "排队中"
   },
   "readdToken": {
-    "message": "之后您还可以通过帐户选项菜单中的“添加代币”来添加此代币。"
+    "message": "你可以在将来通过在你的账户选项菜单中的 '添加代币' 将这个代币添加回来。"
+  },
+  "receive": {
+    "message": "收款"
   },
   "receive2": {
     "message": "收款"
+  },
+  "receiveSpecifiedTokens": {
+    "message": "收取 $1",
+    "description": "Symbol of the specified token"
   },
   "recents": {
     "message": "最近记录"
   },
   "recipientAddressPlaceholder": {
     "message": "查找、公用地址 (0x) 或 DNS"
+  },
+  "reciveToken": {
+    "message": "收取代币"
+  },
+  "recommendedGasLabel": {
+    "message": "建议"
+  },
+  "recoveryPhrase": {
+    "message": "账户助记词"
+  },
+  "recoveryPhraseDescription": {
+    "message": "你的账户助记词以便于备份和恢复你的账户。"
+  },
+  "recoveryPhraseReminderBackupStart": {
+    "message": "从这里开始"
+  },
+  "recoveryPhraseReminderConfirm": {
+    "message": "知道了"
+  },
+  "recoveryPhraseReminderHasBackedUp": {
+    "message": "请将你的账户助记词保存在安全和秘密的地方"
+  },
+  "recoveryPhraseReminderHasNotBackedUp": {
+    "message": "需要再次备份你的账户助记词？"
+  },
+  "recoveryPhraseReminderItemOne": {
+    "message": "切勿与任何人分享你的账户助记词"
+  },
+  "recoveryPhraseReminderItemTwo": {
+    "message": "DEXMask 团队永远不会要求你提供账户助记词"
+  },
+  "recoveryPhraseReminderSubText": {
+    "message": "你的账户助记词控制你所有的账户。"
+  },
+  "recoveryPhraseReminderTitle": {
+    "message": "保护你的资金"
   },
   "reject": {
     "message": "拒绝"
@@ -1278,13 +1771,13 @@
     "message": "拒绝全部"
   },
   "rejectTxsDescription": {
-    "message": "您将批量拒绝 $1 笔交易。"
+    "message": "你将批量拒绝 $1 笔交易。"
   },
   "rejectTxsN": {
     "message": "拒绝 $1 笔交易"
   },
   "rejected": {
-    "message": "拒绝"
+    "message": "已拒绝"
   },
   "remindMeLater": {
     "message": "稍后提醒"
@@ -1296,7 +1789,7 @@
     "message": "删除账户"
   },
   "removeAccountDescription": {
-    "message": "该账户已从您的钱包中删除。请在继续后续操作前，确认您是否已拥有该导入账户的原始账户助记词或账户密钥。您可以通过账户下拉菜单再次导入或创建账户。"
+    "message": "此账户将从你的钱包中删除。在继续操作前，请确认你是否已备份此已导入的账户的原始账户助记词或私钥。你可以在账户下拉选单再次导入或创建账户。 "
   },
   "requestsAwaitingAcknowledgement": {
     "message": "待确认的请求"
@@ -1308,50 +1801,53 @@
     "message": "重置"
   },
   "resetAccount": {
-    "message": "重设账户"
+    "message": "重置账户"
   },
   "resetAccountDescription": {
-    "message": "重置账户将清除您的交易历史记录。这不会改变您账户中的余额，也不会要求您重新输入账户助记词。"
+    "message": "重置账户将清除你的交易记录。这不会改变你账户中的余额，也不会要求你重新输入账户助记词。"
   },
   "restore": {
     "message": "恢复"
   },
   "restoreAccountWithSeed": {
-    "message": "使用账户助记词恢复您的账户"
+    "message": "使用账户助记词恢复你的账户"
   },
   "restoreWalletPreferences": {
-    "message": "已找到于 $1 的数据备份。您想恢复您的钱包设置吗？",
+    "message": "已找到在 $1 的数据备份。你想恢复你的钱包设置吗？",
     "description": "$1 is the date at which the data was backed up"
   },
   "retryTransaction": {
     "message": "重试交易"
   },
   "reusedTokenNameWarning": {
-    "message": "此处的一个代币使用了与您关注的另一个代币的相同符号，这可能会让人感到困惑或欺骗。"
+    "message": "此处的一种代币重用了你关注的另一种代币的符号，这可能会让人感到困惑或具有欺骗性。"
   },
   "revealSeedWords": {
     "message": "显示账户助记词"
   },
   "revealSeedWordsDescription": {
-    "message": "如果您更换浏览器或计算机，则需要使用此账户助记词访问您的帐户。请将它们保存在安全秘密的地方。"
+    "message": "如果你曾经更换了浏览器或计算机，你将需要这个账户助记词再次使用你的账户。请把账户助记词保存在安全和秘密的地方。"
   },
   "revealSeedWordsTitle": {
     "message": "账户助记词"
   },
   "revealSeedWordsWarning": {
-    "message": "该账户助记词可以用来窃取您的所有帐户"
+    "message": "此账户助记词可以用来窃取你的所有账户"
   },
   "revealSeedWordsWarningTitle": {
-    "message": "不要对任何人展示此账户助记词！"
+    "message": "请不要对与任何人分享此账户助记词！"
+  },
+  "rightWay": {
+    "message": "带你通往元宇宙、DeFi、Dex、NFT、GameFi的道路..."
   },
   "rinkeby": {
-    "message": "Rinkeby 测试网络"
+    "message": "Rinkeby 智能链测试网络"
   },
   "ropsten": {
-    "message": "Ropsten 测试网络"
+    "message": "Ropsten 智能链测试网络"
   },
   "rpcUrl": {
-    "message": "新增 RPC URL"
+    "message": "新增 RPC 网址"
   },
   "save": {
     "message": "保存"
@@ -1360,13 +1856,13 @@
     "message": "保存为 CSV 文件"
   },
   "scanInstructions": {
-    "message": "将二维码放在相机前"
+    "message": "请将二维码放置在相机前"
   },
   "scanQrCode": {
     "message": "扫描二维码"
   },
   "scrollDown": {
-    "message": "向下滚动"
+    "message": "向下滑动"
   },
   "search": {
     "message": "搜索"
@@ -1384,61 +1880,125 @@
     "message": "账户助记词"
   },
   "secretBackupPhraseDescription": {
-    "message": "您的账户助记词可以帮助您轻松备份和恢复个人账户。"
+    "message": "你的账户助记词以便于你轻松备份和恢复个人账户。"
   },
   "secretBackupPhraseWarning": {
-    "message": "警告：切勿向他人透露您的账户助记词。任何人一旦持有该账户助记词，即可控制您的 Ether。"
+    "message": "警告：切勿向他人透露你的账户助记词。任何人一旦持有此账户助记词，即可拿取你的 Ether。"
+  },
+  "secretPhrase": {
+    "message": "在此处输入你的账户助记词以恢复你的保险库。"
+  },
+  "secureWallet": {
+    "message": "保护钱包"
   },
   "securityAndPrivacy": {
     "message": "安全与隐私"
   },
   "securitySettingsDescription": {
-    "message": "隐私设置和账户助记词"
+    "message": "隐私设置和钱包账户助记词"
   },
   "seed": {
     "message": "助记词"
   },
+  "seedPhraseConfirm": {
+    "message": "确认你的账户助记词"
+  },
+  "seedPhraseEnterMissingWords": {
+    "message": "确认你的账户助记词"
+  },
+  "seedPhraseIntroSidebarBulletFour": {
+    "message": "请写下并存储在多个秘密位置"
+  },
+  "seedPhraseIntroSidebarBulletOne": {
+    "message": "请保存在密码管理工具中"
+  },
+  "seedPhraseIntroSidebarBulletThree": {
+    "message": "请存放在保险箱中"
+  },
+  "seedPhraseIntroSidebarBulletTwo": {
+    "message": "请存放在银行保险箱中"
+  },
+  "seedPhraseIntroSidebarCopyOne": {
+    "message": "你的账户助记词是你钱包和资金的“万能钥匙”"
+  },
+  "seedPhraseIntroSidebarCopyThree": {
+    "message": "如果有人要求你的账户助记词，他们很可能是想骗你。"
+  },
+  "seedPhraseIntroSidebarCopyTwo": {
+    "message": "永远不要分享你的账户助记词！"
+  },
+  "seedPhraseIntroSidebarTitleOne": {
+    "message": "甚么是账户助记词？"
+  },
+  "seedPhraseIntroSidebarTitleThree": {
+    "message": "“我应该分享我的账户助记词吗？"
+  },
+  "seedPhraseIntroSidebarTitleTwo": {
+    "message": "我应该如何保存我的账户助记词吗？"
+  },
+  "seedPhraseIntroTitle": {
+    "message": "确保你的钱包安全"
+  },
+  "seedPhraseIntroTitleCopy": {
+    "message": "在开始之前，请观看这短片以了解你的账户助记词以及如何确保你钱包的安全。"
+  },
   "seedPhrasePlaceholder": {
-    "message": "用空格分隔每个单词"
+    "message": "请用一个空格分隔开每个单词"
   },
   "seedPhrasePlaceholderPaste": {
-    "message": "从剪贴板粘贴账户助记词"
+    "message": "从剪贴板贴上账户助记词"
   },
   "seedPhraseReq": {
     "message": "账户助记词由 12、15、18、21 或 24 个单词组成"
   },
+  "seedPhraseWriteDownDetails": {
+    "message": "写下这个由 12 单词组成的账户助记词，并将其保存在你信任且只有你可以访问的地方。"
+  },
+  "seedPhraseWriteDownHeader": {
+    "message": "请写下你的账户助记词"
+  },
   "selectAHigherGasFee": {
-    "message": "选择更高的燃料费用，提高交易处理速度。*"
+    "message": "选择更高的燃料费用来加速处理你的交易。*"
   },
   "selectAccounts": {
-    "message": "选择账户"
+    "message": "选择你想连接的账户。"
   },
   "selectAll": {
-    "message": "全部选择"
+    "message": "全选"
   },
   "selectAnAccount": {
     "message": "选择一个账户"
   },
+  "selectAnAccountAlreadyConnected": {
+    "message": "这个账户已经连接到 DEXMask"
+  },
   "selectAnAccountHelp": {
-    "message": "选择在 DEXMask 中查看的账户"
+    "message": "选择要在 DEXMask 中查看的账户。"
+  },
+  "selectAnAccountHelpDirections": {
+    "message": "没有看到你的账户？ $1",
+    "description": "$1 represents the `hardwareWalletSupportLinkConversion` localization key"
   },
   "selectEachPhrase": {
-    "message": "请选择每个单词，以确保其正确性。"
+    "message": "请选择每个单词以确保其正确"
+  },
+  "selectFile": {
+    "message": "选择文件"
   },
   "selectHdPath": {
     "message": "选择 HD 路径"
   },
   "selectPathHelp": {
-    "message": "如果下列账户中没有您当前所持有的 Ledger 账户，请将路径切换至“Legacy (MEW / MyCrypto)”"
+    "message": "如果你在下方没有看到你现有的 Ledger 账户，请尝试将路径切换到 \"Legacy (MEW / MyCrypto)\""
   },
   "selectType": {
-    "message": "选择类型："
+    "message": "选择类型:"
   },
   "selectingAllWillAllow": {
-    "message": "选择全部将允许本网站查看您当前的所有账户。确保您信任这个网站。"
+    "message": "选择全部将允许此网站查看你当前的所有账户，请确保你信任此网站。"
   },
   "send": {
-    "message": "付款"
+    "message": "发送"
   },
   "sendAmount": {
     "message": "发送数额"
@@ -1448,46 +2008,52 @@
     "description": "Symbol of the specified token"
   },
   "sendToken": {
-    "message": "付款"
+    "message": "发送代币"
   },
   "sendTokens": {
     "message": "发送代币"
   },
   "sending": {
-    "message": "付款"
+    "message": "发送中"
   },
   "sentEther": {
     "message": "发送 Ether"
   },
   "separateEachWord": {
-    "message": "用空格分隔每个单词"
+    "message": "请用一个空格分隔开每个单词"
   },
   "settings": {
     "message": "设置"
   },
+  "shareAddress": {
+    "message": "通过发送二维码或复制下面的地址来分享你账户的专用地址以接收任何代币或收藏品。"
+  },
+  "show": {
+    "message": "显示"
+  },
   "showAdvancedGasInline": {
-    "message": "高级燃料控制"
+    "message": "进阶燃料限制设置"
   },
   "showAdvancedGasInlineDescription": {
-    "message": "在发送和确认界面显示燃料价格和燃料限制设置选项。"
+    "message": "选择此项在发送和确认界面显示燃料价格和燃料限制设置选项。"
   },
   "showFiatConversionInTestnets": {
-    "message": "在 Testnets 上显示兑换率"
+    "message": "在测试网上显示兑换率"
   },
   "showFiatConversionInTestnetsDescription": {
-    "message": "请选择该选项，在 Testnets 上显示法定兑换率"
+    "message": "选择此项在测试网上显示兑换率"
   },
   "showHexData": {
     "message": "显示十六进制数据"
   },
   "showHexDataDescription": {
-    "message": "请选择该选项，在发送页面显示十六进制数据字域"
+    "message": "选择此项在发送界面显示十六进制数据字域。"
   },
   "showIncomingTransactions": {
     "message": "显示收到的交易"
   },
   "showIncomingTransactionsDescription": {
-    "message": "选择该选项可使用 Etherscan（以太坊浏览器）（以太坊浏览器）在交易列表中显示收到的交易。"
+    "message": "选择此项可使用 Etherscan（以太坊浏览器）在交易列表中显示收到的交易。"
   },
   "showPermissions": {
     "message": "显示权限"
@@ -1495,23 +2061,26 @@
   "showPrivateKeys": {
     "message": "显示私钥"
   },
+  "showRecommendations": {
+    "message": "显示建议"
+  },
   "showSeedPhrase": {
     "message": "显示账户助记词"
   },
   "sigRequest": {
-    "message": "请求签名"
+    "message": "签名请求"
   },
   "sign": {
     "message": "签名"
   },
   "signNotice": {
-    "message": "签署此消息可能会产生危险的副作用。 \n只从您完全信任的网站上签名。 未来的版本将移除这种危险的方法。"
+    "message": "签署此讯息可能会産生危险的副作用。 只在你完全信任的网站上签名。这种危险的方法将会在未来的版本中移除。"
   },
   "signatureRequest": {
-    "message": "请求签名"
+    "message": "签名请求"
   },
   "signatureRequest1": {
-    "message": "信息"
+    "message": "讯息"
   },
   "signed": {
     "message": "已签名"
@@ -1520,47 +2089,56 @@
     "message": "慢"
   },
   "somethingWentWrong": {
-    "message": "糟糕！出问题了。"
+    "message": "哎呀！ 出现问题了。"
   },
   "speedUp": {
     "message": "加速"
   },
   "speedUpCancellation": {
-    "message": "加速该取消操作"
+    "message": "加速此取消操作"
+  },
+  "speedUpExplanation": {
+    "message": "我们已根据当前网络状况更新了燃料费用，并将其至少提高了 10%（根据网络要求）。"
+  },
+  "speedUpPopoverTitle": {
+    "message": "加速交易操作"
+  },
+  "speedUpTooltipText": {
+    "message": "新燃料费用"
   },
   "speedUpTransaction": {
-    "message": "加速该交易操作"
+    "message": "加速此交易操作"
   },
   "spendLimitAmount": {
-    "message": "消费限额数量"
+    "message": "使用限额数量"
   },
   "spendLimitInsufficient": {
-    "message": "消费限额不足"
+    "message": "使用限额不足"
   },
   "spendLimitInvalid": {
-    "message": "消费限制无效，必须是正数。"
+    "message": "使用限额无效，必须是正数"
   },
   "spendLimitPermission": {
-    "message": "消费限制权限"
+    "message": "使用限制权限"
   },
   "spendLimitRequestedBy": {
-    "message": "消费限制申请来自 $1",
+    "message": "使用限制请求来自 $1",
     "description": "Origin of the site requesting the spend limit"
   },
   "spendLimitTooLarge": {
-    "message": "消费限制过大"
+    "message": "使用限额过大"
   },
   "stateLogError": {
-    "message": "检索状态日志时出错。"
+    "message": "检索状态记录时出错。"
   },
   "stateLogFileName": {
-    "message": "DEXMask 状态日志"
+    "message": "DEXMask 状态记录"
   },
   "stateLogs": {
-    "message": "状态日志"
+    "message": "状态记录"
   },
   "stateLogsDescription": {
-    "message": "状态日志包含您的账户地址和已发送的交易。"
+    "message": "状态记录含有你的账户地址和已发送的交易。"
   },
   "statusConnected": {
     "message": "已连接"
@@ -1568,43 +2146,71 @@
   "statusNotConnected": {
     "message": "未连接"
   },
+  "step1LedgerWallet": {
+    "message": "下载 Ledger 应用程序"
+  },
+  "step1LedgerWalletMsg": {
+    "message": "下载、设置并输入你的密码以解锁 $1.",
+    "description": "$1 represents the `ledgerLiveApp` localization value"
+  },
+  "step1TrezorWallet": {
+    "message": "插入 Trezor 钱包"
+  },
+  "step1TrezorWalletMsg": {
+    "message": "将你的钱包直接连接到你的计算机。有关使用硬件钱包设备的更多资料，$1 ",
+    "description": "$1 represents the `hardwareWalletSupportLinkConversion` localization key"
+  },
+  "step2LedgerWallet": {
+    "message": "插入 Ledger 钱包"
+  },
+  "step2LedgerWalletMsg": {
+    "message": "将你的钱包直接连接到你的计算机。解锁你的 Ledger 设备并打开以太坊 Ethereum 应用程序. 有关使用硬件钱包设备的更多资料，$1。",
+    "description": "$1 represents the `hardwareWalletSupportLinkConversion` localization key"
+  },
   "storePhrase": {
-    "message": "通过如 1Password 等密码管理工具保存该账户助记词。"
+    "message": "使用如 1Password 等密码管理工具保存此账户助记词。"
   },
   "submit": {
     "message": "提交"
   },
   "submitted": {
-    "message": "已提交"
+    "message": "提交"
+  },
+  "support": {
+    "message": "支援"
   },
   "supportCenter": {
-    "message": "访问我们的支持中心"
+    "message": "访问我们的支援中心"
   },
   "swap": {
-    "message": "交易"
+    "message": "兑换"
   },
   "swapAdvancedSlippageInfo": {
-    "message": "如果价格在您下单和确认之间发生变化，这就叫做“滑点”。如果滑点超过您的“最大滑点”设置，您的的兑换将自动取消。"
+    "message": "如果价格在你下单和确认之间发生变化，这就叫做“滑点”。如果滑点超过你的“最大滑点”设置，你的兑换交易将自动取消。"
   },
   "swapAggregator": {
     "message": "聚合商"
+  },
+  "swapAllowSwappingOf": {
+    "message": "允许兑换 $1",
+    "description": "Shows a user that they need to allow a token for swapping on their hardware wallet"
   },
   "swapAmountReceived": {
     "message": "保证数额"
   },
   "swapAmountReceivedInfo": {
-    "message": "这是您将收到的最低数额。根据滑点值， 您可能会收到更多。"
+    "message": "这是你将收到的最低数额。根据滑点值，你可能会收到更多。"
   },
   "swapApproval": {
-    "message": "批准 $1 的兑换 ",
+    "message": "批准 $1 的兑换",
     "description": "Used in the transaction display list to describe a transaction that is an approve call on a token that is to be swapped.. $1 is the symbol of a token that has been approved."
   },
   "swapApproveNeedMoreTokens": {
-    "message": "您还需 $1 $2 来完成这笔兑换",
+    "message": "你还需 $1 $2 来完成这笔兑换",
     "description": "Tells the user how many more of a given token they need for a specific swap. $1 is an amount of tokens and $2 is the token symbol."
   },
   "swapBetterQuoteAvailable": {
-    "message": "有一个可用的更优报价"
+    "message": "有一个更好的报价"
   },
   "swapBuildQuotePlaceHolderText": {
     "message": "没有匹配的代币符合 $1",
@@ -1614,6 +2220,15 @@
     "message": "正在检查 $1",
     "description": "Shown to the user during quote loading. $1 is the name of an aggregator. The message indicates that DEXMask is currently checking if that aggregator has a trade/quote for their requested swap."
   },
+  "swapConfirmWithHwWallet": {
+    "message": "请在你的硬件钱包确认"
+  },
+  "swapContractDataDisabledErrorDescription": {
+    "message": "在你的 Ledger 设备的 Ethereum 应用程序中，进入'设置'并允许使用合约数据。然后，再次尝试兑换交易。"
+  },
+  "swapContractDataDisabledErrorTitle": {
+    "message": "你的 Ledger 设备未启用合约数据"
+  },
   "swapCustom": {
     "message": "自定义"
   },
@@ -1621,7 +2236,7 @@
     "message": "DEXMask 手续费"
   },
   "swapDEXMaskFeeDescription": {
-    "message": "我们每次都能从顶级流动性资源中找到最好的价格。每次报价都会自动收取1%的手续费用，以支持 DEXMask 的持续发展，使其更加完善。",
+    "message": "我们每次都能从顶级流动性资源中找到最优惠的价格。每次报价都会自动收取1%的手续费用。",
     "description": "Provides information about the fee that DEXMask takes for swaps. $1 is a decimal number."
   },
   "swapDecentralizedExchange": {
@@ -1631,27 +2246,31 @@
     "message": "修改限制"
   },
   "swapEnableDescription": {
-    "message": "这是必须的，并且允许 DEXMask 兑换您的 $1。",
+    "message": "这是必须的并且允许 DEXMask 兑换你的 $1。",
     "description": "Gives the user info about the required approval transaction for swaps. $1 will be the symbol of a token being approved for swaps."
   },
   "swapEstimatedNetworkFee": {
     "message": "预计网络手续费"
   },
   "swapEstimatedNetworkFeeSummary": {
-    "message": "“$1”是我们预计的实际产生费用。具体数额视网络情况而定。",
+    "message": "“$1”是我们预计的实际産生费用。实际数额视乎网络情况而定。",
     "description": "$1 will be the translation of swapEstimatedNetworkFee, with the font bolded"
   },
   "swapEstimatedNetworkFees": {
     "message": "预计网络手续费"
   },
   "swapEstimatedNetworkFeesInfo": {
-    "message": "这是预估的用于完成您的兑换所使用的网络手续费。实际数额可能会根据网络条件而变化。"
+    "message": "这是预计用于完成你的兑换交易所使用的网络手续费。实际数额可能会根据网络情况而变化。"
+  },
+  "swapFailedErrorDescriptionWithSupportLink": {
+    "message": "交易失败时有发生，我们随时为你提供协助。如果此问题持续，你可以在 $1 联系我们的帮助中心以获得进一步的帮助。",
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.DEXMask.io"
   },
   "swapFailedErrorTitle": {
     "message": "兑换失败"
   },
   "swapFetchingQuotesErrorDescription": {
-    "message": "呃……出错了。再试一次，如果错误仍存在，请联系客户支持。"
+    "message": "出现问题，请再试一次，如果此问题持续，请联系我们的帮助中心。"
   },
   "swapFetchingQuotesErrorTitle": {
     "message": "获取报价出错"
@@ -1662,11 +2281,31 @@
   "swapFinalizing": {
     "message": "确定中……"
   },
+  "swapFromTo": {
+    "message": "兑换 $1 到 $2",
+    "description": "Tells a user that they need to confirm on their hardware wallet a swap of 2 tokens. $1 is a source token and $2 is a destination token"
+  },
+  "swapGasFeesDetails": {
+    "message": "燃料费用是估计的，并会根据网络流量和交易复杂性而波动。"
+  },
+  "swapGasFeesLearnMore": {
+    "message": "了解更多燃料费用的内容"
+  },
+  "swapGasFeesSplit": {
+    "message": "上一页显示的燃料费用将分配于这两个交易."
+  },
+  "swapGasFeesSummary": {
+    "message": "燃料费用用于支付给在 $1 网络上处理交易的加密货币矿工。 DEXMask 没有从燃料费用中获利。",
+    "description": "$1 is the selected network, e.g. Ethereum or BSC"
+  },
+  "swapHighSlippageWarning": {
+    "message": "滑点数额非常高。"
+  },
   "swapLowSlippageError": {
-    "message": "交易可能失败，最大滑点过低。"
+    "message": "交易可能会失败，最大滑点过低。"
   },
   "swapMaxNetworkFeeInfo": {
-    "message": "“$1”是您最多所话费的数量，当网络不稳定时，这可能是一个大的数额。",
+    "message": "“$1” 是你使用的最高金额。 当网络不稳定时，这可能是一个大的数额。",
     "description": "$1 will be the translation of swapMaxNetworkFees, with the font bolded"
   },
   "swapMaxNetworkFees": {
@@ -1680,23 +2319,32 @@
     "description": "$1 is the number of quotes that the user can select from when opening the list of quotes on the 'view quote' screen"
   },
   "swapNetworkFeeSummary": {
-    "message": "网络手续费包括处理您的兑换和在以太坊（$1）网络上存储的成本。DEXMask 不从这笔费用中获利。"
+    "message": "网络手续费包括处理你的兑换交易和在 $1 网络上存储的成本。DEXMask 没有从这笔费用中获利。"
   },
   "swapNewQuoteIn": {
     "message": "$1 后更新报价",
     "description": "Tells the user the amount of time until the currently displayed quotes are update. $1 is a time that is counting down from 1:00 to 0:00"
   },
   "swapOnceTransactionHasProcess": {
-    "message": "一旦交易完成，您的 $1 将被添加到您的账户中。",
+    "message": "一旦交易完成，你的 $1 将被会添加到你的账户中。",
     "description": "This message communicates the token that is being transferred. It is shown on the awaiting swap screen. The $1 will be a token symbol."
   },
   "swapPriceDifference": {
-    "message": "您将兑换 $1 $2（~$3）为 $4 $5（~$6）。",
+    "message": "你将兑换 $1 $2 (~$3) 为 $4 $5 (~$6).",
     "description": "This message represents the price slippage for the swap.  $1 and $4 are a number (ex: 2.89), $2 and $5 are symbols (ex: ETH), and $3 and $6 are fiat currency amounts."
   },
   "swapPriceDifferenceTitle": {
     "message": "价格差异 ~$1%",
     "description": "$1 is a number (ex: 1.23) that represents the price difference."
+  },
+  "swapPriceImpactTooltip": {
+    "message": "价格影响是当前市场价格与交易执行期间收到的金额之间的差额。 价格影响是您的交易规模相对于流动资金池规模的函数。价格影响是你的交易规模相对于流动资金池规模的函数。"
+  },
+  "swapPriceUnavailableDescription": {
+    "message": "由于缺乏市场价格数据，无法确定价格影响。在兑换之前，请确认你满意即将收到的代币数量。"
+  },
+  "swapPriceUnavailableTitle": {
+    "message": "在继续前，请检查你的费用"
   },
   "swapProcessing": {
     "message": "处理中"
@@ -1705,7 +2353,7 @@
     "message": "报价详情"
   },
   "swapQuoteDetailsSlippageInfo": {
-    "message": "如果在您下订单和确认订单之间的价格发生了变化，这就叫做\"滑点\"。如果滑点超过您的\"最大滑点\"设置，您的兑换将自动取消。"
+    "message": "如果在你下订单后和确认订单之间的价格发生了变化，这就叫做\"滑点\"。如果滑点超过你的\"最大滑点\"设置，你的兑换交易将自动取消。"
   },
   "swapQuoteIncludesRate": {
     "message": "报价包含 $1% DEXMask 手续费",
@@ -1728,22 +2376,25 @@
     "message": "报价超时"
   },
   "swapQuotesNotAvailableErrorDescription": {
-    "message": "尝试调整滑点数量设置，并再试一次。"
+    "message": "请尝试调整滑点数量设置，并再试一次。"
   },
   "swapQuotesNotAvailableErrorTitle": {
     "message": "无可用报价"
   },
   "swapRate": {
-    "message": "费率"
+    "message": "费用"
   },
   "swapReceiving": {
-    "message": "接收"
+    "message": "接收中"
   },
   "swapReceivingInfoTooltip": {
     "message": "这是一个预估数额。确切的数额取决于滑点。"
   },
   "swapRequestForQuotation": {
     "message": "请求报价"
+  },
+  "swapReviewSwap": {
+    "message": "检阅兑换交易"
   },
   "swapSearchForAToken": {
     "message": "搜索代币"
@@ -1755,10 +2406,13 @@
     "message": "选择一个报价"
   },
   "swapSelectAToken": {
-    "message": "选择一个代币"
+    "message": "选择一种代币"
   },
   "swapSelectQuotePopoverDescription": {
     "message": "以下是从多个流动资金来源收集到的所有报价。"
+  },
+  "swapSlippageNegative": {
+    "message": "滑点必须大于或等于零"
   },
   "swapSource": {
     "message": "流动资金来源"
@@ -1776,44 +2430,78 @@
     "message": "兑换到"
   },
   "swapThisWillAllowApprove": {
-    "message": "这样将允许 $1 用于兑换。"
+    "message": "这样将允许 $1 用于兑换交易。"
+  },
+  "swapToConfirmWithHwWallet": {
+    "message": "在你的硬件钱包确认"
   },
   "swapTokenAvailable": {
-    "message": "您的 $1 已添加到您的账户。",
+    "message": "你的 $1 已添加到你的账户。",
     "description": "This message is shown after a swap is successful and communicates the exact amount of tokens the user has received for a swap. The $1 is a decimal number of tokens followed by the token symbol."
+  },
+  "swapTokenBalanceUnavailable": {
+    "message": "我们无法恢复你的 $1 余额",
+    "description": "This message communicates to the user that their balance of a given token is currently unavailable. $1 will be replaced by a token symbol"
   },
   "swapTokenToToken": {
     "message": "兑换 $1 到 $2",
     "description": "Used in the transaction display list to describe a swap. $1 and $2 are the symbols of tokens in involved in a swap."
   },
+  "swapTokenVerificationAddedManually": {
+    "message": "此代币已手动添加。"
+  },
+  "swapTokenVerificationMessage": {
+    "message": "以 $1 确认代币地址。",
+    "description": "Points the user to Etherscan as a place they can verify information about a token. $1 is replaced with the translation for \"Etherscan\" followed by an info icon that shows more info on hover."
+  },
+  "swapTokenVerificationOnlyOneSource": {
+    "message": "仅在 1 个来源上进行了验证"
+  },
+  "swapTokenVerificationSources": {
+    "message": "在 $1 个来源上进行了验证",
+    "description": "Indicates the number of token information sources that recognize the symbol + address. $1 is a decimal number."
+  },
+  "swapTooManyDecimalsError": {
+    "message": "$1 最多允许 $2 位小数点 ",
+    "description": "$1 is a token symbol and $2 is the max. number of decimals allowed for the token"
+  },
   "swapTransactionComplete": {
     "message": "交易完成"
   },
+  "swapTwoTransactions": {
+    "message": "2 笔交易"
+  },
   "swapUnknown": {
-    "message": "未知的"
+    "message": "未知"
   },
   "swapUsingBestQuote": {
     "message": "使用最好的报价"
   },
   "swapVerifyTokenExplanation": {
-    "message": "多个代币可以使用相同的名称和符号。检查 $1（以太坊浏览器）以确认这是您正在寻找的代币。",
+    "message": "多个代币可以使用相同的名称和符号。检查 $1 以确认这是你正在寻找的代币。",
     "description": "This appears in a tooltip next to the verifyThisTokenOn message. It gives the user more information about why they should check the token on a block explorer. $1 will be the name or url of the block explorer, which will be the translation of 'etherscan' or a block explorer url specified for a custom network."
   },
+  "swapWelcome": {
+    "message": "欢迎使用 ZSwap"
+  },
+  "swapWelcomeDescription": {
+    "message": "最先进的去中心化平台，开始兑换和增加流动性。"
+  },
   "swapYourTokenBalance": {
-    "message": "$1 $2 可用",
+    "message": "$1 $2 可用于兑换",
     "description": "Tells the user how much of a token they have in their balance. $1 is a decimal number amount of tokens, and $2 is a token symbol"
   },
   "swapZeroSlippage": {
     "message": "0% 滑点"
   },
   "swapsAdvancedOptions": {
-    "message": "高级选项"
+    "message": "进阶选项"
   },
   "swapsExcessiveSlippageWarning": {
-    "message": "滑点数额太高，会导致不良率。请将滑点设置降低到 15% 以下。"
+    "message": "滑点数额太高，会导致不良率。请将滑点设置降低到 15% 以下。."
   },
   "swapsMaxSlippage": {
-    "message": "最大滑点"
+    "message": "滑点容限"
   },
   "swapsNotEnoughForTx": {
     "message": "没有足够的 $1 来完成此交易",
@@ -1822,11 +2510,29 @@
   "swapsViewInActivity": {
     "message": "在活动中查看"
   },
+  "switchEthereumChainConfirmationDescription": {
+    "message": "这将把 DEXMask 从所选网络切换到之前添加的网络："
+  },
+  "switchEthereumChainConfirmationTitle": {
+    "message": "允许此网站切换网络吗？"
+  },
+  "switchLedgerPaths": {
+    "message": "切换 Ledger 路径"
+  },
+  "switchLedgerPathsText": {
+    "message": "选择 Ledger 路径以查看其他账户"
+  },
+  "switchNetwork": {
+    "message": "切换网络"
+  },
   "switchNetworks": {
     "message": "切换网络"
   },
   "switchToThisAccount": {
     "message": "切换"
+  },
+  "switchingNetworksCancelsPendingConfirmations": {
+    "message": "切换网络将取消所有待处理的确认"
   },
   "symbol": {
     "message": "符号"
@@ -1834,32 +2540,35 @@
   "symbolBetweenZeroTwelve": {
     "message": "符号不得超过 11 个字符。"
   },
+  "syncInProgress": {
+    "message": "同步进行中"
+  },
   "syncWithMobile": {
-    "message": "使用移动设备同步"
+    "message": "与手机同步"
   },
   "syncWithMobileBeCareful": {
-    "message": "扫描这个代码时，请确保附近没有其他人在看您的屏幕。"
+    "message": "扫描这个代码时，请确保附近没有其他人在看你的屏幕。"
   },
   "syncWithMobileComplete": {
-    "message": "您的数据已同步成功。尽情体验 DEXMask 应用程序！"
+    "message": "你的数据已同步成功。尽情体验 DEXMask ！"
   },
   "syncWithMobileDesc": {
-    "message": "您可以使用个人移动设备同步个人账户与信息。打开 DEXMask 移动应用程序，进入“设置”选项，点击“通过浏览器扩展程序同步”"
+    "message": "你可以使用手机同步个人账户与信息。打开 DEXMask 移动应用程序，进入 '设置' 选项，点击“从浏览器扩展同步"
   },
   "syncWithMobileDescNewUsers": {
-    "message": "如果您是首次启用 DEXMask 移动应用程序，请通过个人手机完成如下操作。"
+    "message": "如果你是首次啓用 DEXMask 移动应用程序，请通过个人手机完成如下操作。"
   },
   "syncWithMobileScanThisCode": {
-    "message": "使用 DEXMask 应用程序扫描代码"
+    "message": "使用 DEXMask 手机扫描代码"
   },
   "syncWithMobileTitle": {
-    "message": "使用移动设备进行同步"
+    "message": "与手机同步"
   },
   "syncWithThreeBox": {
     "message": "使用 3Box 同步数据（实验功能）"
   },
   "syncWithThreeBoxDescription": {
-    "message": "开启后可以用 3Box 备份您的设置。此功能目前是实验功能，使用时风险自负。"
+    "message": "开啓后可以用 3Box 备份你的设置。此功能目前是实验功能，使用时风险请自负。"
   },
   "syncWithThreeBoxDisabled": {
     "message": "由于初始同步过程中出现错误，3Box 已被禁用。"
@@ -1874,7 +2583,7 @@
     "message": "测试水管"
   },
   "thisWillCreate": {
-    "message": "将为您创建新的钱包账户和账户助记词"
+    "message": "将为你创建新的钱包账户和账户助记词"
   },
   "tips": {
     "message": "小贴士"
@@ -1887,7 +2596,7 @@
     "description": "$1 is the address to include in the To label. It is typically shortened first using shortenAddress"
   },
   "toSwap": {
-    "message": "进入ZSWAP"
+    "message": "进入 ZSwap"
   },
   "toWithColon": {
     "message": "至："
@@ -1896,13 +2605,19 @@
     "message": "代币"
   },
   "tokenAlreadyAdded": {
-    "message": "代币已添加。"
+    "message": "代币已添加"
   },
   "tokenContractAddress": {
     "message": "代币合约地址"
   },
+  "tokenDecimalFetchFailed": {
+    "message": "需要代币小数位"
+  },
   "tokenSymbol": {
     "message": "代币符号"
+  },
+  "tooltipApproveButton": {
+    "message": "我明白"
   },
   "total": {
     "message": "总计"
@@ -1911,43 +2626,74 @@
     "message": "交易"
   },
   "transactionCancelAttempted": {
-    "message": "尝试取消交易，燃料费用：$1。"
+    "message": "尝试取消交易，估计燃料费用为 $1 。"
   },
   "transactionCancelSuccess": {
-    "message": "取消交易成功。"
+    "message": "取消交易成功"
   },
   "transactionConfirmed": {
-    "message": "交易已确认。"
+    "message": "交易已确认"
   },
   "transactionCreated": {
-    "message": "交易已创建，交易数额：$1。"
+    "message": "交易已创建，交易数额为 $1。"
+  },
+  "transactionDetailDappGasHeading": {
+    "message": "$1 的建议燃料费用",
+    "description": "$1 represents a dapp origin"
+  },
+  "transactionDetailDappGasTooltip": {
+    "message": "编辑以使用 DEXMask 根据最新区块推荐的燃料费用。"
+  },
+  "transactionDetailGasHeading": {
+    "message": "预计燃料费用"
+  },
+  "transactionDetailGasTooltipConversion": {
+    "message": "了解有关燃料费用的更多内容"
+  },
+  "transactionDetailGasTooltipExplanation": {
+    "message": "燃料费用由网络设定，并根据网络流量和交易复杂性而波动。"
+  },
+  "transactionDetailGasTooltipIntro": {
+    "message": "燃料费用用于支付在以太坊网络上处理交易的加密货币矿工。 DEXMask 没有从燃料费用中获利。"
+  },
+  "transactionDetailGasTotalSubtitle": {
+    "message": "数额 + 燃料费用"
   },
   "transactionDropped": {
-    "message": "交易终止。"
+    "message": "交易撤销"
   },
   "transactionError": {
-    "message": "交易出错。合约代码执行异常。"
+    "message": "交易错误。合约代码中出现异常。"
   },
   "transactionErrorNoContract": {
-    "message": "试图在一个非合约地址上调用一个函数。"
+    "message": "尝试在非合约地址上调用函数。"
   },
   "transactionErrored": {
-    "message": "交易出现错误。"
+    "message": "交易遇到错误"
   },
   "transactionFee": {
-    "message": "交易费"
+    "message": "交易费用"
+  },
+  "transactionHistoryBaseFee": {
+    "message": "基本费用 (GWEI)"
+  },
+  "transactionHistoryPriorityFee": {
+    "message": "优先费用 (GWEI)"
+  },
+  "transactionHistoryTotalGasFee": {
+    "message": "总燃料费用"
   },
   "transactionResubmitted": {
-    "message": "重新提交交易，交易费升至：$1。"
+    "message": "已重新提交交易，估计燃料费用增加到 $1。"
   },
   "transactionSubmitted": {
-    "message": "交易已提交，交易费：$1。"
+    "message": "已提交交易，估计燃料费用为 $1。"
   },
   "transactionUpdated": {
-    "message": "交易更新时间。"
+    "message": "交易已更新。"
   },
   "transfer": {
-    "message": "转账"
+    "message": "转移"
   },
   "transferBetweenAccounts": {
     "message": "在我的账户间转账"
@@ -1956,37 +2702,37 @@
     "message": "转自"
   },
   "troubleConnectingToWallet": {
-    "message": "我们在连接您的  $1 遇到问题，尝试检查 $2 并重试。",
+    "message": "我们无法连接到你的 $1，请尝试查看 $2 并重试。",
     "description": "$1 is the wallet device name; $2 is a link to wallet connection guide"
   },
   "troubleTokenBalances": {
-    "message": "我们无法加载您的代币余额。您可以查看它们",
+    "message": "我们无法加载你的代币余额。你可以在这里查看 ",
     "description": "Followed by a link (here) to view token balances"
   },
   "trustSiteApprovePermission": {
-    "message": "您信任这个网站吗？授权即表示您允许 $1 提取您的 $2，并为您自动进行交易。",
+    "message": "你信任这个网站吗？通过授予这个权限，你将允许 $1 提取你的 $2 并为你自动交易。",
     "description": "$1 is the url requesting permission and $2 is the symbol of the currency that the request is for"
   },
   "tryAgain": {
     "message": "重试"
   },
   "typePassword": {
-    "message": "输入您的 DEXMask 密码"
+    "message": "输入你的 DEXMask 密码"
   },
   "unapproved": {
     "message": "未批准"
   },
   "units": {
-    "message": "数量"
+    "message": "单位"
   },
   "unknown": {
     "message": "未知"
   },
   "unknownCameraError": {
-    "message": "尝试获取相机使用权限时报错。请重试……"
+    "message": "尝试使用你的相机时出错。请重试……"
   },
   "unknownCameraErrorTitle": {
-    "message": "哎呀！出问题了……"
+    "message": "哎呀！ 出现问题了。"
   },
   "unknownNetwork": {
     "message": "未知的私有网络"
@@ -2001,47 +2747,76 @@
     "message": "解锁"
   },
   "unlockMessage": {
-    "message": "即将进入去中心化网络"
+    "message": "去中心化网络在等待你的访问"
+  },
+  "unrecognizedChain": {
+    "message": "无法识别此自定义网络。在继续之前，我们建议你 $1 ",
+    "description": "$1 is a clickable link with text defined by the 'unrecognizedChanLinkText' key. The link will open to instructions for users to validate custom network details."
+  },
+  "unrecognizedChainLinkText": {
+    "message": "验证网络详细内容",
+    "description": "Serves as link text for the 'unrecognizedChain' key. This text will be embedded inside the translation for that key."
+  },
+  "unsendableAsset": {
+    "message": "当前不支援发送 (ERC-721) 收藏品代币",
+    "description": "This is an error message we show the user if they attempt to send a collectible asset type, for which currently don't support sending"
   },
   "updatedWithDate": {
     "message": "已更新 $1"
   },
   "urlErrorMsg": {
-    "message": "URL 需要相应的 HTTP/HTTPS 前缀。"
+    "message": "网址需要适当的 HTTP/HTTPS 为开首"
   },
   "urlExistsErrorMsg": {
-    "message": "URL 已经存在于现有的网络列表中"
+    "message": "这个网址当前被 $1 网络使用"
   },
   "usePhishingDetection": {
     "message": "使用网络钓鱼检测"
   },
   "usePhishingDetectionDescription": {
-    "message": "显示针对 Ethereum 用户钓鱼域名的警告。"
+    "message": "显示针对以太坊用户的网络钓鱼域名的警告"
   },
   "usedByClients": {
-    "message": "可用于各种不同的客户端"
+    "message": "各种不同的客户端也使用"
   },
   "userName": {
-    "message": "名称"
+    "message": "用户名称"
+  },
+  "verifyThisTokenDecimalOn": {
+    "message": "可以在 $1 上找到代币小数位",
+    "description": "Points the user to etherscan as a place they can verify information about a token. $1 is replaced with the translation for \"etherscan\""
   },
   "verifyThisTokenOn": {
-    "message": "在 $1 上验证此代币",
+    "message": "在 $1 上验证这代币",
+    "description": "Points the user to etherscan as a place they can verify information about a token. $1 is replaced with the translation for \"etherscan\""
+  },
+  "verifyThisUnconfirmedTokenOn": {
+    "message": "在 $1 上验证这代币，并确保这是你要交易的代币。",
     "description": "Points the user to etherscan as a place they can verify information about a token. $1 is replaced with the translation for \"etherscan\""
   },
   "viewAccount": {
     "message": "查看账户"
   },
+  "viewAllDetails": {
+    "message": "查看所有详细内容"
+  },
   "viewContact": {
-    "message": "查看联系人"
+    "message": "查看联络人"
+  },
+  "viewFullTransactionDetails": {
+    "message": "查看完整的交易详情"
+  },
+  "viewMore": {
+    "message": "查看更多"
   },
   "viewOnCustomBlockExplorer": {
     "message": "在 $1 查看"
   },
   "viewOnEtherscan": {
-    "message": "在ETH浏览器中查看"
+    "message": "在以太坊浏览器上查看"
   },
   "viewinExplorer": {
-    "message": "在 $1 浏览器中查看"
+    "message": "在 $1 浏览器上查看"
   },
   "visitWebSite": {
     "message": "访问我们的网站"
@@ -2052,40 +2827,54 @@
   "walletSeed": {
     "message": "账户助记词"
   },
+  "walletSeedRestore": {
+    "message": "钱包账户助记词"
+  },
   "web3ShimUsageNotification": {
-    "message": "我们发现当前的网站尝试使用已经删除的 window.web3 API。如果这个网站网站已经无法正常使用，请点击 $1 获取更多信息。",
+    "message": "我们发现当前的网站尝试使用已经删除的 window.web3 API。如果这个网站无法正常使用，请点击 $1 查看更多信息。",
     "description": "$1 is a clickable link."
   },
   "welcome": {
-    "message": "欢迎使用 DEXMask"
+    "message": "DexMask 钱包"
   },
   "welcomeBack": {
-    "message": "欢迎回来！"
+    "message": "欢迎你回来"
   },
   "welcomeDexWallet": {
-    "message": "欢迎使用 DEXMask"
+    "message": "欢迎使用 DexMask"
+  },
+  "whatsNew": {
+    "message": "最新消息",
+    "description": "This is the title of a popup that gives users notifications about new features and updates to DEXMask."
   },
   "whatsThis": {
-    "message": "这是什么？"
+    "message": "这是甚么？"
   },
   "writePhrase": {
-    "message": "请将该账户助记词记录在纸上，并保存在安全的地方。如果希望提升信息安全性，请将信息记录在多张纸上，并分别保存在 2 - 3 个不同的地方。"
+    "message": "请将此账户助记词记录在纸上，并保存在安全的地方。如果希望提高安全性，请将账户助记词记录在多张纸上，并分别保存在 2 - 3 个不同的地方。"
   },
   "xOfY": {
-    "message": "$1 / $2",
+    "message": "$1 的 $2",
     "description": "$1 and $2 are intended to be two numbers, where $2 is a total, and $1 is a count towards that total"
   },
+  "xOfYPending": {
+    "message": "$1 的 $2 待定",
+    "description": "$1 and $2 are intended to be two numbers, where $2 is a total number of pending confirmations, and $1 is a count towards that total"
+  },
   "yesLetsTry": {
-    "message": "是的，尝试下"
+    "message": "是的，请尝试"
   },
   "youNeedToAllowCameraAccess": {
-    "message": "需要开启相机访问权限，才能使用该功能。"
+    "message": "需要允许相机访问权限，才能使用此功能。."
   },
   "youSign": {
     "message": "正在签名"
   },
+  "yourAsset": {
+    "message": "你的 $1"
+  },
   "yourPrivateSeedPhrase": {
-    "message": "您的账户助记词"
+    "message": "你的账户助记词"
   },
   "zeroGasPriceOnSpeedUpError": {
     "message": "加速时无燃料价格"
