@@ -55,6 +55,8 @@ export default function CrossChainBtn() {
                 from: selectedAccount.address,
                 fromChain: chainId,
                 destChain: defaultTargetChain.target_meta_chain_id,
+                userInputValue: '',
+                dest: '',
                 supportChains,
               }),
             )

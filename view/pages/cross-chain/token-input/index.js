@@ -158,7 +158,7 @@ export default function CrossChainTokenInput() {
             ) {
               reverseAble = true
 
-              const targetChainTokenInfo = get(allAccountTokens, `${(crossChainState.dest ?? '').toLowerCase()}.${crossChainState.destChain}`) || []
+              const targetChainTokenInfo = get(allAccountTokens, `${(crossChainState.from).toLowerCase()}.${crossChainState.destChain}`) || []
               if (crossChainState.targetCoinAddress !== ethers.constants.AddressZero && !targetChainTokenInfo.find(
                   (token) =>
                     token.address === crossChainState.targetCoinAddress,

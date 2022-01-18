@@ -104,6 +104,8 @@ const TokenOverview = ({ className, token }) => {
               fromChain: chainId,
               target: defaultTargetChain,
               destChain: defaultTargetChain.target_meta_chain_id,
+              userInputValue: '',
+              dest: '',
               supportChains,
             }),
           )
