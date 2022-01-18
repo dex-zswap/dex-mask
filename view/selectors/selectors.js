@@ -397,7 +397,6 @@ export function getKnownMethodData(state, data) {
   const prefixedData = addHexPrefix(data)
   const fourBytePrefix = prefixedData.slice(0, 10)
   const { knownMethodData } = state.metamask
-  console.log(state.metamask)
   return knownMethodData && knownMethodData[fourBytePrefix]
 }
 export function getFeatureFlags(state) {
