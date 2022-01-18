@@ -197,7 +197,8 @@ export default function CrossChainTokenInput() {
             targetCoinAddress: defaultTargetChain.target_token_address,
             target: defaultTargetChain,
             destChain: defaultTargetChain.target_meta_chain_id,
-            supportChains: res.d
+            supportChains: res.d,
+            userInputValue: ''
           })
         }
       })
