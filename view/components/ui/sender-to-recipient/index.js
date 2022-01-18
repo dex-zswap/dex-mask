@@ -25,7 +25,7 @@ function SenderAddress({
 }) {
   const t = useI18nContext()
   const [addressCopied, setAddressCopied] = useState(false)
-  const shortenedAddress = useMemo(() => shortenAddress(senderAddress, 9, -6), [
+  const shortenedAddress = useMemo(() => shortenAddress(senderAddress, 6, -6), [
     senderAddress,
   ])
   let tooltipHtml = <p>{t('copiedExclamation')}</p>
@@ -83,7 +83,7 @@ function RecipientWithAddress({
   recipientName,
 }) {
   const shortenedAddress = useMemo(
-    () => shortenAddress(checksummedRecipientAddress, 9, -6),
+    () => shortenAddress(checksummedRecipientAddress, 6, -6),
     [checksummedRecipientAddress],
   )
   const t = useI18nContext()
