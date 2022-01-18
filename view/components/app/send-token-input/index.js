@@ -1,41 +1,39 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import BigNumber from 'bignumber.js'
-import classnames from 'classnames'
-import { zeroAddress } from 'ethereumjs-util'
-import { ethers } from 'ethers'
-import { useRef } from 'react'
 import TokenListItem from '@c/app/send-token-input/token-list-item'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Identicon from '@c/ui/identicon'
 import TokenBalance from '@c/ui/token-balance'
 import TokenImage from '@c/ui/token-image'
 import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask'
-import { setMaxSendAmount } from '@reducer/send'
+// import { setMaxSendAmount } from '@reducer/send'
 import { PRIMARY } from '@view/helpers/constants/common'
 import { shortenAddress } from '@view/helpers/utils'
 import {
   expandDecimals,
   hexToString,
 } from '@view/helpers/utils/conversions.util'
+import useDeepEffect from '@view/hooks/useDeepEffect'
 import { useI18nContext } from '@view/hooks/useI18nContext'
 import useNativeCurrencyDisplay from '@view/hooks/useNativeCurrencyDisplay'
 import { useTokenFiatAmount } from '@view/hooks/useTokenFiatAmount'
 import { useTokenTracker } from '@view/hooks/useTokenTracker'
-import useDeepEffect from '@view/hooks/useDeepEffect'
 import {
   getDexMaskAccountsOrdered,
   getSelectedAddress,
   getShouldHideZeroBalanceTokens,
 } from '@view/selectors'
 import { showAccountDetail } from '@view/store/actions'
+import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
+import { zeroAddress } from 'ethereumjs-util'
+import { ethers } from 'ethers'
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 function SendTokenInput(
   {
@@ -224,11 +222,8 @@ function SendTokenInput(
     changeAmount && changeAmount(maxSendAmount)
   }, [maxSendAmount, changeAmount, gasLoading])
   const reverseAction = useCallback(() => {
-    (reverseAble && onReverse) && onReverse()
+    reverseAble && onReverse && onReverse()
   }, [onReverse, reverseAble])
-  useEffect(() => {
-    dispatch(setMaxSendAmount())
-  }, [selectedAccount])
   useDeepEffect(() => {
     if (!usedByCross && selectedTokenAddress === zeroAddress()) {
       onTokenChange(nativeAsset)
