@@ -1689,7 +1689,7 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": "注意：永远不要公开此私钥。任何拥有你的私钥的人都可以窃取你账户中的任何资産。"
+    "message": "注意：永远不要公开此私钥。任何拥有你的私钥的人都可以窃取你账户中的任何资产。"
   },
   "privateNetwork": {
     "message": "私人网络"
