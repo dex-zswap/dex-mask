@@ -157,9 +157,18 @@ export default function CrossChainTokenInput() {
               item.token_address === destToken
             ) {
               reverseAble = true
+              const targetChainTokenInfo =
+                get(
+                  allAccountTokens,
+                  `${crossChainState.from.toLowerCase()}.${
+                    crossChainState.destChain
+                  }`,
+                ) || []
 
-              const targetChainTokenInfo = get(allAccountTokens, `${(crossChainState.from).toLowerCase()}.${crossChainState.destChain}`) || []
-              if (crossChainState.targetCoinAddress !== ethers.constants.AddressZero && !targetChainTokenInfo.find(
+              if (
+                crossChainState.targetCoinAddress !==
+                  ethers.constants.AddressZero &&
+                !targetChainTokenInfo.find(
                   (token) =>
                     token.address === crossChainState.targetCoinAddress,
                 )
@@ -177,33 +186,38 @@ export default function CrossChainTokenInput() {
         }))
         dispatch(hideLoadingIndication())
       })
-  }, [chainId, tokenAddresses, tokens, allAccountTokens, omit(crossChainState, ['userInputValue'])])
-  const tokenChanged = useCallback(({
-    address: coinAddress,
-    decimals: tokenDecimals,
-    string,
-  }) => {
-    checkTokenBridge({
-      token_address: coinAddress,
-      meta_chain_id: toBnString(crossChainState.fromChain),
-    }).then((res) => res.json())
-      .then((res) => {
-        if (res.c === 200) {
-          const defaultTargetChain = res.d[0]
-          updateCrossState({
-            coinAddress,
-            tokenDecimals,
-            maxSendAmount: new BigNumber(string).toString(),
-            targetCoinAddress: defaultTargetChain.target_token_address,
-            target: defaultTargetChain,
-            destChain: defaultTargetChain.target_meta_chain_id,
-            supportChains: res.d,
-            userInputValue: ''
-          })
-        }
+  }, [
+    chainId,
+    tokenAddresses,
+    tokens,
+    allAccountTokens,
+    omit(crossChainState, ['userInputValue']),
+  ])
+  const tokenChanged = useCallback(
+    ({ address: coinAddress, decimals: tokenDecimals, string }) => {
+      checkTokenBridge({
+        token_address: coinAddress,
+        meta_chain_id: toBnString(crossChainState.fromChain),
       })
-  }, [crossChainState])
-
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.c === 200) {
+            const defaultTargetChain = res.d[0]
+            updateCrossState({
+              coinAddress,
+              tokenDecimals,
+              maxSendAmount: new BigNumber(string).toString(),
+              targetCoinAddress: defaultTargetChain.target_token_address,
+              target: defaultTargetChain,
+              destChain: defaultTargetChain.target_meta_chain_id,
+              supportChains: res.d,
+              userInputValue: '',
+            })
+          }
+        })
+    },
+    [crossChainState],
+  )
   return (
     <div>
       <CrossFromChainSwitcher
@@ -265,7 +279,11 @@ export default function CrossChainTokenInput() {
             dest: '',
           })
         }
-        toggleCheck={(isInWallet) => updateCrossState({ dest: isInWallet ? selectedAccount.address : '' })}
+        toggleCheck={(isInWallet) =>
+          updateCrossState({
+            dest: isInWallet ? selectedAccount.address : '',
+          })
+        }
       />
     </div>
   )

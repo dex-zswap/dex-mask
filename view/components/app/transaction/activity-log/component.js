@@ -100,7 +100,6 @@ export default class TransactionActivityLog extends PureComponent {
             conversionRate,
             numberOfDecimals: 3,
           })
-
     const formattedTimestamp = formatDate(timestamp, 'y/LLL/d T ')
     const activityText = this.context.t(eventKey, [
       ethValue,

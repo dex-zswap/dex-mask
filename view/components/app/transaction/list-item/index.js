@@ -61,7 +61,9 @@ export default function TransactionListItem({
     isPending,
     senderAddress,
   } = useTransactionDisplayData(transactionGroup, hidePrimary)
-  const hasCancelled = transactionGroup.hasCancelled && displayedStatusKey !== TRANSACTION_STATUSES.CONFIRMED
+  const hasCancelled =
+    transactionGroup.hasCancelled &&
+    displayedStatusKey !== TRANSACTION_STATUSES.CONFIRMED
   const isSignatureReq =
     category === TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST
   const isApproval = category === TRANSACTION_GROUP_CATEGORIES.APPROVAL

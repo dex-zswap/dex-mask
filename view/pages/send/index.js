@@ -1,3 +1,8 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
 import SendAddressInput from '@c/app/send-address-input'
 import SendTokenInput from '@c/app/send-token-input'
 import BackBar from '@c/ui/back-bar'
@@ -25,11 +30,6 @@ import {
 import { useI18nContext } from '@view/hooks/useI18nContext'
 import { getSelectedAccount, getSelectedAddress } from '@view/selectors'
 import { showQrScanner } from '@view/store/actions'
-import BigNumber from 'bignumber.js'
-import { ethers } from 'ethers'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useLocation } from 'react-router-dom'
 import SendFooter from './send-footer'
 export default function SendTransactionScreen() {
   const t = useI18nContext()

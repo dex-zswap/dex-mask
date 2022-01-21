@@ -1,10 +1,22 @@
+import React, {
+  forwardRef,
+  useCallback,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BigNumber from 'bignumber.js'
+import classnames from 'classnames'
+import { zeroAddress } from 'ethereumjs-util'
+import { ethers } from 'ethers'
 import TokenListItem from '@c/app/send-token-input/token-list-item'
 import UserPreferencedCurrencyDisplay from '@c/app/user-preferenced/currency-display'
 import Identicon from '@c/ui/identicon'
 import TokenBalance from '@c/ui/token-balance'
 import TokenImage from '@c/ui/token-image'
-import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask'
-// import { setMaxSendAmount } from '@reducer/send'
+import { getNativeCurrency, getTokens } from '@reducer/dexmask/dexmask' // import { setMaxSendAmount } from '@reducer/send'
+
 import { PRIMARY } from '@view/helpers/constants/common'
 import { shortenAddress } from '@view/helpers/utils'
 import {
@@ -22,18 +34,6 @@ import {
   getShouldHideZeroBalanceTokens,
 } from '@view/selectors'
 import { showAccountDetail } from '@view/store/actions'
-import BigNumber from 'bignumber.js'
-import classnames from 'classnames'
-import { zeroAddress } from 'ethereumjs-util'
-import { ethers } from 'ethers'
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 function SendTokenInput(
   {

@@ -191,7 +191,11 @@ export function useTransactionDisplayData(transactionGroup, hidePrimary) {
     type === TRANSACTION_TYPES.CONTRACT_INTERACTION
   ) {
     category = TRANSACTION_GROUP_CATEGORIES.INTERACTION
-    title = t(type === TRANSACTION_TYPES.CONTRACT_INTERACTION ? 'contractInteraction' : 'contractDeployment')
+    title = t(
+      type === TRANSACTION_TYPES.CONTRACT_INTERACTION
+        ? 'contractInteraction'
+        : 'contractDeployment',
+    )
     subtitle = t('toAddress', [shortenAddress(recipientAddress, 3, -3)])
     subtitleContainsOrigin = true
   } else if (type === TRANSACTION_TYPES.INCOMING) {

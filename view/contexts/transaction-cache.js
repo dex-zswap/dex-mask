@@ -2,9 +2,7 @@ import React, { createContext, useCallback, Component } from 'react'
 import PropTypes from 'prop-types'
 import dexMaskDataBase from '@shared/modules/database'
 export const TransactionCacheContext = createContext((key) => `[${key}]`)
-
 const { Dexie } = global
-
 export const TransactionCacheProvider = (props) => {
   const recordTransaction = useCallback(async (txData) => {
     // return Promise.resolve().then(() => {
