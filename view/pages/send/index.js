@@ -107,7 +107,6 @@ export default function SendTransactionScreen() {
     }
   }, [])
   useEffect(() => {
-    console.log('selectedAccount', selectedAccount)
     setTimeout(() => {
       dispatch(setMaxSendAmount())
     }, 1000)

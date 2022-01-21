@@ -26,7 +26,7 @@ export function getEthConversionFromWeiHex({
   value,
   fromCurrency = ETH,
   conversionRate,
-  numberOfDecimals = 6,
+  numberOfDecimals = 6
 }) {
   const denominations = [fromCurrency, GWEI, WEI]
   let nonZeroDenomination

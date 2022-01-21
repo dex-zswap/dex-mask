@@ -1,6 +1,6 @@
 {
   "name": "dexmask-crx",
-  "version": "2.0.0-rc",
+  "version": "2.0.0",
   "private": true,
   "repository": {
     "type": "git",

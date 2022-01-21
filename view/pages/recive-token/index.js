@@ -53,6 +53,7 @@ const ReciveToken = () => {
         <div className='qr-code'>
           <QrView
             hiddenAddress={true}
+            hideError={true}
             cellWidth={5}
             darkColor='#fff'
             lightColor='transparent'
