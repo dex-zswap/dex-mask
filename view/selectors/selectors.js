@@ -545,37 +545,53 @@ export function getShowRecoveryPhraseReminder(state) {
 export function getAppState(state) {
   return state.appState
 }
-export const getDBTokenOrders = createAsyncSelector({
-  async: async (chainId, accountAddress) => {
-    const transactionsCount = {};
-    const transactionsTime = {};
-    const dbInstance = await dexMaskDataBase.getDBInstance();
-    const result = await dbInstance.getAll('transactions');
-    const transactions = result.filter(({ fromAddress, chainId: transactionChainId }) => fromAddress === accountAddress && transactionChainId == chainId);
-    const countDescTrans = []
-    const timeDescTrans = []
-    let timeDesc
-    let countDesc
+export const getDBTokenOrders = createAsyncSelector(
+  {
+    async: async (chainId, accountAddress) => {
+      const transactionsCount = {}
+      const transactionsTime = {}
+      const dbInstance = await dexMaskDataBase.getDBInstance()
+      const result = await dbInstance.getAll('transactions')
+      const transactions = result.filter(
+        ({ fromAddress, chainId: transactionChainId }) =>
+          fromAddress === accountAddress && transactionChainId == chainId,
+      )
+      const countDescTrans = []
+      const timeDescTrans = []
+      let timeDesc
+      let countDesc
+      transactions.forEach((transaction) => {
+        transactionsCount[transaction.tokenAddress] = transactionsCount[
+          transaction.tokenAddress
+        ]
+          ? transactionsCount[transaction.tokenAddress] + 1
+          : 1
+        transactionsTime[transaction.tokenAddress] = transactionsTime[
+          transaction.tokenAddress
+        ]
+          ? transactionsTime[transaction.tokenAddress] < transaction.timestamp
+            ? transaction.timestamp
+            : transactionsTime[transaction.tokenAddress]
+          : transaction.timestamp
+      })
 
-    transactions.forEach((transaction) => {
-      transactionsCount[transaction.tokenAddress] = transactionsCount[transaction.tokenAddress] ? transactionsCount[transaction.tokenAddress] + 1 : 1
-      transactionsTime[transaction.tokenAddress] = transactionsTime[transaction.tokenAddress] ? transactionsTime[transaction.tokenAddress] < transaction.timestamp ? transaction.timestamp : transactionsTime[transaction.tokenAddress] : transaction.timestamp
-    });
+      for (const tokenAddress in transactionsCount) {
+        countDescTrans.push([tokenAddress, transactionsCount[tokenAddress]])
+      }
 
-    for (const tokenAddress in transactionsCount) {
-      countDescTrans.push([tokenAddress, transactionsCount[tokenAddress]])
-    }
+      for (const tokenAddress in transactionsTime) {
+        timeDescTrans.push([tokenAddress, transactionsTime[tokenAddress]])
+      }
 
-    for (const tokenAddress in transactionsTime) {
-      timeDescTrans.push([tokenAddress, transactionsTime[tokenAddress]])
-    }
-
-    countDesc = countDescTrans.sort((t1, t2) => t2[1] - t1[1]).map(t => t[0])
-    timeDesc = timeDescTrans.sort((t1, t2) => t2[1] - t1[1]).map(t => t[0])
-
-    return {
-      timeDesc,
-      countDesc
-    }
-  }
-}, [getCurrentChainId, getSelectedAddress])
+      countDesc = countDescTrans
+        .sort((t1, t2) => t2[1] - t1[1])
+        .map((t) => t[0])
+      timeDesc = timeDescTrans.sort((t1, t2) => t2[1] - t1[1]).map((t) => t[0])
+      return {
+        timeDesc,
+        countDesc,
+      }
+    },
+  },
+  [getCurrentChainId, getSelectedAddress],
+)

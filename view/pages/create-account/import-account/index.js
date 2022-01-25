@@ -45,17 +45,17 @@ export default class AccountImportSubview extends Component {
           selectedValue={type}
           options={[
           {
-            value: 'privateKey',
-            label: this.context.t('privateKey'),
+           value: 'privateKey',
+           label: this.context.t('privateKey'),
           },
           {
-            value: 'jsonFile',
-            label: this.context.t('jsonFile'),
+           value: 'jsonFile',
+           label: this.context.t('jsonFile'),
           },
           ]}
           onSelect={(type) => {
           this.setState({
-            type,
+           type,
           })
           }}
           />

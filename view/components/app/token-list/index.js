@@ -11,7 +11,7 @@ import {
   getShouldHideZeroBalanceTokens,
   getTokenDisplayOrdersType,
   getTokenDisplayOrders,
-  getDBTokenOrders
+  getDBTokenOrders,
 } from '@view/selectors'
 import { TOKEN_DISPLAY_ORDER_TYPES } from '@shared/constants/tokens'
 export default function TokenList({ onTokenClick }) {
@@ -33,23 +33,40 @@ export default function TokenList({ onTokenClick }) {
     shouldHideZeroBalanceTokens,
   )
   const tokenSorted = useMemo(() => {
-    if (!tokenDisplayOrders.length || !tokenDBOrders.value?.countDesc?.length || !tokenDBOrders.value?.timeDesc?.length || tokenDBOrders.isWaiting || tokenDBOrders.isRejected) {
+    if (
+      !tokenDisplayOrders.length ||
+      !tokenDBOrders.value?.countDesc?.length ||
+      !tokenDBOrders.value?.timeDesc?.length ||
+      tokenDBOrders.isWaiting ||
+      tokenDBOrders.isRejected
+    ) {
       return tokensWithBalances
     }
-    const tokenAddressOrders = tokenDisplayOrdersType === TOKEN_DISPLAY_ORDER_TYPES.DEFAULT ? tokenDisplayOrders : tokenDisplayOrdersType === TOKEN_DISPLAY_ORDER_TYPES.MOST_TRANS ? tokenDBOrders.value?.countDesc : tokenDBOrders.value?.timeDesc
-    return tokenAddressOrders
-    .map((address) =>
-      tokensWithBalances.find(
-        ({ address: tokenAddress }) => address === tokenAddress,
-      ),
-    )
-    .concat(
-      tokensWithBalances.filter(
-        ({ address }) => !tokenAddressOrders.includes(address),
-      ),
-    ).filter(Boolean)
-  }, [tokensWithBalances, tokenDisplayOrders, tokenDBOrders, tokenDisplayOrdersType])
 
+    const tokenAddressOrders =
+      tokenDisplayOrdersType === TOKEN_DISPLAY_ORDER_TYPES.DEFAULT
+        ? tokenDisplayOrders
+        : tokenDisplayOrdersType === TOKEN_DISPLAY_ORDER_TYPES.MOST_TRANS
+        ? tokenDBOrders.value?.countDesc
+        : tokenDBOrders.value?.timeDesc
+    return tokenAddressOrders
+      .map((address) =>
+        tokensWithBalances.find(
+          ({ address: tokenAddress }) => address === tokenAddress,
+        ),
+      )
+      .concat(
+        tokensWithBalances.filter(
+          ({ address }) => !tokenAddressOrders.includes(address),
+        ),
+      )
+      .filter(Boolean)
+  }, [
+    tokensWithBalances,
+    tokenDisplayOrders,
+    tokenDBOrders,
+    tokenDisplayOrdersType,
+  ])
   const tokensDisplay = useMemo(() => {
     const tokensDisplay = []
     const toAddressedCache = []

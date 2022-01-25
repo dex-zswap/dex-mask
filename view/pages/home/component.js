@@ -298,7 +298,7 @@ export default class Home extends PureComponent {
       hideWhatsNewPopup,
       showRecoveryPhraseReminder,
       tokenDisplayOrdersType,
-      setTokenDisplayOrdersType
+      setTokenDisplayOrdersType,
     } = this.props
 
     if (forgottenPassword) {
@@ -332,21 +332,23 @@ export default class Home extends PureComponent {
                   label: t('assets'),
                   key: 'assets',
                   childrenValue: tokenDisplayOrdersType,
-                  onSelect: value => value !== tokenDisplayOrdersType && setTokenDisplayOrdersType(value),
+                  onSelect: (value) =>
+                    value !== tokenDisplayOrdersType &&
+                    setTokenDisplayOrdersType(value),
                   children: [
                     {
                       label: 'Default Portfolio',
-                      value: TOKEN_DISPLAY_ORDER_TYPES.DEFAULT
+                      value: TOKEN_DISPLAY_ORDER_TYPES.DEFAULT,
                     },
                     {
                       label: 'Most Transacted',
-                      value: TOKEN_DISPLAY_ORDER_TYPES.MOST_TRANS
+                      value: TOKEN_DISPLAY_ORDER_TYPES.MOST_TRANS,
                     },
                     {
                       label: 'Recently Transacted',
-                      value: TOKEN_DISPLAY_ORDER_TYPES.RECENT_TRANS
-                    }
-                  ]
+                      value: TOKEN_DISPLAY_ORDER_TYPES.RECENT_TRANS,
+                    },
+                  ],
                 },
                 {
                   label: t('activity'),

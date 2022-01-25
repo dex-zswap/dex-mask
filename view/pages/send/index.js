@@ -31,9 +31,7 @@ import { useI18nContext } from '@view/hooks/useI18nContext'
 import { getSelectedAccount, getSelectedAddress } from '@view/selectors'
 import { showQrScanner } from '@view/store/actions'
 import SendFooter from './send-footer'
-
 export const SEND_ASSET_TOKEN_ADDRESS = 'SEND_ASSET_TOKEN_ADDRESS'
-
 export default function SendTransactionScreen() {
   const t = useI18nContext()
   const dispatch = useDispatch()

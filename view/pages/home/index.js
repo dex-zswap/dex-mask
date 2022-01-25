@@ -27,7 +27,7 @@ import {
   getUnapprovedTemplatedConfirmations,
   getWeb3ShimUsageStateForOrigin,
   unconfirmedTransactionsCountSelector,
-  getTokenDisplayOrdersType
+  getTokenDisplayOrdersType,
 } from '@view/selectors'
 import {
   getThreeBoxLastUpdated,
@@ -40,7 +40,7 @@ import {
   setShowRestorePromptToFalse,
   setWeb3ShimUsageAlertDismissed,
   turnThreeBoxSyncingOn,
-  setTokenDisplayOrdersType
+  setTokenDisplayOrdersType,
 } from '@view/store/actions'
 import Home from './component'
 
@@ -139,7 +139,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(setRecoveryPhraseReminderHasBeenShown()),
   setRecoveryPhraseReminderLastShown: (lastShown) =>
     dispatch(setRecoveryPhraseReminderLastShown(lastShown)),
-  setTokenDisplayOrdersType: (value) => dispatch(setTokenDisplayOrdersType(value))
+  setTokenDisplayOrdersType: (value) =>
+    dispatch(setTokenDisplayOrdersType(value)),
 })
 
 export default compose(

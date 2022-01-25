@@ -40,6 +40,7 @@ import {
 import { SEND_BEIDGE_TOKEN } from '@pages/cross-chain/button'
 import { SEND_ASSET_TOKEN_ADDRESS } from '@pages/send'
 import cloneDeep from 'lodash/cloneDeep'
+
 const renderHeartBeatIfNotInTest = () =>
   process.env.IN_TEST === 'true' ? null : <LoadingHeartBeat />
 

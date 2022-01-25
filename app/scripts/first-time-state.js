@@ -10,8 +10,7 @@
 const initialState = {
   config: {},
   PreferencesController: {
-    frequentRpcListDetail: [
-    ],
+    frequentRpcListDetail: [],
   },
 }
 

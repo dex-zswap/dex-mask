@@ -18,9 +18,7 @@ const Tabs = ({ tabs, actived, children, onChange }) => {
     },
     [onChange],
   )
-
   const locale = useSelector(getCurrentLocale)
-
   return (
     <div className='dex-tabs'>
       <div className='tabs-tab flex space-between items-center'>
@@ -30,17 +28,19 @@ const Tabs = ({ tabs, actived, children, onChange }) => {
               className={classnames(
                 'tab-item',
                 current === tab.key && 'active',
-                tab.children && 'with-children'
+                tab.children && 'with-children',
               )}
               key={tab.key}
               onClick={(e) => switchTab(e, tab.key)}
             >
               <div>
                 {!tab.children && tab.label}
-                {
-                  tab.children &&
+                {tab.children && (
                   <Selector
-                    className={classnames('tab-item-selector', locale.split('_')[0])}
+                    className={classnames(
+                      'tab-item-selector',
+                      locale.split('_')[0],
+                    )}
                     selectedValue={tab.childrenValue}
                     onSelect={tab.onSelect}
                     options={tab.children}
@@ -54,7 +54,7 @@ const Tabs = ({ tabs, actived, children, onChange }) => {
                       </div>
                     )}
                   />
-                }
+                )}
               </div>
             </div>
           )

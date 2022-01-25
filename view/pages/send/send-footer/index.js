@@ -13,7 +13,6 @@ import {
 import { CONFIRM_TRANSACTION_ROUTE } from '@view/helpers/constants/routes'
 import { useI18nContext } from '@view/hooks/useI18nContext'
 import { SEND_ASSET_TOKEN_ADDRESS } from '@pages/send'
-
 export default function SendFooter({}) {
   const t = useI18nContext()
   const dispatch = useDispatch()
@@ -25,16 +24,18 @@ export default function SendFooter({}) {
     dispatch(resetSendState())
     history.go(-1)
   }, [history])
-
-  const onSubmit = useCallback((event) => {
-    event.preventDefault()
-    const promise = dispatch(signTransaction())
-    Promise.resolve(promise).then(() => {
-      localStorage[SEND_ASSET_TOKEN_ADDRESS] = sendAddress
+  const onSubmit = useCallback(
+    (event) => {
+      event.preventDefault()
+      const promise = dispatch(signTransaction())
+      Promise.resolve(promise).then(() => {
+        localStorage[SEND_ASSET_TOKEN_ADDRESS] = sendAddress
+        history.push(CONFIRM_TRANSACTION_ROUTE)
+      })
       history.push(CONFIRM_TRANSACTION_ROUTE)
-    })
-    history.push(CONFIRM_TRANSACTION_ROUTE)
-  }, [sendAddress])
+    },
+    [sendAddress],
+  )
   return (
     <div className='base-width flex space-between'>
       <Button className='half-button' onClick={onCancel}>
