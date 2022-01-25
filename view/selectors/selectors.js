@@ -1,5 +1,8 @@
 import { stripHexPrefix } from 'ethereumjs-util'
 import { createSelector } from 'reselect'
+import createAsyncSelector from '@view/helpers/utils/create-async-selector'
+import dexMaskDataBase from '@shared/modules/database'
+import { TOKEN_DISPLAY_ORDER_TYPES } from '@shared/constants/tokens'
 /**
  * One of the only remaining valid uses of selecting the network subkey of the
  * metamask state tree is to determine if the network is currently 'loading'.
@@ -355,6 +358,10 @@ export function getShouldHideZeroBalanceTokens(state) {
   const { hideZeroBalanceTokens } = getPreferences(state)
   return hideZeroBalanceTokens
 }
+export function getTokenDisplayOrdersType(state, autoPick = true) {
+  const { tokenDisplayOrdersType } = getPreferences(state)
+  return tokenDisplayOrdersType ?? TOKEN_DISPLAY_ORDER_TYPES.DEFAULT
+}
 export function getTokenDisplayOrders(state, autoPick = true) {
   const { tokenDisplayOrders } = getPreferences(state)
   const selectedAddress = getSelectedAddress(state)
@@ -538,3 +545,37 @@ export function getShowRecoveryPhraseReminder(state) {
 export function getAppState(state) {
   return state.appState
 }
+export const getDBTokenOrders = createAsyncSelector({
+  async: async (chainId, accountAddress) => {
+    const transactionsCount = {};
+    const transactionsTime = {};
+    const dbInstance = await dexMaskDataBase.getDBInstance();
+    const result = await dbInstance.getAll('transactions');
+    const transactions = result.filter(({ fromAddress, chainId: transactionChainId }) => fromAddress === accountAddress && transactionChainId == chainId);
+    const countDescTrans = []
+    const timeDescTrans = []
+    let timeDesc
+    let countDesc
+
+    transactions.forEach((transaction) => {
+      transactionsCount[transaction.tokenAddress] = transactionsCount[transaction.tokenAddress] ? transactionsCount[transaction.tokenAddress] + 1 : 1
+      transactionsTime[transaction.tokenAddress] = transactionsTime[transaction.tokenAddress] ? transactionsTime[transaction.tokenAddress] < transaction.timestamp ? transaction.timestamp : transactionsTime[transaction.tokenAddress] : transaction.timestamp
+    });
+
+    for (const tokenAddress in transactionsCount) {
+      countDescTrans.push([tokenAddress, transactionsCount[tokenAddress]])
+    }
+
+    for (const tokenAddress in transactionsTime) {
+      timeDescTrans.push([tokenAddress, transactionsTime[tokenAddress]])
+    }
+
+    countDesc = countDescTrans.sort((t1, t2) => t2[1] - t1[1]).map(t => t[0])
+    timeDesc = timeDescTrans.sort((t1, t2) => t2[1] - t1[1]).map(t => t[0])
+
+    return {
+      timeDesc,
+      countDesc
+    }
+  }
+}, [getCurrentChainId, getSelectedAddress])

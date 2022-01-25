@@ -9,8 +9,71 @@
       color: $gray;
       font-weight: bold;
 
+      &.with-children {
+        .tab-item-selector {
+          display: inline-block;
+          min-width: 60px;
+          max-width: 80px;
+          height: 10px;
+          border: none;
+
+          .current-label {
+            background: none;
+          }
+
+          &.zh {
+            max-width: 60px;
+          }
+
+          &.menu-opened {
+            box-shadow: none;
+          }
+
+          .selector-menu {
+            width: 200px;
+            top: 30px;
+
+            .select-option {
+              color: $white!important;
+              .select-radio {
+                width: 14px;
+                height: 14px;
+                border: 1px solid $gray;
+                border-radius: 50%;
+                margin: 0 10px 0 0;
+              }
+
+              &.select-option-active-color {
+                .checked {
+                  display: block;
+                  width: 6px;
+                  height: 6px;
+                  border-radius: 50%;
+                  background: $primary-gradient;
+                }
+              }
+            }
+          }
+
+          &::after {
+            right: 0;
+          }
+        }
+      }
+
       &.active {
         color: $pink;
+
+        .tab-item-selector {
+          .current-label {
+            color: $pink;
+          }
+
+          &::after {
+            background: url('/images/icons/arrow-down-pink.png') no-repeat center;
+            background-size: 100%;
+          }
+        }
       }
     }
   }

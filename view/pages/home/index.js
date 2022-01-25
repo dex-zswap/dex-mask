@@ -27,6 +27,7 @@ import {
   getUnapprovedTemplatedConfirmations,
   getWeb3ShimUsageStateForOrigin,
   unconfirmedTransactionsCountSelector,
+  getTokenDisplayOrdersType
 } from '@view/selectors'
 import {
   getThreeBoxLastUpdated,
@@ -39,6 +40,7 @@ import {
   setShowRestorePromptToFalse,
   setWeb3ShimUsageAlertDismissed,
   turnThreeBoxSyncingOn,
+  setTokenDisplayOrdersType
 } from '@view/store/actions'
 import Home from './component'
 
@@ -94,6 +96,7 @@ const mapStateToProps = (state) => {
     pendingConfirmations,
     seedPhraseBackedUp,
     originOfCurrentTab,
+    tokenDisplayOrdersType: getTokenDisplayOrdersType(state),
     unconfirmedTransactionsCount: unconfirmedTransactionsCountSelector(state),
     shouldShowSeedPhraseReminder:
       seedPhraseBackedUp === false &&
@@ -136,6 +139,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(setRecoveryPhraseReminderHasBeenShown()),
   setRecoveryPhraseReminderLastShown: (lastShown) =>
     dispatch(setRecoveryPhraseReminderLastShown(lastShown)),
+  setTokenDisplayOrdersType: (value) => dispatch(setTokenDisplayOrdersType(value))
 })
 
 export default compose(

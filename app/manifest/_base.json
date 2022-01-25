@@ -31,7 +31,7 @@
     {
       "matches": ["file://*/*", "http://*/*", "https://*/*"],
       "js": [
-        "dexie.js",
+        "idb.js",
         "global.js",
         "lockdown-install.js",
         "lockdown.js",

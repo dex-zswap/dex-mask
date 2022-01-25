@@ -26,6 +26,7 @@ import {
   RESTORE_VAULT_ROUTE,
   VIEW_QUOTE_ROUTE,
 } from '@view/helpers/constants/routes'
+import { TOKEN_DISPLAY_ORDER_TYPES } from '@shared/constants/tokens'
 import { formatDate } from '@view/helpers/utils'
 const LEARN_MORE_URL =
   'https://metamask.zendesk.com/hc/en-us/articles/360045129011-Intro-to-MetaMask-v8-extension'
@@ -296,6 +297,8 @@ export default class Home extends PureComponent {
       showWhatsNewPopup,
       hideWhatsNewPopup,
       showRecoveryPhraseReminder,
+      tokenDisplayOrdersType,
+      setTokenDisplayOrdersType
     } = this.props
 
     if (forgottenPassword) {
@@ -328,6 +331,22 @@ export default class Home extends PureComponent {
                 {
                   label: t('assets'),
                   key: 'assets',
+                  childrenValue: tokenDisplayOrdersType,
+                  onSelect: value => value !== tokenDisplayOrdersType && setTokenDisplayOrdersType(value),
+                  children: [
+                    {
+                      label: 'Default Portfolio',
+                      value: TOKEN_DISPLAY_ORDER_TYPES.DEFAULT
+                    },
+                    {
+                      label: 'Most Transacted',
+                      value: TOKEN_DISPLAY_ORDER_TYPES.MOST_TRANS
+                    },
+                    {
+                      label: 'Recently Transacted',
+                      value: TOKEN_DISPLAY_ORDER_TYPES.RECENT_TRANS
+                    }
+                  ]
                 },
                 {
                   label: t('activity'),

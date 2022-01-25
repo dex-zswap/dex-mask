@@ -1890,6 +1890,9 @@ export function setAutoLockTimeLimit(value) {
 export function setTokenDisplayOrders(value) {
   return setPreference('tokenDisplayOrders', JSON.stringify(value))
 }
+export function setTokenDisplayOrdersType(value) {
+  return setPreference('tokenDisplayOrdersType', value)
+}
 export function setCompletedOnboarding() {
   return async (dispatch) => {
     dispatch(showLoadingIndication())

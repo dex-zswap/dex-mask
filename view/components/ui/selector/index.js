@@ -46,6 +46,7 @@ export default function Selector({
       }
     }
   }, [toTop, show])
+
   return (
     <div
       className={classnames([

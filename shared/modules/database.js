@@ -1,10 +1,26 @@
-const { Dexie } = global
+class DexMaskDataBase {
+  async initDB() {
+    const db = await global.idb.openDB('dex-mask-database', 2, {
+      upgrade(db) {
+        const store = db.createObjectStore('transactions', {
+          keyPath: 'id',
+          autoIncrement: true,
+        });
+        store.createIndex('tokenAddress', 'tokenAddress');
+        store.createIndex('chainId', 'chainId');
+        store.createIndex('fromAddress', 'fromAddress');
+        store.createIndex('toAddress', 'toAddress');
+        store.createIndex('timestamp', 'timestamp');
+      }
+    });
 
-const dexMaskDataBase = new Dexie('dex-mask-database')
+    this.db = db;
+    return db;
+  }
 
-dexMaskDataBase.version(1).stores({
-  transactions:
-    '++id, tokenAddress, chainId, fromAddress, toAddress, timestamp',
-})
+  async getDBInstance() {
+    return this.db ?? await this.initDB();
+  }
+}
 
-export default dexMaskDataBase
+export default new DexMaskDataBase

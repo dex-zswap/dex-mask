@@ -38,8 +38,8 @@ import {
   removePollingTokenFromAppState,
 } from '@view/store/actions'
 import { SEND_BEIDGE_TOKEN } from '@pages/cross-chain/button'
+import { SEND_ASSET_TOKEN_ADDRESS } from '@pages/send'
 import cloneDeep from 'lodash/cloneDeep'
-
 const renderHeartBeatIfNotInTest = () =>
   process.env.IN_TEST === 'true' ? null : <LoadingHeartBeat />
 
@@ -652,6 +652,11 @@ export default class ConfirmTransactionBase extends Component {
           reportTxData.tokenAddress = localStorage[SEND_BEIDGE_TOKEN]
           reportTxData.type = 'crossChain'
           localStorage.removeItem(SEND_BEIDGE_TOKEN)
+        }
+
+        if (localStorage[SEND_ASSET_TOKEN_ADDRESS]) {
+          reportTxData.tokenAddress = localStorage[SEND_ASSET_TOKEN_ADDRESS]
+          localStorage.removeItem(SEND_ASSET_TOKEN_ADDRESS)
         }
 
         this.context.recordTransaction(reportTxData)

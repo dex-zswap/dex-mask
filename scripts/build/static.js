@@ -56,8 +56,8 @@ const copyTargets = [
     dest: `lockdown.js`,
   },
   {
-    src: `./app/scripts/dexie.js`,
-    dest: `dexie.js`,
+    src: `./app/scripts/idb.js`,
+    dest: `idb.js`,
   },
   {
     // eslint-disable-next-line node/no-extraneous-require
