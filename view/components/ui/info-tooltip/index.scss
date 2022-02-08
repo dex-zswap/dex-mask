@@ -13,28 +13,28 @@
 
 .tippy-popper[x-placement^='top'] .tippy-tooltip-info-theme [x-arrow],
 .tippy-popper[x-placement^='top'] .tippy-tooltip-wideInfo-theme [x-arrow] {
-  border-top-color: #5f19b6;
+  border-top-color: rgba(#24233d, 0.9);
 }
 
 .tippy-popper[x-placement^='right'] .tippy-tooltip-info-theme [x-arrow],
 .tippy-popper[x-placement^='right'] .tippy-tooltip-wideInfo-theme [x-arrow] {
-  border-right-color: #5f19b6;
+  border-right-color: rgba(#24233d, 0.9);
 }
 
 .tippy-popper[x-placement^='left'] .tippy-tooltip-info-theme [x-arrow],
 .tippy-popper[x-placement^='left'] .tippy-tooltip-wideInfo-theme [x-arrow] {
-  border-left-color: #5f19b6;
+  border-left-color: rgba(#24233d, 0.9);
 }
 
 .tippy-popper[x-placement^='bottom'] .tippy-tooltip-info-theme [x-arrow],
 .tippy-popper[x-placement^='bottom'] .tippy-tooltip-wideInfo-theme [x-arrow] {
-  border-bottom-color: #5f19b6;
+  border-bottom-color: rgba(#24233d, 0.9);
 }
 
 .tippy-tooltip {
   &#{&}-info-theme,
   &#{&}-wideInfo-theme {
-    background: #5f19b6;
+    background: rgba(#24233d, 0.9);
     color: #fff;
     box-shadow: 0 0 14px rgba(0, 0, 0, 0.18);
     border-radius: 8px;
