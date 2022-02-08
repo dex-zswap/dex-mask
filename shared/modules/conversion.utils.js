@@ -118,7 +118,9 @@ const converter = ({
   }
 
   if (toDenomination) {
-    convertedValue = (toSpecifiedDenomination[toDenomination] || toSpecifiedDenomination.ETH)(convertedValue)
+    convertedValue = (
+      toSpecifiedDenomination[toDenomination] || toSpecifiedDenomination.ETH
+    )(convertedValue)
   }
 
   if (numberOfDecimals) {

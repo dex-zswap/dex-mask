@@ -337,15 +337,15 @@ export default class Home extends PureComponent {
                     setTokenDisplayOrdersType(value),
                   children: [
                     {
-                      label: 'Default Portfolio',
+                      label: t('defaultPortfolio'),
                       value: TOKEN_DISPLAY_ORDER_TYPES.DEFAULT,
                     },
                     {
-                      label: 'Most Transacted',
+                      label: t('mostTransacted'),
                       value: TOKEN_DISPLAY_ORDER_TYPES.MOST_TRANS,
                     },
                     {
-                      label: 'Recently Transacted',
+                      label: t('recentlyTransacted'),
                       value: TOKEN_DISPLAY_ORDER_TYPES.RECENT_TRANS,
                     },
                   ],

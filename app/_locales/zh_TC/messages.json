@@ -2881,5 +2881,14 @@
   },
   "zswap": {
     "message": "ZSWAP"
+  },
+  "defaultPortfolio": {
+    "message": "默認排序"
+  },
+  "mostTransacted": {
+    "message": "交易最多"
+  },
+  "recentlyTransacted": {
+    "message": "最近交易"
   }
 }

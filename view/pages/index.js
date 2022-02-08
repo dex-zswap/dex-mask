@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react'
-import { HashRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import React, { PureComponent, useEffect } from 'react'
+import { HashRouter, useHistory } from 'react-router-dom'
+import { Provider, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 import AutoInitTokens from '@c/app/auto-init-tokens'
 import { I18nProvider, LegacyI18nProvider } from '@view/contexts/i18n'
@@ -8,8 +8,22 @@ import {
   TransactionCacheProvider,
   LegacyTransactionCacheProvider,
 } from '@view/contexts/transaction-cache'
+import { hideWarning } from '@view/store/actions'
 import ErrorPage from './error'
 import Routes from './routes'
+
+const RestoreWarning = () => {
+  const history = useHistory()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    history.listen(() => dispatch(hideWarning()))
+
+    return () => history.unlisten()
+  }, [])
+
+  return null
+}
 
 class Page extends PureComponent {
   state = {}
