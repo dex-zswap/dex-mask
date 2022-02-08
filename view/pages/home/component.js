@@ -331,24 +331,24 @@ export default class Home extends PureComponent {
                 {
                   label: t('assets'),
                   key: 'assets',
-                  childrenValue: tokenDisplayOrdersType,
-                  onSelect: (value) =>
-                    value !== tokenDisplayOrdersType &&
-                    setTokenDisplayOrdersType(value),
-                  children: [
-                    {
-                      label: t('defaultPortfolio'),
-                      value: TOKEN_DISPLAY_ORDER_TYPES.DEFAULT,
-                    },
-                    {
-                      label: t('mostTransacted'),
-                      value: TOKEN_DISPLAY_ORDER_TYPES.MOST_TRANS,
-                    },
-                    {
-                      label: t('recentlyTransacted'),
-                      value: TOKEN_DISPLAY_ORDER_TYPES.RECENT_TRANS,
-                    },
-                  ],
+                  // childrenValue: tokenDisplayOrdersType,
+                  // onSelect: (value) =>
+                  //   value !== tokenDisplayOrdersType &&
+                  //   setTokenDisplayOrdersType(value),
+                  // children: [
+                  //   {
+                  //     label: t('defaultPortfolio'),
+                  //     value: TOKEN_DISPLAY_ORDER_TYPES.DEFAULT,
+                  //   },
+                  //   {
+                  //     label: t('mostTransacted'),
+                  //     value: TOKEN_DISPLAY_ORDER_TYPES.MOST_TRANS,
+                  //   },
+                  //   {
+                  //     label: t('recentlyTransacted'),
+                  //     value: TOKEN_DISPLAY_ORDER_TYPES.RECENT_TRANS,
+                  //   },
+                  // ],
                 },
                 {
                   label: t('activity'),

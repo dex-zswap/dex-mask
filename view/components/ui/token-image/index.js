@@ -40,8 +40,6 @@ export default function TokenImage({
     [size],
   )
 
-  console.log(nativeCurrencyImage)
-
   const tokenImage = useMemo(() => {
     if (success) {
       return <img className='img' src={src} style={style} />
