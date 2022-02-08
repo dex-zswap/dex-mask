@@ -20,7 +20,7 @@ export default function TokenImage({
   const currentChainId = useSelector(getCurrentChainId)
   const letter = useChainIdNameLetter(chainId)
   const nativeCurrencyImage = useSelector(getNativeCurrencyImage)
-  const isNativeCurrency = address === ethers.constants.AddressZero
+  const isNativeCurrency = useMemo(() => address === ethers.constants.AddressZero, [address])
   const networkId = useMemo(() => {
     if (chainId) {
       return toBnString(chainId)
@@ -39,13 +39,20 @@ export default function TokenImage({
     }),
     [size],
   )
+
+  console.log(nativeCurrencyImage)
+
   const tokenImage = useMemo(() => {
     if (success) {
       return <img className='img' src={src} style={style} />
     }
 
+    if (isNativeCurrency && !src) {
+      return <img className='img' src={nativeCurrencyImage} style={style} />
+    }
+
     return <div className='default-token-image' style={style}></div>
-  }, [success, src, style])
+  }, [success, src, style, isNativeCurrency, nativeCurrencyImage])
   useEffect(() => {
     setLoading(true)
     setSuccess(false)
