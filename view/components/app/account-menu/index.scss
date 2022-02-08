@@ -81,6 +81,10 @@
     margin: 0 0 20px;
     cursor: pointer;
 
+    .account-menu__item__text {
+      font-size: $size-12;
+    }
+
     .icon {
       margin: 0 10px 0 0;
     }
