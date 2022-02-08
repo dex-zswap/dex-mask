@@ -360,7 +360,7 @@ export function getShouldHideZeroBalanceTokens(state) {
 }
 export function getTokenDisplayOrdersType(state, autoPick = true) {
   const { tokenDisplayOrdersType } = getPreferences(state)
-  return tokenDisplayOrdersType ?? TOKEN_DISPLAY_ORDER_TYPES.DEFAULT
+  return TOKEN_DISPLAY_ORDER_TYPES.DEFAULT
 }
 export function getTokenDisplayOrders(state, autoPick = true) {
   const { tokenDisplayOrders } = getPreferences(state)
